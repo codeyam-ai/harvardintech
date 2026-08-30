@@ -154,6 +154,7 @@ blob-report/
 .codeyam/state/refusal-fingerprints.json
 .codeyam/state/rebase-heal.json
 .codeyam/state/rebuild-self-restart.json
+.codeyam/state/push-auto-amend.json
 .codeyam/state/change-origin.json
 .codeyam/state/audit-split.json
 .codeyam/test-run-marker.json

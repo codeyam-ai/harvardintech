@@ -722,6 +722,15 @@ _GATING_SUBCOMMANDS = frozenset(
         "advance",
         "analyze-imports",
         "audit",
+        # The two terminal steps. Neither is slow in the ordinary case, and that
+        # is exactly why they belong here: each POSTs to a handler that shells
+        # out to git, so each CAN block, and each is the LAST command of its
+        # flow — so a block strands the whole cycle with nothing left to report
+        # it. Unwrapped, `feature-complete` hung for ten minutes emitting no
+        # heartbeat and no status document, which is indistinguishable from
+        # working. Membership here is what buys the liveness signal.
+        "feature-complete",
+        "plan-complete",
         "pre-commit-sync",
         "preview",
         "preview-flow",
@@ -732,6 +741,8 @@ _GATING_SUBCOMMANDS = frozenset(
         "push",
         "reconcile-registry",
         "refresh-tests",
+        "scenario-matrix",
+        "scenario-taxonomy",
         "session-checkpoint",
         "session-finalize",
         "show-results",

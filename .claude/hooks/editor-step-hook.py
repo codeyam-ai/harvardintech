@@ -437,7 +437,17 @@ _WEDGE_CHECK_TIMEOUT_SECS = 10
 
 
 def _wedge_notice(project_dir):
-    """Ask the editor whether any background task is demonstrably stranded.
+    """Ask the editor whether this turn is ending on something worth saying.
+
+    `wedge-check` composes three verdicts and this call is blind to which one
+    came back, deliberately — the hook's job is to put the text in front of the
+    agent, and the editor owns what the text says:
+      * a background task is demonstrably STRANDED — its result is not coming;
+      * a background task is HEALTHY but has been running past the reporting
+        threshold — waiting is correct, and the user should be told rather than
+        left to ask;
+      * the turn is ending mid-workflow with NOTHING pending and no question
+        outstanding, so nothing will re-invoke the agent.
 
     Returns the notice text, or "" for the overwhelmingly common case of
     nothing being wrong. Every failure mode collapses to "" on purpose: the
@@ -467,7 +477,7 @@ def _wedge_notice(project_dir):
 
 
 def emit_wedge_block(project_dir, event_data):
-    """Reopen the turn when a background task is demonstrably stranded.
+    """Reopen the turn when `wedge-check` has something to say about its ending.
 
     Returns True when it emitted a block decision (and the caller must print
     nothing else, because a Stop hook's stdout is parsed as one JSON document).
@@ -475,18 +485,30 @@ def emit_wedge_block(project_dir, event_data):
     Blocking rather than printing is the whole point. Stop-hook stdout on a
     plain exit is transcript decoration the agent never reads, and the agent is
     exactly who has to act: a stranded result means every plan that depends on
-    it is void. A `block` decision puts the notice in front of the agent and
+    it is void, a healthy long-running task means the USER needs a status line
+    only the agent can write, and an idle stop means nothing will re-invoke the
+    agent at all. A `block` decision puts the notice in front of the agent and
     reopens the turn, which is the one thing that distinguishes this from the
     launch trigger that could not reach it.
 
-    Three separate guards keep that from becoming a loop, because reopening a
+    Four separate guards keep that from becoming a loop, because reopening a
     turn is the one failure mode a Stop hook can inflict that nothing else can:
       * `stop_hook_active` is set by the harness on a turn that a Stop hook
         already reopened, so we never block twice in a row;
-      * the notice is one-shot per task — `claim_unreported` drops a
-        `.wedge-reported` marker beside the task output, shared with the launch
-        trigger, so the same stall is announced exactly once by either;
+      * a task notice is one-shot per task — `claim_unreported` drops a
+        `.wedge-reported` marker beside the task output, shared across the two
+        task verdicts and the launch trigger, so the same task is announced
+        exactly once by any of them;
+      * the idle-stop notice is one-shot per workflow step, and stays silent
+        entirely whenever a question is outstanding to the user — ending a turn
+        on a gate is correct, and talking over the question would be worse than
+        the silence this closes;
       * any failure at all is silent, and silence means "do not block".
+
+    Note what is NOT a guard: the wording. Every one of the three notices asks
+    the agent to do something — relay, continue, or say what it is blocked on —
+    and none of them refuses the stop. A turn-end hook that told an agent it may
+    not stop would inflict exactly the failure the guards above exist to avoid.
     """
     if event_data.get("stop_hook_active"):
         return False
@@ -772,12 +794,21 @@ def main():
         print("\n".join(lines))
         return
 
-    # ── Stop: the wedge backstop's second trigger ──────────────────────
+    # ── Stop: the turn-end backstop, now covering three verdicts ───────
     # The detector itself has always been correct; its only trigger was the
     # launch of a wrapped command, which an agent parked on a result it cannot
     # get never performs. So the backstop could only rescue an agent that did
     # not need rescuing. This is the reachable trigger: the end of the turn IS
     # the moment parking happens, and it needs no suspicion and no agent action.
+    #
+    # Reachability was necessary and not sufficient. The scan behind it reported
+    # only demonstrably-STRANDED tasks, so a task that was merely slow kept its
+    # heartbeat ticking and the turn ended in the identical silence — 11 parked
+    # turns and 14.9 h of dead time across six VMs, every one ended by a human
+    # asking rather than by the system saying. A third shape sat beside it: nine
+    # turns that ended right after announcing the next step with nothing pending
+    # at all. Same channel, same subprocess, same "empty means nothing wrong";
+    # what changed is that healthy-but-slow and idle-stop now have a verdict too.
     if event_type == "stop" and emit_wedge_block(project_dir, event_data):
         return
 
