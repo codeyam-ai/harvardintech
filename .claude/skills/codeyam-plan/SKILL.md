@@ -27,7 +27,7 @@ The only files you may write are:
 - `.codeyam/plans/<slug>.md` (the plan itself)
 - `git add` / `git commit` of that plan file (and **only** that plan file — never `git add -A`, never a bare `git commit` that would sweep in unrelated staged work). This is the plan-creation commit specifically — it must contain only the plan file. The feature-commit step at the end of the editor workflow has a different rule: it auto-commits all non-gitignored leftovers.
 
-The one read-only CLI call this skill makes is `codeyam-editor editor plan-prefixes` in Step 2 (to offer every prefix used before as a one-click option). It prints to stdout and changes nothing — it is not an "implementation" command.
+The one read-only CLI call this skill makes is `codeyam-editor editor plan-prefixes` in Step 2 (to read the prefixes already in use so you can derive one). It prints to stdout and changes nothing — it is not an "implementation" command.
 
 ## Workflow
 
@@ -47,25 +47,24 @@ Output **exactly** this and nothing else (no preamble, no tool calls, no follow-
 
 Then end your turn. The user will reply with a freeform description.
 
-Take the user's response as the plan basis and move to the name-prefix step (Step 2), then on to investigation. Only ask a follow-up question if the response is genuinely ambiguous (e.g., you can't tell which part of the codebase is involved). Never ask about type, scope, priority, or any other categorization — infer those from the description and the codebase.
+Take the user's response as the plan basis and move to the prefix-derivation step (Step 2), then on to investigation. Only ask a follow-up question if the response is genuinely ambiguous (e.g., you can't tell which part of the codebase is involved). Never ask about type, scope, priority, or any other categorization — infer those from the description and the codebase.
 
-### Step 2: Ask about a name prefix
+### Step 2: Derive a name prefix — do NOT ask for one
 
-A prefix tags the plan's filename and title by author or work item — developer initials (`jc`), a feature code (`auth`), or a ticket number (`PROJ-123`). The question is **always** a one-click `AskUserQuestion` menu, so the user never has to type a prefix to answer it:
+A prefix tags the plan's filename and title by author or work item — developer initials (`jc`), a feature code (`auth`), or a ticket number (`PROJ-123`). **Never open an `AskUserQuestion` menu for it.** The prefix is an organisational convention internal to `.codeyam/plans/`; nothing the user sees or does changes based on the answer, so the question asks them to adjudicate a filename with no stated consequence — the exact shape of an unanswerable gate. Choosing it is a routine judgment call, which is the standard for deciding and reporting rather than asking.
 
 1. Run `codeyam-editor editor plan-prefixes` and capture its trimmed, newline-delimited stdout as `priorPrefixes` (an ordered list, most-recent-first). It prints every distinct prefix any plan has used (scanning both the queue and `.codeyam/plans/completed/`), de-duplicated, or nothing when no plan carries a prefix — or there are no plans yet. The first line equals the legacy `last-plan-prefix` output.
 
-2. **Always** use `AskUserQuestion` — there is no plain-text fallback branch:
-   - Question: "Would you like to prefix the plan's filename and title?"
-   - One option per entry in `priorPrefixes`, in order, **capped at the 3 most-recent** (an `AskUserQuestion` menu allows at most 4 options and the last slot is reserved for "None"). Mark the **first** option "(Recommended)" with description = "Reuse the prefix from your most recent plan."; give the rest description = "Reuse a prefix you've used before."
-   - A final option: label = "None", description = "No prefix — derive the filename and title from the description alone."
-   - The auto-injected **Other** field lets the user type any prefix not shown (including one beyond the 3-most-recent cap).
-
-   When `priorPrefixes` is empty, the menu still renders with just the "None" option (plus the **Other** field) — so the question is always answerable with a single click and the user is never forced to type.
-
-   Interpret the answer: a listed prefix → that prefix; "None" → no prefix; an **Other** reply → the trimmed typed value as the prefix.
+2. Pick the prefix yourself, in this precedence order:
+   - **The user volunteered one** — in the invocation argument or anywhere in the conversation ("call this one `fleet-…`", "tag it PROJ-123"). Honour it verbatim; a volunteered prefix always wins.
+   - **A `priorPrefixes` entry matches the plan's subject** — the vocabulary already in use describes areas of the project (`build`, `audit`, `fleet`, `testing`, `fix`, `git`, `workflows`). Choose the one whose subject the plan is about, not the most recent one; recency is not evidence of fit.
+   - **Nothing fits, or `priorPrefixes` is empty** — use no prefix. The filename and title derive from the description alone, which is a perfectly good outcome and the common one.
 
 3. Strip any double-quote (`"`) characters from the resulting prefix before carrying it into the "Write the plan file" step (Step 5), so both the `title:` and the new `prefix:` frontmatter lines stay valid YAML.
+
+4. Do not announce the choice mid-flow — it is reported once, with the finished plan, in Step 6.
+
+A caller that wants a specific prefix passes `plan-create --prefix` directly; that override is unchanged. What is gone is the unprompted modal.
 
 Then move on to investigation (Step 3).
 
@@ -268,7 +267,7 @@ codeyam-editor editor plan-create \
   --body-file .codeyam/tmp/plan-body.md
 ```
 
-Omit `--prefix` when Step 2 produced no prefix. The command prints the path it
+Omit `--prefix` when Step 2 derived no prefix. The command prints the path it
 wrote, and refuses rather than clobbering an existing slug.
 
 **Why a command and not the Write tool:** `createdAt` has to be a real
@@ -344,10 +343,11 @@ returns [[1, 3], [2, 5]], so the `toEqual([[1, 5]])` assertion fails.
   separately via `--prefix`; do not fold it into the title yourself.
 - `--mode` (required) — `ui` or `backend`. Default to `ui` unless the change is
   purely backend.
-- `--prefix` (optional) — The author/work-item prefix from Step 2, **verbatim**
-  as the user typed it. It is stored as the canonical record of the prefix —
-  `editor plan-prefixes` (and `editor last-plan-prefix`) read it back to seed the
-  next plan's options. **Omit the flag entirely when no prefix was chosen.**
+- `--prefix` (optional) — The author/work-item prefix derived in Step 2 — or,
+  when the user volunteered one, **verbatim** as they typed it. It is stored as
+  the canonical record of the prefix; `editor plan-prefixes` (and `editor
+  last-plan-prefix`) read it back as the vocabulary the next plan derives from.
+  **Omit the flag entirely when no prefix was derived.**
 - `--body-file` (required in practice) — Path to the body markdown. Reads stdin
   when omitted.
 - `--depends-on <slug>` (optional, repeatable) — A prerequisite plan. The Plan
@@ -477,8 +477,15 @@ Run `codeyam-editor editor plans` to verify the plan is parseable and shows up c
 
 Show the user a brief summary of the plan. When Step 4b produced more than two
 or three plans, lead with the grouping: how many there are, and one line per
-merge you made and per merge you considered and declined. Then use
-AskUserQuestion with these options:
+merge you made and per merge you considered and declined.
+
+**Report the Step 2 prefix here**, in one clause — the tag you put on the
+filename and title, and why that one ("filed under `fleet`, since it's a
+roster change") or that there is none. This is the decide-and-report half of
+not asking: the user still learns what was chosen and can say "call it
+something else", which loops through "I want changes" like any other revision.
+
+Then use AskUserQuestion with these options:
 - **"Looks good, commit it" (Recommended)** — Commit the plan and finish
 - **"I want changes"** — User describes changes, you revise the plan, then re-present
 - **"Discard and start over"** — Delete the plan file and go back to Step 1

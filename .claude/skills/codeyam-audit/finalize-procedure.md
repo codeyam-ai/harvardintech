@@ -400,14 +400,27 @@ wants current evidence and screenshots.
 > as a project default, since the right value is a property of the machine's
 > cores and memory, not of any one run).
 >
-> Raising it cannot corrupt a frame. The editor server takes its capture gate
-> EXCLUSIVELY for any capture that seeds, restarts the dev server, or resets a
-> sandbox or container, so those never overlap however many are dispatched;
-> only captures that mutate nothing share the gate. The real cost of too high a
-> value is memory — every capture spawns its own browser — so raise it in steps
-> and watch. Native-simulator stacks are pinned to 1 (one shared device) and
-> ignore the flag, and a content-collection stack sees little gain because
-> nearly every capture there is exclusive either way.
+> Raising it is safe because the editor server takes its capture gate
+> EXCLUSIVELY for any capture that mutates shared state — one that seeds,
+> restarts the dev server, resets a sandbox or container, drives a shared
+> simulator, **or scripts streams or transcripts** (those overlay the scenario's
+> script onto the server's single shared mock engine for the whole render). Such
+> captures never overlap however many are dispatched; only captures that mutate
+> nothing share the gate.
+>
+> That list is exhaustive rather than illustrative, and it is worth knowing why:
+> the stream/transcript channel was MISSING until 2026-08-30, and its absence is
+> what let a `--concurrency 4` sweep screenshot one scenario showing a different
+> scenario's scripted transcript. So do not reason from "my scenarios don't
+> seed, therefore concurrency is free" — reason from the list. If you add a
+> capture path that touches server-side shared state, it needs a channel in
+> `crates/control-api/src/capture_lock_mode.rs::CaptureMutationInputs` before it
+> is safe to run concurrently.
+>
+> The real cost of too high a value is memory — every capture spawns its own
+> browser — so raise it in steps and watch. Native-simulator stacks are pinned
+> to 1 (one shared device) and ignore the flag, and a content-collection stack
+> sees little gain because nearly every capture there is exclusive either way.
 >
 > Two consequences for reading the output. The JSON reports `concurrency`
 > (requested) and `effective_concurrency` (used) — read the latter, since a

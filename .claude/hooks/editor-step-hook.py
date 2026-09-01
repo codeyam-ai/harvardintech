@@ -72,6 +72,82 @@ def label_signals_pre_commit_warning(label):
     return needle in ("present", "demo", "finalize")
 
 
+def label_signals_sync_gate(label):
+    """Return True at the Pre-Commit Sync step — the one step where a stale
+    binary costs a 40-minute-to-two-hour run before anyone finds out.
+
+    Matched on the label rather than the step NUMBER on purpose: the backend
+    tail has already shifted once (`split-backend-present-approval-gate` moved
+    `pre-commit-sync` from 16 to 17), and a hardcoded number would have gone
+    quietly wrong at that commit."""
+    if not label:
+        return False
+    return label.strip().lower() == "pre-commit sync"
+
+
+# `rebuild-self --check` is documented to return in under a second — it never
+# builds, swaps, or restarts. The timeout is a fault bound, not a budget.
+_REBUILD_CHECK_TIMEOUT_S = 10
+
+
+def rebuild_check_verdict(project_dir):
+    """Return the `rebuild-self --check` verdict, or "" when unanswerable.
+
+    The read-only probe: it never builds, swaps, or restarts, and prints one of
+    `current` / `rebuild-in-flight` / `stale` / `aliases-diverged`, so it is
+    safe to run on every turn end at the step that needs it.
+
+    Split from the notice below on the same seam as `wedge_check` /
+    `emit_wedge_block` in this file: shelling out and deciding what verdict
+    means are different concerns, and the verdict parse is worth reading on its
+    own line.
+
+    Every failure collapses to "": an absent or older binary (a fleet
+    mid-upgrade) predates the `--check` flag and exits non-zero, and a hook that
+    raised would interrupt an otherwise-fine turn."""
+    import subprocess as _sp
+
+    try:
+        result = _sp.run(
+            [cli_command(), "editor", "rebuild-self", "--check"],
+            cwd=project_dir,
+            capture_output=True,
+            text=True,
+            timeout=_REBUILD_CHECK_TIMEOUT_S,
+        )
+    except Exception:
+        return ""
+    if result.returncode != 0:
+        return ""
+    tail = result.stdout.strip().splitlines()[-1:]
+    return tail[0].strip() if tail else ""
+
+
+def stale_binary_notice(project_dir):
+    """Surface a stale installed binary BEFORE the agent launches the sync.
+
+    Returns the notice text, or "" when the binary is current or the question
+    cannot be answered.
+
+    Only `stale` is reported. `rebuild-in-flight` means a build is already
+    converging on its own, and `aliases-diverged` self-heals at the next
+    per-role re-exec — neither is a reason to interrupt the agent here.
+
+    The CLI gate in `pre_commit_sync` is the ENFORCING check; this is only the
+    earlier, cheaper word, which is why it degrades to silence rather than to a
+    guess."""
+    if rebuild_check_verdict(project_dir) != "stale":
+        return ""
+    return (
+        "\n\033[1;31m⚠️  The installed editor binary is out of date.\033[0m\n"
+        "   `pre-commit-sync` runs 40 minutes to two hours and would spend all of it "
+        "producing a verdict from code this branch has already replaced.\n"
+        "   Run this FIRST — it rebuilds the CLI without bouncing the editor server, "
+        "so this session stays alive:\n"
+        "     codeyam-editor editor rebuild-self --defer-restart"
+    )
+
+
 def log_event(project_dir, event, data=None):
     """Append a JSONL entry to .codeyam/logs/editor-log.jsonl."""
     try:
@@ -285,7 +361,20 @@ TOOL_LOADING_SELECT_QUERY = "select:TaskCreate,TaskList,TaskUpdate,TaskGet"
 # `steps/library/fragments/background_wait_block.txt`. It is NOT in the
 # per-prompt gate-tool query because it is not a gate-step tool — only the
 # session-entry preload needs it.
-SESSION_START_SELECT_QUERY = TOOL_LOADING_SELECT_QUERY + ",Monitor"
+#
+# It is a SEPARATE query from `TOOL_LOADING_SELECT_QUERY`, and that separation
+# is load-bearing rather than cosmetic. This was once
+# `TOOL_LOADING_SELECT_QUERY + ",Monitor"`, and concatenating them silently
+# disabled the capability mechanism above: `Monitor` resolves on every harness,
+# so the combined lookup can never come back "no matching deferred tools" and —
+# on a harness without the Task* tools — never carries a Task* schema either.
+# `_observe_task_tool_capability` saw neither signal, recorded nothing, and
+# `task_tools_available()` stayed None for the whole session. Measured across 42
+# fleet sessions: the combined query settled the question 0 times out of 42, and
+# 12 of those sessions then obeyed a step directive to call `TaskCreate` and hit
+# `No such tool available`. Asking the two questions separately is what lets the
+# Task* half answer.
+SESSION_START_MONITOR_QUERY = "select:Monitor"
 
 
 # Marker recording the harness session that last received the per-prompt
@@ -387,6 +476,12 @@ def _record_task_tools_available(project_dir, available):
 _NO_MATCHING_TOOLS_MARKERS = ("no matching deferred tools",)
 _TOOL_UNAVAILABLE_MARKERS = ("no such tool available", "is disabled for this session")
 
+# The step-tracking tools, lowercased for substring matching. ONE tuple feeds
+# both the query side (`_looks_like_task_tool_query`) and the response side
+# (`_observe_task_tool_capability`), so the set of names a query is recognized
+# by can never drift from the set its answer is judged against.
+_TASK_TOOL_NAMES = ("taskcreate", "tasklist", "taskupdate", "taskget")
+
 
 def _looks_like_task_tool_query(query):
     """True when a ToolSearch query is the Task* preload this hook prescribes.
@@ -395,17 +490,39 @@ def _looks_like_task_tool_query(query):
     that reorders them, or searches for a subset, still settles the question."""
     lowered = (query or "").lower()
     return "select:" in lowered and any(
-        name in lowered for name in ("taskcreate", "tasklist", "taskupdate", "taskget")
+        name in lowered for name in _TASK_TOOL_NAMES
     )
+
+
+def _task_tools_in_search_result(blob):
+    """True when a Task*-preload response carries a Task* schema, else False.
+
+    Only ever called for a query `_looks_like_task_tool_query` accepted, so the
+    question is already narrowed to "did the tools we asked for come back?" —
+    which makes the no-Task*-name case an ANSWER (they are absent), not silence.
+    Deciding on the names present rather than on the harness's "nothing matched"
+    wording is what lets a PARTIAL result settle it: a query that resolved only
+    its non-Task* names returns False here instead of going unrecorded.
+
+    The no-match marker stays as a fast path and is checked FIRST, so a response
+    that echoes the query back cannot be read as a hit — the echo necessarily
+    contains every Task* name the query asked for."""
+    if any(marker in blob for marker in _NO_MATCHING_TOOLS_MARKERS):
+        return False
+    return any(name in blob for name in _TASK_TOOL_NAMES)
 
 
 def _observe_task_tool_capability(project_dir, tool_name, tool_input, tool_response):
     """Record what a just-finished tool call proves about Task* availability.
 
     Three signals, in the order they arrive in a real session: a Task* preload
-    that came back empty (False), a Task* call the harness refused (False), and
-    a Task* call that worked (True). Anything else is not evidence and is
-    ignored — silence must never be read as an absence."""
+    whose answer carried no Task* schema (False), a Task* call the harness
+    refused (False), and a Task* call that worked (True).
+
+    A tool call this function was not asked about — an unrelated `ToolSearch`,
+    any non-Task* tool — is not evidence and is ignored; silence must never be
+    read as an absence. A Task* preload that came back WITHOUT them is the
+    opposite case and must not be mistaken for silence: it is the absence."""
     # Name-check BEFORE serializing: this runs on every PostToolUse, and a
     # `Read` of a large file would otherwise pay a full stringify to learn it
     # is not a tool this function cares about.
@@ -415,14 +532,11 @@ def _observe_task_tool_capability(project_dir, tool_name, tool_input, tool_respo
     if tool_name == "ToolSearch":
         if not _looks_like_task_tool_query((tool_input or {}).get("query")):
             return
-        if any(marker in blob for marker in _NO_MATCHING_TOOLS_MARKERS):
-            _record_task_tools_available(project_dir, False)
-        elif "taskcreate" in blob:
-            # The schemas came back. Recording the positive matters as much as
-            # the negative: the SessionStart preload still fires every session,
-            # so a harness that GAINS the tools re-settles here rather than
-            # staying on `track-step` forever.
-            _record_task_tools_available(project_dir, True)
+        # Either way this is a recorded answer. Recording the positive matters
+        # as much as the negative: the SessionStart preload fires every session,
+        # so a harness that GAINS the tools re-settles here rather than staying
+        # on `track-step` forever.
+        _record_task_tools_available(project_dir, _task_tools_in_search_result(blob))
         return
     if any(marker in blob for marker in _TOOL_UNAVAILABLE_MARKERS):
         _record_task_tools_available(project_dir, False)
@@ -537,11 +651,18 @@ def main():
     if event_type == "session_start":
         print("<session-start-hook>")
         print(
-            f"Call `ToolSearch` with `{SESSION_START_SELECT_QUERY}` before your first "
-            "turn so the editor workflow's Task* step-tracking tools are available when "
-            "step-task tracking needs them, and `Monitor`'s schema is loaded before any "
-            "call that needs it — a Monitor invoked without its schema fails with "
-            "`InputValidationError`. Monitor is for watching a CONDITION the harness will "
+            "Before your first turn, make TWO SEPARATE `ToolSearch` calls — they ask "
+            "two different questions and a combined query answers neither:\n"
+            f"  1. `{TOOL_LOADING_SELECT_QUERY}` — the editor workflow's step-tracking "
+            "tools. If this returns `no matching deferred tools`, this harness does not "
+            "have them; that is a normal answer, it is recorded, and the workflow will "
+            "stop asking you for them and use `codeyam-editor editor track-step` instead. "
+            "Do NOT widen this query with other tool names — a name that resolves "
+            "everywhere masks the very absence this call exists to detect.\n"
+            f"  2. `{SESSION_START_MONITOR_QUERY}` — loads `Monitor`'s schema before any "
+            "call that needs it; a Monitor invoked without its schema fails with "
+            "`InputValidationError`.\n"
+            "Monitor is for watching a CONDITION the harness will "
             "not notify you about; a backgrounded long command (refresh-tests, "
             "session-finalize) is not that — its completion notification arrives on its "
             "own, and `codeyam-editor editor wait-for` is the same-turn blocking path. "
@@ -861,6 +982,16 @@ def main():
             lines.append(
                 "\n\033[1;31m⚠️  You have uncommitted changes.\033[0m"
             )
+
+    # Stale-binary pre-flight for the sync gate. Deliberately here, at the turn
+    # end that lands the agent ON the step, rather than after it has launched a
+    # multi-hour run: one session saw the drift 60 seconds in and recorded that
+    # it had no way to act on it. The CLI gate refuses too, but a refusal costs
+    # a round trip this notice does not.
+    if event_type == "stop" and label_signals_sync_gate(label):
+        _stale = stale_binary_notice(project_dir)
+        if _stale:
+            lines.append(_stale)
 
     if event_type == "stop":
         lines.append(
