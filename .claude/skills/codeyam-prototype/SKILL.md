@@ -46,7 +46,7 @@ Then end your turn. The user replies with a freeform description.
   as plain text listing the options; otherwise iterate freely.
 - Do **NOT** run `codeyam-editor editor advance` or `codeyam-editor editor
   step`. Those belong to the formalized Build workflow. While the
-  Prototype sub-tab is active there is no advance gate.
+  Build tab's Prototype activity is running there is no advance gate.
 - Do **NOT** run `git add` or `git commit`. The prototype's source
   changes ride into the feature-commit step at the end of the editor
   workflow alongside the plan.
@@ -88,10 +88,35 @@ you built". Treat every batch of edits as a demo cue.
   the view where it's visible, the user has to find it themselves —
   that is the failure mode this section exists to prevent.
 
-## End-of-prototype: writing the plan
+## Two ways a prototype ends
 
-When the user clicks "Finish and Formalize in Build", the chat receives
-this exact instruction string:
+The Prototype activity has **two** exits, and they mean different things.
+Read which instruction arrived before you act — treating one as the other
+either loses the user's work or writes a plan they did not ask for.
+
+| The user clicked | You should |
+|---|---|
+| **"Finish and Formalize in Build"** | Write the plan and hand the work to Build (below). |
+| **"I'm done"** | Stop. Write no plan. Leave the edits in the working tree. |
+
+### "I'm done"
+
+The chat receives this exact instruction string:
+
+> The user has clicked "I'm done". Stop the current activity now. Do NOT
+> start anything new, do NOT write a plan file, do NOT commit, and do NOT run
+> any `codeyam-editor editor advance`/`step` command. Leave any edits you made
+> in the working tree exactly as they are. Summarize what happened in ONE
+> line, then stop.
+
+Do exactly that: one line, then stop. Ending an activity is neither a
+decision to formalize the work nor a decision to discard it, so do not
+offer to do either — the user is returned to the Build tab's activity
+chooser and can pick again from there.
+
+### "Finish and Formalize in Build": writing the plan
+
+The chat receives this exact instruction string:
 
 > The user has clicked "Finish and Formalize in Build". Stop prototyping.
 > Write the plan BODY describing what was prototyped to a scratch file, then

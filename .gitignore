@@ -145,6 +145,7 @@ blob-report/
 .codeyam/state/dependency-provision.json
 .codeyam/state/setup-provision.json
 .codeyam/state/session-results-snapshot.json
+.codeyam/state/pre-commit-sync-rebase-gate.json
 .codeyam/state/step-highwater.json
 .codeyam/state/finalize-phase-fingerprints.json
 .codeyam/state/merge-drivers-version

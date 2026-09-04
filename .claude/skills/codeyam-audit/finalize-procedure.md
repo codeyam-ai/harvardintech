@@ -489,6 +489,23 @@ wants current evidence and screenshots.
 > to 1 (one shared device) and ignore the flag, and a content-collection stack
 > sees little gain because nearly every capture there is exclusive either way.
 >
+> **A capture the server leaves unanswered under concurrency is retried once,
+> serially, before it is ever reported — so do NOT read a timeout at the end of
+> a sweep as a broken scenario.** Both unanswered shapes are retried: a transport
+> failure (the server did not answer, or not with the capture contract) and a
+> per-slug timeout (the budget elapsed before it answered). Neither is a verdict
+> about the scenario; a budget elapsing says the server was too slow. The re-ask
+> is sequential on purpose, because the likeliest cause is the sweep's own
+> fan-out — measured on a 1,740-scenario sweep, three slugs timed out at
+> `--concurrency 4` and all three captured in 37s when re-run serially, with no
+> code or config change. A slug that goes unanswered TWICE keeps its outcome and
+> is reported honestly, so a genuinely uncapturable scenario is never masked.
+>
+> The JSON reports `captures_recovered_by_retry` for exactly this. Non-zero means
+> the run hit that saturation and absorbed it — the signal that a lower
+> `--concurrency` would have captured the same corpus in one pass. Without it, a
+> rescued run looks identical to one that never needed rescuing.
+>
 > Two consequences for reading the output. The JSON reports `concurrency`
 > (requested) and `effective_concurrency` (used) — read the latter, since a
 > native stack reports a request it did not honor. And it reports the cost in
@@ -549,6 +566,14 @@ codeyam-editor editor presentability-scan
 # Refresh the README how-to + scenario gallery (idempotent).
 codeyam-editor editor readme-sync
 ```
+
+**`Debug logging: not scanned` is NOT a pass.** It means this stack declared no
+`debugLogPatterns` and has no built-in default, so the logging pass never ran
+and an empty candidate list is an absence of evidence, not evidence of
+cleanliness. Configure `debugLogPatterns` in `.codeyam/stack.json` (or add a
+built-in default for the stack's framework token) and re-run before treating
+presentability as clean. `Debug logging: none` is the line that means clean;
+under `--format json` the same distinction is `debug_log_patterns_source`.
 
 Then **assertively** remove the clearly-dead docs and debug log lines the scan
 surfaces — but **ask the user about anything uncertain** before deleting it.
@@ -628,6 +653,40 @@ codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.lo
 > `tee`'d file. Do NOT hand-roll an `until grep … sleep` poll loop, and don't regex
 > English success strings. (Same wait-for-the-notification model as the editor
 > SKILL.md and the step hook's background-work block — one model, not two.)
+
+> GOTCHA — **the on-disk log spans EVERY run, so grepping it answers the wrong
+> question.** Separately from the `tee`'d file above, finalize always writes
+> `.codeyam/logs/session-finalize.log`. That file is deliberately append-only —
+> the history is useful, and comparing this run's phase timings against the last
+> one is a real workflow — so a `grep BLOCKED:` or `grep 'Next valid action:'`
+> over it returns **the union of every run this branch has ever done**, most of
+> it historical and none of it labelled as such. This is the same shape as the
+> `<cmd>.txt` warning in CLAUDE.md, where a narrower re-run replaces a wider
+> one's output: in both cases the file you get is not the file you meant.
+>
+> It reads exactly like a live problem. A previous run's `fleet-ready.test.sh
+> mutated the repository under test` bail — carrying a repository-state delta
+> naming a branch that no longer existed — was once read as live damage to the
+> current checkout, and several minutes went into verifying `core.bare`, the
+> reflog, and every ref before it turned out to predate the session by days.
+>
+> Ask for the run you actually mean:
+>
+> ```bash
+> codeyam-editor editor finalize-log --last-run      # just the newest run
+> ```
+>
+> Read-only, exits `0` on an absent or empty log, and takes `--format text|json`
+> like the other query surfaces. Under JSON, `count` is the slice's line count
+> and `total` the whole log's, and the `runId` sibling is the join key — it
+> matches the `runId` on
+> `.codeyam/state/command-output/session-finalize.status.json`, so you can prove
+> the slice and the verdict describe the same run rather than trusting a bare
+> `status`. Every run that started emits a closing `CODEYAM_FINALIZE_RUN_END`
+> marker carrying `ok`, `failed`, or `refused` (a blocked precondition, such as
+> the dirty-tree gate, that returns before the phases run). So a slice with NO
+> closing marker means the run never finished at all — still in flight, or
+> killed.
 
 > GOTCHA — **the per-test-evidence union-clobber.** If the finalize's evidence
 > phase reports a large `per-test-evidence` "missing" / "out of sync" count
@@ -836,9 +895,10 @@ codeyam-editor editor verify-primary-branch-ci
 ```
 
 Exit `0` means a run exists. Exit `2` names the sha and the one command that
-recovers it (`gh workflow run cicd --ref main`). A `gh` that cannot answer, or a
-non-GitHub remote, reports unknown/not-applicable and exits `0` — this check
-never turns a network hiccup into a red gate.
+recovers it (`gh workflow run cicd --ref main`). A `gh` that cannot answer, a
+non-GitHub remote, or a repo that defines no workflows at all reports
+unknown/not-applicable and exits `0` — this check never turns a network hiccup,
+or a project that simply has no CI, into a red gate.
 
 ---
 
