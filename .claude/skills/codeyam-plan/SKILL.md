@@ -491,12 +491,21 @@ roster change") or that there is none. This is the decide-and-report half of
 not asking: the user still learns what was chosen and can say "call it
 something else", which loops through "I want changes" like any other revision.
 
-Then ask with your harness's structured-question tool (on Claude,
-`AskUserQuestion`), or as plain text listing the options in this order if it
-has none — the first option is the recommended one either way:
+Present the menu with your harness's structured-question tool (on Claude,
+`AskUserQuestion`), or as plain text listing the options in this order only on
+a harness that has no such tool — the first option is the recommended one
+either way:
 - **"Looks good, commit it" (Recommended)** — Commit the plan and finish
 - **"I want changes"** — User describes changes, you revise the plan, then re-present
 - **"Discard and start over"** — Delete the plan file and go back to Step 1
+
+The menu is required here even though the first option is marked
+(Recommended). A general convention says not to open a picker for a choice
+that has a conventional default, and that convention does not apply to this
+gate: this is where the user accepts the plan and triggers the commit, so the
+recommendation is about *which* answer is likely right, never about whether to
+ask. Rendering these three as prose leaves the user typing "commit it" by hand
+— which is the exact failure this wording exists to prevent.
 
 ### Step 7: Act on response
 

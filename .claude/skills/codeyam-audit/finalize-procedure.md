@@ -138,6 +138,47 @@ known up front rather than discovered at the finalize wall.
 > per-step gate does **not** mean `session-finalize` will pass. Treat a green
 > session as "the diff is clean," never as "the branch is finalize-ready."
 
+**Converge the binary AND the server before anything routed through the
+server.** These are two build surfaces, not one. `rebuild-self` rebuilds and
+swaps the *binary*, so your next CLI invocation runs new code; the editor
+**server** is a separate long-lived process that keeps executing whatever build
+it booted with until it is restarted. Test runs, gate runs and preview captures
+are routed through the server, so a stale server does not make them slow — it
+makes their conclusions **invalid**. Measured: a 25-minute `refresh-tests` warm
+produced a completely void result because the server was running a build that
+predated 61 edited files.
+
+Read the state before you spend anything on it — the probe never builds, swaps,
+or restarts:
+
+```bash
+codeyam-editor editor rebuild-self --check
+```
+
+Treat any verdict other than `current` as **blocking for server-routed work**:
+
+| Verdict | What it means here |
+|---|---|
+| `current` | Binary and aliases agree with the source. Proceed. |
+| `stale` | A source edit (or a failed post-swap restart) is not in the binary. Run `rebuild-self` — read the stderr guidance, which names the recovery that fits. |
+| `rebuild-in-flight` | A detached worker is still building. Run `rebuild-self` to re-attach; do not start a second build. |
+| `aliases-diverged` | The binary is current but the role hardlinks point at a previous generation — usually after a bare `cargo install --force`. A plain `rebuild-self` relinks them on its already-current fast path without recompiling. |
+
+Then make sure the *server* picked the new binary up:
+
+```bash
+codeyam-editor editor restart-server
+```
+
+> GOTCHA — **`--defer-restart` is the wrong choice whenever the next step
+> routes through the server.** It swaps the binary and deliberately skips the
+> bounce, which is exactly the state that yields a void warm. It exists to
+> protect a session *hosted by the PTY broker* — i.e. one that would be dropped
+> by the bounce. A laptop session usually is not hosted that way, so check
+> whether this session actually descends from the server before assuming it
+> needs protecting. Choosing `--defer-restart` to be safe, on a session that was
+> never at risk, guarantees the one outcome you were trying to avoid.
+
 ---
 
 ## 2. See the whole failure set at once — no fail-fast
@@ -271,6 +312,35 @@ paying a multi-minute test run for it — that is a defect to report, not a
 duration to absorb. This file already makes the argument one layer down for
 the RSS runaway (two sessions let `reconcile-registry` reach 2 GB because
 "this one is slow" was in the docs); it holds for wall-clock too.
+
+> GOTCHA — **`UNCOVERED_GLOSSARY_ENTRY` has TWO causes, and they want
+> opposite actions.** A zero-hit reading means the entity's own instrumented
+> lines recorded no hits. That happens when nothing tests it — the real debt
+> — and it *also* happens when LLVM **inlined** a small function into its
+> callers, so the hits landed on the caller's lines and the entity's own
+> symbol reads zero even though its code ran and its tests passed.
+>
+> The discriminator is in the same LCOV the finding came from: **did a test
+> that references this entity itself record hits?** If yes, the entity was
+> inlined. Measured 2026-09-04 on `session_finalize_log.rs` — `last_run_slice`
+> read zero hits beside four tests that each ran, as did `run_id_of`,
+> `format_warm_note`, `build_finalize_log_document` and
+> `reject_impossible_combination`. The coverage data was healthy: 68.5% of
+> functions project-wide carried hits.
+>
+> The audit now draws this distinction for you and lists the inlined entries
+> in their own `— inlining-suspect (a covering test ran; not debt) —` group,
+> excluded from the zero-hit count. **Neither resolution for a genuinely
+> uncovered entry applies to that group:** do not write a duplicate test for
+> something already tested, and — the expensive one — do not record an
+> `untestabilityReason`. A `trivial-wrapper` / `platform-glue` claim
+> permanently marks a *tested* function as owing no test, and nothing
+> downstream ever revisits it. One session came within a step of doing that
+> to eight entries before noticing their tests had run.
+>
+> Entries outside that group are unchanged and are the real debt. If you are
+> triaging by hand on an older binary, check for a covering test that ran
+> before you choose between "write a test" and "mark untestable".
 
 > GOTCHA — **a git hook invoking a flag the binary doesn't have.** When a
 > commit or push dies on something like `error: unexpected argument '--check'
@@ -524,6 +594,65 @@ wants current evidence and screenshots.
 > *serial* timings), divide the **capture** portion by the effective
 > concurrency and leave the fixed portion alone. Dividing `elapsed_seconds`
 > wholesale is the same class of mis-pricing this reporting exists to stop.
+>
+> **`--concurrency` is not the only wall. `recapture-stale` also carries a
+> default 300-second budget, and on a large sweep that is the one you hit
+> first.** Concurrency changes how much gets captured *before* the budget
+> elapses; it does not change *whether* the sweep finishes. Reading the
+> paragraphs above and tuning only `--concurrency` therefore still leaves you
+> short — measured: 1,789 stale, **132 captured**, exit `2`. A sweep you intend
+> to complete wants the budget lifted explicitly:
+>
+> ```bash
+> codeyam-editor editor recapture-stale --concurrency <N> --max-seconds 0
+> ```
+>
+> `--max-seconds 0` disables the wall. Set both together — they are one decision
+> about a large sweep, not two independent knobs.
+>
+> Distinguish the two outcomes rather than guessing: a budget bail sets
+> **`budget_expired: true`** on the stdout JSON and lists every uncaptured slug
+> under `skipped`. That is an *unfinished* run, not a failed one — the captures
+> it did make are good, and nothing was left worse than it was found. Do not
+> investigate it as a capture failure (which is what the GOTCHA below covers);
+> re-run it with the budget lifted.
+
+> **`--concurrency` and `--max-seconds` bound different things, and a large
+> sweep needs you to get both right.** Concurrency shrinks how long the captures
+> take; the budget bounds how long the run is ALLOWED to take. They are easy to
+> read as one lever and they are not: under a budget too small for the work,
+> raising concurrency changes only how many scenarios get captured before the
+> same wall, never whether the sweep finishes. Following the concurrency advice
+> above and no more is exactly how a reader still gets cut off.
+>
+> The budget used to be a flat 300 seconds whenever you did not name one —
+> chosen before the command had any idea how much work it had found. Measured
+> 2026-09-03 on this repo: 1,789 scenarios stale, a default-budget run captured
+> **132** and skipped **1,657**, printing
+> `⏱ Budget expired after 300s — skipping 1657 remaining slug(s)` and exiting
+> `2`. The same set drained in one pass with `--max-seconds 0`. Five minutes
+> bought nothing but the number.
+>
+> **Omitting `--max-seconds` is now the right default**, and it is no longer the
+> trap: the budget is sized from the stale set the run discovers, at this
+> project's measured capture rate, divided by the concurrency actually in use —
+> with headroom, and never below 300s, so a small touch-up behaves exactly as it
+> did. The startup line names the budget and where it came from:
+>
+> ```
+>   ▶ 1789 scenario(s) to recapture (budget 2952s, derived from 1789 stale
+>     scenario(s) at 4.4s each across 4 concurrent capture(s))
+> ```
+>
+> Read that line. It is there so a mis-sized run can be stopped in its first
+> seconds rather than discovered at the wall.
+>
+> A value you pass is still authoritative — an explicit `--max-seconds 300`
+> still stops at 300 and still exits `2`, because a caller who names a budget
+> means it. So prefer omitting the flag on a full sweep, and reach for an
+> explicit budget only when you deliberately want a time-boxed partial paydown
+> (which is what the `finalize-debt` advice offers it for). `--max-seconds 0`
+> remains unlimited.
 
 > GOTCHA — **a recapture that fails everything is ONE cause, not N.** When
 > `recapture-stale` fails every capture (or most of them), treat it as a single
@@ -566,6 +695,19 @@ codeyam-editor editor presentability-scan
 # Refresh the README how-to + scenario gallery (idempotent).
 codeyam-editor editor readme-sync
 ```
+
+**A `readme-sync` that exits `2` with `BLOCKED:` is a finding to act on, not a
+step to skip past.** It means the README's gallery or how-to block holds content
+codeyam-editor did not write — someone curated by typing between the markers —
+and the sync refused rather than destroying it. Do NOT work around it by
+reverting their edit or by deleting the markers (removing them makes the next
+sync *append* a second, generated gallery). Read the `Next valid action:` line
+and follow it: move that prose outside the markers, or move the curation into
+`.codeyam/readme-gallery.json` — scaffold one with `codeyam-editor editor
+readme-gallery-init`, which names scenarios by slug so their screenshots keep
+refreshing. Surface it to the user when the right home for their words is not
+obvious; it is their writing, and this refusal exists because a routine sync
+once destroyed a hand-curated gallery with no warning.
 
 **`Debug logging: not scanned` is NOT a pass.** It means this stack declared no
 `debugLogPatterns` and has no built-in default, so the logging pass never ran
@@ -763,6 +905,35 @@ With the branch pushed and merge-ready:
   8b below; this is not optional polish, it is the difference between the merge
   publishing a binary and publishing nothing.
 
+**A 5xx from an outward write is not evidence the write failed. Read the
+resource back before retrying.** A `502` says the *response* did not make it
+back to you; it says nothing about whether the server acted. Every outward
+action this section gates — opening a PR, merging one, pushing a tag, creating a
+release — is one where a blind retry is more expensive than the original
+failure, because the retry is not idempotent.
+
+Both halves of that happened in a single session, and both writes had **already
+succeeded**:
+
+| Write | What it returned | What a blind retry would have done |
+|---|---|---|
+| `gh pr create` | HTTP 502 | Opened a **duplicate PR** for the same branch |
+| `gh pr merge --squash` | HTTP 502 | Attempted a **second merge** on a just-merged branch |
+
+So the rule, for any write this procedure gates:
+
+```bash
+# Do NOT re-run the write. Read the resource back first.
+gh pr list --head "$(git branch --show-current)" --json number,state,url
+gh pr view <n> --json state,mergedAt,mergeCommit
+```
+
+If the resource is already in the state the write intended, the write
+succeeded — report it as done and move on. Only retry once a read has actually
+confirmed the write did not land. This generalizes past `gh`: treat *any* 5xx on
+an outward action as "verdict unknown, go and look", never as "it failed, do it
+again".
+
 ### 8a. Red CI is not done — investigate before you classify
 
 **A red test is a red test. `verify-full-finalize` exiting 0 locally is
@@ -806,6 +977,24 @@ whole finalize cycle per fix. Measured on `editor-improvements-76`: that loop
 ran five times, 35–47 minutes each even with section 7's phase fingerprinting
 skipping unchanged phases, for three fixes a single CI run had already reported
 and that could have shipped in one commit.
+
+**What a cycle actually costs, so the advice above is a price rather than an
+exhortation.** On `editor-improvements-80` the same loop ran five times and cost
+roughly **34, 85, 50, 87 and 50 minutes** — call it an hour a fix, with the
+worst case near an hour and a half. Two things follow.
+
+The spread is not noise, and it is the reason the cheap runs were cheap: phase
+fingerprinting skipped the phases nothing had touched. On the 34-minute run,
+Phase 1 reused **20 green partition caches** instead of re-running **35,841
+tests**. So a batched fix set does not merely save you *n − 1* runs — it keeps
+the runs it does cost in the cheap band, because a commit that touches one area
+leaves the other phases' fingerprints intact. Interleaving unrelated fixes
+across separate commits is what dirties every phase and prices each cycle at the
+top of that range.
+
+And an hour is long enough that the batching decision is worth making
+deliberately *before* the first fix, not discovered at the second. When CI hands
+you three failures, the choice is between roughly one hour and roughly four.
 
 > GOTCHA — **the queue tenure does not survive the push.** Every re-finalize
 > needs a fresh `codeyam-editor editor pre-commit-sync` first. The tenure claimed

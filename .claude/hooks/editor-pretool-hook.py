@@ -2432,6 +2432,28 @@ _COMMAND_OUTPUT_TRANSCRIPT = re.compile(
     re.escape(_COMMAND_OUTPUT_STORE) + r"/[^/\s'\"]+\.txt\b"
 )
 
+# The HARNESS's own persisted tool-result transcript — the file Claude Code
+# writes whenever a command's output exceeds the inline budget, and hands back
+# as "Full output saved to: …/tool-results/<id>.txt". It is the same shape as
+# the command-output tee above (both streams, bounded, written for a human),
+# so it fails a scripted parse the same way, and agents reach for it for the
+# same reason.
+#
+# Keyed on the `tool-results/<id>.txt` FILE, on the same terms and for the same
+# reason as `_COMMAND_OUTPUT_TRANSCRIPT` above: match the file, never the
+# directory it lives in. The lookbehind keeps `my-tool-results/x.txt` out.
+#
+# Deliberately NOT anchored on the `~/.claude/projects/` prefix, because that
+# prefix is not stable: it is `/root/.claude/…` in a fleet container,
+# `/Users/<name>/.claude/…` on a laptop, and anywhere at all under
+# `CLAUDE_CONFIG_DIR`. The `tool-results/` segment is the part that does not
+# move.
+_HARNESS_TOOL_RESULT_TRANSCRIPT = re.compile(
+    r"(?<![\w.-])tool-results/[^/\s'\"]+\.txt\b"
+)
+
+_HARNESS_TOOL_RESULTS_STORE = "tool-results"
+
 # A journal entry named by a literal timestamp — the `<eyeballed-from-ls>`
 # shape. A journal read that does NOT name one is an ordinary search and
 # stays a notice pointing at `journal-find`.
@@ -2474,6 +2496,23 @@ def parses_command_output_transcript(command):
     return bool(_COMMAND_OUTPUT_TRANSCRIPT.search(command))
 
 
+def parses_harness_tool_result(command):
+    """True when `command` names the harness's own tool-result TRANSCRIPT — a
+    `…/tool-results/<id>.txt` path.
+
+    The file-shaped counterpart to `parses_command_output_transcript`, and
+    narrow for the same reason: it matches the `<id>.txt` capture itself, never
+    the session directory holding it, so a future sibling written beside it is
+    not swept in by a directory-prefix match — the boundary that had the
+    command-output guard refusing the read of the `.status.json` its own other
+    guard prescribes.
+
+    Pure and side-effect free, and named rather than inlined into
+    `scripted_state_read_target`, so the boundary is assertable directly
+    instead of through a refusal's message text."""
+    return bool(_HARNESS_TOOL_RESULT_TRANSCRIPT.search(command))
+
+
 def writes_into_codeyam(command):
     """True when `command` WRITES to a `.codeyam/` path, or writes somewhere
     this parser cannot resolve.
@@ -2498,13 +2537,14 @@ def scripted_state_read_target(command):
     """The `(kind, store, inspector)` a scripted JSON parse of codeyam state
     touches, or None when `command` is not one.
 
-    `kind` is `"command-output"` or `"journal-entry"` for the two blocking
-    cases, `"inspectable"` for a mapped store that only warrants a pointer.
-    `inspector` is None for both blocking kinds: each carries its recovery in
-    `scripted_state_read_refusal` rather than in the shared store table, so
-    neither perturbs what `matching_inspector` reports.
+    `kind` is `"command-output"`, `"harness-tool-result"` or `"journal-entry"`
+    for the three blocking cases, `"inspectable"` for a mapped store that only
+    warrants a pointer. `inspector` is None for every blocking kind: each
+    carries its recovery in `scripted_state_read_refusal` rather than in the
+    shared store table, so none of them perturbs what `matching_inspector`
+    reports.
 
-    Both blocking cases are tested BEFORE the table lookup AND before the
+    All three blocking cases are tested BEFORE the table lookup AND before the
     write exclusion. Order is the whole mechanism, twice over.
 
     Before the table, because a hand-named journal entry also matches the
@@ -2517,9 +2557,10 @@ def scripted_state_read_target(command):
     exclusion applied first would suppress the block on precisely the shape
     the guard exists for. The exclusion protects the sanctioned scenario
     write, which is a `.codeyam/scenarios/` write — never a parse of the
-    command-output tee, and never a commit body built from an eyeballed
-    timestamp. Neither blocking case has a reading under which the result is
-    trustworthy, whatever else the command does with it.
+    command-output tee, never a regex carved out of the harness's own capture
+    of one, and never a commit body built from an eyeballed timestamp. No
+    blocking case has a reading under which the result is trustworthy,
+    whatever else the command does with it.
 
     Pure and side-effect free — the verdict is separated from the message
     that reports it so the mapping is assertable without going through
@@ -2537,6 +2578,8 @@ def scripted_state_read_target(command):
         return None
     if parses_command_output_transcript(command):
         return ("command-output", _COMMAND_OUTPUT_STORE, None)
+    if parses_harness_tool_result(command):
+        return ("harness-tool-result", _HARNESS_TOOL_RESULTS_STORE, None)
     if _HAND_NAMED_JOURNAL_ENTRY.search(command):
         return ("journal-entry", _JOURNAL_ENTRIES_STORE, None)
     if writes_into_codeyam(command):
@@ -2551,10 +2594,10 @@ def scripted_state_read_target(command):
 def scripted_state_read_refusal(kind):
     """The `(reason, next_action)` pair for a refused scripted state read.
 
-    Branches on the KIND, not the store, because the two blocking cases fail
+    Branches on the KIND, not the store, because the three blocking cases fail
     for unrelated reasons and want unrelated recoveries — one re-runs the
-    original command with a different flag, the other swaps to a command that
-    resolves the entry itself."""
+    original command with a different flag, one points at a document already on
+    disk, and one swaps to a command that resolves the entry itself."""
     if kind == "command-output":
         return (
             f"this parses `{_COMMAND_OUTPUT_STORE}/<cmd>.txt`, which is a live "
@@ -2575,6 +2618,33 @@ def scripted_state_read_refusal(kind):
             f"lines move to stderr, the narrative falls silent, and terminal "
             f"output bounding is disabled, so the redirect is exact and "
             f"complete.",
+        )
+    if kind == "harness-tool-result":
+        return (
+            f"this carves a document out of a `tool-results/<id>.txt` file — "
+            f"the HARNESS's own persisted capture of a command's terminal "
+            f"output, saved because that output was too large to show inline. "
+            f"It holds both streams in arrival order and is bounded for a "
+            f"human reader, so it is not a JSON document: a brace-matcher or "
+            f"an `rfind`/`re.search` over it either throws or silently returns "
+            f"a FRAGMENT, and the fragment is the worse outcome because "
+            f"nothing about it looks wrong.",
+            f"read the document itself — it is almost certainly already on "
+            f"disk and needs no re-run. Any `--format json` run of a wrapped "
+            f"command also writes "
+            f"`{_COMMAND_OUTPUT_STORE}/runs/<cmd>-<runId>.json`: the stdout "
+            f"document ALONE, no stderr narrative, not terminal-bounded, and "
+            f"keyed on the RUN so a later narrower re-run cannot clobber it. "
+            f"The command named that exact path on its own "
+            f"`CODEYAM_FULL_OUTPUT: … — PARSEABLE:` line, so `cat` what the "
+            f"pointer printed. If you only need ONE finding rather than the "
+            f"whole document, recompute it cheaply instead of mining a large "
+            f"one: `{cli_command()} editor audit --only <INVARIANT_ID> "
+            f"--format json` (pass `--only ?` to list the ids), or the "
+            f"read-only query surface for the store in question "
+            f"(`registry-query`, `evidence-query`, `glossary-list`, "
+            f"`scenarios --format entries`, …), each of which emits one clean "
+            f"document with its rows under `entries`.",
         )
     return (
         f"this builds on a journal entry named by a LITERAL timestamp. The "
