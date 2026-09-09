@@ -1,6 +1,6 @@
 ---
 name: codeyam-manual-tests
-description: Generate manual tests from recent commits — short, human-executable checks for the things an automated test cannot settle. Reads the commits since tests were last generated, maps them to the scenarios that demonstrate them, and writes one test per verifiable behavior. Also handles a freeform "write me tests for X" request, seeded from chat. Read-only on git; additive under .codeyam/.
+description: Generate manual tests from recent commits — short, human-executable checks for the things an automated test cannot settle. Reads the commits since tests were last generated (or an explicit `range:` you hand it), maps them to the scenarios that demonstrate them, and writes 3–5 tests ranked by what no automated test can reach — discarding anything a unit test already asserts. Also handles a freeform "write me tests for X" request, seeded from chat. Read-only on git; additive under .codeyam/.
 ---
 
 # CodeYam — Generate Manual Tests
@@ -30,7 +30,25 @@ say so in the report if their request falls outside the changed set.
 
 ## Phase 1 — Establish the range
 
-Run `codeyam-editor editor manual-test-status --format json`.
+An argument beginning **`range:`** names the range explicitly — everything
+after it, up to the first whitespace, is a git revision range
+(`range:HEAD~20..HEAD`, `range:main..HEAD`, `range:abc1234..def5678`). Any text
+after that range is still a focus filter, so
+`range:HEAD~20..HEAD the Testing section` means both.
+
+Resolve it with `git rev-list --count <range>` before using it. If it does not
+resolve, say so and ask — never silently fall back to the marker, because the
+whole point of an explicit range is that the user is overriding the marker on
+purpose and a silent fallback would hand them results from a different range
+than the one they asked for while looking like it worked.
+
+An explicit range **does not stamp the marker.** Phase 7 is skipped entirely:
+the marker records what has been covered from the anchor forward, and moving it
+on the back of a hand-picked range would drop every commit between the marker
+and that range's base. Say in the report that the marker was left where it is.
+
+With no `range:` prefix, run
+`codeyam-editor editor manual-test-status --format json`.
 
 - **`lastGeneratedSha` present and resolvable** → that is your base. This is
   what makes "generate" mean "cover everything not yet covered", which is the
@@ -70,9 +88,89 @@ its API, its library surface — rather than an assumed web page.
 ## Phase 5 — Author the tests
 
 **One test per verifiable behavior.** Not one per commit, not one per changed
-file. A commit renaming a variable across nine files is zero tests. A one-line
-commit changing what a tooltip says is one test. Write nothing for changes with
-no human-observable consequence, and say so in the report rather than padding.
+file. A commit renaming a variable across nine files is zero tests. Write
+nothing for changes with no human-observable consequence, and say so in the
+report rather than padding.
+
+### 5a — Disqualify before you author
+
+**A behavior an automated test already asserts does not get a manual test.**
+This is the first question, asked before any authoring, and it is mechanical
+rather than a judgement: the diff you read in phase 2 **contains the test
+files**. A commit that touched `Foo.tsx` and `Foo.test.tsx` together is telling
+you the behavior is settled. Grep that test file for the behavior before
+writing anything about it.
+
+Concretely, this disqualifies — always, with no subjective override:
+
+- The presence, absence, or wording of a rendered element. `expect(screen
+  .getByText(/renders this state directly/i))` is the whole test; a human
+  re-reading that caption verifies nothing.
+- Prop wiring, callback plumbing, and which handler a button calls.
+- The order of DOM nodes.
+- Anything a contract test over generated output already pins (a step-template
+  shape, a slug set, a copy budget).
+
+A test whose steps are "open the scenario, read the label, confirm it says X"
+is an assertion someone has to perform by hand. Delete it and say in the report
+that it is covered by `<the test file>` — naming the file is what makes the
+smaller count trustworthy rather than lazy.
+
+### 5b — The value ladder
+
+Rank every surviving candidate, highest first, and spend the budget from the
+top:
+
+1. **Crosses a process, a session, or a real external dependency.** A real
+   OAuth round trip, a real CLI binary, a device, a browser tab. Nothing else
+   can reach it.
+2. **A sequence whose danger is what a *later* command believes.** A cache
+   written by one command and read as a verdict by the next. The bug is in the
+   join, so no single-command test sees it.
+3. **Timing, recovery, and crash behavior** — needs a real clock, a real
+   restart, a real dropped connection.
+4. **Perceptual** — layout at real widths and real fonts, animation, crowding,
+   anything jsdom has no layout engine to see.
+
+Below rung 4 there is nothing. If a candidate does not sit on one of those four
+rungs, it is not a manual test.
+
+### 5c — `intent` is the gate
+
+`intent` must name **something concrete a machine cannot reach**. If you cannot
+write that sentence, the test does not ship.
+
+Reject these phrasings in your own draft — they are the tell that a static
+render check is being dressed up as a human judgement:
+
+- "whether it *reads well* / *lands* / *feels right*"
+- "whether it *actually* helps the reader"
+- "is a judgement about wording that no assertion settles"
+
+Those describe a **design review**, not a verification. A design review belongs
+in a scenario walkthrough where the whole surface is on screen and the answer
+can change the design — not in a pending checklist, where it can only ever be
+ticked off. Wanting an opinion on copy is legitimate; a manual test is the
+wrong instrument for it.
+
+### 5d — Budget: 3–5 tests per run
+
+**Write at most five, and treat three as the normal answer.** The cap is not a
+formatting preference — it is what forces the ladder to be used. An uncapped
+run authors everything that survives 5a, which on a large range is twenty
+tests, and a twenty-item checklist is not executed at all; the four that
+mattered are read at the same weight as the sixteen that did not.
+
+A large range does not raise the cap. Fifty commits with four qualifying
+behaviors get four tests. If more than five survive, **rank them and write the
+top five**, then name the ones you cut and their rung in the report so the user
+can ask for them explicitly.
+
+Two consequences worth stating plainly. Reporting "3 of 41 commits produced a
+test" is a **good** outcome, not an apology — most commits should produce
+none. And a run that qualifies zero candidates writes zero tests and says so;
+generating something rather than nothing is exactly the padding this budget
+exists to prevent.
 
 Per partition:
 
@@ -156,14 +254,28 @@ A partial run must not stamp. Stamping resets the commits-since counter, so
 stamping after a failed add silently drops the commits those tests would have
 covered — they would never be offered again.
 
+**Skip this phase entirely on an explicit `range:`** — see phase 1. A run that
+stamps the marker after covering a hand-picked range drops everything between
+the marker and that range's base.
+
+Note what the cap does NOT change: a capped run that covered its range still
+stamps. The commits you declined to write tests for were *considered and
+rejected*, not deferred — that is the whole claim the budget makes — so leaving
+the marker behind to re-offer them would re-litigate the same rejection on
+every subsequent run.
+
 ## Phase 8 — Report
 
 Tell the user:
 
-- How many tests you wrote, and against which commit range.
-- What you deliberately did **not** cover, and why — the renames, the
-  refactors, the changes with no observable consequence. Naming these is what
-  makes the count trustworthy.
+- How many tests you wrote, and against which commit range. **Lead with the
+  ratio** — "4 tests from 41 commits" — so the number reads as a filter having
+  been applied rather than as thin coverage.
+- What you deliberately did **not** cover, and why. Three groups, named
+  separately because they mean different things: changes with no observable
+  consequence (renames, refactors); behaviors **already asserted**, naming the
+  test file that covers each; and candidates that **survived but lost the
+  budget**, with their ladder rung, so the user can ask for one by name.
 - Any surface that got a test but has no scenario yet, so they can decide
   whether to capture one.
 
