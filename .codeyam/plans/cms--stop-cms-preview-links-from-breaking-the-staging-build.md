@@ -19,8 +19,10 @@ This plan makes the site's schema accept what the CMS actually writes. It then b
 - **Fix the schema on our side; do NOT exclude `preview-*.md` from the loaders.** Preview files are a feature: `routableEntries` builds them at their token URL and `publishedEntries` hides them from listings. Excluding them from `collectionGlob` would silently break every preview link.
 - **Accept a string OR a date and normalise to an ISO string.** Nothing in `src/` or `astro.config.mjs` reads `previewCreatedAt` (verified 2026-09-10), so normalising cannot change any rendered output. It only stops the build from rejecting the field.
 - **Report the serializer bug upstream to `@codeyam/cms`.** Our override is a shim. It can be removed once the CMS either quotes ISO timestamps or declares the field as `z.coerce`/union.
-- **Merge `main` into `staging`, don't reset it** (user decision, 2026-09-10). This keeps Nicole's editor history on the branch the CMS writes to, and no force-push is needed. The DROP items are removed in the same merge so a later Promote can't carry them to `main`.
+- **Merge `main` into `staging`, don't reset it** (user decision, 2026-09-10). This keeps Nicole's editor history on the branch the CMS writes to, and no force-push is needed.
+- **Keep every one of Nicole's edits** (user decision, 2026-09-10). Nothing she committed to `staging` is deleted. The staging-only files are all harmless once change 1 lands. The two project previews are word-for-word copies of the published role, so they are working share links. The "How Your Support Will Be Used" marker points at a card group no card uses, so it renders nothing. `hit-bod.webp` is an unreferenced spare copy of Jessica Li's headshot. The only file needing a choice is `momentumSections/testimonials.md`, where she typed Jessica's quote into the band marker. That quote now lives in `testimonials/jessica-li.md` on `main`, so take `main`'s version of the marker. Keeping hers literally would rename the band heading to "Jessica Li, Harvard C'19" and replace its intro with the quote.
 - **Order matters:** land the schema fix on `main` first, so the merge brings it (and CMS 0.14.0) to `staging` together.
+- **Staging stays upstream of `main` from now on.** `promote.yml` only fast-forwards, so any commit that lands on `main` without also being on `staging` turns the next Promote into a PR. That is what has blocked promotion since August. Change 3 documents the standing rule: merge `main` into `staging` after every developer change that lands on `main`.
 
 ## Implementation
 
@@ -38,21 +40,22 @@ Exports `sitePreviewFields`, which is `{ ...previewFields, previewCreatedAt: <st
 
 After change 1 is on `main`, open a PR `main → staging` (or merge locally and push) and resolve it as follows:
 - **Take `main`'s side** for `src/content/momentumSections/testimonials.md` and `src/content/projects/social-media-marketing-specialist-events.md`. The KEEP/RESCUE items were already applied to `main` on 2026-09-10, and the three new role files are byte-identical on both branches.
-- **Delete in the merge commit:** `src/content/momentumSections/how-your-support-will-be-used.md`, the three `preview-*.md` files (two in `projects/`, one in `momentumSections/`), and `public/images/gallery/hit-bod.webp`. These previews are stale share links to content that has already been rescued.
+- **Keep everything else Nicole committed**, unchanged: `src/content/momentumSections/how-your-support-will-be-used.md`, the three `preview-*.md` files (two in `projects/`, one in `momentumSections/`), and `public/images/gallery/hit-bod.webp`. None of them conflicts with `main`, so the merge carries them through as-is. After the merge, confirm the two project preview URLs build and load, and that the preview entries still do not appear in the `/volunteer` listing.
 - The merge also moves `staging` from `@codeyam/cms` 0.5.0 to 0.14.0. Confirm `src/data/cms.json` still targets `staging` after the merge.
 
-Done when the `staging` run of `Deploy to GitHub Pages` is green and https://nseldeib.github.io/harvardintech-staging/ shows the Momentum Fund redesign and the three new volunteer roles.
+Done when the `staging` run of `Deploy to GitHub Pages` is green, https://nseldeib.github.io/harvardintech-staging/ shows the Momentum Fund redesign and the three new volunteer roles, and a Promote run fast-forwards `main` instead of opening a PR.
 
-### 3. Correct the deploy comments that describe this wrongly
+### 3. Correct the deploy comments and document the standing sync rule
 
 **File**: `.github/workflows/deploy.yml`
 
-- The comment above the `review:` job says CMS edits go to `main` via `src/data/cms.json`. They go to `staging`.
+- The comment above the `review:` job says CMS edits go to `main` via `src/data/cms.json`. They go to `staging`, from either site's /admin.
 - The comment in the `main` build step calls the staging job "dormant". It runs on every `staging` push.
 
 **File**: `DEPLOY_SETUP.md`
 
 - Its claim that staging builds are green needs a note that the staging track depends on this fix.
+- Add the standing rule. Editors publish to `staging` and Promote fast-forwards `main` to it, so a developer change that lands on `main` must be merged into `staging` right away. Otherwise the next Promote cannot fast-forward and opens a PR instead.
 
 The other stale docs found by the 2026-09-10 audit (testimonials "start empty", projects "production default", CMS 0.13.0 references) are out of scope here and belong in a separate docs plan.
 
