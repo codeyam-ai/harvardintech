@@ -46,12 +46,19 @@ const startChapterHref = buildMailto({ to: email, subject: 'Starting a Harvard A
     grid-template-columns: 1.3fr 0.7fr;
     gap: 40px;
     align-items: center;
-    padding: 72px 48px;
+    /* The band is one of two full-bleed colour fields in the page's rhythm, and
+       colour needs more margin than paper does: at the old 72px the headline sat
+       close enough to the edges to read as cramped against the section above. */
+    padding: 112px 48px;
   }
   .getinv h2 {
     font-size: clamp(28px, 4vw, 46px);
     font-weight: 800;
     letter-spacing: -0.02em;
+    /* Display type set at 46px inherits the body's reading leading, which opens
+       a gap between the two lines wide enough to read as two headlines. Tight
+       leading is what makes a two-line headline read as one sentence. */
+    line-height: 1.08;
     color: #fff;
     margin: 8px 0 12px;
     max-width: 18ch;
@@ -64,11 +71,23 @@ const startChapterHref = buildMailto({ to: email, subject: 'Starting a Harvard A
     max-width: 54ch;
     margin: 0;
   }
+  /* Stacked rather than side by side: the two actions are alternatives, not a
+     primary with an afterthought, so equal width reads as equal standing. The
+     column is capped and pushed right so it stays a block against the headline
+     instead of stretching across the band. */
   .getinv-actions {
     display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+  }
+  .getinv-actions .btn {
+    font-size: 16px;
+    padding: 18px 28px;
+    text-align: center;
   }
   .getinv .btn-solid {
     background: #fff;
@@ -83,7 +102,7 @@ const startChapterHref = buildMailto({ to: email, subject: 'Starting a Harvard A
       padding: 56px 24px;
     }
     .getinv-actions {
-      justify-content: flex-start;
+      margin-left: 0;
     }
   }
 </style>

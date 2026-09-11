@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 35edbe8f071598316313158a42886bc79f7c5674  source-sha256: c0b2c16c7b79b1e09e438393e619e4598eaf5fd7fd793f7cfd0d907dab19c7d9
+// codeyam-editor: 0.1.7  build: 4fe5e6852023b56622e3937b030d32b71616b6f9  source-sha256: 8ad1de7e5385d8af7889b9884831d134e90ebd5dee2717b179e62e13186bdb30
 const fs = require("fs");
 const path = require("path");
 const { createIssue } = require("./scenario-issues");
@@ -29,6 +29,47 @@ const { createIssue } = require("./scenario-issues");
 // resolves to one of these; an unrecognised framework yields `null`, which
 // the caller treats as "cannot determine" (conservative pass).
 const KNOWN_FRAMEWORKS = ["react", "vue"];
+
+// The same-origin mount the editor's reverse proxy serves the preview under.
+// Two places in this module need it — the counterpart probe's origin map, and
+// the hydration message's "are we under the prefix?" test — and they must never
+// disagree about the spelling, since a message that fails to recognise the
+// mount is exactly the misdiagnosis this constant supports fixing.
+//
+// Agreeing on the spelling is necessary and NOT sufficient: the consumers must
+// also agree on the TEST. Both gates once asked `url.includes(PREVIEW_SUBPATH)`,
+// which is a scan of the whole URL rather than of the route, and that is what
+// `isUnderPreviewSubpath` below exists to replace.
+const PREVIEW_SUBPATH = "/__codeyam_preview";
+
+// Is this URL under the preview mount? Judged on the PATHNAME, never as a
+// substring of the whole URL.
+//
+// A substring scan finds the mount wherever it appears — including
+// percent-encoded inside a query parameter — and that silently disabled this
+// entire escalation path for every isolated-component capture. Those load
+// through the iframe harness, whose document URL is
+// `/__codeyam_harness?src=…%2F__codeyam_preview%2F…`: the literal prefix is
+// absent, so both gates below answered "no" and the answer was decided by
+// encoding rather than by the route. Testing the pathname makes the harness
+// document correctly not-under-the-mount and the decoded preview URL correctly
+// under it, in both directions.
+//
+// Fails CLOSED on a non-string, empty, or unparseable (e.g. relative) URL: this
+// runs inside a capture whose finding is already recorded, so it must never
+// throw.
+function isUnderPreviewSubpath(url) {
+  if (typeof url !== "string" || !url) return false;
+  let pathname;
+  try {
+    pathname = new URL(url).pathname;
+  } catch (_) {
+    return false;
+  }
+  return (
+    pathname === PREVIEW_SUBPATH || pathname.startsWith(`${PREVIEW_SUBPATH}/`)
+  );
+}
 
 // Meta-frameworks mapped to the underlying runtime whose hydration detector
 // applies. These do not carry their runtime's name in their stack identity: a
@@ -382,8 +423,21 @@ function interpretHydration({
   if (frameworkAttached !== false) return null;
   return createIssue(
     "hydration",
-    hydrationMessage({ controlCount, framework, crossOrigin, counterpartUrl }),
-    { url: url ?? null },
+    hydrationMessage({
+      controlCount,
+      framework,
+      crossOrigin,
+      counterpartUrl,
+      url,
+    }),
+    {
+      url: url ?? null,
+      // The attribution travels as DATA alongside the prose. A consumer that
+      // must act on `counterpart-hydrates` — the editor's preview-origin
+      // escalation — reads this field rather than matching the message text.
+      crossOrigin: crossOrigin ?? null,
+      counterpartUrl: counterpartUrl ?? null,
+    },
   );
 }
 
@@ -398,6 +452,7 @@ function hydrationMessage({
   framework,
   crossOrigin,
   counterpartUrl,
+  url,
 }) {
   const fw = framework || "the client framework";
   const plural = controlCount === 1 ? "" : "s";
@@ -407,11 +462,21 @@ function hydrationMessage({
   const counterpart = counterpartUrl || "the other preview origin";
 
   if (crossOrigin === "counterpart-hydrates") {
+    // This used to end with "Re-run the capture against the origin that works",
+    // which described a capability the editor did not have: no flag or command
+    // re-aimed a capture, so the only way to act on it was to hand-edit
+    // `previewOrigin` and restart the server — which blanks the user's pane and
+    // drops their session. Now that the capture origin resolves independently
+    // of the viewer's, say what actually happens and name the key that
+    // overrides it, rather than prescribing a manual step. The
+    // `diagnose-preview` steer is real and stays.
     return (
       `${rendered} on THIS preview origin — but the same route DOES hydrate at ` +
       `${counterpart}. The page is fine and your change did not break it; this ` +
-      `ORIGIN is not serving working client JS. Re-run the capture against the ` +
-      `origin that works, and run ` +
+      `ORIGIN is not serving working client JS. Captures resolve their own ` +
+      `origin and aim at the app directly when the editor runs alongside it, so ` +
+      `this usually needs no action; set \`captureOrigin\` in .codeyam/editor.json ` +
+      `to aim them somewhere else. Run ` +
       "`codeyam-editor editor diagnose-preview --path <route>` to pinpoint what " +
       `the proxy hop is breaking.`
     );
@@ -426,12 +491,56 @@ function hydrationMessage({
     );
   }
 
+  // No counterpart probe ran, so nothing here is attributed — but the URL still
+  // carries one strong, checkable suspect. Under `/__codeyam_preview` the
+  // browser sits at a PREFIXED pathname while the app's server rendered for the
+  // bare one, and a client router that reconciles `window.location.pathname`
+  // against the route embedded in its SSR payload refuses to hydrate on exactly
+  // that mismatch. Naming it is the difference between a lead and a dead end:
+  // the generic "check the browser console" steer below sent a real session
+  // hunting a module error on a page whose client JS was executing perfectly,
+  // and which hydrated on the first try at the app's own origin.
+  if (isUnderPreviewSubpath(url)) {
+    return (
+      `${rendered} — the page is not interactive (hydration did not run), and it was ` +
+      `loaded under the \`${PREVIEW_SUBPATH}\` preview mount. That prefix is the prime ` +
+      `suspect: the browser is at a prefixed pathname while the app rendered for the ` +
+      `bare one, and a client-routed app that reconciles the two refuses to hydrate — ` +
+      `client JS is running fine. Load the same route directly on the app's own origin ` +
+      `to confirm, then run ` +
+      "`codeyam-editor editor diagnose-preview --path <route>`, which probes exactly " +
+      `this. Do NOT start with the browser console; the console is clean in this case.`
+    );
+  }
+
   return (
     `${rendered} — the page is not interactive (hydration did not run). Client JS may ` +
     `not be executing; check the preview proxy and the browser console. Run ` +
     "`codeyam-editor editor diagnose-preview --path <route>` to pinpoint a proxy " +
     `HTML-injection blocker.`
   );
+}
+
+// Decide whether a hydration verdict proves the PREVIEW SUBPATH is what broke
+// the page — the one shape that justifies escalating the preview onto the app's
+// own origin. Returns the escalation payload, or `null` for every other verdict.
+//
+// Both halves are required and neither is sufficient:
+//   - the failing load must have been UNDER `/__codeyam_preview`, and
+//   - the counterpart (the app's own origin) must have HYDRATED.
+//
+// The direction matters and is easy to get backwards. `counterpartOriginUrl`
+// maps both ways, so `counterpart-hydrates` also fires when a capture aimed at
+// the app origin died and the *proxied* copy lived. Escalating on that would
+// move the preview onto the origin that just failed. `dead-on-both` is excluded
+// for the reason spelled out in `hydrationMessage`: the page is genuinely
+// broken, and escalating would swap a false veto for a false pass.
+//
+// Pure, so every branch is asserted without a browser or a server.
+function subpathHydrationEscalation({ crossOrigin, url, counterpartUrl }) {
+  if (crossOrigin !== "counterpart-hydrates") return null;
+  if (!isUnderPreviewSubpath(url)) return null;
+  return { failedUrl: url, counterpartUrl: counterpartUrl ?? null };
 }
 
 // Build the hydration gate's cross-origin control probe, or `null` when this
@@ -476,7 +585,7 @@ function buildCounterpartProbe(page, { readServerState = null } = {}) {
   const origins = {
     appOrigin: `http://localhost:${appPort}`,
     proxyOrigin: `http://127.0.0.1:${controlPort}`,
-    previewPrefix: "/__codeyam_preview",
+    previewPrefix: PREVIEW_SUBPATH,
   };
 
   return async (currentUrl, { framework } = {}) => {
@@ -714,6 +823,9 @@ async function waitForHydration(
 
 module.exports = {
   KNOWN_FRAMEWORKS,
+  PREVIEW_SUBPATH,
+  isUnderPreviewSubpath,
+  subpathHydrationEscalation,
   readStackJson,
   inferFramework,
   resolveInteractivityExpectation,
@@ -722,6 +834,7 @@ module.exports = {
   counterpartOriginUrl,
   hydrationMessage,
   interpretHydration,
+  passwordCensusOf,
   probeHydrationState,
   waitForHydration,
 };

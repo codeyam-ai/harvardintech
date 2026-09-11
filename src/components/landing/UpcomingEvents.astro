@@ -1,10 +1,21 @@
 ---
 // "Upcoming events" (Atlas): the landing-page events section in the editorial
-// idiom — a sec-head (kicker + heading), then either the event cards or the
-// empty state. Empty state (production's day-one default) offers the two
-// subscribe paths — the org's Luma calendar (primary) and the mailing list
-// (secondary) — so a visitor with no events yet still has a next action.
-import EventCard from '../EventCard.astro';
+// idiom — a sec-head (kicker + heading), then either the event rows or the
+// empty state.
+//
+// Events render as full-width ROWS rather than a card grid: the reading order
+// an event actually has is "when, what, where", and a row lets the date sit in
+// its own column at the right where the eye can scan a column of dates without
+// reading each card. The date column is split month / day / year so the day
+// number carries the scan weight.
+//
+// Empty state (production's day-one default) keeps the two subscribe paths —
+// the org's Luma calendar (primary) and the mailing list (secondary) — and
+// states the absence plainly in the same right-hand column the dates would
+// occupy, so the section holds its shape whether or not anything is scheduled.
+// Its explanatory line sits INSIDE the head, directly under the heading, so it
+// reads as part of the heading block rather than as a stranded caption above
+// the buttons.
 import type { EventLike } from '../../lib/events';
 import { LUMA_CALENDAR_URL } from '../../lib/luma';
 
@@ -19,26 +30,45 @@ const {
   newsletterUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb',
 } = Astro.props;
 
+const isEmpty = events.length === 0;
 const count = String(events.length).padStart(2, '0');
+
+/** Month / day / year as separate strings for the date column. Formatted in UTC
+ *  because a date-only frontmatter value parses to UTC midnight, and formatting
+ *  that in a western timezone would render the previous day. */
+function dateParts(value: string | Date) {
+  const d = value instanceof Date ? value : new Date(value);
+  const fmt = (opts: Intl.DateTimeFormatOptions) =>
+    d.toLocaleDateString('en-US', { timeZone: 'UTC', ...opts });
+  return { month: fmt({ month: 'long' }), day: fmt({ day: 'numeric' }), year: fmt({ year: 'numeric' }) };
+}
 ---
 
-<section class="sec" id="events">
+<section
+  class:list={['sec', isEmpty && 'ue-section--empty']}
+  id="events"
+  style="background: var(--paper-2);"
+>
   <div class="wrap">
     <div class="sec-head">
       <div>
         <span class="kick">Calendar</span>
         <h2>Upcoming events</h2>
+        {
+          isEmpty && (
+            <p class="ue-lede">
+              No upcoming events just yet. Subscribe to our Luma calendar to be the
+              first to know when the next one is announced.
+            </p>
+          )
+        }
       </div>
-      {events.length > 0 && <span class="kick">{count} scheduled</span>}
+      {!isEmpty && <span class="kick">{count} scheduled</span>}
     </div>
 
     {
-      events.length === 0 ? (
+      isEmpty ? (
         <div class="ue-empty">
-          <p>
-            No upcoming events just yet. Subscribe to our Luma calendar to be the
-            first to know when the next one is announced.
-          </p>
           <div class="ue-cta">
             <a class="btn btn-solid" href={lumaUrl} rel="noopener" target="_blank">
               Subscribe to our Luma calendar
@@ -47,13 +77,44 @@ const count = String(events.length).padStart(2, '0');
               Subscribe to our newsletter
             </a>
           </div>
+          <div class="ue-none">
+            <span class="ue-none-k">Calendar</span>
+            <span class="ue-none-t">No upcoming events</span>
+          </div>
         </div>
       ) : (
         <Fragment>
-          <div class="ue-grid">
-            {events.map((event) => (
-              <EventCard event={event} variant="upcoming" />
-            ))}
+          <div class="ue-list">
+            {events.map((event) => {
+              const { month, day, year } = dateParts(event.date);
+              return (
+                <article class="ue-row">
+                  <div class="ue-body">
+                    {event.location && <span class="ue-where">{event.location}</span>}
+                    <h3 class="ue-title">
+                      {event.link ? (
+                        <a href={event.link} rel="noopener">
+                          {event.title}
+                        </a>
+                      ) : (
+                        event.title
+                      )}
+                    </h3>
+                    {event.description && <p class="ue-blurb">{event.description}</p>}
+                    {event.link && (
+                      <a class="ue-go" href={event.link} rel="noopener">
+                        Learn more →
+                      </a>
+                    )}
+                  </div>
+                  <div class="ue-date">
+                    <span class="ue-m">{month}</span>
+                    <span class="ue-d">{day}</span>
+                    <span class="ue-y">{year}</span>
+                  </div>
+                </article>
+              );
+            })}
           </div>
           <div class="ue-cta" style="margin-top: 28px;">
             <a class="btn btn-solid" href={lumaUrl} rel="noopener" target="_blank">
@@ -67,22 +128,188 @@ const count = String(events.length).padStart(2, '0');
 </section>
 
 <style>
-  .ue-empty p {
+  /* ---- populated ------------------------------------------------------- */
+  .ue-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .ue-row {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    align-items: center;
+    gap: 24px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--crimson);
+    padding: 22px 26px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ue-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(30, 26, 27, 0.1);
+  }
+  .ue-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .ue-where {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .ue-title {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .ue-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .ue-title a:hover {
+    color: var(--crimson);
+    text-decoration: none;
+  }
+  .ue-blurb {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    margin: 2px 0 0;
+    max-width: 62ch;
+  }
+  .ue-go {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    text-decoration: none;
+    margin-top: 4px;
+  }
+  /* The date column reads as one stacked unit, divided from the body by the
+     same hairline the card is drawn with rather than a second, heavier rule. */
+  .ue-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border-left: 1px solid var(--line);
+    padding-left: 24px;
+    text-align: center;
+  }
+  .ue-m {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.1;
+    color: var(--ink-2);
+  }
+  .ue-d {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--crimson);
+  }
+  .ue-y {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--ink-2);
+  }
+
+  /* ---- empty ----------------------------------------------------------- */
+  /* The lede lives in the head, so the head's standing 40px gap would sit
+     between heading and lede. Closed up here and re-spent below the lede, which
+     is where the separation actually belongs. */
+  .ue-section--empty :global(.sec-head) {
+    margin-bottom: 0;
+  }
+  .ue-lede {
     font-family: var(--font-serif);
     font-size: 19px;
     line-height: 1.5;
     color: var(--ink-2);
     max-width: 56ch;
-    margin: 0 0 24px;
+    margin: 10px 0 0;
   }
-  .ue-grid {
+  .ue-empty {
     display: grid;
-    gap: var(--space-lg);
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 32px;
+    align-items: center;
+    margin-top: 52px;
   }
+  .ue-none {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 132px;
+    padding: 26px 20px;
+    /* Paper on the section's tinted ground, matching the event rows — the panel
+       has to be the same object as a row, since it stands where they stand. */
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--crimson);
+    text-align: center;
+  }
+  .ue-none-k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--crimson);
+  }
+  .ue-none-t {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    /* Tight leading so the line box hugs the glyphs. At 1.2 the box carried
+       ~5px of dead space below the text, which centred the BOX correctly while
+       leaving the words looking high in the panel. */
+    line-height: 1.05;
+    color: var(--ink);
+  }
+
   .ue-cta {
     display: flex;
-    gap: 14px;
+    gap: 26px;
     flex-wrap: wrap;
+  }
+
+  @media (max-width: 820px) {
+    .ue-row {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .ue-date {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 8px;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+      padding-left: 0;
+      padding-top: 14px;
+    }
+    .ue-d {
+      font-size: 32px;
+    }
+    .ue-empty {
+      grid-template-columns: 1fr;
+      margin-top: 36px;
+    }
+    .ue-cta {
+      gap: 16px;
+    }
   }
 </style>

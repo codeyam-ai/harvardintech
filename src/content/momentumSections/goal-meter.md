@@ -4,9 +4,9 @@ kicker: Campaign progress
 title: Our first gifts are already building momentum.
 linkLabel: View the campaign
 linkUrl: ''
-raised: '$47,500'
+raised: '$20'
 goal: '$100,000'
-percent: 47
+percent: 0
 order: 5
 ---
 

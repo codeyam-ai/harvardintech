@@ -48,7 +48,9 @@ const sponsorHref = buildMailto({ to: email, subject: 'Sponsoring Harvard Alumni
     grid-template-columns: 1.3fr 0.7fr;
     gap: 40px;
     align-items: center;
-    padding: 60px 48px;
+    /* Matches the Get involved band directly above — the two colour fields are
+       read as a pair, so they breathe the same. */
+    padding: 112px 48px;
   }
   .giving-copy h3 {
     font-size: clamp(28px, 4vw, 48px);
@@ -65,11 +67,22 @@ const sponsorHref = buildMailto({ to: email, subject: 'Sponsoring Harvard Alumni
     max-width: 52ch;
     margin: 0;
   }
+  /* Stacked and equal width, matching the Get involved band directly above it —
+     the two crimson/ink CTA bands are read as a pair, so their action blocks
+     have to share a shape. */
   .giving-actions {
     display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+  }
+  .giving-actions .btn {
+    font-size: 16px;
+    padding: 18px 28px;
+    text-align: center;
   }
   .giving .btn-solid {
     background: #fff;
@@ -84,7 +97,7 @@ const sponsorHref = buildMailto({ to: email, subject: 'Sponsoring Harvard Alumni
       padding: 48px 24px;
     }
     .giving-actions {
-      justify-content: flex-start;
+      margin-left: 0;
     }
   }
 </style>

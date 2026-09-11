@@ -3,6 +3,14 @@
 // the editorial section idiom — kicker + headline, a serif lede, the two-step
 // apply flow as numbered items, and a crimson "Apply to join" CTA. Replaces the
 // old robin's-egg banner-graphic band.
+//
+// Two columns from the TOP of the section, because it holds two different kinds
+// of thing: an invitation (the heading and who this is for) and a procedure
+// (the steps that admit you, and the button that starts them). The heading is
+// set in two lines so it fits its column, which lets the "How to join" card rise
+// level with it instead of sitting below a full-width heading. The actions live
+// INSIDE that card, at its foot — the button is the last step of the procedure,
+// so it belongs with the steps rather than under the invitation.
 interface Props {
   criteriaUrl?: string;
   verifyUrl?: string;
@@ -20,31 +28,36 @@ const {
 
 <section class="sec" id="community" style="background: var(--paper-2);">
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">Communities</span>
-        <h2>Join our WhatsApp community</h2>
-      </div>
-    </div>
-
     <div class="wa">
-      <p class="wa-lede">
-        A space for Harvard alumni in tech: founders, operators, and investors
-        across industries, connecting in real time, anywhere in the world.
-      </p>
-      <ol class="wa-steps">
-        <li>
-          <span class="wa-n">1</span>
-          <span>Fill out <a href={verifyUrl}>this short form</a> (under 2 minutes) to verify your alumni status.</span>
-        </li>
-        <li>
-          <span class="wa-n">2</span>
-          <span>Request to join the WhatsApp group using <a href={whatsappUrl}>this link</a>.</span>
-        </li>
-      </ol>
-      <div class="wa-cta">
-        <a class="btn btn-solid" href={whatsappUrl} rel="noopener">Apply to join</a>
-        <a class="wa-note" href={criteriaUrl}>See the admissions criteria →</a>
+      <div class="wa-invite">
+        <div class="sec-head">
+          <div>
+            <span class="kick">Communities</span>
+            <h2>Join our WhatsApp<br />community</h2>
+          </div>
+        </div>
+        <p class="wa-lede">
+          A space for Harvard alumni in tech: founders, operators, and investors
+          across industries, connecting in real time, anywhere in the world.
+        </p>
+      </div>
+
+      <div class="wa-how">
+        <span class="kick">How to join</span>
+        <ol class="wa-steps">
+          <li>
+            <span class="wa-n">1</span>
+            <span>Fill out <a href={verifyUrl}>this short form</a> (under 2 minutes) to verify your alumni status.</span>
+          </li>
+          <li>
+            <span class="wa-n">2</span>
+            <span>Request to join the WhatsApp group using <a href={whatsappUrl}>this link</a>.</span>
+          </li>
+        </ol>
+        <div class="wa-cta">
+          <a class="btn btn-solid" href={whatsappUrl} rel="noopener">Apply to join</a>
+          <a class="wa-note" href={criteriaUrl}>See the admissions criteria →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -52,18 +65,35 @@ const {
 
 <style>
   .wa {
-    max-width: 720px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  /* The head sits inside a column here, so its standing bottom gap (sized for a
+     full-width head above content) is replaced by the lede's own top margin. */
+  .wa-invite :global(.sec-head) {
+    margin-bottom: 0;
   }
   .wa-lede {
     font-family: var(--font-serif);
     font-size: 19px;
     line-height: 1.5;
     color: var(--ink-2);
-    margin: 0 0 26px;
+    margin: 18px 0 0;
+    max-width: 46ch;
+  }
+  /* Paper on the section's tinted ground, which is what separates the procedure
+     from the invitation without a second rule. */
+  .wa-how {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--crimson);
+    padding: 26px 28px;
   }
   .wa-steps {
     list-style: none;
-    margin: 0 0 28px;
+    margin: 14px 0 0;
     padding: 0;
     display: grid;
     gap: 16px;
@@ -73,6 +103,7 @@ const {
     align-items: flex-start;
     gap: 14px;
     font-size: 16px;
+    line-height: 1.45;
     color: var(--ink);
   }
   .wa-n {
@@ -89,11 +120,16 @@ const {
     align-items: center;
     justify-content: center;
   }
+  /* The card's foot: a hairline marks where reading the steps ends and acting
+     on them begins. */
   .wa-cta {
     display: flex;
     align-items: center;
     gap: 22px;
     flex-wrap: wrap;
+    margin-top: 24px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
   }
   .wa-note {
     font-family: var(--font-mono);
@@ -105,5 +141,11 @@ const {
   }
   .wa-note:hover {
     text-decoration: underline;
+  }
+  @media (max-width: 820px) {
+    .wa {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
   }
 </style>

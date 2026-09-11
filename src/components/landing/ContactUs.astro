@@ -1,12 +1,19 @@
 ---
-// "Contact us" (Atlas): an editorial closing section — kicker + headline, a
-// serif invitation, and a row of social links (small icon + label) plus the
-// contact email. Reads the editable socials + contact email from the settings
-// singleton; the e-mail entry is synthesized so it always appears.
+// "Contact us" (Atlas): the closing section, set as a crimson band — kicker +
+// headline, a serif invitation, and the social links as a row of circular marks
+// spread across the full content width, each captioned with where it leads.
+//
+// The invitation sits DIRECTLY under the heading and the breathing room goes
+// below it, so the line reads as part of the heading block rather than as a
+// stranded caption above the links.
+//
+// Icons come from `brandIcons.ts` as inline SVG rather than the raster badges in
+// `socialIcon.ts`: on crimson they have to be white, and the original assets are
+// full-colour (one is a JPEG with a white background), so they cannot be
+// recoloured — see the note in that module.
 import { buildMailto } from '../../lib/mailto';
-import { socialIconSrc } from '../../lib/socialIcon';
+import { brandIcon } from '../../lib/brandIcons';
 import type { SocialLink } from '../../lib/site';
-import { withBase } from '../../lib/url';
 
 interface Props {
   socials: readonly SocialLink[];
@@ -15,33 +22,60 @@ interface Props {
 const { socials, email } = Astro.props;
 const contactHref = buildMailto({ to: email, subject: 'Hello from the website' });
 
+/** The bird is gone, so a link still labelled "Twitter" in settings.json reads
+ *  under the name the network has now, without an editor having to retype it. */
+function displayLabel(label: string): string {
+  return /^(twitter|x)$/i.test(label.trim()) ? 'X (Twitter)' : label;
+}
+
+// The e-mail link is synthesized so the section always offers a way to write in,
+// even when no social is configured — but an editor who already added one as a
+// social would otherwise get the same envelope twice under two spellings, which
+// is exactly what the seeded scenario shows. An existing mail link wins.
+const hasEmailSocial = socials.some(
+  (s) => s.icon?.toLowerCase() === 'email' || s.url.trim().toLowerCase().startsWith('mailto:'),
+);
 const links = [
-  ...socials.map((s) => ({ label: s.label, url: s.url, icon: s.icon })),
-  { label: 'E-mail', url: contactHref, icon: 'email' },
+  ...socials.map((s) => ({ label: displayLabel(s.label), url: s.url, icon: s.icon })),
+  ...(hasEmailSocial ? [] : [{ label: 'E-mail', url: contactHref, icon: 'email' }]),
 ];
 ---
 
-<section class="sec" id="contact">
+<section class="sec contact" id="contact">
   <div class="wrap">
     <div class="sec-head">
       <div>
         <span class="kick">Say hello</span>
         <h2>Contact us</h2>
+        <p class="contact-lede">
+          We'd love to hear from you. Reach out on any of these, or drop us a note.
+        </p>
       </div>
     </div>
 
-    <p class="contact-lede">
-      We'd love to hear from you. Reach out on any of these, or drop us a note.
-    </p>
     <div class="contact-row">
       {
         links.map((link) => {
-          const iconSrc = socialIconSrc(link.icon);
+          const icon = brandIcon(link.icon) ?? brandIcon(link.label);
           return (
             <a class="contact-link" href={link.url} rel="noopener" aria-label={link.label}>
-              {iconSrc && (
-                <img class="contact-icon" src={withBase(iconSrc)} alt="" width="22" height="22" loading="lazy" />
-              )}
+              <span class="contact-disc">
+                {icon && (
+                  <svg
+                    class="contact-icon"
+                    viewBox={icon.viewBox}
+                    width="46"
+                    height="46"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    {icon.paths.map((d) => (
+                      <path d={d} />
+                    ))}
+                  </svg>
+                )}
+              </span>
               <span class="contact-label">{link.label}</span>
             </a>
           );
@@ -52,43 +86,86 @@ const links = [
 </section>
 
 <style>
+  .contact {
+    background: var(--crimson);
+    border-bottom: 0;
+  }
+  /* The section furniture is inherited from `.sec`, so only the ink changes —
+     and the head's standing bottom margin is closed up, because the invitation
+     now lives inside the head rather than after it. */
+  .contact :global(.sec-head) {
+    margin-bottom: 0;
+  }
+  .contact :global(.kick) {
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .contact h2 {
+    color: #fff;
+    margin-bottom: 10px;
+  }
   .contact-lede {
     font-family: var(--font-serif);
     font-size: 19px;
     line-height: 1.5;
-    color: var(--ink-2);
-    margin: 0 0 26px;
+    color: rgba(255, 255, 255, 0.86);
+    margin: 0;
     max-width: 52ch;
   }
+  /* One track per link across the full content width: the marks are the section's
+     navigation, so they get the width rather than huddling at the left margin. */
   .contact-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 28px;
+    margin-top: 64px;
   }
   .contact-link {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 11px 18px;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    background: #fff;
+    gap: 16px;
     text-decoration: none;
-    color: var(--ink);
-    font-weight: 600;
-    font-size: 14px;
-    transition: border-color 0.15s ease, transform 0.15s ease;
+    color: #fff;
   }
   .contact-link:hover {
     text-decoration: none;
-    border-color: var(--crimson);
-    transform: translateY(-1px);
+  }
+  .contact-disc {
+    display: grid;
+    place-items: center;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  }
+  .contact-link:hover .contact-disc {
+    background: #fff;
+    color: var(--crimson);
+    transform: translateY(-2px);
   }
   .contact-icon {
     display: block;
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
-    border-radius: 3px;
+    width: 46px;
+    height: 46px;
+  }
+  .contact-label {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+  @media (max-width: 520px) {
+    .contact-row {
+      gap: 20px;
+    }
+    .contact-disc {
+      width: 84px;
+      height: 84px;
+    }
+    .contact-icon {
+      width: 38px;
+      height: 38px;
+    }
   }
 </style>

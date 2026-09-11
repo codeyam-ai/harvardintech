@@ -1,17 +1,28 @@
 ---
-// "Content hub" (Atlas): the org's publishing channels — Blog, Medium,
-// Substack, LinkedIn — as linked cards, plus an optional "latest from the blog"
-// list surfaced from the `blog` collection. Channels are a prop (CMS-editable);
-// defaults mirror the approved taxonomy. External links open the channel; the
-// Blog card stays on-site.
+// "Content hub" (Atlas): what the org has published, then where it publishes.
+//
+// Order matters here: the posts come FIRST because they are the thing worth
+// reading — a visitor who came to read wants the headlines, not a directory of
+// platforms. The channels follow as a compact row of destinations, reduced to
+// mark + name: their one-line descriptions explained what "Medium" or
+// "LinkedIn" is, which the mark and the name already say.
+//
+// Channels are a prop (CMS-editable); defaults mirror the approved taxonomy.
+// External links open the channel; the Blog card stays on-site. Icons are inline
+// SVG in `currentColor` (see `brandIcons.ts`), resolved from the channel label so
+// a CMS-added channel picks up its own glyph with no code change.
 import { withBase } from '../../lib/url';
 import { formatEventDate } from '../../lib/events';
+import { brandIcon } from '../../lib/brandIcons';
 
 interface Channel {
   label: string;
   blurb: string;
   url: string;
   external?: boolean;
+  /** Overrides the label-derived glyph when a channel is named something the
+   *  icon table cannot resolve. */
+  icon?: string;
 }
 interface PostLike {
   slug: string;
@@ -28,7 +39,10 @@ const {
     { label: 'Blog', blurb: 'Essays and recaps from the community.', url: '/blog/welcome' },
     { label: 'Medium', blurb: 'Longform writing from our members.', url: 'https://medium.com/harvard-in-tech', external: true },
     { label: 'LinkedIn', blurb: 'Follow us for announcements and updates.', url: 'https://www.linkedin.com/company/harvardintech/', external: true },
-    { label: 'Newsletter', blurb: 'Our LinkedIn newsletter, in your feed.', url: 'https://www.linkedin.com/newsletters/harvard-in-tech-7056638759055880192/', external: true },
+    // Named in full because the cards no longer carry a description: "Newsletter"
+    // alone did not say where it lives. `iconKeyFor` matches "newsletter" ahead
+    // of "linkedin", so this keeps the envelope rather than the LinkedIn mark.
+    { label: 'LinkedIn newsletter', blurb: 'Our LinkedIn newsletter, in your feed.', url: 'https://www.linkedin.com/newsletters/harvard-in-tech-7056638759055880192/', external: true },
   ],
   posts = [],
 } = Astro.props as Props;
@@ -40,106 +54,89 @@ const {
       <div>
         <span class="kick">Read, watch, listen</span>
         <h2>Content hub</h2>
+        {posts.length > 0 && <p class="ch-lede">Latest from the blog</p>}
       </div>
-    </div>
-
-    <div class="ch-grid">
-      {
-        channels.map((c) => (
-          <a
-            class="ch"
-            href={c.external ? c.url : withBase(c.url)}
-            rel={c.external ? 'noopener' : undefined}
-          >
-            <span class="ch-l">{c.label}</span>
-            <span class="ch-b">{c.blurb}</span>
-            <span class="ch-go">{c.external ? 'Visit →' : 'Read →'}</span>
-          </a>
-        ))
-      }
     </div>
 
     {
       posts.length > 0 && (
         <div class="latest">
-          <span class="kick">Latest from the blog</span>
           <div class="posts">
             {posts.slice(0, 3).map((p) => (
               <a class="post" href={withBase(`/blog/${p.slug}`)}>
                 <span class="post-d">{formatEventDate(p.date)}</span>
                 <span class="post-t">{p.title}</span>
                 {p.summary && <span class="post-s">{p.summary}</span>}
+                <span class="post-go">Read more →</span>
               </a>
             ))}
           </div>
         </div>
       )
     }
+
+    <div class="ch-grid">
+      {
+        channels.map((c) => {
+          const icon = brandIcon(c.icon) ?? brandIcon(c.label);
+          return (
+            <a
+              class="ch"
+              href={c.external ? c.url : withBase(c.url)}
+              rel={c.external ? 'noopener' : undefined}
+            >
+              {icon && (
+                <svg
+                  class="ch-icon"
+                  viewBox={icon.viewBox}
+                  width="26"
+                  height="26"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  {icon.paths.map((d) => (
+                    <path d={d} />
+                  ))}
+                </svg>
+              )}
+              <span class="ch-l">{c.label}</span>
+              <span class="ch-go" aria-hidden="true">→</span>
+            </a>
+          );
+        })
+      }
+    </div>
   </div>
 </section>
 
 <style>
-  .ch-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-  .ch {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-top: 3px solid var(--crimson);
-    padding: 22px 20px;
-    text-decoration: none;
-    color: var(--ink);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .ch:hover {
-    text-decoration: none;
-    transform: translateY(-2px);
-    box-shadow: 0 12px 26px rgba(30, 26, 27, 0.1);
-  }
-  .ch-l {
-    font-size: 17px;
-    font-weight: 800;
-  }
-  .ch-b {
-    font-family: var(--font-serif);
-    font-size: 14px;
-    line-height: 1.4;
-    color: var(--ink-2);
-    flex: 1;
-  }
-  .ch-go {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--crimson);
-  }
-
-  .latest {
-    margin-top: 44px;
-  }
+  /* ---- posts (first) ---------------------------------------------------- */
   .posts {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     margin-top: 16px;
   }
+  /* Paper cards on the section's tinted ground, matching the channel row below
+     and the event rows above — a post is an object you click, so it sits on
+     something rather than floating on the band. */
   .post {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding-top: 16px;
-    border-top: 2px solid var(--crimson);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--crimson);
+    padding: 20px 22px;
     text-decoration: none;
     color: var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   .post:hover {
     text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(30, 26, 27, 0.1);
   }
   .post:hover .post-t {
     color: var(--crimson);
@@ -154,12 +151,92 @@ const {
   .post-t {
     font-size: 18px;
     font-weight: 700;
+    line-height: 1.25;
   }
   .post-s {
     font-family: var(--font-serif);
     font-size: 14px;
+    line-height: 1.45;
     color: var(--ink-2);
   }
+  /* Pinned to the card's foot with `margin-top: auto`, so the three links sit on
+     one line across the row however long each title runs. A span rather than a
+     second <a> — the whole card is already the link. */
+  .post-go {
+    margin-top: auto;
+    padding-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--crimson);
+  }
+  .post:hover .post-go {
+    text-decoration: underline;
+  }
+
+  /* ---- channels (after) ------------------------------------------------- */
+  .ch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 44px;
+  }
+  /* Mark, name and the way out on one line: the card is a signpost, so it is
+     sized by its label rather than padded out to hold a paragraph it no longer
+     carries. Tinted crimson (the token at 10%) instead of drawing a rule —
+     the fill is what separates it from the band, so no border is needed. */
+  .ch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(164, 16, 52, 0.1); /* var(--crimson) #a41034 at 10% */
+    padding: 18px 18px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ch:hover {
+    text-decoration: none;
+    background: rgba(164, 16, 52, 0.16);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(30, 26, 27, 0.1);
+  }
+  .ch-icon {
+    display: block;
+    width: 26px;
+    height: 26px;
+    flex: none;
+    color: var(--crimson);
+  }
+  /* One line, always: the four cards are a row of equal signposts, and a name
+     that wrapped ("LinkedIn newsletter" at 1440px) made its card taller than
+     the other three. */
+  .ch-l {
+    font-size: 16px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  /* Pushed to the far edge so every card's arrow lands on one vertical line
+     across the row, regardless of how long the name is. */
+  .ch-go {
+    margin-left: auto;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--crimson);
+    transition: transform 0.15s ease;
+  }
+  .ch:hover .ch-go {
+    transform: translateX(3px);
+  }
+  .ch-lede {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    margin: 10px 0 0;
+  }
+
   @media (max-width: 900px) {
     .ch-grid {
       grid-template-columns: repeat(2, 1fr);

@@ -1234,7 +1234,12 @@ if (name && name.startsWith('DonorTierBand')) {
         ) : utilityBarProps ? (
           <UtilityBar {...utilityBarProps} />
         ) : ourChaptersProps ? (
-          <OurChapters {...ourChaptersProps} />
+          // Staged at the real content width like the other full-width bands:
+          // the chapter grid is three across, and a narrower stage collapses the
+          // cards into strips that misrepresent the band.
+          <div style="width: 1180px; max-width: 100%;">
+            <OurChapters {...ourChaptersProps} />
+          </div>
         ) : name === 'FocusAreas' ? (
           <FocusAreas />
         ) : contentHubProps ? (
@@ -1244,7 +1249,11 @@ if (name && name.startsWith('DonorTierBand')) {
         ) : name === 'LumaCalendar' ? (
           <LumaCalendar />
         ) : name === 'WhatsappCommunity' ? (
-          <WhatsappCommunity />
+          // Staged at the real content width: the band is two columns, and a
+          // narrow stage collapses it to one and hides what it actually is.
+          <div style="width: 1180px; max-width: 100%;">
+            <WhatsappCommunity />
+          </div>
         ) : name === 'GetInvolved' ? (
           <GetInvolved />
         ) : name === 'SupportUs' ? (
@@ -1252,7 +1261,12 @@ if (name && name.startsWith('DonorTierBand')) {
         ) : name === 'EventGallery' ? (
           <EventGallery />
         ) : upcomingEventsProps ? (
-          <UpcomingEvents {...upcomingEventsProps} />
+          // Staged at the real content width: the empty state is a two-column
+          // band and its buttons sit side by side there, so a narrow stage
+          // wraps them and misreports the layout.
+          <div style="width: 1180px; max-width: 100%;">
+            <UpcomingEvents {...upcomingEventsProps} />
+          </div>
         ) : boardOfDirectorsProps ? (
           <BoardOfDirectors {...boardOfDirectorsProps} />
         ) : (

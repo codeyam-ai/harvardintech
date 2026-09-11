@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 35edbe8f071598316313158a42886bc79f7c5674  source-sha256: 49b3a4f30c5cefe92f9105356aa7cd4dba47710bc3f85524a9725e70e6bd4c8f
+// codeyam-editor: 0.1.7  build: 0d14a78c00a5252fdf12a3cc1c1e955dd08f8e21  source-sha256: 7b774a8fb3089d125d40732545faa0516fad67a8fb876566d405e8d2dab2fd90
 const {
   hasLoadingMarkers,
   shouldStopWaitingForImages,
@@ -1261,6 +1261,7 @@ async function performInteractionSequence(
 
 module.exports = {
   logCaptureTiming,
+  defaultReadServerState,
   resolveTcpTarget,
   assertAppPortReachable,
   escapeHtmlAttribute,

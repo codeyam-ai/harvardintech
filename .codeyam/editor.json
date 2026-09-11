@@ -81,9 +81,9 @@
   ],
   "formatters": [],
   "screenSizes": {
-    "Laptop": {
-      "width": 1280,
-      "height": 800
+    "Desktop": {
+      "width": 1440,
+      "height": 900
     },
     "Mobile": {
       "width": 390,
@@ -93,9 +93,9 @@
       "width": 768,
       "height": 1024
     },
-    "Desktop": {
-      "width": 1440,
-      "height": 900
+    "Laptop": {
+      "width": 1280,
+      "height": 800
     }
   },
   "deviceScaleFactor": 3.0,
@@ -707,6 +707,46 @@
         "filePath": ".claude/hooks/editor-step-hook.py",
         "name": "emit_wedge_block",
         "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-step-hook.py",
+        "name": "_task_tools_in_search_result",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-step-hook.py",
+        "name": "label_signals_sync_gate",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-step-hook.py",
+        "name": "rebuild_check_verdict",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-step-hook.py",
+        "name": "stale_binary_notice",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-pretool-hook.py",
+        "name": "parses_harness_tool_result",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-pretool-hook.py",
+        "name": "_capped_rules",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-pretool-hook.py",
+        "name": "_load_refusal_log",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-pretool-hook.py",
+        "name": "_ordinal",
+        "reason": "editor-shipped"
       }
     ],
     "stepBudget": {
@@ -777,7 +817,8 @@
   },
   "server": {
     "autoRestartOnStaleBinary": true,
-    "maxRssMb": 6144
+    "maxRssMb": 6144,
+    "devServerMaxRssMb": null
   },
   "setupBrowserEnabled": false,
   "workflow": {

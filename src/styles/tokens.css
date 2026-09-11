@@ -238,7 +238,19 @@ h3 {
   font-size: clamp(28px, 3.6vw, 44px);
   font-weight: 800;
   letter-spacing: -0.02em;
+  /* The head aligns its two items on their BOX bottoms, so a heading carrying
+     the body's 1.6 leading (70px of box for 44px of letter) pushed ~13px of
+     dead space below its baseline and left the counter on the right sitting
+     visibly lower than the title. Display leading closes that gap, and also
+     keeps a two-line heading reading as one sentence. */
+  line-height: 1.1;
   margin-top: 10px;
+  /* Nothing else sets a bottom margin on headings, so a section heading kept the
+     browser's ~0.83em default — about 36px here — and it stacked on top of the
+     head's own 40px, holding every section's content ~76px below its title. The
+     gap belongs to `.sec-head`, which owns it deliberately; the heading
+     contributes none of its own. */
+  margin-bottom: 0;
 }
 
 /* Focus-area chips */
