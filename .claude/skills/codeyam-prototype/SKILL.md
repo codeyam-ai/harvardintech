@@ -25,6 +25,26 @@ Output **exactly** this and nothing else:
 
 Then end your turn. The user replies with a freeform description.
 
+## Before your first edit
+
+Name the files the brief will touch, then run:
+
+```
+codeyam-editor editor prototype-preflight --path <file> --path <file>
+```
+
+It reports whether upstream commits you don't have touch those files, and
+whether another in-flight session holds a claimed plan citing them. Both are
+invisible to you otherwise: prototyping edits before a plan exists, so the
+Confirm-gate guards that would catch this cannot fire yet.
+
+If it reports drift or overlap, tell the user what it found and offer to sync
+first — `git pull --rebase` on a still-clean tree is one command, while the
+same collision found after the edits costs a stash/pull/pop and hand-resolved
+conflicts, and may reveal a sibling already shipped the work. It is advisory:
+proceeding on a named collision is a fine choice, discovering it three hours
+later is not.
+
 ## During prototyping
 
 - **Get the current scenario right before changing scenarios.** Changing

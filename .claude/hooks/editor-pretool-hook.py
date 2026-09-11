@@ -166,67 +166,190 @@ _REPEAT_WINDOW_SEC = 600
 # state — an unbounded file would grow for the life of the branch.
 _REFUSAL_LOG_MAX = 40
 
+# How many times a RULE must have been refused — ever, across sessions and
+# across differing arguments — before its block announces itself as a
+# recurring trap. Three, because the measured shape is one refusal per
+# session (the journal-timestamp guard fired in five separate sessions,
+# exactly once in each), so by the third the agent is rediscovering
+# something the project already documents.
+_RULE_RECURRENCE_MIN = 3
 
-def _record_refusal(project_dir, fingerprint, now=None):
-    """Record `fingerprint` and return how many times it has been refused
-    inside the window, INCLUDING this one. 1 means first refusal.
+# Cap on the per-rule aggregate. Unlike `entries` this half IS durable — it
+# has to outlive the session to see a cross-session repeat at all — so what
+# bounds it is the hook's closed set of rule names, not a time window.
+_RULE_LOG_MAX = 64
+
+
+def _ordinal(n):
+    """`3` -> "3rd". Pure, so the 11/12/13 exceptions are assertable
+    without emitting a refusal."""
+    if n % 100 in (11, 12, 13):
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suffix}"
+
+
+def _capped_rules(rules):
+    """The per-rule aggregate trimmed to the most recently seen rules.
+
+    The map is keyed on the hook's own closed set of rule names, so it is
+    already small in practice. The cap makes boundedness a property of the
+    file rather than of the caller — a rule name that ever becomes dynamic
+    must not be able to grow this file for the life of the branch.
+    """
+    if len(rules) <= _RULE_LOG_MAX:
+        return rules
+    ordered = sorted(rules.items(), key=lambda kv: kv[1].get("lastAt", 0))
+    return dict(ordered[-_RULE_LOG_MAX:])
+
+
+def _load_refusal_log(path, now):
+    """Read the refusal log at `path` as `(entries, rules)`.
+
+    `entries` is the windowed fingerprint list with everything older than
+    `_REPEAT_WINDOW_SEC` already dropped; `rules` is the durable per-rule
+    aggregate. Malformed rows are discarded individually rather than
+    condemning the whole file, so one bad entry cannot reset every count.
+
+    A bare JSON list is the pre-`rules` shape. Reading it as `entries`
+    keeps an existing log's debounce working across the upgrade instead
+    of silently resetting every count to 1 the first time a refusal is
+    recorded by a newer hook.
+
+    Unreadable, absent, or corrupt degrades to `([], {})` — which renders
+    exactly today's message — because this only decorates a refusal that
+    is being emitted anyway and must never turn one into a crash.
+    """
+    try:
+        with open(path) as f:
+            loaded = json.load(f)
+    except Exception:
+        return [], {}
+
+    raw_entries = loaded.get("entries") if isinstance(loaded, dict) else loaded
+    raw_rules = loaded.get("rules") if isinstance(loaded, dict) else None
+
+    entries = []
+    if isinstance(raw_entries, list):
+        entries = [
+            e
+            for e in raw_entries
+            if isinstance(e, dict)
+            and isinstance(e.get("at"), (int, float))
+            and now - e["at"] <= _REPEAT_WINDOW_SEC
+        ]
+
+    rules = {}
+    if isinstance(raw_rules, dict):
+        rules = {
+            name: agg
+            for name, agg in raw_rules.items()
+            if isinstance(agg, dict) and isinstance(agg.get("count"), int)
+        }
+
+    return entries, rules
+
+
+def _record_refusal(project_dir, fingerprint, rule=None, now=None):
+    """Record a refusal and return `(call_count, rule_count)`, both
+    INCLUDING this one. `(1, 1)` means a first refusal on either tier.
+
+    Two tiers, two windows, deliberately. `call_count` counts this exact
+    `fingerprint` inside `_REPEAT_WINDOW_SEC` — the retry loop, where the
+    agent re-issues a call that was just refused. `rule_count` counts
+    `rule` with no time filter at all, because the mistake it exists to
+    catch has the opposite shape: it recurs ACROSS sessions, with
+    different arguments each time, so no windowed count of identical
+    calls can ever see it.
+
+    Durable and bounded at once. The `entries` half keeps its window and
+    its cap and stays a debounce hint; the per-rule aggregate is keyed on
+    the hook's closed set of rule names, so it is bounded by that set
+    rather than by how long the branch lives.
 
     Best-effort by construction: this only decorates a message that is
     being emitted anyway, so an unreadable or unwritable log must never
-    turn a clean refusal into a crash. Every failure path returns 1,
-    which renders exactly today's message.
+    turn a clean refusal into a crash. Every failure path returns
+    `(1, 1)`, which renders exactly today's message.
     """
     now = time.time() if now is None else now
     # The scripted-rewrite guard fires before the editor-mode short-circuit,
     # so this runs in non-codeyam repos too. Never CREATE `.codeyam/` as a
     # side effect of refusing something — no project state, no repeat log.
     if not os.path.isdir(os.path.join(project_dir, ".codeyam")):
-        return 1
+        return 1, 1
     path = os.path.join(project_dir, _REFUSAL_LOG)
-    entries = []
-    try:
-        with open(path) as f:
-            loaded = json.load(f)
-        if isinstance(loaded, list):
-            entries = [
-                e
-                for e in loaded
-                if isinstance(e, dict)
-                and isinstance(e.get("at"), (int, float))
-                and now - e["at"] <= _REPEAT_WINDOW_SEC
-            ]
-    except Exception:
-        entries = []
+    entries, rules = _load_refusal_log(path, now)
 
     count = sum(1 for e in entries if e.get("fingerprint") == fingerprint) + 1
     entries.append({"fingerprint": fingerprint, "at": now})
 
+    rule_count = 1
+    if rule:
+        prior = rules.get(rule)
+        rule_count = (prior["count"] if prior else 0) + 1
+        rules[rule] = {
+            "count": rule_count,
+            "firstAt": prior.get("firstAt", now) if prior else now,
+            "lastAt": now,
+        }
+
     try:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as f:
-            json.dump(entries[-_REFUSAL_LOG_MAX:], f)
+            json.dump(
+                {
+                    "entries": entries[-_REFUSAL_LOG_MAX:],
+                    "rules": _capped_rules(rules),
+                },
+                f,
+            )
     except Exception:
         pass
-    return count
+    return count, rule_count
 
 
-def _repeat_notice(count):
+def _repeat_notice(count, rule_count=1):
     """The line that leads a repeated refusal, or "" on the first one.
+
+    Two tiers, and the exact-call one wins whenever both apply — it is
+    both the more specific and the more urgent statement.
 
     Agents re-issued identical refused calls within seconds — four in a
     row at `backend-journal`. A block that reads the same the second time
     gives no signal that the state has not moved, so the retry looks as
     reasonable as the first attempt. Saying so explicitly is the cheapest
     thing that distinguishes them.
+
+    The second tier catches the shape the first cannot see at all: one
+    refusal per session, across sessions, with different arguments each
+    time. Measured across 20 build sessions, guardrails refused 16 times
+    and `ALREADY REFUSED` rendered ZERO times, while the
+    journal-timestamp guard alone fired in five separate sessions. For an
+    agent meeting that rule for the first time the accusatory wording
+    would simply be false, and reusing it would train agents to discount
+    the line — so this tier is informational: the rule is a known
+    recurring trap, and the canonical path below is worth reading once
+    rather than rediscovering.
     """
-    if count < 2:
-        return ""
-    return (
-        f"ALREADY REFUSED ({count}x in the last "
-        f"{_REPEAT_WINDOW_SEC // 60} minutes): this exact call was refused "
-        f"before and nothing has changed since. Re-issuing it will be "
-        f"refused again — take the next valid action below instead.\n"
-    )
+    if count >= 2:
+        return (
+            f"ALREADY REFUSED ({count}x in the last "
+            f"{_REPEAT_WINDOW_SEC // 60} minutes): this exact call was refused "
+            f"before and nothing has changed since. Re-issuing it will be "
+            f"refused again — take the next valid action below instead.\n"
+        )
+    if rule_count >= _RULE_RECURRENCE_MIN:
+        return (
+            f"RECURRING GUARDRAIL ({_ordinal(rule_count)} time in this "
+            f"project): this rule has blocked a call {rule_count} times here, "
+            f"typically once each in a different session — so it is a known "
+            f"recurring trap rather than a first encounter. The next valid "
+            f"action below is the canonical path; it is worth reading once "
+            f"rather than rediscovering.\n"
+        )
+    return ""
 
 
 # Read-only explain mode, set ONCE from argv in `main`. Deliberately not an
@@ -334,8 +457,10 @@ def block(project_dir, rule, reason, next_action, reference="", detail="", evide
         message = f"{message}\n{reference}"
     if _EXPLAIN_MODE:
         _emit_verdict("BLOCKED", rule, detail, message)
-    count = _record_refusal(project_dir, "\x00".join((rule, detail, call, evidence)))
-    print(f"{_repeat_notice(count)}{message}", file=sys.stderr)
+    count, rule_count = _record_refusal(
+        project_dir, "\x00".join((rule, detail, call, evidence)), rule
+    )
+    print(f"{_repeat_notice(count, rule_count)}{message}", file=sys.stderr)
     sys.exit(2)
 
 

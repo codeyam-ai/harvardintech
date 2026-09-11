@@ -522,7 +522,7 @@ ask. Rendering these three as prose leaves the user typing "commit it" by hand
   (and any asset files) are listed; if anything else appears, run `git reset
   --soft HEAD~1` and retry with the pathspec form.
 
-  **Always append `[skip ci]` to the commit message.** Plan files don't change source or tests, so CI must not be triggered. This is non-optional — apply it on the initial commit and on any amend.
+  **Append `[skip ci]` only when this commit targets `main`.** A plan file changes no source or tests, so a plan commit landing directly on `main` must not trigger CI. On a branch, OMIT it: GitHub honors the token for the open PR's run, so a plan commit carrying it silently suppresses that PR's CI. The condition is the target, not the token — same rule on the initial commit and on any amend.
 
   The plan file is brand-new and untracked, so it must be staged before the
   pathspec commit — `git commit -- <pathspec>` only commits *already-tracked*
@@ -535,7 +535,9 @@ ask. Rendering these three as prose leaves the user typing "commit it" by hand
   # Add the asset dir pathspec too when the plan co-located assets:
   #   git add .codeyam/plans/<slug>.md .codeyam/plans/assets/<slug>
   git add .codeyam/plans/<slug>.md
-  git commit -m "plan: <short description of the feature/fix> [skip ci]" -- .codeyam/plans/<slug>.md
+  # On a branch (the usual case) — no [skip ci]; it would suppress the open PR's run.
+  # Committing directly on main? Append " [skip ci]" to the message.
+  git commit -m "plan: <short description of the feature/fix>" -- .codeyam/plans/<slug>.md
   git show --stat --name-only HEAD   # verify only the plan file (and any assets) are in the commit
   codeyam-editor editor plan-complete
   ```

@@ -116,6 +116,74 @@ is an assertion someone has to perform by hand. Delete it and say in the report
 that it is covered by `<the test file>` — naming the file is what makes the
 smaller count trustworthy rather than lazy.
 
+One more disqualifier, short because it is really a pointer to 5a2: **a
+behavior a scenario *can* demonstrate still gets a test, but it gets a
+`scenario` surface — never `no-ui-surface`.** Falling back when rung 1 or 2 of
+the triage would have worked is the specific error the next section exists to
+prevent.
+
+### 5a2 — Simulate before you fall back
+
+**A manual test is a cost.** Before writing one, establish that the state it
+needs genuinely cannot be put on screen in Live Preview with mock data.
+
+"The change was classified `noUiImpact`" is **not** that establishment. That
+classification is a statement about which files moved. It is not a statement
+about what can be rendered, and treating it as one is how every test in a run
+can land on `no-ui-surface` without the question ever being asked once.
+
+Run this ladder on **every** candidate, in order, stopping at the first rung
+that works. Every rung is reachable from **every** partition, `noUiImpact`
+included — that reachability is the whole point, because a partition was
+previously allowed to short-circuit straight past all of it.
+
+1. **An existing scenario already renders the state.** → surface `scenario`.
+   Confirm with `codeyam-editor editor scenario-explain <slug>` that the frame
+   really shows it; a slug that sounds right is not evidence.
+2. **A surface exists but not in this state.** → propose capturing it:
+   `register` for a missing state, `preview-interact` for a state one action
+   away, `preview-flow` for a round trip. Proposed to the user and run only on
+   confirmation, exactly as the capture paragraph in phase 5 already specifies.
+3. **Split the candidate.** If the behavior mixes an irreducible mechanism
+   with an observable output — a race *and* the message it produces — those are
+   two candidates. Take the output half down rungs 1–2; take the mechanism half
+   to rung 5. Both may ship, and neither drags the other down. This is the rung
+   most often skipped, because a candidate arrives feeling like one thing.
+4. **Ask whether the state is a value.** Is what the test needs something a
+   surface *receives* — props, an API response, a file under `.codeyam/`? If
+   yes it is mockable in principle, and what is missing is only a seam to
+   inject it. That is `no-mock-seam`, and you must say which seam. Do not
+   record it as though the behavior were inherently un-simulatable; those are
+   different findings and only one of them is fixable.
+5. **Only now, `no-ui-surface`** — with a required `barrier` and a
+   `barrierDetail` sentence.
+
+**Rungs 1–3 of the value ladder in 5b are claims about today's tooling, not
+laws.** "Crosses a process", "a cache one command writes and another reads",
+"needs a real restart" describe the seams that exist right now. Only rung 4
+(perceptual) is inherent. So each of 5b's rungs 1–3 must be *challenged* here
+before it is accepted — and when the challenge fails, the reason is recorded as
+a barrier rather than assumed.
+
+**The four barriers.** They split on one question: **is this codeyam's fault?**
+
+| barrier | means | codeyam gap? |
+|---|---|---|
+| `no-surface` | Nothing in the app renders this behavior at all. A surface would have to exist before any scenario could show it. | **Yes** |
+| `no-mock-seam` | A surface exists and the state is a value, but nothing can inject it. Name the seam. | **Yes** |
+| `real-process` | Needs two live processes, a real re-exec, a real clock, a real crash. | No |
+| `real-external` | Needs a real third party, network, or device. | No |
+
+The first two are a **backlog**. The last two never will be. Recording them
+identically — which a free-text note cannot avoid doing — is what makes a list
+of simulation gaps unactionable.
+
+`manual-test-add` **refuses** a `no-ui-surface` without both fields. That
+refusal is deliberate: this section is a document, and a document cannot make
+the triage happen. Do not work around it by picking a barrier that will be
+accepted — an unconsidered `real-process` is worse than the free-text note it
+replaced, because it claims a triage was done.
+
 ### 5b — The value ladder
 
 Rank every surviving candidate, highest first, and spend the budget from the
@@ -200,9 +268,19 @@ Per partition:
   Silently skipping surfaces with no scenario hides exactly the gaps that
   matter most; the UI renders it as "no scenario yet" with a route to capture
   one.
-- **`noUiImpact`** → surface `noUiSurface` with a note, and steps describing a
-  CLI or API verification. Write nothing only when the change genuinely has no
-  observable effect.
+- **`noUiImpact`** → **run the 5a2 ladder first — this partition is not a
+  verdict.** It says which files moved, not what can be rendered, and a
+  `noUiImpact` change frequently has an output half that a scenario shows
+  perfectly well (rung 3 splits it out). Only when all four rungs have failed
+  does this become surface `noUiSurface`, carrying a note, a `barrier`, and a
+  `barrierDetail`, with steps describing a CLI or API verification. Write
+  nothing only when the change genuinely has no observable effect.
+
+  This bullet used to end at "with a note", and that made the three
+  surface-creating moves below reachable only from `covered` and `uncovered` —
+  so a backend-classified change could never reach them however simulatable it
+  actually was. The ladder is what removes that dead end; do not reintroduce it
+  by treating the partition as the answer.
 
 **When no surface can demonstrate the behavior, capture one — never write the
 unfollowable steps anyway.** Generation otherwise only ever *reads* the scenario
@@ -223,10 +301,15 @@ read:
   `codeyam-editor editor preview-flow`, whose ordered captioned filmstrip is
   what such a test should point at.
 
-The boundary stays where it was: you still never edit application source, and a
-`noUiImpact` change has nothing to capture. Capture is **offered, never
-mandatory** — if the user declines, say in the test's `intent` that the surface
-does not exist yet rather than writing steps against one that does not.
+The boundary stays where it was: you still never edit application source.
+Capture is **offered, never mandatory** — if the user declines, say in the
+test's `intent` that the surface does not exist yet rather than writing steps
+against one that does not.
+
+What does *not* stay where it was is the old clause that a `noUiImpact` change
+"has nothing to capture". That was the assumption 5a2 exists to retire: the
+partition describes the diff, not the renderable world, and the ladder is run
+before any of these three moves is ruled out.
 
 Writing the fields:
 
@@ -278,6 +361,20 @@ Tell the user:
   budget**, with their ladder rung, so the user can ask for one by name.
 - Any surface that got a test but has no scenario yet, so they can decide
   whether to capture one.
+- **The manual tests, in two groups — never as one list.** They mean different
+  things and only one of them is work:
+  - **Manual because codeyam cannot simulate it yet** — every test whose
+    barrier is `no-surface` or `no-mock-seam`, each with its `barrierDetail`.
+    This is a gap list the user can act on: a surface to build, a seam to add.
+    Say plainly that these would stop needing a human if codeyam could show
+    the state.
+  - **Irreducibly manual** — `real-process` and `real-external`. These need a
+    person no matter what gets built, and presenting them as a backlog would
+    be a standing to-do that can never be closed.
+
+  Reporting them as one undifferentiated list is what the barrier field exists
+  to end; collapsing them again in the report throws away the distinction at
+  the last step.
 
 Never tell the user to run `codeyam-editor editor` commands; they are internal.
 Just tell them what you found and ask what they want next.

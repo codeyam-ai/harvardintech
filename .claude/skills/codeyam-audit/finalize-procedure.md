@@ -426,6 +426,47 @@ the remaining set is only the judgment calls.
 > check, not a progress bar to wait out: a partition reporting `already
 > fresh` after a full run is the tool telling you the run was wasted.
 
+> GOTCHA — **Finish every REGISTRY change before the warm, for the same
+> reason you finish every SOURCE edit before it — and this one is the more
+> expensive of the two, because it is self-sustaining.** The rule above is
+> about the source Merkle hash; a registry change is a second, independent
+> way to invalidate a partition, and `reconcile-registry` producing one is
+> not an accident but its normal output. Any add, remove, or line-drift
+> update moves the affected runner's **registry digest**, and Phase 1
+> refuses cache reuse for every partition whose stamped digest no longer
+> matches — no source file need be touched, so `test-status` can report the
+> partition green while Phase 1 re-runs it anyway.
+>
+> The loop is what makes it costly. A broad registry change invalidates many
+> partitions at once, which collapses Phase 1 from a scoped re-run into a
+> **full-suite** one — and in a full-suite run the `cargo-ignored` runner
+> reliably exceeds its 1800s floor, because it owns tests that spawn real
+> editor servers and they stretch badly under fan-out. A killed runner
+> stores no results, so the finalize fails having proved nothing. The
+> natural next move — fix what the audit found, re-run — changes the
+> registry again and re-enters the loop.
+>
+> Measured on this repo, 2026-09-08: the loop's lap was a **4584s failure**.
+> Finishing all registry changes first, re-warming so the digests matched,
+> and only then finalizing was a **695.7s pass** — Phase 1 scoped itself to
+> the single partition whose digest had moved, and `cargo-ignored` was never
+> re-run at all. Same branch, same work, one seventh the wall-clock.
+>
+> The cheap pre-check is `codeyam-editor editor verify-test-cache`, which
+> answers "do the digests still line up?" before you pay for a run.
+> `codeyam-editor editor test-status` prices it: it reports the digest-
+> invalidated partitions as a fraction of the total (`1 of 20` is a scoped
+> re-run; `9 of 20` is the full-suite run that times out), so the cost of
+> the next finalize is visible in advance rather than discovered at 4584s.
+>
+> Do NOT respond to the timeout by raising `cargo-ignored`'s timeout. The
+> floor is already 1800s, raising a number to escape a contention problem is
+> what `scripts/check-ci-timeout-floors.sh` exists to stop, and the runner's
+> `auto` timeout cannot adapt its way out either — it is
+> `lastSuccessfulRunSecs + headroom`, and a persistently-failing advisory
+> test in that runner means no run is ever recorded successful, so only the
+> floor is ever in play. Fix the ordering instead.
+
 > GOTCHA — **Platform-gate drift can only be reconciled AFTER a full
 > `refresh-tests`, so do not hand-run `reconcile-registry` for it here.**
 > `REGISTRY_HAS_FOREIGN_HOST_GATED_TEST` fires when a test's registry
@@ -1051,10 +1092,11 @@ re-running, or repair one entry with `register-test … --clear-platform-gate`.
 
 A squash merge concatenates **every** branch commit message into the merge
 commit's body, and GitHub Actions honors a skip token **anywhere** in that
-message — not just on the subject line. Plan commits always carry `[skip ci]`,
-correctly, because a plan file changes no source. So the default
-`gh pr merge --squash` lands that token on the primary branch and silently skips
-the entire `cicd` workflow for the merge commit.
+message — not just on the subject line. So ANY branch commit carrying `[skip ci]`
+— a plan commit made on `main` before the branch was cut, a cherry-pick, a
+hand-written one — makes the default `gh pr merge --squash` land that token on
+the primary branch and silently skip the entire `cicd` workflow for the merge
+commit.
 
 Nothing announces it. On 2026-08-09 PR #100 merged as `6baba063b` with no CI run
 at all: no `codeyam-editor-binary:main-6baba063b` was published, no cloud image
@@ -1074,8 +1116,15 @@ honors (`[skip ci]`, `[ci skip]`, `[no ci]`, `[skip actions]`, `[actions skip]`,
 `***NO_CI***`), and it avoids `sed -i`, whose in-place flag differs between BSD
 and GNU — the merge is run from laptops and cloud VMs alike.
 
-**Do NOT stop `/codeyam-plan` emitting `[skip ci]`.** The token is right on the
-original plan-only commit. The defect is it *escaping into a squash body*.
+**Do NOT stop `/codeyam-plan` emitting `[skip ci]`.** The token is right on a
+plan-only commit that targets `main`, which is the only case that emits it —
+`/codeyam-plan` and `/review-session` both OMIT it on a branch, where it would
+suppress the open PR's own run. The defect is it *escaping into a squash body*.
+
+**That branch exception does not make the strip step above unnecessary.** It
+narrows who emits the token, not who can carry one: a branch commit that picked
+one up from any source must still not reach a squash body, so compose the merge
+body with `ci-skip-token.sh --strip` regardless.
 
 **After merging, confirm the merge commit actually got a run:**
 
