@@ -272,6 +272,12 @@
     "testFile": "src/lib/cutoverTicks.test.ts"
   },
   {
+    "description": "Returns the pictogram for a Focus areas row from its label, so a CMS-reworded area keeps its icon; unknown labels get none rather than a wrong one.",
+    "filePath": "src/lib/areaIcons.ts",
+    "name": "areaIcon",
+    "testFile": "src/lib/areaIcons.test.ts"
+  },
+  {
     "description": "The supporter badge: what it prints about the person it belongs to. Reads every field through donorPublicIdentity and donorWhy rather than off the entry, for the reason those functions exist — so an anonymous supporter's badge cannot carry what the network withholds, even though the network never offers them one. The standing line is the founding badge, or the level they gave at, or a plain label: a blank line under a name reads as missing data rather than as someone who simply gave.",
     "filePath": "src/lib/supporterBadge.ts",
     "name": "badgeFor",
@@ -288,6 +294,12 @@
     "filePath": "src/lib/cutoverProgress.ts",
     "name": "blockingDecisions",
     "testFile": "src/lib/cutoverProgress.test.ts"
+  },
+  {
+    "description": "Returns the monochrome currentColor brand glyph (X, LinkedIn, Medium, Facebook, envelope, document) for an icon field or label, or null when none resolves.",
+    "filePath": "src/lib/brandIcons.ts",
+    "name": "brandIcon",
+    "testFile": "src/lib/brandIcons.test.ts"
   },
   {
     "description": "Builds a mailto: URL with optional pre-filled subject/body, normalizing space encoding to %20. Used by the Support Us, Contact Us, and footer links.",
@@ -503,6 +515,12 @@
     "testFile": "src/lib/envFlag.test.ts"
   },
   {
+    "description": "Splits an event date into the month, day and year strings the landing-page event rows stack in their date column, formatted in UTC so a date-only value never slips to the previous day.",
+    "filePath": "src/lib/eventDateParts.ts",
+    "name": "eventDateParts",
+    "testFile": "src/lib/eventDateParts.test.ts"
+  },
+  {
     "description": "The events belonging to one chapter or community, projected into the EventLike shape the event cards render. The match is an exact string comparison against the owner's collection id, because that is what /chapters/<slug> and /communities/<slug> are keyed on — a near-miss like 'New York City' for 'nyc', or a stray trailing space, belongs to nobody, which is exactly the case unmatchedChapterTags reports, so the two are two halves of one rule. An untagged event is excluded here and still appears on /events. Extracted from the two [slug].astro routes, which held this projection verbatim once communities started reusing the chapter tag.",
     "filePath": "src/lib/events.ts",
     "name": "eventsTaggedTo",
@@ -690,6 +708,12 @@
     "filePath": "src/lib/homeSections.ts",
     "name": "hiddenSectionAnchors",
     "testFile": "src/lib/homeSections.test.ts"
+  },
+  {
+    "description": "Resolves a brand-glyph key from an icon field or a human label, most specific word first, mapping the legacy twitter key to the X mark; returns null when nothing matches.",
+    "filePath": "src/lib/brandIcons.ts",
+    "name": "iconKeyFor",
+    "testFile": "src/lib/brandIcons.test.ts"
   },
   {
     "description": "Decides whether the @codeyam/cms admin area ships in a build: only under astro dev or on the gated review track, never on the public build. The admin pages embed each entry's raw markdown in their static HTML while the CMS sign-in gate is client-side only, so wherever /admin deploys every draft's full source is publicly fetchable — putting it on the public domain would defeat the point of phasing content. Dev keeps it so the codeyam Live Preview retains its admin scenarios. Extracted from astro.config.mjs because that file can only be exercised by a real astro build and cannot be imported under vitest.",
@@ -1416,6 +1440,12 @@
     "filePath": "src/lib/site.ts",
     "name": "site",
     "testFile": "src/lib/site.test.ts"
+  },
+  {
+    "description": "Returns the name a social link is shown under on the Contact band: a bare \"Twitter\" or \"X\" reads as \"X (Twitter)\", every other label passes through unchanged.",
+    "filePath": "src/lib/socialLabel.ts",
+    "name": "socialDisplayLabel",
+    "testFile": "src/lib/socialLabel.test.ts"
   },
   {
     "description": "Maps a social link icon field (twitter/facebook/email, case-insensitive) to its self-hosted asset path under public/images/social/. Returns null for unknown or missing icons so the Contact Us section degrades to a label-only link. Icons were downloaded from the original harvardintech.com site to keep the GitHub Pages build CDN-independent.",

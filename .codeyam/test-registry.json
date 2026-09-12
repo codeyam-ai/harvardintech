@@ -469,6 +469,33 @@
       "runner": "tests"
     },
     {
+      "description": "A label an editor reworded in the CMS still finds its pictogram.",
+      "file": "src/lib/areaIcons.test.ts",
+      "format": "vitest",
+      "key": "areaIcon › resolves a reworded label by the word it contains",
+      "line": 15,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Each default Focus area label resolves to its own pictogram.",
+      "file": "src/lib/areaIcons.test.ts",
+      "format": "vitest",
+      "key": "areaIcon › resolves each default focus area label",
+      "line": 6,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "An unrecognised label gets no icon rather than a wrong one.",
+      "file": "src/lib/areaIcons.test.ts",
+      "format": "vitest",
+      "key": "areaIcon › returns null for an unknown or missing label",
+      "line": 21,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The badge is the thing a supporter posts about themselves, so every field on it has to be the one their node panel showed.",
       "file": "src/lib/supporterBadge.test.ts",
       "format": "vitest",
@@ -583,6 +610,33 @@
       "key": "blockingDecisions › returns nothing once the decisions are answered",
       "line": 110,
       "registeredAt": "2026-08-06T15:24:46Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every glyph is drawn on the same 24-unit grid with at least one path, which is what lets the cards size them all with one CSS rule.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brandIcon › draws every glyph on a 24-unit grid with at least one path",
+      "line": 52,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "No match means no icon, never a wrong one.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brandIcon › returns null when nothing resolves",
+      "line": 46,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The resolved key returns that glyph's drawing.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brandIcon › returns the glyph for a resolvable value",
+      "line": 40,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
       "runner": "tests"
     },
     {
@@ -2526,6 +2580,42 @@
       "runner": "tests"
     },
     {
+      "description": "A Date object (what the content loader coerces frontmatter into) gives the same answer as the string it came from.",
+      "file": "src/lib/eventDateParts.test.ts",
+      "format": "vitest",
+      "key": "eventDateParts › accepts a Date as well as a string",
+      "line": 17,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "UTC midnight must stay on its own calendar day, not slip to the previous one as local-time formatting would in any timezone west of UTC.",
+      "file": "src/lib/eventDateParts.test.ts",
+      "format": "vitest",
+      "key": "eventDateParts › keeps a UTC-midnight date on its own calendar day",
+      "line": 27,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The day is not zero-padded, because the column sets it large on its own.",
+      "file": "src/lib/eventDateParts.test.ts",
+      "format": "vitest",
+      "key": "eventDateParts › renders a single-digit day without a leading zero",
+      "line": 11,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A date-only frontmatter string splits into full month name, day and year.",
+      "file": "src/lib/eventDateParts.test.ts",
+      "format": "vitest",
+      "key": "eventDateParts › splits a date-only string into month, day and year",
+      "line": 6,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Every optional field is carried through, because the event card renders them — dropping one here would blank a card with no error anywhere.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
@@ -3635,6 +3725,51 @@
       "key": "hiddenSectionAnchors › treats a band with no entry at all as gone",
       "line": 177,
       "registeredAt": "2026-08-03T21:22:17Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A label naming its glyph inside a phrase still resolves, and the more specific word wins: \"LinkedIn newsletter\" is the envelope, not LinkedIn.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "iconKeyFor › finds the most specific glyph inside a longer label",
+      "line": 19,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "settings.json and every seed still say `twitter`; it must reach the X mark.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "iconKeyFor › maps the legacy twitter key to the X glyph",
+      "line": 12,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "An alias found inside a phrase resolves through the alias, not to nothing.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "iconKeyFor › resolves an alias found inside a phrase",
+      "line": 25,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A key that names a glyph directly resolves to itself, case-insensitively.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "iconKeyFor › resolves an exact glyph name regardless of casing",
+      "line": 6,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Unknown or missing values return null so the caller renders no icon.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "iconKeyFor › returns null for an unknown or missing value",
+      "line": 30,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
       "runner": "tests"
     },
     {
@@ -8198,6 +8333,51 @@
       "key": "site singletons › reflects a second data root on re-import",
       "line": 137,
       "registeredAt": "2026-06-17T11:03:18.675832+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A longer label that merely contains the word is someone's own wording, not the bare network name, so it is not rewritten.",
+      "file": "src/lib/socialLabel.test.ts",
+      "format": "vitest",
+      "key": "socialDisplayLabel › does not rewrite a label that only contains the word",
+      "line": 28,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Every other network passes through exactly as typed.",
+      "file": "src/lib/socialLabel.test.ts",
+      "format": "vitest",
+      "key": "socialDisplayLabel › leaves other labels unchanged",
+      "line": 21,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Casing and stray whitespace from the CMS do not defeat the match.",
+      "file": "src/lib/socialLabel.test.ts",
+      "format": "vitest",
+      "key": "socialDisplayLabel › matches regardless of casing and surrounding whitespace",
+      "line": 16,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "An editor who already renamed the link to \"X\" gets the same, clearer label.",
+      "file": "src/lib/socialLabel.test.ts",
+      "format": "vitest",
+      "key": "socialDisplayLabel › shows a bare X label under the X name with Twitter in brackets",
+      "line": 11,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The label settings.json still carries reads under the network's current name.",
+      "file": "src/lib/socialLabel.test.ts",
+      "format": "vitest",
+      "key": "socialDisplayLabel › shows the legacy Twitter label under the X name",
+      "line": 6,
+      "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
       "runner": "tests"
     },
     {

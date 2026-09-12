@@ -13,6 +13,7 @@
 // recoloured — see the note in that module.
 import { buildMailto } from '../../lib/mailto';
 import { brandIcon } from '../../lib/brandIcons';
+import { socialDisplayLabel } from '../../lib/socialLabel';
 import type { SocialLink } from '../../lib/site';
 
 interface Props {
@@ -22,12 +23,6 @@ interface Props {
 const { socials, email } = Astro.props;
 const contactHref = buildMailto({ to: email, subject: 'Hello from the website' });
 
-/** The bird is gone, so a link still labelled "Twitter" in settings.json reads
- *  under the name the network has now, without an editor having to retype it. */
-function displayLabel(label: string): string {
-  return /^(twitter|x)$/i.test(label.trim()) ? 'X (Twitter)' : label;
-}
-
 // The e-mail link is synthesized so the section always offers a way to write in,
 // even when no social is configured — but an editor who already added one as a
 // social would otherwise get the same envelope twice under two spellings, which
@@ -36,7 +31,7 @@ const hasEmailSocial = socials.some(
   (s) => s.icon?.toLowerCase() === 'email' || s.url.trim().toLowerCase().startsWith('mailto:'),
 );
 const links = [
-  ...socials.map((s) => ({ label: displayLabel(s.label), url: s.url, icon: s.icon })),
+  ...socials.map((s) => ({ label: socialDisplayLabel(s.label), url: s.url, icon: s.icon })),
   ...(hasEmailSocial ? [] : [{ label: 'E-mail', url: contactHref, icon: 'email' }]),
 ];
 ---

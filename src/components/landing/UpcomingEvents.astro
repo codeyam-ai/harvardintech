@@ -18,6 +18,7 @@
 // the buttons.
 import type { EventLike } from '../../lib/events';
 import { LUMA_CALENDAR_URL } from '../../lib/luma';
+import { eventDateParts } from '../../lib/eventDateParts';
 
 interface Props {
   events?: EventLike[];
@@ -32,16 +33,6 @@ const {
 
 const isEmpty = events.length === 0;
 const count = String(events.length).padStart(2, '0');
-
-/** Month / day / year as separate strings for the date column. Formatted in UTC
- *  because a date-only frontmatter value parses to UTC midnight, and formatting
- *  that in a western timezone would render the previous day. */
-function dateParts(value: string | Date) {
-  const d = value instanceof Date ? value : new Date(value);
-  const fmt = (opts: Intl.DateTimeFormatOptions) =>
-    d.toLocaleDateString('en-US', { timeZone: 'UTC', ...opts });
-  return { month: fmt({ month: 'long' }), day: fmt({ day: 'numeric' }), year: fmt({ year: 'numeric' }) };
-}
 ---
 
 <section
@@ -86,7 +77,7 @@ function dateParts(value: string | Date) {
         <Fragment>
           <div class="ue-list">
             {events.map((event) => {
-              const { month, day, year } = dateParts(event.date);
+              const { month, day, year } = eventDateParts(event.date);
               return (
                 <article class="ue-row">
                   <div class="ue-body">
