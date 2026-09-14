@@ -4,9 +4,12 @@
 // gate is client-side only — onto the public domain.
 import { describe, it, expect } from 'vitest';
 import {
+  INTERNAL_PATHS,
+  excludedFromBuild,
   includeCmsIntegration,
   includeCutoverRunbook,
   includeSitemapIntegration,
+  isInternalPath,
 } from './publishTrack';
 
 describe('includeCmsIntegration', () => {
@@ -72,5 +75,56 @@ describe('includeCutoverRunbook', () => {
   // Not a real deploy shape; must not resolve to excluded by accident.
   it('includes the runbook when both dev and review track are set', () => {
     expect(includeCutoverRunbook(true, true)).toBe(true);
+  });
+});
+
+describe('excludedFromBuild', () => {
+  // The tooling captures every one of these under astro dev.
+  it('excludes nothing in dev', () => {
+    expect(excludedFromBuild(true, false)).toEqual([]);
+    expect(excludedFromBuild(true, true)).toEqual([]);
+  });
+
+  // Reviewers are sent to the status page, the deck and the gallery; only the
+  // screenshot pages (sample bios under real board names) have no reader there.
+  it('drops only the screenshot pages on the review track', () => {
+    expect(excludedFromBuild(false, true)).toEqual(['isolated-components']);
+  });
+
+  // The load-bearing case: none of the internal material reaches the domain.
+  it('drops every internal path on the public track', () => {
+    const excluded = excludedFromBuild(false, false);
+    expect(excluded).toEqual(INTERNAL_PATHS);
+    for (const p of ['isolated-components', 'design-review-4ece6c14', 'review', 'donor-network.html']) {
+      expect(excluded).toContain(p);
+    }
+  });
+});
+
+describe('isInternalPath', () => {
+  // Directory-style URLs, with and without the subpath base.
+  it('matches internal pages on the domain and under a base', () => {
+    expect(isInternalPath('/isolated-components/BoardMemberTile/')).toBe(true);
+    expect(isInternalPath('/harvardintech/isolated-components/BoardMemberTile/', '/harvardintech/')).toBe(true);
+    expect(isInternalPath('/design-review-4ece6c14/index.html')).toBe(true);
+    expect(isInternalPath('/review/')).toBe(true);
+  });
+
+  // The sitemap filter hands over absolute URLs.
+  it('matches absolute URLs', () => {
+    expect(isInternalPath('https://harvardintech.com/donor-network.html')).toBe(true);
+  });
+
+  // Real pages stay in the sitemap.
+  it('leaves ordinary pages alone', () => {
+    expect(isInternalPath('/blog/')).toBe(false);
+    expect(isInternalPath('/volunteer/')).toBe(false);
+    expect(isInternalPath('https://harvardintech.com/')).toBe(false);
+  });
+
+  // Near-misses: a page that merely starts with, or contains, an internal name.
+  it('does not match lookalike paths', () => {
+    expect(isInternalPath('/reviews-of-2026/')).toBe(false);
+    expect(isInternalPath('/blog/review/')).toBe(false);
   });
 });

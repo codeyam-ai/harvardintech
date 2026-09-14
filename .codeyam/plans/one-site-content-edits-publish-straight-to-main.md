@@ -39,7 +39,7 @@ In the site audit, the owner marked this plan “Plan it”, then asked that it 
 
 ## Summary
 
-Nicole's content-editor saves commit to the `staging` branch. Every `staging` deploy has failed since 2026-08-20, and her saves only reach the reviewed site through a manual Promote. Promote has been blocked too, because `main` and `staging` diverged. On 2026-09-12 the user decided to drop the staging track: one branch (`main`) and, for now, one site. The editor will commit to `main`, so Nicole's saves appear on the passphrase-gated reviewed site (https://nseldeib.github.io/harvardintech/) in about two minutes. To review a page before sharing it, she uses the editor's drafts and preview links.
+Nicole's content-editor saves commit to the `staging` branch. Every `staging` deploy has failed since 2026-08-20, and her saves only reach the reviewed site through a manual Promote. Promote has been blocked too, because `main` and `staging` diverged. On 2026-09-12 the user decided to drop the staging track: one branch (`main`) and, for now, one site. The editor will commit to `main`, so Nicole's saves appear on the passphrase-gated reviewed site (https://codeyam-ai.github.io/harvardintech/ since the repo moved to `codeyam-ai`) in about two minutes. To review a page before sharing it, she uses the editor's drafts and preview links.
 
 At the public launch, the public build deliberately leaves the editor out (`includeCmsIntegration`), because the editor's pages embed draft text. On 2026-09-14 the default was set: keep the spare second hosting repository (`nseldeib/harvardintech-staging` and its `REVIEW_DEPLOY_KEY` secret) rather than deleting it. At launch, a private editor build of `main` is published there, at review.harvardintech.com. This plan documents that launch-day step; it does not build it.
 
@@ -66,7 +66,7 @@ At the public launch, the public build deliberately leaves the editor out (`incl
 **File**: `src/content/config.ts` replaces the five `...previewFields` spreads with `...sitePreviewFields`.
 
 ### 2. Point the editor at `main`
-- `src/data/cms.json`: `repo.branch` becomes `main`, and `siteUrl` becomes `https://nseldeib.github.io/harvardintech`.
+- `src/data/cms.json`: `repo.branch` becomes `main`, and `siteUrl` becomes `https://codeyam-ai.github.io/harvardintech`. (`repo.owner` already became `codeyam-ai` in the launch links plan.)
 - `src/data/settings.json`: `siteUrl` gets the same value.
 
 ### 3. Bring over Nicole's remaining staging-only files
@@ -135,7 +135,7 @@ Status: PROPOSED. Confirm it fails at execution. Expected failure: `sitePreviewF
 
 ## Scenarios to Demonstrate
 
-- The editor's deploy panel after Publish: the success line names `nseldeib/harvardintech` and `main`.
+- The editor's deploy panel after Publish: the success line names `codeyam-ai/harvardintech` and `main`.
 - A volunteer project preview page, built from a `preview-*.md` with an unquoted `previewCreatedAt`, rendering at its token URL.
 - The `/volunteer` listing with preview entries present: previews are not listed.
 - The cutover runbook's step S2 with the corrected launch-day wording.

@@ -131,4 +131,22 @@ describe('deploy.yml track coherence', () => {
     expect(envValue(jobBody('build'), 'PREVIEW_GATE')).toBe('1');
     expect(envValue(jobBody('review'), 'PREVIEW_GATE')).toBe('1');
   });
+
+  // The repo moved to codeyam-ai; the reviewed site is hosted there now.
+  it('hosts the reviewed track on the codeyam-ai Pages site', () => {
+    expect(envValue(jobBody('build'), 'PAGES_SITE')).toBe('https://codeyam-ai.github.io');
+  });
+
+  // Every advertised URL names the live domain, never a gated preview.
+  it('advertises harvardintech.com from both gated tracks', () => {
+    expect(envValue(jobBody('build'), 'CANONICAL_ORIGIN')).toBe('https://harvardintech.com');
+    expect(envValue(jobBody('review'), 'CANONICAL_ORIGIN')).toBe('https://harvardintech.com');
+  });
+
+  // The passphrase lives only in the secret — never a literal in the workflow.
+  it('takes the gate passphrase from the secret on both gated tracks', () => {
+    const fromSecret = /^\$\{\{\s*secrets\.PREVIEW_GATE_PASSPHRASE\s*\}\}$/;
+    expect(envValue(jobBody('build'), 'PREVIEW_GATE_PASSPHRASE')).toMatch(fromSecret);
+    expect(envValue(jobBody('review'), 'PREVIEW_GATE_PASSPHRASE')).toMatch(fromSecret);
+  });
 });

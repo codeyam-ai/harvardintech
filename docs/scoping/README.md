@@ -55,7 +55,7 @@ entry, mostly non-technical).
    is the team comfortable cutting over? *(See deep dive.)*
 4. ~~**Preview access**~~ — **Resolved.** The preview is no longer a temporary
    pre-launch state that disappears at cutover; a gated site runs permanently
-   alongside the live one. Today that is `nseldeib.github.io/harvardintech`
+   alongside the live one. Today that is `codeyam-ai.github.io/harvardintech`
    (reviewed) plus `nseldeib.github.io/harvardintech-staging` (working); after the
    cutover the gated track becomes `review.harvardintech.com`. It keeps the
    deterrent-level gate (client-side passphrase + `noindex` + robots
@@ -121,7 +121,7 @@ Two sites are built from this one repo. **Today neither is public** —
 harvardintech.com is still Strikingly's — so the split is between a link that
 holds still and a link that moves:
 
-- **Reviewed** — `main` → `nseldeib.github.io/harvardintech`. The link the team
+- **Reviewed** — `main` → `codeyam-ai.github.io/harvardintech`. The link the team
   has. Moves only when someone promotes.
 - **Staging** — `staging` → `nseldeib.github.io/harvardintech-staging`. Takes
   every commit, so work in progress never disturbs the reviewed link.

@@ -7,11 +7,15 @@
 //
 // Included via HeadExtras so it appears on every route, blog posts included.
 import { settings } from '../lib/site';
+import { canonicalFor, canonicalOrigin } from '../lib/canonicalUrl';
 
-// `Astro.site` is the env-driven canonical origin (custom domain in prod, the
-// project-site URL for a subpath deploy). Fall back to the current page origin
-// if `site` is somehow unset.
-const siteUrl = (Astro.site ?? new URL('/', Astro.url)).href;
+// The organization's URL is the live domain (`CANONICAL_ORIGIN`), not the gated
+// preview this build may be served from — see canonicalUrl.ts.
+const siteUrl = canonicalFor(
+  '/',
+  import.meta.env.BASE_URL,
+  canonicalOrigin(Astro.site, Astro.url.origin),
+);
 const sameAs = settings.socials.map((s) => s.url).filter(Boolean);
 
 const organization = {

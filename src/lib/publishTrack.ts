@@ -58,3 +58,68 @@ export function includeSitemapIntegration(isReviewTrack: boolean): boolean {
 export function includeCutoverRunbook(isDev: boolean, isReviewTrack: boolean): boolean {
   return isDev || isReviewTrack;
 }
+
+/**
+ * Paths under `dist/` that are internal to the project and must not be served
+ * on the public site. Relative to the build output, no leading slash.
+ *
+ * - `isolated-components` — the ~170 screenshot pages the codeyam tooling
+ *   captures, each rendering one component in one fixed state. Some carry
+ *   sample bios under real board members' names. The tooling only ever needs
+ *   them under `astro dev`.
+ * - `design-review-4ece6c14` — the 20 MB redesign gallery. `noindex`, but
+ *   protected only by its unguessable URL.
+ * - `review` and `donor-network.html` — the status page and the donor-wall
+ *   deck. Kept off the public site by default until Ben and Nicole decide
+ *   their fate (keep private, retire, or publish on purpose).
+ *
+ * `public/videos/sample-backdrop.mp4` is a placeholder too, but it stays served:
+ * a registered scenario plays it. Replace the folder's contents when real hero
+ * footage arrives (see docs/hero-videos.md).
+ *
+ * The cutover runbook is not listed: `includeCutoverRunbook` already keeps it
+ * out of the public build at the route level.
+ */
+export const INTERNAL_PATHS: readonly string[] = [
+  'isolated-components',
+  'design-review-4ece6c14',
+  'review',
+  'donor-network.html',
+];
+
+/** What the gated preview drops: only what no reviewer is meant to open. */
+const REVIEW_TRACK_EXCLUSIONS: readonly string[] = ['isolated-components'];
+
+/**
+ * The internal paths this build removes from `dist/`.
+ *
+ * - dev: nothing. The tooling captures every one of them.
+ * - review track: the screenshot pages only. The status page, the deck and the
+ *   gallery are exactly what reviewers are sent to.
+ * - public track: everything in `INTERNAL_PATHS`.
+ */
+export function excludedFromBuild(isDev: boolean, isReviewTrack: boolean): readonly string[] {
+  if (isDev) return [];
+  return isReviewTrack ? REVIEW_TRACK_EXCLUSIONS : INTERNAL_PATHS;
+}
+
+/**
+ * Whether a URL (absolute, or a path) points inside one of `INTERNAL_PATHS`.
+ * `base` is removed first, so a subpath deploy's `/harvardintech/review/`
+ * matches the same as `/review/` on the domain. Used to keep internal pages out
+ * of `sitemap.xml`, which is public and machine-read.
+ */
+export function isInternalPath(url: string, base = '/'): boolean {
+  let pathname: string;
+  try {
+    pathname = new URL(url, 'http://internal.invalid').pathname;
+  } catch {
+    return false;
+  }
+  const trimmedBase = base.replace(/\/+$/, '');
+  if (trimmedBase && pathname.startsWith(`${trimmedBase}/`)) {
+    pathname = pathname.slice(trimmedBase.length);
+  }
+  const rest = pathname.replace(/^\/+/, '');
+  return INTERNAL_PATHS.some((entry) => rest === entry || rest.startsWith(`${entry}/`));
+}

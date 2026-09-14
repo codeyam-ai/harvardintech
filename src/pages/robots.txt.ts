@@ -8,13 +8,15 @@
 import type { APIContext } from 'astro';
 import { PREVIEW_GATE_ENABLED } from '../lib/previewGate';
 import { robotsTxtBody } from '../lib/robots';
+import { canonicalFor, canonicalOrigin } from '../lib/canonicalUrl';
 
 export function GET(context: APIContext): Response {
   // Resolve the origin, build the body, shape the response — the policy itself
   // lives in `robotsTxtBody` so both tracks' output is unit-testable without
-  // faking the environment this module reads at load time.
-  const site = context.site ?? new URL('/', context.url);
-  const sitemapUrl = new URL('sitemap-index.xml', site).href;
+  // faking the environment this module reads at load time. The Sitemap line
+  // names the live domain (see canonicalUrl.ts); the gated track omits it.
+  const origin = canonicalOrigin(context.site, context.url.origin);
+  const sitemapUrl = canonicalFor('/sitemap-index.xml', '/', origin);
 
   return new Response(robotsTxtBody(sitemapUrl, PREVIEW_GATE_ENABLED), {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },

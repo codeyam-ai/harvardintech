@@ -8,10 +8,12 @@
 // linked list of the most important pages.
 import type { APIContext } from 'astro';
 import { settings } from '../lib/site';
+import { canonicalFor, canonicalOrigin } from '../lib/canonicalUrl';
 
 export function GET(context: APIContext): Response {
-  const site = context.site ?? new URL('/', context.url);
-  const abs = (path: string) => new URL(path.replace(/^\//, ''), site).href;
+  // Answer engines should cite the live domain, not the gated preview.
+  const origin = canonicalOrigin(context.site, context.url.origin);
+  const abs = (path: string) => canonicalFor(path, '/', origin);
 
   const keyRoutes: Array<{ label: string; path: string }> = [
     { label: 'Home', path: '/' },

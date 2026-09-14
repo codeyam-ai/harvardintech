@@ -211,7 +211,7 @@ about this feature.
 
 Two committed JSON files configure it:
 
-- **`src/data/cms.json`** — which repo commits land in (`nseldeib/harvardintech`,
+- **`src/data/cms.json`** — which repo commits land in (`codeyam-ai/harvardintech`,
   branch **`staging`** — see *Where edits land* below) and which sign-in methods
   are offered (`auth.token: true`, `auth.worker: false` — token only, no service
   to deploy).
@@ -225,8 +225,9 @@ https://nseldeib.github.io/harvardintech-staging` — the working site, not the
 reviewed one the team bookmarks. That looks wrong at a glance and is not.
 
 Nothing the site RENDERS reads this field. Canonical URLs, Open Graph tags,
-`sitemap.xml` and `robots.txt` all come from Astro's own `site`, which the deploy
-workflow sets per track. `settings.siteUrl` is consumed only by the CMS, to build
+structured data, `llms.txt` and the `robots.txt` sitemap line all come from
+`CANONICAL_ORIGIN` (harvardintech.com) and `sitemap.xml` from Astro's own `site`,
+both set per track by the deploy workflow — see `src/lib/canonicalUrl.ts`. `settings.siteUrl` is consumed only by the CMS, to build
 the links it hands an editor: **View on site**, the social-card preview, and the
 URL a **Preview link** row tells you to copy.
 
@@ -306,8 +307,8 @@ one leaks, treat the content it protected as leaked.
 
 ### Two unrelated things called a "preview gate"
 
-`src/components/PreviewGate.astro` is the review site's `crimson2026` passphrase
-overlay. The package's `PreviewGate` is the per-page decryption prompt above.
+`src/components/PreviewGate.astro` is the review site's passphrase overlay (the
+passphrase is the `PREVIEW_GATE_PASSPHRASE` secret). The package's `PreviewGate` is the per-page decryption prompt above.
 They are not variations on one idea — the passphrase is a deterrent that ships in
 the client bundle, while the other cannot be bypassed because the bytes are
 genuinely encrypted.
@@ -345,15 +346,16 @@ Editors paste a fine-grained GitHub Personal Access Token once; the browser hold
 it and commits go straight to the repo under **that editor's own GitHub
 identity**. Nothing to deploy, no shared secret.
 
-**Pre-flight:** a GitHub account with write access to `nseldeib/harvardintech`.
+**Pre-flight:** a GitHub account with write access to `codeyam-ai/harvardintech`.
 
 1. On GitHub, go to **Settings → Developer settings → Fine-grained tokens →
-   Generate new token**. Set **Repository access → Only select repositories →
-   nseldeib/harvardintech** and **Repository permissions → Contents → Read and
-   write** (the single permission the CMS needs). Choose an expiry, generate, and
-   copy the token.
+   Generate new token**. Set **Resource owner → codeyam-ai**, **Repository access
+   → Only select repositories → codeyam-ai/harvardintech** and **Repository
+   permissions → Contents → Read and write** (the single permission the CMS
+   needs). Choose an expiry, generate, and copy the token. A token made before the
+   repo moved from `nseldeib` belongs to the old owner and must be re-created.
 2. Open `/admin` on the **reviewed site**
-   (`https://nseldeib.github.io/harvardintech/admin` — enter the site passphrase
+   (`https://codeyam-ai.github.io/harvardintech/admin` — enter the site passphrase
    first) and paste the token into the sign-in prompt. `/admin` is never served on
    a public build by design, so after the migration this address moves to the
    gated review origin rather than to harvardintech.com.
@@ -398,7 +400,7 @@ private preview.
 CMS commits go to the branch named in `src/data/cms.json` — **`staging`**, which
 builds the **staging site** at `nseldeib.github.io/harvardintech-staging`. An edit
 appears there a minute or two after you publish, and reaches the **reviewed site**
-at `nseldeib.github.io/harvardintech` when someone runs **Promote review → live**.
+at `codeyam-ai.github.io/harvardintech` when someone runs **Promote review → live**.
 
 That extra step is deliberate, and it matters most *after* the migration: at the
 cutover `main` becomes harvardintech.com, so a CMS that committed to `main` would

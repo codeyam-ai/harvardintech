@@ -76,33 +76,34 @@ def read(*parts):
 
 
 def passphrase():
-    """The review site's shared passphrase, read from `src/lib/previewGate.ts`.
+    """The passphrase PLACEHOLDER, read from `src/lib/previewGate.ts`.
 
-    Parsed rather than duplicated so rotating it in one place moves this deck,
-    `public/review/index.html` and the gated site build together. Raises rather
-    than falling back to a literal: a build that cannot resolve the passphrase
-    must not quietly emit a page whose gate opens on the empty string.
+    The real passphrase is no longer in the repo at all: it lives only in the
+    `PREVIEW_GATE_PASSPHRASE` Actions secret, and the site build substitutes it
+    into this placeholder in `dist/` (see `internalPathsAndPassphrase` in
+    astro.config.mjs). So this deck ships the placeholder, parsed rather than
+    duplicated so the two cannot drift. Raises rather than falling back to a
+    literal: a page whose placeholder the build does not recognise would ship a
+    gate that opens on whatever string it does contain.
     """
     with open(PREVIEW_GATE_TS, encoding="utf-8") as f:
         source = f.read()
 
-    match = re.search(
-        r"PREVIEW_GATE_PASSPHRASE\s*=\s*[\s\S]*?\|\|\s*'([^']+)'", source
-    )
+    match = re.search(r"PASSPHRASE_PLACEHOLDER\s*=\s*'([^']+)'", source)
     if not match:
         raise SystemExit(
-            f"could not find the PREVIEW_GATE_PASSPHRASE default in {PREVIEW_GATE_TS}. "
-            "It moved or was rewritten — fix this parse rather than hardcoding the "
-            "passphrase here, or the gate will drift from the rest of the review site."
+            f"could not find PASSPHRASE_PLACEHOLDER in {PREVIEW_GATE_TS}. It moved "
+            "or was rewritten — fix this parse rather than hardcoding a passphrase "
+            "here, or the site build will not fill this page's gate in."
         )
 
     value = match.group(1)
-    # A blank passphrase must never reach the page. `passphraseAccepted` refuses
-    # one at the point of decision too, but failing here means a broken build
-    # rather than a deployed page that opens for anyone who clicks the button.
+    # A blank placeholder must never reach the page. `passphraseAccepted` refuses
+    # an empty passphrase at the point of decision too, but failing here means a
+    # broken build rather than a deployed page that opens for anyone.
     if not value.strip():
         raise SystemExit(
-            f"the PREVIEW_GATE_PASSPHRASE default in {PREVIEW_GATE_TS} is blank. "
+            f"PASSPHRASE_PLACEHOLDER in {PREVIEW_GATE_TS} is blank. "
             "Refusing to emit a gate that opens on an empty string."
         )
     return value

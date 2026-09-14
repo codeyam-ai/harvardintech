@@ -1885,11 +1885,12 @@ body {
      control the answer is a host that can check a password server-side
      (Cloudflare Access), not a stronger client-side check.
 
-     PASSPHRASE is substituted by build.py from src/lib/previewGate.ts, so
-     rotating it there moves this page, /review/ and the whole review site
-     together instead of leaving one of the three behind. */
+     PASSPHRASE is a placeholder that the site build fills in from the
+     PREVIEW_GATE_PASSPHRASE secret, so rotating the secret moves this page,
+     /review/ and the whole review site together instead of leaving one of the
+     three behind. */
   (function () {
-    var PASSPHRASE = 'crimson2026';
+    var PASSPHRASE = '__PREVIEW_GATE_PASSPHRASE__';
     /* Its own sessionStorage key: unlocking this deck should not also unlock
        /review/ (hait-review-ok) or the gated site build (hait-preview-ok). */
     var KEY = 'hait-network-ok';

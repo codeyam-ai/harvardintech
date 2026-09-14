@@ -28,10 +28,54 @@ export const PREVIEW_GATE_ENABLED = envFlagEnabled(process.env.PREVIEW_GATE);
 
 /**
  * Shared passphrase for the preview gate. A DETERRENT, not real security — it
- * ships in the client bundle. Override per-deploy via PREVIEW_GATE_PASSPHRASE.
+ * ships in the client bundle of every gated page.
+ *
+ * It comes ONLY from the `PREVIEW_GATE_PASSPHRASE` secret (GitHub → Settings →
+ * Secrets and variables → Actions). There is deliberately no default: the old
+ * default sat in plain text in this repo, its docs and its git history, which
+ * made it everyone's passphrase. A gated build with the secret unset fails
+ * (`assertPassphraseConfigured`) rather than shipping an empty or known one.
  */
-export const PREVIEW_GATE_PASSPHRASE =
-  process.env.PREVIEW_GATE_PASSPHRASE || 'crimson2026';
+export const PREVIEW_GATE_PASSPHRASE = process.env.PREVIEW_GATE_PASSPHRASE ?? '';
+
+/**
+ * Stand-in for the passphrase inside the raw `public/` pages that carry their
+ * own gate (the status page and the donor deck). The build replaces it in
+ * `dist/` with the secret (`substitutePassphrase`). Under `astro dev` the files
+ * are served as-is, so there the placeholder itself is the passphrase — which is
+ * why scenarios that unlock those pages type it literally.
+ */
+export const PASSPHRASE_PLACEHOLDER = '__PREVIEW_GATE_PASSPHRASE__';
+
+/** Throw when the gate is on but no passphrase was provided to the build. */
+export function assertPassphraseConfigured(
+  enabled: boolean = PREVIEW_GATE_ENABLED,
+  pass: string = PREVIEW_GATE_PASSPHRASE,
+): void {
+  if (enabled && pass.trim() === '') {
+    throw new Error(
+      'PREVIEW_GATE is on but PREVIEW_GATE_PASSPHRASE is empty. Add the ' +
+        'PREVIEW_GATE_PASSPHRASE secret in the GitHub repo settings (see ' +
+        'DEPLOY_SETUP.md). A gated build with no passphrase would ship a gate ' +
+        'anyone can open.',
+    );
+  }
+}
+
+/**
+ * Replace every `PASSPHRASE_PLACEHOLDER` in `source` with `pass`, escaped for a
+ * single- or double-quoted JavaScript string literal (the placeholder sits
+ * inside `var PASSPHRASE = '…'` in both pages).
+ */
+export function substitutePassphrase(source: string, pass: string): string {
+  const escaped = pass
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '\\"')
+    .replace(/</g, '\\x3c')
+    .replace(/\r?\n/g, '\\n');
+  return source.split(PASSPHRASE_PLACEHOLDER).join(escaped);
+}
 
 /**
  * Whether the passphrase gate applies to a given page.

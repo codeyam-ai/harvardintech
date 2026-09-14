@@ -815,6 +815,12 @@ const donorTierBandStates = {
 };
 
 export async function getStaticPaths() {
+  // Screenshot pages for the codeyam tooling, which only ever captures under
+  // `astro dev`. A deployed build emits none of them: some carry sample bios
+  // under real board members' names, and none is behind the passphrase. Same
+  // guard as the cutover runbook's route; the build step in astro.config.mjs
+  // removes the standalone pages in this folder too (`excludedFromBuild`).
+  if (!import.meta.env.DEV) return [];
   // getStaticPaths runs in an isolated scope and cannot reference the
   // module-level consts — enumerate route names inline.
   return [

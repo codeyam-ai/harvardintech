@@ -5,6 +5,7 @@
 // base layout's <head>. (Site-level sitemap.xml / robots.txt live in the
 // deploy-hardening stack, not here — this component owns the per-page tags.)
 import { settings } from '../lib/site';
+import { canonicalFor, canonicalOrigin } from '../lib/canonicalUrl';
 
 interface Props {
   title?: string;
@@ -29,7 +30,15 @@ const { title, description, image, canonical, noindex } = Astro.props;
 // A page title becomes "Page · Site"; the bare site title is the home/default.
 const pageTitle = title ? `${title} · ${settings.siteTitle}` : settings.siteTitle;
 const metaDescription = description ?? settings.description;
-const canonicalUrl = canonical ?? Astro.url.href;
+// The canonical and og:url name the live domain, never the gated preview this
+// page may be served from — see canonicalUrl.ts.
+const canonicalUrl =
+  canonical ??
+  canonicalFor(
+    Astro.url.pathname,
+    import.meta.env.BASE_URL,
+    canonicalOrigin(Astro.site, Astro.url.origin),
+  );
 ---
 
 <title>{pageTitle}</title>

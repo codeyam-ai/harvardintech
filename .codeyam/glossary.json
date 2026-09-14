@@ -278,6 +278,12 @@
     "testFile": "src/lib/areaIcons.test.ts"
   },
   {
+    "description": "Throws when the preview gate is on but the PREVIEW_GATE_PASSPHRASE secret is empty, so a gated build stops loudly instead of shipping a gate anyone can open. Called from PreviewGate.astro and from the build step that fills the self-gated public pages.",
+    "filePath": "src/lib/previewGate.ts",
+    "name": "assertPassphraseConfigured",
+    "testFile": "src/lib/previewGate.test.ts"
+  },
+  {
     "description": "The supporter badge: what it prints about the person it belongs to. Reads every field through donorPublicIdentity and donorWhy rather than off the entry, for the reason those functions exist — so an anonymous supporter's badge cannot carry what the network withholds, even though the network never offers them one. The standing line is the founding badge, or the level they gave at, or a plain label: a blank line under a name reads as missing data rather than as someone who simply gave.",
     "filePath": "src/lib/supporterBadge.ts",
     "name": "badgeFor",
@@ -339,6 +345,18 @@
       "justification": "A single read of the CMS package's localStorage-backed token store; there is no branching of our own to exercise.",
       "kind": "platform-glue"
     }
+  },
+  {
+    "description": "The advertised URL for a served path: removes the Pages subpath base from the path and joins the rest onto the canonical origin, collapsing any doubled slashes. Every canonical link, og:url, structured-data URL, llms.txt link and robots.txt sitemap line is built with it, so the gated preview never names itself — it always names harvardintech.com.",
+    "filePath": "src/lib/canonicalUrl.ts",
+    "name": "canonicalFor",
+    "testFile": "src/lib/canonicalUrl.test.ts"
+  },
+  {
+    "description": "The origin advertised URLs are built on: CANONICAL_ORIGIN when the deploy sets it (harvardintech.com), else the build's own site origin, else the request origin. At launch CANONICAL_ORIGIN is dropped and the fallback to site takes over.",
+    "filePath": "src/lib/canonicalUrl.ts",
+    "name": "canonicalOrigin",
+    "testFile": "src/lib/canonicalUrl.test.ts"
   },
   {
     "description": "The cards belonging to one band, matched by a free-text group with both sides trimmed and lowercased. Blank matches blank, so a section with no group shows the cards with no group — which is the page exactly as it rendered before groups existed, and why this ships with no content migration. A group matching no card yields an EMPTY list rather than falling back to every card: the fallback would make a typo'd group look like it worked, which is the one outcome an editor cannot diagnose from the page. It exists because both card loaders need the identical rule, and a matching rule that drifted between two bands would be a bug no screenshot shows.",
@@ -527,6 +545,12 @@
     "testFile": "src/lib/events.test.ts"
   },
   {
+    "description": "Which internal paths a build removes from dist/: nothing in dev, only the component screenshot pages on the gated review track, and every INTERNAL_PATHS entry — screenshot pages, redesign gallery, status page, donor deck — on the public track.",
+    "filePath": "src/lib/publishTrack.ts",
+    "name": "excludedFromBuild",
+    "testFile": "src/lib/publishTrack.test.ts"
+  },
+  {
     "description": "Where 'share to Facebook' sends a supporter — same shape and same caveat as the LinkedIn helper: Facebook dropped prefilled quote support, so the composed message belongs in the copyable field on the page rather than in a parameter that will be ignored.",
     "filePath": "src/lib/supporterBadge.ts",
     "name": "facebookShareUrl",
@@ -587,7 +611,7 @@
     "testFile": "src/lib/gallery.test.ts"
   },
   {
-    "description": "Whether the review track's crimson2026 passphrase overlay covers a given path. Everything is gated except the CMS preview surface — preview pages and the shareable previews index — because those exist to be handed to an outside reviewer who has no account; gating them would mean sending the link and the site passphrase together, handing that reviewer the whole unreleased site to read one page. The unguessable URL is the access mechanism instead, the same trade the repo already made for the design-review directory. A real page whose slug merely contains the word preview stays gated.",
+    "description": "Whether the review track passphrase overlay covers a given path. Everything is gated except the CMS preview surface — preview pages and the shareable previews index — because those exist to be handed to an outside reviewer who has no account; gating them would mean sending the link and the site passphrase together, handing that reviewer the whole unreleased site to read one page. The unguessable URL is the access mechanism instead, the same trade the repo already made for the design-review directory. A real page whose slug merely contains the word preview stays gated.",
     "filePath": "src/lib/previewGate.ts",
     "name": "gateAppliesTo",
     "testFile": "src/lib/previewGate.test.ts"
@@ -785,6 +809,15 @@
     "testFile": "src/lib/nav.test.ts"
   },
   {
+    "description": "Build-only Astro integration: after the build it deletes the excludedFromBuild paths from dist/ and fills the secret passphrase into the self-gated public pages, asserting a passphrase exists for any it keeps. Pure wiring over tested functions; astro.config.mjs can only be exercised by a real astro build.",
+    "filePath": "astro.config.mjs",
+    "name": "internalPathsAndPassphrase",
+    "untestabilityReason": {
+      "justification": "Astro build hook wiring over excludedFromBuild, assertPassphraseConfigured and substitutePassphrase, which are unit-tested; the config file cannot be imported under vitest.",
+      "kind": "platform-glue"
+    }
+  },
+  {
     "description": "Whether a runbook decision is recorded answered in the progress singleton. Same tolerance for an absent entry as isStepDone, and the same reason: the state file is hand-editable.",
     "filePath": "src/lib/cutoverProgress.ts",
     "name": "isDecisionAnswered",
@@ -795,6 +828,12 @@
     "filePath": "src/lib/embeddedPreview.ts",
     "name": "isEmbeddedPreview",
     "testFile": "src/lib/embeddedPreview.test.ts"
+  },
+  {
+    "description": "Whether a URL or path points inside one of INTERNAL_PATHS, after removing the subpath base. Keeps internal pages out of the public sitemap; lookalike paths such as /reviews-of-2026/ or /blog/review/ do not match.",
+    "filePath": "src/lib/publishTrack.ts",
+    "name": "isInternalPath",
+    "testFile": "src/lib/publishTrack.test.ts"
   },
   {
     "description": "Whether a preview is password-protected, meaning its title and body are encrypted at rest and the stored body is base64 ciphertext rather than markdown. BlogPostBody branches on this: rendering a locked entry through the ordinary markdown path shows the reader a wall of base64, which is exactly what happened on the first attempt at the feature.",
@@ -1506,6 +1545,12 @@
     "filePath": "src/lib/collectionRegistryDrift.ts",
     "name": "stripComments",
     "testFile": "src/lib/collectionRegistryDrift.test.ts"
+  },
+  {
+    "description": "Replaces every passphrase placeholder in a self-gated public page with the secret, escaped for a JavaScript string literal inside an inline script — quotes, backslashes, newlines and a closing script tag cannot break out.",
+    "filePath": "src/lib/previewGate.ts",
+    "name": "substitutePassphrase",
+    "testFile": "src/lib/previewGate.test.ts"
   },
   {
     "description": "The whole upload classified, plus the fields it structurally cannot fill. The unresolvable and unmodelled lists come back unconditionally rather than only when something goes wrong, because they are properties of the FILE FORMAT and not of any row: a spreadsheet where every line is spotless still cannot say who gave at what level, who is a founding donor, or who asked to stay anonymous, and it still carries school and class year the donors collection has no field for. A summary that hid them on a clean file would report success for a job it did a third of.",

@@ -9,7 +9,7 @@ untouched. Both sites below are private:
 
 | Branch | Origin | Role | Gate | Drafts | `/admin` | Sitemap |
 | --- | --- | --- | --- | --- | --- | --- |
-| `main` | nseldeib.github.io/harvardintech | **reviewed** | passphrase + `noindex` | **visible** | **served** | none |
+| `main` | codeyam-ai.github.io/harvardintech | **reviewed** | passphrase + `noindex` | **visible** | **served** | none |
 | `staging` | nseldeib.github.io/harvardintech-staging | **working** | passphrase + `noindex` | **visible** | **served** | none |
 
 They differ only in **cadence**, not configuration. `staging` takes every commit;
@@ -34,37 +34,67 @@ safe: `main` becomes the public site, and nothing reaches it except a promote.
 The CMS is deliberately not behind the passphrase; it has its own GitHub-token
 sign-in and is `noindex, nofollow`. See [docs/nicole-review.md](docs/nicole-review.md).
 
-## At the cutover: the roles swap
+## Launch day checklist
 
-When the Strikingly migration is approved, `main` becomes the public site and
-`staging` becomes the gated review origin:
+What it takes to make `main` the public harvardintech.com, in order. None of it
+has been done; harvardintech.com stays on Strikingly until the owner says go. The
+cutover runbook (`/cutover-runbook/` on the preview) is the step-by-step version.
 
-| Branch | Origin | Gate | Drafts | `/admin` | Sitemap |
-| --- | --- | --- | --- | --- | --- |
-| `main` | harvardintech.com | open, indexable | hidden | absent | published |
-| `staging` | review.harvardintech.com | passphrase + `noindex` | **visible** | **served** | none |
+1. In `.github/workflows/deploy.yml`, `build` job: set `PAGES_SITE` to
+   `https://harvardintech.com`. `CANONICAL_ORIGIN` then matches it and can be
+   deleted.
+2. In the same job, drop `DEPLOY_BASE_PATH`, so the base is `/`.
+3. Remove `PREVIEW_GATE` and `INCLUDE_DRAFTS` from the public build — **only in
+   the same change that stands up the private editor site (item 5)**, never on
+   its own, or nothing is left protected. In that same change, flip the
+   `gates both tracks while neither is meant to be public` case in
+   `src/lib/deployTracks.test.ts`.
+4. In `codeyam-ai/harvardintech` → **Settings → Pages**: confirm **Source** is
+   **GitHub Actions** (on 2026-09-14 it was *Deploy from a branch*, which starts a
+   failing built-in Jekyll build on every push), add the custom domain
+   `harvardintech.com`, wait for GitHub's certificate, then tick **Enforce HTTPS**.
+5. Stand up the private editor site: a gated build of `main` with `/admin`, at
+   `review.harvardintech.com`, as described in the parked plan
+   `.codeyam/plans/one-site-content-edits-publish-straight-to-main.md`.
+6. Create a new `PREVIEW_GATE_PASSPHRASE` secret for the private editor site,
+   different from the preview's, and share it only through the password manager.
+7. DNS — the GoDaddy account owner is Ben. He changes the apex `A` records and the
+   `www` `CNAME` (→ `codeyam-ai.github.io`) from Strikingly to GitHub Pages, and
+   adds the `review` record. **Leave `MX`, the `mail.` host record and every
+   `TXT` alone.**
+8. Redirects from old Strikingly URLs live in another plan. Confirm it has shipped
+   before the DNS change.
+9. After the deploy, verify:
+   - `robots.txt` says `Allow: /` and points at
+     `https://harvardintech.com/sitemap-index.xml`;
+   - the sitemap holds no `/isolated-components`, `/review`, `/design-review-*` or
+     `/donor-network.html` URLs, and each of those paths returns 404;
+   - `/admin` returns 404;
+   - a page's canonical link and `og:url` start with `https://harvardintech.com/`.
 
-Two things must change together: `main`'s `PREVIEW_GATE=1` comes off, and a gated
-track must still be standing. Removing the gate while nothing else is private
-would leave the whole site unprotected.
+### The build variables, per track
 
-Moving staging onto `review.harvardintech.com` is three lines in the `staging`
-job of `deploy.yml` — drop `DEPLOY_BASE_PATH`, point `PAGES_SITE` at the
-subdomain, restore the `CNAME` write — plus one additive GoDaddy record
-(`CNAME review → nseldeib.github.io`) and the custom domain set on the staging
-repo. That record creates a new subdomain and touches nothing that exists: the
-apex `A`, the `www` `CNAME`, the `MX` records, and the SPF `TXT` are all
-unaffected, so it cannot disturb the live site or `@harvardintech.com` email.
+There is no per-track code — the difference is environment variables read by
+`astro.config.mjs`, `src/lib/canonicalUrl.ts`, `src/lib/previewGate.ts` and
+`src/lib/draftVisibility.ts`:
 
-There is no per-track code — the difference is three environment variables read
-by `astro.config.mjs`, `src/lib/previewGate.ts`, and `src/lib/draftVisibility.ts`:
+| Variable | `main` today | `staging` today | `main` public |
+| --- | --- | --- | --- |
+| `DEPLOY_BASE_PATH` | `/harvardintech` | `/harvardintech-staging` | unset — base `/` |
+| `PAGES_SITE` | `https://codeyam-ai.github.io` | `https://nseldeib.github.io` | `https://harvardintech.com` |
+| `CANONICAL_ORIGIN` | `https://harvardintech.com` | `https://harvardintech.com` | unset — falls back to `PAGES_SITE` |
+| `PREVIEW_GATE` | `1` | `1` | unset |
+| `PREVIEW_GATE_PASSPHRASE` | the secret | the secret | unused |
+| `INCLUDE_DRAFTS` | `1` | `1` | unset |
 
-| Variable | `main` today | `staging` today | `main` public | `staging` on its subdomain |
-| --- | --- | --- | --- | --- |
-| `DEPLOY_BASE_PATH` | `/harvardintech` | `/harvardintech-staging` | drop at domain cutover | unset — base stays `/` |
-| `PAGES_SITE` | `https://nseldeib.github.io` | `https://nseldeib.github.io` | `https://harvardintech.com` | `https://review.harvardintech.com` |
-| `PREVIEW_GATE` | `1` | `1` | unset | `1` |
-| `INCLUDE_DRAFTS` | `1` | `1` | unset | `1` |
+`PAGES_SITE` is where a build is really hosted. `CANONICAL_ORIGIN` is what its
+pages advertise — canonical links, share cards, structured data, `llms.txt` and
+the `robots.txt` sitemap line — so the gated preview never names itself.
+
+Internal files never reach the public build: `INTERNAL_PATHS` in
+`src/lib/publishTrack.ts` (the component screenshot pages, the redesign gallery,
+the status page and the donor deck) are removed from `dist/` after the build and
+kept out of the sitemap.
 
 `@codeyam/cms` **0.2.1** added base-path support, so the dashboard runs correctly
 under a subpath — which is what makes both gated sites above possible.
@@ -153,7 +183,8 @@ requires a second repo. It holds only generated output; there is no source in it
    this account is on the free tier — the API rejects it with *"Your current plan
    does not support GitHub Pages for this repository."* Public costs no privacy
    here, because the repo holds only **generated output** built from
-   `nseldeib/harvardintech`, which is itself already public. The privacy is
+   `codeyam-ai/harvardintech`, which is itself already public. (The source repo
+   moved from `nseldeib` to `codeyam-ai`; this hosting repo did not.) The privacy is
    carried by the passphrase gate and `noindex`, not by repo visibility (see the
    note below).
 
@@ -163,7 +194,7 @@ requires a second repo. It holds only generated output; there is no source in it
    ```bash
    ssh-keygen -t ed25519 -C 'harvardintech-staging deploy' -f review_deploy_key -N ''
    gh repo deploy-key add review_deploy_key.pub -R nseldeib/harvardintech-staging -w
-   gh secret set REVIEW_DEPLOY_KEY -R nseldeib/harvardintech < review_deploy_key
+   gh secret set REVIEW_DEPLOY_KEY -R codeyam-ai/harvardintech < review_deploy_key
    rm -f review_deploy_key review_deploy_key.pub
    ```
    A deploy key rather than a personal access token: it is scoped to exactly one
@@ -186,8 +217,8 @@ requires a second repo. It holds only generated output; there is no source in it
    it.
 
 Then visit `https://nseldeib.github.io/harvardintech-staging/` — the passphrase
-overlay should appear. The passphrase is `crimson2026` unless overridden by a
-`PREVIEW_GATE_PASSPHRASE` env var in the workflow.
+overlay should appear. The passphrase is the `PREVIEW_GATE_PASSPHRASE` secret
+(see *The preview passphrase* below).
 
 > **How private is this, really?** The passphrase is a **deterrent, not
 > authentication** — it ships in the client bundle, and the admin pages embed
@@ -197,3 +228,27 @@ overlay should appear. The passphrase is `crimson2026` unless overridden by a
 > (free for up to 50 users): per-person email one-time-PIN, individually
 > revocable, and the raw-markdown exposure stops mattering. Only the publish step
 > of the deploy workflow changes; everything else in this repo is identical.
+
+---
+
+## The preview passphrase
+
+The passphrase lives in exactly one place: the **`PREVIEW_GATE_PASSPHRASE`**
+Actions secret on `codeyam-ai/harvardintech`. It is shared privately — through the
+password manager, never in this repo, its docs, chat or email.
+
+```bash
+gh secret set PREVIEW_GATE_PASSPHRASE -R codeyam-ai/harvardintech
+```
+
+- **There is no default.** A gated build without the secret fails with a message
+  naming it, rather than shipping a gate anyone can open. Create the secret
+  before the first deploy that carries this rule.
+- The site's gate reads it at build time. The two raw `public/` pages with their
+  own gate (`review/index.html` and `donor-network.html`) carry a
+  `__PREVIEW_GATE_PASSPHRASE__` placeholder that the build fills in.
+- Under `astro dev` those two pages are served unfilled, so locally the
+  placeholder itself unlocks them. The site's own gate is off in dev.
+- **Rotating** = set a new secret value, re-run the deploy, send the new value to
+  reviewers. The passphrase used until September 2026 is in git history, so it
+  must never come back.

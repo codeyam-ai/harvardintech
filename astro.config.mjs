@@ -1,12 +1,23 @@
 // @ts-check
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import codeyamCms from '@codeyam/cms';
 import { isPreviewUrl } from '@codeyam/cms/lib/previewPages';
-import { includeCmsIntegration, includeSitemapIntegration } from './src/lib/publishTrack';
+import {
+  excludedFromBuild,
+  includeCmsIntegration,
+  includeSitemapIntegration,
+  isInternalPath,
+} from './src/lib/publishTrack';
+import {
+  PREVIEW_GATE_PASSPHRASE,
+  assertPassphraseConfigured,
+  substitutePassphrase,
+} from './src/lib/previewGate';
 
 // --- codeyam content sandbox ---------------------------------------------
 // The site's "database" is the committed markdown under `src/content/` and the
@@ -128,6 +139,52 @@ function codeyamContentRefresh() {
   };
 }
 
+// Raw `public/` pages that carry their own passphrase gate. They are copied into
+// `dist/` verbatim, so no component can inject the secret — the build step below
+// substitutes it into the placeholder instead.
+const SELF_GATED_FILES = ['review/index.html', 'donor-network.html'];
+
+/**
+ * Build-only integration: removes internal paths from `dist/` and fills in the
+ * passphrase on the self-gated `public/` pages.
+ *
+ * Deleting after the build, rather than excluding at the source, is what lets
+ * one list (`INTERNAL_PATHS` in src/lib/publishTrack.ts) cover hand-built
+ * routes, generated routes and raw `public/` files alike — `public/` has no
+ * seam of its own to hook. `astro dev` never runs `astro:build:done`, so the
+ * tooling's captures are untouched.
+ *
+ * @param {boolean} isDev @param {boolean} isReviewTrack
+ * @returns {import('astro').AstroIntegration}
+ */
+function internalPathsAndPassphrase(isDev, isReviewTrack) {
+  return {
+    name: 'internal-paths-and-passphrase',
+    hooks: {
+      'astro:build:done': ({ dir, logger }) => {
+        const out = fileURLToPath(dir);
+        for (const rel of excludedFromBuild(isDev, isReviewTrack)) {
+          const target = path.join(out, rel);
+          if (!fs.existsSync(target)) continue;
+          fs.rmSync(target, { recursive: true, force: true });
+          logger.info(`removed internal path from the build: ${rel}`);
+        }
+        for (const rel of SELF_GATED_FILES) {
+          const file = path.join(out, rel);
+          if (!fs.existsSync(file)) continue;
+          // Still in the build means this track serves it, so it needs a real
+          // passphrase — never the placeholder, never an empty one.
+          assertPassphraseConfigured(true, PREVIEW_GATE_PASSPHRASE);
+          fs.writeFileSync(
+            file,
+            substitutePassphrase(fs.readFileSync(file, 'utf8'), PREVIEW_GATE_PASSPHRASE),
+          );
+        }
+      },
+    },
+  };
+}
+
 // Only redirect when actually running the dev server — `astro build`/`check`
 // (production + CI) must read the committed source.
 if (process.argv.includes('dev')) {
@@ -171,14 +228,19 @@ if (process.argv.includes('dev')) {
 // Hand-written internal links are prefixed with import.meta.env.BASE_URL via
 // src/lib/url.ts so they resolve under either base.
 const base = process.env.DEPLOY_BASE_PATH || '/';
-const site = process.env.PAGES_SITE || 'https://nseldeib.github.io';
+// The fallback is the live domain, so a build that forgets PAGES_SITE advertises
+// harvardintech.com rather than some GitHub account's Pages host. What pages
+// ADVERTISE (canonical, og:url, structured data) is `CANONICAL_ORIGIN`, which
+// can differ from `site` until launch — see src/lib/canonicalUrl.ts.
+const site = process.env.PAGES_SITE || 'https://harvardintech.com';
 
 // --- two-track publishing -------------------------------------------------
 // Two builds come out of this one repo (see .github/workflows/deploy.yml).
 //
 // TODAY both are gated, because harvardintech.com is still Strikingly's:
-//   - `main`    → nseldeib.github.io/harvardintech         (reviewed — holds still)
-//   - `staging` → nseldeib.github.io/harvardintech-staging (working — moves constantly)
+//   - `main`    → codeyam-ai.github.io/harvardintech       (reviewed — holds still)
+//   - `staging` → nseldeib.github.io/harvardintech-staging (working — moves constantly;
+//                 its hosting repo stayed on the old account when this one moved)
 //
 // AFTER THE MIGRATION the roles split:
 //   - Public track  (`main`    → harvardintech.com):        open, indexable.
@@ -201,13 +263,18 @@ const isDev = process.argv.includes('dev');
 const integrations = [react()];
 if (isDev) integrations.push(codeyamContentRefresh());
 if (includeCmsIntegration(isDev, isReviewTrack)) integrations.unshift(codeyamCms());
+integrations.push(internalPathsAndPassphrase(isDev, isReviewTrack));
 // A preview page is built (its link has to resolve) but must never be ADVERTISED.
 // `sitemap.xml` is a public, machine-read file, so a preview left in it publishes
 // the exact URL the token exists to hide — and unlike an indexed page, no
-// `noindex` can walk that disclosure back. The filter runs on the public track,
-// which is the only track that emits a sitemap at all.
+// `noindex` can walk that disclosure back. Internal paths are dropped for the
+// same reason: they are removed from `dist/` after the build, and a sitemap
+// entry would advertise a 404. The filter runs on the public track, which is the
+// only track that emits a sitemap at all.
 if (includeSitemapIntegration(isReviewTrack)) {
-  integrations.push(sitemap({ filter: (page) => !isPreviewUrl(page) }));
+  integrations.push(
+    sitemap({ filter: (page) => !isPreviewUrl(page) && !isInternalPath(page, base) }),
+  );
 }
 
 export default defineConfig({

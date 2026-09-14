@@ -20,7 +20,7 @@ Confirmed via live DNS/RDAP lookup:
 | **Registrar** | GoDaddy.com, LLC | Keep — no transfer needed |
 | **DNS host** | GoDaddy (`ns05/ns06.domaincontrol.com`) | Edit records here (full control) |
 | **Apex web** (`harvardintech.com`) | `A → 54.183.102.22` (Strikingly) | **Change** → GitHub Pages IPs |
-| **`www`** | `CNAME → www.harvardintech.com.s.strikinglydns.com` (Strikingly) | **Change** → `nseldeib.github.io` |
+| **`www`** | `CNAME → www.harvardintech.com.s.strikinglydns.com` (Strikingly) | **Change** → `codeyam-ai.github.io` |
 | **Email** | `MX → mail.harvardintech.com` (SPF `include:websitewelcome.com`, HostGator) | **PRESERVE — do not touch** |
 | **SPF/TXT** | `v=spf1 a mx include:websitewelcome.com ~all` | **PRESERVE** (email deliverability) |
 
@@ -40,7 +40,7 @@ first so the apex only flips once we've *seen* it working.
 1. Deploy the site to GitHub Pages (see "Publishing the WIP preview" below).
 2. Add a **staging subdomain** — e.g. `new.harvardintech.com` — as the GitHub
    Pages custom domain (writes a `CNAME` file in the repo).
-3. At the DNS host, add **one** record: `CNAME new → nseldeib.github.io`. This
+3. At the DNS host, add **one** record: `CNAME new → codeyam-ai.github.io`. This
    touches nothing about the live site or email.
 4. Wait for propagation + GitHub's TLS cert, then review the real site on the
    real domain (subdomain) with the team. **The live Strikingly site is
@@ -56,7 +56,8 @@ Only when everyone's happy:
    - `A` records → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
      `185.199.111.153`
    - (optional) `AAAA` records → GitHub's IPv6 addresses
-   - `CNAME www → nseldeib.github.io`
+   - `CNAME www → codeyam-ai.github.io` (the repo's owner — it moved from
+     `nseldeib` to `codeyam-ai` in September 2026)
    - **Leave `MX` and any TXT/verification records alone.**
 4. In `astro.config.mjs`, switch to **custom-domain mode**: remove
    `DEPLOY_BASE_PATH` (so `base` → `/`) and set `PAGES_SITE=https://harvardintech.com`.
@@ -73,8 +74,9 @@ confirmed stable for a few days.
 
 - **Search Console verification** is already handled — paste the verification
   meta tag into the CMS "Custom `<head>` HTML" field (built this session).
-- `robots.txt`, `llms.txt`, and `sitemap-index.xml` auto-use the real domain once
-  `PAGES_SITE` is set. ✅
+- Canonical links, share cards, structured data, `llms.txt` and the `robots.txt`
+  sitemap line already name harvardintech.com (`CANONICAL_ORIGIN`), even on the
+  preview. `sitemap-index.xml` follows once `PAGES_SITE` is set. ✅
 - **Redirects:** GitHub Pages can't do server-side 301s. If Strikingly URLs
   differ from the new paths, some link equity may be lost. If the paths mostly
   match (home, /events, /blog), impact is minimal. Worth a quick URL map before
@@ -84,7 +86,7 @@ confirmed stable for a few days.
 
 > **✅ Resolved by two-track publishing.** Both questions below are settled. The
 > workflow now deploys **two** tracks: `main` → the reviewed site (today
-> `nseldeib.github.io/harvardintech`, harvardintech.com after cutover) and
+> `codeyam-ai.github.io/harvardintech`, harvardintech.com after cutover) and
 > `staging` → the working site (today `nseldeib.github.io/harvardintech-staging`,
 > moving to `review.harvardintech.com` when the domain is approved — it is
 > deliberately on a github.io URL until then, so no DNS is needed). The gated
@@ -94,7 +96,7 @@ confirmed stable for a few days.
 > un-gates anything. See [DEPLOY_SETUP.md](../../DEPLOY_SETUP.md). The two
 > decisions are kept below for the record.
 
-The existing workflow deploys **`main` → `nseldeib.github.io/harvardintech`**.
+The existing workflow deploys **`main` → `codeyam-ai.github.io/harvardintech`**.
 Two things to decide:
 
 1. **Branch:** the WIP is on `atlas-homepage-events-revamp`. To publish it we

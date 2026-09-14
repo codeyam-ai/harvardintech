@@ -14,8 +14,13 @@
 import {
   PREVIEW_GATE_ENABLED,
   PREVIEW_GATE_PASSPHRASE,
+  assertPassphraseConfigured,
   gateAppliesTo,
 } from '../lib/previewGate';
+
+// A gated build without the passphrase secret stops here, loudly, instead of
+// shipping a gate with no passphrase.
+assertPassphraseConfigured();
 
 const pass = PREVIEW_GATE_PASSPHRASE;
 const gated = PREVIEW_GATE_ENABLED && gateAppliesTo(Astro.url.pathname);

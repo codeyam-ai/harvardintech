@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 0d14a78c00a5252fdf12a3cc1c1e955dd08f8e21  source-sha256: 7b774a8fb3089d125d40732545faa0516fad67a8fb876566d405e8d2dab2fd90
+// codeyam-editor: 0.1.7  build: 631ea041ee5bf45dd8ecb954a909a55e4bc17f7c  source-sha256: 50fed448c040f57ee3c0f38128628b8bd752a12b249342024537a56d6cc0d860
 const {
   hasLoadingMarkers,
   shouldStopWaitingForImages,
@@ -347,9 +347,18 @@ async function collectVisibleTextLength(target) {
 // style id) and best-effort. Returns true when the style is present after the
 // call.
 //
-// The reveal is per-element and conditional ON THE ELEMENT BEING INVISIBLE,
-// never a blanket `opacity: 1 !important` / `transform: none !important` over
-// `*`. A blanket rule cannot tell an entrance animation's `opacity: 0` from
+// The reveal is conditional on ANIMATION EVIDENCE, not on transparency alone:
+// an element is revealed only when, before the reset lands, an animation or a
+// transition was actually holding it back. An element resting at `opacity: 0`
+// with neither is hidden BY INTENT — a closed dropdown, a hover-only action, an
+// empty toast slot, an off-screen drawer — and is left exactly as the app
+// rendered it. Elements carrying an explicit hidden-intent signal
+// (`aria-hidden="true"`, `inert`, or `pointer-events: none`), on themselves or
+// on an ancestor, are skipped even when a transition is declared — that is the
+// resting shape of a closed popover which animates on open.
+//
+// It is never a blanket `opacity: 1 !important` / `transform: none !important`
+// over `*`. A blanket rule cannot tell an entrance animation's `opacity: 0` from
 // DELIBERATE, resting state — a disabled control's dim, a muted row, a
 // collapsed chevron's rotation — so it silently flattened every one of them out
 // of every screenshot the capture pipeline produced. Two scenarios differing
@@ -387,14 +396,104 @@ async function forceFinalVisualState(target) {
       "}";
     const head = document.head || document.documentElement;
     if (!head || typeof head.appendChild !== "function") return false;
+
+    // Which elements is an animation or a transition ACTUALLY holding back?
+    // Snapshot that BEFORE the stylesheet lands, because injecting it destroys
+    // the evidence: `animation: none` / `transition: none` clears
+    // `animationName`, empties the running-animation list, and zeroes every
+    // duration. Only elements in this set are eligible for the reveal below.
+    const isAnimationHeld = (el) => {
+      let animations = null;
+      if (typeof el.getAnimations === "function") {
+        try {
+          animations = el.getAnimations();
+        } catch (_) {
+          animations = null;
+        }
+      }
+      if (animations && animations.length > 0) return true;
+      // No `getAnimations` (older engines) falls through to the computed-style
+      // evidence below — never to "reveal every invisible element".
+      let computed = null;
+      try {
+        computed = getComputedStyle(el);
+      } catch (_) {
+        return false;
+      }
+      if (!computed) return false;
+      const animationName = computed.animationName;
+      if (
+        typeof animationName === "string" &&
+        animationName !== "" &&
+        animationName !== "none"
+      ) {
+        return true;
+      }
+      const properties = computed.transitionProperty;
+      if (
+        typeof properties !== "string" ||
+        properties === "" ||
+        properties === "none"
+      ) {
+        return false;
+      }
+      const coversVisibility = properties
+        .split(",")
+        .map((property) => property.trim())
+        .some(
+          (property) =>
+            property === "opacity" ||
+            property === "transform" ||
+            property === "all",
+        );
+      if (!coversVisibility) return false;
+      const durations = computed.transitionDuration;
+      if (typeof durations !== "string") return false;
+      // A declared transition with a zero duration animates nothing, so it is
+      // not holding anything back.
+      return durations.split(",").some((duration) => parseFloat(duration) > 0);
+    };
+
+    // Explicit "this is hidden on purpose" signals, which outrank animation
+    // evidence. A closed popover carries its open-transition while resting
+    // closed, so a transition alone cannot distinguish it from an entrance the
+    // capture should finish. An ancestor counts: hiding a whole subtree is the
+    // common spelling.
+    const hasHiddenIntent = (el, computed) => {
+      if (computed && computed.pointerEvents === "none") return true;
+      if (typeof el.closest === "function") {
+        try {
+          if (el.closest('[aria-hidden="true"], [inert]')) return true;
+        } catch (_) {
+          // Fall through to the self-only checks below.
+        }
+      }
+      if (el.inert === true) return true;
+      if (
+        typeof el.getAttribute === "function" &&
+        el.getAttribute("aria-hidden") === "true"
+      ) {
+        return true;
+      }
+      return false;
+    };
+
+    const heldByAnimation = new Set();
+    if (typeof document.querySelectorAll === "function") {
+      for (const el of document.querySelectorAll("*")) {
+        if (isAnimationHeld(el)) heldByAnimation.add(el);
+      }
+    }
+
     head.appendChild(style);
 
     // With animations disabled above, an element held back by an entrance
     // animation now computes to its pre-animation resting state — typically
     // `opacity: 0`, often paired with a translate/scale that parks it offscreen.
-    // Reveal exactly those, and only those: a fully transparent element shows
-    // nothing either way, so forcing it can hide no real state, while an element
-    // at any visible opacity is left untouched.
+    // Reveal exactly those, and only those: membership in the pre-reset
+    // `heldByAnimation` snapshot is what separates them from UI the app is
+    // deliberately holding at `opacity: 0`, which stays hidden. An element at
+    // any visible opacity is left untouched either way.
     //
     // The transform half of the reveal STOPS at the SVG boundary. A CSS
     // `transform` overrides the SVG `transform` presentation attribute, so
@@ -419,6 +518,8 @@ async function forceFinalVisualState(target) {
       if (!computed) continue;
       const opacity = parseFloat(computed.opacity);
       if (!Number.isFinite(opacity) || opacity > INVISIBLE_EPSILON) continue;
+      if (!heldByAnimation.has(el)) continue;
+      if (hasHiddenIntent(el, computed)) continue;
       if (!el.style || typeof el.style.setProperty !== "function") continue;
       const inSvg =
         el.ownerSVGElement != null ||

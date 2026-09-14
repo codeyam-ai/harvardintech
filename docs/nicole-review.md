@@ -12,12 +12,21 @@ until the Strikingly migration.
 
 | Surface | Link | Password |
 |---|---|---|
-| **Website** | https://nseldeib.github.io/harvardintech/ | `crimson2026` |
-| **Todos / project status** | https://nseldeib.github.io/harvardintech/review | `crimson2026` |
-| **Supporter recognition review** | https://nseldeib.github.io/harvardintech/donor-network.html | `crimson2026` |
-| **Domain cutover runbook** | https://nseldeib.github.io/harvardintech/cutover-runbook/ | `crimson2026` |
-| **CMS / admin dashboard** | https://nseldeib.github.io/harvardintech/admin | *(GitHub token — see below)* |
-| **Working site** *(where her edits appear first)* | https://nseldeib.github.io/harvardintech-staging/ | `crimson2026` |
+| **Website** | https://codeyam-ai.github.io/harvardintech/ | site passphrase |
+| **Todos / project status** | https://codeyam-ai.github.io/harvardintech/review | site passphrase |
+| **Supporter recognition review** | https://codeyam-ai.github.io/harvardintech/donor-network.html | site passphrase |
+| **Domain cutover runbook** | https://codeyam-ai.github.io/harvardintech/cutover-runbook/ | site passphrase |
+| **CMS / admin dashboard** | https://codeyam-ai.github.io/harvardintech/admin | *(GitHub token — see below)* |
+| **Working site** *(where her edits appear first)* | https://nseldeib.github.io/harvardintech-staging/ | site passphrase |
+
+**The site passphrase is shared privately** — through the password manager, never
+in this file, chat or email. It lives in the `PREVIEW_GATE_PASSPHRASE` secret (see
+[DEPLOY_SETUP.md](../DEPLOY_SETUP.md#the-preview-passphrase)). The old one was
+retired in September 2026 because it had been written down here in plain text.
+
+The GitHub repo moved from `nseldeib` to `codeyam-ai` in September 2026, which is
+why the preview address changed. The working site's hosting repo did not move, so
+its address is unchanged.
 
 The trailing slash on the runbook link matters — it is a directory route, and
 without it the link 404s.
@@ -38,7 +47,7 @@ because it names where the domain's records live.
 
 **CMS preview links are deliberately NOT behind the passphrase.** A preview link
 exists to be handed to one outside reviewer, and gating it would mean sending
-them the link and `crimson2026` together — which hands them the whole unreleased
+them the link and the site passphrase together — which hands them the whole unreleased
 site to read one page. The unguessable URL is the access mechanism instead, the
 same trade already made for `public/design-review-4ece6c14/`.
 
@@ -55,14 +64,15 @@ HTML is fetchable by anyone who has the address.
 
 ## Ready-to-send note
 
-> Hi Nicole — here's the Harvard Alumni in Tech site preview to review. Everything
-> except the content editor uses the password **crimson2026**:
+> Hi Nicole — here's the Harvard Alumni in Tech site preview to review. The
+> address has changed since last time. Everything except the content editor uses
+> one password, which I'm sending you separately:
 >
-> • **Website:** https://nseldeib.github.io/harvardintech/
-> • **What's done / what's open (todos):** https://nseldeib.github.io/harvardintech/review
-> • **Supporter recognition:** https://nseldeib.github.io/harvardintech/donor-network.html
-> • **Moving the domain over:** https://nseldeib.github.io/harvardintech/cutover-runbook/
-> • **Content editor (CMS):** https://nseldeib.github.io/harvardintech/admin
+> • **Website:** https://codeyam-ai.github.io/harvardintech/
+> • **What's done / what's open (todos):** https://codeyam-ai.github.io/harvardintech/review
+> • **Supporter recognition:** https://codeyam-ai.github.io/harvardintech/donor-network.html
+> • **Moving the domain over:** https://codeyam-ai.github.io/harvardintech/cutover-runbook/
+> • **Content editor (CMS):** https://codeyam-ai.github.io/harvardintech/admin
 >
 > The todos page walks through what's built and the decisions we need from you.
 >
@@ -110,7 +120,8 @@ Nicole does not need a GitHub login of her own.
 
 1. Go to GitHub → **Settings** → **Developer settings** → **Personal access
    tokens** → **Fine-grained tokens** → **Generate new token**.
-2. **Repository access** → *Only select repositories* → `nseldeib/harvardintech`.
+2. **Resource owner** → `codeyam-ai`, then **Repository access** → *Only select
+   repositories* → `codeyam-ai/harvardintech`.
 3. **Repository permissions** → **Contents: Read and write**. That is the only
    one to set; *Metadata: Read* is added automatically and is required.
 4. **Expiration** → short. The review does not need 90 days.
@@ -137,6 +148,9 @@ editor setup used, so a token that is still valid will work. Two caveats:
 - Even a valid one must be **pasted in again**. This is a different editor from
   the one used before, and it stores the token under its own key, so nothing
   carries over from the old sign-in.
+- **Any token made before the repo moved to `codeyam-ai` will not work.** A
+  fine-grained token belongs to one resource owner, and it was `nseldeib`. Make a
+  new one under `codeyam-ai`.
 
 Issuing a fresh token per person is the better habit anyway: it lets you revoke
 one person's access without disturbing anyone else's.
@@ -157,7 +171,7 @@ sending her hunting through /admin for a screen that does not exist.
 
 ## What happens when she edits
 
-Her edits commit to the `staging` branch of `nseldeib/harvardintech` (configured
+Her edits commit to the `staging` branch of `codeyam-ai/harvardintech` (configured
 in `src/data/cms.json`). That triggers a rebuild, and the **staging** site
 updates a minute or two later. Her change reaches the **reviewed** link when
 someone runs **Actions → Promote review → live**.
@@ -245,7 +259,7 @@ There are two gated sites, and **Nicole now has both** — with different jobs:
 
 | | URL | What it is |
 |---|---|---|
-| **Reviewed** | `nseldeib.github.io/harvardintech` | Her main link. Moves only when someone promotes, so it never changes under her mid-review. |
+| **Reviewed** | `codeyam-ai.github.io/harvardintech` | Her main link. Moves only when someone promotes, so it never changes under her mid-review. |
 | **Working** | `nseldeib.github.io/harvardintech-staging` | Takes every commit, including hers. Where her own edits — and any preview link she mints — appear first. |
 
 Staging used to be marked "not for sharing", on the reasoning that a site which

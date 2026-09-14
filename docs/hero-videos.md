@@ -1,9 +1,12 @@
 # Hero videos
 
-Video files served straight from the static build. A file dropped here at
+Video files are served straight from the static build. A file committed at
 `public/videos/momentum.mp4` is reachable at `/videos/momentum.mp4`, which is
 what an editor pastes into the **Hero video** field on the `/donate` page-copy
 entry in `/admin`.
+
+(These notes used to live in `public/videos/README.md`, where the build served
+them to anyone who asked. They moved here so internal notes stay internal.)
 
 Adding a video is a repo commit, not a CMS upload: the media library only
 accepts images (`accept="image/*"`), so there is no upload path for one.
@@ -22,7 +25,7 @@ The hero image stays the video's first frame and its fallback, so a visitor on
 `prefers-reduced-motion`, a browser that blocks autoplay, and a path that 404s
 all see the photo instead.
 
-## sample-backdrop.mp4
+## public/videos/sample-backdrop.mp4
 
 A 10 KB placeholder, NOT campaign footage — a flat crimson gradient generated
 with ffmpeg. It exists so the registered scenarios can demonstrate the hero with

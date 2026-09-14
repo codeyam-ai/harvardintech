@@ -4,7 +4,7 @@
 # TODAY — pre-launch. NEITHER track is public; harvardintech.com is still
 # Strikingly's, and both sites below are passphrase-gated:
 #
-#   main    → nseldeib.github.io/harvardintech          (the REVIEWED site)
+#   main    → codeyam-ai.github.io/harvardintech        (the REVIEWED site)
 #             The link the team has. It moves only when someone promotes, so a
 #             reviewer never opens it mid-change and finds half-finished work.
 #   staging → nseldeib.github.io/harvardintech-staging  (the WORKING site)
@@ -119,7 +119,15 @@ jobs:
           # The domain cutover flips these two: drop DEPLOY_BASE_PATH (base → '/')
           # and point PAGES_SITE at https://harvardintech.com. Nothing else changes.
           DEPLOY_BASE_PATH: /harvardintech
-          PAGES_SITE: https://nseldeib.github.io
+          # Where the preview is really hosted (the repo moved to codeyam-ai).
+          PAGES_SITE: https://codeyam-ai.github.io
+          # What every canonical link, share card and structured-data URL names:
+          # the live domain, never the gated preview. At launch PAGES_SITE
+          # becomes this same value and this line can go.
+          CANONICAL_ORIGIN: https://harvardintech.com
+          # The gate's passphrase lives only in this secret. A gated build
+          # without it fails instead of shipping a gate anyone can open.
+          PREVIEW_GATE_PASSPHRASE: ${{ secrets.PREVIEW_GATE_PASSPHRASE }}
           # PRE-LAUNCH: `main` is NOT the public site yet. harvardintech.com is
           # still served by Strikingly, and this deploy is the private preview
           # the team reviews — so it is passphrase-gated, noindex, and shows
@@ -195,6 +203,8 @@ jobs:
           # write in the step below. Three lines; nothing else here changes.
           DEPLOY_BASE_PATH: /harvardintech-staging
           PAGES_SITE: https://nseldeib.github.io
+          CANONICAL_ORIGIN: https://harvardintech.com
+          PREVIEW_GATE_PASSPHRASE: ${{ secrets.PREVIEW_GATE_PASSPHRASE }}
           PREVIEW_GATE: '1'
           INCLUDE_DRAFTS: '1'
         run: npm run build

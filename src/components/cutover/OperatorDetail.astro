@@ -136,8 +136,8 @@ const { id } = Astro.props;
       <summary>Operator detail</summary>
       <div class="body">
 <ul>
-                  <li><code>public/design-review-4ece6c14/</code> — 20MB, thirteen files, <code>noindex</code>, no passphrase. Deliberately published at an obscure path for the board; the URL is the access mechanism, so deleting it breaks a live link (D3).</li>
-                  <li><code>public/review/index.html</code> — the status page, still a raw <code>public/</code> file carrying <code>crimson2026</code> in client-side JavaScript, and still reachable on the public domain once the gate comes off (D4).</li>
+                  <li><code>public/design-review-4ece6c14/</code> — 20MB, thirteen files, <code>noindex</code>, no passphrase. Deliberately published at an obscure path for the board; the URL is the access mechanism, so deleting it breaks a live link (D3). <b>Now removed from the public build</b> (<code>INTERNAL_PATHS</code>), so it stays on the preview only.</li>
+                  <li><code>public/review/index.html</code> and <code>public/donor-network.html</code> — the status page and the donor deck, raw <code>public/</code> files with their own client-side gate. <b>Now removed from the public build</b> by default, and their passphrase comes from the <code>PREVIEW_GATE_PASSPHRASE</code> secret instead of being written in the file. Whether to keep, retire or publish them is still Ben and Nicole's call (D4).</li>
                   <li><b>This page is no longer on that list.</b> It used to be <code>public/cutover-runbook.html</code>, with the same exposure. It is now a route excluded from the public build by <code>includeCutoverRunbook</code>, so it does not exist on <code>harvardintech.com</code> at all — nothing to clear out here, and nothing that can leak by a configuration mistake.</li>
                 </ul>
                 <p>
@@ -162,7 +162,7 @@ const { id } = Astro.props;
                     <code>185.199.108.153</code>, <code>185.199.109.153</code>,
                     <code>185.199.110.153</code>, <code>185.199.111.153</code>.
                     Optionally add the matching <code>AAAA</code> records.
-                    Repoint <code>CNAME www → nseldeib.github.io</code>.
+                    Repoint <code>CNAME www → codeyam-ai.github.io</code> (the repo's owner since it moved from <code>nseldeib</code>).
                     <b>Leave <code>MX</code>, the <code>mail.</code> host record, and every <code>TXT</code> untouched.</b>
                   </li>
                   <li>Wait for GitHub to issue the certificate, <em>then</em> enable <b>Enforce HTTPS</b>. Enabling it early is what produces a browser warning.</li>

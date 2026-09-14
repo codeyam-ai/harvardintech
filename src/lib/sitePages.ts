@@ -48,9 +48,11 @@ export const RESERVED_PAGE_SLUGS: readonly string[] = [
   'robots.txt',
   // Served verbatim from public/
   'design-review-4ece6c14',
+  'donor-network.html',
   'favicon.svg',
   'images',
   'review',
+  'videos',
   // Injected by @codeyam/cms on dev + the review track
   'admin',
 ];

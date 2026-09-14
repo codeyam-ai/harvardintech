@@ -100,6 +100,15 @@
       "runner": "tests"
     },
     {
+      "description": "With no secret there is no fallback value to leak — and the retired default must never come back as one.",
+      "file": "src/lib/previewGate.test.ts",
+      "format": "vitest",
+      "key": "PREVIEW_GATE_PASSPHRASE › is empty without the secret, and never the retired default",
+      "line": 71,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "A route missing from this list is a route a page can silently shadow.",
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
@@ -496,6 +505,33 @@
       "runner": "tests"
     },
     {
+      "description": "Dev and the public build have no gate, so they need no secret.",
+      "file": "src/lib/previewGate.test.ts",
+      "format": "vitest",
+      "key": "assertPassphraseConfigured › passes when the gate is off, even with no passphrase",
+      "line": 85,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The normal gated deploy: secret present, build proceeds.",
+      "file": "src/lib/previewGate.test.ts",
+      "format": "vitest",
+      "key": "assertPassphraseConfigured › passes when the gate is on and a passphrase is set",
+      "line": 90,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A gated build with no secret must stop, not ship an openable gate.",
+      "file": "src/lib/previewGate.test.ts",
+      "format": "vitest",
+      "key": "assertPassphraseConfigured › throws when the gate is on and the passphrase is empty or blank",
+      "line": 79,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "The badge is the thing a supporter posts about themselves, so every field on it has to be the one their node panel showed.",
       "file": "src/lib/supporterBadge.test.ts",
       "format": "vitest",
@@ -844,6 +880,87 @@
       "key": "canShareBadge › still offers a badge when the campaign has no donation link yet",
       "line": 244,
       "registeredAt": "2026-08-19T00:32:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Whatever the input path, the result is on the origin it was given.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalFor › always returns a URL on the given origin",
+      "line": 51,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A page whose first segment merely starts like the base is not under it.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalFor › does not strip a lookalike prefix",
+      "line": 34,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "After launch the base is '/', and nothing should change about the path.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalFor › leaves the path alone under a root base",
+      "line": 27,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The home page is the base itself, with or without its trailing slash.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalFor › maps the base itself to the domain root",
+      "line": 17,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Joins must never produce `//`, whichever side carries the slash.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalFor › never doubles slashes",
+      "line": 41,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The preview today: served under /harvardintech/, advertised on the domain.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalFor › removes the subpath base so the URL names the real domain",
+      "line": 10,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No site configured at all: use the request's own origin rather than throw.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalOrigin › falls back to the request origin when there is no site",
+      "line": 86,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "At launch the variable is dropped and the build's own site takes over — as an origin, never with the base path attached.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalOrigin › falls back to the site origin when unset",
+      "line": 75,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The deploy sets it to the live domain while the build is hosted elsewhere.",
+      "file": "src/lib/canonicalUrl.test.ts",
+      "format": "vitest",
+      "key": "canonicalOrigin › prefers CANONICAL_ORIGIN when set",
+      "line": 66,
+      "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
     {
@@ -1702,6 +1819,15 @@
       "runner": "tests"
     },
     {
+      "description": "Every advertised URL names the live domain, never a gated preview.",
+      "file": "src/lib/deployTracks.test.ts",
+      "format": "vitest",
+      "key": "deploy.yml track coherence › advertises harvardintech.com from both gated tracks",
+      "line": 141,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "The reviewed track is served from a subpath of this repo's own Pages site, so the same rule applies even though it publishes by artifact upload.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
@@ -1726,6 +1852,24 @@
       "key": "deploy.yml track coherence › gates both tracks while neither is meant to be public",
       "line": 130,
       "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The repo moved to codeyam-ai; the reviewed site is hosted there now.",
+      "file": "src/lib/deployTracks.test.ts",
+      "format": "vitest",
+      "key": "deploy.yml track coherence › hosts the reviewed track on the codeyam-ai Pages site",
+      "line": 136,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The passphrase lives only in the secret — never a literal in the workflow.",
+      "file": "src/lib/deployTracks.test.ts",
+      "format": "vitest",
+      "key": "deploy.yml track coherence › takes the gate passphrase from the secret on both gated tracks",
+      "line": 147,
+      "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
     {
@@ -2688,6 +2832,33 @@
       "runner": "tests"
     },
     {
+      "description": "The load-bearing case: none of the internal material reaches the domain.",
+      "file": "src/lib/publishTrack.test.ts",
+      "format": "vitest",
+      "key": "excludedFromBuild › drops every internal path on the public track",
+      "line": 95,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Reviewers are sent to the status page, the deck and the gallery; only the screenshot pages (sample bios under real board names) have no reader there.",
+      "file": "src/lib/publishTrack.test.ts",
+      "format": "vitest",
+      "key": "excludedFromBuild › drops only the screenshot pages on the review track",
+      "line": 90,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The tooling captures every one of these under astro dev.",
+      "file": "src/lib/publishTrack.test.ts",
+      "format": "vitest",
+      "key": "excludedFromBuild › excludes nothing in dev",
+      "line": 83,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "Asserts every school value already committed to a donor markdown file is still one the dropdown offers, so a value typed as free text before the list existed cannot leave the site rendering something the CMS now calls invalid. Vacuous while the donors collection ships empty; it starts biting the moment the first supporter is added.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
@@ -3039,7 +3210,7 @@
       "file": "src/lib/previewGate.test.ts",
       "format": "vitest",
       "key": "gateAppliesTo › exempts a preview page in any routed collection",
-      "line": 27,
+      "line": 33,
       "registeredAt": "2026-08-12T16:58:34Z",
       "runner": "tests"
     },
@@ -3048,7 +3219,7 @@
       "file": "src/lib/previewGate.test.ts",
       "format": "vitest",
       "key": "gateAppliesTo › exempts a preview under a base path",
-      "line": 41,
+      "line": 47,
       "registeredAt": "2026-08-12T16:58:34Z",
       "runner": "tests"
     },
@@ -3057,7 +3228,7 @@
       "file": "src/lib/previewGate.test.ts",
       "format": "vitest",
       "key": "gateAppliesTo › exempts a preview with a trailing slash",
-      "line": 47,
+      "line": 53,
       "registeredAt": "2026-08-12T16:58:34Z",
       "runner": "tests"
     },
@@ -3066,7 +3237,7 @@
       "file": "src/lib/previewGate.test.ts",
       "format": "vitest",
       "key": "gateAppliesTo › exempts the shareable previews index",
-      "line": 35,
+      "line": 41,
       "registeredAt": "2026-08-12T16:58:34Z",
       "runner": "tests"
     },
@@ -3075,7 +3246,7 @@
       "file": "src/lib/previewGate.test.ts",
       "format": "vitest",
       "key": "gateAppliesTo › gates ordinary site pages",
-      "line": 19,
+      "line": 25,
       "registeredAt": "2026-08-12T16:58:34Z",
       "runner": "tests"
     },
@@ -3084,7 +3255,7 @@
       "file": "src/lib/previewGate.test.ts",
       "format": "vitest",
       "key": "gateAppliesTo › still gates a real page whose slug merely contains \"preview\"",
-      "line": 54,
+      "line": 60,
       "registeredAt": "2026-08-12T16:58:34Z",
       "runner": "tests"
     },
@@ -3777,7 +3948,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeCmsIntegration › excludes the CMS from the public build",
-      "line": 15,
+      "line": 18,
       "registeredAt": "2026-07-30T17:08:52.711894037+00:00",
       "runner": "tests"
     },
@@ -3786,7 +3957,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeCmsIntegration › includes the CMS on the review track",
-      "line": 20,
+      "line": 23,
       "registeredAt": "2026-07-30T17:08:52.711894037+00:00",
       "runner": "tests"
     },
@@ -3795,7 +3966,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeCmsIntegration › includes the CMS under astro dev",
-      "line": 26,
+      "line": 29,
       "registeredAt": "2026-07-30T17:08:52.711894037+00:00",
       "runner": "tests"
     },
@@ -3804,7 +3975,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeCmsIntegration › includes the CMS when both dev and review track are set",
-      "line": 32,
+      "line": 35,
       "registeredAt": "2026-07-30T17:08:52.711894037+00:00",
       "runner": "tests"
     },
@@ -3813,7 +3984,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeCutoverRunbook › excludes the runbook from the public build",
-      "line": 56,
+      "line": 59,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -3822,7 +3993,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeCutoverRunbook › includes the runbook on the review track",
-      "line": 62,
+      "line": 65,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -3831,7 +4002,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeCutoverRunbook › includes the runbook under astro dev",
-      "line": 68,
+      "line": 71,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -3840,7 +4011,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeCutoverRunbook › includes the runbook when both dev and review track are set",
-      "line": 73,
+      "line": 76,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -3849,7 +4020,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeSitemapIntegration › omits the sitemap on the review track",
-      "line": 46,
+      "line": 49,
       "registeredAt": "2026-07-30T17:08:52.711894037+00:00",
       "runner": "tests"
     },
@@ -3858,7 +4029,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "includeSitemapIntegration › publishes a sitemap on the public track",
-      "line": 39,
+      "line": 42,
       "registeredAt": "2026-07-30T17:08:52.711894037+00:00",
       "runner": "tests"
     },
@@ -4223,6 +4394,42 @@
       "runner": "tests"
     },
     {
+      "description": "Near-misses: a page that merely starts with, or contains, an internal name.",
+      "file": "src/lib/publishTrack.test.ts",
+      "format": "vitest",
+      "key": "isInternalPath › does not match lookalike paths",
+      "line": 126,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Real pages stay in the sitemap.",
+      "file": "src/lib/publishTrack.test.ts",
+      "format": "vitest",
+      "key": "isInternalPath › leaves ordinary pages alone",
+      "line": 119,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The sitemap filter hands over absolute URLs.",
+      "file": "src/lib/publishTrack.test.ts",
+      "format": "vitest",
+      "key": "isInternalPath › matches absolute URLs",
+      "line": 114,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Directory-style URLs, with and without the subpath base.",
+      "file": "src/lib/publishTrack.test.ts",
+      "format": "vitest",
+      "key": "isInternalPath › matches internal pages on the domain and under a base",
+      "line": 106,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "an ordinary page is never locked, whatever its draft state",
       "file": "src/lib/drafts.test.ts",
       "format": "vitest",
@@ -4425,7 +4632,7 @@
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
       "key": "llms.txt GET › includes the org name and description from settings",
-      "line": 47,
+      "line": 58,
       "registeredAt": "2026-07-02T02:11:43.784715267+00:00",
       "runner": "tests"
     },
@@ -4434,8 +4641,17 @@
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
       "key": "llms.txt GET › lists key pages as absolute URLs",
-      "line": 54,
+      "line": 65,
       "registeredAt": "2026-07-02T02:11:43.784715267+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The gated preview is hosted on a GitHub Pages subpath, but answer engines must be pointed at the live domain — with no base path attached.",
+      "file": "src/lib/seoEndpoints.test.ts",
+      "format": "vitest",
+      "key": "llms.txt GET › names CANONICAL_ORIGIN, not the preview host, when it is set",
+      "line": 74,
+      "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
     {
@@ -4443,7 +4659,7 @@
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
       "key": "llms.txt GET › surfaces contact email and socials",
-      "line": 62,
+      "line": 87,
       "registeredAt": "2026-07-02T02:11:43.784715267+00:00",
       "runner": "tests"
     },
@@ -7013,6 +7229,15 @@
       "runner": "tests"
     },
     {
+      "description": "The Sitemap line names the live domain even from a subpath-hosted build.",
+      "file": "src/lib/seoEndpoints.test.ts",
+      "format": "vitest",
+      "key": "robots.txt GET › points the Sitemap at CANONICAL_ORIGIN when it is set",
+      "line": 39,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "The Sitemap line uses the env-driven site origin, not a literal placeholder.",
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
@@ -7026,7 +7251,7 @@
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
       "key": "robots.txt GET › responds as text/plain",
-      "line": 39,
+      "line": 50,
       "registeredAt": "2026-07-02T02:11:43.784715267+00:00",
       "runner": "tests"
     },
@@ -7856,6 +8081,22 @@
       "key": "selecting a supporter › points the share links at that supporter own url",
       "line": 153,
       "registeredAt": "2026-08-19T00:32:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This self-gated page carries the exact placeholder the build replaces with the secret, so its gate always gets a real passphrase.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "self-gated public pages › public/donor-network.html carries the passphrase placeholder the build fills in",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This self-gated page carries the exact placeholder the build replaces with the secret, so its gate always gets a real passphrase.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "self-gated public pages › public/review/index.html carries the passphrase placeholder the build fills in",
+      "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
     {
@@ -8804,6 +9045,33 @@
       "runner": "tests"
     },
     {
+      "description": "Quotes, backslashes, newlines and a closing </script> must not break out of the string literal or the inline <script> it sits in.",
+      "file": "src/lib/previewGate.test.ts",
+      "format": "vitest",
+      "key": "substitutePassphrase › escapes characters that would break the string or the script tag",
+      "line": 113,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Both quote styles, every occurrence — a missed one would ship a gate that opens on the placeholder text itself.",
+      "file": "src/lib/previewGate.test.ts",
+      "format": "vitest",
+      "key": "substitutePassphrase › fills in every placeholder",
+      "line": 106,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The build runs this over every self-gated file; one without a gate must come out byte-for-byte as it went in.",
+      "file": "src/lib/previewGate.test.ts",
+      "format": "vitest",
+      "key": "substitutePassphrase › leaves a page with no placeholder unchanged",
+      "line": 121,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "With nothing blocked the sentence changes meaning, not just number — it tells the team the decisions are in and the ball is no longer theirs.",
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
@@ -8900,6 +9168,159 @@
       "key": "supporterRoll › sorts supporters alphabetically by displayed name",
       "line": 531,
       "registeredAt": "2026-08-19T00:32:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › CMS_SETUP.md does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › CMS_SETUP.md has no link to the dead pre-move preview",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › DEPLOY_SETUP.md does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › DEPLOY_SETUP.md has no link to the dead pre-move preview",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › README.md does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › README.md has no link to the dead pre-move preview",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/nicole-review.md does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/nicole-review.md has no link to the dead pre-move preview",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/scoping/README.md does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/scoping/README.md has no link to the dead pre-move preview",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/scoping/domain-transfer-runbook.md does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/scoping/domain-transfer-runbook.md has no link to the dead pre-move preview",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/scoping/harvard-key-sso.md does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/scoping/harvard-key-sso.md has no link to the dead pre-move preview",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The content editor commits to the repo named here; the old owner 404s.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › points the content editor at the codeyam-ai repo",
+      "line": 45,
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › public/donor-network.html does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › public/review/index.html does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › src/data/cms.json does not contain the retired passphrase",
+      "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › src/data/cms.json has no link to the dead pre-move preview",
+      "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
     {

@@ -4,7 +4,7 @@
 // file cannot live in `src/pages` itself (Astro would route it). We assert the
 // env-driven URL wiring and the settings-derived content, the parts most likely
 // to regress (the old static robots.txt shipped a broken placeholder URL).
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { GET as robotsGet } from '../pages/robots.txt';
 import { GET as llmsGet } from '../pages/llms.txt';
 import { settings } from './site';
@@ -35,6 +35,17 @@ describe('robots.txt GET', () => {
     expect(body).toContain('Sitemap: https://fallback.test/sitemap-index.xml');
   });
 
+  // The Sitemap line names the live domain even from a subpath-hosted build.
+  it('points the Sitemap at CANONICAL_ORIGIN when it is set', async () => {
+    vi.stubEnv('CANONICAL_ORIGIN', 'https://harvardintech.com');
+    try {
+      const body = await (await robotsGet(ctx('https://codeyam-ai.github.io/harvardintech/'))).text();
+      expect(body).toContain('Sitemap: https://harvardintech.com/sitemap-index.xml');
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
   // Serves as text/plain so crawlers read it verbatim.
   it('responds as text/plain', async () => {
     const res = await robotsGet(ctx('https://example.com/'));
@@ -56,6 +67,20 @@ describe('llms.txt GET', () => {
     expect(body).toContain('## Key pages');
     expect(body).toContain('[Home](https://example.com/)');
     expect(body).toContain('[Events](https://example.com/events)');
+  });
+
+  // The gated preview is hosted on a GitHub Pages subpath, but answer engines
+  // must be pointed at the live domain — with no base path attached.
+  it('names CANONICAL_ORIGIN, not the preview host, when it is set', async () => {
+    vi.stubEnv('CANONICAL_ORIGIN', 'https://harvardintech.com');
+    try {
+      const body = await (await llmsGet(ctx('https://codeyam-ai.github.io/harvardintech/'))).text();
+      expect(body).toContain('[Home](https://harvardintech.com/)');
+      expect(body).toContain('[Events](https://harvardintech.com/events)');
+      expect(body).not.toContain('github.io');
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 
   // Contact section surfaces the settings email + social links for citation.

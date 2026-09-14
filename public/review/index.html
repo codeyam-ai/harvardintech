@@ -468,9 +468,10 @@
       // the downloaded source — a determined viewer could bypass it. Combined with
       // an unlisted URL + noindex it's enough to keep the page out of casual/public
       // view. For real access control, host behind a server-side password
-      // (Cloudflare Pages / Netlify). Change PASSPHRASE to rotate access.
+      // (Cloudflare Pages / Netlify). The build fills PASSPHRASE in from the
+      // PREVIEW_GATE_PASSPHRASE secret — rotate it there, never here.
       (function () {
-        var PASSPHRASE = 'crimson2026'; // share this out-of-band with reviewers
+        var PASSPHRASE = '__PREVIEW_GATE_PASSPHRASE__';
         var KEY = 'hait-review-ok';
         var gate = document.getElementById('gate');
         var content = document.getElementById('content');
