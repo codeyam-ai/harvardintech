@@ -36,11 +36,18 @@ Two more changes:
 - **Accomplishments (Change):** "Update the data / stats."
 - **"2 new chapters: London and San Francisco":** "Remove this."
 - **Chapter Partner sponsor level (Change):** "Keep and trim cities and have a digital / global / other offering of some sort."
+  - *Superseded for launch (2026-09-14):* after Nicole's walkthrough, the owner removed "Ways to partner" from `/sponsor`, so no level shows on the page.
+  - Step 13 still updates the stored levels, so they are right if the section returns.
 - **Mailing lists (Keep one list):** "These are not per-chapter but we can filter based on geography that folks respond they're in."
 - **Chapter pages are nearly empty (Plan it):** also show recent past events.
 - **Design:** communities get their OWN page type, not the chapter page. The chapter banner is a "Chapter" label plus the city name.
 - **SF lead:** Jessica, in the interim.
 - **WhatsApp:** link only the Google Form, never the group itself.
+- **Nicole's walkthrough (2026-09-14):**
+  - Keep every chapter with a high concentration of alumni in the menu, even without an event lead. This agrees with DC and Seattle as forming chapters.
+  - A chapter without a lead asks "Interested in getting involved with the {city} chapter?" with a Contact us button (step 6).
+  - Founders events: the owner chose tagging by hand (step 12). They sit high on the page, under the join CTA (step 9).
+  - She is replacing the blurry London, AI and Founders banners herself in the content editor. This plan must not overwrite them.
 
 ## Open questions / needs input
 
@@ -109,6 +116,8 @@ Numbers in CMS copy stay editable text rather than being computed at render time
 6. **Shared CTA blocks (new).** Each takes plain props, for scenarios:
    - `src/components/JoinWhatsAppCta.astro` (new): "Join the {name} WhatsApp" linking to the form only.
    - `src/components/FormingChapterCta.astro` (new): "{city} is forming. Help lead it." with two buttons, *Volunteer to lead or support* (`volunteerUrl`) and *Join WhatsApp to meet local alumni* (the form).
+     - Under them goes Nicole's line, "Interested in getting involved with the {city} chapter?", with a *Contact us* button to `mailto:` the site contact address.
+     - Following the contact plan's fallback rule, the button renders only when `contactEmail` is set. Nicole names `info@harvardintech.com`; see `launch--contact-and-calls-to-action`, open question 1.
    - `src/components/GlobalCommunityCta.astro` (new): "Not near a chapter? Join the global community" with three actions: WhatsApp form, newsletter (Mailchimp, one list, noting that geography is asked there) and volunteer.
    - `src/components/CommunityCallouts.astro` (new): a grid of `callouts`.
 7. **Chapter banner and leads.**
@@ -127,7 +136,7 @@ Numbers in CMS copy stay editable text rather than being computed at render time
    - the markdown body
    - `CommunityCallouts`
    - `JoinWhatsAppCta` as the primary CTA
-   - upcoming and recent community events (tag or `communities`)
+   - upcoming and recent community events (tag or `communities`), placed directly under the join CTA, where Nicole expects to find Founders events
    - the gallery toggle
    - `ChapterConnect`
 
@@ -152,6 +161,7 @@ Numbers in CMS copy stay editable text rather than being computed at render time
       - callouts such as "Bi-weekly calls with alumni globally" and "Share what you're building / reading"
       - replace the "just getting started" body
     - `founders.md`: callouts "WhatsApp group" and "Local events in select cities (London co-working days)".
+    - Leave `heroImage` alone on London, AI and Founders if Nicole has already replaced it in the content editor.
     - Add `communities: [founders]` to the three `src/content/events/*alumni-founders-co-working-day*.md` events.
     - Tag `2026-04-30-…-leaders-in-engineering-panel.md` with `chapter: sf-bay-area` (its location is San Francisco).
 13. **Content: numbers and copy.**
@@ -165,7 +175,7 @@ Numbers in CMS copy stay editable text rather than being computed at render time
       - Delete `new-chapters-launched.md`.
       - `linkedin-followers.md` and `events-hosted-and-co-hosted.md` per open question 9.
     - Hero: in `src/content/heroSlides/a-global-community-with-a-home-in-your-city.md` the lede becomes "…in person in SF, New York, London and Boston, with chapters forming in DC and Seattle."
-    - Sponsor:
+    - Sponsor. These are stored only, because "Ways to partner" is hidden for launch (see `launch--giving-pages-short-term`). The edits keep the levels right for when it returns, and keep test (c) green.
       - In `src/content/sponsorLevels/chapter.md` the summary lists only SF, New York, London or Boston, plus a benefit line: "Or back the global community instead".
       - `src/content/sponsorLevels/global.md` (new) adds a "Global Community Partner" level with newsletter recognition (8,500+), WhatsApp community and AI bi-weekly call sponsorship.
     - "Six chapters" copy:
@@ -206,7 +216,7 @@ Numbers in CMS copy stay editable text rather than being computed at render time
 ## Scenarios to Demonstrate
 
 - **New:**
-  - `chapter-route-forming-dc-dmv`: "Chapter · Forming" banner, volunteer + WhatsApp-form CTAs, no leads block.
+  - `chapter-route-forming-dc-dmv`: "Chapter · Forming" banner, volunteer + WhatsApp-form CTAs, Nicole's "Interested in getting involved…" line (its Contact us button shows only when a contact email is set), no leads block.
   - `chapter-route-boston-with-past-events`: Alumni Day under "Recent events in Boston & Cambridge".
   - `chapter-route-london-upcoming-and-past`
   - `community-route-ai-with-callouts`: James as lead, bi-weekly calls callout.
@@ -231,3 +241,6 @@ Numbers in CMS copy stay editable text rather than being computed at render time
 - A lead-application form or any change to the Google Form itself.
 - `src/pages/isolated-components/`.
 - Automatic Luma import or auto-tagging of events by location.
+- Nicole's later ideas (2026-09-14), for after launch:
+  - a WhatsApp page listing channels, current topics and a year-ahead topics calendar;
+  - James's AI content: a topics calendar, upcoming webinars and webinar recaps. This depends on the webinars section in `launch--history-events-archive-and-webinars`.

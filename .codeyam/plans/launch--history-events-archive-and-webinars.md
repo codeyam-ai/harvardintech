@@ -130,7 +130,13 @@ Facts used here, all checked against the saved pages:
      - The heading is "Archive, 2013–2019", with the year range derived from the data.
      - One sentence of introduction.
      - Each year is `<details><summary>2018 · 9 events</summary>`. Inside is an `<ol>` of compact rows: date (for example "Aug 18"), title, location and the full write-up. No cards and no photos.
-   - **`src/components/EventsPage.astro`** keeps Upcoming as it is. Past Events renders only `recent` through `EventsSection.astro`. Below that it renders `EventsArchive` when `archive` is not empty, followed by one line linking to `/webinars`.
+   - **`src/components/EventsPage.astro`** follows `launch--mobile-and-layout`'s sections: no Upcoming list while the Luma embed is on (the owner confirmed this after Nicole's walkthrough, 2026-09-14). The page renders, in order:
+     - Past Events, showing only `recent`, through `EventsSection.astro`;
+     - the mobile plan's "View all past events" link to Luma;
+     - `EventsArchive`, when `archive` is not empty;
+     - one line linking to `/webinars`.
+
+     Whichever of the two plans lands second keeps this order.
    - `src/pages/events.astro` needs no change.
    - The landing page (`src/pages/index.astro`) uses only `upcoming`, so it is unaffected.
 7. **Sept 28 event: `src/content/events/2026-09-28-an-elevated-evening-of-ideas-connection-and-conversation.md` (new)**.
@@ -159,7 +165,7 @@ Facts used here, all checked against the saved pages:
    - **`src/pages/webinars.astro` (new)** uses BaseLayout. It shows an intro and a thumbnail card grid (image, title, speakers, year) linking to `/blog/<slug>`, where the embed plays. There are no iframes on the listing page: 10 third-party players on one page is heavy and loads trackers.
    - It uses the same draft filtering as `events.astro`, via `publishedEntries` and `INCLUDE_DRAFTS`.
 10. **`src/components/Embed.astro`**: add `allow="fullscreen; picture-in-picture"` and `allowfullscreen`, and use a 16:9 aspect-ratio box instead of `min-height: 400px`. This is shared with `pages`, and existing embeds only gain the ability to go full screen.
-11. **Nav.** In **`src/data/nav.json`**, add Content Hub → `{ "label": "Webinars", "url": "/webinars" }` directly after Blog. In **`src/lib/sitePages.ts`**, add `'webinars'` to `RESERVED_PAGE_SLUGS`, under the hand-built routes.
+11. **Nav.** In **`src/data/nav.json`**, add Content Hub → `{ "label": "Webinars", "url": "/webinars" }` where Blog was. The blog is hidden from the menu for launch (`launch--content-and-pages`, 2026-09-14). Webinar posts are blog entries, so their `/blog/<slug>` pages still build. In **`src/lib/sitePages.ts`**, add `'webinars'` to `RESERVED_PAGE_SLUGS`, under the hand-built routes.
 12. **Cross-references.**
    - `src/components/landing/FocusAreas.astro` says "Events, webinars, and podcasts across the year." That copy belongs to the **focus-areas plan**, whose audit recommendation is to remove the band. If the band stays, `/webinars` now makes the "webinars" claim true ("podcasts" still isn't), and its link could point at `/webinars`.
    - Tell the **redirects plan** that `/webinars` is now a real page and should be dropped from its redirect list. `/nyc`, `/japan` and the other old addresses stay with that plan.
@@ -211,7 +217,7 @@ The vitest `include` pattern is `src/**/*.test.{ts,tsx}`, so every helper lives 
 
 These are registered as scenarios for the routes and components. Astro components aren't glossary entities.
 
-- **Events Route – Archive Folded By Year** (`/events`): 1 upcoming, 3 recent past, and archive entries across 2018, 2016 and 2013. All year folds are closed.
+- **Events Route – Archive Folded By Year** (`/events`): the Luma embed, 3 recent past, the "View all past events" link, and archive entries across 2018, 2016 and 2013. All year folds are closed.
 - **EventsArchive – 2018 Expanded**: an interactive scenario that clicks the 2018 summary and shows the rows with the full write-ups.
 - **EventsPage – Archive Only, Nothing Upcoming**: there is no Recent Past block, and the archive still renders.
 - **Events Route – Sept 28 Upcoming With Ticket Link** (date `@today+14d`) and **Sept 28 After It Passes** (`@today-1d`): the card sits under Past Events with no link.

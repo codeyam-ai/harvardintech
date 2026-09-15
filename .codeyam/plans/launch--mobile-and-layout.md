@@ -30,10 +30,11 @@ Note on the audit: it counted three mobile screenshots. Seven `*--mobile.png` fi
 - **The city bar wrapping:** Plan it.
 - **The Luma calendar:** Keep. "Fix so events aren't duped between embedding Luma and other stuff on the apge."
 - **Broader goal:** "we want this site to be mobile adaptive"
+- **Events page, after Nicole's walkthrough (2026-09-14).** Nicole asked to remove the Upcoming list under the calendar, which this plan already does (C). The owner decided that a "View all past events" link after the past events goes to Luma (step 8).
 
 ## Open questions / needs input
 
-1. **For the owner.** Keep or remove the "View Upcoming Events" button at the bottom of `src/components/EventsPage.astro`? It links to **Eventbrite**, which makes a third event source on the page. The recommendation is to point it at Luma (`LUMA_CALENDAR_URL`) or drop it. This plan points it at Luma unless told otherwise.
+1. **Answered (2026-09-14).** The Eventbrite "View Upcoming Events" button goes (`launch--contact-and-calls-to-action`: Luma only). In its place, after the past events, a "View all past events" link goes to Luma (step 8).
 2. **For the owner / content editors.** Once `/events` shows only *past* events from the `events` collection, is someone still adding each event to the CMS after it happens? The homepage "Upcoming events" band also reads this collection. If editors stop adding upcoming events there, the homepage goes to its empty state even while Luma has events. Decide: keep entering upcoming events in the CMS (for the homepage), or a later plan switches the homepage to link to Luma.
 3. **For the owner.** On phones the city bar would read "A global community · 6 chapters". OK, or would you rather show only "A global community"?
 4. **For the implementer (verify, no owner input needed).** Can the Luma embed tell the page its content height (postMessage)? If yes, size the iframe to it. If not, use the fixed responsive height in step 6.
@@ -71,8 +72,12 @@ Why C: Luma is where events are actually created, so its embed is the live, alwa
 8. **`src/components/EventsPage.astro`.** Add a prop `embedActive?: boolean` (default `false`, so the isolated `EventsPage` scenarios in `src/pages/isolated-components/[name].astro` keep their meaning) and use `eventsPageSections`. When `embedActive` is true:
    - drop the "Upcoming" section and the "View Upcoming Events" button;
    - the intro stays;
-   - the Past Events section shows, or nothing shows if there are none.
-   Otherwise, repoint that button to `LUMA_CALENDAR_URL` (open question 1).
+   - the Past Events section shows, or nothing shows if there are none;
+   - after the past events, a "View all past events" link goes to `LUMA_CALENDAR_URL`, opening in a new tab through the contact plan's `externalLinkAttrs`.
+     - Nicole believes Luma can link straight to past events. Use that address if the calendar has one; otherwise use the calendar itself.
+     - When `launch--history-events-archive-and-webinars` has shipped, its Archive block sits below this link.
+
+   Otherwise (no embed), the Upcoming section stays and the Eventbrite button is removed (open question 1).
 9. **`src/pages/events.astro`.** Pass `embedActive={Boolean(LUMA_EMBED_URL)}`. Order: intro header (moved above the embed, so the page opens with its title rather than "Full events calendar"), Luma embed, then Past events.
 10. **`src/components/LumaCalendar.astro`, empty box and alignment.** Replace the fixed `height={640}` with CSS `height: clamp(420px, 70vh, 640px)` on the iframe (`520px` at ≤640px). Move the inline border and radius into `.luma-frame` with `overflow: hidden`, so the scrollbar gutter no longer shows as a white strip inside the border (visible in `events-route-upcoming-and-past--desktop.png`). Set `display:block` to kill the inline-iframe baseline gap. Put the frame in the same `.s-inner` width as the list below it, so the two left edges line up. If open question 4 finds a height postMessage, set height from it instead.
 11. **Responsive sweep.** Walk the checklist below against every component listed. Fix only what fails at 390px or 768px, and record anything bigger as a follow-up rather than growing this plan.
@@ -121,13 +126,13 @@ Mobile = 390x844, Tablet = 768x1024 (`.codeyam/editor.json` `screenSizes`). "Add
 | Home, menu open | `harvard-in-tech-phone-menu-open.json` (new) | url `/`, Mobile + Tablet, `interactions: [{action:"click", selector:".nav-toggle"}]` |
 | Home, no events | `harvard-in-tech-no-upcoming-events.json` | add Mobile |
 | Home, board | `harvard-in-tech-board-of-directors.json` | add Mobile |
-| Events | `events-route-upcoming-and-past.json` | add Mobile; now shows embed + past only |
+| Events | `events-route-upcoming-and-past.json` | add Mobile; now shows embed + past only, ending with the "View all past events" link to Luma |
 | Events, nothing past | `events-route-embed-no-past-events.json` (new) | url `/events`, seed only future events, Desktop + Mobile |
 | Chapters | `chapter-route-new-york-city.json`, `chapter-route-longest-chapter-name-wraps.json` | add Mobile |
 | Communities | `community-route-founders-with-leads-and-events.json` | add Mobile |
 | Volunteer | `volunteer-page-open-projects.json` | add Mobile |
 | Sponsor | `sponsor-route-example-partner-wall.json` | add Mobile |
-| Blog | `blog-post-welcome.json` | add Mobile |
+| Blog | `blog-post-welcome.json` | add Mobile, after `launch--content-and-pages` retargets it to a remaining post (the Welcome post becomes a draft) |
 | CMS-written page | `site-page-a-page-written-in-the-cms.json`, `site-page-long-title-and-no-description.json` | add Mobile |
 | Give | `give-route-public-visitor.json` (new) | url `/give`, `pageFilePath: src/pages/give.astro`, Desktop + Mobile |
 | 404 | `not-found-page.json` (new) | url `/this-page-does-not-exist`, `pageFilePath: src/pages/404.astro`, Desktop + Mobile. Verify dev serves 404.astro for it |
@@ -142,7 +147,7 @@ Key frames to check:
 - the phone landing frame shows the hero within the first screen;
 - the menu-open frame shows grouped links with a Subscribe link at the bottom;
 - the no-events frame shows the message once;
-- the events frame shows no event in both the embed and the list.
+- the events frame shows no event in both the embed and the list, and ends with the "View all past events" link.
 
 ## Out of scope
 

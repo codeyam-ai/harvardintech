@@ -23,7 +23,7 @@ This plan puts the site into one honest **short-term giving state** until the Gi
 | `/donate` | Opening band with a real `<h1>` and generic pre-launch copy. Mission and "why" story. One 2026 priority. Goal meter at $0 of $10,000. Accomplishments. Testimonials. "What your gift powers". Closing band. | Every giving button. Donor wall content: tiers, search, share, "give today and yours will be among them". The three old priority lines, including the 501(c)(6) one. |
 | `/give` | Nothing. It redirects to `/donate`. | The whole page, including the tax FAQ, the fake $50,000 / 8% card and "Secure giving through Givebutter". |
 | Homepage giving band | Pre-launch message. "Sponsorship" button goes to `/sponsor`, plus a link to `/donate`. | "Donate" `mailto:` button. |
-| `/sponsor` | Event, Chapter and Community levels. Empty partner wall ("We are lining up partners…"). Email button. Google Form once its URL is set. | Presenting Partner level. Example sponsors. Empty "form is on the way" box. |
+| `/sponsor` | Opening band. Empty partner wall ("We are lining up partners…"). "Start a conversation": email button, and the Google Form once its URL is set. | The whole "Ways to partner" levels section (owner, after Nicole's walkthrough, 2026-09-14). Example sponsors. Empty "form is on the way" box. |
 
 **Message that replaces every donate button** (one component, copy editable in one place): *"Our first fundraising campaign opens soon — our 2026 goal is $10,000."* It is plain text, not a button, followed by a secondary link, "Other ways to help →" (goes to `/volunteer`).
 
@@ -57,6 +57,10 @@ This plan puts the site into one honest **short-term giving state** until the Gi
 - **Mohammed Ally testimonial (Change):** "I'm pretty sure this is a real quote from a real alumni. We should have a todo to add other quotes."
 - **Donate page has no h1:** Plan it.
 - **Donate page's distinct look:** paused. Keep it as is and see what Nicole's changes lead to. No restyle in this plan.
+- **"Ways to partner": removed for launch (owner, 2026-09-14, after Nicole's walkthrough).**
+  - Keep the sponsorship page and its "Start a conversation" section.
+  - Remove "Ways to partner", which Nicole says is not fleshed out. This replaces the earlier plan to show the levels, including the chapters plan's trimmed Chapter level and new Global level.
+  - The level entries stay in the CMS. Whether the section comes back later is still open (question 9).
 
 ## Open questions / needs input
 
@@ -77,6 +81,7 @@ This plan puts the site into one honest **short-term giving state** until the Gi
 6. **Owner, with Mohammed Ally:** confirm the quote is his words, verbatim. Its last sentence ("What the fund pays for is the part nobody sees…") talks about a fund that has not launched yet, and reads like campaign copy. If he didn't say it, cut the quote to its first two sentences.
 7. **Owner and chapter leads (todo):** collect 2–3 more real quotes, each with the speaker's OK to use their name and photo, as `src/content/testimonials/*.md` entries.
 8. **Owner:** `settings.json` → `givebutterAccountId` is already set. Per `src/lib/givebutter.ts`, that loads Givebutter's script on every page even though no widget is showing yet. Keep it, or clear it until launch? Recommendation: keep it, since it's harmless and needed at launch.
+9. **Owner, later:** does "Ways to partner" come back once the levels are fleshed out, or is it gone for good? For launch it is removed (step 9). Its entries stay in the CMS, so it can return with one change.
 
 ## Recommendations
 
@@ -170,6 +175,9 @@ This plan puts the site into one honest **short-term giving state** until the Gi
    - Add `redirects: { '/give': '/donate' }` in `astro.config.mjs`. Check the generated redirect under the subpath deploy (`base`); if the base isn't applied automatically, write the target with it.
    - The sitemap drops `/give` automatically.
 9. **Sponsor page.**
+   - Stop rendering `SponsorLevels` ("Ways to partner") in `src/components/SponsorPage.astro`. Keep the opening band, `SponsorWall` and `SponsorInquiry` ("Start a conversation").
+   - Leave every `src/content/sponsorLevels/*.md` entry in place, so the section can come back (question 9).
+   - A link to `/sponsor#levels` now has nothing to land on. `launch--contact-and-calls-to-action` repoints its homepage links to `/sponsor`; search for any other `#levels` link and do the same.
    - Add `draft: true` to `src/content/sponsorLevels/presenting.md` and to the three `src/content/sponsors/example-*.md`.
    - In `src/components/sponsor/SponsorInquiry.astro`, render the `EmbedForm` column only when `formUrl` is set.
    - Google Form spec for Ben:
@@ -218,7 +226,7 @@ This plan puts the site into one honest **short-term giving state** until the Gi
 - `givebutton-giving-closed` (new): the message in place of the pill.
 - `harvard-in-tech-landing-page` and `giving-campaign`: the homepage band, pre-launch.
 - `giving-campaign-platform-live` (new): the homepage band with a URL set.
-- `sponsorpage-full-page-no-partners`: three levels, empty wall.
+- `sponsorpage-full-page-no-partners`: no "Ways to partner" section, the empty wall, and "Start a conversation".
 - `sponsorinquiry-awaiting-a-form`: email button only, no box.
 - `sponsorinquiry-form-configured`: the Google Form embedded.
 - `sponsorpage-full-page-with-examples` and `sponsor-route-example-partner-wall`: keep as component states. Re-seed the route scenario if it read the now-drafted content.

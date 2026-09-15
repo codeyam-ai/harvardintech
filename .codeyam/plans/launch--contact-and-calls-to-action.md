@@ -13,6 +13,7 @@ Remove Ben's personal inbox, and every other email address, from the public site
 - The "Start a chapter" CTA goes.
 - The WhatsApp section links only to the Google Form, and "admissions criteria" goes to the criteria doc.
 - The Eventbrite button goes, leaving Luma as the one events system.
+- Every link that leaves the site opens in a new tab (from Nicole's walkthrough, 2026-09-14).
 
 ## Owner decisions (2026-09-14)
 
@@ -25,13 +26,15 @@ Remove Ben's personal inbox, and every other email address, from the public site
 - **Two event systems.** Luma only. "Luma is what's used now; Eventbrite may have been used in the past but is not now."
 - **Confirm the owners of the outside accounts.** Skip.
 - Also in scope: one source for contact and social links, and LinkedIn on the chapter and community "Connect" rows. Removing the donate-email buttons is covered by the separate giving plan.
+- **Outside links (from Nicole's walkthrough, 2026-09-14).** She asked that the WhatsApp and Content Hub links open in a new tab "so that they're not leaving our website entirely". Decided while planning (easy to reverse): every link that leaves harvardintech.com opens in a new tab, not only those, because a mixed rule is harder to keep straight (step 14).
 
 ## Open questions / needs input
 
 1. **Generic address (for Ben, through the owner).** Is there a shared inbox, such as `info@harvardintech.com`? The plan ships with `contactEmail: ""`. If Ben supplies an address, it is a one-line settings edit and every email surface comes back by itself (see the fallback rule). Nothing blocks on this.
+   - Nicole's walkthrough (2026-09-14) names `info@harvardintech.com` as the address a chapter's "Contact us" button should use. Once Ben confirms that inbox is monitored, set `contactEmail` to it. The footer, ContactUs, the Connect rows and the forming-chapter Contact us button in `launch--chapters-and-communities` then all come back.
 2. **SF interim lead (for the owner or Jessica).** Should the SF page publicly show "Jessica Li: Interim chapter lead"? The team entry `src/content/team/jessica-li.md` lists her as "Director of Operations". The default is to add the lead line; drop it if she prefers not to be listed.
 3. **WhatsApp after the form (for the owner).** What happens once someone submits the form? For example, "we'll email you the invite". The default is a single step with no promise we can't verify.
-4. **Speaker and job-post asks (for the owner).** Does the volunteer form (`https://hi.switchy.io/wEYK`) cover people offering to speak? The default sends "Speak at an event" to the volunteer form and "Share job opportunities" to `/sponsor#levels`, whose Community level already says "share what you are hiring for".
+4. **Speaker and job-post asks (for the owner).** Does the volunteer form (`https://hi.switchy.io/wEYK`) cover people offering to speak? The default sends "Speak at an event" to the volunteer form and "Share job opportunities" to `/sponsor` ("Start a conversation"). The Community level that says "share what you are hiring for" is hidden with "Ways to partner" for launch.
 5. **Sponsor inquiry form (for the owner).** `inquiryFormUrl` is `''` in `src/content/sponsorPage/sponsor.md`. With the email removed, the `/sponsor` close needs a form URL. Until one exists, the fallback is "Message us on LinkedIn".
 
 ## Recommendations
@@ -58,14 +61,14 @@ Remove Ben's personal inbox, and every other email address, from the public site
 | 4 | `src/components/ChapterConnect.astro` | email line and E-mail badge | Both omitted when blank; badges become LinkedIn, Twitter, Facebook |
 | 5 | `src/content/chapters/nyc.md:4` | `contactEmail: info@harvardintech.com` | Line removed |
 | 6 | `src/components/landing/GetInvolved.astro:14` | "Start a chapter" mailto to ben@ | CTA removed; the "Volunteer" CTA goes to `/volunteer` |
-| 7 | `src/components/landing/SupportUs.astro:17` | ben@ default; 3 mailto cards | Jobs → `/sponsor#levels`; Speak → volunteer form; Volunteer → `/volunteer` |
+| 7 | `src/components/landing/SupportUs.astro:17` | ben@ default; 3 mailto cards | Jobs → `/sponsor`; Speak → volunteer form; Volunteer → `/volunteer` |
 | 8 | `src/components/SponsorPage.astro:21` and `src/components/sponsor/SponsorInquiry.astro` | ben@ default; "Email us about sponsorship" | Form when `formUrl` is set, otherwise "Message us on LinkedIn"; mailto button only if an email is set |
 | 9 | `src/pages/llms.txt.ts:32` | `Email:` line | Line omitted when blank; socials remain |
 | 10 | `src/components/StructuredData.astro:22` | `email` when truthy | No change; a blank value is already skipped |
 | 11 | `src/pages/index.astro:100`, `src/pages/sponsor.astro:38`, chapter and community `[slug].astro` | pass `contactEmail` | Pass the helper's value (`undefined` when blank) |
 | 12 | `GivingCampaign`, `MomentumFundPage`, `donate/MomentumNetwork`, `donate/DonorWall`, `donate/GiftPillars`, `src/pages/give.astro:40`, `src/pages/donate.astro:124` | ben@ defaults and donate mailtos | **Giving plan.** Cross-reference only (see the gate in step 10) |
 
-The original SF page's `risdhillon@gmail.com` is already gone from `src/content/chapters/sf-bay-area.md`. The original home page's "Host us in your space" mailto is already replaced by `/sponsor#levels` (row 7).
+The original SF page's `risdhillon@gmail.com` is already gone from `src/content/chapters/sf-bay-area.md`. The original home page's "Host us in your space" mailto was replaced by a `/sponsor#levels` link, which now goes to `/sponsor` (row 7).
 
 **Steps**
 
@@ -83,14 +86,17 @@ The original SF page's `risdhillon@gmail.com` is already gone from `src/content/
 5. **Get involved.** In `GetInvolved.astro`, remove the `email` prop, the `buildMailto` import and the "Start a chapter" button. The one primary CTA becomes "Volunteer with us" → `withBase(VOLUNTEER_PATH)`. The `/volunteer` page already exists and carries the form CTA and open projects. Optionally add a secondary "Sponsor or host" → `withBase('/sponsor')`. Rewrite the lede from "...sponsor, or start a chapter where you live" to "...or sponsor, there's a place for you to help". Update the header comment.
 6. **Support us and SF "Host us".** In `SupportUs.astro`, remove the ben@ default and `buildMailto`. Every card gets a real `href`:
    - Sponsor → `/sponsor`
-   - Host → `/sponsor#levels` (unchanged)
-   - Jobs → `/sponsor#levels`
+   - Host → `/sponsor`
+   - Jobs → `/sponsor`
    - Speak → the volunteer form `ctaUrl`, passed in from `src/pages/index.astro` via HomeSections
    - Volunteer → `/volunteer`
 
-   CTA text follows the destination: "See partnership levels →" or "Volunteer →". Also edit `src/content/chapters/sf-bay-area.md`:
+   CTA text follows the destination: "Start a conversation →" or "Volunteer →".
+   - "Ways to partner" is removed from `/sponsor` for launch (owner, 2026-09-14; see `launch--giving-pages-short-term`), so `#levels` no longer exists. That is why Host and Jobs go to `/sponsor` rather than `/sponsor#levels`.
+
+   Also edit `src/content/chapters/sf-bay-area.md`:
    - Add `leads: [{ name: Jessica Li, role: Interim chapter lead }]` (Q2).
-   - Add `links: [{ label: Volunteer, url: /volunteer }, { label: Host an event, url: /sponsor#levels }]`.
+   - Add `links: [{ label: Volunteer, url: /volunteer }, { label: Host an event, url: /sponsor }]`.
 7. **Base path fix for chapter links.** In `ChapterLinks.astro`, wrap `link.url` in `withBase()`. Root-relative CMS links such as `/volunteer` currently break on the subpath deploy (`siteUrl` is a GitHub Pages subpath). Update its comment, which mentions WhatsApp and Eventbrite.
 8. **Sponsor close.** `SponsorPage.astro` drops the ben@ default and passes `email` through as optional. `SponsorInquiry.astro`:
    - Make `email` optional; render the mailto button only when it is set.
@@ -98,14 +104,19 @@ The original SF page's `risdhillon@gmail.com` is already gone from `src/content/
    - Rewrite the `EmbedForm` `fallbackMessage`, which currently says "email us using the button on the left", so it no longer mentions email.
 9. **WhatsApp.** In `WhatsappCommunity.astro`:
    - Delete the `whatsappUrl` prop and step 2 ("Request to join the WhatsApp group using this link").
-   - "Apply to join" → `WHATSAPP_FORM_URL`. "See the admissions criteria →" → `WHATSAPP_CRITERIA_URL`, in a new tab with `rel="noopener"`.
+   - "Apply to join" → `WHATSAPP_FORM_URL`. "See the admissions criteria →" → `WHATSAPP_CRITERIA_URL`. Both open in a new tab through `externalLinkAttrs` (step 14).
    - Keep step 1's verified copy: "Fill out this short form (under 2 minutes) to verify your alumni status."
    - Remove the "no separate criteria page" comment, which is wrong.
    - Search for `chat.whatsapp.com` afterwards: it must return zero hits outside tests.
 10. **Blank the setting (gated).** Set `"contactEmail": ""` in `src/data/settings.json` only once the giving plan has removed the donate mailtos (row 12). `give.astro:40` uses `??`, so a blank string would reach `buildMailto` and render `mailto:?subject=…`. If this plan lands first, it adds a `resolveContactEmail` guard to `give.astro` and `donate.astro` and leaves the buttons themselves to the giving plan. Check `.codeyam/tmp/content-sandbox-active/data/settings.json`, which still holds ben@. A stale content-sandbox snapshot masks `src/data` edits.
 11. **Machine-readable surfaces.** In `src/pages/llms.txt.ts`, emit `- Email:` only when resolved. `StructuredData.astro` needs no change.
-12. **Luma only.** In `EventsPage.astro`, delete the `eventbriteUrl` prop and its "View Upcoming Events" button. `src/pages/events.astro` already renders `LumaCalendar` with `LUMA_CALENDAR_URL` above the list. If a closing link is wanted, use `LUMA_CALENDAR_URL` from `src/lib/luma.ts` ("See the full calendar on Luma").
+12. **Luma only.** In `EventsPage.astro`, delete the `eventbriteUrl` prop and its "View Upcoming Events" button. `src/pages/events.astro` already renders `LumaCalendar` with `LUMA_CALENDAR_URL` above the list. The closing "View all past events" link to Luma belongs to `launch--mobile-and-layout` (owner decision after Nicole's walkthrough, 2026-09-14). Do not add a second Luma link here.
 13. **Scrub.** Update the default and fixture addresses in `src/lib/mailto.test.ts` and `src/lib/url.test.ts` to `hello@example.com`. Leave `buildMailto` itself unchanged: giving and SponsorInquiry still use it when an email exists.
+14. **Outside links open in a new tab.** Create `src/lib/externalLink.ts` (new), exporting `externalLinkAttrs(href, siteOrigin)`:
+   - It returns `{ target: '_blank', rel: 'noopener noreferrer' }` for an `http(s)` link to another host.
+   - It returns nothing for internal, root-relative, `mailto:`, `tel:` and `#` links. A `www.`/apex variant of the site's own domain counts as internal.
+   - Apply it to every outside link: `WhatsappCommunity.astro` (step 9), `ContentHub.astro` (Medium, LinkedIn, the newsletter), `EventCard.astro`, `ChapterLinks.astro` (step 7), `ChapterConnect.astro` (step 4), and the volunteer apply links when they point off-site.
+   - `LumaSubscribe.astro` already sets `target="_blank"`; switch it to the helper so there is one rule.
 
 ## Tests
 
@@ -120,6 +131,9 @@ The original SF page's `risdhillon@gmail.com` is already gone from `src/content/
   - Until the giving plan lands, an explicit allowlist names the row-12 files and fails once they are clean, so the list cannot go stale.
 - `src/lib/seoEndpoints.test.ts`: change "surfaces contact email and socials" so that with a blank setting, `Email:` is absent and each social still appears. With a mocked non-blank email, `Email:` is present.
 - `src/lib/site.test.ts`: the settings still load when `contactEmail` is `""` or missing.
+- `src/lib/externalLink.test.ts` (new):
+  - An `https` link to another host gets `target="_blank"` and `rel="noopener noreferrer"`.
+  - The site's own origin (including its `www.`/apex twin), root-relative paths, `mailto:`, `tel:` and `#anchor` get nothing.
 - Register the new test files before `prove-red`: `--test` matches registered `describe › it` names, not filenames. Content-driven assertions (nyc.md, settings.json) are invisible to test attribution, so run them on the branch, not "on base".
 
 ## Scenarios to Demonstrate
@@ -131,7 +145,8 @@ The original SF page's `risdhillon@gmail.com` is already gone from `src/content/
 - `community-route-founders-with-leads-and-events`: LinkedIn in the Connect row.
 - `get-involved`: a single Volunteer CTA and no "Start a chapter".
 - `support-us`: five cards and no mailto.
-- `whatsapp-community`: one step, Apply → form, criteria → doc.
+- `whatsapp-community`: one step, Apply → form, criteria → doc, both opening in a new tab (a driven capture).
+- `content-hub`: the Medium, LinkedIn and newsletter links open in a new tab.
 - `eventspage-upcoming-and-past` and `events-route-upcoming-and-past`: no Eventbrite button.
 - `sponsorinquiry-awaiting-a-form`: LinkedIn fallback and no email copy.
 - `harvard-in-tech-landing-page`: the footer shows socials only.

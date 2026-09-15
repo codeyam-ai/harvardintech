@@ -38,6 +38,10 @@ Re-verified on disk on 2026-09-14:
 - **Wrong-city banners, headshots, photo requests, share images and favicon, faster loading, licences, logo permission (the Veritas shield, ask the HAA), social icons, the stock volunteer photo, and unused files: Plan it (all).**
 - **Boston:** the owner asked separately that Boston use "the alumni day picture". The repo has none, so this is a sourcing ask to Aimee (B1). The banner slot is prepared here; the chapters plan owns the copy.
 - **Communities (AI, Founders) and forming chapters (DC, Seattle)** get their own page formats in another plan. Here their image slot is optional, and a text header renders when there's no photo.
+- **Nicole's walkthrough (2026-09-14).** The London, AI and Founders banners are blurry, and Nicole is replacing them herself through the content editor.
+  - She resized photos from Harvard in Tech's Facebook page to 2400 × 1350.
+  - She is collecting them in the "HIT Marketing Internal → Website images" folder.
+  - She asked what size is needed; the answer is under Part B.
 
 ## Open questions / needs input
 
@@ -88,6 +92,7 @@ Why (c): it's the only option that covers images Nicole uploads later. It keeps 
    - Delete `heroImage` from `ai.md` and `founders.md` (communities), and from `dc-dmv.md`, `seattle.md` and `london.md` (chapters).
    - Reasons: DC and Seattle show NYC events, and London shows a duplicate of `event-03`.
    - These pages then render the text `ChapterHeader`.
+   - Skip any of these whose `heroImage` Nicole has already replaced with one of her new photos (see Owner decisions). Clear only the ones still pointing at the old wrong-city or duplicate image.
 9. Boston banner slot: `boston-cambridge.md` keeps `heroImage: /images/bg/hero-bg.jpg`, a Harvard campus facade that is correct for Boston.
    - Add a body comment naming the slot, "replace with Alumni Day photo from Aimee", so B1 is a one-field swap.
 10. Re-encode the three big JPEGs that pages use with a one-off `node` + sharp command (mozjpeg, quality 78, longest edge kept at 2000px), and update their `sizeBytes` in `src/data/media.json`:
@@ -99,6 +104,12 @@ Why (c): it's the only option that covers images Nicole uploads later. It keeps 
 ### Part B: sourcing asks, one list per person (no code; each delivery is an A-style swap)
 
 Delivery spec for every photo: the original file, landscape at 2400px or more on the long edge for banners, and a note that says who took it and whether we may use it (this feeds E4). Uploads can go through /admin; the CMS converts them to WebP at 2048px or less.
+- **Check before relying on that last sentence.** A search of `node_modules/@codeyam/cms/src` on 2026-09-14 found no image resizing or WebP conversion, so uploads may ship at exactly the size uploaded. The build-time variants in D (option c) are what actually make phone-size copies.
+
+**Answer for Nicole's size question (2026-09-14).**
+- 2400 × 1350 (16:9) is right for a banner. Upload it as it is; the build makes the smaller copies phones need (D).
+- Banners fill the whole first screen and crop to fit: heavily at the sides on a phone, and at the top and bottom on a wide monitor. Keep the subject near the middle.
+- For photos taken from Facebook, note who took each one and whether we may use it (E4).
 
 1. **Chapter leads:**
    - **Aimee (Boston):** the Alumni Day photo from the 2026-06-05 Cambridge meetup, which goes into the `heroImage` of `boston-cambridge.md`. Also 6–12 Boston event photos for a curated `photos` list (then `showGallery` can come back).

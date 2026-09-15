@@ -9,7 +9,7 @@ source: manual
 ## Summary
 
 This plan fixes the site's content and page gaps before harvardintech.com moves to the new site. It covers the following:
-- a real `/blog/` index instead of the Welcome post, with posts shown as Medium link cards
+- the blog hidden for launch (owner decision after Nicole's walkthrough, 2026-09-14). The Medium link-card `/blog/` index stays the plan for when the blog comes back.
 - removing `/about`
 - a written privacy and cookie policy linked from the footer
 - static redirects for the old Strikingly URLs and the section URLs that 404
@@ -38,6 +38,8 @@ Facts checked on 2026-09-14:
 - **/volunteer page benefit:** "I am not sure we should advertise this - flag for content review."
 - **Social media volunteer project:** Change. "Edit copy to remove that mention but otherwise have the same JD."
 - **Volunteer roster:** "Need more information to mak ea decision."
+- **Blog for launch (2026-09-14, after Nicole's walkthrough).** Hide the blog until there are real articles. Nicole adds that a blog built into the site stays a priority for SEO and AEO, and that Harvard alumni should be invited as contributing writers. This replaces the link-card index for launch (see A).
+- **Mission statement (Nicole).** She is writing the mission statement for the homepage mission band that the nav's "Mission" link reaches (`/#about`, see B).
 
 ## Open questions / needs input
 
@@ -52,10 +54,11 @@ Facts checked on 2026-09-14:
 4. **Owner:** Please confirm the new titles for the two events: "Welcome to NYC Mixer" (2024-10-10) and "Spring Social" (2025-05-22). Or decide to remove them from the past list.
 5. **Owner:** Volunteer roster. Pick one of the options under Recommendations after checking who is still active.
 6. **History-plan owner:** Once the webinars section exists, what is its URL? Until then, `/webinars` redirects to `/events/` (step 5), and the plan retargets it when that section ships.
+7. **Ben and Nadia (from Nicole):** is `/volunteer` for operational volunteers only, or also roles such as a Seattle chapter lead or a podcast host? Nicole is adding projects and needs the answer to pick them.
 
 ## Recommendations
 
-**A. Blog: link cards on a real `/blog/` index. My pick is option 2.**
+**A. Blog: link cards on a real `/blog/` index. My pick is option 2. Deferred for launch:** the owner chose to hide the blog until there are real articles (2026-09-14). Option 2 stays the plan for when the blog comes back. For launch, implementation step 2 hides it instead.
 1. *Import Medium's RSS at build time.* A build step fetches the feed and renders the posts. The drawbacks:
    - the GitHub Pages deploy would depend on Medium being up and not blocking bots
    - the feed only holds the 10 newest posts, so older ones silently drop off
@@ -112,13 +115,13 @@ Old-to-new map. All targets use trailing slashes.
 | `/l-a`, `/japan` | `/#chapters` | no chapter exists; retarget if one launches |
 | `/volunteers` | `/volunteer/` | |
 | `/webinars` | `/events/` | retarget to the history plan's webinars section |
-| `/blog/welcome` | `/blog/` | after A |
+| `/blog/welcome` | — | dropped for launch: the blog is hidden and has no index; add back with A |
 | `/chapters/` | `/#chapters` | section 404 |
 | `/communities/` | `/#community` | section 404 |
 | `/volunteer/projects/` | `/volunteer/` | section 404 |
 | `/events`, `/` | (unchanged) | already exist |
 
-`/blog/` becomes a real page under A, so it needs no redirect.
+While the blog is hidden, `/blog/` does not exist and nothing links to it.
 
 **E. Trailing slashes.** Make `withBase()` in `src/lib/url.ts` add a `/` to internal page paths. It leaves alone any path with a fragment, a query, a file extension or an existing slash. Also normalize `src/data/nav.json`. I am not setting `trailingSlash: 'always'`, because that also makes the dev server and the codeyam preview 404 on slash-less URLs.
 
@@ -150,19 +153,21 @@ I'd lean toward option 2, but only after each person confirms they are still act
 
 ## Implementation
 
-1. **Blog schema and helper.** Add `mediumUrl: z.string().url().optional()` to the `blog` schema in `src/content/config.ts`. Mirror it in the CMS registry (`src/data/collections.json`) so `src/lib/collectionRegistryDrift.test.ts` stays green.
+1. **Blog schema and helper (deferred until the blog comes back).** Add `mediumUrl: z.string().url().optional()` to the `blog` schema in `src/content/config.ts`. Mirror it in the CMS registry (`src/data/collections.json`) so `src/lib/collectionRegistryDrift.test.ts` stays green.
    - Create `src/lib/blog.ts` (new) with these pure helpers:
      - `blogCards(entries)`: published entries only, newest first, `href` set to `mediumUrl ??` `/blog/<id>/`
      - `mediumItemToEntry(item)`: used by the import script
    - Backfill `mediumUrl` on the 10 posts in `src/content/blog/*.md`, using the URL already in each body.
    - Fill in `coverImage` from each post's first feed image.
-2. **Blog index.** Create `src/pages/blog/index.astro` (new) inside `BaseLayout`. It shows a lede taken from `welcome.md`, a card grid from `blogCards`, and a "More on Medium" link.
+2. **Blog hidden for launch** (owner decision, 2026-09-14). There is no single Draft switch for the blog as a whole, so:
+   - `src/data/nav.json`: remove the Content Hub → "Blog" child (`/blog/welcome`).
+   - `src/components/landing/ContentHub.astro`: stop rendering the "Blog" card (line 39) and the recent-posts list (line 66). Put both behind one switch, so bringing the blog back is a one-line change.
    - Set `src/content/blog/welcome.md` to `draft: true`.
-   - Point the nav "Blog" link in `src/data/nav.json` to `/blog/`.
-   - Point the "Blog" card in `src/components/landing/ContentHub.astro` (line 39) to `/blog/`. Its post links (line 66) use `blogCards` hrefs.
-   - In `src/pages/blog/[slug].astro`, change "← All posts" to link to `/blog/` (coordinate with the design plan's move to `BaseLayout`).
-   - `src/pages/llms.txt.ts` already lists `/blog`. Make it `/blog/` and add Privacy.
-3. **Import script.** Create `scripts/import-medium.mjs` (new). It fetches the feed and, for each item without a matching `mediumUrl`, writes a stub `.md` file with `title`, `date`, `summary`, `coverImage` and `mediumUrl`. It overwrites nothing. Document it in `docs/editing-the-site.md`.
+   - The other `/blog/<slug>` pages keep building, so no post and no link someone already has is lost.
+   - In `src/pages/blog/[slug].astro`, drop the "← All posts" link, which would have nowhere to go (coordinate with the design plan's move to `BaseLayout`).
+   - `src/pages/llms.txt.ts`: remove Blog from the key pages and add Privacy.
+   - When the blog comes back: build the `/blog/` index from option 2 (steps 1 and 3), turn the switch on, and point the nav and the card at `/blog/`.
+3. **Import script (deferred until the blog comes back).** Create `scripts/import-medium.mjs` (new). It fetches the feed and, for each item without a matching `mediumUrl`, writes a stub `.md` file with `title`, `date`, `summary`, `coverImage` and `mediumUrl`. It overwrites nothing. Document it in `docs/editing-the-site.md`.
 4. **Privacy page.** Create `src/content/pages/privacy.md` (new). `src/pages/[slug].astro` renders it at `/privacy/`; follow the section outline in C, and set `description` and an "updated" line.
    - In `src/layouts/BaseLayout.astro` (footer, around line 135), add a "Privacy & cookies" link next to `settings.footerText`.
    - Remove the plain-text " · Cookie Policy" from `footerText` in `src/data/settings.json`.
@@ -198,7 +203,7 @@ I'd lean toward option 2, but only after each person confirms they are still act
 
 ## Tests
 
-- `src/lib/blog.test.ts` (new):
+- `src/lib/blog.test.ts` (new, deferred with steps 1 and 3):
   - `blogCards` drops drafts, sorts newest first, and prefers `mediumUrl` over the local route.
   - `mediumItemToEntry` maps a feed item, stored as a trimmed fixture from today's feed, to valid frontmatter.
 - `src/lib/redirects.test.ts` (new):
@@ -209,8 +214,9 @@ I'd lean toward option 2, but only after each person confirms they are still act
 - `src/lib/url.test.ts`:
   - `withBase('/events')` returns `/events/`.
   - `/#about`, `/x.pdf`, `/a?b`, `mailto:` and external URLs come back unchanged.
-- `src/lib/nav.test.ts`: Blog resolves to `/blog/`, and `unresolvedNavUrls` treats `/blog/` as known.
-- `src/lib/seoEndpoints.test.ts`: llms.txt lists `/blog/` and `/privacy/`, and every listed path is an existing route.
+- `src/lib/nav.test.ts`: while the blog is hidden, the Content Hub menu has no Blog entry.
+- `src/lib/seoEndpoints.test.ts`: llms.txt lists `/privacy/` and not the blog, and every listed path is an existing route.
+- ContentHub: no Blog card and no post list while the switch is off.
 - `src/lib/sitePages.test.ts`: a `privacy` page is routable and is not shadowed by a static route.
 - `src/lib/pageCopyDrift.test.ts` (new): see step 7. It must fail if either copy of the discount line comes back while the other stays removed.
 - `src/lib/launchCopy.test.ts` (new) reads the content and data files and asserts all of the following:
@@ -223,9 +229,9 @@ I'd lean toward option 2, but only after each person confirms they are still act
 
 ## Scenarios to Demonstrate
 
-- `blog-index` (new): `/blog/` with the 10 cards, a Medium cover image on each, and the Welcome post absent.
-- `blog-index-empty` (new): no published posts. Shows the lede plus a "Read on Medium" link, not an empty grid.
+- `content-hub` and the Content Hub menu with the blog hidden: no Blog card, post list or menu entry. Medium, LinkedIn and the newsletter remain.
 - `blog-post-welcome.json`: retarget to a remaining post, or retire it with the Welcome post.
+- Deferred with the blog: `blog-index` (the 10 Medium cards) and `blog-index-empty`.
 - `privacy-page` (new): `/privacy/` fully rendered.
 - `harvard-in-tech-landing-page.json`: the footer shows the "Privacy & cookies" link.
 - `focus-areas.json`: shows the new blurbs, with a 6-chapter count.
@@ -237,6 +243,7 @@ I'd lean toward option 2, but only after each person confirms they are still act
 ## Out of scope
 
 - The consent banner or cookieless GA (follow-up from Q2).
+- Building the `/blog/` link-card index and the Medium import script, deferred until the blog comes back (see A).
 - Moving DNS to Cloudflare for true 301s.
 - Porting the volunteer roster (G option 2 is its own plan).
 - The webinars history section itself.
