@@ -2354,7 +2354,7 @@ _INSPECTOR_BY_STORE = [
     (".codeyam/scenarios/_shared", "shared-data"),
     (".codeyam/editor-step.json", "step"),
     (".codeyam/glossary.json", "glossary-find / glossary-list"),
-    (".codeyam/editor.json", "config-show"),
+    (".codeyam/editor.json", "config-query (testRunners / staticChecks) / config-show"),
     (".codeyam/stack.json", "project-info"),
     (".codeyam/scenarios", "scenarios / scenario-explain"),
     (".codeyam/test-cache", "test-cache-query"),

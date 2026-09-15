@@ -272,6 +272,18 @@ For **fresh redesign slots**, weigh the rating and comment to decide whether to 
 
 Keep all guidance about placeholder imagery, inline-only assets, and atomic writes — these apply to tweaked and redesigned mockups alike. After regenerating, post a short note summarizing what was kept/tweaked vs. redesigned, referencing the specific feedback it addressed. The preview is already on the Mockups tab, so no further tab-switch here.
 
+## Step 5b: tweak when asked
+
+A message that starts with `Tweak:` comes from the Plan tab's "Tweak these designs" button while the designs are open in the preview. It is a conversational change to the designs already on screen, not a new round. It ends with a note naming the round, each design by the number shown on its card, the selected design, and the directory the files live in.
+
+- **Resolve every reference against that note.** "The second one", "the slate one", "the selected one" each map to a real file. If a reference is genuinely ambiguous, ask one short question before writing anything.
+- **Change only what the request names, in place.** Keep each edited file's `NN-` prefix and tier. Leave every other design untouched: do not discard or regenerate them, and do not ask which to keep. That question belongs to the `Iterate:` flow above, not this one.
+- **A request that applies to no design in particular** ("make the accent warmer") applies to every design in the round.
+- **A request that combines designs** ("the first one's layout with the third's palette") edits the design it names as the base. If it names none, ask which one to change.
+- **An empty request** means the user has not said what to change yet. Ask, and wait.
+- Switch the preview to the Mockups tab with the same `editor-design-active-tab` POST as Step 5 before writing, and keep the atomic-write, inline-asset, and lint rules.
+- Afterwards, reply with one line per changed design naming what changed, then invite the next tweak. **A tweak never locks a design in.** Selection stays with Step 6.
+
 ## Step 6 — handle the selection
 
 When the user picks a direction with a phrase like *"Let's use 4"*, *"I want 4"*, or *"pick 4"*, POST the corresponding filename to the editor backend with `curl`:
