@@ -28,6 +28,15 @@
       "runner": "tests"
     },
     {
+      "description": "A deliberate assertion on the shipped value, not a tautology: this is the switch that decides whether the launch site shows a blog at all, so flipping it should be a conscious act that fails a test until the test is updated alongside the nav entry and the index it needs.",
+      "file": "src/lib/blogVisibility.test.ts",
+      "format": "vitest",
+      "key": "BLOG_ENABLED › is off, so the launch site offers no way into the blog",
+      "line": 13,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
       "description": "Clicking the button increments the hydrated counter, proving the island is genuinely interactive and not a static render.",
       "file": "src/components/Greeting.test.tsx",
       "format": "vitest",
@@ -109,12 +118,66 @@
       "runner": "tests"
     },
     {
+      "description": "The old sitemap (orig/sitemap_xml.html) is the definition of \"must not break\". Every path it published needs an entry or it 404s at launch.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "REDIRECT_TARGETS › covers every path the old sitemap published",
+      "line": 12,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "These look like index pages because a real page sits one level below them, so visitors trim the URL back by hand and used to get nothing.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "REDIRECT_TARGETS › covers the section paths that had no index of their own",
+      "line": 28,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The blog is hidden for launch and has no index, so /blog/welcome has nowhere to land — it is deliberately absent rather than pointing at a dead route.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "REDIRECT_TARGETS › does not redirect the retired welcome post while the blog is hidden",
+      "line": 46,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A source that is also a real route would shadow the page it redirects from.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "REDIRECT_TARGETS › never redirects a path to itself",
+      "line": 51,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A redirect landing on a URL that itself redirects costs a second hop and dilutes the signal the redirect exists to pass on. Targets must already be in the canonical form `withBase` emits.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "REDIRECT_TARGETS › points every page target at the canonical trailing-slash form",
+      "line": 37,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
       "description": "A route missing from this list is a route a page can silently shadow.",
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "RESERVED_PAGE_SLUGS › covers every hand-built top-level route the site ships",
-      "line": 94,
+      "line": 99,
       "registeredAt": "2026-08-04T18:59:29Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The derivation must not reach past the first path segment: a page slug is one segment, so `/volunteer/projects/` could never be claimed by a page, and reserving a bare `projects` off the back of it would block a legitimate slug.",
+      "file": "src/lib/sitePages.test.ts",
+      "format": "vitest",
+      "key": "RESERVED_PAGE_SLUGS › does not reserve inner segments of a multi-part redirect source",
+      "line": 142,
+      "registeredAt": "2026-09-16T17:01:02Z",
       "runner": "tests"
     },
     {
@@ -122,7 +185,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "RESERVED_PAGE_SLUGS › holds no duplicates",
-      "line": 101,
+      "line": 106,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -131,8 +194,44 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "RESERVED_PAGE_SLUGS › is already normalized — lowercase and slash-free",
-      "line": 106,
+      "line": 111,
       "registeredAt": "2026-08-04T18:59:29Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A redirect claims its address as firmly as a route does — Astro writes a real file there. Before the old Strikingly URLs were reserved, an editor could publish a page slugged `about`, watch the CMS report it PUBLISHED, and get the homepage-mission redirect at that address instead, with nothing saying why. That is the same silent loss the hand-built routes are listed for, arriving by a new route.",
+      "file": "src/lib/sitePages.test.ts",
+      "format": "vitest",
+      "key": "RESERVED_PAGE_SLUGS › reserves the old URLs that are now redirects",
+      "line": 124,
+      "registeredAt": "2026-09-16T17:01:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An editor typing the slug into a CMS box does not normalize it first.",
+      "file": "src/lib/sitePages.test.ts",
+      "format": "vitest",
+      "key": "a CMS page cannot claim a redirected address › catches a redirected slug however the editor typed it",
+      "line": 157,
+      "registeredAt": "2026-09-16T17:01:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The end-to-end statement of the rule above, through the API the route actually calls.",
+      "file": "src/lib/sitePages.test.ts",
+      "format": "vitest",
+      "key": "a CMS page cannot claim a redirected address › reports the old About URLs as shadowed",
+      "line": 151,
+      "registeredAt": "2026-09-16T17:01:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The guard must not overreach: `privacy` is the page this launch added, and it has to stay publishable from the CMS.",
+      "file": "src/lib/sitePages.test.ts",
+      "format": "vitest",
+      "key": "a CMS page cannot claim a redirected address › still lets a genuinely free slug through",
+      "line": 163,
+      "registeredAt": "2026-09-16T17:01:02Z",
       "runner": "tests"
     },
     {
@@ -4853,6 +4952,60 @@
       "runner": "tests"
     },
     {
+      "description": "A prefix check on the bare string would swallow any future route whose name merely starts with \"blog\" — the boundary is the path segment.",
+      "file": "src/lib/blogVisibility.test.ts",
+      "format": "vitest",
+      "key": "isBlogChannel › does not match a different route that merely starts with the same letters",
+      "line": 49,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Medium is where the writing actually lives, and it is the channel the hidden blog hands its readers to — matching it would hide that too.",
+      "file": "src/lib/blogVisibility.test.ts",
+      "format": "vitest",
+      "key": "isBlogChannel › does not match an external URL that contains the word blog",
+      "line": 56,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The other three channels must survive — hiding the blog must not empty the Content Hub.",
+      "file": "src/lib/blogVisibility.test.ts",
+      "format": "vitest",
+      "key": "isBlogChannel › does not match the other channels",
+      "line": 40,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The reason this matches on the PATH and not the label: `channels` is a CMS-editable prop, so an editor can rename the Blog card to anything. A label-based rule would silently stop hiding it the moment they did.",
+      "file": "src/lib/blogVisibility.test.ts",
+      "format": "vitest",
+      "key": "isBlogChannel › is unaffected by what the channel is labelled",
+      "line": 34,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Today's Content Hub card points at a single post rather than an index.",
+      "file": "src/lib/blogVisibility.test.ts",
+      "format": "vitest",
+      "key": "isBlogChannel › matches a path to an individual post",
+      "line": 26,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The index the blog gets when it returns.",
+      "file": "src/lib/blogVisibility.test.ts",
+      "format": "vitest",
+      "key": "isBlogChannel › matches the blog index path",
+      "line": 20,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
       "description": "An answered decision reads as answered.",
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
@@ -5019,7 +5172,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "isReservedPageSlug › is true for a taken slug and false for a free one",
-      "line": 116,
+      "line": 171,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -5298,7 +5451,7 @@
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
       "key": "llms.txt GET › names CANONICAL_ORIGIN, not the preview host, when it is set",
-      "line": 74,
+      "line": 79,
       "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
@@ -5307,7 +5460,7 @@
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
       "key": "llms.txt GET › omits the Email line when the contact email is blank",
-      "line": 103,
+      "line": 108,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -5316,7 +5469,7 @@
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
       "key": "llms.txt GET › surfaces contact email and socials",
-      "line": 88,
+      "line": 93,
       "registeredAt": "2026-07-02T02:11:43.784715267+00:00",
       "runner": "tests"
     },
@@ -6635,11 +6788,93 @@
       "runner": "tests"
     },
     {
+      "description": "Guards the Momentum Fund pair's drift check from passing vacuously by asserting the two files actually share at least one scalar key to compare.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › actually compares something for the Momentum Fund page",
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Guards the analytics pair's drift check from passing vacuously by asserting the two files actually share at least one scalar key to compare.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › actually compares something for the analytics and embeds",
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Guards the sponsorship pair's drift check from passing vacuously by asserting the two files actually share at least one scalar key to compare.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › actually compares something for the sponsorship page",
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Guards the volunteer pair's drift check from passing vacuously by asserting the two files actually share at least one scalar key to compare.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › actually compares something for the volunteer page",
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The same drift check for the Momentum Fund page's JSON fallback and its collection entry.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › keeps the Momentum Fund page copy identical in both places",
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The analytics pair is the one worth naming explicitly: a wrong ID here is invisible on the page and only shows up as missing data weeks later.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › keeps the analytics and donation IDs identical in both places",
+      "line": 131,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The same drift check for settings.json against the siteIntegrations entry, where a stale value is a wrong analytics or donation ID rather than wrong prose.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › keeps the analytics and embeds copy identical in both places",
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The same drift check for the sponsorship page's JSON fallback and its collection entry.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › keeps the sponsorship page copy identical in both places",
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Fails when a scalar key present in both src/data/volunteerPage.json and the volunteer collection entry holds different values, because the collection wins at render and the JSON is a silent trap for whoever edits it.",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › keeps the volunteer page copy identical in both places",
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The specific drift that was live when this guard was written, pinned so a regression is legible rather than just \"some key differs\".",
+      "file": "src/lib/pageCopyDrift.test.ts",
+      "format": "vitest",
+      "key": "page copy drift between the JSON fallback and the collection entry › keeps the volunteer projects heading the collection actually renders",
+      "line": 121,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
       "description": "Lets the routing rule be exercised without depending on this site's routes.",
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › accepts an injected reserved list so the rule is testable in isolation",
-      "line": 198,
+      "line": 253,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6648,7 +6883,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › carries the whole entry through, not just its slug",
-      "line": 204,
+      "line": 259,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6657,7 +6892,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › drops a shadowed page rather than emitting a duplicate route",
-      "line": 165,
+      "line": 220,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6666,7 +6901,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › drops every page when they are all shadowed",
-      "line": 191,
+      "line": 246,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6675,7 +6910,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › handles an empty collection",
-      "line": 184,
+      "line": 239,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6684,7 +6919,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › preserves input order among routable pages",
-      "line": 178,
+      "line": 233,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6693,7 +6928,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › routes every page when no slug is taken",
-      "line": 156,
+      "line": 211,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6702,7 +6937,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › warns about what it dropped",
-      "line": 172,
+      "line": 227,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6711,7 +6946,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › always returns a title, because a page without one is unusable",
-      "line": 265,
+      "line": 320,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6720,7 +6955,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › falls back to the page’s own title and description",
-      "line": 229,
+      "line": 284,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6729,7 +6964,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › leaves description undefined when the page has neither",
-      "line": 254,
+      "line": 309,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6738,7 +6973,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › passes the share image through and drops a blank one",
-      "line": 259,
+      "line": 314,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6747,7 +6982,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › prefers the explicit SEO overrides",
-      "line": 213,
+      "line": 268,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6756,7 +6991,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › treats a cleared meta description as absent so the lede is used",
-      "line": 247,
+      "line": 302,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -6765,7 +7000,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › treats a cleared override as absent, never as an empty title",
-      "line": 239,
+      "line": 294,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -7229,6 +7464,15 @@
       "runner": "tests"
     },
     {
+      "description": "The exception above is a list of one. Anything else hardcoding the inbox should read it through `emailFor` instead, so this pins the exception rather than leaving it as a precedent the next surface can quietly join.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › keeps the prose exception to the privacy policy alone",
+      "line": 108,
+      "registeredAt": "2026-09-16T17:10:28.736462964+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "No personal inbox anywhere outside the giving files still awaiting their plan.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
@@ -7322,12 +7566,12 @@
       "runner": "tests"
     },
     {
-      "description": "The shared inbox is written once, in settings, and read through `emailFor`.",
+      "description": "The inbox appears literally in exactly two files: settings.json, which every displayed surface reads through `emailFor`, and the privacy policy, which must name its contact point in the text.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
-      "key": "public source contact rules › writes the shared inbox only in settings.json",
-      "line": 78,
-      "registeredAt": "2026-09-16T00:20:28Z",
+      "key": "public source contact rules › writes the shared inbox only in settings.json and the privacy policy",
+      "line": 97,
+      "registeredAt": "2026-09-16T17:10:49.873867504+00:00",
       "runner": "tests"
     },
     {
@@ -7571,6 +7815,60 @@
       "key": "recentPastEvents › returns nothing for a limit of zero or less",
       "line": 353,
       "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "`base` arrives from astro.config as either '/harvardintech' or '/harvardintech/' depending on how DEPLOY_BASE_PATH was written; a doubled slash in a meta-refresh target is a different URL.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "redirectsForBase › accepts a base with or without its own trailing slash",
+      "line": 95,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The custom-domain build (harvardintech.com) has base '/', so the map is already correct and must pass through untouched.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "redirectsForBase › leaves every target alone when the site is served from the domain root",
+      "line": 61,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Astro already resolves the source against the base. Prefixing it here too would build dist at /harvardintech/harvardintech/nyc/.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "redirectsForBase › leaves the sources alone, since Astro already resolves those against the base",
+      "line": 86,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A homepage-anchor target needs the base too, and the fragment must survive on the far side of it.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "redirectsForBase › prefixes the base onto a fragment target without losing the anchor",
+      "line": 80,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The bug this function exists for. Astro applies the base to a redirect's SOURCE but not to its target: on the project-subpath build it wrote dist/nyc/index.html — reached at /harvardintech/nyc/ — refreshing to a bare /chapters/nyc/, which is the domain root of codeyam-ai.github.io, where this site does not live. Every old URL would have redirected to a 404.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "redirectsForBase › prefixes the base onto every target on a project-subpath build",
+      "line": 70,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The returned map must not alias the source of truth, or one build's prefixing would leak into the next.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "redirectsForBase › returns a new map rather than mutating the shared one",
+      "line": 101,
+      "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
     {
@@ -9003,7 +9301,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › accepts an injected reserved list, so the rule is testable in isolation",
-      "line": 77,
+      "line": 82,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9012,7 +9310,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › catches /admin, which only exists on dev + the review track",
-      "line": 42,
+      "line": 47,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9021,7 +9319,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › catches a page shadowed by a file served verbatim from public/",
-      "line": 34,
+      "line": 39,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9030,7 +9328,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › catches a page shadowed by a route DIRECTORY, not just a leaf route",
-      "line": 25,
+      "line": 30,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9039,7 +9337,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › catches a page that would be shadowed by a hand-built route",
-      "line": 18,
+      "line": 20,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9048,7 +9346,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › handles an empty page list",
-      "line": 87,
+      "line": 92,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9057,7 +9355,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › ignores case and surrounding slashes, because a slug box accepts both",
-      "line": 51,
+      "line": 56,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9066,7 +9364,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › passes an ordinary page slug through",
-      "line": 13,
+      "line": 15,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9075,7 +9373,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › reports a slug once per occurrence rather than de-duplicating",
-      "line": 69,
+      "line": 74,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9084,7 +9382,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › returns the offending slugs in input order, so a message can name them",
-      "line": 60,
+      "line": 65,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9093,7 +9391,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › treats an empty reserved list as nothing being reserved",
-      "line": 82,
+      "line": 87,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9102,7 +9400,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedSlugWarning › lists every offending slug, not just the first",
-      "line": 145,
+      "line": 200,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9111,7 +9409,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedSlugWarning › names the offending slug and where to fix it",
-      "line": 130,
+      "line": 185,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9120,7 +9418,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedSlugWarning › reads as singular for one slug and plural for several",
-      "line": 137,
+      "line": 192,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9129,7 +9427,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedSlugWarning › says nothing when nothing is shadowed",
-      "line": 124,
+      "line": 179,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -11028,20 +11326,83 @@
       "runner": "tests"
     },
     {
+      "description": "The whole point: an internal page path gets exactly one trailing slash.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase trailing slashes › appends a trailing slash to a nested internal page path",
+      "line": 69,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Applying the rule twice must not accumulate slashes — a path already in canonical form is already done.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase trailing slashes › does not double the slash on a path that already ends in one",
+      "line": 76,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The slash belongs BEFORE the '#', and putting it after breaks the anchor. Rewriting it correctly is a URL parse this helper deliberately does not do, so a fragment path is left exactly as the caller wrote it.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase trailing slashes › leaves a path carrying a fragment alone",
+      "line": 84,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Same reasoning as a fragment: the slash would land after the query string.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase trailing slashes › leaves a path carrying a query alone",
+      "line": 91,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The case that would break real pages: an asset is a FILE, and '/images/harvard-shield.png/' is a 404. Every logo, hero photo and chapter image on the site goes through this helper.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase trailing slashes › leaves a path whose last segment has a file extension alone",
+      "line": 99,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "'//host' starts with a slash but is a protocol-relative URL to another origin, not an internal path — appending to it would rewrite someone else's address.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase trailing slashes › leaves a protocol-relative URL alone",
+      "line": 115,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A dot EARLIER in the path does not make the last segment a file, so the extension check must look only at the final segment.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase trailing slashes › still slashes a page path when an earlier segment contains a dot",
+      "line": 107,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "At the domain root the base is '/', so an internal path gains only its trailing slash.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › adds only the trailing slash to an internal path when the base is root",
+      "line": 14,
+      "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
       "description": "The bare root path stays '/' at the domain root.",
       "file": "src/lib/url.test.ts",
       "format": "vitest",
       "key": "withBase › keeps the root path as a single slash when the base is root",
-      "line": 19,
-      "registeredAt": "2026-06-13T19:06:53Z",
-      "runner": "tests"
-    },
-    {
-      "description": "At the domain root the base is '/', so an internal path is returned unchanged.",
-      "file": "src/lib/url.test.ts",
-      "format": "vitest",
-      "key": "withBase › leaves an internal path unchanged when the base is root",
-      "line": 13,
+      "line": 20,
       "registeredAt": "2026-06-13T19:06:53Z",
       "runner": "tests"
     },
@@ -11050,7 +11411,7 @@
       "file": "src/lib/url.test.ts",
       "format": "vitest",
       "key": "withBase › maps the root path to the base under a subpath",
-      "line": 31,
+      "line": 32,
       "registeredAt": "2026-06-13T19:06:53Z",
       "runner": "tests"
     },
@@ -11059,7 +11420,7 @@
       "file": "src/lib/url.test.ts",
       "format": "vitest",
       "key": "withBase › passes a bare hash anchor through untouched",
-      "line": 55,
+      "line": 56,
       "registeredAt": "2026-06-13T19:06:53Z",
       "runner": "tests"
     },
@@ -11068,7 +11429,7 @@
       "file": "src/lib/url.test.ts",
       "format": "vitest",
       "key": "withBase › passes external http URLs through untouched",
-      "line": 43,
+      "line": 44,
       "registeredAt": "2026-06-13T19:06:53Z",
       "runner": "tests"
     },
@@ -11077,7 +11438,7 @@
       "file": "src/lib/url.test.ts",
       "format": "vitest",
       "key": "withBase › passes mailto links through untouched",
-      "line": 49,
+      "line": 50,
       "registeredAt": "2026-06-13T19:06:53Z",
       "runner": "tests"
     },
@@ -11086,7 +11447,7 @@
       "file": "src/lib/url.test.ts",
       "format": "vitest",
       "key": "withBase › prefixes the subpath base onto an internal path",
-      "line": 25,
+      "line": 26,
       "registeredAt": "2026-06-13T19:06:53Z",
       "runner": "tests"
     },
@@ -11095,7 +11456,7 @@
       "file": "src/lib/url.test.ts",
       "format": "vitest",
       "key": "withBase › preserves a hash fragment on an absolute path under a subpath",
-      "line": 37,
+      "line": 38,
       "registeredAt": "2026-06-13T19:06:53Z",
       "runner": "tests"
     },

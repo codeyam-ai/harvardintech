@@ -1,0 +1,1815 @@
+{
+  "timestamp": "2026-09-16T17:03:54Z",
+  "title": "Content And Pages",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThis plan fixes the site's content and page gaps before harvardintech.com moves to the new site. It covers the following:\n- the blog hidden for launch (owner decision after Nicole's walkthrough, 2026-09-14). The Medium link-card `/blog/` index stays the plan for when the blog comes back.\n- removing `/about`\n- a written privacy and cookie policy linked from the footer\n- static redirects for the old Strikingly URLs and the section URLs that 404\n- trailing-slash internal links\n- a drift guard for duplicated copy, and corrected status docs\n- content fixes to events, focus areas, the volunteer page and one volunteer project\n- a decision brief on the old volunteer roster\n\nIt is all static-site work. Nothing needs a server, and hosting stays on GitHub Pages.\n\nFacts checked on 2026-09-14:\n- `https://medium.com/feed/harvard-in-tech` returns HTTP 200 with 10 items and full `content:encoded` bodies. All 10 are by Jess Li, published Oct 2024 to Feb 2026, with cover images on `cdn-images-1.medium.com`. They are exactly the 10 Medium stubs in `src/content/blog/`. Medium feeds only ever contain the 10 newest posts.\n- The two untitled events' Luma pages (`luma.com/yi4it0ao`, `luma.com/xk5vyfvv`) describe the annual \"Welcome to NYC\" Mixer and the Spring Social. Both were held at Sugar Mouse, 47 3rd Ave, New York, NY.\n- The old sitemap (`orig/sitemap_xml.html`) lists `/`, `/about-us`, `/events`, `/japan`, `/l-a`, `/nyc`, `/san-francisco`, `/volunteers` and `/webinars`.\n\n## Owner decisions (2026-09-14)\n\n- **Blog list:** \"There's a blog page that seems to have placeholder content; is there a way to use that and/or embed Medium content?\"\n- **Welcome post / blog entry point:** Change. \"Need a recommendation - can we embed medium content or host it on the site or should we take a different approach?\"\n- **/about:** Change. \"Have it go to a section on the site or kill it - make a recommendation.\"\n- **Cookie policy:** Change. \"Plan a fix that includes writing up a policy (reference similar organizations).\"\n- **Redirects:** Plan it. \"Figure out if the redirect can support this at the new domain or how to make this work.\"\n- **Section 404s, trailing slashes, status docs, duplicated copy, small inconsistencies:** Plan it (all).\n- **Past events list:** Change. \"Reference event data and flag for cleaning or removal.\"\n- **Focus areas:** Change. \"Hide podcasts if it doesn't exist. For webinars cross-reference older site.\"\n- **/volunteer page benefit:** \"I am not sure we should advertise this - flag for content review.\"\n- **Social media volunteer project:** Change. \"Edit copy to remove that mention but otherwise have the same JD.\"\n- **Volunteer roster:** \"Need more information to mak ea decision.\"\n- **Blog for launch (2026-09-14, after Nicole's walkthrough).** Hide the blog until there are real articles. Nicole adds that a blog built into the site stays a priority for SEO and AEO, and that Harvard alumni should be invited as contributing writers. This replaces the link-card index for launch (see A).\n- **Mission statement (Nicole).** She is writing the mission statement for the homepage mission band that the nav's \"Mission\" link reaches (`/#about`, see B).\n\n## Open questions / needs input\n\n1. **Owner (Nadia) with the HAA liaison:** Does the Harvard Alumni Association require specific privacy or trademark wording from Shared Interest Groups? If it does, that wording replaces the policy outline in step 4.\n2. **Owner:** We have a London chapter. UK GDPR/PECR treats analytics cookies as needing consent. Choose one of these:\n   - (a) add a small consent banner that loads GA only after \"Accept\"\n   - (b) switch GA4 to a no-cookie setup (cookieless pings, i.e. Consent Mode \"denied\" by default)\n   - (c) accept the risk and disclose it only in the policy\n\n   I recommend (a). It is a separate follow-up plan, because `Analytics.astro` scopes consent-gating out today.\n3. **Nicole / Ben (content review):** Is \"Discounts on select Harvard University online courses\" a real benefit that volunteers can claim? If nobody can name the program and how to redeem it, step 11 removes the claim.\n4. **Owner:** Please confirm the new titles for the two events: \"Welcome to NYC Mixer\" (2024-10-10) and \"Spring Social\" (2025-05-22). Or decide to remove them from the past list.\n5. **Owner:** Volunteer roster. Pick one of the options under Recommendations after checking who is still active.\n6. **History-plan owner:** Once the webinars section exists, what is its URL? Until then, `/webinars` redirects to `/events/` (step 5), and the plan retargets it when that section ships.\n7. **Ben and Nadia (from Nicole):** is `/volunteer` for operational volunteers only, or also roles such as a Seattle chapter lead or a podcast host? Nicole is adding projects and needs the answer to pick them.\n\n## Recommendations\n\n**A. Blog: link cards on a real `/blog/` index. My pick is option 2. Deferred for launch:** the owner chose to hide the blog until there are real articles (2026-09-14). Option 2 stays the plan for when the blog comes back. For launch, implementation step 2 hides it instead.\n1. *Import Medium's RSS at build time.* A build step fetches the feed and renders the posts. The drawbacks:\n   - the GitHub Pages deploy would depend on Medium being up and not blocking bots\n   - the feed only holds the 10 newest posts, so older ones silently drop off\n   - editors lose CMS control\n2. *Link cards to Medium (picked).* Each post stays a markdown entry that editors control in the CMS. It gains a `mediumUrl` field so its card links straight to Medium. A new `/blog/` index lists the cards with cover image, summary and date. A developer-run script, `scripts/import-medium.mjs` (new), reads the feed and writes a stub for each new Medium post. It runs only when asked and is never part of the build.\n3. *Host full posts.* This means copying the `content:encoded` HTML into the site. It creates duplicate content, which needs `rel=canonical` to point at Medium, and it would keep hotlinking Medium's CDN images. It also makes a second copy that drifts when authors edit on Medium. It costs the most and adds the least value.\n\nWhy option 2: it gives readers a real blog page and gives Medium the traffic. It works with the feed's 10-item cap, and it keeps the CMS as the editor's single place to work.\n\nThe Welcome post is retired (set to `draft: true`), and its intro paragraph becomes the index's lede. `/blog/welcome` then redirects to `/blog/`.\n\n**B. /about: remove it. My pick is option 3.**\n1. *Grow `/about` into a full page.* That duplicates the hero mission copy.\n2. *Keep it as a one-line page.* It stays dead weight.\n3. *Delete `src/content/pages/about.md` and redirect `/about` and `/about-us` to `/#about` (picked).* The nav's \"Mission\" already goes there, and nothing links to `/about`.\n\n**C. Privacy and cookie policy: a new `pages` entry at `/privacy/`, linked from the footer.**\nThis is not legal advice. Have the HAA liaison, or a volunteer lawyer, review the text before launch.\n\nSuggested sections:\n1. Who we are: a volunteer-run Harvard alumni group, with the contact email.\n2. What we collect, and through which tool:\n   - Google Analytics 4 (`G-GCBX577FFD`): pages viewed, approximate location, device. Uses first-party cookies such as `_ga`.\n   - Luma: event registration data, under Luma's own policy.\n   - Mailchimp: newsletter email address and open/click stats.\n   - Google Forms: volunteer and WhatsApp-application answers.\n   - Givebutter: donations. We do not store card data.\n3. Why we use it: running events, sending newsletters, and understanding site use. We never sell data.\n4. Cookies: a table listing each cookie's name, provider, purpose and lifetime. It also covers how to block or delete cookies, and links Google's opt-out add-on.\n5. Third parties: links to the Luma, Mailchimp, Google and Givebutter privacy pages.\n6. Retention: how long we keep each kind of data, and deletion on request by email.\n7. Your rights: access, correction and deletion, with a short note on GDPR/UK rights for London members.\n8. Children: the site is not directed at people under 13 (or 16 in the UK/EU).\n9. Changes: a \"last updated\" date.\n\nComparable public policies:\n- Harvard University Privacy Statement: https://www.harvard.edu/privacy-statement/\n- Harvard Club of Boston Privacy Policy: https://www.harvardclub.com/privacy-policy\n- Hack Club Privacy Policy, from a volunteer-heavy nonprofit that covers cookies and children: https://www.hackclub.com/privacy/\n\n**D. Redirects: Astro `redirects` now, Cloudflare optional later. My pick is option 1.**\nGitHub Pages cannot send real 301s.\n1. *Astro `redirects` in `astro.config.mjs` (picked).* With static output, Astro writes a small HTML page per old path. The page does a `<meta http-equiv=\"refresh\">` and includes `rel=canonical` to the new URL. It needs no infrastructure, works on both builds, and Google treats it as a redirect.\n2. *GoDaddy forwarding.* GoDaddy DNS hosts the domain today (`docs/scoping/domain-transfer-runbook.md`). It can only forward a whole domain, not individual paths, so it can't work while the apex points at GitHub Pages.\n3. *Cloudflare in front.* Moving nameservers to Cloudflare's free plan gives true per-path 301s through Redirect Rules. However, it moves DNS away from GoDaddy, and the MX/SPF records for the HostGator email must be copied over exactly. The runbook avoids that risk on purpose. This is worth doing after launch if search traffic matters.\n\nOld-to-new map. All targets use trailing slashes.\n\n| Old path | New target | Note |\n|---|---|---|\n| `/about-us`, `/about` | `/#about` | mission hero |\n| `/nyc` | `/chapters/nyc/` | |\n| `/san-francisco` | `/chapters/sf-bay-area/` | |\n| `/l-a`, `/japan` | `/#chapters` | no chapter exists; retarget if one launches |\n| `/volunteers` | `/volunteer/` | |\n| `/webinars` | `/events/` | retarget to the history plan's webinars section |\n| `/blog/welcome` | — | dropped for launch: the blog is hidden and has no index; add back with A |\n| `/chapters/` | `/#chapters` | section 404 |\n| `/communities/` | `/#community` | section 404 |\n| `/volunteer/projects/` | `/volunteer/` | section 404 |\n| `/events`, `/` | (unchanged) | already exist |\n\nWhile the blog is hidden, `/blog/` does not exist and nothing links to it.\n\n**E. Trailing slashes.** Make `withBase()` in `src/lib/url.ts` add a `/` to internal page paths. It leaves alone any path with a fragment, a query, a file extension or an existing slash. Also normalize `src/data/nav.json`. I am not setting `trailingSlash: 'always'`, because that also makes the dev server and the codeyam preview 404 on slash-less URLs.\n\n**F. Duplicated copy: keep the JSON fallbacks and add a drift guard.** `src/lib/pageCopyMerge.ts` merges each collection entry over its JSON file, so the collection always wins. Editing the JSON therefore changes nothing on the live site.\n\nDeleting the JSON files would reach into `readSingleton` typing and scenario seeds (`src/lib/site.ts`), which is too broad a change right before launch.\n\nInstead, a test fails whenever a key present in both places holds different values. Every copy edit in this plan is made in both places.\n\n**G. Volunteer roster: a decision brief.** The old `/volunteers` page had a \"Meet Our Team\" gallery of 9 volunteers. Each had a photo, a name caption and a LinkedIn link, with no roles or bios:\n- Tamara Stariwat\n- Yesenia España\n- Bethany Graham\n- Sreenidhi Perugu\n- Pradnya Kale\n- Regina Pasternak\n- Nicole Soltau\n- Kamal Bassan\n- Tejas Koulagi\n\nThe source data is in `orig_dump2.txt` (lines 210–239).\n\nThe options:\n1. **Leave it off (today's state).**\n2. **Port it as a CMS-edited gallery on `/volunteer`.** This means a new `volunteers` collection with name, photo, LinkedIn and an active flag.\n3. **Add a short text \"Thank you to our volunteers\" credit line with no photos.**\n\nI'd lean toward option 2, but only after each person confirms they are still active and agree to be listed. Until someone confirms, choose option 1. The work for option 2 is its own small plan and is not included here.\n\n## Implementation\n\n1. **Blog schema and helper (deferred until the blog comes back).** Add `mediumUrl: z.string().url().optional()` to the `blog` schema in `src/content/config.ts`. Mirror it in the CMS registry (`src/data/collections.json`) so `src/lib/collectionRegistryDrift.test.ts` stays green.\n   - Create `src/lib/blog.ts` (new) with these pure helpers:\n     - `blogCards(entries)`: published entries only, newest first, `href` set to `mediumUrl ??` `/blog/<id>/`\n     - `mediumItemToEntry(item)`: used by the import script\n   - Backfill `mediumUrl` on the 10 posts in `src/content/blog/*.md`, using the URL already in each body.\n   - Fill in `coverImage` from each post's first feed image.\n2. **Blog hidden for launch** (owner decision, 2026-09-14). There is no single Draft switch for the blog as a whole, so:\n   - `src/data/nav.json`: remove the Content Hub → \"Blog\" child (`/blog/welcome`).\n   - `src/components/landing/ContentHub.astro`: stop rendering the \"Blog\" card (line 39) and the recent-posts list (line 66). Put both behind one switch, so bringing the blog back is a one-line change.\n   - Set `src/content/blog/welcome.md` to `draft: true`.\n   - The other `/blog/<slug>` pages keep building, so no post and no link someone already has is lost.\n   - In `src/pages/blog/[slug].astro`, drop the \"← All posts\" link, which would have nowhere to go (coordinate with the design plan's move to `BaseLayout`).\n   - `src/pages/llms.txt.ts`: remove Blog from the key pages and add Privacy.\n   - When the blog comes back: build the `/blog/` index from option 2 (steps 1 and 3), turn the switch on, and point the nav and the card at `/blog/`.\n3. **Import script (deferred until the blog comes back).** Create `scripts/import-medium.mjs` (new). It fetches the feed and, for each item without a matching `mediumUrl`, writes a stub `.md` file with `title`, `date`, `summary`, `coverImage` and `mediumUrl`. It overwrites nothing. Document it in `docs/editing-the-site.md`.\n4. **Privacy page.** Create `src/content/pages/privacy.md` (new). `src/pages/[slug].astro` renders it at `/privacy/`; follow the section outline in C, and set `description` and an \"updated\" line.\n   - In `src/layouts/BaseLayout.astro` (footer, around line 135), add a \"Privacy & cookies\" link next to `settings.footerText`.\n   - Remove the plain-text \" · Cookie Policy\" from `footerText` in `src/data/settings.json`.\n5. **Redirects.** Create `src/lib/redirects.ts` (new), which exports the map in D as plain data. Import it into `astro.config.mjs` as `redirects: ...`.\n   - Delete `src/content/pages/about.md` (B).\n   - On the project-subpath build (`DEPLOY_BASE_PATH`), check that `dist/nyc/index.html` points its refresh at the base-prefixed URL. If Astro doesn't prefix the base, prefix it in `redirects.ts`.\n   - Check that Hero.astro and HeroCarousel.astro don't both render `id=\"about\"` on the home page (they both declare it).\n6. **Trailing slashes.** Update `withBase` in `src/lib/url.ts` as described in E. Normalize the internal `url`s in `src/data/nav.json`, and the `url` defaults in `src/components/landing/FocusAreas.astro` and `ContentHub.astro`.\n   - Add the trailing slash to the hand-written doc links in `src/lib/nav.ts`, and update the Blog assertions in `src/lib/nav.test.ts` (lines 253–265, 328).\n7. **Drift guard.** Create `src/lib/pageCopyDrift.test.ts` (new) to guard these pairs:\n   - `volunteerPage.json` ↔ `src/content/volunteerPage/volunteer.md`\n   - `sponsorPage.json` ↔ `src/content/sponsorPage/sponsor.md`\n   - `donatePage.json` ↔ `src/content/pageCopy/donate.md`\n   - `settings.json` `googleAnalyticsId`/`givebutterAccountId` ↔ `src/content/siteIntegrations/site.md`\n\n   Fix any drift the guard exposes, keeping the collection's value.\n8. **Status docs.**\n   - `docs/nicole-review.md` line 232: say all 5 bios are blank (`ben-wei.md` and `nadia-eldeib.md` have `bio: ''`; the other three have no bio). Refresh the \"8 events and 11 blog posts\" line after this plan.\n   - `public/review/index.html`:\n     - line 240: \"Chapters (5 cities)\" becomes 6\n     - lines 311 and 329: add SF Bay Area to the city lists\n     - line 313: drop \"podcasts\"\n     - line 373: keep \"none have a bio\" (correct)\n9. **Past events.**\n   - `src/content/events/2024-10-10-harvard-in-tech.md`: title \"Harvard Alumni in Tech: Welcome to NYC Mixer\", location \"New York, NY\", `chapter: nyc`.\n   - `src/content/events/2025-05-22-harvard-in-tech.md`: title \"Harvard Alumni in Tech: Spring Social\", with the same location and chapter.\n   - Keep the filenames, since the ids feed CMS links. If the owner prefers removal (Q4), set `draft: true` instead.\n10. **Focus areas** (`src/components/landing/FocusAreas.astro`):\n    - Programs blurb: \"Events and webinars across the year.\" Drop \"podcasts\", since none exists. The old site did have a `/webinars` page (2020 COVID-era sessions), so \"webinars\" stays and links to the history plan's section once it exists.\n    - Chapters blurb: stop hard-coding \"Five\". Add an optional `chapterCount` prop. `src/components/landing/HomeSections.astro` (line 89) passes the published `chapters` count, which gives \"Chapters in 6 cities, and growing.\"\n11. **Volunteer benefit.** Pending Q3, remove the \"Other Benefits\" item from both `src/content/volunteerPage/volunteer.md` and `src/data/volunteerPage.json`, keeping them identical for step 7. Record the removed text in the PR for Nicole's review.\n12. **Social media project.** In `src/content/projects/social-media-marketing-specialist-events.md`, change \"For this specific New York event, the volunteer will support…\" to \"For each event, the volunteer will support…\". Leave the rest of the JD unchanged, except for one fix: the last line (\"Review post performance…\") becomes a list item, which its missing \"- \" makes it look intended to be. It stays `draft: true`.\n\n## Tests\n\n- `src/lib/blog.test.ts` (new, deferred with steps 1 and 3):\n  - `blogCards` drops drafts, sorts newest first, and prefers `mediumUrl` over the local route.\n  - `mediumItemToEntry` maps a feed item, stored as a trimmed fixture from today's feed, to valid frontmatter.\n- `src/lib/redirects.test.ts` (new):\n  - Every path from the old sitemap has an entry.\n  - No destination is itself a source, so there are no chains.\n  - Every destination is `/`-anchored with a trailing slash or `/#fragment`.\n  - Chapter targets name real files in `src/content/chapters/`.\n- `src/lib/url.test.ts`:\n  - `withBase('/events')` returns `/events/`.\n  - `/#about`, `/x.pdf`, `/a?b`, `mailto:` and external URLs come back unchanged.\n- `src/lib/nav.test.ts`: while the blog is hidden, the Content Hub menu has no Blog entry.\n- `src/lib/seoEndpoints.test.ts`: llms.txt lists `/privacy/` and not the blog, and every listed path is an existing route.\n- ContentHub: no Blog card and no post list while the switch is off.\n- `src/lib/sitePages.test.ts`: a `privacy` page is routable and is not shadowed by a static route.\n- `src/lib/pageCopyDrift.test.ts` (new): see step 7. It must fail if either copy of the discount line comes back while the other stays removed.\n- `src/lib/launchCopy.test.ts` (new) reads the content and data files and asserts all of the following:\n  - No event title equals \"Harvard Alumni in Tech\" exactly.\n  - Every published event has a `location`.\n  - No copy contains \"podcasts\", \"Five city\", \"specific New York event\", \"online courses\", or the plain-text \"Cookie Policy\".\n\n  Note that test-on-base attribution misreads tests of `src/content` for these, so prove-red against the pre-edit files.\n- Register the new test files with `refresh-tests` before `prove-red`.\n\n## Scenarios to Demonstrate\n\n- `content-hub` and the Content Hub menu with the blog hidden: no Blog card, post list or menu entry. Medium, LinkedIn and the newsletter remain.\n- `blog-post-welcome.json`: retarget to a remaining post, or retire it with the Welcome post.\n- Deferred with the blog: `blog-index` (the 10 Medium cards) and `blog-index-empty`.\n- `privacy-page` (new): `/privacy/` fully rendered.\n- `harvard-in-tech-landing-page.json`: the footer shows the \"Privacy & cookies\" link.\n- `focus-areas.json`: shows the new blurbs, with a 6-chapter count.\n- `eventspage-upcoming-and-past.json` and `events-route-upcoming-and-past.json`: the two NYC events appear with their real titles and locations.\n- `volunteer-page-open-projects.json`: the benefits list has no discount claim.\n- `volunteer-project-detail-full-description-no-photo.json`: the social media JD without \"this specific New York event\".\n- `redirect-old-nyc` (new): the static `/nyc/` redirect page, showing its refresh target.\n\n## Out of scope\n\n- The consent banner or cookieless GA (follow-up from Q2).\n- Building the `/blog/` link-card index and the Medium import script, deferred until the blog comes back (see A).\n- Moving DNS to Cloudflare for true 301s.\n- Porting the volunteer roster (G option 2 is its own plan).\n- The webinars history section itself.\n- Moving `blog/[slug].astro` into `BaseLayout` (design plan).\n- Renaming the Medium publication or its handle.\n- Writing board bios.\n- Deleting the JSON fallbacks entirely.\n- Anything under `src/pages/isolated-components/`.",
+  "description": "Closed the content and page gaps standing between this site and the harvardintech.com cutover. The blog is hidden for launch behind one switch (BLOG_ENABLED) — its ten Medium stubs keep building at their own URLs so no retained link breaks, but every route into it is closed: the Content Hub card, the recent-posts list and the nav entry. /about is gone, replaced by a written privacy and cookie policy at /privacy/ that the footer now links to, in place of the words 'Cookie Policy' sitting in footerText as prose that linked nowhere. Eleven old Strikingly and section URLs now redirect, withBase gives every internal link a canonical trailing slash, a new test guards the copy stored in both a JSON fallback and a collection entry, and the events, focus-area, volunteer and status-doc content was corrected.\n\nThree defects were found and fixed that the plan had not anticipated. First, the redirects created eight new addresses a CMS page could be silently shadowed by — an editor publishing a page slugged 'about' would have seen it reported PUBLISHED and got the redirect instead — so RESERVED_PAGE_SLUGS now derives those from the redirect map, with tests. Second, Astro applies the deploy base path to a redirect's source but not its target, so on the project-subpath build every old URL would have redirected to a 404 at the domain root, with a rel=canonical pointing there too; redirectsForBase fixes it and is unit-tested on both deploy shapes. Third, the pre-commit suite caught that the privacy policy hardcodes the shared inbox, which noPersonalEmail.test.ts had pinned to settings.json alone so every displayed surface reads it through emailFor. The policy is now that guard's one documented exception — a privacy policy has to name the address a reader writes to in order to see or delete their data, and markdown in a content collection has no interpolation seam — and a second assertion pins the exception to that single file so it cannot become a precedent. The cost is named in the test: change the inbox and the policy is the one place that will not follow automatically.\n\nOne change went beyond the plan's letter: the Focus Areas 'Content Hub' row still read 'Our blog, Medium, and LinkedIn', naming a blog a visitor can no longer reach — the same defect the plan's own removal of 'podcasts' targeted.\n\nSCOPE VERDICT. Delivered: implementation steps 2 and 4 through 12 of the plan — hide the blog, the privacy page and footer link, redirects, trailing slashes, the copy-drift guard, status docs, the two untitled NYC events, focus areas, the volunteer benefit and the social-media project copy. Deferred, by the owner's 2026-09-14 decision to hide the blog until there are real articles: steps 1 and 3, the /blog/ link-card index and the scripts/import-medium.mjs importer, together with the blog-index and blog-index-empty scenarios. Not registered: a redirect-old-nyc scenario, because the dev server serves /nyc as a real 301 and a capture would follow it and show the chapter page under a redirect label — the static redirect HTML exists only in dist/. All five PROJECT-level deliverables remain deferred and every one of those deferrals was decided by the user, not by this agent; none were newly deferred this cycle.\n\nStill owed by people, not code: the plan carries seven open questions for Nadia, Nicole and Ben. Two of them gate work that shipped on the plan's stated default rather than on an answer — Q4 (the two event titles, now 'Welcome to NYC Mixer' and 'Spring Social') and Q3 (the 'Discounts on select Harvard University online courses' benefit, removed from the volunteer page pending confirmation that anyone can name and redeem the programme). The privacy policy is not legal advice and is written to be reviewed by the HAA liaison or a volunteer lawyer before launch; the UK GDPR analytics-consent question (Q2) is scoped to its own follow-up plan. Two pre-existing capture failures were left untouched: momentum-fund-filtering-the-donor-wall and momentum-fund-the-first-donor-on-the-wall drive an interaction against [data-network-search] while their seeds omit the network section that renders it — drift from the Momentum Network recomposition, on a surface an in-flight plan owns.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--content-and-pages.md\t.codeyam/plans/completed/launch--content-and-pages.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blog-post-welcome.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-welcome--desktop.png",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-welcome--desktop.png.hash",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors-every-bio-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors-two-of-five-bios-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembercard-initials-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembercard-with-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembertile-initials-instead-of-a-headshot--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembertile-no-bio-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembertile-with-a-bio--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-with-image--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-forming-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitypage-founders-composed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-complete--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-cutover-day--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-decisions-answered-nothing-begun--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-nothing-started--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-partway-through--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-waiting-on-one-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-avatar-anonymous--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-avatar-initials-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-avatar-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-card-anonymous--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-card-founding-donor-with-a-note--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-card-named-donor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-card-with-a-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-tier-band-a-declared-giving-level--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-tier-band-other-supporters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-anonymity-beside-named-donors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-empty-the-invitation--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-filtered-to-one-giving-level--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-no-donors-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-the-first-founding-donor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-three-levels-and-twenty-names--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/event-gallery--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/focus-areas--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/focus-areas--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/formingchaptercta-no-contact-address--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/formingchaptercta-with-contact-address--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerytile-captioned-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerytile-keyboard-focus--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/get-involved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillarcard-with-inline-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-numbered-bordered-grid--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-the-duplicated-band-shows-its-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-three-pillars--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givebutton-both-variants--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giveclose-the-final-ask--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givecollage-six-photographs-in-one-frame--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givephoto-the-strip-the-card-overlaps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingcard-no-platform-connected--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunityaction-newsletter-card--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunitycta-three-ways-in--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero-carousel--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/joinwhatsappcta-community-primary-action--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-sections-reordered-by-an-editor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-a-supporter-selected--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-a-supporter-who-wrote-no-message--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-anonymity-among-named-supporters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-day-one-the-grid-unlit--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-the-campaign-at-scale--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-the-first-gift--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumclose-closing-ask--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumclose-photo-split--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumhero-personalized--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumhero-video-backdrop--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumhero-video-path-that-resolves-to-nothing--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumtestimonials-photo-led-rows--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumtestimonials-three-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pagenarrowbody-leads-body-and-links--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-communities-derived--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-derived-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-no-chapters-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-sixth-chapter-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/project-review-gate-refused--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/project-review-unlocked-status--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-example-placements--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-no-partners-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-real-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/support-us--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-every-field-filled--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-quote-without-an-event-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-with-role--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerhero-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcard-with-thumbnail--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcardlinks-both-detail-only-and-apply-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcta-own-link-and-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-long-title-and-blurb--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectphoto-square-upload--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojects-populated-grid--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectsempty-production-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectthumb-linked-bare-and-placeholder--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-one-other-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-three-suggestions--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/site-page-a-page-written-in-the-cms.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/1b0807836c3012382156341a8353bd0fee97c20915fe04d9337dd6580397bda4.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/c99be6fba18bd5115120905515cb7949570f3359d69958db65c0e4215f017a43.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "README.md",
+      "status": "modified"
+    },
+    {
+      "path": "astro.config.mjs",
+      "status": "modified"
+    },
+    {
+      "path": "docs/nicole-review.md",
+      "status": "modified"
+    },
+    {
+      "path": "public/review/index.html",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/ContentHub.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/FocusAreas.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/HomeSections.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/blog/welcome.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2024-10-10-harvard-in-tech.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2025-05-22-harvard-in-tech.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/pages/about.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/projects/social-media-marketing-specialist-events.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/volunteerPage/volunteer.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/nav.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/settings.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/volunteerPage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/nav.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/nav.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/seoEndpoints.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/sitePages.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/sitePages.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/url.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/url.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/blog/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/llms.txt.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blog-post-a-retained-medium-stub.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/privacy-page-the-written-policy.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/1b922a10951b0f290d9f6baaad298ab9431723aa1db226ed7f2ce762272f0a4b.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/a1ab44c77f01b3a2e85b8536b551897befb222ed7b638020a7ef596a2e64671e.json",
+      "status": "added"
+    },
+    {
+      "path": "src/content/pages/privacy.md",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/blogVisibility.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/blogVisibility.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/pageCopyDrift.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/redirects.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/redirects.ts",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "AccomplishmentCard - One Cell Of The Evidence Strip"
+    },
+    {
+      "name": "Blog Post - A Retained Medium Stub"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft"
+    },
+    {
+      "name": "BlogPostArticle - An Ordinary Post"
+    },
+    {
+      "name": "BlogPostBody - Locked, Prompt Replaces The Article"
+    },
+    {
+      "name": "BlogPostBody - Nothing Encrypted, Article Renders"
+    },
+    {
+      "name": "Board of Directors - Empty"
+    },
+    {
+      "name": "Board of Directors - Every Bio Written"
+    },
+    {
+      "name": "Board of Directors - Two Of Five Bios Written"
+    },
+    {
+      "name": "Board of Directors"
+    },
+    {
+      "name": "BoardMemberCard - Initials Fallback"
+    },
+    {
+      "name": "BoardMemberCard - With Photo"
+    },
+    {
+      "name": "BoardMemberTile - Initials Instead Of A Headshot"
+    },
+    {
+      "name": "BoardMemberTile - No Bio Yet"
+    },
+    {
+      "name": "BoardMemberTile - With A Bio"
+    },
+    {
+      "name": "CalloutCard - Single Callout"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps"
+    },
+    {
+      "name": "Chapter Route - New York City"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent"
+    },
+    {
+      "name": "ChapterConnect - Default"
+    },
+    {
+      "name": "ChapterEvents - Community Heading"
+    },
+    {
+      "name": "ChapterEvents - Recent Past Events"
+    },
+    {
+      "name": "ChapterEvents - Rich List"
+    },
+    {
+      "name": "ChapterHero - No Image Fallback"
+    },
+    {
+      "name": "ChapterHero - With Image"
+    },
+    {
+      "name": "ChapterPage - Forming Chapter"
+    },
+    {
+      "name": "ChapterPage - Full Chapter"
+    },
+    {
+      "name": "ChapterPage - Sparse No Leads"
+    },
+    {
+      "name": "ChapterSignUp - Default"
+    },
+    {
+      "name": "CMS Analytics And Embeds"
+    },
+    {
+      "name": "CMS Blog - Duplicate Is Not Momentum-Fund-Only"
+    },
+    {
+      "name": "CMS Blog List - A Preview Link And A Locked One"
+    },
+    {
+      "name": "CMS Blog List - Drafts And Published"
+    },
+    {
+      "name": "CMS Chapter Editor - Marked As Draft"
+    },
+    {
+      "name": "CMS Chapter Editor - New York City"
+    },
+    {
+      "name": "CMS Dashboard - Empty"
+    },
+    {
+      "name": "CMS Dashboard - Populated"
+    },
+    {
+      "name": "CMS Donors Editor - Anonymous Keeps The Data, The Page Withholds It"
+    },
+    {
+      "name": "CMS Donors Editor - The Supporter Identity Fields"
+    },
+    {
+      "name": "CMS Entry Editor - Change Staged For Review"
+    },
+    {
+      "name": "CMS Entry Editor - New Chapter Form"
+    },
+    {
+      "name": "CMS Events - The Collection 0.7 Removed"
+    },
+    {
+      "name": "CMS Media Library - Adopted Images"
+    },
+    {
+      "name": "CMS Momentum Sections - A Move Staged But Not Yet Published"
+    },
+    {
+      "name": "CMS Momentum Sections - A Section Still In Draft"
+    },
+    {
+      "name": "CMS Momentum Sections - In Order With Arrows"
+    },
+    {
+      "name": "CMS Momentum Sections - The Duplicate Built Up In Draft"
+    },
+    {
+      "name": "CMS Momentum Sections - Two Bands Under Their Own Names"
+    },
+    {
+      "name": "CMS New Section - Prefilled By Duplicate"
+    },
+    {
+      "name": "CMS Page Settings - Adding A Donor Wall Tier"
+    },
+    {
+      "name": "CMS Page Settings - Momentum Fund Page"
+    },
+    {
+      "name": "CMS Page Settings - The Momentum Network Copy An Editor Can Now Reach"
+    },
+    {
+      "name": "CMS Publish Review - Nothing To Publish"
+    },
+    {
+      "name": "CMS Publish Review - Plain Language Change Summary"
+    },
+    {
+      "name": "CMS Publish Review - What The Edit Actually Did"
+    },
+    {
+      "name": "CMS Section Editor - Section Type Is A Dropdown"
+    },
+    {
+      "name": "CMS Section Editor - The Donor Fields No Editor Can Change"
+    },
+    {
+      "name": "CMS Section Editor - The Second Band Pointed At Its Own Cards"
+    },
+    {
+      "name": "CMS Section Editor - Where The Pillar Cards Actually Live"
+    },
+    {
+      "name": "CMS Site Settings"
+    },
+    {
+      "name": "CMS Sponsorship Level Editor"
+    },
+    {
+      "name": "CMS Team - Board Members In Their Own Order"
+    },
+    {
+      "name": "CMS Testimonials - The Fields Behind A Quote"
+    },
+    {
+      "name": "CMS Volunteer Page Editor"
+    },
+    {
+      "name": "Coming Soon Band"
+    },
+    {
+      "name": "Community Route - AI On Day One"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events"
+    },
+    {
+      "name": "CommunityCallouts - What Happens Here"
+    },
+    {
+      "name": "CommunityPage - Founders Composed"
+    },
+    {
+      "name": "ContactUs - Default"
+    },
+    {
+      "name": "ContactUs - No Email Set"
+    },
+    {
+      "name": "Content Hub - Empty"
+    },
+    {
+      "name": "Content Hub"
+    },
+    {
+      "name": "Cutover Runbook - A Tick That Could Not Be Saved"
+    },
+    {
+      "name": "Cutover Runbook - Complete"
+    },
+    {
+      "name": "Cutover Runbook - Cutover Day"
+    },
+    {
+      "name": "Cutover Runbook - Decisions Answered Nothing Begun"
+    },
+    {
+      "name": "Cutover Runbook - Nothing Started"
+    },
+    {
+      "name": "Cutover Runbook - Partway Through"
+    },
+    {
+      "name": "Cutover Runbook - The Records On A Phone"
+    },
+    {
+      "name": "Cutover Runbook - Waiting On One Answer"
+    },
+    {
+      "name": "Decision Tick - Decided Read Only"
+    },
+    {
+      "name": "Decision Tick - Decided"
+    },
+    {
+      "name": "Decision Tick - Open"
+    },
+    {
+      "name": "Decision Tick - Writing The Answer"
+    },
+    {
+      "name": "DeployChip - Change Is Live"
+    },
+    {
+      "name": "DeployChip - Published, Still Updating"
+    },
+    {
+      "name": "DeployChip - Publishing"
+    },
+    {
+      "name": "DeployStatus - Build Failed"
+    },
+    {
+      "name": "DeployStatus - Live"
+    },
+    {
+      "name": "DeployStatus - Published, Still Updating"
+    },
+    {
+      "name": "DeployStatus - Publishing, Dismissible"
+    },
+    {
+      "name": "DeployStatus - Waiting For The Site"
+    },
+    {
+      "name": "Donor Avatar - Anonymous"
+    },
+    {
+      "name": "Donor Avatar - Initials Fallback"
+    },
+    {
+      "name": "Donor Avatar - Photo"
+    },
+    {
+      "name": "Donor Card - Anonymous"
+    },
+    {
+      "name": "Donor Card - Founding Donor With A Note"
+    },
+    {
+      "name": "Donor Card - Named Donor"
+    },
+    {
+      "name": "Donor Card - With A Photo"
+    },
+    {
+      "name": "Donor Tier Band - A Declared Giving Level"
+    },
+    {
+      "name": "Donor Tier Band - Other Supporters"
+    },
+    {
+      "name": "Donor Tier Chips - Every Band"
+    },
+    {
+      "name": "Donor Wall - Anonymity Beside Named Donors"
+    },
+    {
+      "name": "Donor Wall Empty - The Invitation"
+    },
+    {
+      "name": "Donor Wall - Filtered To One Giving Level"
+    },
+    {
+      "name": "Donor Wall Intro - Heading And Founding Line"
+    },
+    {
+      "name": "Donor Wall Intro - No Founding Donors"
+    },
+    {
+      "name": "Donor Wall Intro - Nothing To Introduce"
+    },
+    {
+      "name": "Donor Wall - No Donors Yet"
+    },
+    {
+      "name": "Donor Wall - The First Founding Donor"
+    },
+    {
+      "name": "Donor Wall - Three Levels And Twenty Names"
+    },
+    {
+      "name": "EmbedForm - Configured Form"
+    },
+    {
+      "name": "EmbedForm - Embedded Iframe"
+    },
+    {
+      "name": "EmbedForm - Unconfigured Fallback"
+    },
+    {
+      "name": "Event Gallery"
+    },
+    {
+      "name": "Events Route - Upcoming and Past"
+    },
+    {
+      "name": "EventsPage - No Events"
+    },
+    {
+      "name": "EventsPage - Upcoming and Past"
+    },
+    {
+      "name": "Focus Areas"
+    },
+    {
+      "name": "FormingChapterCta - No Contact Address"
+    },
+    {
+      "name": "FormingChapterCta - With Contact Address"
+    },
+    {
+      "name": "Founding Badge - The Mark"
+    },
+    {
+      "name": "GalleryExpand - Fourteen Photos"
+    },
+    {
+      "name": "GalleryLightbox - No Caption"
+    },
+    {
+      "name": "GalleryLightbox - Photo Open"
+    },
+    {
+      "name": "GalleryTile - Captioned Photo"
+    },
+    {
+      "name": "GalleryTile - Keyboard Focus"
+    },
+    {
+      "name": "Get Involved"
+    },
+    {
+      "name": "GiftPillarCard - With Inline Link"
+    },
+    {
+      "name": "GiftPillars - Numbered Bordered Grid"
+    },
+    {
+      "name": "GiftPillars - The Duplicated Band Shows Its Own Cards"
+    },
+    {
+      "name": "GiftPillars - Three Pillars"
+    },
+    {
+      "name": "GiveButton - Both Variants"
+    },
+    {
+      "name": "GiveClose - The Final Ask"
+    },
+    {
+      "name": "GiveCollage - Six Photographs In One Frame"
+    },
+    {
+      "name": "GiveFaq - Every Question Closed"
+    },
+    {
+      "name": "GiveHero - The Opening Ask"
+    },
+    {
+      "name": "GivePhoto - The Strip The Card Overlaps"
+    },
+    {
+      "name": "GiveRecognition - The Placeholder Supporter Card"
+    },
+    {
+      "name": "GiveStatement - Both Tones Together"
+    },
+    {
+      "name": "Giving Campaign"
+    },
+    {
+      "name": "GivingCard - No Platform Connected"
+    },
+    {
+      "name": "GlobalCommunityAction - Newsletter Card"
+    },
+    {
+      "name": "GlobalCommunityCta - Three Ways In"
+    },
+    {
+      "name": "GoalMeter - A Campaign Name That Runs Long"
+    },
+    {
+      "name": "GoalMeter - Navy Chrome With Campaign Link"
+    },
+    {
+      "name": "GoalMeter - The Band Around Givebutter's Meter"
+    },
+    {
+      "name": "Greeting - Hydrated Counter Clicked"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones"
+    },
+    {
+      "name": "Hero Carousel"
+    },
+    {
+      "name": "Hero"
+    },
+    {
+      "name": "Home Sections - All Three Visibility States"
+    },
+    {
+      "name": "JoinWhatsAppCta - Community Primary Action"
+    },
+    {
+      "name": "Locked Preview - Password Required"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password"
+    },
+    {
+      "name": "Locked Preview - Wrong Password"
+    },
+    {
+      "name": "LockedPreviewBody - Before The Password"
+    },
+    {
+      "name": "Luma Calendar"
+    },
+    {
+      "name": "LumaSubscribe - Default"
+    },
+    {
+      "name": "Momentum Fund - A Giving Platform Is Chosen"
+    },
+    {
+      "name": "Momentum Fund - A Mistyped Section Type And A Missing Photo"
+    },
+    {
+      "name": "Momentum Fund - Arriving From The Email"
+    },
+    {
+      "name": "Momentum Fund - Every Section Hidden"
+    },
+    {
+      "name": "Momentum Fund - Finding Your Place In The Network"
+    },
+    {
+      "name": "Momentum Fund - Public Visitor"
+    },
+    {
+      "name": "Momentum Fund - Sections Reordered By An Editor"
+    },
+    {
+      "name": "Momentum Fund - The Donor Wall Moved To The Top"
+    },
+    {
+      "name": "Momentum Fund - The First Donor On The Wall"
+    },
+    {
+      "name": "Momentum Fund - The Goal Meter Held As Coming Soon"
+    },
+    {
+      "name": "Momentum Fund - The Impact Band With Real Quotes"
+    },
+    {
+      "name": "Momentum Fund - Two Pillar Bands With Their Own Cards"
+    },
+    {
+      "name": "Momentum Network - A Supporter Selected"
+    },
+    {
+      "name": "Momentum Network - A Supporter Who Wrote No Message"
+    },
+    {
+      "name": "Momentum Network - Anonymity Among Named Supporters"
+    },
+    {
+      "name": "Momentum Network - Day One, The Grid Unlit"
+    },
+    {
+      "name": "Momentum Network - The Campaign At Scale"
+    },
+    {
+      "name": "Momentum Network - The First Gift"
+    },
+    {
+      "name": "MomentumAccomplishments - Campaign Track Record"
+    },
+    {
+      "name": "MomentumClose - Closing Ask"
+    },
+    {
+      "name": "MomentumClose - Photo Split"
+    },
+    {
+      "name": "MomentumHero - Personalized"
+    },
+    {
+      "name": "MomentumHero - Video Backdrop"
+    },
+    {
+      "name": "MomentumHero - Video Path That Resolves To Nothing"
+    },
+    {
+      "name": "MomentumMission - Gold Band"
+    },
+    {
+      "name": "MomentumNarrative - Image Layout Without An Image"
+    },
+    {
+      "name": "MomentumNarrative - Image Left"
+    },
+    {
+      "name": "MomentumNarrative - Image Right"
+    },
+    {
+      "name": "MomentumNarrative - Text Only"
+    },
+    {
+      "name": "MomentumNarrative - Two Prose Columns"
+    },
+    {
+      "name": "MomentumStats - Campaign Figures"
+    },
+    {
+      "name": "MomentumTestimonials - Photo-Led Rows"
+    },
+    {
+      "name": "MomentumTestimonials - Three Quotes"
+    },
+    {
+      "name": "OrderArrows - Bottom Row"
+    },
+    {
+      "name": "OrderArrows - Middle Row"
+    },
+    {
+      "name": "OrderArrows - The Only Row"
+    },
+    {
+      "name": "OrderArrows - Top Row"
+    },
+    {
+      "name": "Our Chapters - Empty"
+    },
+    {
+      "name": "Our Chapters"
+    },
+    {
+      "name": "PageNarrowBody - Leads Body And Links"
+    },
+    {
+      "name": "Previews Index - The Shareable List Link"
+    },
+    {
+      "name": "PrimaryNav - Communities Derived"
+    },
+    {
+      "name": "PrimaryNav - Derived Chapters"
+    },
+    {
+      "name": "PrimaryNav - No Chapters Yet"
+    },
+    {
+      "name": "PrimaryNav - Sixth Chapter Published"
+    },
+    {
+      "name": "Privacy Page - The Written Policy"
+    },
+    {
+      "name": "Project Review - Gate Refused"
+    },
+    {
+      "name": "Project Review - Unlocked Status"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS"
+    },
+    {
+      "name": "Site Page - Long Title And No Description"
+    },
+    {
+      "name": "SitePageBody - Markdown An Editor Can Write"
+    },
+    {
+      "name": "SitePageHeader - Long Title And No Description"
+    },
+    {
+      "name": "SitePageHeader - Title And Lede"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall"
+    },
+    {
+      "name": "SponsorInquiry - Awaiting A Form"
+    },
+    {
+      "name": "SponsorInquiry - Form Configured"
+    },
+    {
+      "name": "SponsorInquiry - No Email And No Form"
+    },
+    {
+      "name": "SponsorLevels - Four Partnership Levels"
+    },
+    {
+      "name": "SponsorPage - Full Page No Partners"
+    },
+    {
+      "name": "SponsorPage - Full Page With Examples"
+    },
+    {
+      "name": "SponsorWall - Example Placements"
+    },
+    {
+      "name": "SponsorWall - No Partners Yet"
+    },
+    {
+      "name": "SponsorWall - Real Partners"
+    },
+    {
+      "name": "StagingBar - Publish Again While Deploying"
+    },
+    {
+      "name": "StagingBar - Reviewing Before Publish"
+    },
+    {
+      "name": "Stats Band"
+    },
+    {
+      "name": "Step Tick - Commit Refused"
+    },
+    {
+      "name": "Step Tick - Done With Attribution"
+    },
+    {
+      "name": "Step Tick - Read Only"
+    },
+    {
+      "name": "Support Us"
+    },
+    {
+      "name": "Supporter Network - A Direction Full-Screen"
+    },
+    {
+      "name": "Supporter Network - Day One Empty Network"
+    },
+    {
+      "name": "Supporter Network - Gate Locked"
+    },
+    {
+      "name": "Supporter Network - Gate Refused"
+    },
+    {
+      "name": "Supporter Network - Nine Directions"
+    },
+    {
+      "name": "Supporter Recognition - Import Step Four The Wall It Would Produce"
+    },
+    {
+      "name": "Supporter Recognition - Import Step One The File"
+    },
+    {
+      "name": "Supporter Recognition - Import Step Three What The File Cannot Answer"
+    },
+    {
+      "name": "Supporter Recognition - Import Step Two Rows Needing A Person"
+    },
+    {
+      "name": "Supporter Recognition - The Outline Copied For The Doc"
+    },
+    {
+      "name": "Supporter Recognition - The Wall As It Stands"
+    },
+    {
+      "name": "TestimonialCard - Every Field Filled"
+    },
+    {
+      "name": "TestimonialCard - Quote Without An Event Photo"
+    },
+    {
+      "name": "TestimonialCard - With Role"
+    },
+    {
+      "name": "Upcoming Events - Empty"
+    },
+    {
+      "name": "Upcoming Events"
+    },
+    {
+      "name": "UtilityBar - Derived Cities"
+    },
+    {
+      "name": "UtilityBar - No Chapters"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects"
+    },
+    {
+      "name": "Volunteer Page - Open Projects"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested"
+    },
+    {
+      "name": "VolunteerBenefit - Long Copy"
+    },
+    {
+      "name": "VolunteerBenefits - Four Blocks"
+    },
+    {
+      "name": "VolunteerHero - Default"
+    },
+    {
+      "name": "VolunteerProjectBody - Rendered Markdown"
+    },
+    {
+      "name": "VolunteerProjectCard - Linked Through To Its Detail Page"
+    },
+    {
+      "name": "VolunteerProjectCardLinks - Both Detail Only And Apply Only"
+    },
+    {
+      "name": "VolunteerProjectCta - Own Link And Fallback"
+    },
+    {
+      "name": "VolunteerProjectHeader - Long Title And Blurb"
+    },
+    {
+      "name": "VolunteerProjectMeta - Every Date Shape"
+    },
+    {
+      "name": "VolunteerProjectPage - Full Project"
+    },
+    {
+      "name": "VolunteerProjectPhoto - Square Upload"
+    },
+    {
+      "name": "VolunteerProjects - Populated Grid"
+    },
+    {
+      "name": "VolunteerProjectsEmpty - Production Default"
+    },
+    {
+      "name": "VolunteerProjectThumb - Linked Bare And Placeholder"
+    },
+    {
+      "name": "VolunteerRelatedProjects - One Other Project"
+    },
+    {
+      "name": "VolunteerRelatedProjects - Three Suggestions"
+    },
+    {
+      "name": "Whatsapp Community"
+    }
+  ],
+  "testResults": {
+    "total": 135,
+    "passed": 135,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 135,
+        "passed": 135
+      }
+    ]
+  }
+}

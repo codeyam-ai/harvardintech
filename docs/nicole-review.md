@@ -243,15 +243,19 @@ editor's next upload. That matters because the bug is invisible at publish time
 
 ## Still open (team todos, not code)
 
-- Real **board bios** — **2 of the 5 are now written** (Ben Wei and Nadia
-  Eldeib); three are still blank. *Optional, and not a launch blocker* — a
-  member without one renders as photo + name + role, which is exactly what
-  harvardintech.com shows today. Add the rest in /admin whenever they are
-  written, one at a time if that is easier; a half-filled board is a supported
-  state, not a broken one.
+- Real **board bios** — **all 5 are still blank**. Ben Wei and Nadia Eldeib have
+  an empty `bio` field rather than no field at all, which is what an earlier
+  version of this document read as "written"; the other three have no bio field.
+  *Optional, and not a launch blocker* — a member without one renders as photo +
+  name + role, which is exactly what harvardintech.com shows today. Add them in
+  /admin whenever they are written, one at a time if that is easier; a
+  half-filled board is a supported state, not a broken one.
 - A **donation-platform URL** (the Donate button currently opens an email).
 - **Chapter + event content** for the 6 chapters (Boston/Cambridge, DC-DMV,
-  London, NYC, Seattle, SF Bay Area). 8 events and 11 blog posts are in.
+  London, NYC, Seattle, SF Bay Area). 8 events are in. The 11 blog posts are in
+  too but **hidden for launch** — the blog has no entry point until there are
+  real articles written for it, so nothing links to them (see
+  `src/lib/blogVisibility.ts`).
 
 ## Two sites, and which one to send
 

@@ -142,6 +142,10 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
         </div>
         <div class="foot-links">
           {footerEmail ? <a href={`mailto:${footerEmail}`}>{footerEmail}</a> : null}
+          {/* The policy this replaces was the words "Cookie Policy" sitting in
+              `footerText` as plain prose, linking nowhere. A real link, next to
+              the contact address, is where a reader looks for it. */}
+          <a href={withBase('/privacy/')}>Privacy &amp; cookies</a>
           {
             settings.socials.map((s) => (
               <a href={s.url} {...externalLinkAttrs(s.url, Astro.url.origin)}>

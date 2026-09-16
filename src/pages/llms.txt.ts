@@ -24,8 +24,12 @@ export function GET(context: APIContext): Response {
 
   const keyRoutes: Array<{ label: string; path: string }> = [
     { label: 'Home', path: '/' },
-    { label: 'Events', path: '/events' },
-    { label: 'Blog', path: '/blog' },
+    { label: 'Events', path: '/events/' },
+    // Blog removed while it is hidden for launch — pointing an answer engine at
+    // a route with no entry point invites it to cite a page visitors cannot
+    // reach. Privacy takes its place: it is the page a reader most often wants
+    // a direct link to, and the one an answer engine is most likely asked for.
+    { label: 'Privacy & cookies', path: '/privacy/' },
   ];
 
   const body = `# ${settings.siteTitle}

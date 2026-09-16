@@ -22,13 +22,40 @@ interface Area {
 }
 interface Props {
   areas?: Area[];
+  /** How many chapters are published, so the Chapters blurb counts them rather
+   *  than asserting a number that goes stale the next time one launches. The
+   *  homepage passes `chapters.length`; absent (an isolated render, or a caller
+   *  that supplies its own `areas`) falls back to wording with no count in it. */
+  chapterCount?: number;
 }
+// `chapterCount` is destructured BEFORE `areas` so the default blurb below can
+// read it — a later default may reference an earlier binding.
 const {
+  chapterCount,
   areas = [
-    { label: 'Programs', blurb: 'Events, webinars, and podcasts across the year.', url: '/events' },
-    { label: 'Chapters', blurb: 'Five city communities, and growing.', url: '/#chapters' },
+    // "podcasts" was dropped: the org runs none, and naming one on the homepage
+    // promises a thing a visitor then cannot find. Webinars stay — the old site
+    // ran them through 2020 and the history plan restores that archive.
+    { label: 'Programs', blurb: 'Events and webinars across the year.', url: '/events/' },
+    {
+      label: 'Chapters',
+      // Was hard-coded to "Five" and had been wrong since SF Bay Area launched.
+      blurb: chapterCount
+        ? `Chapters in ${chapterCount} ${chapterCount === 1 ? 'city' : 'cities'}, and growing.`
+        : 'City communities, and growing.',
+      url: '/#chapters',
+    },
     { label: 'Communities', blurb: 'Our alumni WhatsApp network.', url: '/#community' },
-    { label: 'Content Hub', blurb: 'Our blog, Medium, and LinkedIn.', url: '/#content' },
+    {
+      label: 'Content Hub',
+      // "Our blog" went with the blog itself. The Content Hub band this row
+      // points at now offers Medium, LinkedIn and the newsletter, so naming a
+      // blog here promised a destination the visitor lands on and cannot find —
+      // the same reason "podcasts" left the Programs row above. Put the blog
+      // back in this sentence when `BLOG_ENABLED` goes back to true.
+      blurb: 'Our Medium publication, LinkedIn, and newsletter.',
+      url: '/#content',
+    },
     { label: 'Membership', blurb: 'About, get involved, and support the mission.', url: '/#get-involved' },
   ],
 } = Astro.props as Props;

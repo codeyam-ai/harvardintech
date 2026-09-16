@@ -66,7 +66,12 @@ describe('llms.txt GET', () => {
     const body = await (await llmsGet(ctx('https://example.com/'))).text();
     expect(body).toContain('## Key pages');
     expect(body).toContain('[Home](https://example.com/)');
-    expect(body).toContain('[Events](https://example.com/events)');
+    expect(body).toContain('[Events](https://example.com/events/)');
+    // Privacy took the Blog slot: the blog is hidden for launch, and pointing an
+    // answer engine at a route with no entry point invites it to cite a page a
+    // reader cannot reach.
+    expect(body).toContain('[Privacy & cookies](https://example.com/privacy/)');
+    expect(body).not.toContain('[Blog]');
   });
 
   // The gated preview is hosted on a GitHub Pages subpath, but answer engines
@@ -76,7 +81,7 @@ describe('llms.txt GET', () => {
     try {
       const body = await (await llmsGet(ctx('https://codeyam-ai.github.io/harvardintech/'))).text();
       expect(body).toContain('[Home](https://harvardintech.com/)');
-      expect(body).toContain('[Events](https://harvardintech.com/events)');
+      expect(body).toContain('[Events](https://harvardintech.com/events/)');
       expect(body).not.toContain('github.io');
     } finally {
       vi.unstubAllEnvs();

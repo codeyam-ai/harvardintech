@@ -108,14 +108,16 @@ codeyam-editor start
 ```
 <!-- codeyam:run-and-edit:end -->
 
-<!-- codeyam:scenario-gallery:start d=4d7a215805e5 -->
+<!-- codeyam:scenario-gallery:start d=814d84b1a97f -->
 ## Scenario gallery
 
 States captured as runnable scenarios with codeyam-editor:
 
-### Blog Post - Welcome
+### Blog Post - A Retained Medium Stub
 
-<img src=".codeyam/scenarios/screenshots/blog-post-welcome--desktop.png" alt="Blog Post - Welcome" width="280">
+<img src=".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png" alt="Blog Post - A Retained Medium Stub" width="280">
+
+A blog post as a reader who still holds its link meets it. This scenario used to show the Welcome post, which was retired when the blog was hidden for launch — the owner decided on 2026-09-14 not to advertise a blog until there are real articles for it. So it now shows one of the ten Medium stubs instead, which is what a retained link actually resolves to: the posts keep building at their own URLs even with every route INTO the blog closed, so nobody holding an old link gets a 404. Note what is ABSENT — the back link that used to sit above the title is gone, because with the blog hidden there is no index for it to return to.
 
 ### Cutover Runbook - The Records On A Phone
 

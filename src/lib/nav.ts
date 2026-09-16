@@ -93,7 +93,7 @@ const INSERT_AFTER_LABEL = 'Programs';
 export function chapterNavItems(chapters: ChapterLike[]): NavItem[] {
   return byPresence(chapters).map((chapter) => ({
     label: chapter.city,
-    url: `/chapters/${chapter.slug}`,
+    url: `/chapters/${chapter.slug}/`,
   }));
 }
 
@@ -140,7 +140,7 @@ export function withChapterGroup(items: NavItem[], chapterItems: NavItem[]): Nav
 export function communityNavItems(communities: CommunityLike[]): NavItem[] {
   return [...communities]
     .sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.name.localeCompare(b.name))
-    .map((community) => ({ label: community.name, url: `/communities/${community.slug}` }));
+    .map((community) => ({ label: community.name, url: `/communities/${community.slug}/` }));
 }
 
 /**

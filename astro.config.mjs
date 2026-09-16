@@ -18,6 +18,7 @@ import {
   assertPassphraseConfigured,
   substitutePassphrase,
 } from './src/lib/previewGate';
+import { redirectsForBase } from './src/lib/redirects';
 
 // --- codeyam content sandbox ---------------------------------------------
 // The site's "database" is the committed markdown under `src/content/` and the
@@ -281,6 +282,12 @@ export default defineConfig({
   output: 'static',
   site,
   base,
+  // The old Strikingly URLs and the section paths that 404'd. Kept as plain data
+  // in src/lib/redirects.ts so the map is unit-testable — this file can only be
+  // exercised by a real `astro build`, the same reason `publishTrack` exists.
+  // `redirectsForBase` is what applies the deploy's base to each target; Astro
+  // does not, and an unprefixed target 404s on the project-subpath build.
+  redirects: redirectsForBase(base),
   integrations,
   // The Astro dev toolbar fires on load and calls Vite's HMR `.send()` before
   // the HMR WebSocket has connected through the fleet editor proxy, throwing

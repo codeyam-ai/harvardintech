@@ -47,7 +47,7 @@ describe('chapterNavItems', () => {
     // part of the whole `children` array rather than only in its own test, so
     // this reproduction keeps pinning the FULL menu the group renders.
     expect(group?.children).toEqual([
-      { label: 'Miami', url: '/chapters/miami' },
+      { label: 'Miami', url: '/chapters/miami/' },
       GLOBAL_COMMUNITY_ITEM,
     ]);
   });
@@ -76,7 +76,7 @@ describe('chapterNavItems', () => {
   // city would 404 for every chapter whose display name is not its slug.
   it('builds the url from the slug, not the city', () => {
     expect(chapterNavItems([chapter('dc-dmv', 'DC & DMV Area', 4)])).toEqual([
-      { label: 'DC & DMV Area', url: '/chapters/dc-dmv' },
+      { label: 'DC & DMV Area', url: '/chapters/dc-dmv/' },
     ]);
   });
 
@@ -208,8 +208,8 @@ describe('chapterNavItems status ordering', () => {
     ];
 
     expect(chapterNavItems(chapters).map((i) => i.url)).toEqual([
-      '/chapters/dc-dmv',
-      '/chapters/seattle',
+      '/chapters/dc-dmv/',
+      '/chapters/seattle/',
     ]);
   });
 });
@@ -244,7 +244,7 @@ describe('communityNavItems', () => {
   // would 404 for any community whose display name is not its slug.
   it('builds the url from the slug, not the name', () => {
     expect(communityNavItems([community('ai', 'AI')])).toEqual([
-      { label: 'AI', url: '/communities/ai' },
+      { label: 'AI', url: '/communities/ai/' },
     ]);
   });
 

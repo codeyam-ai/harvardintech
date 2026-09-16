@@ -8,13 +8,15 @@
 // "LinkedIn" is, which the mark and the name already say.
 //
 // Channels are a prop (CMS-editable); defaults mirror the approved taxonomy.
-// External links open the channel; the Blog card stays on-site. Icons are inline
+// External links open the channel; the on-site Blog card is hidden for launch
+// behind `BLOG_ENABLED` (see `blogVisibility.ts`). Icons are inline
 // SVG in `currentColor` (see `brandIcons.ts`), resolved from the channel label so
 // a CMS-added channel picks up its own glyph with no code change.
 import { withBase } from '../../lib/url';
 import { formatEventDate } from '../../lib/events';
 import { brandIcon } from '../../lib/brandIcons';
 import { externalLinkAttrs } from '../../lib/externalLink';
+import { BLOG_ENABLED, isBlogChannel } from '../../lib/blogVisibility';
 
 interface Channel {
   label: string;
@@ -47,6 +49,17 @@ const {
   ],
   posts = [],
 } = Astro.props as Props;
+
+// Both ways into the blog close on one switch (`BLOG_ENABLED`), so bringing the
+// blog back is a one-line change rather than a hunt through this file. Channels
+// are filtered by PATH rather than by label, so a Blog card an editor renamed in
+// the CMS is still caught; the posts list is emptied rather than its markup
+// deleted, which also drops the "Latest from the blog" lede, since that is
+// already tied to the list being non-empty.
+const visibleChannels = BLOG_ENABLED
+  ? channels
+  : channels.filter((c) => c.external || !isBlogChannel(c.url));
+const visiblePosts = BLOG_ENABLED ? posts : [];
 ---
 
 <section class="sec" id="content" style="background: var(--paper-2);">
@@ -55,15 +68,15 @@ const {
       <div>
         <span class="kick">Read, watch, listen</span>
         <h2>Content hub</h2>
-        {posts.length > 0 && <p class="ch-lede">Latest from the blog</p>}
+        {visiblePosts.length > 0 && <p class="ch-lede">Latest from the blog</p>}
       </div>
     </div>
 
     {
-      posts.length > 0 && (
+      visiblePosts.length > 0 && (
         <div class="latest">
           <div class="posts">
-            {posts.slice(0, 3).map((p) => (
+            {visiblePosts.slice(0, 3).map((p) => (
               <a class="post" href={withBase(`/blog/${p.slug}`)}>
                 <span class="post-d">{formatEventDate(p.date)}</span>
                 <span class="post-t">{p.title}</span>
@@ -78,7 +91,7 @@ const {
 
     <div class="ch-grid">
       {
-        channels.map((c) => {
+        visibleChannels.map((c) => {
           const icon = brandIcon(c.icon) ?? brandIcon(c.label);
           return (
             <a

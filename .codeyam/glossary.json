@@ -436,7 +436,7 @@
     "testFile": "src/lib/sectionGroups.test.ts"
   },
   {
-    "description": "Maps published chapters to header menu items — label from the chapter's own city, url built from its slug as /chapters/<slug> — ordered exactly the way the Our Chapters section orders its cards: by the order field, with city breaking ties and sorting entries that carry no order. Sharing that convention is what keeps the menu and the homepage section from ever listing the same chapters in different sequences. Callers pass chapters already draft-filtered through publishedEntries, so draft visibility stays one rule applied at every call site. Paths are returned base-agnostic; the layout wraps them in withBase at render. Returns an empty list for no chapters, and does not mutate the input.",
+    "description": "Maps published chapters to header menu items — label from the chapter's own city, url built from its slug as /chapters/<slug>/ — ordered exactly the way the Our Chapters section orders its cards: by the order field, with city breaking ties and sorting entries that carry no order. Sharing that convention is what keeps the menu and the homepage section from ever listing the same chapters in different sequences. Callers pass chapters already draft-filtered through publishedEntries, so draft visibility stays one rule applied at every call site. Paths are returned base-agnostic and carry the canonical trailing slash the rest of the site's internal links use; the layout wraps them in withBase at render. Returns an empty list for no chapters, and does not mutate the input.",
     "filePath": "src/lib/nav.ts",
     "name": "chapterNavItems",
     "testFile": "src/lib/nav.test.ts"
@@ -499,7 +499,7 @@
     }
   },
   {
-    "description": "Menu items for the published communities, ordered by the optional order pin and then alphabetically by name — the same rule chapterNavItems applies, so the two derivations cannot disagree about what order means. The label is the community's own name and the url is built from the slug, matching the /communities/<slug> route; building the url from the name would 404 for any community whose display name is not its slug. Callers pass entries already draft-filtered by publishedEntries.",
+    "description": "Menu items for the published communities, ordered by the optional order pin and then alphabetically by name — the same rule chapterNavItems applies, so the two derivations cannot disagree about what order means. The label is the community's own name and the url is built from the slug as /communities/<slug>/, matching the route and carrying the canonical trailing slash the rest of the site's internal links use; building the url from the name would 404 for any community whose display name is not its slug. Callers pass entries already draft-filtered by publishedEntries.",
     "filePath": "src/lib/nav.ts",
     "name": "communityNavItems",
     "testFile": "src/lib/nav.test.ts"
@@ -923,6 +923,12 @@
       "justification": "Astro build hook wiring over excludedFromBuild, assertPassphraseConfigured and substitutePassphrase, which are unit-tested; the config file cannot be imported under vitest.",
       "kind": "platform-glue"
     }
+  },
+  {
+    "description": "Decides whether a Content Hub channel is a route INTO the blog, so the Content Hub can drop it while the blog is hidden for launch. True for the blog index and for any individual post path; false for the external channels (Medium, LinkedIn, the newsletter) that must survive the hiding, and false for a different route whose name merely begins with the same letters. It matches on the PATH rather than the label because `channels` is a CMS-editable prop: a label-based rule would silently stop hiding the card the moment an editor renamed it.",
+    "filePath": "src/lib/blogVisibility.ts",
+    "name": "isBlogChannel",
+    "testFile": "src/lib/blogVisibility.test.ts"
   },
   {
     "description": "Whether a runbook decision is recorded answered in the progress singleton. Same tolerance for an absent entry as isStepDone, and the same reason: the state file is hand-editable.",
@@ -1426,6 +1432,12 @@
     "testFile": "src/lib/events.test.ts"
   },
   {
+    "description": "Applies the deploy's base path to every old-URL redirect TARGET, returning a new map for astro.config to consume. It exists because Astro resolves a redirect's source against the base but not its target: on the project-subpath build it wrote dist/nyc/index.html — reached at /harvardintech/nyc/ — refreshing to a bare /chapters/nyc/, which is the domain root of the Pages host rather than where this site lives, so every indexed Strikingly URL would have redirected to a 404, with a rel=canonical pointing there too. Sources are left alone, since prefixing those as well would build a doubled base path. A base of / yields the map unchanged, which is the custom-domain build.",
+    "filePath": "src/lib/redirects.ts",
+    "name": "redirectsForBase",
+    "testFile": "src/lib/redirects.test.ts"
+  },
+  {
     "description": "Up to `limit` other open projects to suggest at the bottom of one project's detail page. \"Related\" means ADJACENT IN EDITOR ORDER, wrapping past the end — not semantically similar: the collection carries no tag, category, or topic field, so there is nothing to compute similarity from, and of the honest alternatives the editor's own ordering is the only one reflecting a human decision. Wrapping means the last project still gets suggestions instead of none. Filtered through `openProjects` so a retired project is never advertised at the bottom of an open one — the detail route generates a page for every published entry regardless of `active`. Returns an empty list when there is no other open project, which is the collection's real state today.",
     "filePath": "src/lib/projects.ts",
     "name": "relatedProjects",
@@ -1837,7 +1849,7 @@
     "testFile": "src/lib/gallery.test.ts"
   },
   {
-    "description": "Prefixes an internal absolute path with import.meta.env.BASE_URL so links resolve under either the domain root (custom domain, base /) or a project subpath (user.github.io/<repo>). External URLs, mailto, and bare hash anchors pass through untouched. Used by the header nav/logo, chapter back link, 404, and blog links for GitHub Pages deployment.",
+    "description": "Prefixes an internal absolute path with import.meta.env.BASE_URL so links resolve under either the domain root (custom domain, base /) or a project subpath (user.github.io/<repo>). External URLs, mailto, and bare hash anchors pass through untouched. Used by the header nav/logo, chapter back link, 404, and blog links for GitHub Pages deployment. It is ALSO where an internal page path picks up its trailing slash, so the site links to one canonical form of each URL instead of splitting its own traffic between /events and /events/. That normalization happens here rather than through Astro's trailingSlash: 'always', which would make the dev server and the codeyam preview 404 on every slash-less URL. Four shapes are exempt because a slash would make them wrong rather than merely different: a path already ending in one, a path carrying a fragment or query (the slash belongs before the # or ?), a path whose last segment has a file extension (an asset is a file, and /images/shield.png/ is a 404), and a protocol-relative //host URL, which is not an internal path at all.",
     "filePath": "src/lib/url.ts",
     "name": "withBase",
     "testFile": "src/lib/url.test.ts"
@@ -1853,6 +1865,12 @@
     "filePath": "src/lib/nav.ts",
     "name": "withCommunityItems",
     "testFile": "src/lib/nav.test.ts"
+  },
+  {
+    "description": "Puts an internal page path into the site's one canonical form by appending a trailing slash, so the site never links to both /events and /events/ and splits its own traffic between two URLs a search engine reads as different pages. Applied inside withBase, which every internal link already passes through — rather than via Astro's trailingSlash: 'always', which would also make the dev server and the codeyam preview 404 on every slash-less URL. Four shapes are returned untouched because a slash would make them wrong rather than merely different: a path already ending in one, a path carrying a fragment or query (the slash belongs before the # or ?, which is a URL parse this does not do), a path whose LAST segment has a file extension (an asset is a file, and /images/shield.png/ is a 404 — a dot in an earlier segment does not count), and a protocol-relative //host URL, which is not an internal path at all. Module-private: it is one exported function's implementation detail, and url.test.ts drives it through withBase, which already has the BASE_URL mocking harness.",
+    "filePath": "src/lib/url.ts",
+    "name": "withTrailingSlash",
+    "testFile": "src/lib/url.test.ts"
   },
   {
     "description": "The menu with every link to a hidden homepage band removed, and any dropdown left empty by that removal removed with it. The second half of hiding a section: the same rule that already keeps the derived Chapters and Communities groups honest, applied to the hand-authored anchors in nav.json, so an editor who takes a band off the page is never left with a menu item that scrolls to nothing.",

@@ -1,7 +1,6 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import '../../styles/tokens.css';
-import { withBase } from '../../lib/url';
 import SEO from '../../components/SEO.astro';
 import HeadExtras from '../../components/HeadExtras.astro';
 import { settings } from '../../lib/site';
@@ -63,7 +62,6 @@ const { customBodyHtml } = await loadIntegrations(settings);
   </head>
   <body>
     <main style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-lg);">
-      <a href={withBase('/')}>&larr; All posts</a>
       <BlogPostBody post={post}>
         <Content />
       </BlogPostBody>

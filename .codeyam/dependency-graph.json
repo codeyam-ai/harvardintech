@@ -115,7 +115,8 @@
     "astro.config.mjs": {
       "imports": [
         "src/lib/publishTrack.ts",
-        "src/lib/previewGate.ts"
+        "src/lib/previewGate.ts",
+        "src/lib/redirects.ts"
       ],
       "importedBy": []
     },
@@ -1189,7 +1190,8 @@
         "src/lib/url.ts",
         "src/lib/events.ts",
         "src/lib/brandIcons.ts",
-        "src/lib/externalLink.ts"
+        "src/lib/externalLink.ts",
+        "src/lib/blogVisibility.ts"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro",
@@ -1681,6 +1683,19 @@
       "importedBy": [
         "src/lib/areaIcons.test.ts",
         "src/components/landing/FocusAreas.astro"
+      ]
+    },
+    "src/lib/blogVisibility.test.ts": {
+      "imports": [
+        "src/lib/blogVisibility.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/blogVisibility.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/blogVisibility.test.ts",
+        "src/components/landing/ContentHub.astro"
       ]
     },
     "src/lib/brandIcons.test.ts": {
@@ -2473,6 +2488,10 @@
         "src/components/donate/MomentumTestimonials.astro"
       ]
     },
+    "src/lib/pageCopyDrift.test.ts": {
+      "imports": [],
+      "importedBy": []
+    },
     "src/lib/pageCopyMerge.test.ts": {
       "imports": [
         "src/lib/pageCopyMerge.ts",
@@ -2574,6 +2593,20 @@
       "importedBy": [
         "src/lib/publishTrack.test.ts",
         "src/pages/cutover-runbook/[...path].astro",
+        "astro.config.mjs"
+      ]
+    },
+    "src/lib/redirects.test.ts": {
+      "imports": [
+        "src/lib/redirects.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/redirects.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/sitePages.ts",
+        "src/lib/redirects.test.ts",
         "astro.config.mjs"
       ]
     },
@@ -2717,7 +2750,9 @@
       "importedBy": []
     },
     "src/lib/sitePages.ts": {
-      "imports": [],
+      "imports": [
+        "src/lib/redirects.ts"
+      ],
       "importedBy": [
         "src/lib/sitePages.test.ts",
         "src/pages/[slug].astro"
@@ -2853,8 +2888,7 @@
         "src/components/FormingChapterCta.astro",
         "src/components/GlobalCommunityAction.astro",
         "src/pages/cutover-runbook/[...path].astro",
-        "src/pages/404.astro",
-        "src/pages/blog/[slug].astro"
+        "src/pages/404.astro"
       ]
     },
     "src/lib/volunteerPageContent.ts": {
@@ -2890,7 +2924,6 @@
     "src/pages/blog/[slug].astro": {
       "imports": [
         "src/styles/tokens.css",
-        "src/lib/url.ts",
         "src/components/SEO.astro",
         "src/components/HeadExtras.astro",
         "src/lib/site.ts",
@@ -4000,7 +4033,8 @@
         "src/lib/publishTrack.ts::isInternalPath",
         "src/lib/previewGate.ts::__file_root__",
         "src/lib/previewGate.ts::assertPassphraseConfigured",
-        "src/lib/previewGate.ts::substitutePassphrase"
+        "src/lib/previewGate.ts::substitutePassphrase",
+        "src/lib/redirects.ts::redirectsForBase"
       ],
       "importedBy": []
     },
@@ -5162,7 +5196,9 @@
         "src/lib/url.ts::withBase",
         "src/lib/events.ts::formatEventDate",
         "src/lib/brandIcons.ts::brandIcon",
-        "src/lib/externalLink.ts::externalLinkAttrs"
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/blogVisibility.ts::__file_root__",
+        "src/lib/blogVisibility.ts::isBlogChannel"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro::__file_root__",
@@ -5773,6 +5809,31 @@
       "importedBy": [
         "src/lib/areaIcons.test.ts::__file_root__",
         "src/components/landing/FocusAreas.astro::__file_root__"
+      ]
+    },
+    "src/lib/blogVisibility.test.ts::__file_root__": {
+      "filePath": "src/lib/blogVisibility.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/blogVisibility.ts::__file_root__",
+        "src/lib/blogVisibility.ts::isBlogChannel"
+      ],
+      "importedBy": []
+    },
+    "src/lib/blogVisibility.ts::__file_root__": {
+      "filePath": "src/lib/blogVisibility.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/components/landing/ContentHub.astro::__file_root__"
+      ]
+    },
+    "src/lib/blogVisibility.ts::isBlogChannel": {
+      "filePath": "src/lib/blogVisibility.ts",
+      "name": "isBlogChannel",
+      "imports": [],
+      "importedBy": [
+        "src/components/landing/ContentHub.astro::__file_root__"
       ]
     },
     "src/lib/brandIcons.test.ts::__file_root__": {
@@ -7984,6 +8045,23 @@
         "astro.config.mjs::__file_root__"
       ]
     },
+    "src/lib/redirects.test.ts::__file_root__": {
+      "filePath": "src/lib/redirects.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/redirects.ts::__file_root__",
+        "src/lib/redirects.ts::redirectsForBase"
+      ],
+      "importedBy": []
+    },
+    "src/lib/redirects.ts::redirectsForBase": {
+      "filePath": "src/lib/redirects.ts",
+      "name": "redirectsForBase",
+      "imports": [],
+      "importedBy": [
+        "astro.config.mjs::__file_root__"
+      ]
+    },
     "src/lib/reviewGate.js::__file_root__": {
       "filePath": "src/lib/reviewGate.js",
       "name": "__file_root__",
@@ -8242,7 +8320,9 @@
     "src/lib/sitePages.ts::__file_root__": {
       "filePath": "src/lib/sitePages.ts",
       "name": "__file_root__",
-      "imports": [],
+      "imports": [
+        "src/lib/redirects.ts::__file_root__"
+      ],
       "importedBy": [
         "src/lib/sitePages.test.ts::__file_root__"
       ]
@@ -8555,8 +8635,7 @@
         "src/components/FormingChapterCta.astro::__file_root__",
         "src/components/GlobalCommunityAction.astro::__file_root__",
         "src/pages/cutover-runbook/[...path].astro::__file_root__",
-        "src/pages/404.astro::__file_root__",
-        "src/pages/blog/[slug].astro::__file_root__"
+        "src/pages/404.astro::__file_root__"
       ]
     },
     "src/lib/volunteerPageContent.ts::__file_root__": {
@@ -8609,7 +8688,6 @@
       "name": "__file_root__",
       "imports": [
         "src/styles/tokens.css::__file_root__",
-        "src/lib/url.ts::withBase",
         "src/components/SEO.astro::__file_root__",
         "src/components/HeadExtras.astro::__file_root__",
         "src/lib/site.ts::settings",
@@ -9818,5 +9896,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-16T15:29:58Z"
+  "lastUpdated": "2026-09-16T17:13:31Z"
 }

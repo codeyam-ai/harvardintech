@@ -1,0 +1,23 @@
+{
+  "name": "Blog Post - A Retained Medium Stub",
+  "id": "918f8082-7478-46c8-9527-388848bcdaff",
+  "url": "/blog/spotlight-charlie-cheever",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "blog": [
+      {
+        "body": "By **Jess Li**, originally published on the Harvard Alumni in Tech Medium publication.\n\n[Read the full article on Medium →](https://medium.com/harvard-in-tech/harvard-in-tech-spotlight-charlie-cheever-early-facebook-engineer-and-co-founder-of-quora-and-512a3d83548f)",
+        "date": "2025-02-10",
+        "slug": "spotlight-charlie-cheever",
+        "summary": "By Jess Li · originally published on the Harvard Alumni in Tech Medium publication.",
+        "title": "Harvard Alumni in Tech Spotlight: Charlie Cheever, early Facebook engineer and co-founder of Quora and Expo"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/blog/[slug].astro",
+  "description": "A blog post as a reader who still holds its link meets it. This scenario used to show the Welcome post, which was retired when the blog was hidden for launch — the owner decided on 2026-09-14 not to advertise a blog until there are real articles for it. So it now shows one of the ten Medium stubs instead, which is what a retained link actually resolves to: the posts keep building at their own URLs even with every route INTO the blog closed, so nobody holding an old link gets a 404. Note what is ABSENT — the back link that used to sit above the title is gone, because with the blog hidden there is no index for it to return to."
+}

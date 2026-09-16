@@ -10,13 +10,18 @@ import {
 
 describe('shadowedPageSlugs', () => {
   // The common case: a normal page slug is not reserved and routes normally.
+  // `about` used to be the example here and no longer can be — it is now the
+  // source of a redirect to the homepage mission band, so it IS reserved.
   it('passes an ordinary page slug through', () => {
-    expect(shadowedPageSlugs(['about', 'privacy', 'code-of-conduct'])).toEqual([]);
+    expect(shadowedPageSlugs(['our-story', 'privacy', 'code-of-conduct'])).toEqual([]);
   });
 
   // The failure this guard exists for — the page would build and never appear.
   it('catches a page that would be shadowed by a hand-built route', () => {
-    expect(shadowedPageSlugs(['about', 'donate', 'volunteer'])).toEqual(['donate', 'volunteer']);
+    expect(shadowedPageSlugs(['our-story', 'donate', 'volunteer'])).toEqual([
+      'donate',
+      'volunteer',
+    ]);
   });
 
   // /blog and /chapters are directories of dynamic routes, so a page slugged
@@ -58,7 +63,7 @@ describe('shadowedPageSlugs', () => {
 
   // Order and identity are what let the warning name the slug to rename.
   it('returns the offending slugs in input order, so a message can name them', () => {
-    expect(shadowedPageSlugs(['about', 'events', 'privacy', 'donate'])).toEqual([
+    expect(shadowedPageSlugs(['our-story', 'events', 'privacy', 'donate'])).toEqual([
       'events',
       'donate',
     ]);
@@ -75,7 +80,7 @@ describe('shadowedPageSlugs', () => {
 
   // Lets the shadow rule be exercised without depending on this site's routes.
   it('accepts an injected reserved list, so the rule is testable in isolation', () => {
-    expect(shadowedPageSlugs(['about', 'shop'], ['shop'])).toEqual(['shop']);
+    expect(shadowedPageSlugs(['our-story', 'shop'], ['shop'])).toEqual(['shop']);
   });
 
   // The boundary: with nothing reserved, nothing can be shadowed.
@@ -109,13 +114,63 @@ describe('RESERVED_PAGE_SLUGS', () => {
       expect(slug.startsWith('/')).toBe(false);
     }
   });
+
+  // A redirect claims its address as firmly as a route does — Astro writes a
+  // real file there. Before the old Strikingly URLs were reserved, an editor
+  // could publish a page slugged `about`, watch the CMS report it PUBLISHED, and
+  // get the homepage-mission redirect at that address instead, with nothing
+  // saying why. That is the same silent loss the hand-built routes are listed
+  // for, arriving by a new route.
+  it('reserves the old URLs that are now redirects', () => {
+    for (const slug of [
+      'about',
+      'about-us',
+      'nyc',
+      'san-francisco',
+      'l-a',
+      'japan',
+      'volunteers',
+      'webinars',
+    ]) {
+      expect(RESERVED_PAGE_SLUGS).toContain(slug);
+    }
+  });
+
+  // The derivation must not reach past the first path segment: a page slug is
+  // one segment, so `/volunteer/projects/` could never be claimed by a page, and
+  // reserving a bare `projects` off the back of it would block a legitimate slug.
+  it('does not reserve inner segments of a multi-part redirect source', () => {
+    expect(RESERVED_PAGE_SLUGS).not.toContain('projects');
+    expect(RESERVED_PAGE_SLUGS).not.toContain('volunteer/projects');
+  });
+});
+
+describe('a CMS page cannot claim a redirected address', () => {
+  // The end-to-end statement of the rule above, through the API the route
+  // actually calls.
+  it('reports the old About URLs as shadowed', () => {
+    expect(shadowedPageSlugs(['about', 'about-us'])).toEqual(['about', 'about-us']);
+    expect(isReservedPageSlug('about')).toBe(true);
+  });
+
+  // An editor typing the slug into a CMS box does not normalize it first.
+  it('catches a redirected slug however the editor typed it', () => {
+    expect(isReservedPageSlug('/NYC/')).toBe(true);
+  });
+
+  // The guard must not overreach: `privacy` is the page this launch added, and
+  // it has to stay publishable from the CMS.
+  it('still lets a genuinely free slug through', () => {
+    expect(isReservedPageSlug('privacy')).toBe(false);
+    expect(isReservedPageSlug('our-story')).toBe(false);
+  });
 });
 
 describe('isReservedPageSlug', () => {
   // The single-slug form must agree with the list form.
   it('is true for a taken slug and false for a free one', () => {
     expect(isReservedPageSlug('donate')).toBe(true);
-    expect(isReservedPageSlug('about')).toBe(false);
+    expect(isReservedPageSlug('our-story')).toBe(false);
   });
 });
 
@@ -154,17 +209,17 @@ describe('pageRouteEntries', () => {
 
   // The happy path: nothing is dropped and nothing is warned about.
   it('routes every page when no slug is taken', () => {
-    const pages = [entry('about'), entry('privacy')];
+    const pages = [entry('our-story'), entry('privacy')];
     const result = pageRouteEntries(pages);
-    expect(result.routable.map((p) => p.id)).toEqual(['about', 'privacy']);
+    expect(result.routable.map((p) => p.id)).toEqual(['our-story', 'privacy']);
     expect(result.shadowed).toEqual([]);
     expect(result.warning).toBeNull();
   });
 
   // Emitting it would make Astro fail the whole build over one bad slug.
   it('drops a shadowed page rather than emitting a duplicate route', () => {
-    const result = pageRouteEntries([entry('about'), entry('donate')]);
-    expect(result.routable.map((p) => p.id)).toEqual(['about']);
+    const result = pageRouteEntries([entry('our-story'), entry('donate')]);
+    expect(result.routable.map((p) => p.id)).toEqual(['our-story']);
     expect(result.shadowed).toEqual(['donate']);
   });
 
@@ -176,8 +231,8 @@ describe('pageRouteEntries', () => {
 
   // Callers rely on collection order; filtering must not reshuffle it.
   it('preserves input order among routable pages', () => {
-    const result = pageRouteEntries([entry('privacy'), entry('donate'), entry('about')]);
-    expect(result.routable.map((p) => p.id)).toEqual(['privacy', 'about']);
+    const result = pageRouteEntries([entry('privacy'), entry('donate'), entry('our-story')]);
+    expect(result.routable.map((p) => p.id)).toEqual(['privacy', 'our-story']);
   });
 
   // A site with no pages yet builds cleanly and warns about nothing.
@@ -203,7 +258,7 @@ describe('pageRouteEntries', () => {
   // The route needs the entry itself for props, so identity must survive.
   it('carries the whole entry through, not just its slug', () => {
     // The route needs the entry itself for props, so identity must survive.
-    const pages = [entry('about')];
+    const pages = [entry('our-story')];
     expect(pageRouteEntries(pages).routable[0]).toBe(pages[0]);
   });
 });

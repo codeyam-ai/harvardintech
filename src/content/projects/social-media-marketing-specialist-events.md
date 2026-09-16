@@ -9,7 +9,7 @@ draft: true
 ogImage: /images/volunteers.webp
 ---
 
-For this specific New York event, the volunteer will support the full social media promotion cycle, including:
+For each event, the volunteer will support the full social media promotion cycle, including:
 
 - Develop a social media content plan and posting schedule for before, during, and after the event.
 - Write engaging LinkedIn posts that align with Harvard Alumni in Tech’s brand, audience, and event goals.
@@ -23,4 +23,4 @@ For this specific New York event, the volunteer will support the full social med
 - Capture or coordinate real-time event content, when possible.
 - Create post-event recap and thank-you posts.
 - Repurpose event photos, videos, audio, quotes, and key takeaways into at least six additional pieces of content that can be shared throughout the year.
-Review post performance and provide a brief summary of results, insights, and recommendations for future events
+- Review post performance and provide a brief summary of results, insights, and recommendations for future events.

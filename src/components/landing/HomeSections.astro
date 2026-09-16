@@ -90,7 +90,7 @@ const {
     ) : section.kind === 'chapters' ? (
       <OurChapters chapters={chapters} />
     ) : section.kind === 'focus' ? (
-      <FocusAreas />
+      <FocusAreas chapterCount={chapters.length} />
     ) : section.kind === 'content-hub' ? (
       <ContentHub posts={posts} />
     ) : section.kind === 'board' ? (

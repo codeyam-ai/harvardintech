@@ -432,8 +432,12 @@ const utilityBarStates = {
   Empty: { cities: [] as string[] },
 };
 
-// ContentHub (Atlas "Content hub" band): Default shows the four channels plus a
-// "latest from the blog" list; Empty omits posts (channels only).
+// ContentHub (Atlas "Content hub" band). Default USED to show four channels plus
+// a "latest from the blog" list, and Empty the channels alone. While the blog is
+// hidden for launch (`BLOG_ENABLED` in src/lib/blogVisibility.ts) the component
+// drops the Blog card and the post list whatever it is handed, so both states now
+// render the three external channels only. The posts below are kept rather than
+// deleted: they are what Default shows again the moment the blog comes back.
 const SAMPLE_POSTS = [
   { slug: 'welcome', title: 'Welcome to the new Harvard Alumni in Tech', date: '2026-06-01', summary: 'A fresh home for our community, events, and chapters.' },
   { slug: 'summit-recap', title: 'Recap: Harvard Alumni in Tech Summit 2026', date: '2026-05-12', summary: 'Highlights from a day of talks, panels, and networking.' },
@@ -1336,7 +1340,12 @@ if (name && name.startsWith('DonorTierBand')) {
             <OurChapters {...ourChaptersProps} />
           </div>
         ) : name === 'FocusAreas' ? (
-          <FocusAreas />
+          // Six is what the live homepage passes today (`chapters.length`), and
+          // showing it here is the point of the scenario: the Chapters blurb used
+          // to hard-code "Five" and had been wrong since SF Bay Area launched.
+          // Isolated, with no prop, the component falls back to count-free
+          // wording — which would hide exactly the thing this scenario proves.
+          <FocusAreas chapterCount={6} />
         ) : contentHubProps ? (
           <ContentHub {...contentHubProps} />
         ) : name === 'GivingCampaign' ? (

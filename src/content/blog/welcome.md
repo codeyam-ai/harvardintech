@@ -2,6 +2,7 @@
 title: Welcome to the Harvard Alumni in Tech blog
 date: 2026-07-23
 summary: Where to find writing, interviews, and recaps from the Harvard Alumni in Tech community.
+draft: true
 ---
 
 Harvard Alumni in Tech is the official Harvard alumni group for technology. We

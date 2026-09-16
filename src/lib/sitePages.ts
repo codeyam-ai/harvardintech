@@ -14,7 +14,9 @@
 // the build can say so.
 //
 // Pure and framework-free (the `drafts.ts` / `order.ts` pattern) so the rule is
-// unit-testable with no Astro imports and no filesystem.
+// unit-testable with no Astro imports and no filesystem. The redirect map it
+// imports is plain data for the same reason.
+import { REDIRECT_TARGETS } from './redirects';
 
 /**
  * Slugs a CMS page cannot claim, because something else already answers at that
@@ -31,7 +33,23 @@
  * deliberately — a failing test naming the new route is a better prompt than a
  * silent re-derivation.
  */
-export const RESERVED_PAGE_SLUGS: readonly string[] = [
+// The old Strikingly URLs now answered by a redirect. A redirect claims its
+// address just as firmly as a route does — Astro writes a real file there — so a
+// CMS page slugged `about` would be shadowed by the /about → /#about redirect
+// and silently never appear, which is precisely the failure this list exists to
+// name. Derived from the redirect map rather than retyped, so adding a redirect
+// cannot forget to reserve its slug.
+//
+// Only single-segment sources can collide: a `pages` slug is one segment, so
+// `/volunteer/projects/` cannot be claimed by a page anyway (and its first
+// segment, `volunteer`, is already reserved as a hand-built route).
+//
+// Some redirect sources ARE already listed below — `/chapters/` and
+// `/communities/` redirect the bare section path while the route directory of
+// the same name is reserved as a route. They are filtered out rather than
+// appended twice, because a duplicate entry is the signal this list uses to
+// catch a hand-edit that did not check.
+const ROUTE_AND_ASSET_SLUGS: readonly string[] = [
   // Hand-built routes under src/pages/
   '404',
   'donate',
@@ -55,6 +73,18 @@ export const RESERVED_PAGE_SLUGS: readonly string[] = [
   'videos',
   // Injected by @codeyam/cms on dev + the review track
   'admin',
+];
+
+const REDIRECT_SOURCE_SLUGS: readonly string[] = Object.keys(REDIRECT_TARGETS)
+  .map((path) => path.replace(/^\/+|\/+$/g, ''))
+  .filter(
+    (slug) => slug !== '' && !slug.includes('/') && !ROUTE_AND_ASSET_SLUGS.includes(slug),
+  );
+
+export const RESERVED_PAGE_SLUGS: readonly string[] = [
+  ...ROUTE_AND_ASSET_SLUGS,
+  // Old Strikingly URLs, now answered by a redirect (see above)
+  ...REDIRECT_SOURCE_SLUGS,
 ];
 
 /** Normalize a slug for comparison: trimmed, lowercased, no surrounding slashes. */

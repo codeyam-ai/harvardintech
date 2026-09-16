@@ -74,10 +74,41 @@ describe('public source contact rules', () => {
     expect(FILES.filter((f) => /start a chapter/i.test(f.text)).map((f) => f.path)).toEqual([]);
   });
 
-  // The shared inbox is written once, in settings, and read through `emailFor`.
-  it('writes the shared inbox only in settings.json', () => {
-    expect(FILES.filter((f) => f.text.includes(SHARED_INBOX)).map((f) => f.path)).toEqual([
-      'src/data/settings.json',
-    ]);
+  // The shared inbox is written once in settings and read through `emailFor`
+  // everywhere it is DISPLAYED, so the owner's "sparingly" rule holds and a
+  // change of address reaches every surface at once.
+  //
+  // The privacy policy is the documented exception, and the only one. A policy
+  // has to state the address a reader writes to in order to see or delete what
+  // is held about them — GDPR expects a contact point in the text itself, and
+  // "the address in our footer" is not one. It is markdown in a content
+  // collection, which has no interpolation seam, so the address is literal there
+  // rather than resolved through `emailFor`.
+  //
+  // The cost is real and worth naming: change the inbox and the policy is the one
+  // place that will NOT follow automatically, and a policy naming a dead contact
+  // is worse than ordinary stale copy. This assertion is what makes that visible
+  // — a new inbox fails here until the policy is updated to match.
+  const INBOX_IN_PROSE = 'src/content/pages/privacy.md';
+
+  // The inbox appears literally in exactly two files: settings.json, which every
+  // displayed surface reads through `emailFor`, and the privacy policy, which
+  // must name its contact point in the text.
+  it('writes the shared inbox only in settings.json and the privacy policy', () => {
+    expect(
+      FILES.filter((f) => f.text.includes(SHARED_INBOX))
+        .map((f) => f.path)
+        .sort(),
+    ).toEqual([INBOX_IN_PROSE, 'src/data/settings.json'].sort());
+  });
+
+  // The exception above is a list of one. Anything else hardcoding the inbox
+  // should read it through `emailFor` instead, so this pins the exception rather
+  // than leaving it as a precedent the next surface can quietly join.
+  it('keeps the prose exception to the privacy policy alone', () => {
+    const literal = FILES.filter(
+      (f) => f.text.includes(SHARED_INBOX) && f.path !== 'src/data/settings.json',
+    ).map((f) => f.path);
+    expect(literal).toEqual([INBOX_IN_PROSE]);
   });
 });
