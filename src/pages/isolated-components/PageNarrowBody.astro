@@ -1,0 +1,45 @@
+---
+import Component from "../../components/PageNarrowBody.astro";
+import "../../styles/tokens.css";
+
+// The narrow block a chapter page and a community page both end with: back
+// link, leads, markdown body, then the entry's own links.
+//
+// It was written twice — once in each page shell — when communities got their
+// own page type, differing only in the leads heading and the back-link wording.
+// That is the shape that drifts: a spacing or accessibility fix applied to one
+// copy silently leaves the other behind. Capturing it once, here, is what makes
+// the two pages provably share it.
+//
+// The fixture is the community configuration (a named lead under a "Community
+// Lead" heading) because it exercises every slot at once — a chapter renders
+// the same block with a different heading.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: PageNarrowBody</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component
+        backHref="/#community"
+        backLabel="← All communities"
+        leads={[{ name: 'James Nicholson', role: 'Community Lead (pilot)' }]}
+        leadsHeading="Community Lead"
+        links={[
+          { label: 'Join the WhatsApp', url: 'https://forms.gle/GqgaCDDWhWAgpJC68' },
+          { label: 'Past call notes', url: '/blog/welcome' },
+        ]}
+        hasBody={true}
+      >
+        <p>
+          A cross-chapter community for Harvard alumni working in AI — researchers,
+          founders, product leaders, and the people deploying it inside larger companies.
+        </p>
+      </Component>
+    </div>
+  </body>
+</html>

@@ -1,13 +1,13 @@
 ---
 // /communities/<slug> — one page per interest-based community (Founders, AI),
-// the non-geographic counterpart to /chapters/<slug>. Same shape, same
-// components, same draft rule; the differences are all naming: a community has
-// a `name` where a chapter has a `city`, so the events heading and the back link
-// are passed explicitly rather than derived from a place.
+// the non-geographic counterpart to /chapters/<slug>. Same collection shape and
+// same draft rule, but its OWN page component: a community leads with what it
+// does, a chapter leads with where it is. See `CommunityPage.astro` for why
+// sharing the chapter shell stopped working.
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ChapterPage from '../../components/ChapterPage.astro';
-import { splitEvents, eventsTaggedTo } from '../../lib/events';
+import CommunityPage from '../../components/CommunityPage.astro';
+import { splitEvents, eventsTaggedTo, recentPastEvents } from '../../lib/events';
 import LockedPreviewBody from '../../components/LockedPreviewBody.astro';
 import { isLocked, isPreview, publishedEntries, routableEntries } from '../../lib/drafts';
 import { INCLUDE_DRAFTS } from '../../lib/draftVisibility';
@@ -33,21 +33,25 @@ export async function getStaticPaths() {
 type Props = { community: CollectionEntry<'communities'> };
 const { community } = Astro.props as Props;
 const { Content } = await render(community);
-// `photos` is DELIBERATELY absent from this destructure and from the ChapterPage
-// call below. A chapter curates its own gallery in /admin and passes it through;
-// a community is scoped out of that feature on purpose, so it keeps the shared
-// 40-photo event wall every page showed before per-chapter galleries existed.
-// The boundary is enforced twice over: the `communities` schema declares no
-// `photos` field (src/content/config.ts), so there is nothing on
-// `community.data` to forward even if this call site grew the prop.
+// `photos` is DELIBERATELY absent from this destructure and from the
+// CommunityPage call below. A chapter curates its own gallery in /admin and
+// passes it through; a community is scoped out of that feature on purpose, so
+// it keeps the shared 40-photo event wall every page showed before per-chapter
+// galleries existed. The boundary is enforced twice over: the `communities`
+// schema declares no `photos` field (src/content/config.ts), so there is nothing
+// on `community.data` to forward even if this call site grew the prop.
 // `showGallery: false` still hides the section outright, as it does for a chapter.
-const { name, blurb, heroImage, tagline, showGallery, leads, links } = community.data;
+const { name, blurb, heroImage, tagline, showGallery, leads, links, callouts, whatsappFormUrl } =
+  community.data;
 
-// Events join a community through the same `chapter` tag they use for chapters —
-// one "belongs to" field, not two an editor has to choose between. The chapters
-// route warns about tags matching neither list, so a typo here is still caught.
+// Events reach a community by the `chapter` tag (ids are unique across both
+// collections) or by naming it in their own `communities` list — which is what
+// lets a London Founders co-working day appear here AND on the London chapter
+// page. The chapters route warns about tags matching neither list, so a typo is
+// still caught.
 const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS);
-const { upcoming } = splitEvents(eventsTaggedTo(events, community.id));
+const { upcoming, past } = splitEvents(eventsTaggedTo(events, community.id));
+const recent = recentPastEvents(past);
 ---
 
 <BaseLayout
@@ -62,21 +66,21 @@ const { upcoming } = splitEvents(eventsTaggedTo(events, community.id));
         lock={community.data.previewLock ?? ''}
       />
     ) : (
-      <ChapterPage
+      <CommunityPage
         name={name}
         blurb={blurb}
         heroImage={heroImage}
         tagline={tagline}
         showGallery={showGallery}
+        callouts={callouts}
+        whatsappFormUrl={whatsappFormUrl}
         events={upcoming}
-        eventsHeading={`Upcoming ${name} Events`}
+        pastEvents={recent}
         leads={leads}
         links={links}
-        backHref="/#community"
-        backLabel="← All communities"
       >
         <Content />
-      </ChapterPage>
+      </CommunityPage>
     )
   }
 </BaseLayout>

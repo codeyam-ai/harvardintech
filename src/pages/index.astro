@@ -49,7 +49,9 @@ const allEvents = publishedEntries(await getCollection('events'), showDrafts).ma
 }));
 const { upcoming: events } = splitEvents(allEvents);
 
-// Regional chapters for the "Our chapters" section, sorted in-component by `order`.
+// Regional chapters for the "Our chapters" section. Sorted in-component: active
+// cities before forming ones, then by `order`. The spread carries `status`
+// through, so a chapter promoted in /admin reorders the row with no change here.
 const chapters = publishedEntries(await getCollection('chapters'), showDrafts).map((c) => ({
   slug: c.id,
   ...c.data,

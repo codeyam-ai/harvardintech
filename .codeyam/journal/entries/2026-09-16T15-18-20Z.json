@@ -1,0 +1,1395 @@
+{
+  "timestamp": "2026-09-16T15:18:20Z",
+  "title": "Chapters, Communities And Local Presence",
+  "type": "feature",
+  "userRequest": "## Summary\n\nReplace the \"six identical chapter pages\" model with a data-driven **local presence** model with three kinds of page:\n\n| Kind | Entries | What the page leads with |\n|---|---|---|\n| **Active chapter** (`status: active`) | SF & Bay Area, NYC, London, Boston & Cambridge | Named lead(s), upcoming **and recent past** events, sign-up |\n| **Forming chapter** (`status: forming`) | DC and DMV, Seattle / Pacific Northwest | \"Join the local WhatsApp\" + \"Volunteer to lead or support this chapter\" CTAs; no lead block |\n| **Community** (own page type) | AI, Founders | Lead, callouts (e.g. bi-weekly global calls), WhatsApp CTA, community-tagged events |\n\nEverywhere else is derived from the same data or checked against it: the nav, the \"Our chapters\" row, the stat strip, the hero copy, the Chapter Partner sponsor level and the donate page.\n\nTwo more changes:\n- A new **Global community** CTA serves everyone outside the four cities. It offers the WhatsApp form, the newsletter and volunteering, and takes the place where Japan / L.A. used to be.\n- The WhatsApp group is **never linked directly**. Every WhatsApp CTA points at the Google Form (`https://forms.gle/GqgaCDDWhWAgpJC68`). That includes the existing homepage section, which today links `chat.whatsapp.com` twice.\n\n## Owner decisions (2026-09-14)\n\n- **DC and DMV (Change):** \"There's no lead right now, just a WhatsApp channel. I wonder if we could have CTAs to volunteer to lead or support the chapter + join WhatsApp to discuss / meet other local alumni among other things.\"\n- **Seattle / Pacific Northwest (Change):** \"Same situation as DC and DMV; I want to have a template for these places that enable us to have a CTA to volunteer and join WhatsApp.\"\n- **AI community (Change):** \"James Nicholson is the lead (pilot) for this. I'd like a format with a CTA to join the WhatsApp and some callouts of what happens (bi-weekly calls with alumni globally).\"\n- **Founders community (Change):** \"Founders community is in WhatsApp + local events in certain geographies. Have a CTA to WhatsApp.\"\n- **Boston & Cambridge (Change):** \"Boston & Cambridge hosted an Alumni Day event and will host more soon. We should update the image to have the alumni day picture if it doesn't already. We may also want to name the lead (Aimee, will get class info / last name).\"\n- **Japan and L.A.:** \"Drop both; replace with a CTA for Global community and with a callout to join WhatsApp, subscribe to newsletter, and volunteer.\"\n- **Hero slides (Change):** \"Right now there are or will be in-person events in 4 cities: SF, NYC, London, Boston.\"\n- **Stat \"8,000+\":** \"8,500+ newsletter subscribers and 750+ alumni in our WhatsApp\".\n- **Stat \"6 global chapters\":** \"Update it based on above guidance and make sure it's consistent.\"\n- **Accomplishments (Change):** \"Update the data / stats.\"\n- **\"2 new chapters: London and San Francisco\":** \"Remove this.\"\n- **Chapter Partner sponsor level (Change):** \"Keep and trim cities and have a digital / global / other offering of some sort.\"\n  - *Superseded for launch (2026-09-14):* after Nicole's walkthrough, the owner removed \"Ways to partner\" from `/sponsor`, so no level shows on the page.\n  - Step 13 still updates the stored levels, so they are right if the section returns.\n- **Mailing lists (Keep one list):** \"These are not per-chapter but we can filter based on geography that folks respond they're in.\"\n- **Chapter pages are nearly empty (Plan it):** also show recent past events.\n- **Design:** communities get their OWN page type, not the chapter page. The chapter banner is a \"Chapter\" label plus the city name.\n- **SF lead:** Jessica, in the interim.\n- **WhatsApp:** link only the Google Form, never the group itself.\n- **Nicole's walkthrough (2026-09-14):**\n  - Keep every chapter with a high concentration of alumni in the menu, even without an event lead. This agrees with DC and Seattle as forming chapters.\n  - A chapter without a lead asks \"Interested in getting involved with the {city} chapter?\" with a Contact us button (step 6).\n  - Founders events: the owner chose tagging by hand (step 12). They sit high on the page, under the join CTA (step 9).\n  - She is replacing the blurry London, AI and Founders banners herself in the content editor. This plan must not overwrite them.\n\n## Open questions / needs input\n\n1. **Owner (via Aimee):** Aimee's last name and class year, and her title (\"Chapter Lead\"?). Boston ships without a named lead until this arrives.\n2. **Owner (via Jessica):** Jessica's last name and class year, and whether to show \"Interim Chapter Lead\".\n3. **Owner:** the NYC and London leads, if they should be named. Active chapters do not *require* a lead in the schema.\n4. **Owner / James Nicholson:** James's class year and title wording (\"Community Lead (pilot)\"?), the call cadence details (day and time zone, or just \"every other week\"), and how members get onto a call (via the WhatsApp group?).\n5. **Owner:** the Boston **Alumni Day photo**. There is none in the repo: nothing in `public/images/` or `src/data/media.json` matches alumni day, Cambridge or Boston. Today Boston's `heroImage` is `/images/bg/hero-bg.jpg`, the same photo as the homepage hero.\n6. **Owner:** where \"Volunteer to lead or support\" should point. The default is `/volunteer`, whose CTA is `https://hi.switchy.io/wEYK`. A dedicated \"lead a chapter\" form would be better if one exists.\n7. **Owner:** confirm that the Google Form's confirmation step hands out the WhatsApp group link (or that admins add people). After this plan, the site no longer links the group anywhere.\n8. **Owner:** which geographies Founders runs local events in (London co-working days so far), and whether other cities are coming.\n9. **Owner:** current figures for the accomplishments that are not given in the notes: LinkedIn followers (currently `8,000+`) and events hosted (`100+`).\n10. **Owner:** which city the untagged 2024-10-10 and 2025-05-22 \"Harvard Alumni in Tech\" events were in, so they can show as NYC's (or another city's) recent past events.\n11. **Owner:** whether the stat strip should grow to 5 figures (newsletter, WhatsApp, chapters, events, Est. 2013) or drop one. The default is 5; `Stats.astro` lays the strip out on `--n` columns, so 5 is supported.\n\n## Recommendations\n\n**A. A `status` field on the existing `chapters` collection, plus a separate `CommunityPage` (pick).**\n- Adds `status: active | forming`, `whatsappFormUrl`, `volunteerUrl` and `callouts` to `chapters`, and `callouts` and `whatsappFormUrl` to `communities`.\n- A forming chapter becomes active by flipping one select in `/admin`. The URL, nav entry and events all stay put.\n- Communities get their own component, as the design decision requires, while keeping their existing collection and route.\n\n**B. A separate `formingChapters` collection.** Simpler per-collection forms, but promoting DC to active means deleting and re-creating the entry, moving event tags and re-pointing the nav. That fights the \"flip when a lead appears\" workflow.\n\n**C. Keep one `ChapterPage` with a `kind` prop covering communities too.** This has the smallest diff, but it contradicts the owner's decision and keeps the \"Harvard Alumni in Tech AI\" banner problem alive.\n\n**Why A:**\n- It matches how the site already works: one collection per surface, with nav and cards derived from content (`src/lib/nav.ts`).\n- It is the only option where the owner's \"template for these places\" is a single field.\n- It keeps the counts testable: stats, hero and sponsor copy are guarded against `status` by a unit test (see Tests) instead of being hand-synced.\n\nNumbers in CMS copy stay editable text rather than being computed at render time, because editors own that copy. The guard test reports drift and never blocks a publish, the same convention as `unresolvedNavUrls`.\n\n## Implementation\n\n1. **Pure model, `src/lib/localPresence.ts` (new).** Framework-free, the same shape as `nav.ts` and `events.ts`. It exports:\n   - `WHATSAPP_JOIN_FORM_URL` (the Google Form), `NEWSLETTER_URL` (the Mailchimp URL) and `DEFAULT_VOLUNTEER_URL = '/volunteer'`.\n   - `isWhatsAppGroupLink(url)`, which is true for `chat.whatsapp.com` / `wa.me`.\n   - `chapterStatus(entry)`, where absent means `active`.\n   - `presenceSummary(chapters) → { active, forming, activeCount, formingCount }`.\n   - `joinCtas(entry)`, which resolves the form, volunteer and newsletter URLs, falling back to the defaults and never returning a group link.\n2. **Schema, `src/content/config.ts`.**\n   - `chapters` gains:\n     - `status: z.enum(['active','forming']).optional()`\n     - `whatsappFormUrl: z.string().optional().refine(u => !u || !isWhatsAppGroupLink(u), 'Link the Google Form, not the WhatsApp group')`\n     - `volunteerUrl: z.string().optional()`\n     - `callouts: z.array(z.object({ title: z.string(), text: z.string().optional() })).optional()`\n   - `communities` gains `whatsappFormUrl` (same refine) and `callouts`.\n   - `events` gains `communities: z.array(z.string()).optional()`, so a London co-working day can also appear on Founders without losing its `chapter: london` tag.\n   - Update the stale \"(NYC, SF, L.A., Japan)\" comment at line 158.\n3. **CMS registry, `src/data/collections.json`.** Mirror every new field:\n   - `status` as a `select` (Active / Forming), with a hint explaining that forming shows the volunteer + WhatsApp CTAs.\n   - `callouts` as a `list`.\n   - `whatsappFormUrl` with a hint that says \"Google Form only\".\n   - `communities` on events as a `list`.\n\n   `src/data/collections.test.ts` fails on schema/registry drift, so steps 2 and 3 land together.\n4. **Events, `src/lib/events.ts`.**\n   - Add `recentPastEvents(past, { limit = 3 })`.\n   - Extend `eventsTaggedTo` (or add `eventsForCommunity`) so it matches `event.communities?.includes(id)` as well as `chapter`.\n   - Extend `unmatchedChapterTags` inputs to cover `communities` tags. Its caller is in `src/pages/chapters/[slug].astro`.\n5. **WhatsApp form-only, `src/components/landing/WhatsappCommunity.astro`.**\n   - Drop the `whatsappUrl` prop and its `chat.whatsapp.com` default.\n   - Rewrite step 2 as something like \"After you're verified, we'll send you the invite\". Wording depends on open question 7.\n   - Point \"Apply to join\" at `WHATSAPP_JOIN_FORM_URL`.\n6. **Shared CTA blocks (new).** Each takes plain props, for scenarios:\n   - `src/components/JoinWhatsAppCta.astro` (new): \"Join the {name} WhatsApp\" linking to the form only.\n   - `src/components/FormingChapterCta.astro` (new): \"{city} is forming. Help lead it.\" with two buttons, *Volunteer to lead or support* (`volunteerUrl`) and *Join WhatsApp to meet local alumni* (the form).\n     - Under them goes Nicole's line, \"Interested in getting involved with the {city} chapter?\", with a *Contact us* button to `mailto:` the site contact address.\n     - The button goes to `info@harvardintech.com`. This is one of the few places `launch--contact-and-calls-to-action` shows the shared inbox (owner, 2026-09-15: \"sparingly\"). It renders only when that plan's `emailFor('formingChapter')` returns an address.\n   - `src/components/GlobalCommunityCta.astro` (new): \"Not near a chapter? Join the global community\" with three actions: WhatsApp form, newsletter (Mailchimp, one list, noting that geography is asked there) and volunteer.\n   - `src/components/CommunityCallouts.astro` (new): a grid of `callouts`.\n7. **Chapter banner and leads.**\n   - `src/components/ChapterHero.astro`: replace `Harvard Alumni in Tech ${name}` with a small uppercase `label` kicker (default `\"Chapter\"`) above the `name` title. A forming chapter's kicker reads \"Chapter · Forming\".\n   - `src/components/ChapterHeader.astro`: add the same `label` to the no-image fallback.\n   - `src/components/ChapterLeads.astro`: add a `heading` prop (default \"Chapter Leads\").\n8. **Chapter page, `src/components/ChapterPage.astro` and `src/pages/chapters/[slug].astro`.**\n   - The route passes `status`, `past` (via `recentPastEvents`), `callouts` and the resolved CTAs.\n   - Active chapters render upcoming events, then \"Recent events in {city}\" using `ChapterEvents.astro` with `EventCard variant=\"past\"`. `ChapterEvents` gets a `variant` prop and a new section id.\n   - Forming chapters render `FormingChapterCta` in place of the leads block.\n   - Every chapter ends with `GlobalCommunityCta` above `ChapterConnect`.\n   - Fix the stale Japan mention in the header comment.\n9. **Community page type.** `src/components/CommunityPage.astro` (new) contains:\n   - a hero labelled \"Community\"\n   - the lead(s) via `ChapterLeads heading=\"Community Lead\"`\n   - the markdown body\n   - `CommunityCallouts`\n   - `JoinWhatsAppCta` as the primary CTA\n   - upcoming and recent community events (tag or `communities`), placed directly under the join CTA, where Nicole expects to find Founders events\n   - the gallery toggle\n   - `ChapterConnect`\n\n   `src/pages/communities/[slug].astro` switches from `ChapterPage` to `CommunityPage`.\n10. **Nav, `src/lib/nav.ts`.**\n    - `ChapterLike` gains `status?`. `chapterNavItems` sorts active before forming, then by `order` and city.\n    - A new `GLOBAL_COMMUNITY_ITEM` (`{ label: 'Global community', url: '/#global-community' }`) is appended by `withChapterGroup` whenever chapters exist.\n    - `src/layouts/BaseLayout.astro` already spreads `c.data`, so it only needs checking.\n11. **\"Our chapters\" row, `src/components/landing/OurChapters.astro`.**\n    - Use the same active-then-forming sort.\n    - The count kicker reads \"04 cities · 2 forming\".\n    - Forming cards get a \"Forming · help lead it\" badge.\n    - Add a final `id=\"global-community\"` card or band built from `GlobalCommunityCta`, in the place of the old Japan / L.A. cards.\n    - `src/pages/index.astro` spreads `c.data`, so `status` flows through.\n12. **Content: chapters and communities.**\n    - `src/content/chapters/dc-dmv.md` and `seattle.md`: `status: forming`, forming-voice body copy.\n    - `sf-bay-area.md`: `leads: [{ name: 'Jessica …', role: 'Interim Chapter Lead' }]` (open question 2).\n    - `boston-cambridge.md`: `status: active`. Swap `heroImage` for the Alumni Day photo and add Aimee's lead entry once open questions 1 and 5 are answered.\n    - `nyc.md`, `london.md`: `status: active`.\n    - `src/content/communities/ai.md`:\n      - `leads: [{ name: 'James Nicholson', role: 'Community Lead (pilot)' }]`\n      - callouts such as \"Bi-weekly calls with alumni globally\" and \"Share what you're building / reading\"\n      - replace the \"just getting started\" body\n    - `founders.md`: callouts \"WhatsApp group\" and \"Local events in select cities (London co-working days)\".\n    - Leave `heroImage` alone on London, AI and Founders if Nicole has already replaced it in the content editor.\n    - Add `communities: [founders]` to the three `src/content/events/*alumni-founders-co-working-day*.md` events.\n    - Tag `2026-04-30-…-leaders-in-engineering-panel.md` with `chapter: sf-bay-area` (its location is San Francisco).\n13. **Content: numbers and copy.**\n    - Stats:\n      - `src/content/stats/alumni-technologists.md` becomes `8,500+` / \"Newsletter subscribers\".\n      - `src/content/stats/whatsapp-alumni.md` (new) is `750+` / \"Alumni in our WhatsApp\".\n      - `global-chapters.md` becomes `4` / \"Chapters with in-person events\".\n    - Accomplishments:\n      - `whatsapp-community-members.md` becomes `750+`.\n      - `newsletter-subscribers.md` (new) is `8,500+`.\n      - Delete `new-chapters-launched.md`.\n      - `linkedin-followers.md` and `events-hosted-and-co-hosted.md` per open question 9.\n    - Hero: in `src/content/heroSlides/a-global-community-with-a-home-in-your-city.md` the lede becomes \"…in person in SF, New York, London and Boston, with chapters forming in DC and Seattle.\"\n    - Sponsor. These are stored only, because \"Ways to partner\" is hidden for launch (see `launch--giving-pages-short-term`). The edits keep the levels right for when it returns, and keep test (c) green.\n      - In `src/content/sponsorLevels/chapter.md` the summary lists only SF, New York, London or Boston, plus a benefit line: \"Or back the global community instead\".\n      - `src/content/sponsorLevels/global.md` (new) adds a \"Global Community Partner\" level with newsletter recognition (8,500+), WhatsApp community and AI bi-weekly call sponsorship.\n    - \"Six chapters\" copy:\n      - `src/content/sponsorPage/sponsor.md` intro becomes \"four chapters and a global community\".\n      - `src/content/pageCopy/donate.md` stats `8,000+ Members` becomes `8,500+ Newsletter subscribers`, and `'6' Chapters & Growing` becomes `'4'`.\n14. **Fallback copy.** The committed fallbacks repeat the old figures, so update them too:\n    - `src/components/landing/Stats.astro` (line 14)\n    - `src/components/landing/HeroCarousel.astro` (line 53)\n    - `src/data/donatePage.json` (line 14)\n    - `src/data/sponsorPage.json` (lines 4 and 23)\n15. **Workflow notes.**\n    - Register the new test files before `prove-red`.\n    - Content edits are masked by a stale `content-sandbox-active` snapshot and ignored by the screenshot staleness check. Recapture content-driven scenarios with `--target --force`.\n\n## Tests\n\n- **`src/lib/localPresence.test.ts` (new):**\n  - `chapterStatus` defaults to active.\n  - `presenceSummary` counts 4 active / 2 forming for the real fixture shape.\n  - `joinCtas` falls back to `WHATSAPP_JOIN_FORM_URL` and `/volunteer`, and never returns a `chat.whatsapp.com` URL even if one is passed.\n  - `isWhatsAppGroupLink` covers `chat.whatsapp.com`, `wa.me` and `forms.gle`, which returns false.\n- **`src/lib/presenceConsistency.test.ts` (new).** Reads content off disk line-by-line, like `chapter.photos.test.ts`. It asserts:\n  - (a) `stats/global-chapters.md` `value` equals the active-chapter count.\n  - (b) `pageCopy/donate.md`'s Chapters stat equals the same count.\n  - (c) the hero lede, `sponsorLevels/chapter.md` summary and `sponsorPage/sponsor.md` intro name no forming city as in-person and never mention Japan, L.A. or \"six chapters\".\n  - (d) no file under `src/` (excluding `isolated-components/` and tests) contains `chat.whatsapp.com`.\n  - (e) `accomplishments/new-chapters-launched.md` does not exist.\n- **`src/lib/nav.test.ts`:**\n  - `chapterNavItems` orders active before forming.\n  - `withChapterGroup` appends \"Global community\" → `/#global-community`, and still omits the group when there are no chapters.\n- **`src/lib/events.test.ts`:**\n  - `recentPastEvents` is most-recent-first and capped at 3.\n  - The community match via `communities` works.\n  - `unmatchedChapterTags` reports an unknown `communities` tag.\n- **`src/data/collections.test.ts`:** stays green, which proves the registry mirrors every new schema field.\n- **`src/lib/chapter.photos.test.ts`:** unchanged. It still guards Boston's new `heroImage` path indirectly, so check that the path exists on disk.\n\n## Scenarios to Demonstrate\n\n- **New:**\n  - `chapter-route-forming-dc-dmv`: \"Chapter · Forming\" banner, volunteer + WhatsApp-form CTAs, Nicole's \"Interested in getting involved…\" line (its Contact us button shows only when a contact email is set), no leads block.\n  - `chapter-route-boston-with-past-events`: Alumni Day under \"Recent events in Boston & Cambridge\".\n  - `chapter-route-london-upcoming-and-past`\n  - `community-route-ai-with-callouts`: James as lead, bi-weekly calls callout.\n  - `community-route-founders-with-london-coworking`\n  - `ourchapters-four-active-two-forming-plus-global`\n  - `globalcommunitycta-default`\n- **Update (recapture):**\n  - `chapter-route-new-york-city`, `chapter-route-sf-bay-area` (interim lead)\n  - `chapterhero-with-image`, `chapterhero-no-image-fallback` (label + city)\n  - `community-route-ai-on-day-one`, `community-route-founders-with-leads-and-events`\n  - `primarynav-derived-chapters`, `primarynav-communities-derived`\n  - `stats-band`, `hero-carousel`, `whatsapp-community` (form-only)\n  - `sponsorlevels-four-partnership-levels`, `momentumaccomplishments-campaign-track-record`\n  - `harvard-in-tech-landing-page`\n\n  Screen every changed PNG for font-race or wrong-page frames.\n\n## Out of scope\n\n- Per-chapter mailing lists. There is one Mailchimp list, segmented by the geography subscribers report. The five other hard-coded Mailchimp URLs are not consolidated here, but the new components use `NEWSLETTER_URL`.\n- Deleting `public/images/chapters/japan.jpg` and `la.jpg` and their `src/data/media.json` entries. They are unreferenced by content, so this is a later media cleanup.\n- A lead-application form or any change to the Google Form itself.\n- `src/pages/isolated-components/`.\n- Automatic Luma import or auto-tagging of events by location.\n- Nicole's later ideas (2026-09-14), for after launch:\n  - a WhatsApp page listing channels, current topics and a year-ahead topics calendar;\n  - James's AI content: a topics calendar, upcoming webinars and webinar recaps. This depends on the webinars section in `launch--history-events-archive-and-webinars`.",
+  "description": "Replaced the six-identical-chapter-pages model with a data-driven local-presence model. A single `status` field on a chapter decides everything: four active chapters (SF, New York, London, Boston) render leads and events, while two forming ones (DC, Seattle) swap the leads block for a volunteer-to-lead and join-the-local-WhatsApp ask, keeping their URL, menu entry and event tags so promotion is one select in /admin. Communities moved off the chapter shell onto their own CommunityPage, which leads with what the community does rather than where it is — the old shared hero produced \"HARVARD ALUMNI IN TECH AI\", which read as a product rather than a group of people. Events gained a `communities` list so one London Founders co-working day appears on both the London chapter page and the Founders page without either tag having to win, and a new Global Community band replaces the retired Japan and L.A. cards on the homepage and closes every chapter page. Figures were corrected across the stat strip, donate page, sponsor intro and hero lede (8,500+ newsletter, 750+ WhatsApp, 4 chapters), and a consistency test now reads the content off disk and fails if that copy ever drifts from the real chapter count again — the class of drift that let the site claim six chapters while four held events.\n\nSCOPE VERDICT — delivered: this cycle is a slice of the `faithfully-reproduce-the-harvardintech-com-site` deliverable, covering the chapters, communities, roster and the figures that describe them. Deferred: all five project deliverables remain deferred and every one of those deferrals was decided by the USER, not by this agent — faithfully-reproduce-the-harvardintech-com-site, publish-the-site-live-on-github-pages, a-content-admin-cms-that-runs-locally, the-content-admin-also-running-in-the-cloud, and the-content-admin-protected-by-a-password. No agent-decided deferral exists on this cycle.\n\nSHIPPED WITH DEFAULTS, NOT BLOCKED — 11 owner questions are recorded in the plan with the default each took. Boston ships with no named lead and the generic homepage hero photo; New York shows no recent-events block because two 2024/2025 events remain untagged; LinkedIn followers (8,000+) and events hosted (100+) keep their old values and are now the only unverified figures on the site. The WhatsApp step-2 copy was deliberately left alone rather than assert a hand-off process nobody has confirmed.\n\nNOTED FOR LAUNCH — every event committed to the repo has already passed (newest 2026-07-10), so no chapter currently renders an Upcoming Events section at all. The recent-past-events block added here is the only thing keeping those pages from reading as abandoned, and a seeded scenario (chapter-route-upcoming-above-recent) exists because the upcoming block could otherwise never be captured.\n\nFIXED ALONG THE WAY — three new CTA components had each hand-rolled an external-link test that disagreed with the site's own tested rule (an absolute harvardintech.com URL would have opened in a new tab); they now use isExternalHref/externalLinkAttrs, and withBase turned out to already handle the href side, so the branch was redundant. Two grids fell to 2+1 because they sat in a reading-width container. A PrimaryNav scenario claimed to show the Chapters dropdown open and never did, which also made two nav scenarios byte-identical. A scenario seed published a chat.whatsapp.com group invite into a captured frame.\n\nKNOWN, NOT FIXED — momentum-fund-a-giving-platform-is-chosen and momentum-fund-the-donor-wall-moved-to-the-top capture identical frames. This predates this work (identical renderInputHash at HEAD), belongs to the in-flight Recompose The Momentum Network plan, and its author documented the sameness as expected: it pins where links point, not how the page looks. Left for that plan's owner rather than cleared from here.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/data-structure.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--chapters-and-communities.md\t.codeyam/plans/completed/launch--chapters-and-communities.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-events-tagged-to-this-chapter.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-longest-chapter-name-wraps.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-new-york-city.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-sf-bay-area.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterhero-no-image-fallback.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterhero-with-image.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterpage-sparse-no-leads.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-ai-on-day-one.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-founders-with-leads-and-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/our-chapters.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/primarynav-derived-chapters.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-welcome--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-community-heading--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-rich-list--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-with-image--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-with-image--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-complete--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-cutover-day--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-decisions-answered-nothing-begun--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-nothing-started--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-partway-through--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-waiting-on-one-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-no-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/get-involved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero-carousel--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero-carousel--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-derived-chapters--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-derived-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-sixth-chapter-published--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-awaiting-a-form--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-form-configured--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-no-email-and-no-form--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/support-us--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcard-with-thumbnail--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcta-own-link-and-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-long-title-and-blurb--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectmeta-every-date-shape--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojects-populated-grid--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-one-other-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-three-suggestions--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/5e7f35f36e94d29e07cdbd216ab5b9696bf5ab72abbdaf6eba3b1d27ac15dca8.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/7865c2217bab7f968e866ecb71251c82352350295f0f3cf9e0df8114ee611264.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterEvents.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterHeader.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterHero.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterLeads.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/HeroCarousel.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/OurChapters.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/Stats.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/accomplishments/new-chapters-launched.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/accomplishments/whatsapp-community-members.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/boston-cambridge.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/dc-dmv.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/london.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/nyc.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/seattle.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/sf-bay-area.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/communities/ai.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/communities/founders.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2026-04-30-harvard-alumni-in-tech-leaders-in-engineering-panel.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2026-05-15-alumni-founders-co-working-day.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2026-06-12-alumni-founders-co-working-day-june.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2026-07-10-alumni-founders-co-working-day-july.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/heroSlides/a-global-community-with-a-home-in-your-city.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/pageCopy/donate.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/sponsorLevels/chapter.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/sponsorLevels/community.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/sponsorLevels/event.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/sponsorPage/sponsor.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/alumni-technologists.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/events-hosted.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/global-chapters.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/harvard-alumni-in-tech.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/collections.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/donatePage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/sponsorPage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/contact.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/events.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/events.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/nav.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/nav.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/chapters/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/communities/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/index.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/calloutcard-single-callout.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-upcoming-above-recent.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterevents-recent-past-events.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterpage-forming-chapter.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/communitycallouts-what-happens-here.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/communitypage-founders-composed.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/formingchaptercta-no-contact-address.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/formingchaptercta-with-contact-address.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/globalcommunityaction-newsletter-card.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/globalcommunitycta-three-ways-in.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/joinwhatsappcta-community-primary-action.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/pagenarrowbody-leads-body-and-links.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/calloutcard-single-callout--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/calloutcard-single-callout--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-recent-past-events--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-recent-past-events--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-forming-chapter--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-forming-chapter--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitycallouts-what-happens-here--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitycallouts-what-happens-here--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitypage-founders-composed--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitypage-founders-composed--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/formingchaptercta-no-contact-address--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/formingchaptercta-no-contact-address--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/formingchaptercta-with-contact-address--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/formingchaptercta-with-contact-address--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunityaction-newsletter-card--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunityaction-newsletter-card--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunitycta-three-ways-in--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunitycta-three-ways-in--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/joinwhatsappcta-community-primary-action--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/joinwhatsappcta-community-primary-action--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pagenarrowbody-leads-body-and-links--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pagenarrowbody-leads-body-and-links--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/2c00c2918668a7e79925f8dba99f8b6ddb7f3b3baafb09cb689b3a30f7917353.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/e222da2acb080c57b3627375657a264f8a640a42707301c0e94641a2a8c9bc3e.json",
+      "status": "added"
+    },
+    {
+      "path": "src/components/CalloutCard.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/CommunityCallouts.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/CommunityPage.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/FormingChapterCta.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/GlobalCommunityAction.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/GlobalCommunityCta.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/JoinWhatsAppCta.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/PageNarrowBody.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/content/accomplishments/newsletter-subscribers.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/sponsorLevels/global.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/stats/whatsapp-alumni.md",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/localPresence.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/localPresence.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/presenceConsistency.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/CalloutCard.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/CommunityCallouts.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/CommunityPage.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/FormingChapterCta-NoEmail.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/FormingChapterCta.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/GlobalCommunityAction.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/GlobalCommunityCta.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/JoinWhatsAppCta.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/PageNarrowBody.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Blog Post - Welcome",
+      "screenshotPath": "blog-post-welcome--desktop.png"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft",
+      "screenshotPath": "blog-preview-link-shared-draft--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo",
+      "screenshotPath": "chapter-gallery-a-single-photo--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped",
+      "screenshotPath": "chapter-gallery-curated-and-capped--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged",
+      "screenshotPath": "chapter-gallery-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed",
+      "screenshotPath": "chapter-gallery-show-all-revealed--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns",
+      "screenshotPath": "chapter-gallery-three-photos-three-columns--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter",
+      "screenshotPath": "chapter-route-events-tagged-to-this-chapter--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps",
+      "screenshotPath": "chapter-route-longest-chapter-name-wraps--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--desktop.png"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area",
+      "screenshotPath": "chapter-route-sf-bay-area--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent",
+      "screenshotPath": "chapter-route-upcoming-above-recent--desktop.png"
+    },
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - A Tick That Could Not Be Saved",
+      "screenshotPath": "cutover-runbook-a-tick-that-could-not-be-saved--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Complete",
+      "screenshotPath": "cutover-runbook-complete--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Cutover Day",
+      "screenshotPath": "cutover-runbook-cutover-day--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Decisions Answered Nothing Begun",
+      "screenshotPath": "cutover-runbook-decisions-answered-nothing-begun--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Nothing Started",
+      "screenshotPath": "cutover-runbook-nothing-started--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Partway Through",
+      "screenshotPath": "cutover-runbook-partway-through--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - The Records On A Phone",
+      "screenshotPath": "cutover-runbook-the-records-on-a-phone--mobile.png"
+    },
+    {
+      "name": "Cutover Runbook - Waiting On One Answer",
+      "screenshotPath": "cutover-runbook-waiting-on-one-answer--desktop.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Password Required",
+      "screenshotPath": "locked-preview-password-required--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password",
+      "screenshotPath": "locked-preview-unlocked-with-the-password--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Wrong Password",
+      "screenshotPath": "locked-preview-wrong-password--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Giving Platform Is Chosen",
+      "screenshotPath": "momentum-fund-a-giving-platform-is-chosen--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Mistyped Section Type And A Missing Photo",
+      "screenshotPath": "momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Arriving From The Email",
+      "screenshotPath": "momentum-fund-arriving-from-the-email--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Every Section Hidden",
+      "screenshotPath": "momentum-fund-every-section-hidden--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Finding Your Place In The Network",
+      "screenshotPath": "momentum-fund-filtering-the-donor-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Public Visitor",
+      "screenshotPath": "momentum-fund-public-visitor--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Donor Wall Moved To The Top",
+      "screenshotPath": "momentum-fund-the-donor-wall-moved-to-the-top--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The First Donor On The Wall",
+      "screenshotPath": "momentum-fund-the-first-donor-on-the-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Goal Meter Held As Coming Soon",
+      "screenshotPath": "momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Impact Band With Real Quotes",
+      "screenshotPath": "momentum-fund-the-impact-band-with-real-quotes--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Two Pillar Bands With Their Own Cards",
+      "screenshotPath": "momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS",
+      "screenshotPath": "site-page-a-page-written-in-the-cms--desktop.png"
+    },
+    {
+      "name": "Site Page - Long Title And No Description",
+      "screenshotPath": "site-page-long-title-and-no-description--desktop.png"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall",
+      "screenshotPath": "sponsor-route-example-partner-wall--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects",
+      "screenshotPath": "volunteer-page-no-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Open Projects",
+      "screenshotPath": "volunteer-page-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS",
+      "screenshotPath": "volunteer-page-rewritten-from-the-cms--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo",
+      "screenshotPath": "volunteer-project-detail-full-description-no-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link",
+      "screenshotPath": "volunteer-project-detail-photo-and-own-sign-up-link--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested",
+      "screenshotPath": "volunteer-project-detail-retired-projects-never-suggested--desktop.png"
+    },
+    {
+      "name": "CalloutCard - Single Callout",
+      "screenshotPath": "calloutcard-single-callout--desktop.png"
+    },
+    {
+      "name": "ChapterConnect - Default",
+      "screenshotPath": "chapterconnect-default--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Community Heading",
+      "screenshotPath": "chapterevents-community-heading--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Recent Past Events",
+      "screenshotPath": "chapterevents-recent-past-events--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Rich List",
+      "screenshotPath": "chapterevents-rich-list--desktop.png"
+    },
+    {
+      "name": "ChapterHero - With Image",
+      "screenshotPath": "chapterhero-with-image--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Forming Chapter",
+      "screenshotPath": "chapterpage-forming-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "CommunityCallouts - What Happens Here",
+      "screenshotPath": "communitycallouts-what-happens-here--desktop.png"
+    },
+    {
+      "name": "CommunityPage - Founders Composed",
+      "screenshotPath": "communitypage-founders-composed--desktop.png"
+    },
+    {
+      "name": "Content Hub",
+      "screenshotPath": "content-hub--desktop.png"
+    },
+    {
+      "name": "EventsPage - Upcoming and Past",
+      "screenshotPath": "eventspage-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "FormingChapterCta - No Contact Address",
+      "screenshotPath": "formingchaptercta-no-contact-address--desktop.png"
+    },
+    {
+      "name": "FormingChapterCta - With Contact Address",
+      "screenshotPath": "formingchaptercta-with-contact-address--desktop.png"
+    },
+    {
+      "name": "GlobalCommunityAction - Newsletter Card",
+      "screenshotPath": "globalcommunityaction-newsletter-card--desktop.png"
+    },
+    {
+      "name": "GlobalCommunityCta - Three Ways In",
+      "screenshotPath": "globalcommunitycta-three-ways-in--desktop.png"
+    },
+    {
+      "name": "Hero Carousel",
+      "screenshotPath": "hero-carousel--desktop.png"
+    },
+    {
+      "name": "JoinWhatsAppCta - Community Primary Action",
+      "screenshotPath": "joinwhatsappcta-community-primary-action--desktop.png"
+    },
+    {
+      "name": "Our Chapters",
+      "screenshotPath": "our-chapters--desktop.png"
+    },
+    {
+      "name": "PageNarrowBody - Leads Body And Links",
+      "screenshotPath": "pagenarrowbody-leads-body-and-links--desktop.png"
+    },
+    {
+      "name": "Stats Band",
+      "screenshotPath": "stats-band--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 220,
+    "passed": 220,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 220,
+        "passed": 220
+      }
+    ]
+  }
+}

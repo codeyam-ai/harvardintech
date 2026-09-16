@@ -1,0 +1,33 @@
+---
+import Component from "../../components/GlobalCommunityCta.astro";
+import "../../styles/tokens.css";
+
+// The band that answers "my city isn't on the list".
+//
+// It sits where the Japan and L.A. cards used to be on the homepage, and closes
+// every chapter page. Those two cities were listed as chapters long after they
+// stopped running anything, so the row was making a promise the site could not
+// keep; this is the honest version of the same offer, and it is aimed at the
+// large majority of alumni who are not in one of the four chapter cities.
+//
+// The component takes no data props — its three destinations resolve from
+// `joinCtas()` with no entry, which is exactly how the homepage calls it. So
+// this frame IS the production render, not an approximation of one.
+//
+// What it has to prove: three actions of equal visual weight, each with a line
+// saying what it gets you, sitting three-across on a desktop. No width wrapper,
+// because this is a full-bleed band rather than a card.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: GlobalCommunityCta</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component />
+    </div>
+  </body>
+</html>

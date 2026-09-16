@@ -6,5 +6,5 @@ benefits:
   - text: Put a leader from your team on a panel or in a fireside conversation
   - text: Share open roles with a network of alumni technologists
   - text: No budget required — this is how a lot of our best partnerships start
-order: 4
+order: 5
 ---

@@ -1,0 +1,30 @@
+---
+import Component from "../../components/FormingChapterCta.astro";
+import "../../styles/tokens.css";
+
+// The forming-chapter band with NO contact address — which is the production
+// state, not the edge case. The shared inbox is allowed on only a handful of
+// surfaces (`EMAIL_SURFACES` in `src/lib/contact.ts`), and blanking the setting
+// removes it from all of them at once, so a site that shows no email anywhere
+// is a supported configuration rather than a misconfiguration.
+//
+// What this frame has to prove: the band still reads as complete without the
+// Contact us line. The two buttons are the ask; Nicole's "Interested in getting
+// involved?" line is a softer third option, and its absence must not leave a
+// dangling gap or a sentence with nothing after it.
+//
+// Compare with `FormingChapterCta` for the same band once an address is set.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: FormingChapterCta-NoEmail</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component name="Seattle / Pacific Northwest" />
+    </div>
+  </body>
+</html>

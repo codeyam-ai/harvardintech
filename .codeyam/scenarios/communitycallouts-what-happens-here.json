@@ -1,0 +1,12 @@
+{
+  "name": "CommunityCallouts - What Happens Here",
+  "id": "74867bd0-2077-4ad0-ae7e-24cad43842c0",
+  "url": "/isolated-components/CommunityCallouts",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "CommunityCallouts",
+  "scenarioType": "component",
+  "description": "The block that lets a community page read as finished before it has any events. The AI community's main activity is a bi-weekly call, and a recurring call is not a calendar entry, so the page previously carried only a blurb and a photo and a visitor could not tell whether anything was happening. The third card deliberately has no detail line, proving the optional text is genuinely optional and a card without it still sits flush with its neighbours."
+}

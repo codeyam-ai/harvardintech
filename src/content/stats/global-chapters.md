@@ -1,5 +1,5 @@
 ---
-value: '6'
-label: 'Global chapters'
-order: 2
+value: '4'
+label: 'Chapters with in-person events'
+order: 3
 ---

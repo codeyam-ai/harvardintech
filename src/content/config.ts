@@ -4,6 +4,7 @@ import { previewFields } from '@codeyam/cms/content';
 import { glob } from 'astro/loaders';
 import type { Loader } from 'astro/loaders';
 import { contentRoot } from '../lib/contentRoot';
+import { isWhatsAppGroupLink } from '../lib/localPresence';
 
 // A typed content collection is the data layer for a static Astro site:
 // markdown files under `<contentRoot>/<collection>/` validated against this
@@ -142,6 +143,13 @@ const team = defineCollection({
 // is the slug/id of the regional chapter this event belongs to — optional so a
 // non-chapter event (e.g. the Cambridge panel) still validates and simply
 // appears on no chapter page.
+//
+// `communities` exists because one tag could not express the real case. A
+// Founders co-working day in London belongs to BOTH the London chapter and the
+// Founders community, and with a single `chapter` box the editor had to pick a
+// winner — the event disappeared from whichever page lost. The place tag stays
+// where it is and the group tags are a list beside it, so nothing an editor
+// already typed has to change.
 const events = defineCollection({
   loader: collectionGlob('events'),
   schema: z.object({
@@ -151,19 +159,41 @@ const events = defineCollection({
     description: z.string().optional(),
     link: z.string().optional(),
     chapter: z.string().optional(),
+    communities: z.array(z.string()).optional(),
     draft: z.boolean().optional(),
   }),
 });
 
-// Regional chapters (NYC, SF, L.A., Japan). One markdown file per city under
+// Regional chapters (SF & Bay Area, New York City, London, Boston & Cambridge,
+// and the forming DC and Seattle). One markdown file per city under
 // `<contentRoot>/chapters/`, rendered at `/chapters/<slug>` and linked from the
 // nav Chapters dropdown. `leads` (named organizers) and `links` (city-specific
 // signup / social URLs) are optional so a chapter with no leads still renders;
 // the markdown body is the longer "about this chapter" copy.
+//
+// `status` is what lets a city with alumni but no organizer stay on the site
+// honestly: a `forming` chapter keeps its URL, its nav entry and its event tags
+// and simply asks for a lead instead of naming one. Promoting it is flipping
+// this one select — see `src/lib/localPresence.ts` for the full rule.
 const chapters = defineCollection({
   loader: collectionGlob('chapters'),
   schema: z.object({
     city: z.string(),
+    status: z.enum(['active', 'forming']).optional(),
+    // The Google Form that gates the local WhatsApp group. The refine is the
+    // point of the field: pasting the group's own invite here would publish an
+    // un-revocable link that skips alumni verification, so the schema refuses
+    // it at edit time and `joinCtas` refuses it again at render.
+    whatsappFormUrl: z
+      .string()
+      .optional()
+      .refine((u) => !isWhatsAppGroupLink(u), {
+        message: 'Link the Google Form, not the WhatsApp group itself.',
+      }),
+    volunteerUrl: z.string().optional(),
+    callouts: z
+      .array(z.object({ title: z.string(), text: z.string().optional() }))
+      .optional(),
     region: z.string().optional(),
     blurb: z.string().optional(),
     // Full-bleed city header (mirrors the live harvardintech.com chapter pages):
@@ -208,15 +238,36 @@ const chapters = defineCollection({
 // beside the hand-authored WhatsApp link.
 //
 // Deliberately the chapter schema with `name` in place of `city`: a community
-// has no location, but everything else about the page — hero, tagline, leads,
-// links, gallery toggle, per-community contact email — is the same, so both
-// render through the same components and an editor who has filled in one form
-// already knows the other. Events join a community through the same `chapter`
-// tag they use for chapters, so there is no second field to learn.
+// has no location, but the FIELDS are the same — hero, tagline, leads, links,
+// gallery toggle, per-community contact email — so an editor who has filled in
+// one form already knows the other.
+//
+// What is NOT the same any more is the page. A community renders through
+// `CommunityPage.astro`, not the chapter page, because the two lead with
+// different things: a chapter leads with a place and its calendar, a community
+// leads with what it actually does. `callouts` is how it says that before it
+// has any events, and `whatsappFormUrl` is its primary call to action rather
+// than an afterthought below the fold.
+//
+// Events reach a community two ways: the `chapter` tag (which always worked,
+// since ids are unique across both collections) or the newer `communities`
+// list, which is what lets one London Founders co-working day sit on the London
+// chapter page AND here without either tag having to win.
 const communities = defineCollection({
   loader: collectionGlob('communities'),
   schema: z.object({
     name: z.string(),
+    // Same rule, same reason as the chapters field above: the form, never the
+    // group. See `isWhatsAppGroupLink`.
+    whatsappFormUrl: z
+      .string()
+      .optional()
+      .refine((u) => !isWhatsAppGroupLink(u), {
+        message: 'Link the Google Form, not the WhatsApp group itself.',
+      }),
+    callouts: z
+      .array(z.object({ title: z.string(), text: z.string().optional() }))
+      .optional(),
     blurb: z.string().optional(),
     heroImage: z.string().optional(),
     tagline: z.string().optional(),

@@ -4,6 +4,7 @@ import * as path from 'node:path';
 import {
   chapterNavItems,
   withChapterGroup,
+  GLOBAL_COMMUNITY_ITEM,
   communityNavItems,
   withCommunityItems,
   internalNavUrls,
@@ -42,7 +43,13 @@ describe('chapterNavItems', () => {
     const items = withChapterGroup(HAND_AUTHORED, chapterNavItems(chapters));
     const group = items.find((i) => i.label === 'Chapters');
 
-    expect(group?.children).toEqual([{ label: 'Miami', url: '/chapters/miami' }]);
+    // The Global community entry always closes the dropdown — asserted here as
+    // part of the whole `children` array rather than only in its own test, so
+    // this reproduction keeps pinning the FULL menu the group renders.
+    expect(group?.children).toEqual([
+      { label: 'Miami', url: '/chapters/miami' },
+      GLOBAL_COMMUNITY_ITEM,
+    ]);
   });
 
   // Menu order must match the "Our chapters" cards exactly, or the two surfaces
@@ -144,6 +151,66 @@ describe('withChapterGroup', () => {
     withChapterGroup(HAND_AUTHORED, chapterItems);
 
     expect(HAND_AUTHORED).toEqual(original);
+  });
+
+  // Most alumni are not in one of the four cities. Before this entry existed,
+  // opening Chapters and finding nowhere near you was a dead end — the menu's
+  // implicit answer was "not for you". It must be LAST, after the cities.
+  it('closes the dropdown with the Global community entry', () => {
+    const items = withChapterGroup(HAND_AUTHORED, chapterItems);
+    const group = items.find((i) => i.label === 'Chapters');
+
+    expect(group?.children).toEqual([...chapterItems, GLOBAL_COMMUNITY_ITEM]);
+    expect(group?.children?.at(-1)).toEqual({
+      label: 'Global community',
+      url: '/#global-community',
+    });
+  });
+
+  // The global entry must NOT keep an otherwise-empty group alive: a "Chapters"
+  // caret whose only child is "Global community" is a menu lying about what it
+  // contains. The no-chapters rule wins over the always-append rule.
+  it('does not resurrect the group for the global entry alone', () => {
+    const items = withChapterGroup(HAND_AUTHORED, []);
+
+    expect(items.find((i) => i.label === 'Chapters')).toBeUndefined();
+    expect(JSON.stringify(items)).not.toContain('global-community');
+  });
+});
+
+describe('chapterNavItems status ordering', () => {
+  // The menu leads with the cities that actually hold events. A visitor opening
+  // Chapters is usually looking for something to attend, and a forming chapter
+  // has nothing to attend yet — so it is listed, but listed after.
+  it('orders active chapters before forming ones', () => {
+    const chapters = [
+      { slug: 'dc-dmv', city: 'DC and DMV Area', status: 'forming' },
+      { slug: 'nyc', city: 'New York City', status: 'active' },
+      { slug: 'seattle', city: 'Seattle / Pacific Northwest', status: 'forming' },
+      { slug: 'boston-cambridge', city: 'Boston & Cambridge' },
+    ];
+
+    expect(chapterNavItems(chapters).map((i) => i.label)).toEqual([
+      'Boston & Cambridge',
+      'New York City',
+      'DC and DMV Area',
+      'Seattle / Pacific Northwest',
+    ]);
+  });
+
+  // A forming chapter is a real chapter with a real page — it is reordered,
+  // never hidden. Dropping it from the menu would strand the alumni who are
+  // already in that city's WhatsApp group.
+  it('still lists every forming chapter', () => {
+    const chapters = [
+      { slug: 'dc-dmv', city: 'DC and DMV Area', status: 'forming' },
+      { slug: 'seattle', city: 'Seattle / Pacific Northwest', status: 'forming' },
+    ];
+
+    expect(chapterNavItems(chapters).map((i) => i.url)).toEqual([
+      '/chapters/dc-dmv',
+      '/chapters/seattle',
+    ]);
   });
 });
 

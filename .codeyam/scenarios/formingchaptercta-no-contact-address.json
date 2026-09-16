@@ -1,0 +1,12 @@
+{
+  "name": "FormingChapterCta - No Contact Address",
+  "id": "83c8bb9c-3fcb-44fe-be87-6df40cadaad5",
+  "url": "/isolated-components/FormingChapterCta-NoEmail",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "FormingChapterCta",
+  "scenarioType": "component",
+  "description": "The same band with no contact address set — the production state rather than the edge case, since the shared inbox is deliberately restricted to a handful of surfaces and blanking the setting removes it from all of them at once. The frame has to prove the band still reads as finished with only its two buttons: no dangling gap where the Contact us line was, and no sentence left hanging without it."
+}

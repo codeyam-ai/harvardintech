@@ -10,9 +10,14 @@ interface Props {
   stats?: Stat[];
 }
 const {
+  // Kept in step with the `stats` collection, which is what actually renders in
+  // production. These are the figures shown if that collection is ever empty,
+  // so a stale copy here would put retired numbers ("5 global chapters") back on
+  // the homepage at exactly the moment nobody is looking.
   stats = [
-    { value: '8,000+', label: 'Alumni technologists' },
-    { value: '5', label: 'Global chapters' },
+    { value: '8,500+', label: 'Newsletter subscribers' },
+    { value: '750+', label: 'Alumni in our WhatsApp' },
+    { value: '4', label: 'Chapters with in-person events' },
     { value: '100+', label: 'Events hosted' },
     { value: 'Est. 2013', label: 'Harvard Alumni in Tech' },
   ],

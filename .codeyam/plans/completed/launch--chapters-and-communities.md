@@ -63,6 +63,25 @@ Two more changes:
 10. **Owner:** which city the untagged 2024-10-10 and 2025-05-22 "Harvard Alumni in Tech" events were in, so they can show as NYC's (or another city's) recent past events.
 11. **Owner:** whether the stat strip should grow to 5 figures (newsletter, WhatsApp, chapters, events, Est. 2013) or drop one. The default is 5; `Stats.astro` lays the strip out on `--n` columns, so 5 is supported.
 
+## Open questions — status at build (2026-09-16)
+
+Everything below shipped with a stated default rather than blocking. Nothing
+here prevents launch; each is a content edit in /admin once the answer arrives.
+
+| # | Question | Status at build |
+|---|---|---|
+| 1 | Aimee's last name, class year, title | **Open.** Boston ships with no named lead. |
+| 2 | Jessica's last name, class year | **Answered by the content already**: `sf-bay-area.md` carries `Jessica Li / Interim chapter lead`. Class year still open. |
+| 3 | NYC and London leads | **Open.** Both ship without named leads; the schema does not require them. |
+| 4 | James's class year, title, call cadence | **Partly.** Shipped as `Community Lead (pilot)` with "bi-weekly calls with alumni globally". Class year and the day/time-zone still open. |
+| 5 | Boston Alumni Day photo | **Open.** Boston keeps `/images/bg/hero-bg.jpg`, the homepage hero — nothing in `public/images/` matches Alumni Day. Body copy now mentions the event. |
+| 6 | Where "Volunteer to lead or support" points | **Defaulted** to `/volunteer` via `VOLUNTEER_PATH`. A per-chapter `volunteerUrl` overrides it with no code change. |
+| 7 | Does the Google Form hand out the group link? | **Open — and it is why `WhatsappCommunity`'s step-2 copy was left alone.** Writing "we'll send you the invite" would assert a process nobody confirmed. The component had already dropped its group link in the contact cycle, so nothing is blocked. |
+| 8 | Which geographies Founders runs events in | **Shipped as** "Local events in select cities — co-working days in London so far, with more cities as founders there volunteer to host them." |
+| 9 | Current LinkedIn followers / events hosted | **Open.** `linkedin-followers.md` keeps `8,000+` and `events-hosted` keeps `100+`. Note these are now the ONLY unverified figures on the site. |
+| 10 | City for the untagged 2024-10-10 and 2025-05-22 events | **Open.** They remain untagged, so they appear on `/events` and no chapter page. This is why NYC shows no "Recent events" block yet. |
+| 11 | Should the stat strip grow to 5? | **Defaulted to 5** (newsletter, WhatsApp, chapters, events, Est. 2013). `Stats.astro` lays out on `--n` columns, so dropping one needs no code change. |
+
 ## Recommendations
 
 **A. A `status` field on the existing `chapters` collection, plus a separate `CommunityPage` (pick).**
@@ -81,10 +100,59 @@ Two more changes:
 
 Numbers in CMS copy stay editable text rather than being computed at render time, because editors own that copy. The guard test reports drift and never blocks a publish, the same convention as `unresolvedNavUrls`.
 
+## Reused existing code
+
+Survey run at the Confirm gate (2026-09-16), before any code was written. Every
+constant and entity this plan proposes was grepped against the tree first.
+
+**Already exists — reuse, do not redefine.** `src/lib/contact.ts` (landed by
+`launch--contact-and-calls-to-action`, commit af07e4c) already owns:
+- `WHATSAPP_FORM_URL = 'https://forms.gle/GqgaCDDWhWAgpJC68'` — this *is* the
+  plan's `WHATSAPP_JOIN_FORM_URL`. `localPresence.ts` imports it; it must not
+  declare a second copy.
+- `VOLUNTEER_PATH = '/volunteer'` — this *is* the plan's
+  `DEFAULT_VOLUNTEER_URL`. Same rule: import, do not redeclare.
+- `emailFor('formingChapter')` — already registered in `EMAIL_SURFACES`, so
+  step 6's Contact-us button has its seam today.
+
+**Already exists — this plan EXTENDS it, it is not a rebuild:**
+- `eventsTaggedTo` (`src/lib/events.ts:50`) — gains `event.communities` matching
+  alongside `chapter` (step 4).
+- `withChapterGroup` (`src/lib/nav.ts:80`) — gains the appended
+  `GLOBAL_COMMUNITY_ITEM` (step 10).
+- `ChapterEvents.astro` — gains a `variant` prop and a second section id so one
+  component renders both the upcoming and the recent-past block (step 8).
+
+**Confirmed genuinely new — no equivalent field under another name:**
+`chapters.status`, `whatsappFormUrl`, `volunteerUrl` and `callouts` appear in
+`src/content/config.ts` in no spelling; the chapters schema carries no
+status/lifecycle field at all.
+
+**Step 1's `NEWSLETTER_URL` was right, and it found real duplication.** The
+Mailchimp signup is `https://mailchi.mp/0222623e1169/fbrj32e9wb`, repeated as a
+bare literal in FIVE components — `BaseLayout.astro:89`, `ChapterSignUp.astro:10`,
+`landing/Hero.astro:14`, `landing/HeroCarousel.astro:35`,
+`landing/UpcomingEvents.astro:31` — plus one content file. It is now named once
+in `src/lib/contact.ts` as `NEWSLETTER_URL` and re-exported from
+`localPresence.ts`. New call sites use the constant; the five existing literals
+are deliberately NOT swept up, as that is an unrelated change to five components
+this plan otherwise does not touch. Worth a follow-up.
+
+(Distinct from the LinkedIn newsletter in `src/data/nav.json`, which is a feed
+to follow rather than a list to join. Both are real and they are not
+interchangeable.)
+
+**Step 5 is largely already done.** `WhatsappCommunity.astro` already resolves
+`verifyUrl` from `WHATSAPP_FORM_URL` and no longer defaults to
+`chat.whatsapp.com`. What remains of step 5 is the step-2 copy rewrite. The one
+surviving `chat.whatsapp.com` string under `src/` is a fixture at
+`src/pages/isolated-components/[name].astro:135`, which test (d) must exclude or
+the fixture must be changed.
+
 ## Implementation
 
 1. **Pure model, `src/lib/localPresence.ts` (new).** Framework-free, the same shape as `nav.ts` and `events.ts`. It exports:
-   - `WHATSAPP_JOIN_FORM_URL` (the Google Form), `NEWSLETTER_URL` (the Mailchimp URL) and `DEFAULT_VOLUNTEER_URL = '/volunteer'`.
+   - `chapterStatus`, `presenceSummary`, `joinCtas`, `isWhatsAppGroupLink` — and **re-exports** `WHATSAPP_FORM_URL` and `VOLUNTEER_PATH` from `src/lib/contact.ts` rather than declaring its own copies (see *Reused existing code*). The newsletter URL is the LinkedIn one in `src/data/nav.json`, not a Mailchimp URL.
    - `isWhatsAppGroupLink(url)`, which is true for `chat.whatsapp.com` / `wa.me`.
    - `chapterStatus(entry)`, where absent means `active`.
    - `presenceSummary(chapters) → { active, forming, activeCount, formingCount }`.

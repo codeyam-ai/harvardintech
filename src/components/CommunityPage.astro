@@ -1,0 +1,116 @@
+---
+// A single interest-based community page (AI, Founders).
+//
+// This used to render through `ChapterPage`, and sharing that shell was the
+// problem. A chapter page is built around a PLACE: its hero announces a city,
+// its first question is "what is happening near me", and its leads block is
+// headed "Chapter Leads". Pointed at a community, every one of those was subtly
+// wrong — the AI page's banner read "HARVARD ALUMNI IN TECH AI", which sounds
+// like a product launch rather than a group of people.
+//
+// A community also has a different problem to solve. A chapter with nothing on
+// the calendar is between events; a community may never have listable events at
+// all — the AI community's bi-weekly calls are its main activity and no calendar
+// entry describes them. So the ORDER here is different from a chapter's: what
+// this community does, then how to join it, then events if there are any.
+import ChapterConnect from './ChapterConnect.astro';
+import ChapterEvents from './ChapterEvents.astro';
+import ChapterHero from './ChapterHero.astro';
+import CommunityCallouts from './CommunityCallouts.astro';
+import JoinWhatsAppCta from './JoinWhatsAppCta.astro';
+import PageNarrowBody from './PageNarrowBody.astro';
+import EventGallery from './landing/EventGallery.astro';
+import type { EventLike } from '../lib/events';
+
+interface Lead {
+  name: string;
+  role?: string;
+}
+interface CommunityLink {
+  label: string;
+  url: string;
+}
+interface Props {
+  /** The community's name — "AI", "Founders". Never a city. */
+  name: string;
+  blurb?: string;
+  heroImage?: string;
+  tagline?: string;
+  showGallery?: boolean;
+  /** "What happens here" cards. The most important field on this page: it is
+   *  what a community can say about itself before it has any events. */
+  callouts?: { title: string; text?: string }[];
+  whatsappFormUrl?: string;
+  events?: EventLike[];
+  /** The last few that already happened, most recent first. */
+  pastEvents?: EventLike[];
+  leads?: Lead[];
+  links?: CommunityLink[];
+  backHref?: string;
+  backLabel?: string;
+}
+const {
+  name,
+  blurb,
+  heroImage,
+  tagline,
+  showGallery = true,
+  callouts = [],
+  whatsappFormUrl,
+  events = [],
+  pastEvents = [],
+  leads = [],
+  links = [],
+  backHref = '/#community',
+  backLabel = '← All communities',
+} = Astro.props;
+
+// Detected HERE for the same reason ChapterPage does it — a forwarded slot
+// always reads as filled from inside PageNarrowBody.
+const hasBody = Astro.slots.has('default');
+---
+
+<ChapterHero name={name} blurb={blurb} heroImage={heroImage} tagline={tagline} label="Community" />
+
+{
+  /* What this community actually does, before anything else. For a community
+     with no events on the calendar this is the whole answer to "is anything
+     happening here", so it goes above the fold-adjacent join band rather than
+     below it. */
+}
+<CommunityCallouts callouts={callouts} />
+
+<JoinWhatsAppCta name={name} whatsappFormUrl={whatsappFormUrl} />
+
+{
+  /* Directly under the join CTA, which is where Nicole looked for the Founders
+     events and did not find them when they sat at the bottom of the page. */
+}
+<ChapterEvents events={events} name={name} heading={`Upcoming ${name} Events`} />
+
+<ChapterEvents
+  events={pastEvents}
+  name={name}
+  variant="past"
+  heading={`Recent ${name} Events`}
+/>
+
+<PageNarrowBody
+  backHref={backHref}
+  backLabel={backLabel}
+  leads={leads}
+  leadsHeading={leads.length > 1 ? 'Community Leads' : 'Community Lead'}
+  links={links}
+  hasBody={hasBody}
+>
+  <slot />
+</PageNarrowBody>
+
+{
+  /* A community has no curated gallery of its own — that is a chapter feature —
+     so this is always the shared event wall, and `showGallery: false` still
+     turns it off. */
+  showGallery ? <EventGallery /> : null
+}
+
+<ChapterConnect />

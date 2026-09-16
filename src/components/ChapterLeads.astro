@@ -8,15 +8,18 @@ interface Lead {
 }
 interface Props {
   leads?: Lead[];
+  /** The heading over the list. "Chapter Leads" is right for a city and wrong
+   *  for a group, so a community page passes "Community Lead" instead. */
+  heading?: string;
 }
-const { leads = [] } = Astro.props;
+const { leads = [], heading = 'Chapter Leads' } = Astro.props;
 ---
 
 {
   leads.length > 0 ? (
     <div style="margin-bottom: var(--space-xl);">
       <h2 style="text-transform: uppercase; letter-spacing: 0.08em; font-size: 1rem; margin: 0 0 var(--space-md);">
-        Chapter Leads
+        {heading}
       </h2>
       <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-lg);">
         {leads.map((lead) => (

@@ -1,6 +1,6 @@
 {
   "name": "ChapterPage - Sparse No Leads",
-  "id": "91538d5b-2e35-4bc6-a1fd-a8075830fc37",
+  "id": "d36a87cf-93ee-4f4b-9347-8ef6de336acb",
   "url": "/isolated-components/ChapterPage-Sparse",
   "dimensions": [
     "Desktop"
@@ -8,5 +8,6 @@
   "mocks": {},
   "componentName": "ChapterPage-Sparse",
   "scenarioType": "component",
-  "pageFilePath": "src/components/ChapterPage.astro"
+  "pageFilePath": "src/components/ChapterPage.astro",
+  "description": "The thinnest chapter that still has to render: a city and a region, no hero photo, no leads, no body, no links. It proves the centered-header fallback and that every optional block is genuinely optional rather than leaving reserved gaps. The fixture names DC and DMV Area, having previously named Japan — a chapter the site has since retired, which made it a trap for the next reader rather than a neutral example."
 }

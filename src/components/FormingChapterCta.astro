@@ -1,0 +1,112 @@
+---
+// What a FORMING chapter shows where an active one shows its leads.
+//
+// The honest problem this solves: DC and Seattle have a real concentration of
+// alumni and an active WhatsApp group, but nobody running events. The old page
+// rendered them identically to New York — a leads heading with nothing under it
+// and an empty calendar — which read as a dead chapter rather than a new one.
+// Deleting them was worse: it hid a group of alumni who are actually there.
+//
+// So the page asks for exactly the two things the chapter is missing: someone to
+// help lead it, and members in the local group. Nicole's line and a Contact us
+// button sit underneath for anyone who wants to talk to a person first — and
+// that button renders ONLY when `emailFor('formingChapter')` returns an address,
+// which is how the shared inbox stays on its short list of approved surfaces.
+import { joinCtas } from '../lib/localPresence';
+import { externalLinkAttrs } from '../lib/externalLink';
+import { buildMailto } from '../lib/mailto';
+import { withBase } from '../lib/url';
+
+interface Props {
+  /** The city this chapter is forming in. */
+  name: string;
+  whatsappFormUrl?: string;
+  volunteerUrl?: string;
+  /** The address from `emailFor('formingChapter', …)`. Absent → no Contact us
+   *  button, and the block still reads complete without it. */
+  contactEmail?: string;
+}
+const { name, whatsappFormUrl, volunteerUrl, contactEmail } = Astro.props;
+
+const { whatsappFormUrl: formHref, volunteerUrl: volunteerHref } = joinCtas({
+  whatsappFormUrl,
+  volunteerUrl,
+});
+// `withBase` alone is the whole href rule: it prefixes an internal absolute
+// path with the base path and returns anything else — an https URL, a mailto,
+// an anchor — untouched. The branch this used to carry was redundant.
+// `externalLinkAttrs` is a separate question (new tab or not), and that one
+// genuinely needs the origin.
+const origin = Astro.url.origin;
+
+const mailto = contactEmail
+  ? buildMailto({
+      to: contactEmail,
+      subject: `Getting involved with the ${name} chapter`,
+    })
+  : undefined;
+---
+
+<section class="s-section" id="help-lead" style="background: var(--color-bg-blue);">
+  <div class="s-narrow" style="text-align: center;">
+    <!-- `balance` because the heading is city-name-long and varies: "Seattle /
+         Pacific Northwest is forming. Help lead it." wraps at a different word
+         than DC's does, and an unbalanced wrap strands the final "it." alone on
+         a second line. Unsupported browsers just get the normal wrap. -->
+    <h2 class="s-title" style="text-wrap: balance;">{name} is forming. Help lead it.</h2>
+    <p style="font-size: 1.1rem; color: var(--color-fg); margin: 0 auto var(--space-lg); max-width: var(--text-width);">
+      There are Harvard alumni in tech here and a WhatsApp group already running —
+      what {name} does not have yet is someone organising events. If that could be
+      you, or you just want to meet the alumni nearby, start with one of these.
+    </p>
+
+    <div class="forming-actions">
+      <a class="s-btn" href={withBase(volunteerHref)} {...externalLinkAttrs(volunteerHref, origin)}>
+        Volunteer to lead or support
+      </a>
+      <a
+        class="s-btn s-btn-quiet"
+        href={withBase(formHref)}
+        {...externalLinkAttrs(formHref, origin)}
+      >
+        Join WhatsApp to meet local alumni
+      </a>
+    </div>
+
+    {
+      mailto ? (
+        <p class="forming-contact">
+          Interested in getting involved with the {name} chapter?
+          <a href={mailto}>Contact us</a>
+        </p>
+      ) : null
+    }
+  </div>
+</section>
+
+<style>
+  /* Wraps to one button per row on a phone rather than letting two long labels
+     shrink into unreadable pills. */
+  .forming-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: center;
+  }
+  /* The secondary action: same size and hit area as the primary, lighter
+     weight, so "volunteer to lead" reads as the bigger ask without making
+     "join WhatsApp" look like an afterthought. */
+  .s-btn-quiet {
+    background: transparent;
+    color: var(--color-fg);
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+  .forming-contact {
+    margin: var(--space-lg) 0 0;
+    font-size: 0.95rem;
+    color: var(--color-muted);
+  }
+  .forming-contact a {
+    margin-left: 0.35rem;
+  }
+</style>

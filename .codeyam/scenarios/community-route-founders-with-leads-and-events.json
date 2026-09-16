@@ -1,6 +1,6 @@
 {
   "name": "Community Route - Founders With Leads And Events",
-  "id": "c2915203-442f-49ce-bcc1-0b4fa1833427",
+  "id": "e94de151-7fb2-4891-97c6-66ba66ed4b88",
   "url": "/communities/founders",
   "dimensions": [
     "Desktop"
@@ -26,7 +26,7 @@
         "links": [
           {
             "label": "Join the Founders WhatsApp",
-            "url": "https://chat.whatsapp.com/harvardintech-founders"
+            "url": "https://forms.gle/GqgaCDDWhWAgpJC68"
           },
           {
             "label": "Founder office hours signup",
@@ -69,5 +69,5 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/communities/[slug].astro",
-  "description": "A community once it has people and a calendar behind it — the state the team is working toward, not the one production starts in. Named leads, city-specific links, and events reach the page through the same tag chapters use, so nothing about the editing model is new. Production starts with none of this, which the AI scenario shows."
+  "description": "A community once it has people and a calendar behind it. Its events are tagged the ORIGINAL way — a single chapter tag naming the community — which this seed keeps on purpose: that path still works and this is what proves it. The newer alternative is an event's own communities list, which is what lets one London co-working day sit on the London chapter page and here at the same time without either tag having to win; the production Founders content uses that path, and this scenario deliberately covers the other. Its Join link points at the shared Google Form: this seed previously carried a raw chat.whatsapp.com invite, which put the one pattern the site forbids into a frame that looks like the product."
 }

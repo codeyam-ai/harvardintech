@@ -1,0 +1,12 @@
+{
+  "name": "GlobalCommunityCta - Three Ways In",
+  "id": "3e551a62-e7d6-42d4-9d9e-c46917319485",
+  "url": "/isolated-components/GlobalCommunityCta",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "GlobalCommunityCta",
+  "scenarioType": "component",
+  "description": "The band that answers 'my city is not on the list' — which is the situation most alumni are in. It occupies the homepage slot where the Japan and L.A. cards used to sit, and closes every chapter page. Three actions of equal weight, each with one line of consequence: the WhatsApp community, the newsletter and volunteering, none of which need a local chapter. The component takes no data props, so this frame is the production render rather than an approximation of it."
+}

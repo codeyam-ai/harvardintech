@@ -62,12 +62,23 @@ const PACKAGE_REGISTRY = JSON.parse(REGISTRY_SOURCE) as CollectionsRegistry;
 
 // Schema keys that legitimately have no editor input, per collection.
 //
-// Currently empty, and that is the interesting part: the implicit `draft` toggle
-// and the built-ins' core fields all come back from `resolveCollections` as real
-// editor inputs, so nothing needs excusing today. Keep it that way — every entry
-// added here is a field an editor cannot set from /admin, so an unexplained
-// addition is the guard being silenced rather than satisfied.
-const EXEMPT_SCHEMA_KEYS: Record<string, string[]> = {};
+// Every entry here is a field an editor cannot set from /admin, so an
+// unexplained addition is the guard being silenced rather than satisfied. Each
+// one therefore carries its reason.
+const EXEMPT_SCHEMA_KEYS: Record<string, string[]> = {
+  // `events.communities` is a list of plain strings, and the editor cannot
+  // render one: a `list` field holds repeatable ROWS OF FIELDS, not repeatable
+  // scalars. That limitation is already documented above `sponsorLevels` in
+  // `config.ts` — it is why `benefits` had to become `{ text }` objects and why
+  // the levels became their own collection.
+  //
+  // Reshaping `communities` into `[{ id }]` to satisfy the editor was rejected:
+  // it would put an object wrapper into every event's frontmatter to work
+  // around an input control, and the owner chose to tag community events by
+  // hand anyway. The `chapter` box beside it covers the common case from
+  // /admin; a second community tag is a deliberate, rarer edit.
+  events: ['communities'],
+};
 
 // MOVED: the unit cases for the five helpers above — declaredFieldNames,
 // unknownFields, missingFields, stripComments, schemaKeysFor — now live beside

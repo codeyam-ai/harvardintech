@@ -5,7 +5,14 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ChapterPage from '../../components/ChapterPage.astro';
-import { splitEvents, unmatchedChapterTags, eventsTaggedTo } from '../../lib/events';
+import {
+  splitEvents,
+  unmatchedChapterTags,
+  eventsTaggedTo,
+  recentPastEvents,
+} from '../../lib/events';
+import { emailFor } from '../../lib/contact';
+import { settings } from '../../lib/site';
 import LockedPreviewBody from '../../components/LockedPreviewBody.astro';
 import { isLocked, isPreview, publishedEntries, routableEntries } from '../../lib/drafts';
 import { INCLUDE_DRAFTS } from '../../lib/draftVisibility';
@@ -23,11 +30,11 @@ export async function getStaticPaths() {
   const chapterIds = chapters.map((chapter) => chapter.id);
 
   // The one place holding every list an event tag can legitimately match, so the
-  // one place that can notice a tag matching none of them. The CMS renders
-  // `chapter` as a free-text box, so a city name or a stray space typed there
-  // passes schema validation and still drops the event off every page. The same
-  // tag also carries communities (there is no separate `community` field), so
-  // those ids count as matches here or every community event would be reported.
+  // one place that can notice a tag matching none of them. Both tags are typed
+  // by hand, so a city name or a stray space passes schema validation and still
+  // drops the event off every page. Community ids count as matches because the
+  // `chapter` tag may name a community AND because an event now carries its own
+  // `communities` list — `unmatchedChapterTags` checks both shapes.
   // Advisory only: `npm run build` gates the deploy, and refusing to publish over
   // a cosmetic typo would turn one missing event into a dead site update.
   const taggedEvents = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS);
@@ -58,12 +65,34 @@ export async function getStaticPaths() {
 type Props = { chapter: CollectionEntry<'chapters'> };
 const { chapter } = Astro.props as Props;
 const { Content } = await render(chapter);
-const { city, region, blurb, heroImage, tagline, showGallery, photos, leads, links } = chapter.data;
+const {
+  city,
+  region,
+  blurb,
+  heroImage,
+  tagline,
+  showGallery,
+  photos,
+  leads,
+  links,
+  status,
+  callouts,
+  whatsappFormUrl,
+  volunteerUrl,
+} = chapter.data;
 
-// Upcoming events explicitly tagged to this chapter (soonest first). Events with
-// no `chapter` (e.g. the Cambridge panel) belong to no chapter and are excluded.
+// Events tagged to this chapter (via `chapter`, or via an event's `communities`
+// list). Events with no tag belong to no chapter and are excluded.
+//
+// Both halves of the split are used now: what is coming up, and the last few
+// that happened. A chapter between events used to render as a blank page.
 const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS);
-const { upcoming } = splitEvents(eventsTaggedTo(events, chapter.id));
+const { upcoming, past } = splitEvents(eventsTaggedTo(events, chapter.id));
+const recent = recentPastEvents(past);
+
+// The shared inbox, but only because `formingChapter` is on the approved list
+// in `contact.ts`. A chapter that is not forming never renders it.
+const formingContactEmail = emailFor('formingChapter', settings.contactEmail);
 ---
 
 <BaseLayout
@@ -84,6 +113,12 @@ const { upcoming } = splitEvents(eventsTaggedTo(events, chapter.id));
         showGallery={showGallery}
         photos={photos}
         events={upcoming}
+        pastEvents={recent}
+        status={status}
+        callouts={callouts}
+        whatsappFormUrl={whatsappFormUrl}
+        volunteerUrl={volunteerUrl}
+        formingContactEmail={formingContactEmail}
         leads={leads}
         links={links}
       >

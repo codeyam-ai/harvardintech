@@ -5,6 +5,7 @@ import {
   splitEvents,
   unmatchedChapterTags,
   eventsTaggedTo,
+  recentPastEvents,
 } from './events';
 
 describe('toEventDate', () => {
@@ -165,6 +166,44 @@ describe('unmatchedChapterTags', () => {
 
     expect(unmatchedChapterTags(events, [])).toEqual(['london']);
   });
+
+  // The `communities` list is typed by hand too, so a typo there is invisible
+  // in exactly the same way — and would be unreported if the guard only ever
+  // looked at `chapter`.
+  it('reports a typo in the communities list', () => {
+    const events = [
+      { title: 'Co-working', date: '2026-05-15', chapter: 'london', communities: ['fonders'] },
+    ];
+
+    expect(unmatchedChapterTags(events, ['london', 'founders'])).toEqual(['fonders']);
+  });
+
+  // A correctly spelled community tag is a match, not a warning — otherwise the
+  // console would cry wolf on every properly tagged event.
+  it('accepts a communities tag that matches a known id', () => {
+    const events = [
+      { title: 'Co-working', date: '2026-05-15', chapter: 'london', communities: ['founders'] },
+    ];
+
+    expect(unmatchedChapterTags(events, ['london', 'founders'])).toEqual([]);
+  });
+
+  // Both shapes are reported from one pass, in first-seen order, so an editor
+  // fixing an event sees everything wrong with it at once.
+  it('reports a bad chapter tag and a bad community tag together', () => {
+    const events = [
+      { title: 'Mixed', date: '2026-05-15', chapter: 'lndon', communities: ['fonders'] },
+    ];
+
+    expect(unmatchedChapterTags(events, ['london', 'founders'])).toEqual(['lndon', 'fonders']);
+  });
+
+  // Every event written before the field existed has no `communities` key.
+  it('handles an event with no communities key', () => {
+    const events = [{ title: 'Old', date: '2026-01-01', chapter: 'london' }];
+
+    expect(unmatchedChapterTags(events, ['london'])).toEqual([]);
+  });
 });
 
 describe('eventsTaggedTo', () => {
@@ -230,5 +269,100 @@ describe('eventsTaggedTo', () => {
   it('returns nothing when no event is tagged to the owner', () => {
     expect(eventsTaggedTo([entry('summit', 'nyc')], 'ai')).toEqual([]);
     expect(eventsTaggedTo([], 'ai')).toEqual([]);
+  });
+
+  // THE CASE ONE TAG COULD NOT EXPRESS. A Founders co-working day in London
+  // belongs to the place AND the group; with a single box the editor had to
+  // pick which page it would vanish from.
+  it('matches an owner named in the communities list', () => {
+    const events = [entry('coworking', 'london', { communities: ['founders'] })];
+
+    expect(eventsTaggedTo(events, 'founders').map((e) => e.slug)).toEqual(['coworking']);
+  });
+
+  // The other half of the same event: adding the community tag must not cost
+  // the chapter its event.
+  it('still matches the chapter tag on a dual-tagged event', () => {
+    const events = [entry('coworking', 'london', { communities: ['founders'] })];
+
+    expect(eventsTaggedTo(events, 'london').map((e) => e.slug)).toEqual(['coworking']);
+  });
+
+  // The filter is a boolean OR, not a concatenation — an event that matches
+  // both ways is one event, not two cards for the same evening.
+  it('returns a doubly-matching event only once', () => {
+    const events = [entry('coworking', 'founders', { communities: ['founders'] })];
+
+    expect(eventsTaggedTo(events, 'founders').map((e) => e.slug)).toEqual(['coworking']);
+  });
+
+  // An event may join several communities, and none of them is the `chapter`.
+  it('matches any id in the communities list, with no chapter tag at all', () => {
+    const events = [entry('roundtable', undefined, { communities: ['ai', 'founders'] })];
+
+    expect(eventsTaggedTo(events, 'ai').map((e) => e.slug)).toEqual(['roundtable']);
+    expect(eventsTaggedTo(events, 'founders').map((e) => e.slug)).toEqual(['roundtable']);
+  });
+
+  // Every event written before the field existed has no `communities` key. The
+  // lookup must treat that as "no community tags", not crash on undefined.
+  it('handles an event with no communities key', () => {
+    expect(eventsTaggedTo([entry('summit', 'nyc')], 'founders')).toEqual([]);
+  });
+});
+
+describe('recentPastEvents', () => {
+  const past = (slug: string) => ({ slug, title: slug, date: '2026-01-01' });
+
+  // A chapter with nothing coming up looked abandoned. Showing the last few is
+  // the cheapest proof it is real — but only the last few: a full archive
+  // buries the sign-up under years of history.
+  it('returns at most three events by default', () => {
+    const events = [past('a'), past('b'), past('c'), past('d'), past('e')];
+
+    expect(recentPastEvents(events).map((e) => e.slug)).toEqual(['a', 'b', 'c']);
+  });
+
+  // `splitEvents` hands back `past` most-recent-first, so this must preserve
+  // that order rather than re-sorting — the newest three are the point.
+  it('preserves the order it was given', () => {
+    const events = [past('newest'), past('middle'), past('oldest')];
+
+    expect(recentPastEvents(events).map((e) => e.slug)).toEqual([
+      'newest',
+      'middle',
+      'oldest',
+    ]);
+  });
+
+  // A chapter with fewer than the cap shows all of them rather than padding.
+  it('returns everything when there are fewer than the limit', () => {
+    expect(recentPastEvents([past('a')]).map((e) => e.slug)).toEqual(['a']);
+    expect(recentPastEvents([])).toEqual([]);
+  });
+
+  // The caller can widen or narrow the section without a second function.
+  it('honours an explicit limit', () => {
+    const events = [past('a'), past('b'), past('c')];
+
+    expect(recentPastEvents(events, { limit: 2 }).map((e) => e.slug)).toEqual(['a', 'b']);
+  });
+
+  // A zero or negative limit switches the section off, so a caller that wants
+  // no recent-events block needs no second branch around the component.
+  it('returns nothing for a limit of zero or less', () => {
+    const events = [past('a'), past('b')];
+
+    expect(recentPastEvents(events, { limit: 0 })).toEqual([]);
+    expect(recentPastEvents(events, { limit: -1 })).toEqual([]);
+  });
+
+  // The chapter page renders this list and the full past list on other pages;
+  // slicing in place would truncate the caller's own array.
+  it('does not mutate its input', () => {
+    const events = [past('a'), past('b'), past('c'), past('d')];
+    recentPastEvents(events);
+
+    expect(events).toHaveLength(4);
   });
 });

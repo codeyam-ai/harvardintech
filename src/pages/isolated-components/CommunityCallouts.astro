@@ -1,0 +1,42 @@
+---
+import Component from "../../components/CommunityCallouts.astro";
+import "../../styles/tokens.css";
+
+// "What happens here" — the block that lets a community page read as finished
+// before it has a single event on the calendar.
+//
+// This is a real chicken-and-egg problem rather than a nicety. The AI
+// community's main activity is a bi-weekly call, and a recurring call is not an
+// event in the calendar sense, so the page had nothing on it but a blurb and a
+// photo and a visitor could not tell whether anything was happening at all.
+//
+// The fixture is the AI community's real callouts, including one with no
+// `text`: the detail line is optional, and a card that reserved space for a
+// missing one would leave a hole in the middle of the grid.
+const CALLOUTS = [
+  {
+    title: 'Bi-weekly calls with alumni globally',
+    text: 'An open call every other week — what people are building, what is working, and what turned out not to. No agenda beyond that, and no need to be in any particular city.',
+  },
+  {
+    title: "Share what you're building and reading",
+    text: 'The WhatsApp group is where papers, launches and job openings circulate between calls.',
+  },
+  // Deliberately no `text`: proves the optional detail line is genuinely
+  // optional and the card still sits flush with its neighbours.
+  { title: 'Researchers, founders and operators together' },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: CommunityCallouts</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component callouts={CALLOUTS} />
+    </div>
+  </body>
+</html>

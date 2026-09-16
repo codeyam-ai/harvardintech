@@ -1,11 +1,12 @@
 {
   "name": "Chapter Route - New York City",
-  "id": "43c7900b-bba9-498b-adfa-311b085d646e",
+  "id": "e48ca92f-4950-46cd-8d13-50e217c7d86a",
   "url": "/chapters/nyc",
   "dimensions": [
     "Desktop"
   ],
   "mocks": {},
   "scenarioType": "application",
-  "pageFilePath": "src/pages/chapters/[slug].astro"
+  "pageFilePath": "src/pages/chapters/[slug].astro",
+  "description": "The founding chapter with NO events tagged to it — the counterpart to London, where tags match and the events section appears. Neither an upcoming nor a recent block renders here, which is the assertion: both sections stay away entirely rather than leaving an empty heading behind. It is also the state a chapter sits in whenever its tags are typo'd, since a near-miss tag belongs to nobody and looks exactly like this."
 }

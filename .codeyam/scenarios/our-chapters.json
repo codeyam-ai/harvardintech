@@ -1,6 +1,6 @@
 {
   "name": "Our Chapters",
-  "id": "c2ca7434-acb5-4bed-bdfa-968d60190fe7",
+  "id": "be72b077-bbc2-498c-a434-b6feb4ed80da",
   "url": "/isolated-components/OurChapters",
   "dimensions": [
     "Desktop"
@@ -8,5 +8,6 @@
   "mocks": {},
   "componentName": "OurChapters",
   "scenarioType": "component",
-  "pageFilePath": "src/components/landing/OurChapters.astro"
+  "pageFilePath": "src/components/landing/OurChapters.astro",
+  "description": "The homepage roster, now split by status. The four cities that actually hold events sort ahead of the two that are forming, and DC and Seattle carry a Forming - help lead it badge instead of pretending to a calendar they do not have. The count kicker reads 04 cities - 2 forming rather than the flat 6 the site used to claim. The fixture lists the chapters unsorted on purpose, so the frame proves the ordering is the component's work and not the data's."
 }

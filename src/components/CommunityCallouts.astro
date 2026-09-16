@@ -1,0 +1,61 @@
+---
+// The "what happens here" grid — a few short cards naming what a community or
+// chapter actually does.
+//
+// This exists because a community page has a real chicken-and-egg problem: the
+// AI community runs bi-weekly calls, but calls are not events in the calendar
+// sense, so the page had nothing on it but a blurb and a hero. A visitor could
+// not tell whether anything was happening. Callouts are the editor's way of
+// saying "this is what you get" without waiting for a listable event.
+//
+// Renders nothing when there are no callouts, so a page that has events instead
+// simply omits the section.
+import CalloutCard from './CalloutCard.astro';
+
+interface Callout {
+  title: string;
+  text?: string;
+}
+interface Props {
+  callouts?: Callout[];
+  heading?: string;
+}
+const { callouts = [], heading = 'What happens here' } = Astro.props;
+---
+
+{
+  callouts.length > 0 ? (
+    <section class="s-section">
+      {/* `s-inner`, not `s-narrow`: three cards at a 240px minimum do not fit a
+          reading measure, and a narrow container silently drops them to 2 + 1
+          with one card stranded on its own row. */}
+      <div class="s-inner">
+        <h2 class="s-title" style="text-align: center;">
+          {heading}
+        </h2>
+        <ul class="callouts">
+          {callouts.map((callout) => (
+            <li>
+              <CalloutCard title={callout.title} text={callout.text} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ) : null
+}
+
+<style>
+  .callouts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-lg);
+  }
+  /* The card styles in CalloutCard; the grid cell only lets it fill the row. */
+  .callouts > li {
+    display: flex;
+  }
+</style>

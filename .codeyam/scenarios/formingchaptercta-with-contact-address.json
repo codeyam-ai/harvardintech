@@ -1,0 +1,12 @@
+{
+  "name": "FormingChapterCta - With Contact Address",
+  "id": "37f7b946-c266-4374-98eb-188be2667955",
+  "url": "/isolated-components/FormingChapterCta",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "FormingChapterCta",
+  "scenarioType": "component",
+  "description": "The band a forming chapter shows where an active one shows its leads. DC has alumni and a running WhatsApp group but nobody organising events, and the old page rendered that as an empty leads heading over an empty calendar — indistinguishable from a dead chapter. Here the page asks for the two things the chapter is actually missing: someone to lead it, and members in the local group. Nicole's 'Interested in getting involved?' line and a Contact us button sit underneath for anyone who wants a person first; that button appears only because an address is configured, which is what this scenario differs from FormingChapterCta - No Contact Address on."
+}

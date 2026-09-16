@@ -42,6 +42,12 @@
         "required": false
       },
       {
+        "name": "communities",
+        "type": "array",
+        "required": false,
+        "description": "Community slugs this event also belongs to, alongside its `chapter` tag. A London Founders co-working day carries chapter: london AND communities: [founders], so it appears on both pages without either tag having to win."
+      },
+      {
         "name": "body",
         "type": "string",
         "required": false
@@ -332,6 +338,30 @@
         "name": "city",
         "type": "string",
         "required": true
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "required": false,
+        "description": "`active` or `forming`. Absent means active, so every chapter that existed before this field keeps its behaviour. A forming chapter has no lead yet: its page swaps the leads block for volunteer-to-lead and join-WhatsApp CTAs, and its roster card carries a Forming badge. Promoting a chapter is flipping this one select in /admin — the URL, the nav entry and the event tags all stay put."
+      },
+      {
+        "name": "whatsappFormUrl",
+        "type": "string",
+        "required": false,
+        "description": "The Google Form that gates entry to this chapter's WhatsApp group. Never the group invite itself: the site links the form only, so joining always goes through alumni verification. Absent falls back to the site-wide form in `src/lib/contact.ts`."
+      },
+      {
+        "name": "volunteerUrl",
+        "type": "string",
+        "required": false,
+        "description": "Where a forming chapter's `Volunteer to lead or support` button points. Absent falls back to the site-wide volunteer path."
+      },
+      {
+        "name": "callouts",
+        "type": "array",
+        "required": false,
+        "description": "Short `title` + optional `text` cards describing what actually happens here (e.g. `Bi-weekly calls with alumni globally`). Gives a chapter or community with a thin body something concrete to show."
       },
       {
         "name": "region",
@@ -810,7 +840,7 @@
   },
   {
     "name": "Community",
-    "description": "A non-geographic Harvard in Tech community (Founders, AI) \u2014 the interest-based counterpart to a Chapter. Stored as a markdown file in the `communities` content collection; rendered on per-community routes at /communities/<slug>, and the source the base layout derives the nav Communities entries from (alongside the hand-authored WhatsApp link in nav.json). Shares the Chapter shape so both render through the same page components; `name` replaces `city` because a community has no location. Events join a community through the same `chapter` tag they use for chapters, so editors learn no second field.",
+    "description": "A non-geographic Harvard in Tech community (Founders, AI) \u2014 the interest-based counterpart to a Chapter. Stored as a markdown file in the `communities` content collection; rendered on per-community routes at /communities/<slug>, and the source the base layout derives the nav Communities entries from (alongside the hand-authored WhatsApp link in nav.json). Shares the Chapter shape at the data level, but NOT at the render level: a community renders through its own `CommunityPage`, not the chapter page, because a chapter leads with a place and a community leads with what it does. `name` replaces `city` because a community has no location. An event reaches a community two ways — the `chapter` tag it always could use, or the newer `communities` list, which is what lets a London Founders co-working day sit on both the London chapter page and the Founders page without either tag having to win.",
     "category": "datastore",
     "order": 13,
     "fields": [
@@ -824,6 +854,18 @@
         "name": "name",
         "type": "string",
         "required": true
+      },
+      {
+        "name": "whatsappFormUrl",
+        "type": "string",
+        "required": false,
+        "description": "The Google Form that gates entry to this community's WhatsApp group — the community's primary CTA. Never the group invite itself. Absent falls back to the site-wide form in `src/lib/contact.ts`."
+      },
+      {
+        "name": "callouts",
+        "type": "array",
+        "required": false,
+        "description": "Short `title` + optional `text` cards naming what this community actually does (AI: `Bi-weekly calls with alumni globally`; Founders: `Local events in select cities`). This is what makes a community page read as finished before it has events on the calendar."
       },
       {
         "name": "blurb",

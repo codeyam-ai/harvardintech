@@ -7,11 +7,22 @@ interface Props {
   name: string;
   region?: string;
   blurb?: string;
+  /** The same kicker `ChapterHero` shows — "Chapter", "Chapter · Forming",
+   *  "Community". Carried through the no-image fallback so a page without a
+   *  hero photo still says which kind of page it is. */
+  label?: string;
 }
-const { name, region, blurb } = Astro.props;
+const { name, region, blurb, label } = Astro.props;
 ---
 
 <header style="text-align: center; margin: var(--space-lg) 0 var(--space-xl);">
+  {
+    label ? (
+      <p style="color: var(--color-faint); text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.8rem; font-weight: 600; margin: 0 0 var(--space-sm);">
+        {label}
+      </p>
+    ) : null
+  }
   <h1 class="s-title" style="margin-bottom: var(--space-md);">{name}</h1>
   {
     region ? (

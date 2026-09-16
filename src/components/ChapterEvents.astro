@@ -16,19 +16,34 @@ interface Props {
   /** Overrides the default "Upcoming Events in <name>" phrasing. A community is
    *  not a place, so /communities passes "Upcoming <name> Events" instead. */
   heading?: string;
+  /**
+   * `upcoming` (the default) or `past`.
+   *
+   * A chapter now renders this component TWICE — what is coming up, then the
+   * last few that happened. The second block is what makes a real chapter with
+   * a quiet month look alive rather than abandoned, and it is the same list of
+   * the same cards, so it is a variant rather than a second component.
+   *
+   * It carries its own heading and its own section id: two sections sharing
+   * `id="chapter-events"` would be invalid HTML and would break any link to
+   * either.
+   */
+  variant?: 'upcoming' | 'past';
 }
-const { events = [], name, heading } = Astro.props;
-const title = heading ?? `Upcoming Events in ${name}`;
+const { events = [], name, heading, variant = 'upcoming' } = Astro.props;
+const isPast = variant === 'past';
+const title = heading ?? (isPast ? `Recent events in ${name}` : `Upcoming Events in ${name}`);
+const sectionId = isPast ? 'chapter-past-events' : 'chapter-events';
 ---
 
 {
   events.length > 0 ? (
-    <section class="s-section" id="chapter-events">
+    <section class="s-section" id={sectionId}>
       <div class="s-inner" style="text-align: center;">
         <h2 class="s-title s-title--plain">{title}</h2>
         <div style="display: grid; gap: var(--space-lg); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 920px; margin: 0 auto;">
           {events.map((event) => (
-            <EventCard event={event} variant="upcoming" />
+            <EventCard event={event} variant={variant} />
           ))}
         </div>
       </div>

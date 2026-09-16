@@ -19,9 +19,9 @@ campaignName: The Momentum Fund
 stats:
   - value: 100+
     label: Events Hosted
-  - value: 8,000+
-    label: Members
-  - value: '6'
+  - value: 8,500+
+    label: Newsletter subscribers
+  - value: '4'
     label: Chapters & Growing
 donorsEmptyMessage: The Momentum Fund is just beginning, and this wall is waiting for its first names. Give today and yours will be among them.
 donorTiers:

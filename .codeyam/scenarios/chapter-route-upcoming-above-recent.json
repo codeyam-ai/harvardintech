@@ -1,0 +1,59 @@
+{
+  "name": "Chapter Route - Upcoming Above Recent",
+  "id": "d419904f-6fb0-4065-8ad4-f71877ff3ae3",
+  "url": "/chapters/london",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "chapters": [
+      {
+        "blurb": "Our European hub across the London tech scene.",
+        "body": "Evening socials and founder roundtables connecting Harvard alumni across the UK and Europe.",
+        "city": "London",
+        "region": "London, UK",
+        "showGallery": false,
+        "slug": "london",
+        "status": "active"
+      }
+    ],
+    "events": [
+      {
+        "chapter": "london",
+        "date": "2027-01-21",
+        "description": "Drinks and introductions for alumni across the UK.",
+        "location": "London, United Kingdom",
+        "slug": "london-winter-social",
+        "title": "London Winter Social"
+      },
+      {
+        "chapter": "london",
+        "date": "2027-02-18",
+        "description": "A closed-door session for alumni building companies.",
+        "location": "London, United Kingdom",
+        "slug": "london-founder-roundtable",
+        "title": "Founder Roundtable"
+      },
+      {
+        "chapter": "london",
+        "date": "2026-07-10",
+        "description": "A day of heads-down work alongside other alumni founders.",
+        "location": "London, United Kingdom",
+        "slug": "london-coworking-july",
+        "title": "Alumni Founders Co-working Day (July)"
+      },
+      {
+        "chapter": "london",
+        "date": "2026-05-15",
+        "description": "An evening for alumni across the London tech scene.",
+        "location": "London, United Kingdom",
+        "slug": "london-evening-social",
+        "title": "Evening Social"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/chapters/[slug].astro",
+  "description": "A chapter with something coming up AND a history behind it, showing the order the two blocks take on one page: Upcoming Events in London first, Recent events in London beneath it. This state cannot be produced from the committed content, because every event in the repo has already passed — which is exactly why it needs a seed. Without it, the upcoming block on a chapter route has no frame proving it renders at all, and a regression there would stay invisible until someone published a future event. The chapter is seeded without a hero photo so both sections fit the capture; a full-bleed hero is a whole viewport tall and would show neither."
+}

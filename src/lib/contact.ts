@@ -20,6 +20,22 @@ export const VOLUNTEER_PATH = '/volunteer';
 /** The WhatsApp join form. The group itself is never linked directly. */
 export const WHATSAPP_FORM_URL = 'https://forms.gle/GqgaCDDWhWAgpJC68';
 
+/**
+ * The newsletter signup — the Mailchimp hosted form, which is what "Subscribe"
+ * has always meant on this site.
+ *
+ * Named here because it was previously a bare literal repeated in five
+ * components (`BaseLayout`, `ChapterSignUp`, `Hero`, `HeroCarousel`,
+ * `UpcomingEvents`) plus one content file. That is one list the team can move,
+ * and six places that would have to be found and changed together when they
+ * do. New call sites use this constant; the existing literals are left alone
+ * rather than swept up in an unrelated change.
+ *
+ * Not to be confused with the LinkedIn NEWSLETTER in `nav.json`, which is a
+ * feed to follow rather than a list to join.
+ */
+export const NEWSLETTER_URL = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
+
 /** The WhatsApp admissions criteria doc, from the original site's copy. */
 export const WHATSAPP_CRITERIA_URL =
   'https://docs.google.com/document/d/1IvWhYTdFqOzMYg6ySXx7pmMOfwhDwDHfXHdDkZRbkyE/edit?tab=t.0#heading=h.2l2z5vqeznos';

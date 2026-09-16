@@ -1,6 +1,6 @@
 {
   "name": "PrimaryNav - Derived Chapters",
-  "id": "0c14ee6f-929c-4cfb-bc66-c93d24195eb7",
+  "id": "bdee7a21-893b-4fd7-936a-f8d35eec5f5a",
   "url": "/isolated-components/PrimaryNav",
   "dimensions": [
     "Desktop"
@@ -8,11 +8,5 @@
   "mocks": {},
   "componentName": "PrimaryNav",
   "scenarioType": "component",
-  "description": "The header menu with the Chapters dropdown hovered open. The five chapter links are not authored anywhere in nav.json — they are generated from the chapters collection at render time, ordered by each chapter's order field and labelled with its own city. The other four groups are the hand-authored ones an editor still edits under /admin, and they render identically, which is the point: derived and authored items are indistinguishable in the markup.",
-  "interactions": [
-    {
-      "action": "hover",
-      "text": "Chapters"
-    }
-  ]
+  "description": "The header menu with the Chapters dropdown hovered open. None of the chapter links is authored in nav.json — they are generated from the chapters collection at render time, and they now sort active cities before forming ones, so a visitor meets the four places that hold events before the two asking for a lead. The dropdown closes with Global community, which is not a chapter at all: it points at the homepage band for everyone living nowhere near one of these cities. The other groups are the hand-authored ones an editor still edits under /admin, and they render identically, which is the point."
 }

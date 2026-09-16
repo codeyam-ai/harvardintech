@@ -1,0 +1,12 @@
+{
+  "name": "CommunityPage - Founders Composed",
+  "id": "1271ee31-485e-42ee-9020-5412d0fa5d86",
+  "url": "/isolated-components/CommunityPage",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "CommunityPage",
+  "scenarioType": "component",
+  "description": "A whole community page in the page type communities got when they stopped rendering through ChapterPage. The order is the point: what the community does, then how to join it, then events — not a chapter's place-then-calendar sequence. A community may never have listable events at all, so the join ask cannot sit below them. The hero kicker reads Community rather than the old Harvard Alumni in Tech Founders title, which read as a product name."
+}

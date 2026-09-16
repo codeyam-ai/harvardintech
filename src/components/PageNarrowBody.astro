@@ -1,0 +1,86 @@
+---
+// The narrow content block a chapter page and a community page both end with:
+// a back link, the leads, the markdown body, and the entry's own links.
+//
+// It was written twice — once in `ChapterPage`, once in `CommunityPage` — when
+// communities got their own page type. The two copies differed only in the
+// heading over the leads and the wording of the back link, which is exactly the
+// kind of near-identical pair that drifts: a spacing fix or an accessibility
+// fix applied to one silently leaves the other behind.
+//
+// Renders NOTHING when there is no back-of-page content at all, so a sparse
+// entry does not leave an empty bordered box on the page.
+import ChapterLeads from './ChapterLeads.astro';
+import ChapterLinks from './ChapterLinks.astro';
+import { withBase } from '../lib/url';
+
+interface Lead {
+  name: string;
+  role?: string;
+}
+interface PageLink {
+  label: string;
+  url: string;
+}
+interface Props {
+  backHref: string;
+  backLabel: string;
+  leads?: Lead[];
+  /** "Chapter Leads" for a city, "Community Lead(s)" for a group. */
+  leadsHeading?: string;
+  /**
+   * Whether to show the leads at all.
+   *
+   * A FORMING chapter passes `false` even when it has leads: the page is
+   * asking for a lead, so naming one in the body would contradict the band
+   * above it. The decision belongs to the caller, which knows the status.
+   */
+  showLeads?: boolean;
+  links?: PageLink[];
+  /**
+   * Whether the markdown body has content.
+   *
+   * Passed in rather than detected with `Astro.slots.has('default')`, which
+   * cannot answer the question from in here: the parent forwards its own
+   * `<slot />` into this component's slot, so the slot is always "filled" from
+   * this side even when the page it came from has no body at all. Only the
+   * parent can see whether the ORIGINAL slot had anything in it.
+   */
+  hasBody?: boolean;
+}
+const {
+  backHref,
+  backLabel,
+  leads = [],
+  leadsHeading,
+  showLeads = true,
+  links = [],
+  hasBody = false,
+} = Astro.props;
+
+const leadsVisible = showLeads && leads.length > 0;
+const hasContent = leadsVisible || links.length > 0 || hasBody;
+---
+
+{
+  hasContent ? (
+    <section class="s-section">
+      <div class="s-narrow">
+        <a
+          href={withBase(backHref)}
+          style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;"
+        >
+          {backLabel}
+        </a>
+
+        {leadsVisible ? <ChapterLeads leads={leads} heading={leadsHeading} /> : null}
+
+        <div style="line-height: 1.8;">
+          <slot />
+        </div>
+
+        <ChapterLinks links={links} />
+      </div>
+    </section>
+  ) : null
+}

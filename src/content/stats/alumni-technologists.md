@@ -1,5 +1,5 @@
 ---
-value: '8,000+'
-label: 'Alumni technologists'
+value: '8,500+'
+label: 'Newsletter subscribers'
 order: 1
 ---

@@ -1,0 +1,12 @@
+{
+  "name": "ChapterPage - Forming Chapter",
+  "id": "a463e7b5-cc6b-4912-ac88-117ac5fff0a2",
+  "url": "/isolated-components/ChapterPage-Forming",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterPage",
+  "scenarioType": "component",
+  "description": "The same chapter page with status forming — the state DC and Seattle are in. The leads block is replaced by a help-lead-it band, the hero kicker reads Chapter - Forming, and callouts carry what the chapter can honestly claim. The fixture deliberately PASSES a lead named Should Not Render: a forming chapter must suppress its leads rather than merely lack them, and a fixture with no leads could not tell the difference. Compare with ChapterPage - Full Chapter for the active shape."
+}

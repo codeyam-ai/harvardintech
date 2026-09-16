@@ -1,6 +1,6 @@
 {
   "name": "Chapter Route - SF & Bay Area",
-  "id": "26986574-2ac0-4ec0-b90f-328d551813f3",
+  "id": "74fddcc6-4bb9-463d-adf8-038ed1340f5a",
   "url": "/chapters/sf-bay-area",
   "dimensions": [
     "Desktop"
@@ -8,5 +8,5 @@
   "mocks": {},
   "scenarioType": "application",
   "pageFilePath": "src/pages/chapters/[slug].astro",
-  "description": "The West Coast chapter added to the roster, rendering through the same route as every other chapter. Its page needed no code — publishing the markdown entry produced the page, the menu link, and the card on the home page at once. The frame shows the full-bleed city hero, which is the whole viewport on this route; the leads, body copy and gallery sit below it."
+  "description": "The West Coast chapter, rendering through the same route as every other. Its page needed no code — publishing the markdown entry produced the page, the menu link and the card. It now also carries a named lead and one tagged event, and because that event has passed it demonstrates the pairing an active chapter most often shows in practice: leads present, nothing upcoming, and a Recent events block carrying the proof that the chapter is real."
 }

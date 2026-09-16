@@ -1,0 +1,74 @@
+---
+import Component from "../../components/CommunityPage.astro";
+import "../../styles/tokens.css";
+
+// A whole community page, composed.
+//
+// This is the page type communities got when they stopped rendering through
+// ChapterPage. Sharing the chapter shell was subtly wrong at every turn: the
+// hero announced a PLACE, the leads block was headed "Chapter Leads", and the
+// AI page's banner read "HARVARD ALUMNI IN TECH AI", which sounds like a
+// product rather than a group of people.
+//
+// The ORDER is the substantive difference and what this frame exists to show:
+// what the community does (callouts), then how to join it, then events — not a
+// chapter's place-then-calendar sequence. A community may never have listable
+// events at all, so the join ask cannot sit below them.
+//
+// Fixture is the Founders community with its real callouts and its three London
+// co-working days, which reach the page through the `communities` tag that also
+// keeps them on the London chapter page.
+const CALLOUTS = [
+  {
+    title: 'A WhatsApp group that actually gets used',
+    text: 'Fundraising questions, hiring, and the things founders will say to each other but not on a public stage.',
+  },
+  {
+    title: 'Local events in select cities',
+    text: 'Co-working days in London so far, with more cities as founders there volunteer to host them.',
+  },
+  {
+    title: 'No stage requirement',
+    text: 'Pre-idea through post-Series A. There is no application and nothing to qualify for beyond being alumni-affiliated and building something.',
+  },
+];
+const PAST_EVENTS = [
+  {
+    slug: 'coworking-july',
+    title: 'Alumni Founders Co-working Day (July)',
+    date: '2026-07-10',
+    location: 'London, United Kingdom',
+  },
+  {
+    slug: 'coworking-june',
+    title: 'Alumni Founders Co-working Day (June)',
+    date: '2026-06-12',
+    location: 'London, United Kingdom',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: CommunityPage</title>
+  </head>
+  <body style="margin: 0;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component
+        name="Founders"
+        blurb="For alumni building companies — from first idea to scale."
+        tagline="A working community for Harvard alumni who are building."
+        callouts={CALLOUTS}
+        pastEvents={PAST_EVENTS}
+        showGallery={false}
+      >
+        <p>
+          A working community for Harvard alumni who are building. Founder dinners,
+          candid fundraising conversations, and small peer groups.
+        </p>
+      </Component>
+    </div>
+  </body>
+</html>

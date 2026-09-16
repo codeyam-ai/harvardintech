@@ -1,0 +1,55 @@
+---
+// One action in the global-community band: a whole-card link with a label and a
+// line explaining what it gets you.
+//
+// The whole card is the anchor rather than just the label, because the three
+// actions are the entire point of that band and a four-word tap target inside a
+// large card is a worse one than the card itself.
+//
+// Link handling goes through `isExternalHref`/`externalLinkAttrs`, the site's
+// single rule for what leaves us — the newsletter and the WhatsApp form do, the
+// volunteer page does not, and this component does not need to know which.
+import { externalLinkAttrs } from '../lib/externalLink';
+import { withBase } from '../lib/url';
+
+interface Props {
+  label: string;
+  href: string;
+  /** One line of consequence under the label. */
+  blurb?: string;
+}
+const { label, href, blurb } = Astro.props;
+---
+
+<a class="action" href={withBase(href)} {...externalLinkAttrs(href, Astro.url.origin)}>
+  <span class="action-label">{label}</span>
+  {blurb ? <span class="action-blurb">{blurb}</span> : null}
+</a>
+
+<style>
+  .action {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    height: 100%;
+    box-sizing: border-box;
+    padding: var(--space-lg);
+    border-radius: var(--radius, 8px);
+    background: var(--color-bg-blue);
+    text-decoration: none;
+    color: inherit;
+  }
+  .action:hover,
+  .action:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--color-accent, currentColor);
+  }
+  .action-label {
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  .action-blurb {
+    color: var(--color-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+</style>

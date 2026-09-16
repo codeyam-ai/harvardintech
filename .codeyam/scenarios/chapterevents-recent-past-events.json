@@ -1,0 +1,12 @@
+{
+  "name": "ChapterEvents - Recent Past Events",
+  "id": "2c02e6a2-de58-4f03-a3f8-d5319fcc1f3a",
+  "url": "/isolated-components/ChapterEvents-Past",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterEvents",
+  "scenarioType": "component",
+  "description": "The past variant of the events section, capped at the most recent few. A chapter between events used to render as a blank page, which reads as abandoned rather than quiet — showing what it recently did is the cheapest proof it is running. Same component and the same cards as the upcoming list; only the heading and the card variant differ, which is why it is a variant rather than a second component and why capturing it matters: nothing else would catch the two drifting apart."
+}

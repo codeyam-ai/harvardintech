@@ -1,6 +1,6 @@
 {
   "name": "Community Route - AI On Day One",
-  "id": "dc7d9c63-83d8-4807-bdfc-bfa4a0f5a7d9",
+  "id": "72045776-dcc5-4d27-816c-764f92a2096f",
   "url": "/communities/ai",
   "dimensions": [
     "Desktop"
@@ -21,5 +21,5 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/communities/[slug].astro",
-  "description": "The state every community actually launches in: announced, but with no leads named and nothing on the calendar yet. This is the realistic day-one page, and the point is that it still reads as finished — the hero, the blurb and the join band carry it, and the events section renders nothing at all rather than an empty heading. Compare with the Founders scenario for the same page once it fills in."
+  "description": "The state every community actually launches in: announced, with no leads named and nothing on the calendar. It now renders through CommunityPage rather than the chapter shell, so the hero kicker reads Community instead of naming the organisation — the old title produced HARVARD ALUMNI IN TECH AI, which read as a product rather than a group of people. The point stands: the page still reads as finished, carried by the hero, the blurb and the join band, with the events section rendering nothing at all rather than an empty heading."
 }

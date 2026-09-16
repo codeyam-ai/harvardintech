@@ -12,6 +12,7 @@
 // every nav item from `label` plus `children`/`url` and drops any other key, and
 // it collapses a dropdown with no children back to a plain link. A group the
 // layout injects is the only form that serializer cannot corrupt.
+import { byPresence } from './localPresence';
 import type { NavItem } from './site';
 
 /**
@@ -22,6 +23,10 @@ export interface ChapterLike {
   slug: string;
   city: string;
   order?: number;
+  /** `active` or `forming`; absent means active. Ordering only — a forming
+   *  chapter is a real chapter with a real page, so it is never hidden from
+   *  the menu, just listed after the cities that have events. */
+  status?: string;
 }
 
 /**
@@ -38,6 +43,24 @@ export interface CommunityLike {
 /** The label the injected dropdown carries in the header. */
 export const CHAPTERS_LABEL = 'Chapters';
 
+/**
+ * The last entry in the Chapters dropdown: somewhere to go for the large
+ * majority of alumni who are not in one of the four cities.
+ *
+ * Before this, a visitor who opened Chapters and found no city near them hit a
+ * dead end — the menu's implicit message was "this is not for you". The item
+ * points at the homepage band that offers the WhatsApp community, the
+ * newsletter and volunteering, none of which need a local chapter to join.
+ *
+ * It lives beside the chapter items rather than in `nav.json` because it is
+ * only meaningful WITH them: on a site with no chapters published the dropdown
+ * does not exist and neither should this.
+ */
+export const GLOBAL_COMMUNITY_ITEM: NavItem = {
+  label: 'Global community',
+  url: '/#global-community',
+};
+
 /** The group derived communities are merged INTO. Unlike Chapters — a group
  *  this module injects wholesale — Communities already exists in `nav.json`
  *  carrying hand-authored links (WhatsApp), so the derived items join it. */
@@ -49,9 +72,15 @@ const INSERT_AFTER_LABEL = 'Programs';
 
 /**
  * Menu items for the given chapters, ordered exactly as the "Our chapters"
- * section orders its cards (`OurChapters.astro`) — by `order`, with `city`
- * breaking ties and sorting the entries that carry no `order` at all. Sharing
- * the convention is what keeps the two surfaces from ever disagreeing.
+ * section orders its cards (`OurChapters.astro`) — active chapters first, then
+ * forming ones, and within each group by `order` with `city` breaking ties and
+ * sorting the entries that carry no `order` at all. Sharing the convention is
+ * what keeps the two surfaces from ever disagreeing.
+ *
+ * The status tier goes in FRONT of the `order` pin rather than replacing it, so
+ * an editor who has pinned an order still gets it — within their tier. A
+ * visitor opening the menu meets the cities that actually hold events first,
+ * which is what the menu is mostly used to find.
  *
  * The label is the chapter's own `city`, so the menu shows the name the editor
  * typed; the url is built from the `slug`, matching the `/chapters/<slug>`
@@ -62,25 +91,37 @@ const INSERT_AFTER_LABEL = 'Programs';
  * so draft visibility stays one rule applied identically at every call site.
  */
 export function chapterNavItems(chapters: ChapterLike[]): NavItem[] {
-  return [...chapters]
-    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.city.localeCompare(b.city))
-    .map((chapter) => ({ label: chapter.city, url: `/chapters/${chapter.slug}` }));
+  return byPresence(chapters).map((chapter) => ({
+    label: chapter.city,
+    url: `/chapters/${chapter.slug}`,
+  }));
 }
 
 /**
  * The top-level menu with the derived Chapters dropdown inserted directly after
  * `Programs`, or appended when no such item exists.
  *
+ * The dropdown ends with `GLOBAL_COMMUNITY_ITEM`, so the menu always offers a
+ * way in to someone who lives in none of the listed cities — which is most
+ * alumni. It is appended HERE rather than by the caller because it is part of
+ * what this group means, and a caller that forgot it would leave that visitor
+ * at a dead end with nothing to say so.
+ *
  * With no chapters the group is omitted entirely rather than rendered empty: an
  * empty dropdown is a caret that opens onto nothing, and the CMS serializer
- * collapses it back into a plain link pointing nowhere.
+ * collapses it back into a plain link pointing nowhere. The global item does
+ * NOT keep it alive on its own — a lone "Global community" under a "Chapters"
+ * caret would be a menu lying about what it contains.
  *
  * Returns a new array — the input is not mutated.
  */
 export function withChapterGroup(items: NavItem[], chapterItems: NavItem[]): NavItem[] {
   if (chapterItems.length === 0) return [...items];
 
-  const group: NavItem = { label: CHAPTERS_LABEL, children: chapterItems };
+  const group: NavItem = {
+    label: CHAPTERS_LABEL,
+    children: [...chapterItems, GLOBAL_COMMUNITY_ITEM],
+  };
   const anchor = items.findIndex((item) => item.label === INSERT_AFTER_LABEL);
   if (anchor === -1) return [...items, group];
 

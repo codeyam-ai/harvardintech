@@ -18,6 +18,7 @@ photos:
   - image: /images/gallery/event-34.jpg
   - image: /images/gallery/event-37.jpg
 region: New York, NY
+status: active
 tagline: We are the New York Chapter of Harvard Alumni in Tech.
 ---
 

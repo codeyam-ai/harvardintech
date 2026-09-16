@@ -16,9 +16,20 @@ interface Props {
   blurb?: string;
   heroImage?: string;
   tagline?: string;
+  /**
+   * The small uppercase kicker above the name — "Chapter", "Chapter · Forming",
+   * "Community".
+   *
+   * This replaced a title that read "Harvard Alumni in Tech <name>". That
+   * phrasing was already strained for a city and actively wrong for a group:
+   * the AI community's banner announced "HARVARD ALUMNI IN TECH AI", which
+   * reads as a product rather than a community of people. Splitting the kind
+   * from the name lets one hero serve both, says which kind of page you are on,
+   * and gives a forming chapter somewhere honest to say so.
+   */
+  label?: string;
 }
-const { name, region, blurb, heroImage, tagline } = Astro.props;
-const title = `Harvard Alumni in Tech ${name}`;
+const { name, region, blurb, heroImage, tagline, label = 'Chapter' } = Astro.props;
 ---
 
 {
@@ -33,12 +44,13 @@ const title = `Harvard Alumni in Tech ${name}`;
         <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.39);" />
       </div>
       <div class="chapter-hero-inner">
-        <h1 class="chapter-hero-title">{title}</h1>
+        {label ? <p class="chapter-hero-kicker">{label}</p> : null}
+        <h1 class="chapter-hero-title">{name}</h1>
         {tagline ? <p class="chapter-hero-tagline">{tagline}</p> : null}
       </div>
     </section>
   ) : (
-    <ChapterHeader name={name} region={region} blurb={blurb} />
+    <ChapterHeader name={name} region={region} blurb={blurb} label={label} />
   )
 }
 
@@ -71,6 +83,17 @@ const title = `Harvard Alumni in Tech ${name}`;
     margin: 0 auto;
     color: #fff;
     text-align: center;
+  }
+  /* The kind of page, above the name. Deliberately small and wide-tracked so it
+     reads as a label rather than competing with the title it introduces. */
+  .chapter-hero-kicker {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 0.75rem;
   }
   .chapter-hero-title {
     text-transform: uppercase;
@@ -124,6 +147,10 @@ const title = `Harvard Alumni in Tech ${name}`;
     }
     .chapter-hero-inner {
       text-align: left;
+    }
+    .chapter-hero-kicker {
+      font-size: 12px;
+      margin-bottom: 0.5rem;
     }
     .chapter-hero-title {
       display: block;

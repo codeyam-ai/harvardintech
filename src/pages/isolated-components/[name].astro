@@ -132,13 +132,41 @@ const chapterPageStates = {
       { name: 'Ben Wei', role: 'Events' },
     ],
     links: [
-      { label: 'Join the NYC WhatsApp', url: 'https://chat.whatsapp.com/harvardintech-nyc' },
+      // The join FORM, not the group. The site never links a group invite, and
+      // a fixture that does would be the one place a reader could find the
+      // discouraged pattern written down as if it were fine.
+      { label: 'Join the NYC WhatsApp', url: 'https://forms.gle/GqgaCDDWhWAgpJC68' },
       { label: 'NYC events on Eventbrite', url: 'https://www.eventbrite.com/o/harvard-in-tech-17275560304' },
     ],
   },
   Sparse: {
-    name: 'Japan',
-    region: 'Tokyo',
+    // Was 'Japan' until Japan was retired from the roster. A fixture naming a
+    // chapter the site deliberately dropped is a trap for the next reader, so
+    // it is a forming chapter now — which is also the state a sparse entry is
+    // realistically IN, since a city with no lead is the one least likely to
+    // have a hero photo or body copy yet.
+    name: 'DC and DMV Area',
+    region: 'Washington, DC',
+  },
+  // The forming chapter: same page, different ask. The leads block is replaced
+  // by the "help lead it" band, the hero kicker reads "Chapter · Forming", and
+  // the callouts carry what the chapter can honestly claim. Leads ARE passed
+  // and must NOT render — that is the assertion this state exists to make, and
+  // a fixture with no leads could not make it.
+  Forming: {
+    name: 'DC and DMV Area',
+    region: 'Washington, DC',
+    status: 'forming',
+    blurb: 'Alumni across DC, Maryland and Virginia — a WhatsApp group today, a chapter as soon as someone steps up to lead it.',
+    heroImage: '/images/gallery/event-18.jpg',
+    tagline: 'A Harvard Alumni in Tech chapter forming across the Washington metro area.',
+    showGallery: false,
+    formingContactEmail: 'info@harvardintech.com',
+    leads: [{ name: 'Should Not Render', role: 'A forming chapter names no lead' }],
+    callouts: [
+      { title: 'An active WhatsApp group', text: 'Policy and tech alumni already talking to each other across the metro area.' },
+      { title: 'Waiting on an organiser', text: 'Happy hours are the obvious first event — someone just has to pick a date.' },
+    ],
   },
 };
 
@@ -152,9 +180,14 @@ const chapterHeroStates = {
     tagline: 'We are the New York Chapter of Harvard Alumni in Tech.',
   },
   Fallback: {
-    name: 'Japan',
-    region: 'Tokyo',
-    blurb: 'Our first international chapter.',
+    // Also un-Japanned. A forming chapter is the realistic no-photo case, and
+    // it doubles the value of the frame: it proves the kicker reaches the
+    // centered fallback too, so a page without a hero image still says which
+    // kind of page it is.
+    name: 'DC and DMV Area',
+    region: 'Washington, DC',
+    blurb: 'A chapter forming across the Washington metro area.',
+    label: 'Chapter · Forming',
   },
 };
 
@@ -195,13 +228,40 @@ const SAMPLE_COMMUNITY_EVENTS = [
     link: 'https://www.harvardintech.com/events/fundraising-ama',
   },
 ];
+const SAMPLE_PAST_EVENTS = [
+  {
+    title: 'Alumni Founders Co-working Day (July)',
+    date: '2026-07-10',
+    location: 'London, United Kingdom',
+    description: 'A day of heads-down work alongside other alumni founders.',
+  },
+  {
+    title: 'Leaders in Engineering Panel',
+    date: '2026-04-30',
+    location: 'San Francisco, California',
+    description: 'Engineering leaders from across the alumni network on scaling teams.',
+  },
+];
 const chapterEventsStates = {
   Default: { events: SAMPLE_CHAPTER_EVENTS, name: 'San Francisco' },
-  Empty: { events: [] as typeof SAMPLE_CHAPTER_EVENTS, name: 'Los Angeles' },
+  // 'Los Angeles' was a retired chapter; the empty state needs a name, not a
+  // claim, so it uses a city with no chapter rather than one the site dropped.
+  Empty: { events: [] as typeof SAMPLE_CHAPTER_EVENTS, name: 'Austin' },
   Community: {
     events: SAMPLE_COMMUNITY_EVENTS,
     name: 'Founders',
     heading: 'Upcoming Founders Events',
+  },
+  // The past variant. A chapter between events used to render as a blank page,
+  // which read as abandoned rather than quiet; showing the last few proves it
+  // is real. Same component and same cards as Default — only the heading and
+  // the card variant differ, which is exactly why it is a variant rather than a
+  // second component, and why capturing it matters: nothing else would catch
+  // the two drifting apart.
+  Past: {
+    events: SAMPLE_PAST_EVENTS,
+    name: 'San Francisco',
+    variant: 'past' as const,
   },
 };
 
@@ -288,15 +348,22 @@ const boardOfDirectorsStates = {
 // Empty proves the "coming soon" fallback (production starts with no chapters).
 //
 // Mirrors the committed chapters, INCLUDING the absence of an `order` on every
-// entry — that is what makes the roster sort alphabetically by city, so a
-// fixture that re-pinned them would show an order the real site never renders.
+// entry — that is what makes the roster sort alphabetically by city within its
+// status tier, so a fixture that re-pinned them would show an order the real
+// site never renders.
+//
+// `status` mirrors production too, and it is what makes this fixture worth
+// looking at: the four cities that hold events sort ahead of the two that are
+// forming, and DC and Seattle carry the "Forming · help lead it" badge. Listed
+// here in source order deliberately UNSORTED (DC second, Seattle fifth) so the
+// frame proves `byPresence` is doing the reordering rather than the fixture.
 const SAMPLE_CHAPTERS = [
-  { slug: 'boston-cambridge', city: 'Boston & Cambridge', blurb: 'Home of Harvard, our Cambridge and Boston community.', heroImage: '/images/bg/hero-bg.jpg' },
-  { slug: 'dc-dmv', city: 'DC and DMV Area', blurb: 'The DC, Maryland & Virginia community.', heroImage: '/images/gallery/event-18.jpg' },
-  { slug: 'london', city: 'London', blurb: 'Our European hub across the London tech scene.', heroImage: '/images/gallery/event-05.jpg' },
-  { slug: 'nyc', city: 'New York City', blurb: 'Our founding chapter and largest community.', heroImage: '/images/chapters/nyc.jpg' },
-  { slug: 'seattle', city: 'Seattle / Pacific Northwest', blurb: 'The Pacific Northwest chapter.', heroImage: '/images/gallery/event-27.jpg' },
-  { slug: 'sf-bay-area', city: 'SF & Bay Area', blurb: 'Our West Coast chapter across San Francisco and Silicon Valley.', heroImage: '/images/chapters/san-francisco.jpg' },
+  { slug: 'boston-cambridge', city: 'Boston & Cambridge', status: 'active', blurb: 'Home of Harvard, our Cambridge and Boston community.', heroImage: '/images/bg/hero-bg.jpg' },
+  { slug: 'dc-dmv', city: 'DC and DMV Area', status: 'forming', blurb: 'Alumni across DC, Maryland and Virginia — a WhatsApp group today, a chapter as soon as someone steps up to lead it.', heroImage: '/images/gallery/event-18.jpg' },
+  { slug: 'london', city: 'London', status: 'active', blurb: 'Our European hub across the London tech scene.', heroImage: '/images/gallery/event-05.jpg' },
+  { slug: 'nyc', city: 'New York City', status: 'active', blurb: 'Our founding chapter and largest community.', heroImage: '/images/chapters/nyc.jpg' },
+  { slug: 'seattle', city: 'Seattle / Pacific Northwest', status: 'forming', blurb: 'Alumni across Seattle and the Pacific Northwest — a WhatsApp group today, a chapter as soon as someone steps up to lead it.', heroImage: '/images/gallery/event-27.jpg' },
+  { slug: 'sf-bay-area', city: 'SF & Bay Area', status: 'active', blurb: 'Our West Coast chapter across San Francisco and Silicon Valley.', heroImage: '/images/chapters/san-francisco.jpg' },
 ];
 const ourChaptersStates = {
   Default: { chapters: SAMPLE_CHAPTERS },
@@ -838,11 +905,13 @@ export async function getStaticPaths() {
     { params: { name: 'EventsPage-Empty' } },
     { params: { name: 'ChapterPage' } },
     { params: { name: 'ChapterPage-Sparse' } },
+    { params: { name: 'ChapterPage-Forming' } },
     { params: { name: 'ChapterHero' } },
     { params: { name: 'ChapterHero-Fallback' } },
     { params: { name: 'ChapterEvents' } },
     { params: { name: 'ChapterEvents-Empty' } },
     { params: { name: 'ChapterEvents-Community' } },
+    { params: { name: 'ChapterEvents-Past' } },
     { params: { name: 'ChapterSignUp' } },
     { params: { name: 'ChapterConnect' } },
     { params: { name: 'BoardMemberCard' } },
@@ -1241,7 +1310,20 @@ if (name && name.startsWith('DonorTierBand')) {
         ) : name === 'Stats' ? (
           <Stats />
         ) : primaryNavProps ? (
-          <div class:list={['nav-stage', name === 'PrimaryNav-CommunitiesOpen' && 'nav-stage--communities-open']}>
+          <div
+            class:list={[
+              'nav-stage',
+              name === 'PrimaryNav-CommunitiesOpen' && 'nav-stage--communities-open',
+              // The two chapter states are ABOUT the derived chapter links, and
+              // those links live inside a dropdown that is closed at rest — so
+              // without pinning it open both captured the same resting header,
+              // and the frames were byte-identical to each other. That made
+              // "a sixth chapter still reaches the menu" a claim its own
+              // screenshot could not show, and collided the two scenarios.
+              (name === 'PrimaryNav' || name === 'PrimaryNav-SixChapters') &&
+                'nav-stage--chapters-open',
+            ]}
+          >
             <PrimaryNav {...primaryNavProps} />
           </div>
         ) : utilityBarProps ? (
@@ -1309,6 +1391,14 @@ if (name && name.startsWith('DonorTierBand')) {
         padding-left: 120px;
       }
       .nav-stage--communities-open .links > .nav-item:nth-child(3) .mega {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+      /* Chapters is the SECOND group (Programs, Chapters, Communities), and it
+         is the group this module injects rather than one nav.json authors —
+         which is exactly why its contents need to be visible in a capture. */
+      .nav-stage--chapters-open .links > .nav-item:nth-child(2) .mega {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);

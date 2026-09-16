@@ -1,0 +1,96 @@
+---
+// "Not near a chapter? Join the global community."
+//
+// This is the answer to a question the site used to leave hanging. Four cities
+// hold in-person events and two more are forming; every other alum — which is
+// the large majority of them — opened the Chapters menu, found nothing near
+// them, and had nowhere to go. This band takes the place on the homepage where
+// the Japan and L.A. cards used to sit, and closes every chapter page.
+//
+// Three actions rather than one, because "join" means different things to
+// different people: the WhatsApp community (talk to people now), the newsletter
+// (hear from us occasionally), and volunteering (do something). None of them
+// require living anywhere in particular.
+import GlobalCommunityAction from './GlobalCommunityAction.astro';
+import { joinCtas } from '../lib/localPresence';
+
+interface Props {
+  /** Overrides the default heading — a chapter page says something slightly
+   *  different from the homepage band. */
+  heading?: string;
+  /** Rendered as an `<h2>` band by default. A page that already has an `<h1>`
+   *  above it never wants another, so this stays a section heading. */
+  id?: string;
+}
+const { heading = 'Not near a chapter? Join the global community.', id = 'global-community' } =
+  Astro.props;
+
+const { whatsappFormUrl, newsletterUrl, volunteerUrl } = joinCtas();
+
+const actions = [
+  {
+    label: 'Join the WhatsApp community',
+    href: whatsappFormUrl,
+    blurb: '750+ alumni, worldwide. Sign up with the form and we verify your affiliation.',
+  },
+  {
+    label: 'Subscribe to the newsletter',
+    href: newsletterUrl,
+    blurb: 'One list, not one per city — we ask where you are so we can tell you what is near you.',
+  },
+  {
+    label: 'Volunteer with us',
+    href: volunteerUrl,
+    blurb: 'Help run a programme, or start something where you live.',
+  },
+];
+---
+
+<section class="s-section global-community" id={id}>
+  <!-- `s-inner` (content width), not `s-narrow` (text width): three cards at a
+       240px minimum do not fit in a reading measure, so a narrow container
+       silently drops them to a 2 + 1 grid with one card stranded on its own
+       row. The heading and lede keep the reading measure for themselves. -->
+  <div class="s-inner">
+    <h2 class="s-title" style="text-align: center; text-wrap: balance;">{heading}</h2>
+    <p class="global-community-lede">
+      Most of our alumni are not in one of the cities with a chapter. These are open to
+      everyone, wherever you are.
+    </p>
+
+    <ul class="global-community-actions">
+      {
+        actions.map((action) => (
+          <li>
+            <GlobalCommunityAction label={action.label} href={action.href} blurb={action.blurb} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .global-community-lede {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 1.05rem;
+    max-width: var(--text-width);
+    margin: 0 auto var(--space-xl);
+  }
+  /* auto-fit so three cards sit in a row on a desktop and stack cleanly on a
+     phone without a second breakpoint. */
+  .global-community-actions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-lg);
+  }
+  /* The card itself styles in GlobalCommunityAction; the grid cell only needs
+     to let it fill the row height. */
+  .global-community-actions > li {
+    display: flex;
+  }
+</style>

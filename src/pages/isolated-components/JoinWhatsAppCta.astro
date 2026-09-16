@@ -1,0 +1,31 @@
+---
+import Component from "../../components/JoinWhatsAppCta.astro";
+import "../../styles/tokens.css";
+
+// The primary call to action on a community page.
+//
+// The thing worth watching in this frame is the LINK, which the screenshot
+// cannot show: it must be the Google Form, never the WhatsApp group itself.
+// Joining goes through the form so alumni status is verified before an admin
+// adds anyone; a raw `chat.whatsapp.com` invite in public HTML skips that check
+// and cannot be revoked once it has been scraped. `joinCtas` enforces that even
+// when content hands it a group link, which is why this fixture passes NO
+// `whatsappFormUrl` — the shared form is the production default and the state
+// most communities render in.
+//
+// See `src/lib/localPresence.test.ts` for the rule itself, which is where a
+// regression would actually be caught.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: JoinWhatsAppCta</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component name="Founders" />
+    </div>
+  </body>
+</html>

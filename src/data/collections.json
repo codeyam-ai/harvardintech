@@ -61,6 +61,13 @@
           "label": "Registration link",
           "type": "text",
           "optional": true
+        },
+        {
+          "name": "chapter",
+          "label": "Chapter",
+          "type": "text",
+          "optional": true,
+          "hint": "Which chapter this event belongs to, written exactly as the chapter's web address ends — \"nyc\", \"london\", \"sf-bay-area\". Leave blank for an event that belongs to no single city; it still appears on the Events page. A misspelling is not an error: the event simply appears on no chapter page, so check it against the address bar."
         }
       ]
     },
@@ -108,6 +115,52 @@
           "name": "city",
           "label": "City",
           "type": "text"
+        },
+        {
+          "name": "status",
+          "label": "Status",
+          "type": "select",
+          "optional": true,
+          "hint": "Active shows the chapter leads and its events. Forming shows \"help lead it\" instead — a volunteer call and a link to join the local WhatsApp — for a city with alumni but nobody running events yet. Blank counts as Active. Switching to Active is all it takes to promote a chapter: the web address, the menu entry and every event already tagged to it stay exactly where they are.",
+          "options": [
+            "active",
+            "forming"
+          ]
+        },
+        {
+          "name": "whatsappFormUrl",
+          "label": "WhatsApp sign-up form",
+          "type": "text",
+          "optional": true,
+          "hint": "Google Form only — never the WhatsApp group's own invite link. The form is what checks someone is an alum before they are added, and a group invite pasted here would be public and impossible to take back. Blank uses the shared sign-up form, which is right for most chapters. Must start https://forms.gle/ or https://docs.google.com/forms/.",
+          "pattern": "^https://(forms\\.gle|docs\\.google\\.com/forms)/"
+        },
+        {
+          "name": "volunteerUrl",
+          "label": "Volunteer link",
+          "type": "text",
+          "optional": true,
+          "hint": "Where \"Volunteer to lead or support\" points on a forming chapter. Blank uses the site's volunteer page."
+        },
+        {
+          "name": "callouts",
+          "label": "What happens here",
+          "type": "list",
+          "optional": true,
+          "hint": "A few short cards naming what this chapter actually does — \"Quarterly founder dinners\", \"Monthly coffee meetups\". Worth filling in when the chapter has no events on the calendar yet, since otherwise the page has nothing concrete to show.",
+          "fields": [
+            {
+              "name": "title",
+              "label": "Title",
+              "type": "text"
+            },
+            {
+              "name": "text",
+              "label": "Detail",
+              "type": "textarea",
+              "optional": true
+            }
+          ]
         },
         {
           "name": "region",
@@ -225,6 +278,34 @@
           "name": "name",
           "label": "Name",
           "type": "text"
+        },
+        {
+          "name": "whatsappFormUrl",
+          "label": "WhatsApp sign-up form",
+          "type": "text",
+          "optional": true,
+          "hint": "Google Form only — never the WhatsApp group's own invite link. The form is what checks someone is an alum before they are added, and a group invite pasted here would be public and impossible to take back. Blank uses the shared sign-up form. Must start https://forms.gle/ or https://docs.google.com/forms/.",
+          "pattern": "^https://(forms\\.gle|docs\\.google\\.com/forms)/"
+        },
+        {
+          "name": "callouts",
+          "label": "What happens here",
+          "type": "list",
+          "optional": true,
+          "hint": "A few short cards naming what this community actually does — \"Bi-weekly calls with alumni globally\", \"Local events in select cities\". This is the main thing a community page has to show before it has events on the calendar, so it is worth filling in.",
+          "fields": [
+            {
+              "name": "title",
+              "label": "Title",
+              "type": "text"
+            },
+            {
+              "name": "text",
+              "label": "Detail",
+              "type": "textarea",
+              "optional": true
+            }
+          ]
         },
         {
           "name": "blurb",

@@ -10,11 +10,13 @@ import ChapterHero from './ChapterHero.astro';
 import ChapterEvents from './ChapterEvents.astro';
 import ChapterSignUp from './ChapterSignUp.astro';
 import ChapterConnect from './ChapterConnect.astro';
-import ChapterLeads from './ChapterLeads.astro';
-import ChapterLinks from './ChapterLinks.astro';
+import CommunityCallouts from './CommunityCallouts.astro';
+import PageNarrowBody from './PageNarrowBody.astro';
+import FormingChapterCta from './FormingChapterCta.astro';
+import GlobalCommunityCta from './GlobalCommunityCta.astro';
 import EventGallery from './landing/EventGallery.astro';
 import type { EventLike } from '../lib/events';
-import { withBase } from '../lib/url';
+import { isForming } from '../lib/localPresence';
 
 interface Lead {
   name: string;
@@ -48,6 +50,32 @@ interface Props {
    *  which reads wrong for a community ("...in Founders") — /communities passes
    *  its own phrasing. */
   eventsHeading?: string;
+  /**
+   * The last few events that already happened, most recent first.
+   *
+   * A chapter with nothing on the calendar this month looked identical to one
+   * that had never run anything. Showing what it recently did is the cheapest
+   * possible proof that it is real — and it is why a quiet active chapter is
+   * still worth visiting.
+   */
+  pastEvents?: EventLike[];
+  /**
+   * `active` or `forming`; absent means active.
+   *
+   * A forming chapter swaps the leads block for the "help lead it" band. It
+   * keeps its hero, its body copy, its gallery and its URL — the difference is
+   * what the page ASKS you for, not how much of a page it is.
+   */
+  status?: string;
+  /** "What happens here" cards, for a chapter whose calendar is thin. */
+  callouts?: { title: string; text?: string }[];
+  /** The entry's own WhatsApp form override. Always a form, never a group. */
+  whatsappFormUrl?: string;
+  /** Where a forming chapter's volunteer button points. */
+  volunteerUrl?: string;
+  /** From `emailFor('formingChapter', …)`. Absent → the forming band shows no
+   *  Contact us button. Only a forming chapter ever uses this. */
+  formingContactEmail?: string;
   leads?: Lead[];
   links?: ChapterLink[];
   /** Where the "back" link at the top of the content block points, and what it
@@ -66,43 +94,71 @@ const {
   photos,
   events = [],
   eventsHeading,
+  pastEvents = [],
+  status,
+  callouts = [],
+  whatsappFormUrl,
+  volunteerUrl,
+  formingContactEmail,
   leads = [],
   links = [],
   backHref = '/#events',
   backLabel = '← All chapters',
 } = Astro.props;
 
-// The narrow content block (leads + markdown body + links) only renders when
-// there is something to show. `hasBody` is detected from the default slot.
+const forming = isForming({ status });
+// The kicker over the hero title. A forming chapter says so in the one place
+// every visitor looks first, rather than leaving them to infer it from a
+// missing leads block further down.
+const heroLabel = forming ? 'Chapter · Forming' : 'Chapter';
+
+// Detected HERE, not inside PageNarrowBody: that component receives this page's
+// `<slot />` forwarded into its own, which always reads as filled from in there.
+// See its `hasBody` prop.
 const hasBody = Astro.slots.has('default');
-const hasContent = leads.length > 0 || links.length > 0 || hasBody;
 ---
 
-<ChapterHero name={name} region={region} blurb={blurb} heroImage={heroImage} tagline={tagline} />
+<ChapterHero
+  name={name}
+  region={region}
+  blurb={blurb}
+  heroImage={heroImage}
+  tagline={tagline}
+  label={heroLabel}
+/>
+
+{
+  /* The ask comes FIRST on a forming chapter. Someone who lands on a page for a
+     city with no events needs to know what to do with it before they scroll
+     past the fold and conclude there is nothing here. */
+  forming ? (
+    <FormingChapterCta
+      name={name}
+      whatsappFormUrl={whatsappFormUrl}
+      volunteerUrl={volunteerUrl}
+      contactEmail={formingContactEmail}
+    />
+  ) : null
+}
 
 <ChapterEvents events={events} name={name} heading={eventsHeading} />
 
+<CommunityCallouts callouts={callouts} />
+
+<ChapterEvents events={pastEvents} name={name} variant="past" />
+
 <ChapterSignUp />
 
-{
-  hasContent ? (
-    <section class="s-section">
-      <div class="s-narrow">
-        <a href={withBase(backHref)} style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;">
-          {backLabel}
-        </a>
-
-        <ChapterLeads leads={leads} />
-
-        <div style="line-height: 1.8;">
-          <slot />
-        </div>
-
-        <ChapterLinks links={links} />
-      </div>
-    </section>
-  ) : null
-}
+<PageNarrowBody
+  backHref={backHref}
+  backLabel={backLabel}
+  leads={leads}
+  showLeads={!forming}
+  links={links}
+  hasBody={hasBody}
+>
+  <slot />
+</PageNarrowBody>
 
 {
   /* An empty `photos` list is treated as absent, not as "an empty gallery":
@@ -117,5 +173,12 @@ const hasContent = leads.length > 0 || links.length > 0 || hasBody;
     )
   ) : null
 }
+
+{
+  /* Every chapter page ends by offering the way in that needs no chapter at
+     all. A visitor who has read to the bottom of a city page they are not near
+     should not have to go back to the menu to find one. */
+}
+<GlobalCommunityCta />
 
 <ChapterConnect />

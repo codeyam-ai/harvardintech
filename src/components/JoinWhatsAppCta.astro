@@ -1,0 +1,55 @@
+---
+// The "join the WhatsApp" band — the primary call to action on a community page
+// and a secondary one on a chapter page.
+//
+// The link is ALWAYS the Google Form, never the group's own invite. The form is
+// what verifies someone is actually an alum before an admin adds them; a raw
+// group invite in public HTML skips that check and, once it has been scraped,
+// cannot be taken back. `joinCtas` resolves the URL and refuses a group link
+// even if one reaches it from content, so this component cannot render the
+// wrong destination however it is called. `isWhatsAppGroupLink` in
+// `src/lib/localPresence.ts` is where those hosts are actually named — this
+// comment deliberately does not repeat them, because `noPersonalEmail.test.ts`
+// scans this directory for exactly that string and cannot tell prose from a
+// live href.
+import { joinCtas } from '../lib/localPresence';
+import { externalLinkAttrs } from '../lib/externalLink';
+import { withBase } from '../lib/url';
+
+interface Props {
+  /** The chapter city or community name, used in the heading and button. */
+  name: string;
+  /** The entry's own form override, if it has one. Absent → the shared form. */
+  whatsappFormUrl?: string;
+  /** Overrides the default heading when a page wants its own phrasing. */
+  heading?: string;
+  /** One line under the heading. Absent → a sensible default for `name`. */
+  blurb?: string;
+}
+const { name, whatsappFormUrl, heading, blurb } = Astro.props;
+
+const { whatsappFormUrl: href } = joinCtas({ whatsappFormUrl });
+const title = heading ?? `Join the ${name} WhatsApp`;
+const line =
+  blurb ??
+  `Where ${name} members trade introductions, jobs and what they're working on. ` +
+    `Sign up with the form and we'll verify your Harvard affiliation before adding you.`;
+// `withBase` handles the href on its own: it prefixes an internal absolute path
+// and returns an https URL untouched. Whether the link opens in a NEW TAB is a
+// separate question, and `externalLinkAttrs` is the site's one rule for it — a
+// hand-rolled `/^https?:\/\//` test looks equivalent and is not, since it calls
+// an absolute harvardintech.com URL external and sends our own site to a new tab.
+const linkAttrs = externalLinkAttrs(href, Astro.url.origin);
+---
+
+<section class="s-section" id="join-whatsapp" style="background: var(--color-bg-blue);">
+  <div class="s-narrow" style="text-align: center;">
+    <h2 class="s-title">{title}</h2>
+    <p style="font-size: 1.1rem; color: var(--color-fg); margin: 0 auto var(--space-lg); max-width: var(--text-width);">
+      {line}
+    </p>
+    <a class="s-btn" href={withBase(href)} {...linkAttrs}>
+      Apply to join
+    </a>
+  </div>
+</section>

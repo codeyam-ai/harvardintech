@@ -9,6 +9,14 @@
     ]
   },
   {
+    "description": "A single what-happens-here card with a title and optional detail. Split from the callouts grid for the same reason every other card here is its own component: the card carries the look, the grid is only an arrangement, and a scenario showing one card should not have to build a list.",
+    "filePath": "src/components/CalloutCard.astro",
+    "name": "CalloutCard",
+    "scenarios": [
+      "calloutcard-single-callout"
+    ]
+  },
+  {
     "description": "The Connect With Us row on chapter and community pages: a centered heading and the site's social links as circular badges, each carrying that brand's official logo in its brand colour. No email is shown here - the shared inbox appears only on the surfaces listed in EMAIL_SURFACES.",
     "filePath": "src/components/ChapterConnect.astro",
     "name": "ChapterConnect",
@@ -56,6 +64,22 @@
     "name": "ChapterSignUp",
     "scenarios": [
       "chaptersignup-default"
+    ]
+  },
+  {
+    "description": "A grid of short cards naming what a community or chapter actually does. It is how a page with no calendar entries still says something concrete — the AI community's activity is a recurring call, which is real but is not an event, so without this the page carried only a blurb and a photo.",
+    "filePath": "src/components/CommunityCallouts.astro",
+    "name": "CommunityCallouts",
+    "scenarios": [
+      "communitycallouts-what-happens-here"
+    ]
+  },
+  {
+    "description": "The page a community renders through, separate from ChapterPage since a chapter leads with a place and a community leads with what it does. Its order differs on purpose — callouts, then the join ask, then events — because a community may have no listable events at all and the ask cannot sit below them.",
+    "filePath": "src/components/CommunityPage.astro",
+    "name": "CommunityPage",
+    "scenarios": [
+      "communitypage-founders-composed"
     ]
   },
   {
@@ -136,6 +160,15 @@
     ]
   },
   {
+    "description": "What a forming chapter shows where an active one shows its leads: a volunteer-to-lead ask and a join-the-local-WhatsApp ask, with an optional Contact us line. It exists because rendering a lead-less city identically to New York made a new chapter look like a dead one, while deleting it would have hidden alumni who are actually there.",
+    "filePath": "src/components/FormingChapterCta.astro",
+    "name": "FormingChapterCta",
+    "scenarios": [
+      "formingchaptercta-with-contact-address",
+      "formingchaptercta-no-contact-address"
+    ]
+  },
+  {
     "description": "Astro endpoint that emits an llms.txt AEO summary (org name, description, key pages as absolute URLs, contact email and socials) built from site settings and the env-driven site origin.",
     "filePath": "src/pages/llms.txt.ts",
     "name": "GET",
@@ -156,6 +189,22 @@
     ]
   },
   {
+    "description": "One action card in the global-community band, where the whole card is the link rather than just its label. Routes its href through withBase and its new-tab attributes through the site's shared external-link rule, so no call site decides either question for itself.",
+    "filePath": "src/components/GlobalCommunityAction.astro",
+    "name": "GlobalCommunityAction",
+    "scenarios": [
+      "globalcommunityaction-newsletter-card"
+    ]
+  },
+  {
+    "description": "The band offering the WhatsApp community, the newsletter and volunteering to anyone not near a chapter — which is most alumni. It takes the homepage slot the retired Japan and L.A. cards held and closes every chapter page, so a visitor who finds no city near them is never left at a dead end.",
+    "filePath": "src/components/GlobalCommunityCta.astro",
+    "name": "GlobalCommunityCta",
+    "scenarios": [
+      "globalcommunitycta-three-ways-in"
+    ]
+  },
+  {
     "description": "Template React island: a name greeting with an interactive click counter. Not used on the Harvard in Tech landing page; retained from the scaffold.",
     "filePath": "src/components/Greeting.tsx",
     "name": "Greeting",
@@ -167,6 +216,14 @@
     "name": "HeroCarousel",
     "scenarios": [
       "hero-carousel"
+    ]
+  },
+  {
+    "description": "The join band that is a community page's primary call to action. It always links the Google Form and never a WhatsApp group invite, because joining runs through alumni verification and a published group link would bypass it irrevocably.",
+    "filePath": "src/components/JoinWhatsAppCta.astro",
+    "name": "JoinWhatsAppCta",
+    "scenarios": [
+      "joinwhatsappcta-community-primary-action"
     ]
   },
   {
@@ -193,6 +250,14 @@
     "scenarios": [
       "our-chapters",
       "our-chapters-empty"
+    ]
+  },
+  {
+    "description": "The narrow closing block shared by chapter and community pages: back link, leads, markdown body, then links. Extracted from two near-identical copies that differed only in the leads heading and back-link wording, which is the shape where a fix lands on one and silently misses the other. Takes `hasBody` as a prop because a forwarded slot always reads as filled from inside.",
+    "filePath": "src/components/PageNarrowBody.astro",
+    "name": "PageNarrowBody",
+    "scenarios": [
+      "pagenarrowbody-leads-body-and-links"
     ]
   },
   {
@@ -326,6 +391,12 @@
     "testFile": "src/lib/cutoverProgress.test.ts"
   },
   {
+    "description": "Orders chapters active-first, then by the `order` pin, then by city. The status tier sits in front of the pin rather than replacing it, so an editor's ordering still applies within its tier while a visitor always meets the cities that actually hold events first.",
+    "filePath": "src/lib/localPresence.ts",
+    "name": "byPresence",
+    "testFile": "src/lib/localPresence.test.ts"
+  },
+  {
     "description": "The goal-meter band's optional link out to the campaign, or undefined when it should not be drawn. BOTH halves are required, which is the whole rule: a label with no destination would render a link that goes nowhere — worse than no link, since a reader who clicks it learns the page is broken — and a url with no label has nothing to click. Either box alone therefore draws nothing, which is the shipped state and exactly what the goal-meter entry documents to the editor. Whitespace-only counts as blank, and the trimmed values are returned so a pasted trailing newline never reaches the href.",
     "filePath": "src/lib/momentumSections.ts",
     "name": "campaignLink",
@@ -369,6 +440,12 @@
     "filePath": "src/lib/nav.ts",
     "name": "chapterNavItems",
     "testFile": "src/lib/nav.test.ts"
+  },
+  {
+    "description": "Whether a chapter is `active` or `forming`, defaulting to active when the field is absent or unrecognised. The default is load-bearing: every chapter predating the field was one with events, so absent-means-active is what kept the whole roster rendering unchanged when the field shipped.",
+    "filePath": "src/lib/localPresence.ts",
+    "name": "chapterStatus",
+    "testFile": "src/lib/localPresence.test.ts"
   },
   {
     "description": "Whether a given chip should read as pressed: exactly the selected one. Kept pure so the aria-pressed bookkeeping is testable without a DOM, and so a screen-reader user is told which filter is active rather than having to infer it from what disappeared.",
@@ -579,6 +656,12 @@
     "filePath": "src/lib/supporterBadge.ts",
     "name": "facebookShareUrl",
     "testFile": "src/lib/supporterBadge.test.ts"
+  },
+  {
+    "description": "Reads one optional presence field as a string off a value of any shape. It exists so the rules in this module can take `unknown` rather than an all-optional interface, which TypeScript treats as a weak type and would reject for a chapter carrying none of those fields — the default case and most of the roster.",
+    "filePath": "src/lib/localPresence.ts",
+    "name": "field",
+    "testFile": "src/lib/localPresence.test.ts"
   },
   {
     "description": "Writes one supporter into the selection panel's slots, and points the share links at that supporter's own URL. A slot with nothing to show is HIDDEN rather than emptied: a supporter who left their location blank should not get a stray label over an empty line. The share hrefs are set from values the server precomposed, so the link a supporter posts and the badge they are reading cannot be for two different people.",
@@ -860,6 +943,12 @@
     "testFile": "src/lib/externalLink.test.ts"
   },
   {
+    "description": "True when a chapter has no lead yet and its page should ask for one instead of naming one. A thin wrapper over chapterStatus so call sites read as a question rather than a string comparison, which is what keeps the rule in one place.",
+    "filePath": "src/lib/localPresence.ts",
+    "name": "isForming",
+    "testFile": "src/lib/localPresence.test.ts"
+  },
+  {
     "description": "Whether a URL or path points inside one of INTERNAL_PATHS, after removing the subpath base. Keeps internal pages out of the public sitemap; lookalike paths such as /reviews-of-2026/ or /blog/review/ do not match.",
     "filePath": "src/lib/publishTrack.ts",
     "name": "isInternalPath",
@@ -906,6 +995,18 @@
     "filePath": "src/lib/cutoverProgress.ts",
     "name": "isStepReady",
     "testFile": "src/lib/cutoverProgress.test.ts"
+  },
+  {
+    "description": "True when a URL points at a WhatsApp group itself rather than the join form, matched on host. This is the definition the content schema refuses at edit time and joinCtas refuses at render, because a raw group invite in public HTML skips alumni verification and cannot be revoked once scraped.",
+    "filePath": "src/lib/localPresence.ts",
+    "name": "isWhatsAppGroupLink",
+    "testFile": "src/lib/localPresence.test.ts"
+  },
+  {
+    "description": "Resolves the WhatsApp form, volunteer and newsletter destinations for one chapter or community, falling back to the site-wide defaults. It also refuses a WhatsApp group link outright, which is the render-time backstop for content that reaches the page without passing through the admin's validation — a seed, a migration, or a hand-edited markdown file.",
+    "filePath": "src/lib/localPresence.ts",
+    "name": "joinCtas",
+    "testFile": "src/lib/localPresence.test.ts"
   },
   {
     "description": "Maps a KeyboardEvent.key to a lightbox action — Escape to close, the arrows to next/prev — or null to ignore it. Mapping Escape is deliberate redundancy: `dialog` closes itself on Escape, so routing it here keeps ONE close path that also runs our teardown rather than letting the native cancel and our handler drift apart.",
@@ -1261,6 +1362,12 @@
     "testFile": "src/lib/pageCopyMerge.test.ts"
   },
   {
+    "description": "Splits the chapter roster into active and forming lists with their counts. The counts are derived here once because the same figures are repeated as editable prose in the stat strip, the donate page and the sponsor intro, and hand-counting them in four places is how the site came to claim six chapters when four held events.",
+    "filePath": "src/lib/localPresence.ts",
+    "name": "presenceSummary",
+    "testFile": "src/lib/localPresence.test.ts"
+  },
+  {
     "description": "Projects collection entries projected into the flat shape the cards render, with the entry's `id` promoted to `slug`. Lives in the lib rather than inline in the detail route because it is the piece most likely to drift silently: a new field on the `projects` schema that is not added here simply never reaches a suggestion card, with no type error and no failing build to say so. Keeps `relatedProjects` and every card component free of any `astro:content` type. Non-mutating; preserves input order so the caller decides sorting.",
     "filePath": "src/lib/projects.ts",
     "name": "projectCardData",
@@ -1311,6 +1418,12 @@
       "justification": "filesystem boundary — readFileSync + JSON.parse of a data-dir file",
       "kind": "platform-glue"
     }
+  },
+  {
+    "description": "The most recent few events a chapter or community already held, capped (3 by default) from an already-past list. A page with nothing upcoming looked abandoned; showing the last few proves it is running, while the cap stops years of history burying the sign-up below it.",
+    "filePath": "src/lib/events.ts",
+    "name": "recentPastEvents",
+    "testFile": "src/lib/events.test.ts"
   },
   {
     "description": "Up to `limit` other open projects to suggest at the bottom of one project's detail page. \"Related\" means ADJACENT IN EDITOR ORDER, wrapping past the end — not semantically similar: the collection carries no tag, category, or topic field, so there is nothing to compute similarity from, and of the honest alternatives the editor's own ordering is the only one reflecting a human decision. Wrapping means the last project still gets suggestions instead of none. Filtered through `openProjects` so a retired project is never advertised at the bottom of an open one — the detail route generates a page for every published entry regardless of `active`. Returns an empty list when there is no other open project, which is the collection's real state today.",

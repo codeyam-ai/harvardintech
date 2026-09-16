@@ -1,0 +1,12 @@
+{
+  "name": "JoinWhatsAppCta - Community Primary Action",
+  "id": "ef1c0188-b66d-4092-ab0f-c53ca1224c77",
+  "url": "/isolated-components/JoinWhatsAppCta",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "JoinWhatsAppCta",
+  "scenarioType": "component",
+  "description": "A community page's primary call to action. The load-bearing detail is one the screenshot cannot show: the button points at the Google Form, never at the WhatsApp group. Joining runs through the form so alumni status is verified before anyone is added, and a group invite published in HTML would skip that and could not be revoked once scraped. This fixture passes no override, so it renders the shared form every community falls back to."
+}

@@ -1,0 +1,34 @@
+---
+import Component from "../../components/GlobalCommunityAction.astro";
+import "../../styles/tokens.css";
+
+// One action card from the global-community band.
+//
+// The whole card is the anchor rather than just its label — with three actions
+// carrying the entire band, a four-word tap target inside a large card is the
+// worse choice. This frame is where that is visible: the hover and focus ring
+// belong to the card, not to the text.
+//
+// The fixture uses the newsletter action because it is the one whose blurb runs
+// to two lines, so the card is captured at its taller shape rather than its
+// shortest.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: GlobalCommunityAction</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div style="width: 360px; display: flex;">
+        <Component
+          label="Subscribe to the newsletter"
+          href="https://mailchi.mp/0222623e1169/fbrj32e9wb"
+          blurb="One list, not one per city — we ask where you are so we can tell you what is near you."
+        />
+      </div>
+    </div>
+  </body>
+</html>

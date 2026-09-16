@@ -1,0 +1,43 @@
+---
+// One "what happens here" card: a title and an optional line of detail.
+//
+// Split out of `CommunityCallouts` for the same reason every other card on this
+// site is its own component (`GiftPillarCard`, `DonorCard`,
+// `AccomplishmentCard`): the card is the thing with a look, the list is only an
+// arrangement of them, and a scenario that wants to show one card should not
+// have to build a list to do it.
+interface Props {
+  title: string;
+  text?: string;
+}
+const { title, text } = Astro.props;
+---
+
+<div class="callout">
+  <h3 class="callout-title">{title}</h3>
+  {text ? <p class="callout-text">{text}</p> : null}
+</div>
+
+<style>
+  .callout {
+    height: 100%;
+    box-sizing: border-box;
+    padding: var(--space-lg);
+    border-radius: var(--radius, 8px);
+    /* A rule rather than a filled card: these sit between a hero and a join
+       band that are both filled, and a third block of colour turns the page
+       into stripes. */
+    box-shadow: inset 0 0 0 1px var(--color-border, rgba(0, 0, 0, 0.12));
+  }
+  .callout-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+  .callout-text {
+    margin: 0.5rem 0 0;
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+import Component from "../../components/FormingChapterCta.astro";
+import "../../styles/tokens.css";
+
+// What a FORMING chapter shows in place of its leads — the state DC and Seattle
+// are in: alumni and a WhatsApp group on the ground, but nobody running events.
+//
+// `contactEmail` is passed because the Contact us button is conditional on it,
+// and its ABSENCE is the more common production state (the shared inbox is
+// allowed on only a handful of surfaces). The no-email variant has its own page,
+// `FormingChapterCta-NoEmail`, since this stack prerenders and `?s=` does not
+// resolve at build time.
+//
+// No width wrapper: this is a full-bleed band, not a card, so it renders at the
+// viewport width exactly as it does on a chapter page.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: FormingChapterCta</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component name="DC and DMV Area" contactEmail="info@harvardintech.com" />
+    </div>
+  </body>
+</html>

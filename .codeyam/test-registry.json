@@ -885,6 +885,33 @@
       "runner": "tests"
     },
     {
+      "description": "The nav and the homepage row sort the SAME array. A sort in place would make the second caller's result depend on whether the first one ran.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "byPresence › does not mutate its input",
+      "line": 136,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The `order` pin still works — WITHIN a tier. An editor who pinned an order keeps it; they just cannot pin a forming chapter above an active one.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "byPresence › honours the order pin within a tier",
+      "line": 125,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Status tiers FIRST, then the `order` pin, then the city name. A visitor opening the menu meets the cities that hold events before the ones that do not, which is what the menu is mostly used to find.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "byPresence › puts active chapters before forming ones",
+      "line": 113,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
       "description": "Neither box filled is the progress band as it renders today.",
       "file": "src/lib/momentumSections.test.ts",
       "format": "vitest",
@@ -1092,11 +1119,56 @@
       "runner": "tests"
     },
     {
+      "description": "The fixture the whole file rests on. Stated as its own assertion so that a roster change fails HERE with an obvious message, rather than failing three copy assertions below and looking like three separate problems.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "chapter counts agree with the content › has four active chapters and two forming",
+      "line": 53,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The homepage stat strip. This is the number a visitor sees first, and the one that said \"6\" while two of those six had never held an event.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "chapter counts agree with the content › the chapters stat equals the active-chapter count",
+      "line": 59,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The donate page repeats the same figure in its own stats block, which is read by people deciding whether to give money — so it is the worst place on the site to overstate the size of the organisation.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "chapter counts agree with the content › the donate page Chapters stat equals the same count",
+      "line": 68,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The menu leads with the cities that actually hold events. A visitor opening Chapters is usually looking for something to attend, and a forming chapter has nothing to attend yet — so it is listed, but listed after.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "chapterNavItems status ordering › orders active chapters before forming ones",
+      "line": 185,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A forming chapter is a real chapter with a real page — it is reordered, never hidden. Dropping it from the menu would strand the alumni who are already in that city's WhatsApp group.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "chapterNavItems status ordering › still lists every forming chapter",
+      "line": 204,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
       "description": "The label and the url come from different fields. Building the url from the city would 404 for every chapter whose display name is not its slug.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › builds the url from the slug, not the city",
-      "line": 70,
+      "line": 77,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1105,7 +1177,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › includes a chapter that nav.json does not list",
-      "line": 39,
+      "line": 40,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1114,7 +1186,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › orders by the order field, falling back to city for ties and absent values",
-      "line": 50,
+      "line": 57,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1123,8 +1195,44 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › returns no items for no chapters",
-      "line": 78,
+      "line": 85,
       "registeredAt": "2026-07-28T15:22:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Absent means active because every chapter that existed before this field did was one with events. A different default would have silently converted the whole roster to \"forming\" the moment the field shipped.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "chapterStatus › defaults to active when no status is set",
+      "line": 26,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An unrecognised value falls back to active rather than forming: a typo in /admin should not turn a working chapter's page into a volunteer appeal.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "chapterStatus › falls back to active on an unrecognised value",
+      "line": 41,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "`isForming` exists so call sites read as a question rather than a string comparison; it must never disagree with `chapterStatus`, which is the rule.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "chapterStatus › isForming is the forming half of the same rule",
+      "line": 49,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The field is read straight through when it says one of the two things it is allowed to say.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "chapterStatus › reads an explicit status",
+      "line": 34,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -1258,7 +1366,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › declares only real schema keys for every built-in extra",
-      "line": 166,
+      "line": 177,
       "registeredAt": "2026-07-27T18:48:12Z",
       "runner": "tests"
     },
@@ -1267,7 +1375,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › declares only real schema keys for every custom collection",
-      "line": 93,
+      "line": 104,
       "registeredAt": "2026-08-04T13:20:43Z",
       "runner": "tests"
     },
@@ -1276,7 +1384,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › declares the chapters list rows the schema expects",
-      "line": 116,
+      "line": 127,
       "registeredAt": "2026-07-27T18:48:12Z",
       "runner": "tests"
     },
@@ -1285,7 +1393,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › declares the hero video as an optional text field with guidance",
-      "line": 141,
+      "line": 152,
       "registeredAt": "2026-08-08T02:12:09Z",
       "runner": "tests"
     },
@@ -1294,7 +1402,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › maps the SEO group onto the frontmatter keys this site already uses",
-      "line": 210,
+      "line": 221,
       "registeredAt": "2026-07-27T18:48:12Z",
       "runner": "tests"
     },
@@ -1303,7 +1411,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › places the hero video directly after the hero image",
-      "line": 157,
+      "line": 168,
       "registeredAt": "2026-08-08T02:12:09Z",
       "runner": "tests"
     },
@@ -1312,7 +1420,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › renders an editor input for every schema key of every collection",
-      "line": 187,
+      "line": 198,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -1321,7 +1429,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed chapters › lists the six chapters alphabetically by city",
-      "line": 464,
+      "line": 531,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1330,7 +1438,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed chapters › pins no chapter with an order, so the roster sorts alphabetically",
-      "line": 457,
+      "line": 524,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1339,7 +1447,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › derives community links that all resolve to a page",
-      "line": 430,
+      "line": 497,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1348,7 +1456,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › does not hand-list the communities",
-      "line": 422,
+      "line": 489,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1357,7 +1465,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › no longer hand-lists the chapters",
-      "line": 416,
+      "line": 483,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1366,7 +1474,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › points every internal link at a page that exists",
-      "line": 404,
+      "line": 471,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1375,7 +1483,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed page singletons vs CMS registry › keeps every retired-key excuse pointing at something real and still uneditable",
-      "line": 324,
+      "line": 335,
       "registeredAt": "2026-08-19T20:31:11.589811377+00:00",
       "runner": "tests"
     },
@@ -1384,7 +1492,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed page singletons vs CMS registry › renders an editor input for every key of every committed page singleton",
-      "line": 302,
+      "line": 313,
       "registeredAt": "2026-08-19T20:31:11.589811377+00:00",
       "runner": "tests"
     },
@@ -1393,7 +1501,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › builds the url from the slug, not the name",
-      "line": 178,
+      "line": 245,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1402,7 +1510,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › honours an order pin ahead of the unpinned entries",
-      "line": 167,
+      "line": 234,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1411,7 +1519,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › orders alphabetically by name when nothing is pinned",
-      "line": 159,
+      "line": 226,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1420,7 +1528,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › returns no items for no communities",
-      "line": 186,
+      "line": 253,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1494,6 +1602,42 @@
       "key": "contentRoot › returns CODEYAM_CONTENT_ROOT when it is set",
       "line": 21,
       "registeredAt": "2026-06-17T11:03:18.675832+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "\"six chapters\" was the phrase that outlived the fact, in two places at once. Any spelling of a too-large count is the same bug.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "copy names no retired or forming city as active › never claims six chapters",
+      "line": 106,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The retired cities, across every surface that used to name them.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "copy names no retired or forming city as active › never mentions Japan or L.A.",
+      "line": 92,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The sponsor level sells \"back one city's calendar for the year\". Offering a forming city there would be selling a calendar that does not exist.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "copy names no retired or forming city as active › the chapter sponsor level offers no forming city",
+      "line": 118,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The hero lede must separate the two groups rather than listing all six as places you can turn up in person.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "copy names no retired or forming city as active › the hero lede marks the forming chapters as forming",
+      "line": 128,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -2455,7 +2599,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "draft visibility › omits a drafted chapter from the production menu",
-      "line": 98,
+      "line": 105,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -2464,7 +2608,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "draft visibility › shows a drafted chapter while authoring",
-      "line": 104,
+      "line": 111,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -3017,7 +3161,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › carries the optional fields the event cards render",
-      "line": 194,
+      "line": 233,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3026,7 +3170,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › does not match a tag that only looks like the owner id",
-      "line": 215,
+      "line": 254,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3035,8 +3179,17 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › excludes events with no tag at all",
-      "line": 223,
+      "line": 262,
       "registeredAt": "2026-07-30T13:54:13Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every event written before the field existed has no `communities` key.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "eventsTaggedTo › handles an event with no communities key",
+      "line": 202,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -3044,8 +3197,35 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches a community id through the same chapter tag",
-      "line": 186,
+      "line": 225,
       "registeredAt": "2026-07-30T13:54:13Z",
+      "runner": "tests"
+    },
+    {
+      "description": "THE CASE ONE TAG COULD NOT EXPRESS. A Founders co-working day in London belongs to the place AND the group; with a single box the editor had to pick which page it would vanish from.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "eventsTaggedTo › matches an owner named in the communities list",
+      "line": 277,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An event may join several communities, and none of them is the `chapter`.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "eventsTaggedTo › matches any id in the communities list, with no chapter tag at all",
+      "line": 300,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The filter is a boolean OR, not a concatenation — an event that matches both ways is one event, not two cards for the same evening.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "eventsTaggedTo › returns a doubly-matching event only once",
+      "line": 293,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -3053,7 +3233,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns nothing when no event is tagged to the owner",
-      "line": 230,
+      "line": 269,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3062,8 +3242,17 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns only the events tagged to the given owner",
-      "line": 178,
+      "line": 217,
       "registeredAt": "2026-07-30T13:54:13Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The other half of the same event: adding the community tag must not cost the chapter its event.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "eventsTaggedTo › still matches the chapter tag on a dual-tagged event",
+      "line": 285,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -3309,7 +3498,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › does not zero-pad single-digit days",
-      "line": 38,
+      "line": 39,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -3318,7 +3507,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › formats a Date instance the same as its ISO string",
-      "line": 32,
+      "line": 33,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -3327,7 +3516,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › formats an ISO date as Month D, YYYY",
-      "line": 27,
+      "line": 28,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -4659,7 +4848,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "internalNavUrls › collects site-internal urls at every level and skips external ones",
-      "line": 247,
+      "line": 314,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -4904,6 +5093,96 @@
       "key": "isStepReady › reports an unblocked, unticked step as ready",
       "line": 137,
       "registeredAt": "2026-08-06T15:24:46Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Matching is on the HOST, so a link that merely mentions WhatsApp in its path or query is not caught by accident.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "isWhatsAppGroupLink › is false for a link that only mentions whatsapp elsewhere in the url",
+      "line": 166,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The predicate also guards the Zod refine, which runs against every entry including the ones with no URL — so absent and malformed must be quiet `false`, never a throw that would fail the whole content build.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "isWhatsAppGroupLink › is false for blank, relative and unparseable values",
+      "line": 174,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The Google Form is the ALLOWED destination — the whole point of the rule.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "isWhatsAppGroupLink › is false for the Google Form",
+      "line": 159,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The three shapes a group invite actually arrives in. Each one published on the site would be a public join link nobody can revoke.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "isWhatsAppGroupLink › is true for a WhatsApp group invite",
+      "line": 146,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A paste from a browser bar can carry either. Case or a `www.` must not be enough to slip an invite past the rule.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "isWhatsAppGroupLink › is true regardless of a www. prefix or capitalisation",
+      "line": 154,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "THE load-bearing case. Content can reach this function without passing through /admin — a seed, a migration, a hand-edited markdown file — so the schema's refine is not the only thing standing between an editor's mistake and a public, un-revocable group invite. This is the render-time backstop.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "joinCtas › NEVER returns a group invite, even when content supplies one",
+      "line": 211,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A chapter needs no URLs of its own to render a complete set of CTAs, which is what lets an editor publish a new city without filling in three boxes.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "joinCtas › falls back to the shared form, the volunteer page and the newsletter",
+      "line": 186,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The CMS writes an empty string where an editor cleared a box. Treating that as a real value would render `href=\"\"`, which reloads the current page.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "joinCtas › treats a blank or whitespace-only override as absent",
+      "line": 220,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A pasted URL routinely carries trailing whitespace, and a space inside an href is not trimmed by the browser — the link 404s.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "joinCtas › trims a padded override rather than emitting a broken url",
+      "line": 227,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The override is the reason the fields exist — a chapter that runs its own form or volunteer page must not be silently redirected to the shared one.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "joinCtas › uses an entry-specific form and volunteer url when given",
+      "line": 198,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -6788,6 +7067,42 @@
       "runner": "tests"
     },
     {
+      "description": "The headline numbers. \"4\" is what the stat strip, the donate page and the sponsor intro all claim in prose; if this count moves, that copy is wrong.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "presenceSummary › counts 4 active and 2 forming for the real roster",
+      "line": 70,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A chapter with no status counts as active — the same default as `chapterStatus`, proven here because this is where the count comes from.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "presenceSummary › counts a status-less chapter as active",
+      "line": 88,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Production started with no chapters at all, and the homepage still renders that state — so zero must be a shape, not a crash.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "presenceSummary › handles an empty roster",
+      "line": 99,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Callers need the split lists, not only the tallies — the \"Our chapters\" row renders from them — and each list must keep its input order.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "presenceSummary › returns the entries themselves, not just counts",
+      "line": 80,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
       "description": "Every field the card renders has to survive the projection — a field dropped here silently never reaches a suggestion card, with no type error to catch it.",
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
@@ -7202,6 +7517,60 @@
       "key": "readSingleton › throws when the singleton is not valid JSON",
       "line": 109,
       "registeredAt": "2026-08-06T15:32:50.953557895+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The chapter page renders this list and the full past list on other pages; slicing in place would truncate the caller's own array.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "recentPastEvents › does not mutate its input",
+      "line": 362,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The caller can widen or narrow the section without a second function.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "recentPastEvents › honours an explicit limit",
+      "line": 345,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "`splitEvents` hands back `past` most-recent-first, so this must preserve that order rather than re-sorting — the newest three are the point.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "recentPastEvents › preserves the order it was given",
+      "line": 328,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A chapter with nothing coming up looked abandoned. Showing the last few is the cheapest proof it is real — but only the last few: a full archive buries the sign-up under years of history.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "recentPastEvents › returns at most three events by default",
+      "line": 320,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A chapter with fewer than the cap shows all of them rather than padding.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "recentPastEvents › returns everything when there are fewer than the limit",
+      "line": 339,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A zero or negative limit switches the section off, so a caller that wants no recent-events block needs no second branch around the component.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "recentPastEvents › returns nothing for a limit of zero or less",
+      "line": 353,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -7648,6 +8017,15 @@
       "key": "resolveVisibility › shows a band with neither toggle set",
       "line": 17,
       "registeredAt": "2026-08-03T21:22:17Z",
+      "runner": "tests"
+    },
+    {
+      "description": "\"2 new chapters launched: London and San Francisco\" was a point-in-time boast that had become simply untrue, and the owner asked for it removed — not drafted, removed. A draft toggle would leave it to resurface.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "retired content is gone rather than hidden › the new-chapters-launched accomplishment no longer exists",
+      "line": 154,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -9298,7 +9676,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › does not mutate the input array order",
-      "line": 98,
+      "line": 99,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -9307,7 +9685,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › handles an empty event list",
-      "line": 64,
+      "line": 65,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -9316,7 +9694,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns no past events when all are upcoming",
-      "line": 77,
+      "line": 78,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -9325,7 +9703,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns no upcoming events when every event has passed",
-      "line": 89,
+      "line": 90,
       "registeredAt": "2026-08-05T20:56:12Z",
       "runner": "tests"
     },
@@ -9334,7 +9712,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns past events sorted most recent first",
-      "line": 58,
+      "line": 59,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -9343,7 +9721,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns upcoming events sorted soonest first",
-      "line": 52,
+      "line": 53,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -9352,7 +9730,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › treats an event exactly at now as upcoming",
-      "line": 69,
+      "line": 70,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10186,7 +10564,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "toEventDate › parses an ISO date string into a Date",
-      "line": 18,
+      "line": 19,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10195,7 +10573,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "toEventDate › returns a Date instance unchanged",
-      "line": 12,
+      "line": 13,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10416,11 +10794,20 @@
       "runner": "tests"
     },
     {
+      "description": "A correctly spelled community tag is a match, not a warning — otherwise the console would cry wolf on every properly tagged event.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "unmatchedChapterTags › accepts a communities tag that matches a known id",
+      "line": 183,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
       "description": "A trailing space is invisible in the CMS text box but breaks the exact match.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › catches a tag that differs only by whitespace",
-      "line": 129,
+      "line": 130,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -10429,8 +10816,17 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › handles an empty event list",
-      "line": 64,
+      "line": 65,
       "registeredAt": "2026-07-28T20:55:29Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every event written before the field existed has no `communities` key.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "unmatchedChapterTags › handles an event with no communities key",
+      "line": 202,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -10438,8 +10834,26 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › names a chapter tag that matches no chapter",
-      "line": 108,
+      "line": 109,
       "registeredAt": "2026-07-28T20:50:40Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Both shapes are reported from one pass, in first-seen order, so an editor fixing an event sees everything wrong with it at once.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "unmatchedChapterTags › reports a bad chapter tag and a bad community tag together",
+      "line": 193,
+      "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The `communities` list is typed by hand too, so a typo there is invisible in exactly the same way — and would be unreported if the guard only ever looked at `chapter`.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "unmatchedChapterTags › reports a typo in the communities list",
+      "line": 173,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -10447,7 +10861,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports each distinct tag once, in first-seen order",
-      "line": 136,
+      "line": 137,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -10456,7 +10870,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports every tag when there are no chapters at all",
-      "line": 163,
+      "line": 164,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -10465,7 +10879,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports nothing when every tag matches a chapter",
-      "line": 119,
+      "line": 120,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -10474,7 +10888,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › treats a blank tag as untagged",
-      "line": 147,
+      "line": 148,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -10483,7 +10897,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › ignores a trailing slash difference",
-      "line": 352,
+      "line": 419,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -10492,7 +10906,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › reports a url with no page behind it",
-      "line": 344,
+      "line": 411,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -10501,7 +10915,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › resolves a bare fragment against the home page",
-      "line": 338,
+      "line": 405,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -10510,7 +10924,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › resolves a fragment against its page",
-      "line": 332,
+      "line": 399,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -10690,8 +11104,17 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › appends the group when there is no Programs item",
-      "line": 122,
+      "line": 129,
       "registeredAt": "2026-07-28T15:22:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Most alumni are not in one of the four cities. Before this entry existed, opening Chapters and finding nowhere near you was a dead end — the menu's implicit answer was \"not for you\". It must be LAST, after the cities.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "withChapterGroup › closes the dropdown with the Global community entry",
+      "line": 159,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -10699,8 +11122,17 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › does not mutate the caller list",
-      "line": 142,
+      "line": 149,
       "registeredAt": "2026-07-28T15:22:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The global entry must NOT keep an otherwise-empty group alive: a \"Chapters\" caret whose only child is \"Global community\" is a menu lying about what it contains. The no-chapters rule wins over the always-append rule.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "withChapterGroup › does not resurrect the group for the global entry alone",
+      "line": 173,
+      "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
@@ -10708,7 +11140,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › inserts the group directly after Programs",
-      "line": 114,
+      "line": 121,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -10717,7 +11149,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › omits the group entirely when there are no chapters",
-      "line": 133,
+      "line": 140,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -10726,7 +11158,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › appends derived items after the hand-authored ones",
-      "line": 197,
+      "line": 264,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -10735,7 +11167,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › creates the group when nav.json no longer has one",
-      "line": 216,
+      "line": 283,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -10744,7 +11176,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › does not mutate the caller list or its groups",
-      "line": 236,
+      "line": 303,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -10753,7 +11185,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › leaves the surrounding menu order untouched",
-      "line": 208,
+      "line": 275,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -10762,7 +11194,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › returns the menu unchanged when there are no communities",
-      "line": 228,
+      "line": 295,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -10771,7 +11203,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › does not mutate the input tree",
-      "line": 313,
+      "line": 380,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10780,7 +11212,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › drops a dropdown left empty by the removal",
-      "line": 302,
+      "line": 369,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10789,7 +11221,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › drops a link to a hidden band",
-      "line": 288,
+      "line": 355,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10798,7 +11230,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › keeps an item that has no children to begin with",
-      "line": 321,
+      "line": 388,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10807,7 +11239,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › leaves links to real pages alone",
-      "line": 295,
+      "line": 362,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10816,7 +11248,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › returns the menu unchanged when nothing is hidden",
-      "line": 308,
+      "line": 375,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     }

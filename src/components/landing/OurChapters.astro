@@ -4,8 +4,10 @@
 // content collection passed from the homepage; an empty list shows a quiet
 // prompt (production starts empty). Photos render as <img> for proxy-safe
 // loading, matching the other sections.
+import GlobalCommunityCta from '../GlobalCommunityCta.astro';
 import { withBase } from '../../lib/url';
 import { altFor, readMediaManifest } from '../../lib/media';
+import { byPresence, chapterStatus, presenceSummary } from '../../lib/localPresence';
 
 interface ChapterLike {
   slug: string;
@@ -13,15 +15,20 @@ interface ChapterLike {
   blurb?: string;
   heroImage?: string;
   order?: number;
+  status?: string;
 }
 interface Props {
   chapters?: ChapterLike[];
 }
 const { chapters = [] } = Astro.props as Props;
-const sorted = [...chapters].sort(
-  (a, b) => (a.order ?? 99) - (b.order ?? 99) || a.city.localeCompare(b.city),
-);
-const count = String(sorted.length).padStart(2, '0');
+// Active cities first, then the ones forming — the same order the nav dropdown
+// uses, so the row and the menu never disagree about which city comes first.
+const sorted = byPresence(chapters);
+const { activeCount, formingCount } = presenceSummary(chapters);
+// The kicker counts the cities that actually hold events, and names the forming
+// ones separately. Counting all six as "cities" was the claim that made "6
+// global chapters" wrong everywhere else on the site.
+const count = String(activeCount).padStart(2, '0');
 // Read the library once for the whole row rather than per card.
 const media = readMediaManifest();
 ---
@@ -33,7 +40,13 @@ const media = readMediaManifest();
         <span class="kick">A global community</span>
         <h2>Our chapters</h2>
       </div>
-      {sorted.length > 0 && <span class="kick">{count} cities</span>}
+      {
+        sorted.length > 0 && (
+          <span class="kick">
+            {count} cities{formingCount > 0 ? ` · ${formingCount} forming` : ''}
+          </span>
+        )
+      }
     </div>
 
     {
@@ -49,6 +62,9 @@ const media = readMediaManifest();
                 <img class="pho" src={withBase(c.heroImage)} alt={altFor(c.heroImage, '', media)} />
               )}
               <div class="c-meta">
+                {chapterStatus(c) === 'forming' && (
+                  <span class="badge">Forming · help lead it</span>
+                )}
                 <span class="cn">{c.city}</span>
                 {c.blurb && <span class="cb">{c.blurb}</span>}
               </div>
@@ -59,6 +75,15 @@ const media = readMediaManifest();
     }
   </div>
 </section>
+
+{
+  /* Where the Japan and L.A. cards used to be. Those two were listed as
+     chapters long after they stopped running anything, which left the row
+     making a promise the site could not keep. Replacing them with the global
+     community is the honest version of the same offer: there IS somewhere to
+     go if your city is not on the list, and it is not a city. */
+}
+<GlobalCommunityCta />
 
 <style>
   /* Three across, so six chapters read as two even rows rather than a row of
@@ -105,6 +130,20 @@ const media = readMediaManifest();
     display: flex;
     flex-direction: column;
     gap: 6px;
+  }
+  /* Sits above the city name rather than over the photo: the cards are
+     photographic and a floating pill competes with whatever is in the image,
+     while here it reads as part of the same caption block. */
+  .badge {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--ink, #141011);
   }
   .cn {
     font-size: 20px;

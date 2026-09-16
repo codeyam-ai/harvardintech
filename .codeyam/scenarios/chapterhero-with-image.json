@@ -1,11 +1,12 @@
 {
   "name": "ChapterHero - With Image",
-  "id": "c13c86c8-6c32-4ffa-9d01-36382f37b036",
+  "id": "05b07ab1-3d01-483f-8d34-d47a570e94c7",
   "url": "/isolated-components/ChapterHero",
   "dimensions": [
     "Desktop"
   ],
   "mocks": {},
   "componentName": "ChapterHero",
-  "scenarioType": "component"
+  "scenarioType": "component",
+  "description": "The full-bleed city header. The title used to read Harvard Alumni in Tech plus the city, which was strained for a place and actively wrong for a group - the AI community's banner announced HARVARD ALUMNI IN TECH AI, which reads as a product rather than people. The organisation's name moved into the small uppercase kicker above, leaving the city as the title. That split is also what gives a forming chapter somewhere honest to say so, since the kicker can read Chapter - Forming without touching the title."
 }
