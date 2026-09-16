@@ -168,7 +168,7 @@
           "label": "Contact email",
           "type": "text",
           "optional": true,
-          "hint": "Blank falls back to the global contact email in Settings."
+          "hint": "Not shown on the page: it lists the site's social links. The shared inbox appears in the footer and the homepage Contact section."
         },
         {
           "name": "order",
@@ -259,7 +259,7 @@
           "label": "Contact email",
           "type": "text",
           "optional": true,
-          "hint": "Blank falls back to the global contact email in Settings."
+          "hint": "Not shown on the page: it lists the site's social links. The shared inbox appears in the footer and the homepage Contact section."
         },
         {
           "name": "order",

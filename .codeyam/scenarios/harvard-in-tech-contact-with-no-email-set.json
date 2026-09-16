@@ -1,0 +1,54 @@
+{
+  "name": "Harvard in Tech - Contact With No Email Set",
+  "id": "eb5bf590-b0af-42d7-a95e-275d42e5351d",
+  "url": "/#contact",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "command": "bash .codeyam/seed-singleton-data.sh settings",
+    "data": {
+      "settings": [
+        {
+          "contactEmail": "",
+          "customBodyHtml": "",
+          "customHeadHtml": "",
+          "description": "The official Harvard Alumni Group for technology, encouraging innovation and connecting technologists across the Harvard community.",
+          "footerText": "© 2026 Harvard Alumni in Tech. All rights reserved. · Cookie Policy",
+          "givebutterAccountId": "khqJtxj5uVUZ1eO8",
+          "googleAnalyticsId": "G-GCBX577FFD",
+          "previewIndexToken": "qsrwe18v5cm4ccas8pffxktt4c",
+          "siteTitle": "Harvard Alumni in Tech",
+          "siteUrl": "https://nseldeib.github.io/harvardintech-staging",
+          "socials": [
+            {
+              "icon": "linkedin",
+              "label": "LinkedIn",
+              "url": "https://www.linkedin.com/company/harvardintech/"
+            },
+            {
+              "icon": "twitter",
+              "label": "Twitter",
+              "url": "https://twitter.com/harvardintech"
+            },
+            {
+              "icon": "facebook",
+              "label": "Facebook",
+              "url": "https://facebook.com/harvardintech"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/index.astro",
+  "description": "The bottom of the home page with the shared inbox blanked in settings. The Contact section offers the socials alone with no e-mail disc, its invitation drops the offer to drop us a note, and the footer below it carries no mail link at all - no empty line, no dead mailto. This is the fallback the whole contact rule is built to guarantee: the address lives in one setting behind one allowlist, so retiring the inbox degrades every surface to socials instead of leaving broken links behind. The frame is driven to the foot of the page because that is where both surfaces sit.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": ".foot-copy"
+    }
+  ]
+}

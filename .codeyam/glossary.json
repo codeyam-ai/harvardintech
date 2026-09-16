@@ -9,7 +9,7 @@
     ]
   },
   {
-    "description": "The 'Connect With Us' social footer from the live chapter pages: a centered heading, the contact email, and the social links rendered as dark circular icon badges. Reads the editable socials + contact email from the settings singleton and reuses socialIconSrc + buildMailto.",
+    "description": "The Connect With Us row on chapter and community pages: a centered heading and the site's social links as circular badges, each carrying that brand's official logo in its brand colour. No email is shown here - the shared inbox appears only on the surfaces listed in EMAIL_SURFACES.",
     "filePath": "src/components/ChapterConnect.astro",
     "name": "ChapterConnect",
     "scenarios": [
@@ -428,6 +428,12 @@
     "testFile": "src/lib/nav.test.ts"
   },
   {
+    "description": "Builds the social link row in settings order, appending a synthesized e-mail entry only when an address is present and never duplicating a mail link an editor already added as a social.",
+    "filePath": "src/lib/contact.ts",
+    "name": "connectLinks",
+    "testFile": "src/lib/contact.test.ts"
+  },
+  {
     "description": "Returns the directory the content collections load from: the CODEYAM_CONTENT_ROOT sandbox during a codeyam session, else the committed src/content.",
     "filePath": "src/lib/contentRoot.ts",
     "name": "contentRoot",
@@ -456,6 +462,12 @@
     "filePath": "src/lib/reviewOutline.js",
     "name": "directionLabel",
     "testFile": "src/lib/reviewOutline.test.ts"
+  },
+  {
+    "description": "Wraps connectLinks and applies each social's display label, so Twitter reads as X while the synthesized e-mail entry passes through untouched.",
+    "filePath": "src/lib/contact.ts",
+    "name": "displayConnectLinks",
+    "testFile": "src/lib/contact.test.ts"
   },
   {
     "description": "The name a supporter's node and profile card print: their real name, or the standing 'Anonymous supporter' label when they asked not to be named. Every reader-facing surface in the exploration goes through here rather than reading .name, because one component that forgets publishes a name against someone's explicit request.",
@@ -515,6 +527,12 @@
     "testFile": "src/lib/donors.test.ts"
   },
   {
+    "description": "Returns the shared inbox only for the six surfaces allowed to show it - footer, homepage contact, forming chapter, sponsor inquiry, llms.txt and structured data - and undefined everywhere else, which is how the owner's sparingly rule is enforced in one place.",
+    "filePath": "src/lib/contact.ts",
+    "name": "emailFor",
+    "testFile": "src/lib/contact.test.ts"
+  },
+  {
     "description": "Splits a campaign heading around its first *emphasized* clause into head / accent / tail, so the crimson accent the campaign design puts on the end of the mission band's sentence is something an editor writes with markdown emphasis rather than a span hand-edited into the template. The title arrives as plain frontmatter text, not rendered markdown, so the marker is parsed here rather than slotted through render(). Only the FIRST pair is honoured and * is the only marker — one deliberate affordance, not a second markdown implementation. Every degenerate input yields a plain heading: no marker, an unclosed marker, and an empty ** all return the whole string as head, because a stray asterisk on the page's largest sentence is worse than no accent at all.",
     "filePath": "src/lib/campaignCopy.ts",
     "name": "emphasizedHeading",
@@ -549,6 +567,12 @@
     "filePath": "src/lib/publishTrack.ts",
     "name": "excludedFromBuild",
     "testFile": "src/lib/publishTrack.test.ts"
+  },
+  {
+    "description": "Returns the new-tab attributes for an outside link and nothing for an internal one, giving every component one shared rule for links that leave the site.",
+    "filePath": "src/lib/externalLink.ts",
+    "name": "externalLinkAttrs",
+    "testFile": "src/lib/externalLink.test.ts"
   },
   {
     "description": "Where 'share to Facebook' sends a supporter — same shape and same caveat as the LinkedIn helper: Facebook dropped prefilled quote support, so the composed message belongs in the copyable field on the page rather than in a parameter that will be ignored.",
@@ -828,6 +852,12 @@
     "filePath": "src/lib/embeddedPreview.ts",
     "name": "isEmbeddedPreview",
     "testFile": "src/lib/embeddedPreview.test.ts"
+  },
+  {
+    "description": "Decides whether a link leaves the site, treating the live domain, its www twin and the page's own origin as internal and ignoring relative paths, anchors, mailto and tel links.",
+    "filePath": "src/lib/externalLink.ts",
+    "name": "isExternalHref",
+    "testFile": "src/lib/externalLink.test.ts"
   },
   {
     "description": "Whether a URL or path points inside one of INTERNAL_PATHS, after removing the subpath base. Keeps internal pages out of the public sitemap; lookalike paths such as /reviews-of-2026/ or /blog/review/ do not match.",
@@ -1289,6 +1319,12 @@
     "testFile": "src/lib/projects.test.ts"
   },
   {
+    "description": "Trims the configured contact address and returns undefined when it is blank or absent, so no surface can render a dead mailto link.",
+    "filePath": "src/lib/contact.ts",
+    "name": "resolveContactEmail",
+    "testFile": "src/lib/contact.test.ts"
+  },
+  {
     "description": "Where a giving CTA on a CAMPAIGN page points, as distinct from the button on the giving page itself (which is resolveGiveHref). The two answer different questions: a CTA on /donate means 'take me somewhere I can give', and the best answer is /give, which states the goal, the amounts and what the money funds before asking for anything; the button at the bottom of /give means 'I am giving now', which has to leave the site for the platform or open the giving-inquiry email until one exists. A configured donateUrl wins outright here, so choosing a platform sends every campaign CTA straight to it and takes /give out of the path entirely — a real checkout is a better destination than our page, and the CMS switch keeps working unchanged. Without this split the button on /give would resolve to /give and the page would link to itself, which is the failure this function exists to make impossible.",
     "filePath": "src/lib/giving.ts",
     "name": "resolveGiveCtaHref",
@@ -1487,12 +1523,6 @@
     "testFile": "src/lib/socialLabel.test.ts"
   },
   {
-    "description": "Maps a social link icon field (twitter/facebook/email, case-insensitive) to its self-hosted asset path under public/images/social/. Returns null for unknown or missing icons so the Contact Us section degrades to a label-only link. Icons were downloaded from the original harvardintech.com site to keep the GitHub Pages build CDN-independent.",
-    "filePath": "src/lib/socialIcon.ts",
-    "name": "socialIconSrc",
-    "testFile": "src/lib/socialIcon.test.ts"
-  },
-  {
     "description": "Returns a new array of board members ordered by ascending order field (missing order treated as 0), so the public Board of Directors matches the curated sequence regardless of on-disk file order.",
     "filePath": "src/lib/team.ts",
     "name": "sortBoardMembers",
@@ -1533,6 +1563,12 @@
     "filePath": "src/lib/team.ts",
     "name": "splitRole",
     "testFile": "src/lib/team.test.ts"
+  },
+  {
+    "description": "Decides the sponsorship call to action in priority order - a configured inquiry form wins and suppresses any button, otherwise the shared inbox, otherwise the site's LinkedIn - so the sponsor page never dead-ends.",
+    "filePath": "src/lib/contact.ts",
+    "name": "sponsorCta",
+    "testFile": "src/lib/contact.test.ts"
   },
   {
     "description": "The partnership levels a set of collection entries produces: ordered by the editor's order pin, reshaped for the page, or null when there are none. The null return is the whole reason this exists apart from toSponsorLevels — it is the signal mergeSponsorCopy needs to tell 'an editor deleted every level' apart from 'nothing has been migrated into this collection yet'. The second must fall back to the committed JSON and the first must not, or removing a level would silently undo itself on the next build. Takes the entries rather than their data so the loader above it stays a bare fetch with no reshaping of its own.",
@@ -1710,5 +1746,11 @@
     "filePath": "src/lib/nav.ts",
     "name": "withoutHiddenSections",
     "testFile": "src/lib/nav.test.ts"
+  },
+  {
+    "description": "Returns a hostname's other spelling — the apex for a www host, the www form for an apex — so a site origin counts as its own under either one and a link home is never treated as leaving the site.",
+    "filePath": "src/lib/externalLink.ts",
+    "name": "wwwTwin",
+    "testFile": "src/lib/externalLink.test.ts"
   }
 ]

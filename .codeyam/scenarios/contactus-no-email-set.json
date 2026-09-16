@@ -1,0 +1,13 @@
+{
+  "name": "ContactUs - No Email Set",
+  "id": "a149f1c2-ab2d-46a2-84ee-a572bfa59de7",
+  "url": "/isolated-components/ContactUs-NoEmail",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ContactUs",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/landing/ContactUs.astro",
+  "description": "The Contact section with the shared inbox blanked in settings: the socials stand alone, the e-mail disc is gone, and the invitation drops its offer to drop us a note rather than pointing at an address nobody reads. This is what the section degrades to if the inbox is ever retired, and it is the reason the address is resolved through one allowlist instead of being hardcoded per surface."
+}

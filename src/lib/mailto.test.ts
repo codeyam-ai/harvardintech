@@ -4,7 +4,7 @@ import { buildMailto } from './mailto';
 describe('buildMailto', () => {
   // With only a recipient, the result is a bare mailto: with no query string.
   it('builds a bare mailto when only a recipient is given', () => {
-    expect(buildMailto({ to: 'ben@harvardintech.com' })).toBe('mailto:ben@harvardintech.com');
+    expect(buildMailto({ to: 'hello@example.com' })).toBe('mailto:hello@example.com');
   });
 
   // A subject is appended as a query parameter.

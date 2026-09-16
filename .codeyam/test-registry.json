@@ -649,6 +649,71 @@
       "runner": "tests"
     },
     {
+      "description": "The chapter Connect row draws each logo in its own brand colour, and every brand mark carries the official value.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brand colours › gives facebook its official brand colour",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The chapter Connect row draws each logo in its own brand colour, and every brand mark carries the official value.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brand colours › gives linkedin its official brand colour",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The chapter Connect row draws each logo in its own brand colour, and every brand mark carries the official value.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brand colours › gives medium its official brand colour",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The chapter Connect row draws each logo in its own brand colour, and every brand mark carries the official value.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brand colours › gives x its official brand colour",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The generic glyphs are not brands, so they inherit the surrounding ink instead of forcing a colour of their own.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brand colours › leaves the generic blog glyph uncoloured",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The generic glyphs are not brands, so they inherit the surrounding ink instead of forcing a colour of their own.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brand colours › leaves the generic email glyph uncoloured",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The generic glyphs are not brands, so they inherit the surrounding ink instead of forcing a colour of their own.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brand colours › leaves the generic newsletter glyph uncoloured",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A colour must be a hex value the `color` CSS property accepts verbatim.",
+      "file": "src/lib/brandIcons.test.ts",
+      "format": "vitest",
+      "key": "brand colours › states every colour as a hex value",
+      "line": 79,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
       "description": "Every glyph is drawn on the same 24-unit grid with at least one path, which is what lets the cards size them all with one CSS rule.",
       "file": "src/lib/brandIcons.test.ts",
       "format": "vitest",
@@ -1360,6 +1425,60 @@
       "runner": "tests"
     },
     {
+      "description": "With an address, one E-mail entry is appended after the socials.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "connectLinks › adds an E-mail entry only when an address is present",
+      "line": 41,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An editor-added mail social wins; the synthesized entry is not a duplicate.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "connectLinks › does not duplicate an e-mail link an editor already added as a social",
+      "line": 56,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every social, in the settings order, LinkedIn included: the old Connect row filtered to Twitter and Facebook and dropped it.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "connectLinks › keeps every social in settings order, LinkedIn included",
+      "line": 36,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A blank address never produces a mailto of any kind.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "connectLinks › never emits a mailto for a blank address",
+      "line": 49,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The WhatsApp join goes through the verification form, never the group link.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "contact destinations › joins WhatsApp through the form and links the criteria doc",
+      "line": 138,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Volunteer calls to action land on the volunteer page, a site path.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "contact destinations › points volunteer calls to action at the volunteer page",
+      "line": 133,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
       "description": "a production build (no override) reads the committed source dir",
       "file": "src/lib/contentRoot.test.ts",
       "format": "vitest",
@@ -2044,6 +2163,42 @@
       "runner": "tests"
     },
     {
+      "description": "The URLs and icons ride through unchanged; only the label is rewritten.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "displayConnectLinks › changes only the label, never the destination",
+      "line": 88,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The synthesized e-mail entry is not a social and must pass through untouched.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "displayConnectLinks › leaves the synthesized e-mail entry untouched",
+      "line": 74,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no address it is the socials alone, still correctly named.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "displayConnectLinks › offers the socials alone when there is no address",
+      "line": 81,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Twitter reads under the name the network has now, so nobody wonders where it went. Every other social keeps the label the editor typed.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "displayConnectLinks › shows Twitter under its current name and leaves the others alone",
+      "line": 65,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
       "description": "The default state, and the state the wall renders on the server: everything shown. A filter that started with something hidden would mean the no-JS wall and the JS wall disagreed about what the page contains.",
       "file": "src/lib/donorFilter.test.ts",
       "format": "vitest",
@@ -2428,6 +2583,104 @@
       "key": "duplicate: the row hands off to the create form › reads the slug back off the query string",
       "line": 94,
       "registeredAt": "2026-08-25T01:10:11Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The owner's \"sparingly\" rule is exactly these six places.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › lists exactly the six surfaces in the email rule",
+      "line": 98,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A blanked setting silences every surface, listed or not.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns nothing for every surface when the setting is blank",
+      "line": 123,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Anything off the email rule's list - the chapter Connect row, a support card - gets no address at all.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns nothing for the unlisted surface \"\"",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Anything off the email rule's list - the chapter Connect row, a support card - gets no address at all.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns nothing for the unlisted surface \"chapterConnect\"",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Anything off the email rule's list - the chapter Connect row, a support card - gets no address at all.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns nothing for the unlisted surface \"getInvolved\"",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Anything off the email rule's list - the chapter Connect row, a support card - gets no address at all.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns nothing for the unlisted surface \"supportUs\"",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns the address for contactUs",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns the address for footer",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns the address for formingChapter",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns the address for llms",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns the address for sponsorInquiry",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "emailFor › returns the address for structuredData",
+      "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
     {
@@ -2888,6 +3141,113 @@
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed momentumSections.layout value is offered",
       "registeredAt": "2026-08-07T12:04:36Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › adds nothing for #contact",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › adds nothing for /volunteer",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › adds nothing for mailto:hello@example.com",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › adds nothing for tel:+15555550100",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › adds nothing for volunteer",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No href, no attributes — the helper is safe to spread on an optional link.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › adds nothing when there is no href",
+      "line": 46,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The site's own origin — the preview host this build is served from — stays in the same tab.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › keeps a link to the page’s own origin in the same tab",
+      "line": 19,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab with noopener noreferrer.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › opens http://medium.com/harvard-in-tech in a new tab",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab with noopener noreferrer.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › opens https://forms.gle/GqgaCDDWhWAgpJC68 in a new tab",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab with noopener noreferrer.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › opens https://lu.ma/harvardintech in a new tab",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The live domain and its www./apex twin are always the site's own, so they stay in the same tab.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › treats the live domain https://harvardintech.com/events as internal",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The live domain and its www./apex twin are always the site's own, so they stay in the same tab.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › treats the live domain https://www.harvardintech.com/ as internal",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A www./apex twin of the page's own origin counts as internal too.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "externalLinkAttrs › treats the www twin of the page origin as internal",
+      "line": 32,
+      "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
     {
@@ -4394,6 +4754,15 @@
       "runner": "tests"
     },
     {
+      "description": "Without a page origin, only the live domain is the site's own.",
+      "file": "src/lib/externalLink.test.ts",
+      "format": "vitest",
+      "key": "isExternalHref › judges against the live domain when no origin is given",
+      "line": 54,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
       "description": "Near-misses: a page that merely starts with, or contains, an internal name.",
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
@@ -4655,11 +5024,20 @@
       "runner": "tests"
     },
     {
+      "description": "A blanked setting drops the Email line and keeps every social.",
+      "file": "src/lib/seoEndpoints.test.ts",
+      "format": "vitest",
+      "key": "llms.txt GET › omits the Email line when the contact email is blank",
+      "line": 103,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
       "description": "Contact section surfaces the settings email + social links for citation.",
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
       "key": "llms.txt GET › surfaces contact email and socials",
-      "line": 87,
+      "line": 88,
       "registeredAt": "2026-07-02T02:11:43.784715267+00:00",
       "runner": "tests"
     },
@@ -6536,6 +6914,108 @@
       "runner": "tests"
     },
     {
+      "description": "No personal inbox anywhere outside the giving files still awaiting their plan.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › names no personal inbox outside the pending giving files",
+      "line": 50,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Luma is the one events system.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › never links Eventbrite",
+      "line": 68,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The WhatsApp group is joined through the form, never linked directly.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › never links the WhatsApp group directly",
+      "line": 63,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The chapter-founding mailto is gone; volunteering is the way in.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › offers no chapter-founding mailto",
+      "line": 73,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The scan must actually see the site, or every assertion below passes vacuously.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › scans the site source",
+      "line": 44,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › src/components/MomentumFundPage.astro still needs its giving-plan exemption",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › src/components/donate/DonorWall.astro still needs its giving-plan exemption",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › src/components/donate/GiftPillars.astro still needs its giving-plan exemption",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › src/components/donate/MomentumNetwork.astro still needs its giving-plan exemption",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › src/components/landing/GivingCampaign.astro still needs its giving-plan exemption",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › src/pages/give.astro still needs its giving-plan exemption",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The shared inbox is written once, in settings, and read through `emailFor`.",
+      "file": "src/lib/noPersonalEmail.test.ts",
+      "format": "vitest",
+      "key": "public source contact rules › writes the shared inbox only in settings.json",
+      "line": 78,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
       "description": "returns a new array in both branches, so a caller chaining sort cannot mutate the collection",
       "file": "src/lib/drafts.test.ts",
       "format": "vitest",
@@ -6830,6 +7310,47 @@
       "key": "renumberEntries › reports only the rows whose number changed",
       "line": 202,
       "registeredAt": "2026-08-10T21:05:09Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A real address comes back trimmed, ready for a mailto.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "resolveContactEmail › returns the trimmed address",
+      "line": 28,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead mailto link.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "resolveContactEmail › treats \"   \" as no address",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead mailto link.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "resolveContactEmail › treats \"\" as no address",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead mailto link.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "resolveContactEmail › treats null as no address",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead mailto link.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "resolveContactEmail › treats undefined as no address",
+      "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
     {
@@ -8550,6 +9071,22 @@
       "runner": "tests"
     },
     {
+      "description": "The contact email is optional: a blank or missing address still loads, so the site can switch to socials only without breaking the build.",
+      "file": "src/lib/site.test.ts",
+      "format": "vitest",
+      "key": "site singletons › loads settings when the contact email is blank",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The contact email is optional: a blank or missing address still loads, so the site can switch to socials only without breaking the build.",
+      "file": "src/lib/site.test.ts",
+      "format": "vitest",
+      "key": "site singletons › loads settings when the contact email is missing",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
       "description": "/sponsor is driven the same way, and its partnership levels are the part that matters: a sponsor's `tier` matches a level `id`, so the levels must survive the round-trip intact or the wall cannot group anyone. The disclaimer rides here too, because the Harvard Alumni Association requires the page to state that contributions are not gifts to the University — copy the team can revise without a deploy.",
       "file": "src/lib/site.test.ts",
       "format": "vitest",
@@ -8619,69 +9156,6 @@
       "key": "socialDisplayLabel › shows the legacy Twitter label under the X name",
       "line": 6,
       "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "The synthesized e-mail entry resolves to the envelope icon.",
-      "file": "src/lib/socialIcon.test.ts",
-      "format": "vitest",
-      "key": "socialIconSrc › maps email to its self-hosted asset",
-      "line": 16,
-      "registeredAt": "2026-06-15T15:44:36Z",
-      "runner": "tests"
-    },
-    {
-      "description": "Facebook resolves to the downloaded facebook icon.",
-      "file": "src/lib/socialIcon.test.ts",
-      "format": "vitest",
-      "key": "socialIconSrc › maps facebook to its self-hosted asset",
-      "line": 11,
-      "registeredAt": "2026-06-15T15:44:36Z",
-      "runner": "tests"
-    },
-    {
-      "description": "LinkedIn resolves to its self-hosted crimson glyph (added in the Atlas revamp).",
-      "file": "src/lib/socialIcon.test.ts",
-      "format": "vitest",
-      "key": "socialIconSrc › maps linkedin to its self-hosted asset",
-      "line": 21,
-      "registeredAt": "2026-07-01T19:46:01Z",
-      "runner": "tests"
-    },
-    {
-      "description": "Each known platform maps to its self-hosted asset under public/images/social/.",
-      "file": "src/lib/socialIcon.test.ts",
-      "format": "vitest",
-      "key": "socialIconSrc › maps twitter to its self-hosted asset",
-      "line": 6,
-      "registeredAt": "2026-06-15T15:44:36Z",
-      "runner": "tests"
-    },
-    {
-      "description": "Lookup is case-insensitive so data-layer casing variations still resolve.",
-      "file": "src/lib/socialIcon.test.ts",
-      "format": "vitest",
-      "key": "socialIconSrc › resolves regardless of icon casing",
-      "line": 26,
-      "registeredAt": "2026-06-15T15:44:36Z",
-      "runner": "tests"
-    },
-    {
-      "description": "An unknown platform returns null so the caller degrades to label-only.",
-      "file": "src/lib/socialIcon.test.ts",
-      "format": "vitest",
-      "key": "socialIconSrc › returns null for an unknown icon",
-      "line": 32,
-      "registeredAt": "2026-06-15T15:44:36Z",
-      "runner": "tests"
-    },
-    {
-      "description": "A missing icon value returns null rather than throwing or guessing.",
-      "file": "src/lib/socialIcon.test.ts",
-      "format": "vitest",
-      "key": "socialIconSrc › returns null for null, undefined, or empty input",
-      "line": 37,
-      "registeredAt": "2026-06-15T15:44:36Z",
       "runner": "tests"
     },
     {
@@ -8979,6 +9453,66 @@
       "key": "splitRole › trims whitespace around the separator",
       "line": 116,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "With no form, the shared inbox takes the inquiry, subject pre-filled.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "sponsorCta › emails the shared inbox when there is no form",
+      "line": 160,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no inquiry form and the shared inbox blanked too, LinkedIn keeps the sponsor close from dead-ending.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "sponsorCta › falls back to LinkedIn when the address is \"   \"",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no inquiry form and the shared inbox blanked too, LinkedIn keeps the sponsor close from dead-ending.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "sponsorCta › falls back to LinkedIn when the address is \"\"",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no inquiry form and the shared inbox blanked too, LinkedIn keeps the sponsor close from dead-ending.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "sponsorCta › falls back to LinkedIn when the address is undefined",
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A whitespace-only form URL is not a form; the next option takes over.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "sponsorCta › ignores a blank form URL",
+      "line": 155,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A configured form is the one way in, so no competing button is offered.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "sponsorCta › offers no button when an inquiry form is configured",
+      "line": 150,
+      "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Nothing configured at all means no button, never a dead link.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "sponsorCta › offers no button when there is no form, address or LinkedIn",
+      "line": 175,
+      "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
     {

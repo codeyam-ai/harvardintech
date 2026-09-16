@@ -8,6 +8,7 @@
 // Included via HeadExtras so it appears on every route, blog posts included.
 import { settings } from '../lib/site';
 import { canonicalFor, canonicalOrigin } from '../lib/canonicalUrl';
+import { emailFor } from '../lib/contact';
 
 // The organization's URL is the live domain (`CANONICAL_ORIGIN`), not the gated
 // preview this build may be served from — see canonicalUrl.ts.
@@ -17,13 +18,15 @@ const siteUrl = canonicalFor(
   canonicalOrigin(Astro.site, Astro.url.origin),
 );
 const sameAs = settings.socials.map((s) => s.url).filter(Boolean);
+// One of the few places the shared inbox is shown (src/lib/contact.ts).
+const email = emailFor('structuredData', settings.contactEmail);
 
 const organization = {
   '@type': 'Organization',
   name: settings.siteTitle,
   url: siteUrl,
   description: settings.description,
-  ...(settings.contactEmail ? { email: settings.contactEmail } : {}),
+  ...(email ? { email } : {}),
   ...(sameAs.length > 0 ? { sameAs } : {}),
 };
 

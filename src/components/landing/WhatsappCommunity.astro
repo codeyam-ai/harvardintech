@@ -1,8 +1,12 @@
 ---
 // "Communities → WhatsApp" (Atlas): the alumni WhatsApp community, presented in
-// the editorial section idiom — kicker + headline, a serif lede, the two-step
-// apply flow as numbered items, and a crimson "Apply to join" CTA. Replaces the
-// old robin's-egg banner-graphic band.
+// the editorial section idiom — kicker + headline, a serif lede, the apply step,
+// and a crimson "Apply to join" CTA. Replaces the old robin's-egg banner-graphic
+// band.
+//
+// The group itself is never linked (owner, 2026-09-14): "Apply to join" goes to
+// the verification form, and the admissions criteria go to their own doc. Both
+// leave the site, so both open in a new tab.
 //
 // Two columns from the TOP of the section, because it holds two different kinds
 // of thing: an invitation (the heading and who this is for) and a procedure
@@ -11,19 +15,21 @@
 // level with it instead of sitting below a full-width heading. The actions live
 // INSIDE that card, at its foot — the button is the last step of the procedure,
 // so it belongs with the steps rather than under the invitation.
+import { WHATSAPP_CRITERIA_URL, WHATSAPP_FORM_URL } from '../../lib/contact';
+import { externalLinkAttrs } from '../../lib/externalLink';
+
 interface Props {
   criteriaUrl?: string;
   verifyUrl?: string;
-  whatsappUrl?: string;
 }
 const {
-  // Alumni-verification Google Form (step 1 + eligibility criteria) and the
-  // WhatsApp group invite (step 2), matching the live site's WhatsApp section.
-  // (Eligibility is defined/verified in the form — no separate criteria page.)
-  criteriaUrl = 'https://forms.gle/GqgaCDDWhWAgpJC68',
-  verifyUrl = 'https://forms.gle/GqgaCDDWhWAgpJC68',
-  whatsappUrl = 'https://chat.whatsapp.com/BXrshhQQ0WrHT5kUZczjcm',
+  // The admissions criteria doc, and the alumni-verification Google Form that
+  // is also how you apply — matching the original site's WhatsApp copy.
+  criteriaUrl = WHATSAPP_CRITERIA_URL,
+  verifyUrl = WHATSAPP_FORM_URL,
 } = Astro.props as Props;
+const verifyAttrs = externalLinkAttrs(verifyUrl, Astro.url.origin);
+const criteriaAttrs = externalLinkAttrs(criteriaUrl, Astro.url.origin);
 ---
 
 <section class="sec" id="community" style="background: var(--paper-2);">
@@ -47,16 +53,12 @@ const {
         <ol class="wa-steps">
           <li>
             <span class="wa-n">1</span>
-            <span>Fill out <a href={verifyUrl}>this short form</a> (under 2 minutes) to verify your alumni status.</span>
-          </li>
-          <li>
-            <span class="wa-n">2</span>
-            <span>Request to join the WhatsApp group using <a href={whatsappUrl}>this link</a>.</span>
+            <span>Fill out <a href={verifyUrl} {...verifyAttrs}>this short form</a> (under 2 minutes) to verify your alumni status.</span>
           </li>
         </ol>
         <div class="wa-cta">
-          <a class="btn btn-solid" href={whatsappUrl} rel="noopener">Apply to join</a>
-          <a class="wa-note" href={criteriaUrl}>See the admissions criteria →</a>
+          <a class="btn btn-solid" href={verifyUrl} {...verifyAttrs}>Apply to join</a>
+          <a class="wa-note" href={criteriaUrl} {...criteriaAttrs}>See the admissions criteria →</a>
         </div>
       </div>
     </div>

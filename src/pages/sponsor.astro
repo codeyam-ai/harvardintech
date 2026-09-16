@@ -14,6 +14,7 @@ import SponsorPage from '../components/SponsorPage.astro';
 import { sponsorPage, settings } from '../lib/site';
 import { loadSponsorCopy } from '../lib/sponsorPageContent';
 import { publishedEntries } from '../lib/drafts';
+import { emailFor } from '../lib/contact';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
 
 const sponsors = publishedEntries(
@@ -35,5 +36,9 @@ const copy = await loadSponsorCopy(sponsorPage);
   title="Sponsorship"
   description="Partner with Harvard Alumni in Tech. Sponsor an event, back a city chapter, or host us in your space — and reach the Harvard alumni building in tech."
 >
-  <SponsorPage copy={copy} sponsors={sponsors} email={settings.contactEmail} />
+  <SponsorPage
+    copy={copy}
+    sponsors={sponsors}
+    email={emailFor('sponsorInquiry', settings.contactEmail)}
+  />
 </BaseLayout>

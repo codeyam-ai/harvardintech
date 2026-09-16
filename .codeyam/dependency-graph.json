@@ -249,10 +249,11 @@
     },
     "src/components/ChapterConnect.astro": {
       "imports": [
-        "src/lib/mailto.ts",
-        "src/lib/socialIcon.ts",
-        "src/lib/site.ts",
-        "src/lib/url.ts"
+        "src/lib/brandIcons.ts",
+        "src/lib/contact.ts",
+        "src/lib/externalLink.ts",
+        "src/lib/socialLabel.ts",
+        "src/lib/site.ts"
       ],
       "importedBy": [
         "src/components/ChapterPage.astro",
@@ -292,7 +293,10 @@
       ]
     },
     "src/components/ChapterLinks.astro": {
-      "imports": [],
+      "imports": [
+        "src/lib/externalLink.ts",
+        "src/lib/url.ts"
+      ],
       "importedBy": [
         "src/components/ChapterPage.astro"
       ]
@@ -346,7 +350,8 @@
     },
     "src/components/EventCard.astro": {
       "imports": [
-        "src/lib/events.ts"
+        "src/lib/events.ts",
+        "src/lib/externalLink.ts"
       ],
       "importedBy": [
         "src/components/ChapterEvents.astro",
@@ -431,7 +436,9 @@
       ]
     },
     "src/components/LumaSubscribe.astro": {
-      "imports": [],
+      "imports": [
+        "src/lib/externalLink.ts"
+      ],
       "importedBy": [
         "src/components/LumaCalendar.astro",
         "src/pages/isolated-components/LumaSubscribe.astro"
@@ -506,7 +513,8 @@
     "src/components/StructuredData.astro": {
       "imports": [
         "src/lib/site.ts",
-        "src/lib/canonicalUrl.ts"
+        "src/lib/canonicalUrl.ts",
+        "src/lib/contact.ts"
       ],
       "importedBy": [
         "src/components/HeadExtras.astro"
@@ -1072,9 +1080,9 @@
     },
     "src/components/landing/ContactUs.astro": {
       "imports": [
-        "src/lib/mailto.ts",
+        "src/lib/contact.ts",
+        "src/lib/externalLink.ts",
         "src/lib/brandIcons.ts",
-        "src/lib/socialLabel.ts",
         "src/lib/site.ts"
       ],
       "importedBy": [
@@ -1086,7 +1094,8 @@
       "imports": [
         "src/lib/url.ts",
         "src/lib/events.ts",
-        "src/lib/brandIcons.ts"
+        "src/lib/brandIcons.ts",
+        "src/lib/externalLink.ts"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro",
@@ -1143,7 +1152,8 @@
     },
     "src/components/landing/GetInvolved.astro": {
       "imports": [
-        "src/lib/mailto.ts"
+        "src/lib/contact.ts",
+        "src/lib/url.ts"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro",
@@ -1220,7 +1230,8 @@
     },
     "src/components/landing/SupportUs.astro": {
       "imports": [
-        "src/lib/mailto.ts",
+        "src/lib/contact.ts",
+        "src/lib/externalLink.ts",
         "src/lib/url.ts"
       ],
       "importedBy": [
@@ -1240,7 +1251,10 @@
       ]
     },
     "src/components/landing/WhatsappCommunity.astro": {
-      "imports": [],
+      "imports": [
+        "src/lib/contact.ts",
+        "src/lib/externalLink.ts"
+      ],
       "importedBy": [
         "src/components/landing/HomeSections.astro",
         "src/pages/isolated-components/[name].astro"
@@ -1254,6 +1268,7 @@
     },
     "src/components/nav/PrimaryNav.astro": {
       "imports": [
+        "src/lib/externalLink.ts",
         "src/lib/url.ts",
         "src/lib/site.ts"
       ],
@@ -1295,7 +1310,9 @@
     "src/components/sponsor/SponsorInquiry.astro": {
       "imports": [
         "src/components/EmbedForm.astro",
-        "src/lib/mailto.ts"
+        "src/lib/contact.ts",
+        "src/lib/externalLink.ts",
+        "src/lib/site.ts"
       ],
       "importedBy": [
         "src/components/SponsorPage.astro",
@@ -1361,6 +1378,7 @@
     },
     "src/components/volunteer/VolunteerHero.astro": {
       "imports": [
+        "src/lib/externalLink.ts",
         "src/lib/url.ts"
       ],
       "importedBy": [
@@ -1391,6 +1409,7 @@
     },
     "src/components/volunteer/VolunteerProjectCardLinks.astro": {
       "imports": [
+        "src/lib/externalLink.ts",
         "src/lib/url.ts"
       ],
       "importedBy": [
@@ -1400,6 +1419,7 @@
     },
     "src/components/volunteer/VolunteerProjectCta.astro": {
       "imports": [
+        "src/lib/externalLink.ts",
         "src/lib/url.ts",
         "src/lib/projects.ts"
       ],
@@ -1478,6 +1498,7 @@
     },
     "src/components/volunteer/VolunteerProjectsEmpty.astro": {
       "imports": [
+        "src/lib/externalLink.ts",
         "src/lib/url.ts"
       ],
       "importedBy": [
@@ -1534,7 +1555,9 @@
         "src/lib/integrationsContent.ts",
         "src/lib/drafts.ts",
         "src/lib/draftVisibility.ts",
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/lib/contact.ts",
+        "src/lib/externalLink.ts"
       ],
       "importedBy": [
         "src/pages/volunteer/projects/[slug].astro",
@@ -1572,6 +1595,7 @@
       "imports": [],
       "importedBy": [
         "src/lib/brandIcons.test.ts",
+        "src/components/ChapterConnect.astro",
         "src/components/landing/ContentHub.astro",
         "src/components/landing/ContactUs.astro"
       ]
@@ -1631,6 +1655,33 @@
       "importedBy": [
         "src/data/collections.test.ts",
         "src/lib/collectionRegistryDrift.test.ts"
+      ]
+    },
+    "src/lib/contact.test.ts": {
+      "imports": [
+        "src/lib/contact.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/contact.ts": {
+      "imports": [
+        "src/lib/mailto.ts",
+        "src/lib/socialLabel.ts",
+        "src/lib/site.ts"
+      ],
+      "importedBy": [
+        "src/layouts/BaseLayout.astro",
+        "src/lib/contact.test.ts",
+        "src/components/sponsor/SponsorInquiry.astro",
+        "src/components/ChapterConnect.astro",
+        "src/components/landing/WhatsappCommunity.astro",
+        "src/components/landing/SupportUs.astro",
+        "src/components/landing/GetInvolved.astro",
+        "src/components/landing/ContactUs.astro",
+        "src/components/StructuredData.astro",
+        "src/pages/llms.txt.ts",
+        "src/pages/index.astro",
+        "src/pages/sponsor.astro"
       ]
     },
     "src/lib/contentRoot.test.ts": {
@@ -1961,6 +2012,33 @@
         "src/pages/communities/[slug].astro"
       ]
     },
+    "src/lib/externalLink.test.ts": {
+      "imports": [
+        "src/lib/externalLink.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/externalLink.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/layouts/BaseLayout.astro",
+        "src/lib/externalLink.test.ts",
+        "src/components/ChapterLinks.astro",
+        "src/components/volunteer/VolunteerHero.astro",
+        "src/components/volunteer/VolunteerProjectCta.astro",
+        "src/components/volunteer/VolunteerProjectCardLinks.astro",
+        "src/components/volunteer/VolunteerProjectsEmpty.astro",
+        "src/components/LumaSubscribe.astro",
+        "src/components/sponsor/SponsorInquiry.astro",
+        "src/components/EventCard.astro",
+        "src/components/ChapterConnect.astro",
+        "src/components/landing/WhatsappCommunity.astro",
+        "src/components/landing/SupportUs.astro",
+        "src/components/landing/ContentHub.astro",
+        "src/components/landing/ContactUs.astro",
+        "src/components/nav/PrimaryNav.astro"
+      ]
+    },
     "src/lib/gallery.test.ts": {
       "imports": [
         "src/lib/gallery.ts",
@@ -2108,11 +2186,7 @@
       "importedBy": [
         "src/lib/giving.ts",
         "src/lib/mailto.test.ts",
-        "src/components/sponsor/SponsorInquiry.astro",
-        "src/components/ChapterConnect.astro",
-        "src/components/landing/SupportUs.astro",
-        "src/components/landing/GetInvolved.astro",
-        "src/components/landing/ContactUs.astro",
+        "src/lib/contact.ts",
         "src/components/landing/GivingCampaign.astro"
       ]
     },
@@ -2247,6 +2321,10 @@
         "src/lib/momentumNetworkDom.ts",
         "src/lib/networkSound.test.ts"
       ]
+    },
+    "src/lib/noPersonalEmail.test.ts": {
+      "imports": [],
+      "importedBy": []
     },
     "src/lib/order.test.ts": {
       "imports": [
@@ -2448,6 +2526,7 @@
         "src/lib/site.ts",
         "src/lib/site.ts",
         "src/lib/site.ts",
+        "src/lib/site.ts",
         "src/lib/site.ts"
       ],
       "importedBy": []
@@ -2468,10 +2547,13 @@
         "src/lib/site.test.ts",
         "src/lib/site.test.ts",
         "src/lib/site.test.ts",
+        "src/lib/site.test.ts",
+        "src/lib/contact.ts",
         "src/lib/integrationsContent.ts",
         "src/lib/volunteerPageContent.ts",
         "src/lib/nav.test.ts",
         "src/components/VolunteerPage.astro",
+        "src/components/sponsor/SponsorInquiry.astro",
         "src/components/GivebutterWidgets.astro",
         "src/components/HeadExtras.astro",
         "src/components/ChapterConnect.astro",
@@ -2509,19 +2591,6 @@
         "src/pages/[slug].astro"
       ]
     },
-    "src/lib/socialIcon.test.ts": {
-      "imports": [
-        "src/lib/socialIcon.ts"
-      ],
-      "importedBy": []
-    },
-    "src/lib/socialIcon.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/socialIcon.test.ts",
-        "src/components/ChapterConnect.astro"
-      ]
-    },
     "src/lib/socialLabel.test.ts": {
       "imports": [
         "src/lib/socialLabel.ts"
@@ -2532,7 +2601,8 @@
       "imports": [],
       "importedBy": [
         "src/lib/socialLabel.test.ts",
-        "src/components/landing/ContactUs.astro"
+        "src/lib/contact.ts",
+        "src/components/ChapterConnect.astro"
       ]
     },
     "src/lib/sponsorPageContent.ts": {
@@ -2613,6 +2683,7 @@
       "importedBy": [
         "src/layouts/BaseLayout.astro",
         "src/lib/url.test.ts",
+        "src/components/ChapterLinks.astro",
         "src/components/cutover/RunbookHeader.astro",
         "src/components/ChapterHero.astro",
         "src/components/ChapterPage.astro",
@@ -2628,7 +2699,6 @@
         "src/components/volunteer/VolunteerProjectsEmpty.astro",
         "src/components/sponsor/SponsorWallItem.astro",
         "src/components/sponsor/SponsorHero.astro",
-        "src/components/ChapterConnect.astro",
         "src/components/BoardMemberCard.astro",
         "src/components/landing/BoardMemberTile.astro",
         "src/components/landing/Hero.astro",
@@ -2636,6 +2706,7 @@
         "src/components/landing/SupportUs.astro",
         "src/components/landing/GalleryTile.astro",
         "src/components/landing/ContentHub.astro",
+        "src/components/landing/GetInvolved.astro",
         "src/components/landing/OurChapters.astro",
         "src/components/landing/FocusAreas.astro",
         "src/components/landing/HeroCarousel.astro",
@@ -2658,7 +2729,8 @@
       ],
       "importedBy": [
         "src/pages/volunteer/projects/[slug].astro",
-        "src/pages/volunteer.astro"
+        "src/pages/volunteer.astro",
+        "src/pages/index.astro"
       ]
     },
     "src/pages/404.astro": {
@@ -2791,6 +2863,8 @@
       "imports": [
         "src/layouts/BaseLayout.astro",
         "src/lib/site.ts",
+        "src/lib/contact.ts",
+        "src/lib/volunteerPageContent.ts",
         "src/lib/drafts.ts",
         "src/lib/events.ts",
         "src/lib/draftVisibility.ts",
@@ -3417,7 +3491,8 @@
     "src/pages/llms.txt.ts": {
       "imports": [
         "src/lib/site.ts",
-        "src/lib/canonicalUrl.ts"
+        "src/lib/canonicalUrl.ts",
+        "src/lib/contact.ts"
       ],
       "importedBy": [
         "src/lib/seoEndpoints.test.ts"
@@ -3440,6 +3515,7 @@
         "src/lib/site.ts",
         "src/lib/sponsorPageContent.ts",
         "src/lib/drafts.ts",
+        "src/lib/contact.ts",
         "src/lib/draftVisibility.ts"
       ],
       "importedBy": []
@@ -3770,10 +3846,11 @@
       "filePath": "src/components/ChapterConnect.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/mailto.ts::buildMailto",
-        "src/lib/socialIcon.ts::socialIconSrc",
-        "src/lib/site.ts::settings",
-        "src/lib/url.ts::withBase"
+        "src/lib/brandIcons.ts::brandIcon",
+        "src/lib/contact.ts::connectLinks",
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/socialLabel.ts::socialDisplayLabel",
+        "src/lib/site.ts::settings"
       ],
       "importedBy": [
         "src/pages/isolated-components/[name].astro::__file_root__"
@@ -3805,7 +3882,10 @@
     "src/components/ChapterLinks.astro::__file_root__": {
       "filePath": "src/components/ChapterLinks.astro",
       "name": "__file_root__",
-      "imports": [],
+      "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/url.ts::withBase"
+      ],
       "importedBy": [
         "src/components/ChapterPage.astro::__file_root__"
       ]
@@ -3868,7 +3948,8 @@
       "name": "__file_root__",
       "imports": [
         "src/lib/events.ts::EventLike",
-        "src/lib/events.ts::formatEventDate"
+        "src/lib/events.ts::formatEventDate",
+        "src/lib/externalLink.ts::externalLinkAttrs"
       ],
       "importedBy": [
         "src/components/EventsSection.astro::__file_root__"
@@ -3967,7 +4048,9 @@
     "src/components/LumaSubscribe.astro::__file_root__": {
       "filePath": "src/components/LumaSubscribe.astro",
       "name": "__file_root__",
-      "imports": [],
+      "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs"
+      ],
       "importedBy": [
         "src/components/LumaCalendar.astro::__file_root__",
         "src/pages/isolated-components/LumaSubscribe.astro::__file_root__"
@@ -4061,7 +4144,8 @@
       "imports": [
         "src/lib/site.ts::settings",
         "src/lib/canonicalUrl.ts::canonicalFor",
-        "src/lib/canonicalUrl.ts::canonicalOrigin"
+        "src/lib/canonicalUrl.ts::canonicalOrigin",
+        "src/lib/contact.ts::emailFor"
       ],
       "importedBy": []
     },
@@ -4749,9 +4833,9 @@
       "filePath": "src/components/landing/ContactUs.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/mailto.ts::buildMailto",
+        "src/lib/contact.ts::displayConnectLinks",
+        "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/brandIcons.ts::brandIcon",
-        "src/lib/socialLabel.ts::socialDisplayLabel",
         "src/lib/site.ts::SocialLink"
       ],
       "importedBy": [
@@ -4764,7 +4848,8 @@
       "imports": [
         "src/lib/url.ts::withBase",
         "src/lib/events.ts::formatEventDate",
-        "src/lib/brandIcons.ts::brandIcon"
+        "src/lib/brandIcons.ts::brandIcon",
+        "src/lib/externalLink.ts::externalLinkAttrs"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro::__file_root__",
@@ -4833,7 +4918,8 @@
       "filePath": "src/components/landing/GetInvolved.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/mailto.ts::buildMailto"
+        "src/lib/contact.ts::__file_root__",
+        "src/lib/url.ts::withBase"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro::__file_root__",
@@ -4929,7 +5015,8 @@
       "filePath": "src/components/landing/SupportUs.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/mailto.ts::buildMailto",
+        "src/lib/contact.ts::__file_root__",
+        "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/url.ts::withBase"
       ],
       "importedBy": [
@@ -4953,7 +5040,10 @@
     "src/components/landing/WhatsappCommunity.astro::__file_root__": {
       "filePath": "src/components/landing/WhatsappCommunity.astro",
       "name": "__file_root__",
-      "imports": [],
+      "imports": [
+        "src/lib/contact.ts::__file_root__",
+        "src/lib/externalLink.ts::externalLinkAttrs"
+      ],
       "importedBy": [
         "src/components/landing/HomeSections.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
@@ -4971,6 +5061,7 @@
       "filePath": "src/components/nav/PrimaryNav.astro",
       "name": "__file_root__",
       "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/url.ts::withBase",
         "src/lib/site.ts::NavItem"
       ],
@@ -5018,7 +5109,9 @@
       "name": "__file_root__",
       "imports": [
         "src/components/EmbedForm.astro::__file_root__",
-        "src/lib/mailto.ts::buildMailto"
+        "src/lib/contact.ts::sponsorCta",
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/site.ts::settings"
       ],
       "importedBy": [
         "src/components/SponsorPage.astro::__file_root__",
@@ -5101,6 +5194,7 @@
       "filePath": "src/components/volunteer/VolunteerHero.astro",
       "name": "__file_root__",
       "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/url.ts::withBase"
       ],
       "importedBy": [
@@ -5134,6 +5228,7 @@
       "filePath": "src/components/volunteer/VolunteerProjectCardLinks.astro",
       "name": "__file_root__",
       "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/url.ts::withBase"
       ],
       "importedBy": [
@@ -5145,6 +5240,7 @@
       "filePath": "src/components/volunteer/VolunteerProjectCta.astro",
       "name": "__file_root__",
       "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/url.ts::withBase",
         "src/lib/projects.ts::projectCta"
       ],
@@ -5239,6 +5335,7 @@
       "filePath": "src/components/volunteer/VolunteerProjectsEmpty.astro",
       "name": "__file_root__",
       "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/url.ts::withBase"
       ],
       "importedBy": [
@@ -5316,7 +5413,9 @@
         "src/lib/integrationsContent.ts::loadIntegrations",
         "src/lib/drafts.ts::publishedEntries",
         "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/lib/contact.ts::emailFor",
+        "src/lib/externalLink.ts::externalLinkAttrs"
       ],
       "importedBy": [
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
@@ -5372,6 +5471,7 @@
       "name": "brandIcon",
       "imports": [],
       "importedBy": [
+        "src/components/ChapterConnect.astro::__file_root__",
         "src/components/landing/ContentHub.astro::__file_root__",
         "src/components/landing/ContactUs.astro::__file_root__"
       ]
@@ -5457,6 +5557,68 @@
         "src/lib/collectionRegistryDrift.ts::unknownFields"
       ],
       "importedBy": []
+    },
+    "src/lib/contact.test.ts::__file_root__": {
+      "filePath": "src/lib/contact.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/contact.ts::__file_root__",
+        "src/lib/contact.ts::connectLinks",
+        "src/lib/contact.ts::displayConnectLinks",
+        "src/lib/contact.ts::emailFor",
+        "src/lib/contact.ts::resolveContactEmail",
+        "src/lib/contact.ts::sponsorCta"
+      ],
+      "importedBy": []
+    },
+    "src/lib/contact.ts::__file_root__": {
+      "filePath": "src/lib/contact.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/mailto.ts::buildMailto",
+        "src/lib/socialLabel.ts::socialDisplayLabel",
+        "src/lib/site.ts::SocialLink"
+      ],
+      "importedBy": [
+        "src/components/landing/WhatsappCommunity.astro::__file_root__",
+        "src/components/landing/SupportUs.astro::__file_root__",
+        "src/components/landing/GetInvolved.astro::__file_root__"
+      ]
+    },
+    "src/lib/contact.ts::connectLinks": {
+      "filePath": "src/lib/contact.ts",
+      "name": "connectLinks",
+      "imports": [],
+      "importedBy": [
+        "src/components/ChapterConnect.astro::__file_root__"
+      ]
+    },
+    "src/lib/contact.ts::displayConnectLinks": {
+      "filePath": "src/lib/contact.ts",
+      "name": "displayConnectLinks",
+      "imports": [],
+      "importedBy": [
+        "src/components/landing/ContactUs.astro::__file_root__"
+      ]
+    },
+    "src/lib/contact.ts::emailFor": {
+      "filePath": "src/lib/contact.ts",
+      "name": "emailFor",
+      "imports": [],
+      "importedBy": [
+        "src/components/StructuredData.astro::__file_root__",
+        "src/pages/llms.txt.ts::__file_root__",
+        "src/pages/index.astro::__file_root__",
+        "src/pages/sponsor.astro::__file_root__"
+      ]
+    },
+    "src/lib/contact.ts::sponsorCta": {
+      "filePath": "src/lib/contact.ts",
+      "name": "sponsorCta",
+      "imports": [],
+      "importedBy": [
+        "src/components/sponsor/SponsorInquiry.astro::__file_root__"
+      ]
     },
     "src/lib/contentRoot.test.ts::__file_root__": {
       "filePath": "src/lib/contentRoot.test.ts",
@@ -6243,6 +6405,36 @@
         "src/pages/chapters/[slug].astro::__file_root__"
       ]
     },
+    "src/lib/externalLink.test.ts::__file_root__": {
+      "filePath": "src/lib/externalLink.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/externalLink.ts::isExternalHref"
+      ],
+      "importedBy": []
+    },
+    "src/lib/externalLink.ts::externalLinkAttrs": {
+      "filePath": "src/lib/externalLink.ts",
+      "name": "externalLinkAttrs",
+      "imports": [],
+      "importedBy": [
+        "src/components/ChapterLinks.astro::__file_root__",
+        "src/components/volunteer/VolunteerHero.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectCta.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectCardLinks.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectsEmpty.astro::__file_root__",
+        "src/components/LumaSubscribe.astro::__file_root__",
+        "src/components/sponsor/SponsorInquiry.astro::__file_root__",
+        "src/components/EventCard.astro::__file_root__",
+        "src/components/ChapterConnect.astro::__file_root__",
+        "src/components/landing/WhatsappCommunity.astro::__file_root__",
+        "src/components/landing/SupportUs.astro::__file_root__",
+        "src/components/landing/ContentHub.astro::__file_root__",
+        "src/components/landing/ContactUs.astro::__file_root__",
+        "src/components/nav/PrimaryNav.astro::__file_root__"
+      ]
+    },
     "src/lib/gallery.test.ts::__file_root__": {
       "filePath": "src/lib/gallery.test.ts",
       "name": "__file_root__",
@@ -6604,11 +6796,7 @@
       "importedBy": [
         "src/lib/giving.ts::__file_root__",
         "src/lib/mailto.test.ts::__file_root__",
-        "src/components/sponsor/SponsorInquiry.astro::__file_root__",
-        "src/components/ChapterConnect.astro::__file_root__",
-        "src/components/landing/SupportUs.astro::__file_root__",
-        "src/components/landing/GetInvolved.astro::__file_root__",
-        "src/components/landing/ContactUs.astro::__file_root__",
+        "src/lib/contact.ts::__file_root__",
         "src/components/landing/GivingCampaign.astro::__file_root__"
       ]
     },
@@ -7487,6 +7675,7 @@
         "src/lib/site.ts::__file_root__",
         "src/lib/site.ts::__file_root__",
         "src/lib/site.ts::__file_root__",
+        "src/lib/site.ts::__file_root__",
         "src/lib/site.ts::__file_root__"
       ],
       "importedBy": []
@@ -7526,6 +7715,7 @@
       "name": "SocialLink",
       "imports": [],
       "importedBy": [
+        "src/lib/contact.ts::__file_root__",
         "src/components/landing/HomeSections.astro::__file_root__",
         "src/components/landing/ContactUs.astro::__file_root__"
       ]
@@ -7559,6 +7749,7 @@
         "src/lib/site.test.ts::__file_root__",
         "src/lib/site.test.ts::__file_root__",
         "src/lib/site.test.ts::__file_root__",
+        "src/lib/site.test.ts::__file_root__",
         "src/lib/site.test.ts::__file_root__"
       ]
     },
@@ -7578,6 +7769,7 @@
       "imports": [],
       "importedBy": [
         "src/lib/seoEndpoints.test.ts::__file_root__",
+        "src/components/sponsor/SponsorInquiry.astro::__file_root__",
         "src/components/GivebutterWidgets.astro::__file_root__",
         "src/components/HeadExtras.astro::__file_root__",
         "src/components/ChapterConnect.astro::__file_root__",
@@ -7590,6 +7782,7 @@
         "src/pages/give.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/sponsor.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__",
         "src/pages/blog/[slug].astro::__file_root__"
       ]
     },
@@ -7609,6 +7802,7 @@
       "importedBy": [
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/volunteer.astro::__file_root__",
+        "src/pages/index.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ]
     },
@@ -7675,22 +7869,6 @@
         "src/lib/sitePages.test.ts::__file_root__"
       ]
     },
-    "src/lib/socialIcon.test.ts::__file_root__": {
-      "filePath": "src/lib/socialIcon.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/socialIcon.ts::socialIconSrc"
-      ],
-      "importedBy": []
-    },
-    "src/lib/socialIcon.ts::socialIconSrc": {
-      "filePath": "src/lib/socialIcon.ts",
-      "name": "socialIconSrc",
-      "imports": [],
-      "importedBy": [
-        "src/components/ChapterConnect.astro::__file_root__"
-      ]
-    },
     "src/lib/socialLabel.test.ts::__file_root__": {
       "filePath": "src/lib/socialLabel.test.ts",
       "name": "__file_root__",
@@ -7704,7 +7882,8 @@
       "name": "socialDisplayLabel",
       "imports": [],
       "importedBy": [
-        "src/components/landing/ContactUs.astro::__file_root__"
+        "src/lib/contact.ts::__file_root__",
+        "src/components/ChapterConnect.astro::__file_root__"
       ]
     },
     "src/lib/sponsorPageContent.ts::__file_root__": {
@@ -7918,6 +8097,7 @@
       "imports": [],
       "importedBy": [
         "src/lib/url.test.ts::__file_root__",
+        "src/components/ChapterLinks.astro::__file_root__",
         "src/components/cutover/RunbookHeader.astro::__file_root__",
         "src/components/ChapterHero.astro::__file_root__",
         "src/components/ChapterPage.astro::__file_root__",
@@ -7933,7 +8113,6 @@
         "src/components/volunteer/VolunteerProjectsEmpty.astro::__file_root__",
         "src/components/sponsor/SponsorWallItem.astro::__file_root__",
         "src/components/sponsor/SponsorHero.astro::__file_root__",
-        "src/components/ChapterConnect.astro::__file_root__",
         "src/components/BoardMemberCard.astro::__file_root__",
         "src/components/landing/BoardMemberTile.astro::__file_root__",
         "src/components/landing/Hero.astro::__file_root__",
@@ -7941,6 +8120,7 @@
         "src/components/landing/SupportUs.astro::__file_root__",
         "src/components/landing/GalleryTile.astro::__file_root__",
         "src/components/landing/ContentHub.astro::__file_root__",
+        "src/components/landing/GetInvolved.astro::__file_root__",
         "src/components/landing/OurChapters.astro::__file_root__",
         "src/components/landing/FocusAreas.astro::__file_root__",
         "src/components/landing/HeroCarousel.astro::__file_root__",
@@ -7971,7 +8151,8 @@
       "imports": [],
       "importedBy": [
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
-        "src/pages/volunteer.astro::__file_root__"
+        "src/pages/volunteer.astro::__file_root__",
+        "src/pages/index.astro::__file_root__"
       ]
     },
     "src/pages/404.astro::__file_root__": {
@@ -8146,6 +8327,9 @@
       "imports": [
         "src/layouts/BaseLayout.astro::__file_root__",
         "src/lib/site.ts::settings",
+        "src/lib/site.ts::volunteerPage",
+        "src/lib/contact.ts::emailFor",
+        "src/lib/volunteerPageContent.ts::loadVolunteerCopy",
         "src/lib/drafts.ts::publishedEntries",
         "src/lib/events.ts::splitEvents",
         "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
@@ -8935,6 +9119,7 @@
         "src/lib/nav.ts::withChapterGroup",
         "src/lib/nav.ts::withCommunityItems",
         "src/lib/site.ts::donatePage",
+        "src/lib/site.ts::settings",
         "src/lib/site.ts::sponsorPage",
         "src/lib/site.ts::volunteerPage",
         "src/styles/tokens.css::__file_root__"
@@ -8947,7 +9132,8 @@
       "imports": [
         "src/lib/site.ts::settings",
         "src/lib/canonicalUrl.ts::canonicalFor",
-        "src/lib/canonicalUrl.ts::canonicalOrigin"
+        "src/lib/canonicalUrl.ts::canonicalOrigin",
+        "src/lib/contact.ts::emailFor"
       ],
       "importedBy": []
     },
@@ -8972,6 +9158,7 @@
         "src/lib/site.ts::sponsorPage",
         "src/lib/sponsorPageContent.ts::loadSponsorCopy",
         "src/lib/drafts.ts::publishedEntries",
+        "src/lib/contact.ts::emailFor",
         "src/lib/draftVisibility.ts::INCLUDE_DRAFTS"
       ],
       "importedBy": []
@@ -9114,5 +9301,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-14T20:29:16Z"
+  "lastUpdated": "2026-09-16T01:19:46Z"
 }

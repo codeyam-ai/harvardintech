@@ -1,0 +1,1047 @@
+{
+  "timestamp": "2026-09-16T01:16:57Z",
+  "title": "Contact And Calls To Action",
+  "type": "feature",
+  "userRequest": "## Summary\n\nRemove Ben's personal inbox from the public site. Use the shared `info@harvardintech.com` sparingly in its place: in six named places, instead of nearly everywhere Ben's address shows today. Everywhere else, contact becomes the socials, and the calls to action go to the volunteer form, `/volunteer` or `/sponsor`.\n\nOne setting, `settings.contactEmail`, holds the address, and one allowlist decides where it may appear. Every surface must still work with socials only if the setting is ever blanked. Other fixes:\n- LinkedIn is added to the chapter and community \"Connect\" rows.\n- The \"Start a chapter\" CTA goes.\n- The WhatsApp section links only to the Google Form, and \"admissions criteria\" goes to the criteria doc.\n- The Eventbrite button goes, leaving Luma as the one events system.\n- Every link that leaves the site opens in a new tab (from Nicole's walkthrough, 2026-09-14).\n\n## Owner decisions (2026-09-14)\n\n- **The one personal inbox used everywhere.** \"We should remove ben's email from anywhere and instead consistently have contact info via socials. I've asked Ben if there's a more generic email to list.\"\n- **Contact email changed from the original.** Plan it. \"Just show socials and remove the contact email mentions.\"\n- **SF chapter contact and \"Host us\".** Plan it. \"We need a new SF lead (Jessica in interim); remove any personal emails and have CTAs go to volunteer or other appropriate form.\"\n- **\"Start a chapter\" CTA.** Change. \"Don't think we want this CTA: instead have a more general volunteer CTA (this might exist already).\"\n- **WhatsApp join steps.** Change. \"Make sure corrections are made as needed. Just link to the Google Form; remove the WhatsApp link request to join direct link.\"\n- **WhatsApp admissions criteria.** \"Admissions criteria should go to the criteria doc.\"\n- **Two event systems.** Luma only. \"Luma is what's used now; Eventbrite may have been used in the past but is not now.\"\n- **Confirm the owners of the outside accounts.** Skip.\n- Also in scope: one source for contact and social links, and LinkedIn on the chapter and community \"Connect\" rows. Removing the donate-email buttons is covered by the separate giving plan.\n- **Outside links (from Nicole's walkthrough, 2026-09-14).** She asked that the WhatsApp and Content Hub links open in a new tab \"so that they're not leaving our website entirely\". Decided while planning (easy to reverse): every link that leaves harvardintech.com opens in a new tab, not only those, because a mixed rule is harder to keep straight (step 14).\n- **Contact email, revised (2026-09-15).** \"We can sparingly use info@harvardintech.com (but less than we use the email now).\" This replaces \"just show socials\". The shared inbox appears in the six places listed under the email rule, and nowhere else.\n\n## Open questions / needs input\n\n1. **Shared inbox (for Ben, through the owner).** Decided 2026-09-15: use `info@harvardintech.com`, sparingly (see the email rule). Nicole's walkthrough named it too. Ben should confirm someone watches that inbox before launch; nothing blocks on it.\n2. **SF interim lead (for the owner or Jessica).** Should the SF page publicly show \"Jessica Li: Interim chapter lead\"? The team entry `src/content/team/jessica-li.md` lists her as \"Director of Operations\". The default is to add the lead line; drop it if she prefers not to be listed.\n3. **WhatsApp after the form (for the owner).** What happens once someone submits the form? For example, \"we'll email you the invite\". The default is a single step with no promise we can't verify.\n4. **Speaker and job-post asks (for the owner).** Does the volunteer form (`https://hi.switchy.io/wEYK`) cover people offering to speak? The default sends \"Speak at an event\" to the volunteer form and \"Share job opportunities\" to `/sponsor` (\"Start a conversation\"). The Community level that says \"share what you are hiring for\" is hidden with \"Ways to partner\" for launch.\n5. **Sponsor inquiry form (for the owner).** `inquiryFormUrl` is `''` in `src/content/sponsorPage/sponsor.md`. With the email removed, the `/sponsor` close needs a form URL. Until one exists, the button emails `info@harvardintech.com`, one of the email rule's six places.\n\n## Recommendations\n\n- **A. Delete `contactEmail` everywhere, including the schema and the settings type.** This is the cleanest result today. The cost comes back when Ben supplies a generic address: every surface has to be rebuilt.\n- **B. Keep one optional `contactEmail` setting, blank it, and make every consumer degrade to socials only.** (The 2026-09-14 pick, replaced by D.) One setting and one helper become the single source. A future generic address is a content edit, not a code change. The rule is testable: a blank email renders no `mailto:`.\n- **C. Swap in `info@harvardintech.com` everywhere Ben's address was.** It appears on the original site and in `nyc.md`, but it keeps the email on nearly every page, which the owner wants to reduce.\n- **D. One `contactEmail` setting set to `info@harvardintech.com`, plus an allowlist of the few surfaces that may show it (pick).** This is B's single source and socials-only fallback, with a list deciding where the address appears.\n\n**Pick D.** It carries out the owner's 2026-09-15 decision, \"sparingly\", and keeps B's safety: blank the setting and every surface falls back to socials.\n\n**Email rule (applies everywhere).** The address is shown only on these six surfaces, and only when `contactEmail` is non-blank after trimming:\n1. the site footer;\n2. the homepage Contact section (`ContactUs`);\n3. the forming-chapter \"Contact us\" button (`launch--chapters-and-communities`);\n4. the sponsor page's \"Start a conversation\", only when no inquiry form is set;\n5. `llms.txt`;\n6. the site's structured data.\n\nEverywhere else, including every chapter and community Connect row:\n- A section or element whose only job is to show an email is omitted entirely: no empty line and no dead link.\n- A CTA that used to open a `mailto:` gets a non-email destination instead: the volunteer form, `/volunteer`, `/sponsor` or LinkedIn. It never becomes an empty `mailto:?subject=`.\n\n## Implementation\n\n**Every email and mailto on public pages.** Found by grepping `mailto:`, `ben@`, `info@` and `contactEmail`, excluding `isolated-components` and tests.\n\n| # | Where | Today | Replacement |\n|---|-------|-------|-------------|\n| 1 | `src/data/settings.json` `contactEmail` | `ben@harvardintech.com` | `info@harvardintech.com` |\n| 2 | `src/layouts/BaseLayout.astro:138` footer | mailto link | info@ mailto (email-rule surface 1); omitted if the setting is blank |\n| 3 | `src/components/landing/ContactUs.astro` | synthesized E-mail disc | E-mail disc with info@ (surface 2); if the setting is blank, omitted, and the lede drops \"or drop us a note\" |\n| 4 | `src/components/ChapterConnect.astro` | email line and E-mail badge | Both removed (not an email-rule surface); badges become LinkedIn, Twitter, Facebook |\n| 5 | `src/content/chapters/nyc.md:4` | `contactEmail: info@harvardintech.com` | Line removed |\n| 6 | `src/components/landing/GetInvolved.astro:14` | \"Start a chapter\" mailto to ben@ | CTA removed; the \"Volunteer\" CTA goes to `/volunteer` |\n| 7 | `src/components/landing/SupportUs.astro:17` | ben@ default; 3 mailto cards | Jobs → `/sponsor`; Speak → volunteer form; Volunteer → `/volunteer` |\n| 8 | `src/components/SponsorPage.astro:21` and `src/components/sponsor/SponsorInquiry.astro` | ben@ default; \"Email us about sponsorship\" | Form when `formUrl` is set, otherwise an info@ button (surface 4); \"Message us on LinkedIn\" only if the setting is blank too |\n| 9 | `src/pages/llms.txt.ts:32` | `Email:` line | info@ line (surface 5); omitted if blank |\n| 10 | `src/components/StructuredData.astro:22` | `email` when truthy | Uses the email rule (surface 6); a blank value is already skipped |\n| 11 | `src/pages/index.astro:100`, `src/pages/sponsor.astro:38`, chapter and community `[slug].astro` | pass `contactEmail` | Pass `emailFor(surface)` (`undefined` off the list or when blank) |\n| 12 | `GivingCampaign`, `MomentumFundPage`, `donate/MomentumNetwork`, `donate/DonorWall`, `donate/GiftPillars`, `src/pages/give.astro:40`, `src/pages/donate.astro:124` | ben@ defaults and donate mailtos | **Giving plan.** Cross-reference only. Until it lands, these go to info@ instead of Ben (step 10) |\n\nThe original SF page's `risdhillon@gmail.com` is already gone from `src/content/chapters/sf-bay-area.md`. The original home page's \"Host us in your space\" mailto was replaced by a `/sponsor#levels` link, which now goes to `/sponsor` (row 7).\n\n**Steps**\n\n1. **Single source.** Create `src/lib/contact.ts` (new), which exports:\n   - `resolveContactEmail(value?: string): string | undefined`: trims the value; blank becomes `undefined`.\n   - `connectLinks(socials, email?)`: returns every `settings.socials` entry in its settings order, plus an `E-mail` entry only when an email is present.\n   - `EMAIL_SURFACES`: the six surfaces in the email rule (`footer`, `contactUs`, `formingChapter`, `sponsorInquiry`, `llms`, `structuredData`).\n   - `emailFor(surface, value?)`: the resolved address when `surface` is on the list, otherwise `undefined`. Every consumer goes through it, so adding a surface is a one-line, reviewable change.\n   - `VOLUNTEER_PATH = '/volunteer'`.\n   - `WHATSAPP_FORM_URL = 'https://forms.gle/GqgaCDDWhWAgpJC68'`.\n   - `WHATSAPP_CRITERIA_URL = 'https://docs.google.com/document/d/1IvWhYTdFqOzMYg6ySXx7pmMOfwhDwDHfXHdDkZRbkyE/edit?tab=t.0#heading=h.2l2z5vqeznos'` (from the original site's WhatsApp copy).\n\n   The volunteer form URL keeps its existing home, `ctaUrl` in `src/content/volunteerPage/volunteer.md`. Do not copy it.\n2. **Settings type.** In `src/lib/site.ts`, change `SiteSettings.contactEmail` to `contactEmail?: string`. Set it to `info@harvardintech.com` in `src/data/settings.json` at step 10.\n3. **Footer and home.** In `src/layouts/BaseLayout.astro`, render the footer mail link from `emailFor('footer')`. In `src/components/landing/HomeSections.astro`, make `email` optional and rewrite its \"Required\" doc comment. In `ContactUs.astro`, make `email` optional and pass `emailFor('contactUs')` to `connectLinks`, so the E-mail disc shows info@ and disappears if the setting is blanked. Rewrite the lede and header comment.\n4. **Connect rows (chapters and communities).** Rewrite `ChapterConnect.astro` to use `connectLinks(settings.socials)`, with no email: Connect rows are not an email-rule surface.\n   - This drops the twitter/facebook name filter, so LinkedIn appears.\n   - Remove the `<p>` email line and the per-chapter `emailProp`.\n   - Remove `contactEmail` from `src/content/chapters/nyc.md`.\n   - Keep the optional schema field in `src/content/config.ts` and `src/data/collections.json`, so old entries still load. Change its hint to: \"Not shown: chapter pages list the site's social links. The shared inbox appears in the footer and the homepage Contact section.\"\n5. **Get involved.** In `GetInvolved.astro`, remove the `email` prop, the `buildMailto` import and the \"Start a chapter\" button. The one primary CTA becomes \"Volunteer with us\" → `withBase(VOLUNTEER_PATH)`. The `/volunteer` page already exists and carries the form CTA and open projects. Optionally add a secondary \"Sponsor or host\" → `withBase('/sponsor')`. Rewrite the lede from \"...sponsor, or start a chapter where you live\" to \"...or sponsor, there's a place for you to help\". Update the header comment.\n6. **Support us and SF \"Host us\".** In `SupportUs.astro`, remove the ben@ default and `buildMailto`. Every card gets a real `href`:\n   - Sponsor → `/sponsor`\n   - Host → `/sponsor`\n   - Jobs → `/sponsor`\n   - Speak → the volunteer form `ctaUrl`, passed in from `src/pages/index.astro` via HomeSections\n   - Volunteer → `/volunteer`\n\n   CTA text follows the destination: \"Start a conversation →\" or \"Volunteer →\".\n   - \"Ways to partner\" is removed from `/sponsor` for launch (owner, 2026-09-14; see `launch--giving-pages-short-term`), so `#levels` no longer exists. That is why Host and Jobs go to `/sponsor` rather than `/sponsor#levels`.\n\n   Also edit `src/content/chapters/sf-bay-area.md`:\n   - Add `leads: [{ name: Jessica Li, role: Interim chapter lead }]` (Q2).\n   - Add `links: [{ label: Volunteer, url: /volunteer }, { label: Host an event, url: /sponsor }]`.\n7. **Base path fix for chapter links.** In `ChapterLinks.astro`, wrap `link.url` in `withBase()`. Root-relative CMS links such as `/volunteer` currently break on the subpath deploy (`siteUrl` is a GitHub Pages subpath). Update its comment, which mentions WhatsApp and Eventbrite.\n8. **Sponsor close.** `SponsorPage.astro` drops the ben@ default and passes `email` through as optional. `SponsorInquiry.astro`:\n   - Make `email` optional, and pass `emailFor('sponsorInquiry')` only when no `formUrl` is set: the form wins when it exists.\n   - With no `formUrl`, render the info@ mailto button. Only if the setting is blank too, render \"Message us on LinkedIn\" → the LinkedIn social from settings.\n   - Rewrite the `EmbedForm` `fallbackMessage`, which currently says \"email us using the button on the left\", so it no longer mentions email.\n9. **WhatsApp.** In `WhatsappCommunity.astro`:\n   - Delete the `whatsappUrl` prop and step 2 (\"Request to join the WhatsApp group using this link\").\n   - \"Apply to join\" → `WHATSAPP_FORM_URL`. \"See the admissions criteria →\" → `WHATSAPP_CRITERIA_URL`. Both open in a new tab through `externalLinkAttrs` (step 14).\n   - Keep step 1's verified copy: \"Fill out this short form (under 2 minutes) to verify your alumni status.\"\n   - Remove the \"no separate criteria page\" comment, which is wrong.\n   - Search for `chat.whatsapp.com` afterwards: it must return zero hits outside tests.\n10. **Switch the setting to the shared inbox.** Set `\"contactEmail\": \"info@harvardintech.com\"` in `src/data/settings.json`.\n   - No gate is needed any more. The address is never blank, so `give.astro`'s `??` cannot render an empty `mailto:?subject=…`.\n   - Until the giving plan removes the donate mailtos (row 12), they email info@ instead of Ben.\n   - Check `.codeyam/tmp/content-sandbox-active/data/settings.json` if it exists: a stale content-sandbox snapshot masks `src/data` edits.\n11. **Machine-readable surfaces.** In `src/pages/llms.txt.ts`, emit `- Email:` from `emailFor('llms')`. In `StructuredData.astro`, take `email` from `emailFor('structuredData')`.\n12. **Luma only.** In `EventsPage.astro`, delete the `eventbriteUrl` prop and its \"View Upcoming Events\" button. `src/pages/events.astro` already renders `LumaCalendar` with `LUMA_CALENDAR_URL` above the list. The closing \"View all past events\" link to Luma belongs to `launch--mobile-and-layout` (owner decision after Nicole's walkthrough, 2026-09-14). Do not add a second Luma link here.\n13. **Scrub.** Update the default and fixture addresses in `src/lib/mailto.test.ts` and `src/lib/url.test.ts` to `hello@example.com`. Leave `buildMailto` itself unchanged: giving and SponsorInquiry still use it when an email exists.\n14. **Outside links open in a new tab.** Create `src/lib/externalLink.ts` (new), exporting `externalLinkAttrs(href, siteOrigin)`:\n   - It returns `{ target: '_blank', rel: 'noopener noreferrer' }` for an `http(s)` link to another host.\n   - It returns nothing for internal, root-relative, `mailto:`, `tel:` and `#` links. A `www.`/apex variant of the site's own domain counts as internal.\n   - Apply it to every outside link: `WhatsappCommunity.astro` (step 9), `ContentHub.astro` (Medium, LinkedIn, the newsletter), `EventCard.astro`, `ChapterLinks.astro` (step 7), `ChapterConnect.astro` (step 4), and the volunteer apply links when they point off-site.\n   - `LumaSubscribe.astro` already sets `target=\"_blank\"`; switch it to the helper so there is one rule.\n\n## Tests\n\n- `src/lib/contact.test.ts` (new):\n  - `resolveContactEmail` returns `undefined` for `\"\"`, `\"  \"` and `undefined`, and the trimmed value otherwise.\n  - `connectLinks` keeps the settings order and includes LinkedIn.\n  - `connectLinks` adds `E-mail` only when an email is present, and never emits `mailto:` for a blank email.\n  - `emailFor` returns the address for each of the six surfaces, `undefined` for any other surface (for example `chapterConnect`), and `undefined` for every surface when the setting is blank.\n  - The WhatsApp constants: the form is a `forms.gle` URL and the criteria URL is a `docs.google.com/document` URL.\n- `src/lib/noPersonalEmail.test.ts` (new): reads every file under `src/components`, `src/pages`, `src/layouts`, `src/content` and `src/data`, skipping `isolated-components` and `*.test.*`. It asserts:\n  - No `ben@`, `benwei@` or `@gmail.com`.\n  - No `chat.whatsapp.com`, no `eventbrite.com` and no \"Start a chapter\".\n  - `info@harvardintech.com` appears only in `src/data/settings.json`. Components read it through `emailFor`, never as a literal.\n  - Until the giving plan lands, an explicit allowlist names the row-12 files and fails once they are clean, so the list cannot go stale.\n- `src/lib/seoEndpoints.test.ts`: change \"surfaces contact email and socials\" so that with a blank setting, `Email:` is absent and each social still appears. With a mocked non-blank email, `Email:` is present.\n- `src/lib/site.test.ts`: the settings still load when `contactEmail` is `\"\"` or missing.\n- `src/lib/externalLink.test.ts` (new):\n  - An `https` link to another host gets `target=\"_blank\"` and `rel=\"noopener noreferrer\"`.\n  - The site's own origin (including its `www.`/apex twin), root-relative paths, `mailto:`, `tel:` and `#anchor` get nothing.\n- Register the new test files before `prove-red`: `--test` matches registered `describe › it` names, not filenames. Content-driven assertions (nyc.md, settings.json) are invisible to test attribution, so run them on the branch, not \"on base\".\n\n## Scenarios to Demonstrate\n\n- `contactus-default`: info@ as the E-mail disc next to the socials.\n- `chapterconnect-default`: LinkedIn, Twitter and Facebook badges, with no email line. Retire `chapterconnect-per-chapter-email`: Connect rows never show an email now.\n- `chapter-route-sf-bay-area`: interim lead Jessica, Volunteer and Host buttons that resolve under the base path, and the Connect row with LinkedIn.\n- `chapter-route-new-york-city`: no `info@` line.\n- `community-route-founders-with-leads-and-events`: LinkedIn in the Connect row.\n- `get-involved`: a single Volunteer CTA and no \"Start a chapter\".\n- `support-us`: five cards and no mailto.\n- `whatsapp-community`: one step, Apply → form, criteria → doc, both opening in a new tab (a driven capture).\n- `content-hub`: the Medium, LinkedIn and newsletter links open in a new tab.\n- `eventspage-upcoming-and-past` and `events-route-upcoming-and-past`: no Eventbrite button.\n- `sponsorinquiry-awaiting-a-form`: the info@ button, since no form is set.\n- `harvard-in-tech-landing-page`: the footer shows info@ and the socials.\n- New: \"Contact with no email set\". The settings email is blanked, showing that the socials-only fallback still works: no footer mailto, no E-mail disc, and LinkedIn on the sponsor page.\n\nContent edits don't mark screenshots stale, so recapture with `--target --force`. Screen every changed PNG for wrong-page frames.\n\n## Out of scope\n\n- Donate and giving email buttons, and the ben@ defaults in giving components (row 12): see the giving plan.\n- Confirming the owners of the outside accounts (owner: skip).\n- Recruiting a permanent SF lead; setting up or monitoring the info@ inbox (Ben).\n- The Mailchimp \"Subscribe\" link, Luma embed configuration and `src/pages/isolated-components/`.\n- Design-review mockups under `public/design-review-4ece6c14/`, which contain old addresses. They are not site pages; delete or hide them in the launch-cleanup plan if they ship.",
+  "description": "Ben's personal address is gone from the public site. One optional setting holds the shared inbox info@harvardintech.com and one allowlist decides where it may appear - the footer, the homepage Contact section, the forming-chapter button, the sponsor close when no inquiry form is set, llms.txt and the site's structured data - while every other surface offers the socials or a form, so blanking the setting degrades the whole site to socials with no dead mailto anywhere. The calls to action moved with it: \"Start a chapter\" and the Eventbrite button are gone, Get involved offers one Volunteer call to action plus Sponsor or host, the five support cards go to the sponsor page, the volunteer form or the volunteer page, chapter and community Connect rows gained LinkedIn and lost their email line, WhatsApp links only to the join form and the criteria doc, SF lists Jessica Li as interim lead with Volunteer and Host buttons, and every link that leaves harvardintech.com opens in a new tab through one helper. A new application scenario, Contact With No Email Set, photographs the foot of the home page with the inbox blanked - no e-mail disc, no footer mail link - seeded through a new singleton-seed wrapper, because that scenario seeds the site's settings file rather than a content collection.\n\nScope verdict: none of the project's five deliverables was delivered this cycle - reproducing the site, publishing it on GitHub Pages, the local content admin, the same admin in the cloud, and protecting it with a password or GitHub sign-in all remain deferred. Every one of those deferrals was decided by the user; none was decided by the agent.\n\nOpen with the owner: whether the SF page should publicly name Jessica Li as interim lead, what happens after someone submits the WhatsApp form, and a sponsor inquiry form URL - until one exists the sponsor close emails the shared inbox. Deviation from the plan: the donate and giving mailtos now go to the shared inbox rather than Ben and stay there until the giving plan removes them, with a test pinning that exemption list so it cannot go stale.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--contact-and-calls-to-action.md\t.codeyam/plans/completed/launch--contact-and-calls-to-action.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--chapters-and-communities.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterconnect-per-chapter-email.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-welcome--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-default--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-per-chapter-email--desktop.png",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-per-chapter-email--desktop.png.hash",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-community-heading--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-rich-list--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-default--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-complete--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-cutover-day--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-decisions-answered-nothing-begun--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-nothing-started--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-partway-through--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-waiting-on-one-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-no-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-no-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/get-involved--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/get-involved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-numbered-bordered-grid--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-the-duplicated-band-shows-its-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-three-pillars--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/luma-calendar--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/lumasubscribe-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-sections-reordered-by-an-editor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-communities-derived--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-derived-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-no-chapters-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-sixth-chapter-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-awaiting-a-form--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-awaiting-a-form--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-form-configured--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-form-configured--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/support-us--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/support-us--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerhero-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcard-with-thumbnail--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcardlinks-both-detail-only-and-apply-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcta-own-link-and-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojects-populated-grid--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectsempty-production-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-one-other-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-three-suggestions--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/0d10466d9207341ed96f773ede556ece72b6638c399e6885815eb695241a8649.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/603fb6fbc0525a18484c138eaf7983a8736ebc2f7fc868c1a90b70f8eae5ce3d.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterConnect.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterLinks.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/EventCard.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/EventsPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/LumaSubscribe.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/SponsorPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/StructuredData.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/ContactUs.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/ContentHub.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/GetInvolved.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/HomeSections.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/SupportUs.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/WhatsappCommunity.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/nav/PrimaryNav.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/sponsor/SponsorInquiry.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerHero.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectCardLinks.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectCta.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectsEmpty.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/nyc.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/sf-bay-area.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/collections.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/settings.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/brandIcons.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/brandIcons.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/mailto.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/seoEndpoints.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/site.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/site.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/socialIcon.test.ts",
+      "status": "deleted"
+    },
+    {
+      "path": "src/lib/socialIcon.ts",
+      "status": "deleted"
+    },
+    {
+      "path": "src/lib/url.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/chapters/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/communities/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/index.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/llms.txt.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/sponsor.astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/contactus-no-email-set.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-chapterconnect-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-landing-contactus-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-landing-getinvolved-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-landing-supportus-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-landing-whatsappcommunity-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-sponsor-sponsorinquiry-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-contact-with-no-email-set.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-no-email-set--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-no-email-set--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-no-email-and-no-form--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-no-email-and-no-form--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorinquiry-no-email-and-no-form.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/seed-singleton-data.sh",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/launch--contact-and-calls-to-action.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/0dbec6b680baa39be75411c0cabba06fa8a52e40ee34f90ef93a5be79bd38bf5.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/9d619857a374c1aeca40fd0379fe7f57073d8df1fd693ff246d198a805fad452.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/c676ed7d188936600dbdb4f78f337d0d09ccd03ea9012b96da2a3e116466ea73.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/ffea8b3d869cb7d0999ffabd93cec6456ed10278fe6a07827e72f4d55ae5783d.json",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/contact.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/contact.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/externalLink.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/externalLink.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/noPersonalEmail.test.ts",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Blog Post - Welcome",
+      "screenshotPath": "blog-post-welcome--desktop.png"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft",
+      "screenshotPath": "blog-preview-link-shared-draft--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo",
+      "screenshotPath": "chapter-gallery-a-single-photo--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped",
+      "screenshotPath": "chapter-gallery-curated-and-capped--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged",
+      "screenshotPath": "chapter-gallery-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed",
+      "screenshotPath": "chapter-gallery-show-all-revealed--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns",
+      "screenshotPath": "chapter-gallery-three-photos-three-columns--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter",
+      "screenshotPath": "chapter-route-events-tagged-to-this-chapter--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps",
+      "screenshotPath": "chapter-route-longest-chapter-name-wraps--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--desktop.png"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area",
+      "screenshotPath": "chapter-route-sf-bay-area--desktop.png"
+    },
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - A Tick That Could Not Be Saved",
+      "screenshotPath": "cutover-runbook-a-tick-that-could-not-be-saved--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Complete",
+      "screenshotPath": "cutover-runbook-complete--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Cutover Day",
+      "screenshotPath": "cutover-runbook-cutover-day--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Decisions Answered Nothing Begun",
+      "screenshotPath": "cutover-runbook-decisions-answered-nothing-begun--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Nothing Started",
+      "screenshotPath": "cutover-runbook-nothing-started--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Partway Through",
+      "screenshotPath": "cutover-runbook-partway-through--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - The Records On A Phone",
+      "screenshotPath": "cutover-runbook-the-records-on-a-phone--mobile.png"
+    },
+    {
+      "name": "Cutover Runbook - Waiting On One Answer",
+      "screenshotPath": "cutover-runbook-waiting-on-one-answer--desktop.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Password Required",
+      "screenshotPath": "locked-preview-password-required--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password",
+      "screenshotPath": "locked-preview-unlocked-with-the-password--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Wrong Password",
+      "screenshotPath": "locked-preview-wrong-password--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Giving Platform Is Chosen",
+      "screenshotPath": "momentum-fund-a-giving-platform-is-chosen--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Mistyped Section Type And A Missing Photo",
+      "screenshotPath": "momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Arriving From The Email",
+      "screenshotPath": "momentum-fund-arriving-from-the-email--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Every Section Hidden",
+      "screenshotPath": "momentum-fund-every-section-hidden--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Finding Your Place In The Network",
+      "screenshotPath": "momentum-fund-filtering-the-donor-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Public Visitor",
+      "screenshotPath": "momentum-fund-public-visitor--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Donor Wall Moved To The Top",
+      "screenshotPath": "momentum-fund-the-donor-wall-moved-to-the-top--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The First Donor On The Wall",
+      "screenshotPath": "momentum-fund-the-first-donor-on-the-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Goal Meter Held As Coming Soon",
+      "screenshotPath": "momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Impact Band With Real Quotes",
+      "screenshotPath": "momentum-fund-the-impact-band-with-real-quotes--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Two Pillar Bands With Their Own Cards",
+      "screenshotPath": "momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS",
+      "screenshotPath": "site-page-a-page-written-in-the-cms--desktop.png"
+    },
+    {
+      "name": "Site Page - Long Title And No Description",
+      "screenshotPath": "site-page-long-title-and-no-description--desktop.png"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall",
+      "screenshotPath": "sponsor-route-example-partner-wall--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects",
+      "screenshotPath": "volunteer-page-no-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Open Projects",
+      "screenshotPath": "volunteer-page-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS",
+      "screenshotPath": "volunteer-page-rewritten-from-the-cms--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo",
+      "screenshotPath": "volunteer-project-detail-full-description-no-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link",
+      "screenshotPath": "volunteer-project-detail-photo-and-own-sign-up-link--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested",
+      "screenshotPath": "volunteer-project-detail-retired-projects-never-suggested--desktop.png"
+    },
+    {
+      "name": "ChapterConnect - Default",
+      "screenshotPath": "chapterconnect-default--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Community Heading",
+      "screenshotPath": "chapterevents-community-heading--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Rich List",
+      "screenshotPath": "chapterevents-rich-list--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "Content Hub",
+      "screenshotPath": "content-hub--desktop.png"
+    },
+    {
+      "name": "EventsPage - Upcoming and Past",
+      "screenshotPath": "eventspage-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "Luma Calendar",
+      "screenshotPath": "luma-calendar--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Communities Derived",
+      "screenshotPath": "primarynav-communities-derived--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Derived Chapters",
+      "screenshotPath": "primarynav-derived-chapters--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - No Chapters Yet",
+      "screenshotPath": "primarynav-no-chapters-yet--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Sixth Chapter Published",
+      "screenshotPath": "primarynav-sixth-chapter-published--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1210,
+    "passed": 1,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1210,
+        "passed": 1
+      }
+    ]
+  }
+}

@@ -48,7 +48,6 @@ interface Props {
    *  which reads wrong for a community ("...in Founders") — /communities passes
    *  its own phrasing. */
   eventsHeading?: string;
-  contactEmail?: string;
   leads?: Lead[];
   links?: ChapterLink[];
   /** Where the "back" link at the top of the content block points, and what it
@@ -67,7 +66,6 @@ const {
   photos,
   events = [],
   eventsHeading,
-  contactEmail,
   leads = [],
   links = [],
   backHref = '/#events',
@@ -120,4 +118,4 @@ const hasContent = leads.length > 0 || links.length > 0 || hasBody;
   ) : null
 }
 
-<ChapterConnect email={contactEmail} />
+<ChapterConnect />

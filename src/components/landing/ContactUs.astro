@@ -11,29 +11,24 @@
 // `socialIcon.ts`: on crimson they have to be white, and the original assets are
 // full-colour (one is a JPEG with a white background), so they cannot be
 // recoloured — see the note in that module.
-import { buildMailto } from '../../lib/mailto';
+import { displayConnectLinks } from '../../lib/contact';
+import { externalLinkAttrs } from '../../lib/externalLink';
 import { brandIcon } from '../../lib/brandIcons';
-import { socialDisplayLabel } from '../../lib/socialLabel';
 import type { SocialLink } from '../../lib/site';
 
 interface Props {
   socials: readonly SocialLink[];
-  email: string;
+  /** The shared inbox, when this surface may show it (`emailFor('contactUs', …)`). */
+  email?: string;
 }
 const { socials, email } = Astro.props;
-const contactHref = buildMailto({ to: email, subject: 'Hello from the website' });
 
-// The e-mail link is synthesized so the section always offers a way to write in,
-// even when no social is configured — but an editor who already added one as a
-// social would otherwise get the same envelope twice under two spellings, which
-// is exactly what the seeded scenario shows. An existing mail link wins.
-const hasEmailSocial = socials.some(
-  (s) => s.icon?.toLowerCase() === 'email' || s.url.trim().toLowerCase().startsWith('mailto:'),
-);
-const links = [
-  ...socials.map((s) => ({ label: socialDisplayLabel(s.label), url: s.url, icon: s.icon })),
-  ...(hasEmailSocial ? [] : [{ label: 'E-mail', url: contactHref, icon: 'email' }]),
-];
+// The e-mail disc is synthesized from the shared inbox, one of the few places the
+// owner's "sparingly" rule shows it (see `EMAIL_SURFACES` in src/lib/contact.ts).
+// With no address the section offers the socials alone. An editor who already
+// added a mail link as a social keeps that one instead of getting two envelopes.
+const links = displayConnectLinks(socials, email);
+const hasEmail = links.some((link) => link.url.trim().toLowerCase().startsWith('mailto:'));
 ---
 
 <section class="sec contact" id="contact">
@@ -43,7 +38,9 @@ const links = [
         <span class="kick">Say hello</span>
         <h2>Contact us</h2>
         <p class="contact-lede">
-          We'd love to hear from you. Reach out on any of these, or drop us a note.
+          {hasEmail
+            ? "We'd love to hear from you. Reach out on any of these, or drop us a note."
+            : "We'd love to hear from you. Reach out on any of these."}
         </p>
       </div>
     </div>
@@ -53,7 +50,12 @@ const links = [
         links.map((link) => {
           const icon = brandIcon(link.icon) ?? brandIcon(link.label);
           return (
-            <a class="contact-link" href={link.url} rel="noopener" aria-label={link.label}>
+            <a
+              class="contact-link"
+              href={link.url}
+              aria-label={link.label}
+              {...externalLinkAttrs(link.url, Astro.url.origin)}
+            >
               <span class="contact-disc">
                 {icon && (
                   <svg

@@ -56,3 +56,29 @@ describe('brandIcon', () => {
     }
   });
 });
+
+describe('brand colours', () => {
+  // The chapter Connect row draws each logo in its own brand colour, so every
+  // brand mark carries one. These are the official values.
+  it.each([
+    ['linkedin', '#0A66C2'],
+    ['x', '#000000'],
+    ['facebook', '#0866FF'],
+    ['medium', '#000000'],
+  ])('gives %s its official brand colour', (key, color) => {
+    expect(BRAND_ICONS[key].color).toBe(color);
+  });
+
+  // The generic glyphs are not brands, so they inherit the surrounding ink
+  // instead of forcing a colour of their own.
+  it.each([['email'], ['newsletter'], ['blog']])('leaves the generic %s glyph uncoloured', (key) => {
+    expect(BRAND_ICONS[key].color).toBeUndefined();
+  });
+
+  // A colour must be a hex value the `color` CSS property accepts verbatim.
+  it('states every colour as a hex value', () => {
+    for (const icon of Object.values(BRAND_ICONS)) {
+      if (icon.color) expect(icon.color).toMatch(/^#[0-9A-F]{6}$/);
+    }
+  });
+});

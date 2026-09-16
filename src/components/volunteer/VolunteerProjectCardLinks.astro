@@ -5,6 +5,7 @@
 // Stacked rather than side by side — two uppercase mono links on one row wrap
 // raggedly at the narrow end of the grid. Renders an empty flex container when
 // a card has neither link, and `gap` means that costs no space.
+import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 
 interface Props {
@@ -25,7 +26,7 @@ const { href, applyUrl } = Astro.props as Props;
   }
   {
     applyUrl ? (
-      <a class="go" href={withBase(applyUrl)} rel="noopener">
+      <a class="go" href={withBase(applyUrl)} {...externalLinkAttrs(applyUrl, Astro.url.origin)}>
         Get involved →
       </a>
     ) : null

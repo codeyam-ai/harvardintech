@@ -1,20 +1,14 @@
 ---
 // "Get involved" (Atlas ink band): the "bring it to your city" call to action.
-// A dark editorial band — kicker, headline, serif lede, and two CTAs (volunteer
-// or start a chapter) — sitting between the light board grid and the crimson
+// A dark editorial band — kicker, headline, serif lede, and two CTAs (volunteer,
+// or sponsor and host) — sitting between the light board grid and the crimson
 // giving band for a light → dark → crimson rhythm.
-import { buildMailto } from '../../lib/mailto';
-
-interface Props {
-  contactUrl?: string;
-  email?: string;
-}
-const {
-  contactUrl = 'https://hi.switchy.io/wEYK',
-  email = 'ben@harvardintech.com',
-} = Astro.props;
-
-const startChapterHref = buildMailto({ to: email, subject: 'Starting a Harvard Alumni in Tech chapter' });
+//
+// The old chapter-founding button is gone (owner, 2026-09-14): it opened a
+// personal inbox, and the volunteer page is where anyone who wants to lead or
+// help a chapter starts.
+import { VOLUNTEER_PATH } from '../../lib/contact';
+import { withBase } from '../../lib/url';
 ---
 
 <section class="getinv" id="get-involved">
@@ -23,14 +17,13 @@ const startChapterHref = buildMailto({ to: email, subject: 'Starting a Harvard A
       <span class="kick" style="color:#fff">Get involved</span>
       <h2>Bring Harvard Alumni in Tech to your city.</h2>
       <p>
-        We're a volunteer-run community. Whether you want to speak, host, sponsor,
-        or start a chapter where you live, there's a place for you to help the
-        network grow.
+        We're a volunteer-run community. Whether you want to speak, host, or
+        sponsor, there's a place for you to help the network grow.
       </p>
     </div>
     <div class="getinv-actions">
-      <a class="btn btn-solid" href={contactUrl} rel="noopener">Volunteer</a>
-      <a class="btn btn-out on-dark" href={startChapterHref}>Start a chapter</a>
+      <a class="btn btn-solid" href={withBase(VOLUNTEER_PATH)}>Volunteer with us</a>
+      <a class="btn btn-out on-dark" href={withBase('/sponsor')}>Sponsor or host</a>
     </div>
   </div>
 </section>

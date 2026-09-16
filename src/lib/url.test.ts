@@ -48,7 +48,7 @@ describe('withBase', () => {
   // mailto and other non-slash schemes are left alone.
   it('passes mailto links through untouched', () => {
     vi.stubEnv('BASE_URL', '/harvardintech/');
-    expect(withBase('mailto:ben@harvardintech.com')).toBe('mailto:ben@harvardintech.com');
+    expect(withBase('mailto:hello@example.com')).toBe('mailto:hello@example.com');
   });
 
   // A bare in-page anchor is not an absolute path, so it is left alone.

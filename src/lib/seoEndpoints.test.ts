@@ -83,12 +83,35 @@ describe('llms.txt GET', () => {
     }
   });
 
-  // Contact section surfaces the settings email + social links for citation.
+  // Contact section surfaces the shared inbox (llms.txt is one of the few places
+  // it is shown) plus every social link for citation.
   it('surfaces contact email and socials', async () => {
-    const body = await (await llmsGet(ctx('https://example.com/'))).text();
-    expect(body).toContain(`Email: ${settings.contactEmail}`);
-    for (const s of settings.socials) {
-      expect(body).toContain(`${s.label}: ${s.url}`);
+    const saved = settings.contactEmail;
+    settings.contactEmail = 'hello@example.com';
+    try {
+      const body = await (await llmsGet(ctx('https://example.com/'))).text();
+      expect(body).toContain('- Email: hello@example.com');
+      for (const s of settings.socials) {
+        expect(body).toContain(`${s.label}: ${s.url}`);
+      }
+    } finally {
+      settings.contactEmail = saved;
+    }
+  });
+
+  // A blanked setting drops the Email line and keeps every social.
+  it('omits the Email line when the contact email is blank', async () => {
+    const saved = settings.contactEmail;
+    settings.contactEmail = '';
+    try {
+      const body = await (await llmsGet(ctx('https://example.com/'))).text();
+      expect(body).not.toContain('Email:');
+      expect(body).not.toContain('mailto:');
+      for (const s of settings.socials) {
+        expect(body).toContain(`${s.label}: ${s.url}`);
+      }
+    } finally {
+      settings.contactEmail = saved;
     }
   });
 });

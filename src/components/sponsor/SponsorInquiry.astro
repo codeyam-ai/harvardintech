@@ -1,20 +1,26 @@
 ---
-// The closing ask: an inquiry form AND a pre-filled email, because the two serve
-// different readers — someone ready to talk specifics fills the form, someone
-// who would rather just write gets the mailto. Both land in the same inbox.
+// The closing ask. When an inquiry form exists it is the one way in: a sponsor's
+// details arrive structured, and the shared inbox stays out of the way (the
+// owner's "sparingly" rule, 2026-09-15). Until then the button emails the shared
+// inbox, one of the few places it is shown (`emailFor` in src/lib/contact.ts).
+// With no form and no address at all, the button falls back to the site's
+// LinkedIn, so the section never offers a dead link.
 //
 // The form is delegated to a third-party provider (EmbedForm), since a static
 // build cannot process a submission. With no form URL configured, EmbedForm
 // renders its unconfigured fallback, which reads as an obvious placeholder
 // rather than a broken form — the honest state until a real form exists.
 import EmbedForm from '../EmbedForm.astro';
-import { buildMailto } from '../../lib/mailto';
+import { sponsorCta } from '../../lib/contact';
+import { externalLinkAttrs } from '../../lib/externalLink';
+import { settings } from '../../lib/site';
 
 interface Props {
   title?: string;
   body?: string;
   formUrl?: string;
-  email: string;
+  /** The shared inbox, when this surface may show it (`emailFor('sponsorInquiry', …)`). */
+  email?: string;
   disclaimer?: string;
 }
 const {
@@ -25,10 +31,11 @@ const {
   disclaimer,
 } = Astro.props as Props;
 
-const mailto = buildMailto({
-  to: email,
-  subject: 'Sponsoring Harvard Alumni in Tech',
-});
+// Which button the section offers — form, then the shared inbox, then LinkedIn —
+// is decided by `sponsorCta`, so the rule is unit-tested rather than only
+// provable by rendering this page.
+const linkedIn = settings.socials.find((s) => s.icon === 'linkedin' || /linkedin/i.test(s.label));
+const cta = sponsorCta(formUrl, email, linkedIn?.url);
 ---
 
 <section class="sec" id="inquire">
@@ -43,7 +50,13 @@ const mailto = buildMailto({
     <div class="inq">
       <div class="inq-copy">
         {body ? <p class="inq-body">{body}</p> : null}
-        <a class="btn btn-solid" href={mailto}>Email us about sponsorship</a>
+        {
+          cta ? (
+            <a class="btn btn-solid" href={cta.href} {...externalLinkAttrs(cta.href, Astro.url.origin)}>
+              {cta.label}
+            </a>
+          ) : null
+        }
         {
           disclaimer ? (
             <p class="inq-disclaimer">{disclaimer}</p>
@@ -55,7 +68,7 @@ const mailto = buildMailto({
           embedUrl={formUrl}
           title="Sponsorship inquiry"
           buttonLabel="Send"
-          fallbackMessage="Our sponsorship inquiry form is on the way. In the meantime, email us using the button on the left and we will pick it up from there."
+          fallbackMessage="Our sponsorship inquiry form is on the way. In the meantime, reach us using the button on the left and we will pick it up from there."
         />
       </div>
     </div>

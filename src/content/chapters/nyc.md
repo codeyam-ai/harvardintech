@@ -1,7 +1,6 @@
 ---
 blurb: Our founding chapter and largest community.
 city: New York City
-contactEmail: info@harvardintech.com
 heroImage: /images/chapters/nyc.jpg
 photos:
   - image: /images/gallery/event-01.jpg

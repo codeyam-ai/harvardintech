@@ -14,6 +14,7 @@
 import { withBase } from '../../lib/url';
 import { formatEventDate } from '../../lib/events';
 import { brandIcon } from '../../lib/brandIcons';
+import { externalLinkAttrs } from '../../lib/externalLink';
 
 interface Channel {
   label: string;
@@ -83,7 +84,7 @@ const {
             <a
               class="ch"
               href={c.external ? c.url : withBase(c.url)}
-              rel={c.external ? 'noopener' : undefined}
+              {...(c.external ? externalLinkAttrs(c.url, Astro.url.origin) : {})}
             >
               {icon && (
                 <svg

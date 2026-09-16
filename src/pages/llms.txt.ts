@@ -9,11 +9,18 @@
 import type { APIContext } from 'astro';
 import { settings } from '../lib/site';
 import { canonicalFor, canonicalOrigin } from '../lib/canonicalUrl';
+import { emailFor } from '../lib/contact';
 
 export function GET(context: APIContext): Response {
   // Answer engines should cite the live domain, not the gated preview.
   const origin = canonicalOrigin(context.site, context.url.origin);
   const abs = (path: string) => canonicalFor(path, '/', origin);
+  // One of the few places the shared inbox is shown (src/lib/contact.ts).
+  const email = emailFor('llms', settings.contactEmail);
+  const contactLines = [
+    ...(email ? [`- Email: ${email}`] : []),
+    ...settings.socials.map((s) => `- ${s.label}: ${s.url}`),
+  ];
 
   const keyRoutes: Array<{ label: string; path: string }> = [
     { label: 'Home', path: '/' },
@@ -31,8 +38,7 @@ ${keyRoutes.map((r) => `- [${r.label}](${abs(r.path)})`).join('\n')}
 
 ## Contact
 
-- Email: ${settings.contactEmail}
-${settings.socials.map((s) => `- ${s.label}: ${s.url}`).join('\n')}
+${contactLines.join('\n')}
 `;
 
   return new Response(body, {

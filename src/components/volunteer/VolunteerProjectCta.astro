@@ -5,6 +5,7 @@
 // project's own sign-up link, else the site-wide volunteer CTA, else nothing at
 // all. Keeping that rule in `src/lib/projects.ts` means the fallback is unit-
 // tested rather than only provable by rendering the page.
+import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 import { projectCta } from '../../lib/projects';
 
@@ -20,7 +21,7 @@ const cta = projectCta(applyUrl, ctaLabel, ctaUrl);
 
 {
   cta ? (
-    <a class="btn btn-solid cta" href={withBase(cta.href)} rel="noopener">
+    <a class="btn btn-solid cta" href={withBase(cta.href)} {...externalLinkAttrs(cta.href, Astro.url.origin)}>
       {cta.label}
     </a>
   ) : null

@@ -3,6 +3,7 @@
 // link) vs past (faint date, dimmed, no link) styling. Shared by the landing
 // UpcomingEvents section and the /events page so all event cards stay identical.
 import { formatEventDate, type EventLike } from '../lib/events';
+import { externalLinkAttrs } from '../lib/externalLink';
 
 interface Props {
   event: EventLike;
@@ -37,7 +38,11 @@ const isPast = variant === 'past';
   }
   {
     !isPast && event.link ? (
-      <a href={event.link} rel="noopener" style="margin-top: auto; font-weight: 500;">
+      <a
+        href={event.link}
+        style="margin-top: auto; font-weight: 500;"
+        {...externalLinkAttrs(event.link, Astro.url.origin)}
+      >
         Learn more →
       </a>
     ) : null

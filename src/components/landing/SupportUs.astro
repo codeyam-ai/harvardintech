@@ -2,31 +2,31 @@
 // "Support us" (Atlas): five ways to support, as crimson-edged cards in the
 // editorial grid used across the redesigned site.
 //
-// Two of the five now lead to /sponsor rather than straight to an inbox. The
-// difference is how much the reader needs to know first: someone weighing
-// sponsoring or hosting wants to see the partnership levels and what each one
-// underwrites before they write, and /sponsor covers both of those as its Event
-// and Community levels. The remaining three are single, self-explanatory asks
-// with nothing to read up on, so they still open a pre-filled mailto.
-import { buildMailto } from '../../lib/mailto';
+// Every card leads to a page or a form, never an inbox (owner, 2026-09-14:
+// "remove any personal emails and have CTAs go to volunteer or other appropriate
+// form"). Sponsoring, hosting and job posts go to /sponsor, whose "Start a
+// conversation" takes the inquiry; speaking goes to the volunteer form, whose
+// URL lives in the volunteer page copy and is passed in; volunteering goes to
+// /volunteer. "Ways to partner" is hidden on /sponsor for launch, so nothing
+// links to `#levels`.
+import { VOLUNTEER_PATH } from '../../lib/contact';
+import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 
 interface Props {
-  email?: string;
+  /** The volunteer form (the volunteer page's `ctaUrl`). Absent → /volunteer. */
+  volunteerFormUrl?: string;
 }
-const { email = 'ben@harvardintech.com' } = Astro.props;
+const { volunteerFormUrl } = Astro.props;
 
+const toSponsor = { href: withBase('/sponsor'), cta: 'Start a conversation →' };
 const options = [
-  { label: 'Sponsor an event', href: withBase('/sponsor') },
-  { label: 'Host us in your space', href: withBase('/sponsor#levels') },
-  { label: 'Share job opportunities', subject: 'Sharing a job opportunity' },
-  { label: 'Speak at an event', subject: 'Speaking at a Harvard Alumni in Tech event' },
-  { label: 'Volunteer your time', subject: 'Volunteering with Harvard Alumni in Tech' },
-].map((opt) => ({
-  label: opt.label,
-  href: opt.href ?? buildMailto({ to: email, subject: opt.subject! }),
-  cta: opt.href ? 'See partnership levels →' : 'Get in touch →',
-}));
+  { label: 'Sponsor an event', ...toSponsor },
+  { label: 'Host us in your space', ...toSponsor },
+  { label: 'Share job opportunities', ...toSponsor },
+  { label: 'Speak at an event', href: volunteerFormUrl ?? withBase(VOLUNTEER_PATH), cta: 'Volunteer →' },
+  { label: 'Volunteer your time', href: withBase(VOLUNTEER_PATH), cta: 'Volunteer →' },
+];
 ---
 
 <section class="sec" id="support">
@@ -40,7 +40,7 @@ const options = [
     <div class="support-grid">
       {
         options.map((opt) => (
-          <a class="sup" href={opt.href}>
+          <a class="sup" href={opt.href} {...externalLinkAttrs(opt.href, Astro.url.origin)}>
             <span class="sup-l">{opt.label}</span>
             <span class="sup-go">{opt.cta}</span>
           </a>

@@ -13,6 +13,10 @@
 //
 // The panel opens with CSS alone (`:hover` / `:focus-within`) — no JS, so it
 // works before hydration and for keyboard users.
+//
+// Outside links (the Content Hub's Medium and LinkedIn entries) open in a new
+// tab through the one site-wide rule in src/lib/externalLink.ts.
+import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 import type { NavItem } from '../../lib/site';
 
@@ -39,11 +43,17 @@ const { items } = Astro.props as Props;
                       <Fragment>
                         <span class="mega-h">{group.label}</span>
                         {group.children.map((leaf) => (
-                          <a href={withBase(leaf.url ?? '/')}>{leaf.label}</a>
+                          <a href={withBase(leaf.url ?? '/')} {...externalLinkAttrs(leaf.url, Astro.url.origin)}>
+                            {leaf.label}
+                          </a>
                         ))}
                       </Fragment>
                     ) : (
-                      <a class="mega-h-link" href={withBase(group.url ?? '/')}>
+                      <a
+                        class="mega-h-link"
+                        href={withBase(group.url ?? '/')}
+                        {...externalLinkAttrs(group.url, Astro.url.origin)}
+                      >
                         {group.label}
                       </a>
                     )}
@@ -52,7 +62,9 @@ const { items } = Astro.props as Props;
               ) : (
                 <div class="mega-col">
                   {item.children.map((child) => (
-                    <a href={withBase(child.url ?? '/')}>{child.label}</a>
+                    <a href={withBase(child.url ?? '/')} {...externalLinkAttrs(child.url, Astro.url.origin)}>
+                      {child.label}
+                    </a>
                   ))}
                 </div>
               )}
@@ -60,7 +72,7 @@ const { items } = Astro.props as Props;
           </div>
         </div>
       ) : (
-        <a class="nav-top" href={withBase(item.url ?? '/')}>
+        <a class="nav-top" href={withBase(item.url ?? '/')} {...externalLinkAttrs(item.url, Astro.url.origin)}>
           {item.label}
         </a>
       ),

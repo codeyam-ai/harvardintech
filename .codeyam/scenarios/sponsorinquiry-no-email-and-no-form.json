@@ -1,0 +1,13 @@
+{
+  "name": "SponsorInquiry - No Email And No Form",
+  "id": "868882b5-e8ab-479b-b9ea-a6dfd458fe8c",
+  "url": "/isolated-components/SponsorInquiry-NoEmail",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "SponsorInquiry",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/sponsor/SponsorInquiry.astro",
+  "description": "The closing ask with no inquiry form configured AND the shared inbox blanked: the button falls back to the site's LinkedIn so a prospective sponsor still has a way through. The last rung of the priority ladder - form, then shared inbox, then LinkedIn - and the state that proves the section can never dead-end."
+}

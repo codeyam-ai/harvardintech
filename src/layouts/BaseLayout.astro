@@ -27,6 +27,12 @@ import { loadIntegrations } from '../lib/integrationsContent';
 import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
 import { withBase } from '../lib/url';
+import { emailFor } from '../lib/contact';
+import { externalLinkAttrs } from '../lib/externalLink';
+
+// The footer is one of the few places the shared inbox is shown
+// (`EMAIL_SURFACES` in src/lib/contact.ts). Blank setting → no mail link.
+const footerEmail = emailFor('footer', settings.contactEmail);
 
 interface Props {
   title?: string;
@@ -135,10 +141,10 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
           <p class="foot-copy">{settings.footerText}</p>
         </div>
         <div class="foot-links">
-          <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a>
+          {footerEmail ? <a href={`mailto:${footerEmail}`}>{footerEmail}</a> : null}
           {
             settings.socials.map((s) => (
-              <a href={s.url} rel="noopener">
+              <a href={s.url} {...externalLinkAttrs(s.url, Astro.url.origin)}>
                 {s.label}
               </a>
             ))

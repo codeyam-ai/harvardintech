@@ -117,7 +117,7 @@ Numbers in CMS copy stay editable text rather than being computed at render time
    - `src/components/JoinWhatsAppCta.astro` (new): "Join the {name} WhatsApp" linking to the form only.
    - `src/components/FormingChapterCta.astro` (new): "{city} is forming. Help lead it." with two buttons, *Volunteer to lead or support* (`volunteerUrl`) and *Join WhatsApp to meet local alumni* (the form).
      - Under them goes Nicole's line, "Interested in getting involved with the {city} chapter?", with a *Contact us* button to `mailto:` the site contact address.
-     - Following the contact plan's fallback rule, the button renders only when `contactEmail` is set. Nicole names `info@harvardintech.com`; see `launch--contact-and-calls-to-action`, open question 1.
+     - The button goes to `info@harvardintech.com`. This is one of the few places `launch--contact-and-calls-to-action` shows the shared inbox (owner, 2026-09-15: "sparingly"). It renders only when that plan's `emailFor('formingChapter')` returns an address.
    - `src/components/GlobalCommunityCta.astro` (new): "Not near a chapter? Join the global community" with three actions: WhatsApp form, newsletter (Mailchimp, one list, noting that geography is asked there) and volunteer.
    - `src/components/CommunityCallouts.astro` (new): a grid of `callouts`.
 7. **Chapter banner and leads.**

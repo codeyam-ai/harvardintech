@@ -12,7 +12,9 @@
 // `HomeSections`, so this route is data loading plus one element.
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { settings } from '../lib/site';
+import { settings, volunteerPage } from '../lib/site';
+import { emailFor } from '../lib/contact';
+import { loadVolunteerCopy } from '../lib/volunteerPageContent';
 import { publishedEntries } from '../lib/drafts';
 import { splitEvents } from '../lib/events';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
@@ -73,6 +75,9 @@ const board = sortBoardMembers(
 
 const { sections, unknownKinds } = await loadHomeSections();
 const slides = await loadHeroSlides();
+// The volunteer form keeps its one home, the volunteer page's `ctaUrl`; the
+// Support us "Speak at an event" card borrows it rather than copying it.
+const { ctaUrl: volunteerFormUrl } = await loadVolunteerCopy(volunteerPage);
 const stats = await loadHomeStats();
 
 // Advisory, never build-failing — `kind` is free text because the CMS has no
@@ -97,6 +102,7 @@ if (unknownKinds.length > 0) {
     posts={posts}
     board={board}
     socials={settings.socials}
-    email={settings.contactEmail}
+    email={emailFor('contactUs', settings.contactEmail)}
+    volunteerFormUrl={volunteerFormUrl}
   />
 </BaseLayout>

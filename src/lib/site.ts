@@ -25,7 +25,9 @@ export interface SocialLink {
 export interface SiteSettings {
   siteTitle: string;
   description: string;
-  contactEmail: string;
+  /** The shared inbox. Shown only on the surfaces in `EMAIL_SURFACES`
+   *  (src/lib/contact.ts); blank → socials only, everywhere. */
+  contactEmail?: string;
   footerText: string;
   socials: SocialLink[];
   // The homepage stat strip is NOT here any more. `homeStats` lived on this

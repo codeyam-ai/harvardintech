@@ -45,9 +45,12 @@ interface Props {
   posts?: any[];
   board?: any[];
   socials?: SocialLink[];
-  /** Required, not optional: `ContactUs` builds a mailto from it and has no
-   *  sensible fallback, so an absent address would render a dead contact link. */
-  email: string;
+  /** The shared inbox for the Contact section, already filtered through
+   *  `emailFor('contactUs', …)`. Absent → the section offers socials only. */
+  email?: string;
+  /** The volunteer form (the volunteer page's `ctaUrl`), for the Support us
+   *  "Speak at an event" card. Absent → the card goes to /volunteer. */
+  volunteerFormUrl?: string;
 }
 
 const {
@@ -60,6 +63,7 @@ const {
   board = [],
   socials = [],
   email,
+  volunteerFormUrl,
 } = Astro.props as Props;
 ---
 
@@ -98,7 +102,7 @@ const {
     ) : section.kind === 'whatsapp' ? (
       <WhatsappCommunity />
     ) : section.kind === 'support' ? (
-      <SupportUs email={email} />
+      <SupportUs volunteerFormUrl={volunteerFormUrl} />
     ) : section.kind === 'gallery' ? (
       <EventGallery />
     ) : (

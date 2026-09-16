@@ -51,7 +51,7 @@ import {
   communityNavItems,
   withCommunityItems,
 } from '../../lib/nav';
-import { volunteerPage, donatePage, sponsorPage } from '../../lib/site';
+import { volunteerPage, donatePage, sponsorPage, settings } from '../../lib/site';
 import '../../styles/tokens.css';
 
 // Component-isolation harness. codeyam captures a single component in isolation
@@ -205,12 +205,10 @@ const chapterEventsStates = {
   },
 };
 
-// ChapterConnect states: Default reads the global settings contact email;
-// Email passes a per-chapter `email` override (the SF chapter's address),
-// proving the override branch wins over the settings fallback.
+// ChapterConnect states: one. The Connect row lists the site's socials from
+// settings and never an email, so there is no per-chapter override to prove.
 const chapterConnectStates = {
   Default: {},
-  Email: { email: 'risdhillon@harvardintech.com' },
 } as const;
 
 // BoardMemberCard states: a member WITH a photo (the real board headshot) vs a
@@ -225,19 +223,19 @@ const boardMemberCardStates = {
 } as const;
 
 // ContactUs states: the live "CONTACT US" section with its real downloaded
-// social icons (Twitter / E-mail / Facebook) rendered icon-over-label. The
-// e-mail entry is always synthesized from `email`, so the Default state shows
-// all three icons exactly as on harvardintech.com.
+// social icons rendered icon-over-label. Default is today's homepage: the site's
+// socials plus the E-mail disc synthesized from the shared inbox. NoEmail is the
+// socials-only fallback a blanked setting produces: no disc, no "drop us a note".
 const contactUsStates = {
   Default: {
-    socials: [
-      { label: 'Twitter', url: 'https://twitter.com/harvardintech', icon: 'twitter' },
-      { label: 'Facebook', url: 'https://facebook.com/harvardintech', icon: 'facebook' },
-      { label: 'Email', url: 'mailto:ben@harvardintech.com', icon: 'email' },
-    ],
-    email: 'ben@harvardintech.com',
+    socials: settings.socials,
+    email: settings.contactEmail,
   },
-} as const;
+  NoEmail: {
+    socials: settings.socials,
+    email: undefined,
+  },
+};
 
 // Landing-page section components composed by the Home route (index.astro).
 // Hero / WhatsappCommunity / GetInvolved / SupportUs / EventGallery have all-
@@ -615,22 +613,30 @@ const sponsorLevelsStates = {
 };
 
 // SponsorInquiry: `Default` is today's page — no third-party form configured, so
-// the embed shows the reader-facing placeholder next to the email CTA.
-// `Configured` proves the same section once a real form URL is set, which is the
-// only part of this page still waiting on the team.
+// the embed shows the reader-facing placeholder next to the shared-inbox CTA.
+// `Configured` proves the form wins once a real form URL is set: no email button.
+// `NoEmail` is the last fallback, no form and a blanked setting: the button
+// messages the site's LinkedIn instead.
 const sponsorInquiryStates = {
   Default: {
     title: SPONSOR_COPY.inquiryTitle,
     body: SPONSOR_COPY.inquiryBody,
     formUrl: SPONSOR_COPY.inquiryFormUrl,
-    email: 'ben@harvardintech.com',
+    email: settings.contactEmail,
     disclaimer: SPONSOR_COPY.disclaimer,
   },
   Configured: {
     title: SPONSOR_COPY.inquiryTitle,
     body: SPONSOR_COPY.inquiryBody,
     formUrl: 'https://docs.google.com/forms/d/e/EXAMPLE_SPONSOR_FORM/viewform?embedded=true',
-    email: 'ben@harvardintech.com',
+    email: settings.contactEmail,
+    disclaimer: SPONSOR_COPY.disclaimer,
+  },
+  NoEmail: {
+    title: SPONSOR_COPY.inquiryTitle,
+    body: SPONSOR_COPY.inquiryBody,
+    formUrl: SPONSOR_COPY.inquiryFormUrl,
+    email: undefined,
     disclaimer: SPONSOR_COPY.disclaimer,
   },
 };
@@ -839,10 +845,10 @@ export async function getStaticPaths() {
     { params: { name: 'ChapterEvents-Community' } },
     { params: { name: 'ChapterSignUp' } },
     { params: { name: 'ChapterConnect' } },
-    { params: { name: 'ChapterConnect-Email' } },
     { params: { name: 'BoardMemberCard' } },
     { params: { name: 'BoardMemberCard-Initials' } },
     { params: { name: 'ContactUs' } },
+    { params: { name: 'ContactUs-NoEmail' } },
     { params: { name: 'Hero' } },
     { params: { name: 'WhatsappCommunity' } },
     { params: { name: 'GetInvolved' } },
@@ -878,6 +884,7 @@ export async function getStaticPaths() {
     { params: { name: 'SponsorWall-Partners' } },
     { params: { name: 'SponsorInquiry' } },
     { params: { name: 'SponsorInquiry-Configured' } },
+    { params: { name: 'SponsorInquiry-NoEmail' } },
     { params: { name: 'MomentumAccomplishments' } },
     { params: { name: 'VolunteerPage' } },
     { params: { name: 'VolunteerPage-Sparse' } },

@@ -6,6 +6,8 @@
 // without this a visitor who wants the calendar in their own app has nowhere to
 // go. It is only used alongside the embed — the link-out card mode already
 // carries its own subscribe call to action.
+import { externalLinkAttrs } from '../lib/externalLink';
+
 interface Props {
   calendarUrl: string;
 }
@@ -17,7 +19,7 @@ const { calendarUrl } = Astro.props as Props;
     Want every new event, across all chapters, in your own calendar? Subscribe
     on Luma and they'll appear automatically.
   </p>
-  <a class="btn btn-out" href={calendarUrl} rel="noopener" target="_blank">
+  <a class="btn btn-out" href={calendarUrl} {...externalLinkAttrs(calendarUrl, Astro.url.origin)}>
     Subscribe on Luma →
   </a>
 </div>

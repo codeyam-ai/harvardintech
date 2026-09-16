@@ -148,4 +148,23 @@ describe('site singletons', () => {
     expect(mod.settings.siteTitle).toBe('Second');
     expect(mod.nav.items).toHaveLength(0);
   });
+
+  // The contact email is optional: a blank or missing address still loads, so
+  // an editor can switch the site to socials-only without breaking the build.
+  it.each([
+    ['blank', { contactEmail: '' }],
+    ['missing', {}],
+  ])('loads settings when the contact email is %s', async (_label, email) => {
+    tmp = mkdtempSync(join(tmpdir(), 'site-test-'));
+    writeAllSingletons(tmp, {
+      settings: { siteTitle: 'No Inbox', description: '', footerText: '', socials: [], ...email },
+    });
+
+    process.env.CODEYAM_DATA_ROOT = tmp;
+    vi.resetModules();
+    const mod = await import('./site');
+
+    expect(mod.settings.siteTitle).toBe('No Inbox');
+    expect(mod.settings.contactEmail || undefined).toBeUndefined();
+  });
 });

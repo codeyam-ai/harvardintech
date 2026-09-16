@@ -18,7 +18,7 @@ interface Props {
   sponsors?: SponsorLike[];
   email?: string;
 }
-const { copy, sponsors = [], email = 'ben@harvardintech.com' } = Astro.props as Props;
+const { copy, sponsors = [], email } = Astro.props as Props;
 ---
 
 <SponsorHero

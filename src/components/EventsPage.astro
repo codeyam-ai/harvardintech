@@ -7,16 +7,13 @@
 import EventsSection from './EventsSection.astro';
 import { splitEvents, type EventLike } from '../lib/events';
 
+// No Eventbrite button: Luma is the one events system (owner, 2026-09-14), and
+// the Luma calendar sits above this body on /events.
 interface Props {
   events?: EventLike[];
   now?: string | Date;
-  eventbriteUrl?: string;
 }
-const {
-  events = [],
-  now,
-  eventbriteUrl = 'https://www.eventbrite.com/o/harvard-in-tech-17275560304',
-} = Astro.props;
+const { events = [], now } = Astro.props;
 
 const { upcoming, past } = splitEvents(events, now ?? new Date());
 ---
@@ -42,9 +39,5 @@ const { upcoming, past } = splitEvents(events, now ?? new Date());
         <EventsSection title="Past Events" events={past} variant="past" marginTop="var(--space-xl)" />
       ) : null
     }
-
-    <div style="margin-top: var(--space-xl);">
-      <a class="s-btn" href={eventbriteUrl} rel="noopener">View Upcoming Events</a>
-    </div>
   </div>
 </section>

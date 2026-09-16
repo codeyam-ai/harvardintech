@@ -4,6 +4,7 @@
 // This is the PRODUCTION DEFAULT, not an edge case: the `projects` collection
 // starts empty, so most visitors see this. It therefore has to do real work —
 // acknowledge the gap and still give the reader a way to raise their hand.
+import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 
 interface Props {
@@ -22,7 +23,7 @@ const {
   <p>{message}</p>
   {
     ctaLabel && ctaUrl ? (
-      <a class="btn btn-out" href={withBase(ctaUrl)} rel="noopener">
+      <a class="btn btn-out" href={withBase(ctaUrl)} {...externalLinkAttrs(ctaUrl, Astro.url.origin)}>
         {ctaLabel}
       </a>
     ) : null

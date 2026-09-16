@@ -2,6 +2,7 @@
 // /volunteer hero: the "Join the Volunteer Team" pitch and the primary
 // sign-up CTA, over a full-bleed photo with a contrast scrim — matching the
 // homepage and /donate hero treatment.
+import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 
 interface Props {
@@ -24,7 +25,7 @@ const heroImage = image ? withBase(image) : null;
     <p class="lede">{intro}</p>
     {
       ctaLabel && ctaUrl ? (
-        <a class="btn btn-solid cta" href={withBase(ctaUrl)} rel="noopener">
+        <a class="btn btn-solid cta" href={withBase(ctaUrl)} {...externalLinkAttrs(ctaUrl, Astro.url.origin)}>
           {ctaLabel}
         </a>
       ) : null

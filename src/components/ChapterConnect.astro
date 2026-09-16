@@ -1,50 +1,54 @@
 ---
-// "Connect With Us" social footer from the live chapter pages: a centered
-// heading, the contact email, and the social links rendered as dark circular
-// icon badges (distinct from the landing ContactUs icon-over-label treatment).
-// Reads the editable socials + contact email from the settings singleton so it
-// stays CMS-editable, and reuses the shared icon + mailto helpers. An optional
-// `email` prop lets a chapter page override the displayed address with its own
-// per-chapter contact email; absent → the global settings email.
-import { buildMailto } from '../lib/mailto';
-import { socialIconSrc } from '../lib/socialIcon';
+// "Connect With Us" from the live chapter pages: a centered heading and the
+// site's social links as circular badges, each carrying the brand's official
+// logo in its official colour. Reads the editable socials from the settings
+// singleton so it stays CMS-editable.
+//
+// The logos are inline SVG from `brandIcons.ts` (the official Simple Icons
+// marks), so they stay sharp on any screen. They replaced the original site's
+// 100px teal raster badges, which blurred on high-density displays and still
+// showed the retired Twitter bird.
+//
+// No email here, on purpose. The owner's rule (2026-09-15) shows the shared
+// inbox "sparingly", and a chapter or community Connect row is not one of those
+// places (see `EMAIL_SURFACES` in src/lib/contact.ts). Every social is listed in
+// its settings order, so LinkedIn appears alongside X and Facebook.
+import { brandIcon } from '../lib/brandIcons';
+import { connectLinks } from '../lib/contact';
+import { externalLinkAttrs } from '../lib/externalLink';
+import { socialDisplayLabel } from '../lib/socialLabel';
 import { settings } from '../lib/site';
-import { withBase } from '../lib/url';
 
-interface Props {
-  email?: string;
-}
-const { email: emailProp } = Astro.props;
-const email = emailProp ?? settings.contactEmail;
-const contactHref = buildMailto({ to: email, subject: 'Hello from the website' });
-
-// Twitter, E-mail, Facebook in the live site's order. The e-mail entry is
-// synthesized from the contact email so it always renders.
-const links = [
-  ...settings.socials.filter((s) => /twitter/i.test(s.label)),
-  { label: 'E-mail', url: contactHref, icon: 'email' },
-  ...settings.socials.filter((s) => /facebook/i.test(s.label)),
-];
+const links = connectLinks(settings.socials);
 ---
 
 <section class="s-section" id="connect" style="text-align: center;">
   <div class="s-narrow">
     <h2 class="s-title">Connect With Us</h2>
-    <p style="font-size: 1.1rem; color: var(--color-muted); margin: 0 0 var(--space-lg);">
-      <a href={contactHref} style="color: var(--color-link);">{email}</a>
-    </p>
-    <div style="display: flex; gap: var(--space-lg); justify-content: center; align-items: center;">
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; align-items: center; margin-top: var(--space-md);">
       {
         links.map((link) => {
-          const iconSrc = socialIconSrc(link.icon);
-          return iconSrc ? (
+          const icon = brandIcon(link.icon) ?? brandIcon(link.label);
+          return icon ? (
             <a
               href={link.url}
-              rel="noopener"
               class="connect-badge"
-              aria-label={link.label}
+              aria-label={socialDisplayLabel(link.label)}
+              style={icon.color ? `color: ${icon.color}` : undefined}
+              {...externalLinkAttrs(link.url, Astro.url.origin)}
             >
-              <img src={withBase(iconSrc)} alt="" width="24" height="24" loading="lazy" />
+              <svg
+                viewBox={icon.viewBox}
+                width="24"
+                height="24"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                {icon.paths.map((d) => (
+                  <path d={d} />
+                ))}
+              </svg>
             </a>
           ) : null;
         })
@@ -62,6 +66,7 @@ const links = [
     height: 48px;
     border-radius: 50%;
     background: #fff;
+    color: var(--color-text);
     border: 1px solid var(--color-border);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: transform 0.15s ease;
@@ -69,12 +74,13 @@ const links = [
   .connect-badge:hover {
     transform: scale(1.08);
   }
-  .connect-badge img {
-    /* Render the brand glyphs in their natural colors — the email icon is an
-       opaque JPEG, so a brightness/invert filter would flatten it to a solid
-       block; a light circular badge keeps all three icons legible. */
+  .connect-badge:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  .connect-badge svg {
+    display: block;
     width: 24px;
     height: 24px;
-    object-fit: contain;
   }
 </style>
