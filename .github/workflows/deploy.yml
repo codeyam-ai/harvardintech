@@ -1,92 +1,88 @@
-# Build the Astro static site and publish it. One repo, two tracks, chosen by
-# the branch that was pushed.
+# Build the Astro static site and publish it. ONE branch, one site.
 #
-# TODAY — pre-launch. NEITHER track is public; harvardintech.com is still
-# Strikingly's, and both sites below are passphrase-gated:
+# TODAY — pre-launch. The site is not public; harvardintech.com is still
+# Strikingly's, and the one site below is passphrase-gated:
 #
-#   main    → codeyam-ai.github.io/harvardintech        (the REVIEWED site)
-#             The link the team has. It moves only when someone promotes, so a
-#             reviewer never opens it mid-change and finds half-finished work.
-#   staging → nseldeib.github.io/harvardintech-staging  (the WORKING site)
-#             Where day-to-day commits land and get looked at first.
+#   main → codeyam-ai.github.io/harvardintech   passphrase-gated + noindex,
+#          drafts visible, serves /admin.
 #
-# Both are passphrase-gated + noindex, show drafts, and serve /admin. The only
-# difference today is cadence: `staging` moves constantly, `main` moves on
-# purpose. Promotion is a single merge staging → main, which promote.yml does at
-# the press of a button.
+# This is the link the team has, AND where the content editor commits. An edit
+# saved in /admin lands on `main` and is on the site in about two minutes. There
+# is no promote step any more, and nothing to keep in sync.
+#
+# WHY ONE BRANCH. Until 2026-09-12 there were two: `staging` for day-to-day work
+# and `main` for reviewing, joined by a manual Promote. Every `staging` deploy had
+# failed since 2026-08-20 (an unquoted preview timestamp the schema rejected, now
+# fixed in src/lib/previewFieldsSchema.ts), so the editor's saves reached nothing,
+# and Promote was blocked besides because the branches had diverged. The second
+# track cost real reliability and bought a separation nobody was using. See
+# .codeyam/plans/completed/one-site-content-edits-publish-straight-to-main.md.
 #
 # WHY GITHUB.IO AND NOT review.harvardintech.com: standing up the review
 # subdomain means adding a DNS record to harvardintech.com, and we do not have
-# the go-ahead to touch that domain yet. Hosting the working site on the staging
-# repo's own Pages URL needs no DNS at all, so the domain stays untouched until
-# the migration is approved. See "AT THE STRIKINGLY CUTOVER" below for the
-# two-line diff that moves it.
+# the go-ahead to touch that domain yet. The repo's own Pages URL needs no DNS,
+# so the domain stays untouched until the migration is approved.
 #
-# AT THE STRIKINGLY CUTOVER the roles change — `main` becomes the public site
-# and `staging` becomes the gated review origin:
+# AT THE STRIKINGLY CUTOVER `main` becomes the public site:
 #
-#   main    → harvardintech.com            open, indexable, drafts hidden,
-#                                          no /admin, sitemap published.
-#   staging → review.harvardintech.com     passphrase-gated + noindex.
+#   main → harvardintech.com   open, indexable, drafts hidden, no /admin,
+#                              sitemap published.
 #
-# Reaching that state means dropping PREVIEW_GATE/INCLUDE_DRAFTS from the main
-# build AND keeping a gated track standing — together, never one without the
-# other, or nothing is protected. See DEPLOY_SETUP.md.
+# Reaching that state means dropping PREVIEW_GATE/INCLUDE_DRAFTS from this build
+# AND standing a gated track back up — together, never one without the other, or
+# nothing is protected and /admin ships publicly. The gated track returns as a
+# PRIVATE EDITOR BUILD OF `main` published to the kept second repository
+# (nseldeib/harvardintech-staging, whose REVIEW_DEPLOY_KEY secret is retained for
+# exactly this), pointed at review.harvardintech.com. That is a launch-day step,
+# not a branch. See DEPLOY_SETUP.md.
 #
-# Two axes phase a change: `staging` phases CODE, and the CMS Draft toggle
-# phases CONTENT.
+# The CMS Draft toggle is now the only axis that phases a change: it phases
+# CONTENT. Code is phased by not merging it.
 #
-# The difference between the tracks is entirely environmental — see
-# astro.config.mjs (base/site, conditional CMS + sitemap),
+# What varies between a gated build and a public one is entirely environmental —
+# see astro.config.mjs (base/site, conditional CMS + sitemap),
 # src/lib/previewGate.ts (PREVIEW_GATE) and src/lib/draftVisibility.ts
 # (INCLUDE_DRAFTS). There is no per-track code.
 #
-# Public-track setup: none in the common case. The build job's "Enable /
-# configure GitHub Pages" step turns Pages on automatically. If your org policy
-# blocks token-based enablement and the first deploy 404s, run
+# Setup: none in the common case. The build job's "Enable / configure GitHub
+# Pages" step turns Pages on automatically. If your org policy blocks
+# token-based enablement and the first deploy 404s, run
 # `scripts/enable-pages.sh` once (or toggle the UI) and re-run — see
 # DEPLOY_SETUP.md.
 #
-# Staging-track setup (one-time, see DEPLOY_SETUP.md): create the
-# nseldeib/harvardintech-staging repo, enable Pages on it with Source =
-# branch `gh-pages`, and store the SSH deploy key's private half here as the
-# REVIEW_DEPLOY_KEY secret (public half on the staging repo, with write access).
-# No DNS. Until that exists the `staging` job fails and `main` is unaffected.
+# REQUIRED SECRET: PREVIEW_GATE_PASSPHRASE. The build refuses to ship a gate with
+# no passphrase, so this workflow FAILS without it. It did not survive the move
+# to the codeyam-ai account, which is why every deploy between 2026-09-12 and
+# 2026-09-17 failed.
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, staging]
+    branches: [main]
   workflow_dispatch:
-  # promote.yml calls this after fast-forwarding main, because a push made with
-  # GITHUB_TOKEN does not itself trigger a workflow. Under workflow_call the
-  # `github.ref_name` guards below see the CALLER's ref (main), so the public
-  # track runs and the review job is skipped — which is exactly what promotion
-  # means.
-  workflow_call:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Per-track concurrency. The two tracks must NOT cancel each other — a shared
-# `pages` group would mean a push to staging kills an in-flight production
-# deploy — so the ref is part of the group name.
+# One branch now, so one group. The ref stays in the name anyway: it costs
+# nothing and keeps a manually dispatched run on another ref from cancelling the
+# deploy of `main`.
 concurrency:
   group: pages-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
-  # ---- Public track: main → harvardintech.com -----------------------------
+  # ---- main → codeyam-ai.github.io/harvardintech (gated today) ------------
   build:
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:
-      # Check out the branch TIP, not `github.sha`. Under workflow_call from
-      # promote.yml, `github.sha` is main as it stood when promote was
-      # dispatched — i.e. before the fast-forward — so a default checkout would
-      # publish the pre-promotion content.
+      # Check out the branch TIP, not `github.sha`. This mattered when promote.yml
+      # called this workflow after a fast-forward; with one branch it is simply
+      # the safer default — a manually dispatched run publishes what is on `main`
+      # now, not what was there when the run was queued.
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
@@ -134,9 +130,10 @@ jobs:
           # drafts, and it serves /admin so the CMS can edit it.
           #
           # REMOVING THESE TWO LINES IS WHAT TAKES THE SITE PUBLIC. Do it only
-          # at the Strikingly cutover, and only once something else is standing
-          # up a private track (the dormant `staging` job below) — otherwise
-          # there is nothing left protecting the preview. See DEPLOY_SETUP.md.
+          # at the Strikingly cutover, and only once a private editor build of
+          # `main` is standing on the kept second repository — otherwise there is
+          # nothing left protecting the preview and /admin ships to the world.
+          # See DEPLOY_SETUP.md.
           PREVIEW_GATE: '1'
           INCLUDE_DRAFTS: '1'
         run: npm run build
@@ -157,91 +154,9 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  # ---- Staging track: staging → nseldeib.github.io/harvardintech-staging --
-  # A second GitHub Pages *site* requires a second repo (one repo = one Pages
-  # site), so this job builds here and pushes the built output to the staging
-  # repo's gh-pages branch over SSH.
-  #
-  # It gets its own repo rather than a subdirectory of the reviewed site because
-  # the two must deploy independently — the whole point is that `main` holds
-  # still while this one moves. It does NOT get a custom domain: that would mean
-  # a DNS record on harvardintech.com, which is off-limits until the migration is
-  # approved. The staging repo's default Pages URL needs no DNS at all.
-  #
-  # /admin ships here as well as on `main`. Note that the CMS commits to the
-  # branch named in src/data/cms.json — `main` — so an edit made through THIS
-  # site's admin lands on the reviewed site, skipping staging entirely. That is
-  # the one thing here that does not respect the track boundary. It is left as-is
-  # deliberately: content editors work on `main`'s admin, this site is for us,
-  # and making the CMS branch per-build is a larger change than the boundary is
-  # worth today. Do content edits on the reviewed site's /admin.
-  review:
-    if: github.ref_name == 'staging'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - name: Install dependencies
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
-        run: npm ci
-      - name: Build staging site
-        env:
-          # Served from a subpath of the staging repo's Pages site, so the base
-          # must match the repo name — same shape as the `main` build above.
-          # @codeyam/cms 0.2.2 supports a non-root base, and the gated `main`
-          # deploy is the standing proof that /admin works under one.
-          #
-          # AT THE CUTOVER, when review.harvardintech.com is approved: drop
-          # DEPLOY_BASE_PATH (the custom domain is rooted at '/'), point
-          # PAGES_SITE at https://review.harvardintech.com, and restore the CNAME
-          # write in the step below. Three lines; nothing else here changes.
-          DEPLOY_BASE_PATH: /harvardintech-staging
-          PAGES_SITE: https://nseldeib.github.io
-          CANONICAL_ORIGIN: https://harvardintech.com
-          PREVIEW_GATE_PASSPHRASE: ${{ secrets.PREVIEW_GATE_PASSPHRASE }}
-          PREVIEW_GATE: '1'
-          INCLUDE_DRAFTS: '1'
-        run: npm run build
-      - name: Add .nojekyll
-        # Required for a BRANCH-sourced Pages site: without it Jekyll strips
-        # Astro's `_astro/` asset directory and the site loads unstyled with no
-        # JS. (The `main` track deploys via artifact, which never runs Jekyll,
-        # so it needs neither this nor a CNAME.)
-        #
-        # No CNAME file: this site has no custom domain. Writing one would bind
-        # a domain whose DNS does not point here, and Pages would serve a
-        # misconfigured-domain error instead of the site.
-        run: |
-          touch dist/.nojekyll
-      - name: Publish to staging repo
-        env:
-          REVIEW_DEPLOY_KEY: ${{ secrets.REVIEW_DEPLOY_KEY }}
-        # A deploy key rather than a PAT: it is scoped to exactly one repo and
-        # carries no person's identity. The push is force-with-lease-free by
-        # design — gh-pages here is a generated artifact branch with no history
-        # worth preserving, and each run replaces it wholesale.
-        run: |
-          set -euo pipefail
-          if [ -z "${REVIEW_DEPLOY_KEY:-}" ]; then
-            echo "::error::REVIEW_DEPLOY_KEY secret is not set — see DEPLOY_SETUP.md for the one-time staging-track setup."
-            exit 1
-          fi
-          mkdir -p ~/.ssh
-          printf '%s\n' "$REVIEW_DEPLOY_KEY" > ~/.ssh/review_deploy_key
-          chmod 600 ~/.ssh/review_deploy_key
-          ssh-keyscan -t rsa,ecdsa,ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
-          export GIT_SSH_COMMAND="ssh -i ~/.ssh/review_deploy_key -o IdentitiesOnly=yes"
-          cd dist
-          git init -q
-          git checkout -q -B gh-pages
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -q -m "Staging build from staging@${GITHUB_SHA}"
-          git push -q -f git@github.com:nseldeib/harvardintech-staging.git gh-pages
+# The gated review track returns at launch as a PRIVATE EDITOR BUILD OF `main`
+# published to the kept second repository (nseldeib/harvardintech-staging) and
+# pointed at review.harvardintech.com. Its REVIEW_DEPLOY_KEY secret is retained
+# here for exactly that. It is a launch-day step, not a branch — see
+# DEPLOY_SETUP.md. The `review` job that used to build the `staging` branch was
+# removed on 2026-09-17 with the one-site change.

@@ -2,9 +2,9 @@
   "repo": {
     "owner": "codeyam-ai",
     "repo": "harvardintech",
-    "branch": "staging"
+    "branch": "main"
   },
-  "siteUrl": "https://nseldeib.github.io/harvardintech-staging",
+  "siteUrl": "https://codeyam-ai.github.io/harvardintech",
   "authEndpoint": "/auth",
   "auth": {
     "token": true,

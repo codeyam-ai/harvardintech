@@ -8,14 +8,16 @@ import "../../styles/tokens.css";
 // `live` here is not "GitHub said the build finished": the poll holds at
 // `verifying` until the site's own `/deploy-status.json` marker CHANGES, so
 // reaching this panel means the new bytes are genuinely being served. That is
-// only true now that the watch reads the marker on the site the `staging` branch
-// actually deploys to — it used to read the main site's marker, which this
-// commit never touches, so the change it was waiting for could never happen.
+// only true now that the watch reads the marker on the site the branch actually
+// deploys to. The bug it fixed was reading a DIFFERENT site's marker, which the
+// commit never touches, so the change it waited for could never arrive — a
+// mismatch that was easy to create while two branches published to two sites,
+// and that the move to one branch removes at the source.
 //
 // "View live site" points at that same site for the same reason.
-const TARGET = { owner: 'nseldeib', repo: 'harvardintech', branch: 'staging' };
-const COMMIT_URL = 'https://github.com/nseldeib/harvardintech/commit/a0dec62273d5ec475ae0825ed31184a84447c6f1';
-const SITE_URL = 'https://nseldeib.github.io/harvardintech-staging';
+const TARGET = { owner: 'codeyam-ai', repo: 'harvardintech', branch: 'main' };
+const COMMIT_URL = 'https://github.com/codeyam-ai/harvardintech/commit/a0dec62273d5ec475ae0825ed31184a84447c6f1';
+const SITE_URL = 'https://codeyam-ai.github.io/harvardintech';
 ---
 
 <html lang="en">

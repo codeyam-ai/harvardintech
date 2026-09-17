@@ -235,23 +235,24 @@ const base = process.env.DEPLOY_BASE_PATH || '/';
 // can differ from `site` until launch — see src/lib/canonicalUrl.ts.
 const site = process.env.PAGES_SITE || 'https://harvardintech.com';
 
-// --- two-track publishing -------------------------------------------------
-// Two builds come out of this one repo (see .github/workflows/deploy.yml).
+// --- publishing tracks ----------------------------------------------------
+// ONE branch, one site today (see .github/workflows/deploy.yml).
 //
-// TODAY both are gated, because harvardintech.com is still Strikingly's:
-//   - `main`    → codeyam-ai.github.io/harvardintech       (reviewed — holds still)
-//   - `staging` → nseldeib.github.io/harvardintech-staging (working — moves constantly;
-//                 its hosting repo stayed on the old account when this one moved)
+// TODAY it is gated, because harvardintech.com is still Strikingly's:
+//   - `main` → codeyam-ai.github.io/harvardintech   gated, noindex, drafts
+//     visible, ships /admin. It is also where the content editor commits.
 //
-// AFTER THE MIGRATION the roles split:
-//   - Public track  (`main`    → harvardintech.com):        open, indexable.
-//   - Review track  (`staging` → review.harvardintech.com): passphrase-gated,
-//     noindex, drafts visible, and the only track that ships /admin.
+// AFTER THE MIGRATION there are two BUILDS, still one branch:
+//   - Public build  (`main` → harvardintech.com):        open, indexable.
+//   - Private editor build (`main` → review.harvardintech.com, published to the
+//     kept second repository): passphrase-gated, noindex, drafts visible, and
+//     the only build that ships /admin.
 //
-// `isReviewTrack` is a property of the BUILD, not of the branch: PREVIEW_GATE=1
-// marks it, and src/lib/previewGate.ts reads the same var for the gate UI. Both
-// of today's builds set it, so both are review-track builds and both ship /admin
-// — which is why /admin is reachable on the gated preview right now.
+// `isReviewTrack` is a property of the BUILD, never of the branch — which is
+// exactly why dropping the second branch changed nothing here. PREVIEW_GATE=1
+// marks it, and src/lib/previewGate.ts reads the same var for the gate UI.
+// Today's only build sets it, which is why /admin is reachable on the gated
+// preview right now.
 const isReviewTrack = process.env.PREVIEW_GATE === '1';
 const isDev = process.argv.includes('dev');
 

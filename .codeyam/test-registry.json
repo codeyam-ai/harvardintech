@@ -2181,66 +2181,57 @@
       "runner": "tests"
     },
     {
-      "description": "Every advertised URL names the live domain, never a gated preview.",
+      "description": "Every advertised URL names the live domain, never the gated preview.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
-      "key": "deploy.yml track coherence › advertises harvardintech.com from both gated tracks",
-      "line": 141,
-      "registeredAt": "2026-09-14T18:19:59Z",
+      "key": "deploy.yml track coherence › advertises harvardintech.com from the gated build",
+      "line": 135,
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
-      "description": "The reviewed track is served from a subpath of this repo's own Pages site, so the same rule applies even though it publishes by artifact upload.",
+      "description": "The headline contract, and the bug class this file exists for: a job's base path must name the same repo it publishes to. The two sit far apart in the workflow with nothing connecting them, and a mismatch deploys a site that returns 200 while every asset and link 404s. The site is served from a subpath of this repo's own Pages site, so the rule applies even though it publishes by artifact upload rather than by push.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
-      "key": "deploy.yml track coherence › builds the reviewed track with a base matching this repo",
-      "line": 112,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "key": "deploy.yml track coherence › builds with a base matching this repo",
+      "line": 105,
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
-      "description": "The headline contract, and the bug class this file exists for: the staging job's base path must name the same repo it publishes to. They sit far apart in the workflow with nothing connecting them, and a mismatch deploys a site that returns 200 while every asset and link 404s.",
+      "description": "The one-site change on 2026-09-17 retired the `staging` branch and the `review` job that built it. This is what stops either coming back by accident: a second deploy target is how the base-path mismatch above became possible in the first place, and how an editor ended up saving to a branch whose build had been failing for three weeks.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
-      "key": "deploy.yml track coherence › builds the staging track with a base matching the repo it publishes to",
-      "line": 102,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "key": "deploy.yml track coherence › deploys no branch other than main",
+      "line": 116,
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
-      "description": "Dropping PREVIEW_GATE is precisely what takes a site public, and harvardintech.com is still Strikingly's — so until the cutover BOTH tracks must set it. This is the one assertion here guarding exposure rather than correctness, which is why it covers both jobs rather than just the new one.",
+      "description": "Dropping PREVIEW_GATE is precisely what takes the site public, and harvardintech.com is still Strikingly's — so until the cutover the build must set it. The one assertion here guarding exposure rather than correctness.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
-      "key": "deploy.yml track coherence › gates both tracks while neither is meant to be public",
+      "key": "deploy.yml track coherence › gates the build while the site is not meant to be public",
+      "line": 125,
+      "registeredAt": "2026-09-17T14:06:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The repo moved to codeyam-ai; the site is hosted there now.",
+      "file": "src/lib/deployTracks.test.ts",
+      "format": "vitest",
+      "key": "deploy.yml track coherence › hosts the site on the codeyam-ai Pages site",
       "line": 130,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
-      "description": "The repo moved to codeyam-ai; the reviewed site is hosted there now.",
+      "description": "The passphrase lives only in the secret — never a literal in the workflow. A gated build with an empty one would ship a gate anyone can open, so the build refuses and the deploy fails rather than publishing it. That is also why the secret going missing in the account move stopped every deploy dead.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
-      "key": "deploy.yml track coherence › hosts the reviewed track on the codeyam-ai Pages site",
-      "line": 136,
-      "registeredAt": "2026-09-14T18:19:59Z",
-      "runner": "tests"
-    },
-    {
-      "description": "The passphrase lives only in the secret — never a literal in the workflow.",
-      "file": "src/lib/deployTracks.test.ts",
-      "format": "vitest",
-      "key": "deploy.yml track coherence › takes the gate passphrase from the secret on both gated tracks",
-      "line": 147,
-      "registeredAt": "2026-09-14T18:19:59Z",
-      "runner": "tests"
-    },
-    {
-      "description": "The staging site has no custom domain. A CNAME file would bind a domain whose DNS does not point at it, and Pages then serves a misconfigured-domain error instead of the site. Restoring this write is a deliberate step of the future migration, not something to leave lying around.",
-      "file": "src/lib/deployTracks.test.ts",
-      "format": "vitest",
-      "key": "deploy.yml track coherence › writes no CNAME on the staging track",
-      "line": 122,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "key": "deploy.yml track coherence › takes the gate passphrase from the secret",
+      "line": 143,
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -2248,7 +2239,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › buildDeployRecord › carries the commit url, marker url and sampled baseline",
-      "line": 35,
+      "line": 36,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2257,7 +2248,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › buildDeployRecord › preserves a null marker baseline rather than dropping the field",
-      "line": 55,
+      "line": 56,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2266,7 +2257,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › buildDeployRecord › starts at the committed stage stamped with the supplied clock",
-      "line": 45,
+      "line": 46,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2275,7 +2266,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › deployWatchKey › distinguishes two different commits",
-      "line": 66,
+      "line": 67,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2284,7 +2275,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › deployWatchKey › distinguishes two watches of the same commit started at different times",
-      "line": 76,
+      "line": 77,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2293,7 +2284,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › deployWatchKey › is stable for the same commit and start time",
-      "line": 85,
+      "line": 86,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2302,7 +2293,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › isDeployRecord › accepts a record built by buildDeployRecord",
-      "line": 140,
+      "line": 141,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2311,7 +2302,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › isDeployRecord › rejects a record missing the fields the poll depends on",
-      "line": 149,
+      "line": 150,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2320,7 +2311,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › isDeployRecord › rejects null and non-object values",
-      "line": 156,
+      "line": 157,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2329,7 +2320,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › isWatchExpired › expires a watch left over from a much earlier session",
-      "line": 131,
+      "line": 132,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2338,7 +2329,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › isWatchExpired › expires a watch whose budget is exactly spent",
-      "line": 124,
+      "line": 125,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2347,7 +2338,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › isWatchExpired › treats a just-started watch as resumable",
-      "line": 115,
+      "line": 116,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2356,7 +2347,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › remainingWatchMs › counts down from the start time rather than from now",
-      "line": 96,
+      "line": 97,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -2365,7 +2356,7 @@
       "file": "src/lib/deployWatch.test.ts",
       "format": "vitest",
       "key": "deployWatch › remainingWatchMs › floors at zero once the budget is spent",
-      "line": 105,
+      "line": 106,
       "registeredAt": "2026-08-08T00:50:27Z",
       "runner": "tests"
     },
@@ -7010,7 +7001,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › handles the reviewed track repo too",
       "line": 39,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7019,7 +7010,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › returns the repo name as a rooted path",
       "line": 34,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7028,7 +7019,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › throws on an empty repo name rather than returning a bare slash",
       "line": 56,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7037,7 +7028,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › tolerates surrounding slashes rather than doubling them",
       "line": 44,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7046,7 +7037,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › trims surrounding whitespace",
       "line": 49,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7679,7 +7670,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › reads the repo out of an HTTPS remote",
       "line": 78,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7688,7 +7679,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › reads the repo out of an SSH push command",
       "line": 64,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7697,7 +7688,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › reads the repo when the .git suffix is absent",
       "line": 71,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7706,7 +7697,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › returns the repo, not the owner",
       "line": 85,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -7715,7 +7706,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › returns undefined when the command contains no remote",
       "line": 91,
-      "registeredAt": "2026-08-07T12:04:36.344243078+00:00",
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {
@@ -9787,6 +9778,69 @@
       "key": "site singletons › reflects a second data root on re-import",
       "line": 137,
       "registeredAt": "2026-06-17T11:03:18.675832+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The fix: the same input now parses. This is the assertion that would have caught the outage on the day it was introduced.",
+      "file": "src/lib/previewFieldsSchema.test.ts",
+      "format": "vitest",
+      "key": "sitePreviewFields — the bug it exists for › accepts the unquoted timestamp YAML turns into a Date",
+      "line": 39,
+      "registeredAt": "2026-09-17T14:06:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The other two preview fields are untouched by the shim and must keep working, or a preview link would validate but not resolve.",
+      "file": "src/lib/previewFieldsSchema.test.ts",
+      "format": "vitest",
+      "key": "sitePreviewFields — the bug it exists for › keeps previewOf and previewLock as the upstream schema declares them",
+      "line": 78,
+      "registeredAt": "2026-09-17T14:06:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The field is optional: an ordinary entry carries no preview marker at all, and must not be forced to invent one.",
+      "file": "src/lib/previewFieldsSchema.test.ts",
+      "format": "vitest",
+      "key": "sitePreviewFields — the bug it exists for › leaves an ordinary entry with no preview fields alone",
+      "line": 69,
+      "registeredAt": "2026-09-17T14:06:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Accepting is only half of it. Everything downstream — `isPreview`, the preview index, the staleness copy — was written against a string, so a Date reaching them would move the failure from the build to the page, which is worse because it is silent.",
+      "file": "src/lib/previewFieldsSchema.test.ts",
+      "format": "vitest",
+      "key": "sitePreviewFields — the bug it exists for › normalises the Date back to the ISO string the CMS meant to write",
+      "line": 52,
+      "registeredAt": "2026-09-17T14:06:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A correctly QUOTED timestamp must still work — the serializer quotes some values already, so both spellings reach the schema in practice.",
+      "file": "src/lib/previewFieldsSchema.test.ts",
+      "format": "vitest",
+      "key": "sitePreviewFields — the bug it exists for › passes an already-quoted timestamp through untouched",
+      "line": 61,
+      "registeredAt": "2026-09-17T14:06:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A genuinely wrong type is still wrong. Widening to string|Date must not have widened to anything.",
+      "file": "src/lib/previewFieldsSchema.test.ts",
+      "format": "vitest",
+      "key": "sitePreviewFields — the bug it exists for › still rejects a value that is neither a string nor a date",
+      "line": 90,
+      "registeredAt": "2026-09-17T14:06:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The failing case, stated against the UPSTREAM schema so this test also documents why the shim is needed. If a future @codeyam/cms release fixes the serializer or widens the field, this assertion flips and the shim can go — which is the signal to delete `previewFieldsSchema.ts` entirely.",
+      "file": "src/lib/previewFieldsSchema.test.ts",
+      "format": "vitest",
+      "key": "sitePreviewFields — the bug it exists for › upstream previewFields still rejects what the CMS actually writes",
+      "line": 28,
+      "registeredAt": "2026-09-17T14:06:35Z",
       "runner": "tests"
     },
     {

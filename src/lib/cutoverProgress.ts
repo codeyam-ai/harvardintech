@@ -122,7 +122,7 @@ export const STEPS: StepDef[] = [
     needs: ['D1'],
     note: {
       label: 'Note',
-      html: 'The gated review track already exists, so this costs one DNS record and no new setup.',
+      html: 'The gated review track is switched on at launch from the kept second repository, so this costs one DNS record plus that build — no new hosting to create.',
     },
   },
   {

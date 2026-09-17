@@ -55,9 +55,8 @@ entry, mostly non-technical).
    is the team comfortable cutting over? *(See deep dive.)*
 4. ~~**Preview access**~~ — **Resolved.** The preview is no longer a temporary
    pre-launch state that disappears at cutover; a gated site runs permanently
-   alongside the live one. Today that is `codeyam-ai.github.io/harvardintech`
-   (reviewed) plus `nseldeib.github.io/harvardintech-staging` (working); after the
-   cutover the gated track becomes `review.harvardintech.com`. It keeps the
+   alongside the live one. Today that is `codeyam-ai.github.io/harvardintech`;
+   after the cutover the gated track becomes `review.harvardintech.com`. It keeps the
    deterrent-level gate (client-side passphrase + `noindex` + robots
    `Disallow`). *Still open if the team wants it:* moving the gated track to
    Cloudflare Pages behind Cloudflare Access buys real per-person
@@ -121,21 +120,23 @@ Two sites are built from this one repo. **Today neither is public** —
 harvardintech.com is still Strikingly's — so the split is between a link that
 holds still and a link that moves:
 
-- **Reviewed** — `main` → `codeyam-ai.github.io/harvardintech`. The link the team
-  has. Moves only when someone promotes.
-- **Staging** — `staging` → `nseldeib.github.io/harvardintech-staging`. Takes
-  every commit, so work in progress never disturbs the reviewed link.
+- **One site** — `main` → `codeyam-ai.github.io/harvardintech`. Takes every
+  commit, including the content editor's. Passphrase + `noindex` + robots
+  `Disallow` (deterrent-level privacy), shows **drafts**, serves `/admin`.
 
-Both are passphrase + `noindex` + robots `Disallow` (deterrent-level privacy),
-show **drafts**, and serve `/admin`.
+A second `staging` branch and a Promote button did this until 2026-09-12. Every
+`staging` build had failed since 2026-08-20, so the editor's saves reached
+nothing, and Promote was blocked because the branches had diverged. It was
+retired rather than repaired.
 
-**After the domain cutover** the roles split into live and review: `main` →
-harvardintech.com (open, indexable, published content only) and `staging` →
+**After the domain cutover** there are two BUILDS of the same branch: `main` →
+harvardintech.com (open, indexable, published content only) and `main` →
 `review.harvardintech.com` (gated, drafts visible, the only place `/admin` is
-served). The gated track is permanent, not a pre-launch stopgap.
+served, published to the second repository kept for it). The gated track is
+permanent, not a pre-launch stopgap.
 
-Two axes phase a change: the `staging` branch phases *code*, the CMS Draft toggle
-phases *content*. Promotion is one button: **Actions → Promote review → live**.
+The CMS Draft toggle phases *content*; code is phased by not merging it. There is
+no promote step.
 
 The gate is now an explicit `PREVIEW_GATE` env var rather than being inferred
 from `DEPLOY_BASE_PATH`, so the domain cutover no longer un-gates anything as a

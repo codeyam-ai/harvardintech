@@ -1642,6 +1642,12 @@
     "testFile": "src/lib/site.test.ts"
   },
   {
+    "description": "The CMS package's `previewFields` with `previewCreatedAt` widened to accept a string OR a Date, normalising both to an ISO string. It exists because @codeyam/cms writes that timestamp UNQUOTED when an editor mints a preview link, YAML reads an unquoted ISO timestamp as a Date, and upstream declares the field `z.string()` — so the entry fails validation and the WHOLE build stops, not just that page. Every staging deploy from 2026-08-20 onward died this way; main escaped only by holding no preview files, and pointing the editor at main removed that luck. It normalises rather than merely accepting, because every reader downstream (isPreview, the preview index, the staleness copy) was written against a string, so letting a Date through would move the failure from the build to the page, where it is silent. Deliberately not z.coerce.date(), which would flip the stored type and push the same mismatch onto those readers. Delete this shim when the package quotes the timestamp; its test asserts the upstream schema still rejects the value, so that assertion flipping is the signal.",
+    "filePath": "src/lib/previewFieldsSchema.ts",
+    "name": "sitePreviewFields",
+    "testFile": "src/lib/previewFieldsSchema.test.ts"
+  },
+  {
     "description": "Returns the name a social link is shown under on the Contact band: a bare \"Twitter\" or \"X\" reads as \"X (Twitter)\", every other label passes through unchanged.",
     "filePath": "src/lib/socialLabel.ts",
     "name": "socialDisplayLabel",

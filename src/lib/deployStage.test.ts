@@ -23,7 +23,7 @@ import {
 // guards that it stays terminal, stays distinguishable from success and from
 // failure, and never claims something that was not observed.
 describe('deploy stages', () => {
-  const TARGET = { owner: 'nseldeib', repo: 'harvardintech', branch: 'staging' };
+  const TARGET = { owner: 'codeyam-ai', repo: 'harvardintech', branch: 'main' };
 
   describe('isTerminalStage', () => {
     // The whole bug in one assertion. If `unconfirmed` is not terminal, the
@@ -109,8 +109,8 @@ describe('deploy stages', () => {
     it('names the repo and branch on success', () => {
       const subhead = deploySubhead('live', TARGET);
 
-      expect(subhead).toContain('nseldeib/harvardintech');
-      expect(subhead).toContain('staging');
+      expect(subhead).toContain('codeyam-ai/harvardintech');
+      expect(subhead).toContain('main');
     });
   });
 

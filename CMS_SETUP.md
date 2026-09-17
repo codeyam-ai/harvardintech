@@ -212,42 +212,43 @@ about this feature.
 Two committed JSON files configure it:
 
 - **`src/data/cms.json`** — which repo commits land in (`codeyam-ai/harvardintech`,
-  branch **`staging`** — see *Where edits land* below) and which sign-in methods
+  branch **`main`** — see *Where edits land* below) and which sign-in methods
   are offered (`auth.token: true`, `auth.worker: false` — token only, no service
   to deploy).
 - **`src/data/collections.json`** — the editor's view of this site's content
   schema. See **How collections.json relates to src/content/config.ts** below.
 
-### `settings.siteUrl` points at STAGING, on purpose
+### `settings.siteUrl` names the gated site, not the public domain
 
 `src/data/settings.json` carries `siteUrl:
-https://nseldeib.github.io/harvardintech-staging` — the working site, not the
-reviewed one the team bookmarks. That looks wrong at a glance and is not.
+https://codeyam-ai.github.io/harvardintech` — the gated site, not
+`harvardintech.com`. That looks wrong at a glance and is not.
 
 Nothing the site RENDERS reads this field. Canonical URLs, Open Graph tags,
 structured data, `llms.txt` and the `robots.txt` sitemap line all come from
 `CANONICAL_ORIGIN` (harvardintech.com) and `sitemap.xml` from Astro's own `site`,
-both set per track by the deploy workflow — see `src/lib/canonicalUrl.ts`. `settings.siteUrl` is consumed only by the CMS, to build
-the links it hands an editor: **View on site**, the social-card preview, and the
-URL a **Preview link** row tells you to copy.
+both set per build by the deploy workflow — see `src/lib/canonicalUrl.ts`.
+`settings.siteUrl` is consumed only by the CMS, to build the links it hands an
+editor: **View on site**, the social-card preview, and the URL a **Preview link**
+row tells you to copy.
 
 Every one of those links has to point where the commit actually LANDS. The CMS
-commits to `staging` (`cms.json`), so a preview clone materialises on the staging
-site — and only there, until someone promotes. Pointing this field at the
-reviewed site would hand an editor a URL that 404s for as long as it takes
-somebody to notice, which is exactly what it did before this was corrected.
+commits to `main` (`cms.json`), which deploys to the gated site, so that is where
+a preview clone materialises. Pointing this field at `harvardintech.com` would
+hand an editor a URL that 404s — that site is still Strikingly's.
 
-**The two URLs are answering different questions and are meant to differ:**
+**The two URLs answer different questions:**
 
 | Field | Value | Answers |
 |---|---|---|
-| `cms.json` → `siteUrl` | `…/harvardintech-staging` | Which site's `deploy-status.json` the publish watch reads |
-| `settings.json` → `siteUrl` | `…/harvardintech-staging` | Which site the editor's links point at |
+| `cms.json` → `siteUrl` | `codeyam-ai.github.io/harvardintech` | Which site's `deploy-status.json` the publish watch reads |
+| `settings.json` → `siteUrl` | `codeyam-ai.github.io/harvardintech` | Which site the editor's links point at |
 
-They agree today because both describe where `staging` deploys. **At the
-Strikingly cutover they still should** — the CMS keeps committing to the review
-track, so both keep naming whatever that track's origin becomes
-(`review.harvardintech.com`), NOT the public domain.
+They agree today because both describe where `main` deploys. **At the Strikingly
+cutover they still should** — the CMS moves to the private editor build, so both
+become `review.harvardintech.com`, NOT the public domain. The public build ships
+no `/admin` at all (`includeCmsIntegration`), so there is no editor there to hand
+anyone a link.
 
 **This field is editable from the CMS** (Settings → Public URL), so an editor can
 change it without touching the repo. If preview links ever start pointing at the
@@ -379,8 +380,8 @@ Always available, no auth, no server.
 
 1. Run `npm run dev` and open `/admin`.
 2. Edit content; writes go to the local working tree.
-3. Commit and push to `staging` yourself — the change appears on the review site
-   on the next deploy, and goes live when you promote.
+3. Commit and push to `main` yourself — the change appears on the gated site on
+   the next deploy, about two minutes later.
 
 ## Staging, review, and commit
 
@@ -397,31 +398,32 @@ atomically.
 still served by Strikingly and is untouched by this repo, so every site here is a
 private preview.
 
-CMS commits go to the branch named in `src/data/cms.json` — **`staging`**, which
-builds the **staging site** at `nseldeib.github.io/harvardintech-staging`. An edit
-appears there a minute or two after you publish, and reaches the **reviewed site**
-at `codeyam-ai.github.io/harvardintech` when someone runs **Promote review → live**.
+CMS commits go to the branch named in `src/data/cms.json` — **`main`**, which
+builds the gated site at `codeyam-ai.github.io/harvardintech`. An edit appears
+there about two minutes after you publish. There is no promote step.
 
-That extra step is deliberate, and it matters most *after* the migration: at the
-cutover `main` becomes harvardintech.com, so a CMS that committed to `main` would
-publish every save straight to the public site with no review. Pointing it at
-`staging` means the promote button is the only thing that reaches the world —
-before the cutover and after it.
+**What guards the cutover instead.** At the migration `main` becomes
+harvardintech.com, so from that day a save would otherwise publish straight to the
+world. Two things replace the old promote button, and they are stronger than it
+was. The public build ships **no `/admin` at all** (`includeCmsIntegration`), so
+there is no editor pointed at the public site to save from; the CMS moves to the
+private editor build. And the **Draft** toggle holds an individual entry back,
+which is finer-grained than a whole branch and is what editors actually used.
 
-> **Both sites serve `/admin`, and it does not matter which one you use.** The CMS
-> commits to whatever `cms.json` names, so an edit made from either admin lands on
-> `staging` either way.
+> **The editor commits to whatever `cms.json` names**, so it does not matter which
+> `/admin` you opened — an edit lands on `main` either way.
 
-Two independent things phase a change, and it helps to keep them straight:
+**Drafts are now the only way to phase a change:**
 
 | | What it phases | How you use it |
 | --- | --- | --- |
-| **Draft toggle** (per entry) | *content* | Leave Draft **on** while an entry is half-written. Drafts appear on the gated sites and never on a public build — so a draft is safe to publish. |
-| **`staging` branch** (whole site) | *code* | Code changes land here first. The reviewed link does not move until someone promotes. |
+| **Draft toggle** (per entry) | *content* | Leave Draft **on** while an entry is half-written. Drafts appear on the gated site and never on a public build — so a draft is safe to publish. |
+| **Not merging** (whole site) | *code* | Code is phased by leaving it on a branch you have not merged. There is no long-lived second branch. |
 
-**Promoting staging → reviewed.** Go to the repo's **Actions** tab → **Promote
-review → live** → **Run workflow**. That merges `staging` into `main`. It is a
-button, not a git exercise, and it is deliberately manual.
+Until 2026-09-12 a `staging` branch and a Promote workflow did this instead. Every
+`staging` build had failed since 2026-08-20 on an unquoted preview timestamp, so
+saves reached no site at all, and Promote was blocked because the branches had
+diverged. See `DEPLOY_SETUP.md`.
 
 If the promote workflow reports it could not fast-forward, `main` has changes
 `staging` does not. Content edits no longer cause this — they commit to `staging`

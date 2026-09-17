@@ -3,6 +3,7 @@ title: "launch -- Giving Pages Short Term"
 mode: ui
 createdAt: "2026-09-14T17:29:50Z"
 prefix: "launch"
+order: 5
 source: manual
 ---
 

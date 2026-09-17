@@ -1,13 +1,15 @@
 // Draft visibility config for the two-track publishing model. Decides whether a
 // given build renders entries flagged `draft: true`.
 //
-// Two tracks build from this one repo, and the difference between them is
+// Two builds come from this one branch, and the difference between them is
 // entirely environmental:
-//   - Public track (`main` → harvardintech.com): a production build with
+//   - Public build (`main` → harvardintech.com): a production build with
 //     INCLUDE_DRAFTS unset → drafts hidden, exactly as before.
-//   - Review track (`staging` → review.harvardintech.com): also a production
-//     build, but with INCLUDE_DRAFTS=1 → drafts visible, so the Harvard Alumni
-//     in Tech team can read in-flight work before it is promoted.
+//   - Review build (`main` → review.harvardintech.com, published to the kept
+//     second repository): also a production build, but with INCLUDE_DRAFTS=1 →
+//     drafts visible, so the Harvard Alumni in Tech team can read in-flight work
+//     before it is published. A draft is now the ONLY way to hold content back —
+//     there is no second branch to stage it on.
 //   - `astro dev` (codeyam preview + every scenario capture): not a production
 //     build → drafts visible, so an author previewing their work sees it.
 //

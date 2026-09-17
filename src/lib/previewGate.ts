@@ -1,12 +1,11 @@
 // Preview gate config. Locks a deployed build behind a passphrase + noindex so
 // it can be shared privately. See PreviewGate.astro.
 //
-// This is the REVIEW TRACK's standing gate, not a temporary pre-launch measure.
-// Under the two-track publishing model the review site
-// (review.harvardintech.com, built from `staging`) stays gated and unindexed
-// permanently, while the public site (harvardintech.com, built from `main`) is
-// open and indexable. Both tracks build from this one repo, so the gate must be
-// set per build:
+// This is the REVIEW BUILD's standing gate, not a temporary pre-launch measure.
+// The review site (review.harvardintech.com) stays gated and unindexed
+// permanently, while the public site (harvardintech.com) is open and indexable.
+// Both come from `main` — they are two BUILDS of one branch, not two branches,
+// which is why the gate is set per build rather than per ref:
 //   - `astro dev` (codeyam preview + every scenario capture): unset → gate OFF,
 //     so screenshots are never overlaid by the passphrase prompt.
 //   - Review-track deploy: PREVIEW_GATE=1 → gate ON.

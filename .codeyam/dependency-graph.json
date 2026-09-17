@@ -1618,6 +1618,7 @@
     },
     "src/content/config.ts": {
       "imports": [
+        "src/lib/previewFieldsSchema.ts",
         "src/lib/contentRoot.ts",
         "src/lib/localPresence.ts"
       ],
@@ -2542,6 +2543,19 @@
     "src/lib/presenceConsistency.test.ts": {
       "imports": [],
       "importedBy": []
+    },
+    "src/lib/previewFieldsSchema.test.ts": {
+      "imports": [
+        "src/lib/previewFieldsSchema.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/previewFieldsSchema.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/previewFieldsSchema.test.ts",
+        "src/content/config.ts"
+      ]
     },
     "src/lib/previewGate.test.ts": {
       "imports": [
@@ -5713,6 +5727,7 @@
       "filePath": "src/content/config.ts",
       "name": "__file_root__",
       "imports": [
+        "src/lib/previewFieldsSchema.ts::__file_root__",
         "src/lib/contentRoot.ts::contentRoot",
         "src/lib/localPresence.ts::isWhatsAppGroupLink"
       ],
@@ -7846,6 +7861,22 @@
         "src/lib/personalize.test.ts::__file_root__"
       ]
     },
+    "src/lib/previewFieldsSchema.test.ts::__file_root__": {
+      "filePath": "src/lib/previewFieldsSchema.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/previewFieldsSchema.ts::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/previewFieldsSchema.ts::__file_root__": {
+      "filePath": "src/lib/previewFieldsSchema.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/content/config.ts::__file_root__"
+      ]
+    },
     "src/lib/previewGate.test.ts::__file_root__": {
       "filePath": "src/lib/previewGate.test.ts",
       "name": "__file_root__",
@@ -9896,5 +9927,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-16T17:13:31Z"
+  "lastUpdated": "2026-09-17T14:28:45Z"
 }

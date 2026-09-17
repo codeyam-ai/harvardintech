@@ -95,58 +95,54 @@ describe('pushTargetRepo', () => {
 });
 
 describe('deploy.yml track coherence', () => {
-  // The headline contract, and the bug class this file exists for: the staging
-  // job's base path must name the same repo it publishes to. They sit far apart
-  // in the workflow with nothing connecting them, and a mismatch deploys a site
-  // that returns 200 while every asset and link 404s.
-  it('builds the staging track with a base matching the repo it publishes to', () => {
-    const body = jobBody('review');
-    const target = pushTargetRepo(body);
-
-    expect(target).toBeDefined();
-    expect(envValue(body, 'DEPLOY_BASE_PATH')).toBe(pagesBasePathFor(target!));
-  });
-
-  // The reviewed track is served from a subpath of this repo's own Pages site,
-  // so the same rule applies even though it publishes by artifact upload.
-  it('builds the reviewed track with a base matching this repo', () => {
+  // The headline contract, and the bug class this file exists for: a job's base
+  // path must name the same repo it publishes to. The two sit far apart in the
+  // workflow with nothing connecting them, and a mismatch deploys a site that
+  // returns 200 while every asset and link 404s.
+  //
+  // The site is served from a subpath of this repo's own Pages site, so the rule
+  // applies even though it publishes by artifact upload rather than by push.
+  it('builds with a base matching this repo', () => {
     expect(envValue(jobBody('build'), 'DEPLOY_BASE_PATH')).toBe(
       pagesBasePathFor('harvardintech'),
     );
   });
 
-  // The staging site has no custom domain. A CNAME file would bind a domain
-  // whose DNS does not point at it, and Pages then serves a
-  // misconfigured-domain error instead of the site. Restoring this write is a
-  // deliberate step of the future migration, not something to leave lying around.
-  it('writes no CNAME on the staging track', () => {
-    expect(jobBody('review')).not.toMatch(/>\s*dist\/CNAME/);
+  // The one-site change on 2026-09-17 retired the `staging` branch and the
+  // `review` job that built it. This is what stops either coming back by
+  // accident: a second deploy target is how the base-path mismatch above became
+  // possible in the first place, and how an editor ended up saving to a branch
+  // whose build had been failing for three weeks.
+  it('deploys no branch other than main', () => {
+    expect(WORKFLOW).not.toMatch(/branches:\s*\[[^\]]*staging/);
+    expect(WORKFLOW).not.toMatch(/^\s{2}review:/m);
   });
 
-  // Dropping PREVIEW_GATE is precisely what takes a site public, and
-  // harvardintech.com is still Strikingly's — so until the cutover BOTH tracks
-  // must set it. This is the one assertion here guarding exposure rather than
-  // correctness, which is why it covers both jobs rather than just the new one.
-  it('gates both tracks while neither is meant to be public', () => {
+  // Dropping PREVIEW_GATE is precisely what takes the site public, and
+  // harvardintech.com is still Strikingly's — so until the cutover the build
+  // must set it. The one assertion here guarding exposure rather than
+  // correctness.
+  it('gates the build while the site is not meant to be public', () => {
     expect(envValue(jobBody('build'), 'PREVIEW_GATE')).toBe('1');
-    expect(envValue(jobBody('review'), 'PREVIEW_GATE')).toBe('1');
   });
 
-  // The repo moved to codeyam-ai; the reviewed site is hosted there now.
-  it('hosts the reviewed track on the codeyam-ai Pages site', () => {
+  // The repo moved to codeyam-ai; the site is hosted there now.
+  it('hosts the site on the codeyam-ai Pages site', () => {
     expect(envValue(jobBody('build'), 'PAGES_SITE')).toBe('https://codeyam-ai.github.io');
   });
 
-  // Every advertised URL names the live domain, never a gated preview.
-  it('advertises harvardintech.com from both gated tracks', () => {
+  // Every advertised URL names the live domain, never the gated preview.
+  it('advertises harvardintech.com from the gated build', () => {
     expect(envValue(jobBody('build'), 'CANONICAL_ORIGIN')).toBe('https://harvardintech.com');
-    expect(envValue(jobBody('review'), 'CANONICAL_ORIGIN')).toBe('https://harvardintech.com');
   });
 
   // The passphrase lives only in the secret — never a literal in the workflow.
-  it('takes the gate passphrase from the secret on both gated tracks', () => {
-    const fromSecret = /^\$\{\{\s*secrets\.PREVIEW_GATE_PASSPHRASE\s*\}\}$/;
-    expect(envValue(jobBody('build'), 'PREVIEW_GATE_PASSPHRASE')).toMatch(fromSecret);
-    expect(envValue(jobBody('review'), 'PREVIEW_GATE_PASSPHRASE')).toMatch(fromSecret);
+  // A gated build with an empty one would ship a gate anyone can open, so the
+  // build refuses and the deploy fails rather than publishing it. That is also
+  // why the secret going missing in the account move stopped every deploy dead.
+  it('takes the gate passphrase from the secret', () => {
+    expect(envValue(jobBody('build'), 'PREVIEW_GATE_PASSPHRASE')).toMatch(
+      /^\$\{\{\s*secrets\.PREVIEW_GATE_PASSPHRASE\s*\}\}$/,
+    );
   });
 });

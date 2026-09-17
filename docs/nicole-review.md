@@ -17,7 +17,6 @@ until the Strikingly migration.
 | **Supporter recognition review** | https://codeyam-ai.github.io/harvardintech/donor-network.html | site passphrase |
 | **Domain cutover runbook** | https://codeyam-ai.github.io/harvardintech/cutover-runbook/ | site passphrase |
 | **CMS / admin dashboard** | https://codeyam-ai.github.io/harvardintech/admin | *(GitHub token — see below)* |
-| **Working site** *(where her edits appear first)* | https://nseldeib.github.io/harvardintech-staging/ | site passphrase |
 
 **The site passphrase is shared privately** — through the password manager, never
 in this file, chat or email. It lives in the `PREVIEW_GATE_PASSPHRASE` secret (see
@@ -25,15 +24,16 @@ in this file, chat or email. It lives in the `PREVIEW_GATE_PASSPHRASE` secret (s
 retired in September 2026 because it had been written down here in plain text.
 
 The GitHub repo moved from `nseldeib` to `codeyam-ai` in September 2026, which is
-why the preview address changed. The working site's hosting repo did not move, so
-its address is unchanged.
+why the address changed.
 
 The trailing slash on the runbook link matters — it is a directory route, and
 without it the link 404s.
 
-The last row is the one that is new, and it exists because the first five all
-point at the **reviewed** site while her CMS edits commit to the **working** one.
-See *Two sites, and which one to send* below.
+**There is one site now.** Until September 2026 there was a second, "working"
+address where her edits landed first, and someone had to run a Promote to move
+them across. That is gone: her saves commit straight to `main` and appear on the
+one link above in about two minutes. Nothing to promote, nothing to keep in sync,
+and no second address to explain.
 
 The site, the todos page and the runbook share one passphrase. It is a
 **deterrent, not authentication** — it ships in the client bundle — so it keeps
@@ -100,14 +100,13 @@ HTML is fetchable by anyone who has the address.
 > separate access token, which I'll send you privately if you'd like to make
 > edits directly.
 >
-> One thing if you do edit: your change goes to the **working site** first, not
-> the link above. It shows up there a minute or two after you save, and the
-> editor tells you when it has landed:
+> If you do edit: your change appears on that same link about two minutes after
+> you save, and the editor tells you when it has landed. There is nothing to
+> promote and no second address to check.
 >
-> • **Working site (see your edit right away):** https://nseldeib.github.io/harvardintech-staging/
->
-> The reviewed link at the top only moves when we promote, which is deliberate —
-> it means nothing shifts under you mid-review. Say the word and we'll promote.
+> If you want to work on something without it going live, mark it a **draft** in
+> the editor. Drafts stay off the site until you publish them, and you can send
+> anyone a preview link to a single draft page.
 >
 > (The real harvardintech.com is unchanged — this is a private preview.)
 
@@ -171,15 +170,20 @@ sending her hunting through /admin for a screen that does not exist.
 
 ## What happens when she edits
 
-Her edits commit to the `staging` branch of `codeyam-ai/harvardintech` (configured
-in `src/data/cms.json`). That triggers a rebuild, and the **staging** site
-updates a minute or two later. Her change reaches the **reviewed** link when
-someone runs **Actions → Promote review → live**.
+Her edits commit to the `main` branch of `codeyam-ai/harvardintech` (configured in
+`src/data/cms.json`). That triggers a rebuild, and the site updates a minute or
+two later. There is no promote step.
 
 There is no path by which an edit reaches the real harvardintech.com — that only
-happens at the Strikingly migration, deliberately. The promote step exists now
-rather than later on purpose: at the cutover `main` becomes the public site, so a
-CMS pointed at `main` would publish every save straight to the world.
+happens at the Strikingly migration, deliberately.
+
+**What changes at the cutover, and why it is not a problem.** At the migration
+`main` becomes the public site, so from that day a save would publish straight to
+the world. That is what the promote step used to guard against. Two things replace
+it: the CMS moves to the private editor build (the public build ships no `/admin`
+at all — see `includeCmsIntegration`), and the **Draft** toggle is how anything
+is held back. Drafts are per-entry, which is finer than a whole branch was, and
+they were always the mechanism Nicole actually used.
 
 Her commits are attributed to the token owner's GitHub identity, not her name.
 That is expected for a review.
@@ -257,32 +261,24 @@ editor's next upload. That matters because the bug is invisible at publish time
   real articles written for it, so nothing links to them (see
   `src/lib/blogVisibility.ts`).
 
-## Two sites, and which one to send
+## One site
 
-There are two gated sites, and **Nicole now has both** — with different jobs:
+There is one gated site: `codeyam-ai.github.io/harvardintech`. Her edits, and any
+preview link she mints, appear there about two minutes after she saves. It is not
+public — `harvardintech.com` is still Strikingly's.
 
-| | URL | What it is |
-|---|---|---|
-| **Reviewed** | `codeyam-ai.github.io/harvardintech` | Her main link. Moves only when someone promotes, so it never changes under her mid-review. |
-| **Working** | `nseldeib.github.io/harvardintech-staging` | Takes every commit, including hers. Where her own edits — and any preview link she mints — appear first. |
+**What this replaced, and why.** There used to be two: a "working" site taking
+every commit, and this "reviewed" one that moved only when someone ran a Promote.
+The idea was that a site changing under you is no good to review against. In
+practice it failed on both counts. Every working-site build had been broken since
+20 August — an unquoted timestamp in a preview file that the schema rejected — so
+her saves reached nothing at all. Promote was blocked besides, because the two
+branches had diverged. She was reviewing one site, editing into another, and the
+note she had been sent pointed at a link where her changes never appeared.
 
-Staging used to be marked "not for sharing", on the reasoning that a site which
-changes under you is no good to review against. That reasoning still holds for
-*reviewing*, which is why the reviewed link stays her default. It does not hold
-for *editing*: an editor who cannot see her own change has no way to tell a save
-that worked from one that did not, and the note she was sent told her the change
-would appear on a link where it never does.
-
-Neither is public — `harvardintech.com` is still Strikingly's.
-
-When a change is ready for her, go to **Actions → Promote review → live → Run
-workflow**. That merges `staging` into `main` and her link catches up a minute or
-two later.
-
-Her CMS edits commit to `staging`, so they ride the same promote as our code
-changes rather than landing on the reviewed link behind it. Promotes should
-fast-forward cleanly; if one opens a PR instead, someone committed to `main`
-directly — review and merge that PR, or rebase `staging` on `main` and re-run.
+The separation the second site was meant to provide now comes from **drafts**,
+which is where it belonged: per-entry, controlled by her in the editor, and
+finer-grained than a whole branch ever was.
 
 ## Known rough edges
 

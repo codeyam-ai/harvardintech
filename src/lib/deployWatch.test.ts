@@ -13,9 +13,10 @@ import {
 // Publishing used to be a phase the admin sat in until GitHub Pages finished:
 // a full-screen panel whose close button stayed disabled until the deploy
 // reached a terminal stage. On this site it never did — the watch polled the
-// marker on nseldeib.github.io/harvardintech while commits deploy to
-// harvardintech-staging — so the panel never became closable and an editor had
-// to reload the page to do anything else after every publish.
+// marker on one site while commits deployed to another, a mismatch made possible
+// by publishing two sites from two branches — so the panel never became closable
+// and an editor had to reload the page to do anything else after every publish.
+// The move to one branch on 2026-09-17 removes that class of mismatch at source.
 //
 // The fix makes the watch outlive the page and run beside the editing rather
 // than in front of it, which puts real weight on these small pure rules: they
@@ -25,7 +26,7 @@ import {
 // marker contract this site depends on.
 describe('deployWatch', () => {
   const BASELINE = {
-    markerUrl: 'https://nseldeib.github.io/harvardintech-staging/deploy-status.json',
+    markerUrl: 'https://codeyam-ai.github.io/harvardintech/deploy-status.json',
     markerBaseline: { commit: 'a0dec62' },
   };
 

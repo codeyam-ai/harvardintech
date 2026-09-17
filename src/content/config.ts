@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import { defineCollection, z } from 'astro:content';
-import { previewFields } from '@codeyam/cms/content';
+import { sitePreviewFields } from '../lib/previewFieldsSchema';
 import { glob } from 'astro/loaders';
 import type { Loader } from 'astro/loaders';
 import { contentRoot } from '../lib/contentRoot';
@@ -67,8 +67,11 @@ function collectionGlob(collection: string): Loader {
 // schema, decide visibility: see `publishedEntries` in `src/lib/drafts.ts`.
 //
 // The five collections with a PER-ENTRY ROUTE additionally spread
-// `...previewFields` (`previewOf`, `previewCreatedAt`, `previewLock`), which is
-// what lets the CMS mint a preview link for them. The same zod-strips-unknown-
+// `...sitePreviewFields` (`previewOf`, `previewCreatedAt`, `previewLock`), which
+// is what lets the CMS mint a preview link for them. That is the package's
+// `previewFields` with the timestamp widened to accept what the CMS actually
+// writes — see `src/lib/previewFieldsSchema.ts` for the upstream bug it works
+// around and when to delete it. The same zod-strips-unknown-
 // keys rule applies: without the spread the marker never reaches `entry.data`,
 // every preview filter sees an ordinary page, and the feature fails silently in
 // the worst possible direction — an unlisted draft rendered as a live page.
@@ -97,7 +100,7 @@ const blog = defineCollection({
     embedUrl: z.string().optional(),
     embedHtml: z.string().optional(),
     draft: z.boolean().optional(),
-    ...previewFields,
+    ...sitePreviewFields,
   }),
 });
 
@@ -117,7 +120,7 @@ const pages = defineCollection({
     embedUrl: z.string().optional(),
     embedHtml: z.string().optional(),
     draft: z.boolean().optional(),
-    ...previewFields,
+    ...sitePreviewFields,
   }),
 });
 
@@ -228,7 +231,7 @@ const chapters = defineCollection({
       .optional(),
     order: z.number().optional(),
     draft: z.boolean().optional(),
-    ...previewFields,
+    ...sitePreviewFields,
   }),
 });
 
@@ -281,7 +284,7 @@ const communities = defineCollection({
       .optional(),
     order: z.number().optional(),
     draft: z.boolean().optional(),
-    ...previewFields,
+    ...sitePreviewFields,
   }),
 });
 
@@ -308,7 +311,7 @@ const projects = defineCollection({
     order: z.number().optional(),
     active: z.boolean().optional(),
     draft: z.boolean().optional(),
-    ...previewFields,
+    ...sitePreviewFields,
   }),
 });
 

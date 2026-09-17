@@ -1,0 +1,759 @@
+{
+  "timestamp": "2026-09-17T14:24:52Z",
+  "title": "One Site: Content Edits Publish Straight To Main",
+  "type": "feature",
+  "userRequest": "> **PARKED 2026-09-14 at the user's request.** The user is not ready to change the publishing setup yet and wants to make other changes first. Do not run this plan unless the user asks for it. If it does run, it supersedes the two queued staging plans (`cms--stop-cms-preview-links-from-breaking-the-staging-build` and `make-the-review-harvardintech-com-switch-a-single-setting`).\n\n## Decision needed from Jared (flagged 2026-09-14)\n\nIn the site audit, the owner marked this plan “Plan it”, then asked that it be flagged for Jared’s review before it goes back into the queue.\n\n**The decision.** Should the site drop the separate staging site, and have Nicole’s content-editor saves go straight to the reviewed site?\n\n**Why it came up**\n- Staging has failed to build since Aug 20, so Nicole’s saves reach no site at all.\n- The Promote button can’t work while `main` and `staging` disagree.\n- The GitHub repo has since moved to the `codeyam-ai` account. Staging still lives under the old `nseldeib` account at `nseldeib.github.io/harvardintech-staging`, and it wasn’t moved.\n\n**The options**\n1. **One site now; add a private editor copy at launch.** This is the recommendation, and it is what this plan describes.\n   - The editor commits to `main`, and there’s nothing to sync.\n   - At launch, the same branch is also built into a private, gated copy with the editor. The public site leaves the editor out, because its pages carry draft text.\n   - The spare staging repo and its deploy key are kept for that private copy.\n2. **One site, with the second private copy running from today.**\n   - Same end state, and launch day needs no new setup.\n   - Until launch there are two identical gated sites.\n3. **Keep staging and fix it.**\n   - Apply the preview-date fix and merge `main` into `staging`.\n   - After every developer change, someone must copy it into staging by hand. That drift is what broke it.\n\n**Context worth knowing**\n- **Launch timing.** The public launch is waiting on the domain move, which Ben controls, and the owner is “not ready to shift”. So nothing about launch day is urgent.\n- **Nicole’s saves.** Until this is decided, they still go to the broken staging branch.\n- **The preview-date fix is needed either way.** The first preview link minted on `main` would otherwise break `main`’s build.\n\n---\n\n## Summary\n\nNicole's content-editor saves commit to the `staging` branch. Every `staging` deploy has failed since 2026-08-20, and her saves only reach the reviewed site through a manual Promote. Promote has been blocked too, because `main` and `staging` diverged. On 2026-09-12 the user decided to drop the staging track: one branch (`main`) and, for now, one site. The editor will commit to `main`, so Nicole's saves appear on the passphrase-gated reviewed site (https://codeyam-ai.github.io/harvardintech/ since the repo moved to `codeyam-ai`) in about two minutes. To review a page before sharing it, she uses the editor's drafts and preview links.\n\nAt the public launch, the public build deliberately leaves the editor out (`includeCmsIntegration`), because the editor's pages embed draft text. On 2026-09-14 the default was set: keep the spare second hosting repository (`nseldeib/harvardintech-staging` and its `REVIEW_DEPLOY_KEY` secret) rather than deleting it. At launch, a private editor build of `main` is published there, at review.harvardintech.com. This plan documents that launch-day step; it does not build it.\n\n## Key Decisions\n\n- **One branch.** `src/data/cms.json` targets `main`. Nothing deploys `staging` any more. The branch itself is left on GitHub untouched.\n- **Fix the preview-link date bug first.** The editor writes `previewCreatedAt` as an unquoted timestamp, YAML reads it as a date, and `previewFields` declares a string, so the first preview file on `main` would break `main`'s build. Accept a string or a date and normalise to an ISO string. This is carried over from the superseded staging plan.\n- **Rescue Nicole's last five staging-only files onto `main`,** copied byte-exact from `origin/staging`, after the date fix lands:\n  - `src/content/projects/preview-g6kj69ws1715hjq3dvawc45mjc.md`\n  - `src/content/projects/preview-qq5aaysz3mrtnmbx2z2gfkqghc.md`\n  - `src/content/momentumSections/preview-vf2bygxsmb7pgcwyc0c30zmjyc.md`\n  - `src/content/momentumSections/how-your-support-will-be-used.md`\n  - `public/images/gallery/hit-bod.webp`\n\n  `momentumSections/testimonials.md` keeps `main`'s version, as decided on 2026-09-10.\n- **Retire the staging machinery:** the `review` job and the `staging` push trigger in `deploy.yml`, and `promote.yml`. **Keep** the second repository and its deploy-key secret, because launch day reuses them.\n- **Correct every link and direction** so all of them point to the one site. This was the user's explicit ask.\n- **Supersede both queued staging plans.** This plan absorbs the date fix from `cms--stop-cms-preview-links-from-breaking-the-staging-build`. `make-the-review-harvardintech-com-switch-a-single-setting` becomes part of the launch-day docs.\n\n## Implementation\n\n### 1. Accept the editor's unquoted preview timestamp\n**New file**: `src/lib/previewFieldsSchema.ts` exports `sitePreviewFields`, which is `{ ...previewFields, previewCreatedAt: string | Date → ISO string, optional }`. It includes a short comment naming the upstream `@codeyam/cms` 0.14.0 serializer bug and when to delete the shim.\n**File**: `src/content/config.ts` replaces the five `...previewFields` spreads with `...sitePreviewFields`.\n\n### 2. Point the editor at `main`\n- `src/data/cms.json`: `repo.branch` becomes `main`, and `siteUrl` becomes `https://codeyam-ai.github.io/harvardintech`. (`repo.owner` already became `codeyam-ai` in the launch links plan.)\n- `src/data/settings.json`: `siteUrl` gets the same value.\n\n### 3. Bring over Nicole's remaining staging-only files\nCheck out the five files listed above from `origin/staging`, unchanged.\n\n### 4. Retire the staging deploy track\n- `.github/workflows/deploy.yml`:\n  - Remove the `review` job and `staging` from `on.push.branches`.\n  - Drop the `workflow_call` trigger (it existed only for promote).\n  - Rewrite the header comment for one track today, plus the launch-day private editor build.\n  - Fix the \"dormant `staging` job\" comment in the build step.\n- Delete `.github/workflows/promote.yml`.\n\n### 5. Correct every reference\n- `docs/nicole-review.md`: one site, one link list. Remove the \"Working site\" row, the \"Two sites\" section and the Promote instructions. Rewrite \"What happens when she edits\" and the ready-to-send note.\n- `DEPLOY_SETUP.md`: one gated track today. The launch-day step becomes: add the private editor build of `main` to the kept repository, then point review.harvardintech.com at it.\n- `docs/scoping/README.md`, `docs/scoping/domain-transfer-runbook.md`, `CMS_SETUP.md`: the same correction.\n- Cutover runbook screens (`src/lib/cutoverProgress.ts`, `src/components/cutover/OperatorDetail.astro`, `RunbookChecks.astro`, `RunbookOnTheDay.astro`, `DecisionDetail.astro`): stop saying the gated track \"already exists\". Say it is switched on at launch from the kept repository.\n- Comments in `src/lib/previewGate.ts`, `src/lib/draftVisibility.ts` and `astro.config.mjs`: the review track is a launch-day build of `main`, not the `staging` branch.\n- `public/review/index.html` (the todos page), wherever it points at staging.\n- Isolation fixtures that hard-code the staging target (`DeployStatus-*`, `StagingBar-*`, `DecisionTick*`, `StepTick*`): the target branch becomes `main`, and `SITE_URL` becomes the reviewed site. Update the `deploystatus-live` scenario description to match.\n\n### 6. Draft the note to Nicole\nA short, plain message the user can send: one link, where she edits, that saves appear in about two minutes, and how drafts and preview links work.\n\n## Tests\n\n- **New** `src/lib/previewFieldsSchema.test.ts`: the reproduction test below.\n- `src/lib/deployTracks.test.ts`: remove the staging-track assertions (the `review` job is gone). Keep the reviewed-track base-path and gate assertions. Add one asserting no job deploys a `staging` branch.\n- `src/lib/deployWatch.test.ts`: the marker URL fixture moves to the reviewed site.\n- `src/lib/deployStage.test.ts`: the success subhead names `main`.\n- `src/lib/publishTrack.test.ts`: unchanged. The public build still excludes the editor.\n\n## Reproduction Test\n\nA preview entry whose frontmatter carries the editor's unquoted `previewCreatedAt` fails schema validation. That is what broke the `staging` build, and it would break `main` too once a preview file lands there.\n\n**Target**: `src/lib/previewFieldsSchema.test.ts` (new)\n\n```ts\nimport { describe, it, expect } from 'vitest';\nimport { z } from 'astro/zod';\nimport { sitePreviewFields } from './previewFieldsSchema';\n\ndescribe('sitePreviewFields', () => {\n  it('accepts the unquoted timestamp the CMS writes and normalises it to an ISO string', () => {\n    const schema = z.object({ title: z.string(), ...sitePreviewFields });\n    const parsed = schema.parse({\n      title: 'Social Media Marketing Specialist- Events',\n      previewOf: 'social-media-marketing-specialist-events',\n      previewCreatedAt: new Date('2026-08-20T17:24:30.165Z'),\n    });\n    expect(parsed.previewCreatedAt).toBe('2026-08-20T17:24:30.165Z');\n  });\n\n  it('still accepts a quoted timestamp string', () => {\n    const schema = z.object({ title: z.string(), ...sitePreviewFields });\n    expect(\n      schema.parse({ title: 'x', previewCreatedAt: '2026-08-20T17:24:30.165Z' }).previewCreatedAt,\n    ).toBe('2026-08-20T17:24:30.165Z');\n  });\n});\n```\n\nStatus: PROPOSED. Confirm it fails at execution. Expected failure: `sitePreviewFields` does not exist yet.\n\n## Scenarios to Demonstrate\n\n- The editor's deploy panel after Publish: the success line names `codeyam-ai/harvardintech` and `main`.\n- A volunteer project preview page, built from a `preview-*.md` with an unquoted `previewCreatedAt`, rendering at its token URL.\n- The `/volunteer` listing with preview entries present: previews are not listed.\n- The cutover runbook's step S2 with the corrected launch-day wording.\n\n## Out of scope\n\n- Deleting the second repository, its deploy key, or the `staging` branch on GitHub. All are left in place, and the repository and key are reused at launch.\n- Building the launch-day private editor copy. It is documented only.\n- The four Momentum Fund donate-page scenarios whose test data does not load on this dev server. That is a separate follow-up.",
+  "description": "Nicole's content edits have reached no website since 20 August. Two independent failures did it: her saves committed to the `staging` branch, whose every build failed on an unquoted preview timestamp the schema rejected, and the Promote step that would have carried them across was blocked anyway because the branches had diverged. She was reviewing one address and editing into another, and the note she had been sent named a link where her changes could never appear. This cycle fixes the bug, retires the second track, and points the editor at `main`.\n\nThe bug first, as the plan required. When an editor mints a preview link the CMS clones the entry and writes `previewCreatedAt` UNQUOTED; YAML reads that as a Date, upstream declares it `z.string()`, and the entry fails validation — which stops the WHOLE build, not just that page. `src/lib/previewFieldsSchema.ts` widens the field to accept a string or a Date and normalises back to an ISO string, because every reader downstream was written against a string and letting a Date through would move the failure from the build to the page, where it is silent. It is a shim over a `@codeyam/cms` 0.14.0 serializer bug, and its test asserts the UPSTREAM schema still rejects the value — so that assertion flipping is the signal to delete the shim.\n\nProven rather than asserted: Nicole's five staging-only files were restored byte-exact from `origin/staging`, and a build under the real gated config then succeeded with both of her preview clones rendering as pages. The editor now lists them at codeyam-ai.github.io/harvardintech, and their 'Created 8/20/2026' line is the very field that was crashing the build.\n\nThe editor targets `main` in `cms.json` and `settings.json`; `promote.yml` is deleted and the `review` job removed, with triggers down to `main` only. The second repository and its REVIEW_DEPLOY_KEY are KEPT — launch day republishes a private editor build of `main` there behind review.harvardintech.com. What the second branch used to provide now comes from drafts, which is per-entry, controlled by the editor, and finer-grained than a branch; the public build ships no /admin at all, so there is nothing on the public site to save from.\n\nThree findings worth recording. A SECOND dev server was running — an orphaned `npm run dev` holding port 4322 while the editor's own served 4323 — which is the condition that silently corrupts `cms-*` captures, exactly the screens this feature changes; it was killed. Two test failures turned out to be the repo catching problems in Nicole's rescued work rather than in new code: her board photo carried no alt text (the media manifest guard exists to stop an undescribed photo shipping), and her section note directed editors to a CMS screen renamed since she wrote it (now 'Momentum Fund gift pillars', where those cards genuinely live). And 24 of 26 changed screenshots were capture churn — the hero carousel landing on a different slide — on pages this feature does not touch, so they were restored from HEAD; only the two cutover-runbook frames changed for a nameable reason, the runbook note that used to claim the gated review track 'already exists'.\n\nSCOPE VERDICT. Delivered: all six implementation steps — the schema fix, the editor repointed at `main`, Nicole's five files rescued, the staging machinery retired, every reference corrected across twelve isolation fixtures and five docs, and the rewritten note to send her. Deferred: nothing from this plan. Two queued plans are SUPERSEDED by it and should be closed — `cms--stop-cms-preview-links-from-breaking-the-staging-build`, whose date fix this absorbed, and (already deleted) the review-subdomain plan, whose content became launch-day documentation. All five PROJECT-level deliverables remain deferred, every one decided by the user, none newly deferred here.\n\nStill blocking, and not a code change: the `PREVIEW_GATE_PASSPHRASE` repository secret did not survive the move to the codeyam-ai account. Nine deploys have failed on it alone since 2026-09-12, so none of this is visible until it is set. The workflow header and DEPLOY_SETUP.md now both name it as the first thing to check. Left untouched: the pre-existing `momentum-fund-filtering-the-donor-wall` capture failure, whose seed omits the network section its interaction needs — drift on a surface an in-flight plan owns.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms--stop-cms-preview-links-from-breaking-the-staging-build.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/one-site-content-edits-publish-straight-to-main.md\t.codeyam/plans/completed/one-site-content-edits-publish-straight-to-main.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--design-system.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--giving-pages-short-term.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--history-events-archive-and-webinars.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--images.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--mobile-and-layout.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/make-the-review-harvardintech-com-switch-a-single-setting.md",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-complete--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-cutover-day--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-decisions-answered-nothing-begun--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-nothing-started--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-partway-through--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-waiting-on-one-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-decided--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-decided-read-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-open--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-writing-the-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-commit-refused--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-done-with-attribution--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-read-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/25dd3237b6bfd105063f9023002741325755bfd852dc5bbff7b0d649c596b205.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/7c41cd6b13fb383f3a6373094574adde858e8ce0163d451ee91c2d43470b73e7.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "status": "modified"
+    },
+    {
+      "path": ".github/workflows/promote.yml",
+      "status": "deleted"
+    },
+    {
+      "path": "CMS_SETUP.md",
+      "status": "modified"
+    },
+    {
+      "path": "DEPLOY_SETUP.md",
+      "status": "modified"
+    },
+    {
+      "path": "astro.config.mjs",
+      "status": "modified"
+    },
+    {
+      "path": "docs/nicole-review.md",
+      "status": "modified"
+    },
+    {
+      "path": "docs/scoping/README.md",
+      "status": "modified"
+    },
+    {
+      "path": "docs/scoping/domain-transfer-runbook.md",
+      "status": "modified"
+    },
+    {
+      "path": "public/images/gallery/hit-bod.webp",
+      "status": "added"
+    },
+    {
+      "path": "src/components/cutover/OperatorDetail.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/momentumSections/how-your-support-will-be-used.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/momentumSections/preview-vf2bygxsmb7pgcwyc0c30zmjyc.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/preview-g6kj69ws1715hjq3dvawc45mjc.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/preview-qq5aaysz3mrtnmbx2z2gfkqghc.md",
+      "status": "added"
+    },
+    {
+      "path": "src/data/cms.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/media.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/settings.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/cutoverProgress.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/deployStage.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/deployTracks.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/deployWatch.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/draftVisibility.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/previewGate.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/DecisionTick-Decided.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/DecisionTick-ReadOnly.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/DecisionTick.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/DeployStatus-Failed.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/DeployStatus-Live.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/DeployStatus-Publishing.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/DeployStatus-StillUpdating.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/DeployStatus-Verifying.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/StagingBar-PublishAgainWhileDeploying.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/StagingBar-Reviewing.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/StepTick-Done.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/StepTick.astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/pull-events-from-luma-instead-of-re-typing-them.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/a752b86e3993ca7d13b6e17d6bf4832e4ff3488aee81eb81a313b04da80f6372.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/aef3ee29c9574e8e2607b8a5224f467a8e45799ceda183f808b60d84be7f70ed.json",
+      "status": "added"
+    },
+    {
+      "path": "docs/launch-decisions-2026-09-16.md",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/previewFieldsSchema.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/previewFieldsSchema.ts",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Blog Post - A Retained Medium Stub",
+      "screenshotPath": "blog-post-a-retained-medium-stub--desktop.png"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft",
+      "screenshotPath": "blog-preview-link-shared-draft--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo",
+      "screenshotPath": "chapter-gallery-a-single-photo--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped",
+      "screenshotPath": "chapter-gallery-curated-and-capped--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged",
+      "screenshotPath": "chapter-gallery-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed",
+      "screenshotPath": "chapter-gallery-show-all-revealed--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns",
+      "screenshotPath": "chapter-gallery-three-photos-three-columns--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter",
+      "screenshotPath": "chapter-route-events-tagged-to-this-chapter--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps",
+      "screenshotPath": "chapter-route-longest-chapter-name-wraps--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--desktop.png"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area",
+      "screenshotPath": "chapter-route-sf-bay-area--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent",
+      "screenshotPath": "chapter-route-upcoming-above-recent--desktop.png"
+    },
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - A Tick That Could Not Be Saved",
+      "screenshotPath": "cutover-runbook-a-tick-that-could-not-be-saved--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Complete",
+      "screenshotPath": "cutover-runbook-complete--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Cutover Day",
+      "screenshotPath": "cutover-runbook-cutover-day--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Decisions Answered Nothing Begun",
+      "screenshotPath": "cutover-runbook-decisions-answered-nothing-begun--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Nothing Started",
+      "screenshotPath": "cutover-runbook-nothing-started--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Partway Through",
+      "screenshotPath": "cutover-runbook-partway-through--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - The Records On A Phone",
+      "screenshotPath": "cutover-runbook-the-records-on-a-phone--mobile.png"
+    },
+    {
+      "name": "Cutover Runbook - Waiting On One Answer",
+      "screenshotPath": "cutover-runbook-waiting-on-one-answer--desktop.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Password Required",
+      "screenshotPath": "locked-preview-password-required--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password",
+      "screenshotPath": "locked-preview-unlocked-with-the-password--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Wrong Password",
+      "screenshotPath": "locked-preview-wrong-password--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Giving Platform Is Chosen",
+      "screenshotPath": "momentum-fund-a-giving-platform-is-chosen--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Mistyped Section Type And A Missing Photo",
+      "screenshotPath": "momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Arriving From The Email",
+      "screenshotPath": "momentum-fund-arriving-from-the-email--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Every Section Hidden",
+      "screenshotPath": "momentum-fund-every-section-hidden--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Finding Your Place In The Network",
+      "screenshotPath": "momentum-fund-filtering-the-donor-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Public Visitor",
+      "screenshotPath": "momentum-fund-public-visitor--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Donor Wall Moved To The Top",
+      "screenshotPath": "momentum-fund-the-donor-wall-moved-to-the-top--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The First Donor On The Wall",
+      "screenshotPath": "momentum-fund-the-first-donor-on-the-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Goal Meter Held As Coming Soon",
+      "screenshotPath": "momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Impact Band With Real Quotes",
+      "screenshotPath": "momentum-fund-the-impact-band-with-real-quotes--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Two Pillar Bands With Their Own Cards",
+      "screenshotPath": "momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png"
+    },
+    {
+      "name": "Privacy Page - The Written Policy",
+      "screenshotPath": "privacy-page-the-written-policy--desktop.png"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS",
+      "screenshotPath": "site-page-a-page-written-in-the-cms--desktop.png"
+    },
+    {
+      "name": "Site Page - Long Title And No Description",
+      "screenshotPath": "site-page-long-title-and-no-description--desktop.png"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall",
+      "screenshotPath": "sponsor-route-example-partner-wall--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects",
+      "screenshotPath": "volunteer-page-no-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Open Projects",
+      "screenshotPath": "volunteer-page-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS",
+      "screenshotPath": "volunteer-page-rewritten-from-the-cms--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo",
+      "screenshotPath": "volunteer-project-detail-full-description-no-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link",
+      "screenshotPath": "volunteer-project-detail-photo-and-own-sign-up-link--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested",
+      "screenshotPath": "volunteer-project-detail-retired-projects-never-suggested--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Decided",
+      "screenshotPath": "decision-tick-decided--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Decided Read Only",
+      "screenshotPath": "decision-tick-decided-read-only--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Open",
+      "screenshotPath": "decision-tick-open--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Writing The Answer",
+      "screenshotPath": "decision-tick-writing-the-answer--desktop.png"
+    },
+    {
+      "name": "Step Tick - Commit Refused",
+      "screenshotPath": "step-tick-commit-refused--desktop.png"
+    },
+    {
+      "name": "Step Tick - Done With Attribution",
+      "screenshotPath": "step-tick-done-with-attribution--desktop.png"
+    },
+    {
+      "name": "Step Tick - Read Only",
+      "screenshotPath": "step-tick-read-only--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1305,
+    "passed": 1305,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1305,
+        "passed": 1305
+      }
+    ]
+  }
+}

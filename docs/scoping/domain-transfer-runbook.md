@@ -84,12 +84,13 @@ confirmed stable for a few days.
 
 ## Publishing the WIP preview (needed before Phase 1, and for sharing now)
 
-> **✅ Resolved by two-track publishing.** Both questions below are settled. The
-> workflow now deploys **two** tracks: `main` → the reviewed site (today
-> `codeyam-ai.github.io/harvardintech`, harvardintech.com after cutover) and
-> `staging` → the working site (today `nseldeib.github.io/harvardintech-staging`,
-> moving to `review.harvardintech.com` when the domain is approved — it is
-> deliberately on a github.io URL until then, so no DNS is needed). The gated
+> **✅ Resolved.** Both questions below are settled. The workflow deploys `main` →
+> the gated site (today `codeyam-ai.github.io/harvardintech`, harvardintech.com
+> after cutover). At the cutover a SECOND BUILD of the same branch is published to
+> the kept second repository behind `review.harvardintech.com` — it stays on a
+> github.io URL until that domain is approved, so no DNS is needed before then.
+> (A `staging` branch served this until 2026-09-12; it was retired because its
+> builds had been failing since August. See `DEPLOY_SETUP.md`.) The gated
 > track is permanent, so there is no longer a "WIP preview" that has to go away
 > at launch — and the preview gate is an explicit `PREVIEW_GATE` var rather than
 > a side effect of `DEPLOY_BASE_PATH`, so the cutover in Phase 1 no longer

@@ -2,6 +2,7 @@
 title: "One Site: Content Edits Publish Straight To Main"
 mode: ui
 createdAt: "2026-09-14T17:24:43Z"
+order: 1
 source: manual
 ---
 

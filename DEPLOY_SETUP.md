@@ -2,34 +2,49 @@
 
 The build agent will ask which setup applies to your project.
 
-## Today: two gated sites, neither public
+## Today: one gated site, not public
 
 Until the Strikingly migration `harvardintech.com` is still Strikingly's and is
-untouched. Both sites below are private:
+untouched. The one site below is private:
 
-| Branch | Origin | Role | Gate | Drafts | `/admin` | Sitemap |
-| --- | --- | --- | --- | --- | --- | --- |
-| `main` | codeyam-ai.github.io/harvardintech | **reviewed** | passphrase + `noindex` | **visible** | **served** | none |
-| `staging` | nseldeib.github.io/harvardintech-staging | **working** | passphrase + `noindex` | **visible** | **served** | none |
+| Branch | Origin | Gate | Drafts | `/admin` | Sitemap |
+| --- | --- | --- | --- | --- | --- |
+| `main` | codeyam-ai.github.io/harvardintech | passphrase + `noindex` | **visible** | **served** | none |
 
-They differ only in **cadence**, not configuration. `staging` takes every commit;
-`main` moves only when someone promotes. That is the whole point — the link the
-team reviews holds still, so nobody opens it mid-change and finds half-finished
-work.
+The build sets `PREVIEW_GATE=1` and `INCLUDE_DRAFTS=1`. **Dropping
+`PREVIEW_GATE` is the switch that takes the site public** — do not do it before
+the cutover.
 
-Both builds set `PREVIEW_GATE=1` and `INCLUDE_DRAFTS=1`. **Dropping
-`PREVIEW_GATE` is the switch that takes a site public** — do not do it before the
-cutover.
+**REQUIRED SECRET — `PREVIEW_GATE_PASSPHRASE`.** A gated build with no passphrase
+would ship a gate anyone can open, so the build refuses and the deploy FAILS.
+This secret did not survive the move to the `codeyam-ai` account, and every
+deploy between 2026-09-12 and 2026-09-17 failed on it alone. If deploys are
+failing and nothing else explains it, check this first.
 
-The staging site is hosted on the staging repo's own Pages URL rather than
-`review.harvardintech.com` on purpose: a custom domain would mean adding a DNS
-record to `harvardintech.com`, and that domain stays untouched until the
-migration is approved. See "At the cutover" below for the three-line diff.
+It is hosted on the repo's own Pages URL rather than `review.harvardintech.com`
+on purpose: a custom domain would mean adding a DNS record to
+`harvardintech.com`, and that domain stays untouched until the migration is
+approved.
 
-**Content edits land on `staging` too.** The CMS commits to the branch named in
-`src/data/cms.json`, which is `staging`, so an edit from either site's `/admin`
-goes through the same promote as a code change. This is what keeps the cutover
-safe: `main` becomes the public site, and nothing reaches it except a promote.
+**Content edits land on `main` too.** The CMS commits to the branch named in
+`src/data/cms.json`, which is `main`, so a save from `/admin` is on the site about
+two minutes later. There is no promote step.
+
+### Why there used to be two, and what replaced it
+
+Until 2026-09-12 a second branch, `staging`, published to
+`nseldeib.github.io/harvardintech-staging` and took every commit, while `main`
+moved only when someone ran a Promote. It was meant to keep the reviewed link
+still. It did not work: every `staging` build had failed since 2026-08-20 on an
+unquoted preview timestamp the schema rejected, so the editor's saves reached no
+site at all, and Promote was blocked besides because the branches had diverged.
+
+What the second branch was for is now done by **drafts** — per-entry, controlled
+in the editor, finer-grained than a branch. The timestamp bug itself is fixed in
+`src/lib/previewFieldsSchema.ts`.
+
+**The second repository is kept**, along with its `REVIEW_DEPLOY_KEY` secret,
+because launch day reuses both — see below.
 
 The CMS is deliberately not behind the passphrase; it has its own GitHub-token
 sign-in and is `noindex, nofollow`. See [docs/nicole-review.md](docs/nicole-review.md).
@@ -78,14 +93,17 @@ There is no per-track code — the difference is environment variables read by
 `astro.config.mjs`, `src/lib/canonicalUrl.ts`, `src/lib/previewGate.ts` and
 `src/lib/draftVisibility.ts`:
 
-| Variable | `main` today | `staging` today | `main` public |
+Both of the launch-day builds come from `main`. They differ only in these values,
+which is the whole reason one branch is enough:
+
+| Variable | `main` today | `main` public (launch) | `main` private editor build (launch) |
 | --- | --- | --- | --- |
-| `DEPLOY_BASE_PATH` | `/harvardintech` | `/harvardintech-staging` | unset — base `/` |
-| `PAGES_SITE` | `https://codeyam-ai.github.io` | `https://nseldeib.github.io` | `https://harvardintech.com` |
-| `CANONICAL_ORIGIN` | `https://harvardintech.com` | `https://harvardintech.com` | unset — falls back to `PAGES_SITE` |
-| `PREVIEW_GATE` | `1` | `1` | unset |
-| `PREVIEW_GATE_PASSPHRASE` | the secret | the secret | unused |
-| `INCLUDE_DRAFTS` | `1` | `1` | unset |
+| `DEPLOY_BASE_PATH` | `/harvardintech` | unset — base `/` | unset — base `/` |
+| `PAGES_SITE` | `https://codeyam-ai.github.io` | `https://harvardintech.com` | `https://review.harvardintech.com` |
+| `CANONICAL_ORIGIN` | `https://harvardintech.com` | unset — falls back to `PAGES_SITE` | `https://harvardintech.com` |
+| `PREVIEW_GATE` | `1` | unset | `1` |
+| `PREVIEW_GATE_PASSPHRASE` | the secret | unused | the secret |
+| `INCLUDE_DRAFTS` | `1` | unset | `1` |
 
 `PAGES_SITE` is where a build is really hosted. `CANONICAL_ORIGIN` is what its
 pages advertise — canonical links, share cards, structured data, `llms.txt` and
@@ -97,14 +115,14 @@ the status page and the donor deck) are removed from `dist/` after the build and
 kept out of the sitemap.
 
 `@codeyam/cms` **0.2.1** added base-path support, so the dashboard runs correctly
-under a subpath — which is what makes both gated sites above possible.
+under a subpath — which is what makes the gated site above possible.
 Before 0.2.1 the admin pages built to the right place but every link inside them
 pointed at the origin root, so the CMS was unreachable on a project site. If you
 ever see admin links 404 while the pages themselves load, that is the symptom of
 an older version; check the installed one before debugging anything else.
 
-Promotion is a merge `staging` → `main`, run from the Actions tab via the
-**Promote review → live** workflow (`.github/workflows/promote.yml`).
+There is no promotion step. `promote.yml` was deleted with the one-site change on
+2026-09-17; content is held back with drafts instead.
 
 ## Two Base Modes (Chosen at Setup)
 
@@ -164,16 +182,16 @@ gh workflow run "Deploy to GitHub Pages" --ref <default-branch>
 
 ---
 
-## Staging-track setup (one-time, manual)
+## Second-repository setup (kept for launch day)
 
-The `main` track works as-is. The staging track needs four things that cannot be
-done from inside this repo. Until they exist, pushes to `staging` fail at the
-"Publish to staging repo" step and **`main` is unaffected** — so this is safe to
-leave half-done.
+**Nothing here runs today.** The one-site change on 2026-09-17 removed the job
+that pushed to this repository; there is no second track any more. It is
+documented and the repository is KEPT because launch day reuses it: that is where
+the private editor build of `main` is published, behind
+`review.harvardintech.com`.
 
-**No DNS step.** The staging site is served from the staging repo's own Pages URL,
-so `harvardintech.com` is never touched. Moving it onto
-`review.harvardintech.com` is a later, separate change — see "At the cutover".
+One GitHub repo hosts exactly one Pages site, so a second origin genuinely
+requires a second repo. It holds only generated output; there is no source in it.
 
 One GitHub repo hosts exactly one Pages site, so a second origin genuinely
 requires a second repo. It holds only generated output; there is no source in it.
