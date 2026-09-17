@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 4fe5e6852023b56622e3937b030d32b71616b6f9  source-sha256: c5d6ec4e43d4ec78890d4ea3baa8bf1b35fb44dbe3a40424b9f03b54e9030e7e
+// codeyam-editor: 0.1.7  build: 725ec8d314388385fcbfbed29a3208d6e2e87d3f  source-sha256: 1d96471a1f0c730e17e929641744fe44821d8c76e89c2898e3e04a88bb517993
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -1633,10 +1633,13 @@ async function runScenarioCheck(
         createIssue(
           "navigation",
           "Captured the editor's dev-server placeholder, not the app. The proxy " +
-            `answered with \`${DEV_SERVER_DOWN_HEADER}\`, which means the app's dev ` +
-            "server was not serving this request. The screenshot would be of " +
-            "codeyam's own placeholder card. Start the app's dev server and re-run " +
-            "the capture.",
+            `answered with \`${DEV_SERVER_DOWN_HEADER}\`, which means the proxy ` +
+            "could not reach the app for this request. That happens two ways: the " +
+            "app's dev server is not running, or it is running and the proxy could " +
+            "not reach it this time. The screenshot would be of codeyam's own " +
+            "placeholder card. Re-run the capture first — it is the cheaper check, " +
+            "and a transient miss clears. If the same capture fails this way again, " +
+            "confirm the app's dev server is up and accepting connections.",
           { url, devServerDown: true },
         ),
       );

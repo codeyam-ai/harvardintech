@@ -81,21 +81,21 @@
   ],
   "formatters": [],
   "screenSizes": {
-    "Desktop": {
-      "width": 1440,
-      "height": 900
-    },
-    "Mobile": {
-      "width": 390,
-      "height": 844
-    },
     "Tablet": {
       "width": 768,
       "height": 1024
     },
+    "Desktop": {
+      "width": 1440,
+      "height": 900
+    },
     "Laptop": {
       "width": 1280,
       "height": 800
+    },
+    "Mobile": {
+      "width": 390,
+      "height": 844
     }
   },
   "deviceScaleFactor": 3.0,
@@ -746,6 +746,21 @@
       {
         "filePath": ".claude/hooks/editor-pretool-hook.py",
         "name": "_ordinal",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-pretool-hook.py",
+        "name": "windowed_handoff_read",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-pretool-hook.py",
+        "name": "windowed_handoff_read_refusal",
+        "reason": "editor-shipped"
+      },
+      {
+        "filePath": ".claude/hooks/editor-pretool-hook.py",
+        "name": "windowed_handoff_read_tool",
         "reason": "editor-shipped"
       }
     ],
