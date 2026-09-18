@@ -142,15 +142,31 @@ describe('the imported archive entries', () => {
   });
 });
 
+// The entry was typed by hand as "An Elevated Evening of Ideas, Connection &
+// Conversation" and is now the one the Luma import writes, under the name the
+// calendar carries. They are the same evening: Luma's `start_at` for it is
+// 2026-09-28T22:00:00Z, which is 6 PM in New York, the hour the hand-written
+// entry already gave. Luma's name won because Luma is where people registered.
 describe('the Sept 28 event', () => {
-  const sept28 = entries.find((e) => e.title.startsWith('An Elevated Evening'));
+  const sept28 = entries.find((e) => e.title.startsWith('Harvard in Tech Fall Welcome Mixer'));
 
   // The link is the entire point of the entry while the event is upcoming, and
   // `EventCard` renders it only when the event has not passed — so a missing
-  // link is invisible until the one week it matters.
+  // link is invisible until the one week it matters. It is now the canonical
+  // Luma URL rather than the switchy.io redirect, which is also what lets the
+  // importer recognise this entry as already present and leave it alone.
   it('is present and carries its ticket link', () => {
     expect(sept28).toBeDefined();
-    expect(sept28!.frontmatter).toContain('link: "https://hi.switchy.io/_t_t"');
+    expect(sept28!.frontmatter).toContain('link: "https://luma.com/dwn2dmuj"');
+  });
+
+  // The hand-written entry carried a location and a write-up that Luma does not
+  // supply — the calendar gives only "New York, NY" and no description. The
+  // reconciliation kept both, so importing a name must not cost the page its
+  // copy.
+  it('keeps the write-up and the specific venue the calendar does not carry', () => {
+    expect(sept28!.frontmatter).toContain('Private rooftop, Hudson Yards, New York, NY');
+    expect(sept28!.frontmatter).toContain('Curated tabletop conversations');
   });
 
   // A bare `2026-09-28` is UTC midnight, which `splitEvents` reads as past from

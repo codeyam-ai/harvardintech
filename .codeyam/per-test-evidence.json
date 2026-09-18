@@ -895,10 +895,13 @@
   },
   "apple-touch-icon.png › exists": {
     "file": "src/lib/siteIcons.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
@@ -907,10 +910,13 @@
   },
   "apple-touch-icon.png › is exactly 180x180": {
     "file": "src/lib/siteIcons.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
@@ -6941,6 +6947,39 @@
       "pass|full|2026-09-18T15:46:13.404Z"
     ]
   },
+  "eventMarkdown › omits an absent optional field instead of writing it empty": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "eventMarkdown › writes community tags as a list when given them": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "eventMarkdown › writes only the fields the events collection declares": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
   "eventsTaggedTo › carries the optional fields the event cards render": {
     "file": "src/lib/events.test.ts",
     "lastRunAt": "2026-09-18T19:38:13.568Z",
@@ -7537,10 +7576,13 @@
   },
   "favicon.svg › exists": {
     "file": "src/lib/siteIcons.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
@@ -7549,10 +7591,13 @@
   },
   "favicon.svg › is not the scaffold placeholder any more": {
     "file": "src/lib/siteIcons.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
@@ -7561,10 +7606,13 @@
   },
   "favicon.svg › is parseable as an image": {
     "file": "src/lib/siteIcons.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
@@ -7573,10 +7621,13 @@
   },
   "favicon.svg › uses the brand crimson from the design tokens": {
     "file": "src/lib/siteIcons.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
@@ -9983,6 +10034,105 @@
       "pass|full|2026-09-18T15:46:13.404Z"
     ]
   },
+  "importing from Luma › does not write a private event": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "importing from Luma › is a no-op on a second run": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "importing from Luma › leaves an entry that has been edited by hand exactly as it is": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "importing from Luma › leaves the collection alone and does not fail when Luma is unreachable": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "importing from Luma › reads past events only when asked for them": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "importing from Luma › recognises an event filed under a different date by its Luma link": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "importing from Luma › treats a non-200 from Luma the same way as an unreachable one": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "importing from Luma › writes an event that is not in the collection yet": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "importing from Luma › writes nothing under --dry-run": {
+    "file": "src/lib/lumaImport.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
   "includeCmsIntegration › excludes the CMS from the public build": {
     "file": "src/lib/publishTrack.test.ts",
     "lastRunAt": "2026-09-18T19:38:13.568Z",
@@ -11853,6 +12003,171 @@
       "pass|changed|2026-09-18T18:21:45.349Z",
       "pass|changed|2026-09-18T18:19:55.521Z",
       "pass|full|2026-09-18T15:46:13.404Z"
+    ]
+  },
+  "lumaEntriesFromFeed › maps every usable entry and silently drops the rest": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEntriesFromFeed › treats a response with no entries as empty rather than throwing": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventDate › renders a positive offset for a zone east of UTC": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventDate › returns null for an unparseable timestamp rather than an Invalid Date": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › builds a full registration URL from the bare slug the feed sends": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › builds a slug matching the collection filename convention": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › dates an event by its own timezone, not by UTC": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › drops a non-public event": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › drops an entry the calendar has not approved": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › maps a physical event to title, date, location, link and cover image": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › survives a missing geo_address_info, cover_url or end_at": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › tags a city with a chapter, and leaves a city without one alone": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaEventToEntry › yields no location for an online event instead of inventing one": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaSlugFromLink › reads the slug out of either Luma host": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "lumaSlugFromLink › returns null for a link that is not a Luma event": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
     ]
   },
   "mapping the spreadsheet columns › drops a column the site has no field for": {
@@ -20831,6 +21146,28 @@
       "pass|full|2026-09-18T15:46:13.404Z"
     ]
   },
+  "slugifyTitle › matches the filenames already in the collection": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "slugifyTitle › spells an ampersand out, as the hand-written entries do": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
   "snapshot-strikingly › parses saved pages and plans the capture without touching the network": {
     "file": "src/lib/archiveImporters.test.ts",
     "lastRunAt": "2026-09-18T19:38:13.568Z",
@@ -22729,38 +23066,49 @@
   },
   "the Sept 28 event › carries a time and an offset, not a bare date": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
+      "fail|targeted|2026-09-18T20:20:17.099Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
-      "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T19:29:14.656Z"
     ]
   },
   "the Sept 28 event › is present and carries its ticket link": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
+      "fail|targeted|2026-09-18T20:20:17.099Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
-      "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T19:29:14.656Z"
+    ]
+  },
+  "the Sept 28 event › keeps the write-up and the specific venue the calendar does not carry": {
+    "file": "src/lib/eventsArchiveContent.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
     ]
   },
   "the anonymity contract › does not leak the withheld name through initials": {
@@ -22963,10 +23311,13 @@
   },
   "the default share card › exists": {
     "file": "src/lib/siteIcons.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
@@ -22999,14 +23350,79 @@
   },
   "the default share card › is exactly the 1200x630 that SEO.astro declares for it": {
     "file": "src/lib/siteIcons.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z"
+    ]
+  },
+  "the feed request › asks for the past as a separate request, not a page of the same one": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "the feed request › imports from the same calendar the Events page embeds": {
+    "file": "src/lib/lumaFeed.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z"
+    ]
+  },
+  "the icon kit › declares a raster fallback alongside the SVG": {
+    "file": "src/lib/siteIcons.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|full|2026-09-18T21:03:35.194Z"
+    ]
+  },
+  "the icon kit › draws the same mark in the favicon as in the header component": {
+    "file": "src/lib/siteIcons.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|full|2026-09-18T21:03:35.194Z"
+    ]
+  },
+  "the icon kit › ships a root favicon.ico as well": {
+    "file": "src/lib/siteIcons.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|full|2026-09-18T21:03:35.194Z"
+    ]
+  },
+  "the icon kit › ships the raster fallback at exactly the 32x32 it declares": {
+    "file": "src/lib/siteIcons.test.ts",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|full|2026-09-18T21:03:35.194Z"
     ]
   },
   "the image licence ledger › has a row for every image in the media library": {
@@ -23071,164 +23487,164 @@
   },
   "the imported archive entries › carries no invisible characters in any title or write-up": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the imported archive entries › carries the original write-up on every entry": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the imported archive entries › ends no title on a dangling separator": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the imported archive entries › files every entry under a filename matching its own date": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the imported archive entries › gives every archive entry a location": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the imported archive entries › imported every curated event, and only those": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the imported archive entries › keeps the three venues the original site actually stated": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the imported archive entries › leaves no date at the head of any title": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the imported archive entries › publishes the 32 dated events and holds back the one with no known date": {
     "file": "src/lib/eventsArchiveContent.test.ts",
-    "lastRunAt": "2026-09-18T19:38:13.568Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-09-18T21:30:48.108Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-09-18T21:30:48.108Z",
+      "pass|changed|2026-09-18T21:02:30.535Z",
+      "pass|changed|2026-09-18T20:59:05.901Z",
+      "pass|changed|2026-09-18T20:25:43.635Z",
+      "pass|changed|2026-09-18T20:23:09.097Z",
       "pass|full|2026-09-18T19:38:13.568Z",
       "pass|changed|2026-09-18T19:31:23.024Z",
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
-      "pass|changed|2026-09-18T18:26:53.329Z",
-      "pass|changed|2026-09-18T18:24:37.891Z",
-      "pass|changed|2026-09-18T18:23:20.814Z",
-      "pass|changed|2026-09-18T18:21:45.349Z",
-      "pass|changed|2026-09-18T18:19:55.521Z",
-      "pass|full|2026-09-18T15:46:13.404Z"
+      "pass|changed|2026-09-18T18:26:53.329Z"
     ]
   },
   "the sound control › reports the state it is in": {

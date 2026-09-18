@@ -9,6 +9,14 @@
     ]
   },
   {
+    "description": "The approved Harvard Alumni in Tech H lockup as inline SVG, used as the 26px nav mark in place of the Veritas shield. Carries no colour of its own — it fills with currentColor and reads its height from a custom property — so one definition serves crimson-on-white in the header and white-on-crimson anywhere a dark ground appears. Its geometry is duplicated in public/favicon.svg, which cannot import it, and a test pins the two paths together.",
+    "filePath": "src/components/BrandMark.astro",
+    "name": "BrandMark",
+    "scenarios": [
+      "brandmark-both-grounds-at-three-sizes"
+    ]
+  },
+  {
     "description": "A single what-happens-here card with a title and optional detail. Split from the callouts grid for the same reason every other card here is its own component: the card carries the look, the grid is only an arrangement, and a scenario showing one card should not have to build a list.",
     "filePath": "src/components/CalloutCard.astro",
     "name": "CalloutCard",
@@ -829,6 +837,12 @@
     "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
+    "description": "The complete markdown file for one imported event. Writes only fields the `events` collection declares — notably NOT `coverImage`, which the mapping carries but the schema has no slot for — and omits an absent optional rather than writing it empty.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "eventMarkdown",
+    "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
     "description": "The events belonging to one chapter or community, projected into the EventLike shape the event cards render. The match is an exact string comparison against the owner's collection id, because that is what /chapters/<slug> and /communities/<slug> are keyed on — a near-miss like 'New York City' for 'nyc', or a stray trailing space, belongs to nobody, which is exactly the case unmatchedChapterTags reports, so the two are two halves of one rule. An untagged event is excluded here and still appears on /events. Extracted from the two [slug].astro routes, which held this projection verbatim once communities started reusing the chapter tag.",
     "filePath": "src/lib/events.ts",
     "name": "eventsTaggedTo",
@@ -860,6 +874,12 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "One `get-items` request that returns null rather than throwing when Luma is unreachable or answers non-200 — the seam that lets the import fail soft and leave committed events in place. Private.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "fetchFeed",
+    "testFile": "src/lib/lumaImport.test.ts"
   },
   {
     "description": "Reads one optional presence field as a string off a value of any shape. It exists so the rules in this module can take `unknown` rather than an all-optional interface, which TypeScript treats as a weak type and would reject for a chapter carrying none of those fields — the default case and most of the roster.",
@@ -1425,6 +1445,36 @@
     "testFile": "src/lib/donorImport.test.ts"
   },
   {
+    "description": "Every mappable entry in a `get-items` response. One unpublishable entry costs that entry and nothing else, so a private event in the middle of a page does not take the rest of the run with it.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "lumaEntriesFromFeed",
+    "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
+    "description": "Renders a Luma `start_at` as a local date-time with its offset, plus the `YYYY-MM-DD` the filename is built from. This exists because `start_at` is UTC and the calendar is not: a 6 PM Pacific event is already tomorrow in UTC, so taking the date off the raw string files it a day late.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "lumaEventDate",
+    "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
+    "description": "Maps one Luma feed entry to the shape the `events` collection stores, or null when it does not belong on the public site. Drops non-public and unapproved events, gives an online event no location rather than an invented one, and turns Luma's bare `url` slug into a full registration link.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "lumaEventToEntry",
+    "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
+    "description": "Builds the Luma `get-items` URL for one period. Past events are a separate REQUEST rather than a later page of the same one, which is the distinction that keeps the archive from silently coming back empty.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "lumaFeedUrl",
+    "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
+    "description": "Extracts Luma's own event slug from a registration link, or null. This is the identity the importer dedupes on, because matching on the filename is not enough — one committed entry is filed a day later than Luma's local date for the same event.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "lumaSlugFromLink",
+    "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
     "description": "Joins the snapshot manifest to the hand-reviewed title table and writes the 33 event entries, giving the undated one a draft flag so its placeholder date never reaches the public site, and leaving alone any file edited since it was imported so a CMS correction survives a re-run.",
     "filePath": "scripts/import-archive-events.mjs",
     "name": "main",
@@ -1432,6 +1482,12 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
+    "description": "Runs the whole Luma import: fetch, map, and write any event not already present, overwriting nothing. Paths and `fetch` are injectable so a test can drive it against a temp directory with no network, and it returns its counts rather than exiting.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "main",
+    "testFile": "src/lib/lumaImport.test.ts"
   },
   {
     "description": "Writes the webinar posts from the manifest, copies each surviving cover into public/images/webinars, and prunes media records whose file is no longer on disk so the media library never lists a file the site does not have.",
@@ -1605,6 +1661,12 @@
     "testFile": "src/lib/sitePages.test.ts"
   },
   {
+    "description": "The UTC offset of a timezone at a given instant, in minutes, derived by re-reading the zoned wall clock as if it were UTC. Private; it is what makes the written date carry a real offset rather than an assumed one.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "offsetMinutes",
+    "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
     "description": "Selects the volunteer projects to render — those not explicitly closed (`active !== false`), ordered by `order`. Absent `active` means open, matching the board-member convention, so a project whose toggle was never touched still shows.",
     "filePath": "src/lib/projects.ts",
     "name": "openProjects",
@@ -1621,6 +1683,12 @@
     "filePath": "src/lib/momentumSections.ts",
     "name": "orderedSections",
     "testFile": "src/lib/momentumSections.test.ts"
+  },
+  {
+    "description": "Zero-pads a number to a fixed width, on its absolute value so a negative UTC offset does not smuggle its sign into the digits. Private.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "pad",
+    "testFile": "src/lib/lumaFeed.test.ts"
   },
   {
     "description": "Finds one page inside a Strikingly store by its path. Every page of the site is listed in each store, but only the requested one has its sections hydrated, which is why the snapshot fetches each URL separately.",
@@ -1678,6 +1746,12 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
+    "description": "Reads the importer's three flags off argv: `--dry-run`, `--past` and `--force`.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "parseArgs",
+    "testFile": "src/lib/lumaImport.test.ts"
   },
   {
     "description": "Reads the webinars importer flags: --dry-run and --force.",
@@ -1807,6 +1881,12 @@
     "filePath": "src/lib/momentumNetworkDom.ts",
     "name": "readDetails",
     "testFile": "src/lib/momentumNetworkDom.test.ts"
+  },
+  {
+    "description": "Indexes the events already in the collection by the two things that can identify one: the Luma slug inside its `link`, and its filename. The link index is what stops an event filed under a slightly different date importing a second time.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "readExisting",
+    "testFile": "src/lib/lumaImport.test.ts"
   },
   {
     "description": "Reads the CMS media library manifest from `<dataRoot>/media.json` — the singleton the package writes from /admin — returning an empty library when the file is absent or malformed, so production before the first upload and any scenario that seeds no media still render rather than failing the build. Goes through `dataRoot()` like the settings and nav singletons so a codeyam session's sandbox redirect reaches it and the seed adapter can seed a `media` key per scenario.",
@@ -2117,6 +2197,12 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "A URL slug from an event title, following the same rules the Strikingly archive importer established so an imported filename and a hand-written one are built identically.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "slugifyTitle",
+    "testFile": "src/lib/lumaFeed.test.ts"
   },
   {
     "description": "Returns the name a social link is shown under on the Contact band: a bare \"Twitter\" or \"X\" reads as \"X (Twitter)\", every other label passes through unchanged.",
@@ -2485,6 +2571,12 @@
     "testFile": "src/lib/externalLink.test.ts"
   },
   {
+    "description": "Quotes a scalar for YAML frontmatter, escaping backslashes and embedded quotes. Named the same as the Strikingly archive helper because it does the same job for the other importer.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "yamlQuote",
+    "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
     "description": "A YAML double-quoted scalar. Escapes backslashes before quotes, since the other order would re-escape the backslash it just added and leave the quote bare. Shared by both importers, which each carried their own copy until they were folded together here.",
     "filePath": "src/lib/strikinglyArchive.js",
     "name": "yamlQuote",
@@ -2492,5 +2584,11 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "The wall-clock year/month/day/hour/minute/second of an instant in a named IANA timezone, read out of `Intl.DateTimeFormat`. Private; exercised through `lumaEventDate`.",
+    "filePath": "src/lib/lumaFeed.js",
+    "name": "zonedParts",
+    "testFile": "src/lib/lumaFeed.test.ts"
   }
 ]

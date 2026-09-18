@@ -1,0 +1,135 @@
+{
+  "timestamp": "2026-09-18T21:44:51Z",
+  "title": "Pull events from Luma, and the H brand mark as site icon and header mark",
+  "type": "feature",
+  "userRequest": "Two queued plans, taken in one cycle at the owner's request. First: stop re-typing events. Harvard Alumni in Tech's Luma calendar is already where events are really created, so the site should read it instead of asking an editor to enter each one a second time. Second, folded in when the owner noticed the browser tab still showed a generic globe: build the approved H lockup once and use it as the browser icon, the iOS home-screen icon, and the 26px nav mark in place of the Veritas shield.",
+  "description": "EVENTS FROM LUMA. `src/lib/lumaFeed.js` maps a Luma feed entry to the shape the `events` collection already stores, and `scripts/import-luma.mjs` fetches the calendar and writes any event not already present. The split is deliberate: every judgement is in the pure module and is tested against responses captured verbatim from the live API, so none of it depends on what Luma happens to be serving when the suite runs.\n\nTwo things the plan did not anticipate, both found by reading the real response. Luma's `url` is a bare slug (`dwn2dmuj`), not a URL — writing it through unchanged would have produced a relative link that 404s while every check short of clicking it passed. And `start_at` is UTC while the calendar is not: the San Francisco panel starts at `2026-04-30T01:00:00Z`, which is the evening of the 29th in California, so taking the date off the raw string files it a day late. The committed hand-written entry for that event does exactly that, which is why the importer dedupes on the LUMA SLUG inside each entry's `link` rather than on the filename — a filename comparison would have imported the panel a second time and listed it twice.\n\nIt never overwrites. An event already in the collection is left exactly as it is, so a correction made in /admin survives every run. It fails soft: if Luma is unreachable, or answers non-200, the script says so and exits 0, and the build ships the events already committed rather than emptying the page. The deploy workflow now runs it nightly at 07:10 UTC, commits what it imported back to `main`, and builds — the commit uses GITHUB_TOKEN so it cannot retrigger the workflow, and none is needed because the run that wrote the files goes on to deploy them.\n\nThree events came across. The 28 September reconciliation was the owner's call: Luma's \"Harvard in Tech Fall Welcome Mixer\" and the hand-typed \"An Elevated Evening of Ideas, Connection & Conversation\" are the same evening — Luma's start time is 6 PM in New York, the hour the hand-written entry already carried. Luma's name won because Luma is where people registered, but the entry keeps the team's Hudson Yards venue and write-up, which the calendar does not supply.\n\nTHE H MARK. `src/components/BrandMark.astro` holds the approved lockup as inline SVG filled with `currentColor`, so one definition serves crimson-on-white in the header and white-on-crimson in the icon. `public/favicon.svg` carries a second copy of the path because an external favicon cannot import anything, and a test asserts the two `d` attributes match so drift surfaces in a test run rather than on a tab strip.\n\nThe generic globe was NOT caused by the mark being wrong. `SiteIcons.astro` declared only an SVG icon, so a browser that does not use SVG favicons fell through to an implicit `GET /favicon.ico` at the ORIGIN root — outside the site's base entirely on the subpath deploy, so it 404s with no error anywhere. A PNG is now declared explicitly through `withBase`, with a root `.ico` shipped as well.\n\nTwo things were settled by looking rather than by taking the plan's word. The favicon inset: four candidates rendered at 16 / 32 / 128px, and 0.286 kept the T in the negative space open at 16px while larger crowded the rounded corners. And the header size: the first cut used the shield's 26px, but measured off the capture that put the mark at 2.11x the wordmark's 12.3px cap height, overshooting the text by about 7px top and bottom — correctly centred, but towering, because the shield was square and this lockup is narrow and tall. 20px is 1.63x cap height and spans the text's line box instead.\n\nThe first cut of the header mark also rendered INVISIBLY: the sizing rule was written in BaseLayout's scoped style block, and Astro's scoped styles do not cross into a child component's markup, so it never matched. The sizing now lives in the component, which is where the scope attribute is stamped.\n\nALSO FIXED, found on the way. The scenario that proves the homepage excludes past events had gone blank — it was rendering the empty state, which made it byte-identical to the empty-state scenario beside it and destroyed the only coverage that proves the page filters. Cause was a corrupted Astro content data store plus a dev server launched while the content sandbox marker was absent, so it read production content instead of the seed. The data-store corruption itself traced to FOUR dev servers running at once, all writing the same file. And 78 loop-generated test descriptions that a past `reconcile-registry` had blanked were restored from the registry's own git history — `backfill-descriptions` cannot recover them because they have no literal declaration in source to read.\n\nLEFT ALONE DELIBERATELY: two /donate scenarios fail on a stale seed selector. They were already broken before this cycle and nothing here touches donor data, so they belong to the giving-pages plan rather than this commit.",
+  "modifiedFiles": [
+    {
+      "path": "src/lib/lumaFeed.js",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/lumaFeed.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/lumaImport.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "scripts/import-luma.mjs",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/luma.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2026-09-28-harvard-in-tech-fall-welcome-mixer.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/events/2026-09-11-alumni-founders-co-working-day-september.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/events/2026-08-14-alumni-founders-co-working-day-august.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/events/2026-09-28-an-elevated-evening-of-ideas-connection-and-conversation.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/lib/eventsArchiveContent.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "status": "modified"
+    },
+    {
+      "path": "DEPLOY_SETUP.md",
+      "status": "modified"
+    },
+    {
+      "path": "docs/launch-decisions-2026-09-16.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/BrandMark.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/SiteIcons.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/siteIcons.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/imageCredits.json",
+      "status": "modified"
+    },
+    {
+      "path": "public/favicon.svg",
+      "status": "modified"
+    },
+    {
+      "path": "public/favicon-32.png",
+      "status": "added"
+    },
+    {
+      "path": "public/favicon.ico",
+      "status": "added"
+    },
+    {
+      "path": "public/apple-touch-icon.png",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/BrandMark.astro",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-no-upcoming-events.json",
+      "status": "modified"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "BrandMark - Both Grounds At Three Sizes",
+      "screenshotPath": "brandmark-both-grounds-at-three-sizes--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 55,
+    "passed": 55,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 55,
+        "passed": 55
+      }
+    ]
+  }
+}

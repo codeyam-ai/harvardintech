@@ -49,6 +49,33 @@ because launch day reuses both — see below.
 The CMS is deliberately not behind the passphrase; it has its own GitHub-token
 sign-in and is `noindex, nofollow`. See [docs/nicole-review.md](docs/nicole-review.md).
 
+## Events come from Luma, nightly
+
+Events are not typed into the site. `scripts/import-luma.mjs` reads the Harvard
+Alumni in Tech calendar from Luma's public API and writes any event not already
+in the collection to `src/content/events/`. The deploy workflow runs it on a
+nightly `schedule:` (07:10 UTC), commits whatever it imported back to `main`,
+and then builds — so an event created on Luma is on the site the next morning
+with nobody re-typing it.
+
+Three things worth knowing:
+
+- **It never overwrites.** An entry already in the collection is left exactly as
+  it is, so a title, location or description corrected in `/admin` is not
+  reverted by the next run. Deduplication is on the Luma slug inside each
+  entry's `link`, not on the filename, so an entry filed under a slightly
+  different date is still recognised as the same event.
+- **It fails soft.** If Luma cannot be reached the script reports it and exits
+  0; the build ships the events already committed rather than failing or
+  emptying the events page.
+- **GitHub disables a scheduled workflow after 60 days of repository
+  inactivity.** A quiet stretch after launch therefore stops the nightly import
+  with no notice. Any push, or one manual run from the Actions tab
+  (`Run workflow` on Deploy to GitHub Pages), starts it again.
+
+To run it by hand: `node scripts/import-luma.mjs --past` (`--dry-run` to see
+what it would do, `--force` to let Luma's version win over what is committed).
+
 ## Launch day checklist
 
 What it takes to make `main` the public harvardintech.com, in order. None of it

@@ -11,6 +11,7 @@ import { getCollection } from 'astro:content';
 import '../styles/tokens.css';
 import SEO from '../components/SEO.astro';
 import HeadExtras from '../components/HeadExtras.astro';
+import BrandMark from '../components/BrandMark.astro';
 import UtilityBar from '../components/nav/UtilityBar.astro';
 import PrimaryNav from '../components/nav/PrimaryNav.astro';
 import { settings, nav } from '../lib/site';
@@ -115,13 +116,7 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
 
     <header class="site-nav">
       <a class="brand" href={withBase('/')}>
-        <img
-          class="brand-shield"
-          src={withBase('/images/harvard-shield.png')}
-          alt=""
-          width="26"
-          height="26"
-        />
+        <BrandMark class="brand-mark" />
         <span class="brand-word">Harvard Alumni in Tech</span>
       </a>
 
@@ -169,20 +164,38 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
         background: #fff;
         border-bottom: 1px solid var(--line);
       }
+      /* The H lockup is TALLER than it is wide, where the shield it replaced was
+         roughly square. At the same 26px height it therefore reads narrower, so
+         the gap is tightened from 10px to 8px to keep the optical spacing
+         between mark and wordmark looking as it did. */
       .brand {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         text-decoration: none;
         flex: none;
+        color: var(--crimson);
       }
       .brand:hover {
         text-decoration: none;
       }
-      .brand-shield {
-        display: block;
-        height: 26px;
-        width: auto;
+      /* The mark's own size and display live in BrandMark.astro — Astro's
+         scoped styles do not reach a child component's markup, so a rule
+         written here would silently never match. What the header sets is the
+         two things that DO cross the boundary: the inherited `color` the
+         mark's `currentColor` resolves against (set on `.brand` above, where
+         `.brand-word` overrides it with `--ink` for the wordmark), and the
+         height, through the custom property the component reads.
+
+         20px, NOT the shield's 26px. The shield was roughly square, so 26px
+         read as a compact badge beside the wordmark. This lockup is narrow and
+         tall (145x269), so at 26px it stood 2.1x the wordmark's measured
+         12.3px cap height and overshot the text by ~7px top and bottom —
+         correctly centred, but towering. At 20px it is 1.6x cap height, which
+         spans the text's line box rather than exceeding it. Measured off the
+         capture, not guessed; 22px was also tried and still read tall. */
+      .brand {
+        --brand-mark-height: 20px;
       }
       .brand-word {
         font-weight: 800;

@@ -1,11 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Harvard Alumni in Tech">
-  <!-- Interim mark: a crimson HIT monogram (crimson #a41034, from tokens.css).
-       Deliberately NOT the Veritas shield: use of the shield by a Shared Interest
-       Group is still awaiting an answer from the HAA, and the browser tab should
-       not be blocked on that decision. Swap for the designer's mark when it lands. -->
+  <!-- The approved Harvard Alumni in Tech H lockup, white on the brand crimson
+       (#a41034, from tokens.css). Approved for use on its own — see
+       docs/launch-decisions-2026-09-16.md, "Brand mark".
+
+       The colour is hardcoded here and NOT `currentColor`: an external favicon
+       has no page to inherit from, so `currentColor` would resolve to black.
+
+       The path is a SECOND COPY of the geometry in src/components/BrandMark.astro
+       — an external favicon cannot import anything. src/lib/siteIcons.test.ts
+       asserts the two `d` attributes match, so drift surfaces in a test run
+       rather than on a tab strip. Read that component for what the geometry
+       means; in short, the 47-unit gap under the bar is the T and must stay open.
+
+       The 0.286 scale was chosen by rendering candidates at 16, 32 and 128px:
+       larger crowds the rounded corners, smaller loses weight at 16px. -->
   <rect width="100" height="100" rx="18" fill="#a41034"/>
-  <text x="50" y="50" fill="#ffffff"
-        font-family="Georgia, 'Times New Roman', serif"
-        font-size="40" font-weight="700" letter-spacing="1"
-        text-anchor="middle" dominant-baseline="central">HIT</text>
+  <g transform="translate(29.265 11.535) scale(0.286)">
+    <path d="M0 0h145v47H0z M0 94h46v175H0z M99 94h46v175H99z M46 167h53v47H46z" fill="#ffffff"/>
+  </g>
 </svg>

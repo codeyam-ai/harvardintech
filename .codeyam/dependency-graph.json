@@ -208,6 +208,14 @@
         "src/lib/archiveImporters.test.ts"
       ]
     },
+    "scripts/import-luma.mjs": {
+      "imports": [
+        "src/lib/lumaFeed.js"
+      ],
+      "importedBy": [
+        "src/lib/lumaImport.test.ts"
+      ]
+    },
     "scripts/import-webinars.mjs": {
       "imports": [
         "src/lib/strikinglyArchive.js"
@@ -278,6 +286,13 @@
       ],
       "importedBy": [
         "src/pages/isolated-components/[name].astro"
+      ]
+    },
+    "src/components/BrandMark.astro": {
+      "imports": [],
+      "importedBy": [
+        "src/layouts/BaseLayout.astro",
+        "src/pages/isolated-components/BrandMark.astro"
       ]
     },
     "src/components/CalloutCard.astro": {
@@ -1782,6 +1797,7 @@
         "src/styles/tokens.css",
         "src/components/SEO.astro",
         "src/components/HeadExtras.astro",
+        "src/components/BrandMark.astro",
         "src/components/nav/UtilityBar.astro",
         "src/components/nav/PrimaryNav.astro",
         "src/lib/site.ts",
@@ -2474,10 +2490,31 @@
     "src/lib/luma.ts": {
       "imports": [],
       "importedBy": [
+        "src/lib/lumaFeed.test.ts",
         "src/components/landing/UpcomingEvents.astro",
         "src/components/EventsPage.astro",
         "src/pages/events.astro"
       ]
+    },
+    "src/lib/lumaFeed.js": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/lumaFeed.test.ts",
+        "scripts/import-luma.mjs"
+      ]
+    },
+    "src/lib/lumaFeed.test.ts": {
+      "imports": [
+        "src/lib/lumaFeed.js",
+        "src/lib/luma.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/lumaImport.test.ts": {
+      "imports": [
+        "scripts/import-luma.mjs"
+      ],
+      "importedBy": []
     },
     "src/lib/mailto.test.ts": {
       "imports": [
@@ -3357,6 +3394,13 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/BrandMark.astro": {
+      "imports": [
+        "src/components/BrandMark.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/CalloutCard.astro": {
       "imports": [
         "src/components/CalloutCard.astro",
@@ -4184,6 +4228,7 @@
         "src/pages/isolated-components/BlogPostBody.astro",
         "src/pages/isolated-components/EventsArchive.astro",
         "src/pages/isolated-components/MomentumTestimonials.astro",
+        "src/pages/isolated-components/BrandMark.astro",
         "src/pages/isolated-components/SitePageHeader-LongTitle.astro",
         "src/pages/isolated-components/GiveClose.astro",
         "src/pages/isolated-components/DecisionTick-ReadOnly.astro",
@@ -4410,6 +4455,17 @@
       ],
       "importedBy": []
     },
+    "scripts/import-luma.mjs::__file_root__": {
+      "filePath": "scripts/import-luma.mjs",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/lumaFeed.js::eventMarkdown",
+        "src/lib/lumaFeed.js::lumaEntriesFromFeed",
+        "src/lib/lumaFeed.js::lumaFeedUrl",
+        "src/lib/lumaFeed.js::lumaSlugFromLink"
+      ],
+      "importedBy": []
+    },
     "scripts/import-webinars.mjs::__file_root__": {
       "filePath": "scripts/import-webinars.mjs",
       "name": "__file_root__",
@@ -4493,6 +4549,14 @@
       ],
       "importedBy": [
         "src/pages/isolated-components/[name].astro::__file_root__"
+      ]
+    },
+    "src/components/BrandMark.astro::__file_root__": {
+      "filePath": "src/components/BrandMark.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/BrandMark.astro::__file_root__"
       ]
     },
     "src/components/CalloutCard.astro::__file_root__": {
@@ -6289,6 +6353,7 @@
         "src/styles/tokens.css::__file_root__",
         "src/components/SEO.astro::__file_root__",
         "src/components/HeadExtras.astro::__file_root__",
+        "src/components/BrandMark.astro::__file_root__",
         "src/components/nav/UtilityBar.astro::__file_root__",
         "src/components/nav/PrimaryNav.astro::__file_root__",
         "src/lib/site.ts::nav",
@@ -7835,6 +7900,62 @@
         "src/components/EventsPage.astro::__file_root__",
         "src/pages/events.astro::__file_root__"
       ]
+    },
+    "src/lib/lumaFeed.js::eventMarkdown": {
+      "filePath": "src/lib/lumaFeed.js",
+      "name": "eventMarkdown",
+      "imports": [],
+      "importedBy": [
+        "scripts/import-luma.mjs::__file_root__"
+      ]
+    },
+    "src/lib/lumaFeed.js::lumaEntriesFromFeed": {
+      "filePath": "src/lib/lumaFeed.js",
+      "name": "lumaEntriesFromFeed",
+      "imports": [],
+      "importedBy": [
+        "scripts/import-luma.mjs::__file_root__"
+      ]
+    },
+    "src/lib/lumaFeed.js::lumaFeedUrl": {
+      "filePath": "src/lib/lumaFeed.js",
+      "name": "lumaFeedUrl",
+      "imports": [],
+      "importedBy": [
+        "scripts/import-luma.mjs::__file_root__"
+      ]
+    },
+    "src/lib/lumaFeed.js::lumaSlugFromLink": {
+      "filePath": "src/lib/lumaFeed.js",
+      "name": "lumaSlugFromLink",
+      "imports": [],
+      "importedBy": [
+        "scripts/import-luma.mjs::__file_root__"
+      ]
+    },
+    "src/lib/lumaFeed.test.ts::__file_root__": {
+      "filePath": "src/lib/lumaFeed.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/lumaFeed.js::__file_root__",
+        "src/lib/lumaFeed.js::eventMarkdown",
+        "src/lib/lumaFeed.js::lumaEntriesFromFeed",
+        "src/lib/lumaFeed.js::lumaEventDate",
+        "src/lib/lumaFeed.js::lumaEventToEntry",
+        "src/lib/lumaFeed.js::lumaFeedUrl",
+        "src/lib/lumaFeed.js::lumaSlugFromLink",
+        "src/lib/lumaFeed.js::slugifyTitle",
+        "src/lib/luma.ts::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/lumaImport.test.ts::__file_root__": {
+      "filePath": "src/lib/lumaImport.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "scripts/import-luma.mjs::__file_root__"
+      ],
+      "importedBy": []
     },
     "src/lib/mailto.test.ts::__file_root__": {
       "filePath": "src/lib/mailto.test.ts",
@@ -9898,6 +10019,15 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/BrandMark.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BrandMark.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/BrandMark.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/CalloutCard.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/CalloutCard.astro",
       "name": "__file_root__",
@@ -10940,6 +11070,7 @@
         "src/pages/isolated-components/BlogPostBody.astro::__file_root__",
         "src/pages/isolated-components/EventsArchive.astro::__file_root__",
         "src/pages/isolated-components/MomentumTestimonials.astro::__file_root__",
+        "src/pages/isolated-components/BrandMark.astro::__file_root__",
         "src/pages/isolated-components/SitePageHeader-LongTitle.astro::__file_root__",
         "src/pages/isolated-components/GiveClose.astro::__file_root__",
         "src/pages/isolated-components/DecisionTick-ReadOnly.astro::__file_root__",
@@ -11006,5 +11137,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-18T19:39:15Z"
+  "lastUpdated": "2026-09-18T21:46:57Z"
 }

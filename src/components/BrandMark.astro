@@ -1,0 +1,62 @@
+---
+// The Harvard Alumni in Tech H lockup, as inline SVG.
+//
+// WHAT THE GEOMETRY MEANS. One unit governs the whole mark: the stem width, 47.
+// The overline bar is 47 tall, the gap beneath it is 47, and the crossbar
+// joining the two stems is 47. That is why the proportions hold at any size and
+// why the gap must NOT be closed: the white space between the bar and the
+// crossbar is the T, and the T in the negative space is the point of the mark.
+//
+// Four rectangles, in path order: the overline bar across the top, the left
+// stem, the right stem, and the crossbar between them.
+//
+// CAVEAT worth carrying forward: this geometry was MEASURED off a raster in
+// `HIT_BrandGuidelines.pdf`, not traced from vector artwork. It is faithful
+// enough to render crisply at every size the site uses, but if the original
+// vector ever turns up, re-check it against this path before trusting it for
+// print. See `docs/launch-decisions-2026-09-16.md`, "Brand mark".
+//
+// The mark carries NO colour of its own — it fills with `currentColor`, so one
+// definition serves crimson-on-white in the header and white-on-crimson
+// wherever a dark ground appears later. The caller sets `color` and the size.
+//
+// `public/favicon.svg` holds a SECOND copy of this same path, because an
+// external favicon file cannot import anything. `src/lib/siteIcons.test.ts`
+// asserts the two `d` attributes match, so the drift shows up in a test run
+// rather than on a tab strip.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props as Props;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 145 269"
+  fill="currentColor"
+  role="img"
+  aria-label="Harvard Alumni in Tech"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path d="M0 0h145v47H0z M0 94h46v175H0z M99 94h46v175H99z M46 167h53v47H46z" />
+</svg>
+
+<style>
+  /* The sizing lives HERE, not in the caller, because Astro's scoped styles do
+     not cross a component boundary: a `.brand-mark` rule written in
+     BaseLayout's style block never matches this <svg>, since the scope
+     attribute is only stamped on elements in that file's own template. The
+     first cut of this component did exactly that, and the mark rendered at no
+     height at all — present in the DOM, invisible on the page.
+
+     Height is a custom property so a caller can resize it without reaching
+     inside; `width: auto` then follows the viewBox aspect. Colour is
+     deliberately NOT set: the path fills with `currentColor`, so the mark takes
+     whatever `color` it inherits from the link or section around it. */
+  svg {
+    display: block;
+    height: var(--brand-mark-height, 26px);
+    width: auto;
+  }
+</style>

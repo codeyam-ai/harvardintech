@@ -1,0 +1,58 @@
+---
+import Component from "../../../src/components/BrandMark.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for BrandMark.
+//
+// The component takes no data, so there is no seed to get right. What IS worth
+// demonstrating is the two claims the mark makes, neither of which is visible
+// in a single default shot:
+//
+//   1. It takes `currentColor`. One definition serves crimson-on-white (the
+//      header) and white-on-crimson (the browser icon), so both grounds are
+//      shown side by side — a mark that had baked in its own fill would look
+//      identical on the left and wrong on the right.
+//   2. It holds up at size. 26px is the real header size, and it is small
+//      enough that the 47-unit gap under the bar — the T in the negative
+//      space, the whole idea of the mark — is where it would close up first.
+//      The row runs 26 / 48 / 96px so the smallest is checkable against the
+//      largest in one frame.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: BrandMark</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: 32px; display: flex; gap: 32px;">
+      <div
+        style="background: #fff; color: var(--crimson); padding: 28px 40px; display: flex; align-items: flex-end; gap: 28px; border: 1px solid #e6e6e6;"
+      >
+        <Component class="s26" />
+        <Component class="s48" />
+        <Component class="s96" />
+      </div>
+      <div
+        style="background: var(--crimson); color: #fff; padding: 28px 40px; display: flex; align-items: flex-end; gap: 28px;"
+      >
+        <Component class="s26" />
+        <Component class="s48" />
+        <Component class="s96" />
+      </div>
+    </div>
+
+    <style is:global>
+      .s26 {
+        --brand-mark-height: 26px;
+      }
+      .s48 {
+        --brand-mark-height: 48px;
+      }
+      .s96 {
+        --brand-mark-height: 96px;
+      }
+    </style>
+  </body>
+</html>

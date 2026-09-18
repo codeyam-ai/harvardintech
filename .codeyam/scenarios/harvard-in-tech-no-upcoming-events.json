@@ -48,7 +48,7 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/index.astro",
-  "description": "The homepage events band with nothing upcoming — captured at /#events so the band is actually in frame rather than below the fold. This is the state the live site is in today: the collection holds eight events and every one has passed, so the band renders its invitation instead of a list, offering the Luma calendar and the mailing list as the two ways to hear about the next one. It seeds zero events, which exercises the empty branch but cannot tell whether the page FILTERS — a page handing the band every event would render identically here. The past-and-future scenario beside it is the one that proves the filter.",
+  "description": "The homepage events band with nothing upcoming — captured at /#events so the band is actually in frame rather than below the fold. This is no longer the state of the live site: since events are pulled from Luma, the collection carries whatever the calendar has scheduled, and today that is the 28 September mixer. It is a state the site will nevertheless return to every time the calendar empties out, and that quiet stretch is exactly when nobody is looking — so the band renders its invitation instead of a list, offering the Luma calendar and the mailing list as the two ways to hear about the next one. It seeds zero events, which exercises the empty branch but cannot tell whether the page FILTERS — a page handing the band every event would render identically here. The past-and-future scenario beside it is the one that proves the filter.",
   "interactions": [
     {
       "action": "hover",

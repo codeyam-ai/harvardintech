@@ -2,18 +2,36 @@
 // The site's icon links: the browser-tab favicon and the iOS home-screen icon.
 //
 // Its own component because `HeadExtras` composes sub-components and nothing
-// else, and because these two links have one shared concern — they are the only
-// place the site's MARK appears outside the page body, so whatever the HAA
-// decides about the Veritas shield, this is the file that changes.
+// else, and because these links have one shared concern — they are the only
+// place the site's MARK appears outside the page body.
 //
-// The mark today is a crimson HIT monogram (`public/favicon.svg`), deliberately
-// not the shield: permission for a Shared Interest Group to use the shield is
-// still outstanding, and the browser tab should not wait on that answer.
+// The mark is the approved Harvard Alumni in Tech H lockup. Its geometry is
+// shared with `src/components/BrandMark.astro`, which renders the same path in
+// the header; `public/favicon.svg` holds the second copy because an external
+// favicon file cannot import anything, and a test pins the two together.
 //
-// Both paths go through `withBase` so they resolve on the project-subpath
-// deploy (codeyam-ai.github.io/harvardintech/) as well as on the bare domain.
+// WHY A RASTER FALLBACK IS DECLARED AT ALL, when the SVG is better in every way
+// a browser that supports it: a browser that does NOT use SVG favicons — and
+// Google's search-result crawler — ignores the SVG entirely and issues an
+// implicit `GET /favicon.ico` against the ORIGIN ROOT. On the project-subpath
+// deploy (codeyam-ai.github.io/harvardintech/) that path is outside the site's
+// base altogether, so it 404s and the tab falls back to a generic globe with no
+// error reported anywhere. The implicit request cannot be base-corrected, so a
+// root `favicon.ico` alone would still miss on the subpath deploy; declaring a
+// PNG explicitly, through `withBase`, is what stops the request being made.
+// (A root `favicon.ico` is shipped too, cheaply, for the custom-domain deploy
+// and for crawlers that only ever ask for that path.)
+//
+// ORDER MATTERS: the PNG is declared first and the SVG second, so a browser
+// that understands `image/svg+xml` still prefers the SVG — the type hint wins
+// over document order — while one that does not takes the PNG rather than
+// falling through.
+//
+// Every path goes through `withBase` so it resolves on the project-subpath
+// deploy as well as on the bare domain.
 import { withBase } from '../lib/url';
 ---
 
+<link rel="icon" href={withBase('/favicon-32.png')} sizes="32x32" />
 <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
 <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />

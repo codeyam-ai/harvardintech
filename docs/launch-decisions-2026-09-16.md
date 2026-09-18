@@ -121,6 +121,11 @@ re-opens it.
 - **Reconcile the 28 September event.** Luma calls it "Harvard in Tech Fall
   Welcome Mixer"; the archive plan adds it by hand as "An Elevated Evening of
   Ideas, Connection & Conversation".
+  - **Settled 2026-09-18:** they are the same evening — Luma's start time for it
+    is 6 PM in New York, the hour the hand-written entry already carried. Luma's
+    name wins, because Luma is where people registered. The entry keeps the
+    hand-written venue ("Private rooftop, Hudson Yards") and write-up, which the
+    calendar does not supply, so importing a name cost the page none of its copy.
 
 ## Design system (`launch--design-system`)
 

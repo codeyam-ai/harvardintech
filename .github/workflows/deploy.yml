@@ -59,10 +59,24 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Nightly, so an event created on Luma reaches the site without anyone
+  # pushing. 07:10 UTC is the small hours in New York and early morning in
+  # London — after the day's events are set, before anyone looks.
+  #
+  # GitHub DISABLES a scheduled workflow in a repository with no activity for
+  # 60 days. A quiet stretch after launch therefore stops this job silently;
+  # any push, or one manual run from the Actions tab, starts it again. See
+  # DEPLOY_SETUP.md.
+  schedule:
+    - cron: '10 7 * * *'
   workflow_dispatch:
 
+# `contents: write` so the nightly run can commit the events it imported from
+# Luma back to `main`. That commit uses GITHUB_TOKEN, which deliberately does
+# NOT retrigger this workflow — no loop — and none is needed, because the run
+# that wrote the files goes on to build and deploy them itself.
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -110,6 +124,29 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: npm ci
+      # Pull anything new off the Luma calendar before building, so the site
+      # does not wait for someone to re-type an event that already exists.
+      #
+      # It never overwrites an entry that is already in the collection, so an
+      # edit made in /admin survives every run. If Luma is unreachable the
+      # script says so and exits 0, and the build ships the events already
+      # committed rather than failing or emptying the page.
+      - name: Import events from Luma
+        run: node scripts/import-luma.mjs --past
+      # Commit them back so the repo, the CMS and the site agree on what the
+      # calendar holds. `--quiet` exits non-zero only when there is something
+      # to commit, so a night with no new events is a clean no-op.
+      - name: Commit imported events
+        run: |
+          if git diff --quiet -- src/content/events; then
+            echo "no new events from Luma"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/events
+          git commit -m "content: import events from Luma [skip ci]"
+          git push origin HEAD:${{ github.ref_name }}
       - name: Build site
         env:
           # The domain cutover flips these two: drop DEPLOY_BASE_PATH (base → '/')

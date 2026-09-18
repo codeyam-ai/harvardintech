@@ -1,0 +1,12 @@
+{
+  "name": "BrandMark - Both Grounds At Three Sizes",
+  "id": "401a1d57-0d1d-4618-9231-924d3bfae483",
+  "url": "/isolated-components/BrandMark",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "BrandMark",
+  "scenarioType": "component",
+  "description": "The approved H lockup, shown the two ways the site actually uses it and at the three sizes that decide whether it works. Left: crimson on white, the header. Right: white on crimson, the browser icon. The component carries no colour of its own — it fills with currentColor — so a mark that had baked in its own fill would look correct on the left and invisible or wrong on the right, and only showing both grounds in one frame catches that. The sizes run 26 / 48 / 96px because 26px is the real header size and is where the mark fails first: the 47-unit gap beneath the overline bar is the T in the negative space, the whole idea of the mark, and it is the first thing to close up as the mark shrinks. Anything that changes the geometry shows here before it reaches a tab strip."
+}
