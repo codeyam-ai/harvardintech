@@ -49,6 +49,20 @@ nothing.
   shows the evening twice. **Luma's name wins unless the owner says otherwise**,
   because Luma is where people actually registered.
 
+## Owner answers (2026-09-18, at the plan gate)
+
+1. **The Fall Welcome Mixer and the "Elevated Evening" are the SAME event.**
+   Luma's name wins: the hand-written 28 September entry under
+   `src/content/events/` is replaced by the imported one, so that date appears
+   once, as *"Harvard in Tech Fall Welcome Mixer"*. This is the single place the
+   import is allowed to displace a hand-written entry — a one-time reconciliation
+   in Implementation step 4, not a change to the script's never-overwrite rule.
+2. **Unpublished or deleted Luma events follow the stated default**: anything
+   already past stays on the site; anything still upcoming that Luma no longer
+   lists is dropped on the next build.
+3. Open question 3 remains for the implementer (pagination / reachability of past
+   events through `get-items`).
+
 ## Open questions
 
 1. **Owner.** Are the Fall Welcome Mixer and the "Elevated Evening" the same
