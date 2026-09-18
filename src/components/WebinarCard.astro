@@ -1,0 +1,109 @@
+---
+// One recording in the webinars grid: its cover still, title, speaker line and
+// year, all inside a single link to the post where the video actually plays.
+//
+// The whole card is one link rather than a linked title, because the cover
+// image is the part a reader aims at — a 16:9 still with a clickable heading
+// above it is a target most people miss on the first try.
+//
+// `coverImage` is optional and its absence is MEANINGFUL, not a fallback: a
+// recording whose host has lost the video has no still to show (what the
+// provider returns for one is a generic colour-bars placeholder, identical for
+// every dead upload), so the card shows a plain tinted block rather than
+// captioning a colour chart as a video still.
+interface Props {
+  slug: string;
+  title: string;
+  year: number;
+  summary?: string;
+  coverImage?: string;
+}
+const { slug, title, year, summary, coverImage } = Astro.props as Props;
+---
+
+<li class="webinar-card">
+  <a class="webinar-card__link" href={`/blog/${slug}/`}>
+    {
+      coverImage ? (
+        <img
+          class="webinar-card__image"
+          src={coverImage}
+          alt={`Video still from ${title}`}
+          loading="lazy"
+          width="640"
+          height="360"
+        />
+      ) : (
+        <div class="webinar-card__image webinar-card__image--none" aria-hidden="true" />
+      )
+    }
+    <div class="webinar-card__body">
+      <h2 class="webinar-card__title">{title}</h2>
+      {summary && <p class="webinar-card__summary">{summary}</p>}
+      <p class="webinar-card__year">{year}</p>
+    </div>
+  </a>
+</li>
+
+<style>
+  .webinar-card {
+    border: 1px solid var(--color-border, #e5e5e5);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .webinar-card__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .webinar-card__image {
+    display: block;
+    width: 100%;
+    /* `height: auto` is load-bearing, not tidying. The <img> carries width and
+       height attributes so the browser can reserve the space before the file
+       arrives, and those map to a presentational `height: 360px` that wins over
+       `aspect-ratio` on its own — which rendered a 297x356 box and let
+       object-fit crop the sides off every title. Releasing the height lets the
+       ratio below govern and the attributes go back to only preventing shift. */
+    height: auto;
+    /* A 16:9 box crops YouTube's 4:3 `hqdefault` stills top and bottom, which
+       is exactly where their black letterbox bars are. */
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #f2f2f2;
+  }
+
+  .webinar-card__image--none {
+    background: linear-gradient(135deg, #f4f4f4, #e7e7e7);
+  }
+
+  .webinar-card__body {
+    padding: var(--space-md);
+  }
+
+  .webinar-card__title {
+    font-size: 1.05rem;
+    margin: 0 0 0.4rem;
+  }
+
+  .webinar-card__summary {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .webinar-card__year {
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .webinar-card__link:hover .webinar-card__title,
+  .webinar-card__link:focus-visible .webinar-card__title {
+    text-decoration: underline;
+  }
+</style>

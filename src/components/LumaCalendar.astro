@@ -23,14 +23,17 @@ const {
   calendarUrl,
   embedUrl,
   title = 'Full events calendar',
-  height = 640,
+  height = 560,
 } = Astro.props as Props;
 ---
 
 <section class="luma s-section" id="calendar">
   <div class="s-inner">
     <div class="luma-head">
-      <h2 class="s-title--plain" style="text-align:left;margin:0;">{title}</h2>
+      <h2 class="s-title--plain">{title}</h2>
+      <p class="luma-lede">
+        Everything coming up, across every chapter, live from our Luma calendar.
+      </p>
     </div>
 
     {
@@ -38,11 +41,11 @@ const {
         <Fragment>
           <div class="luma-frame">
             <iframe
+              class="luma-iframe"
               src={embedUrl}
               title="Harvard Alumni in Tech events on Luma"
               width="100%"
               height={height}
-              style="border:1px solid var(--line);border-radius:6px;"
               allowfullscreen
             />
           </div>
@@ -74,12 +77,60 @@ const {
 </section>
 
 <style>
+  /* What Luma actually leaves us to design with.
+     The embed is a third-party iframe: we cannot touch a pixel inside it, it
+     ships its own light card with its own rounding and padding, and it does NOT
+     report its content height (no postMessage), so the frame height is ours to
+     choose and the calendar scrolls inside it. That leaves exactly three levers
+     — the frame's WIDTH, its HEIGHT and the chrome AROUND it — and the previous
+     version worked against all three: a 640px box at full page width, wrapped in
+     our own bordered rectangle. With one event in the calendar that read as a
+     small card marooned in a large empty box, inside a second box.
+
+     So: hold the calendar to the same 920px column the event cards below it use,
+     size the frame to the viewport instead of a fixed 640, and let Luma's own
+     card be the only card. */
   .luma-head {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .luma-head h2 {
+    margin: 0;
+  }
+  .luma-lede {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 48ch;
+    margin: 10px auto 0;
   }
   .luma-frame {
     position: relative;
     width: 100%;
+    /* The same measure as the event-card grid below, so the calendar reads as
+       part of the page rather than a full-bleed panel bolted to the top. */
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .luma-iframe {
+    display: block;
+    width: 100%;
+    /* Tracks the viewport rather than sitting at a fixed 640: tall enough on a
+       laptop to show several events, short enough on a small screen that the
+       calendar is not the entire first screenful. The floor keeps two rows and
+       Luma's own header visible at the smallest sizes.
+
+       Deliberately sized nearer the LOW end of what the calendar can hold. The
+       org usually has one or two events in flight, and Luma pads the rest of
+       its panel with flat grey — so an over-tall frame reads as a half-empty
+       box every quiet week, while a short one only costs a scroll on the rare
+       busy one. Raise the ceiling if the calendar starts running fuller. */
+    height: clamp(340px, 46vh, 540px);
+    border: 0;
+    /* Luma's panel has its own rounded corners; this only clips the scroll
+       area to match so the two edges agree. */
+    border-radius: 8px;
   }
   .luma-card {
     display: flex;

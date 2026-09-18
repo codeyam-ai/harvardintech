@@ -39,10 +39,12 @@ export const REDIRECT_TARGETS: Record<string, string> = {
 
   '/volunteers': '/volunteer/',
 
-  // The old site's /webinars held the 2020 COVID-era sessions. They have no home
-  // here yet — the history/archive plan builds that section. Until it ships,
-  // /events is the closest true answer; retarget when it does.
-  '/webinars': '/events/',
+  // NOTE: `/webinars` is deliberately absent. It used to redirect to /events as
+  // the closest true answer while the 2020 sessions had no home here; they now
+  // have one, so `src/pages/webinars.astro` answers that address directly. A
+  // redirect left here would win over the route and the page would never be
+  // reachable — which is exactly the silent shadowing `sitePages.ts` exists to
+  // catch, and why `webinars` moved into its route list in the same change.
 
   // --- section 404s ------------------------------------------------------
   // Each of these has real pages BELOW it (`/chapters/nyc/`) but no index of its

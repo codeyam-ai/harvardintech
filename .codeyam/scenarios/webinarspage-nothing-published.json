@@ -1,0 +1,13 @@
+{
+  "name": "WebinarsPage - Nothing Published",
+  "id": "0ca3061b-5c3d-4c14-8a54-7cb76ef68da7",
+  "url": "/isolated-components/WebinarsPage-Empty",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "WebinarsPage",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/WebinarsPage.astro",
+  "description": "The webinars body with no recordings published: the heading and the explanation of what the series was both stand, and only the grid is replaced by a plain line. Not a hypothetical - five of the eleven recordings are already unpublished because their video host lost the uploads, and the rest are one toggle away."
+}

@@ -1,0 +1,58 @@
+---
+// The folded history at the bottom of /events.
+//
+// Thirty-three events from the New York chapter's 2013-2019 run, imported from
+// the old Strikingly site. They are the organisation's record and they belong
+// on the site — but as CARDS they would be thirty-three photo tiles between a
+// visitor and everything else, so each year is a closed fold instead: seven
+// rows a reader can open, rather than a wall they have to scroll.
+//
+// This component groups and frames; `EventsArchiveYear` owns one fold and
+// `EventsArchiveItem` owns one row. Renders nothing at all when there is no
+// archive, so a site with no imported history simply does not have this section.
+import EventsArchiveYear from './EventsArchiveYear.astro';
+import { groupByYear, type EventLike } from '../lib/events';
+
+interface Props {
+  events: EventLike[];
+  title?: string;
+}
+const { events, title } = Astro.props;
+
+const years = groupByYear(events);
+// The heading states the range it actually covers rather than a hardcoded one,
+// so importing an older event cannot leave the label lying.
+const last = years.at(-1)?.year;
+const first = years.at(0)?.year;
+const range =
+  first === undefined || last === undefined
+    ? ''
+    : first === last
+      ? `${first}`
+      : `${last}–${first}`;
+const heading = title ?? (range ? `Archive, ${range}` : 'Archive');
+---
+
+{
+  years.length > 0 && (
+    <section class="events-archive" style="margin-top: var(--space-xl); text-align: left;">
+      <h2
+        style="text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.1rem; margin: 0 0 var(--space-sm); text-align: center;"
+      >
+        {heading}
+      </h2>
+      <p
+        style="color: var(--color-muted); max-width: var(--text-width); margin: 0 auto var(--space-lg); text-align: center;"
+      >
+        Harvard in Tech began in New York. These are the events from that first
+        run, kept as they were written at the time.
+      </p>
+
+      <div style="max-width: 920px; margin: 0 auto;">
+        {years.map(({ year, events: yearEvents }) => (
+          <EventsArchiveYear year={year} events={yearEvents} />
+        ))}
+      </div>
+    </section>
+  )
+}

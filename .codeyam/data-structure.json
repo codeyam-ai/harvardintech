@@ -205,6 +205,12 @@
         "required": false
       },
       {
+        "name": "series",
+        "type": "string",
+        "required": false,
+        "description": "Groups a post into a named series. The only value today is `webinars`, which puts the post on the /webinars listing page while it still renders at /blog/<slug>."
+      },
+      {
         "name": "metaTitle",
         "type": "string",
         "required": false

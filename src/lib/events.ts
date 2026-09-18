@@ -177,3 +177,68 @@ export function unmatchedChapterTags(
   }
   return unmatched;
 }
+
+/**
+ * The cutoff between "recent past" and "archive": events BEFORE this date are
+ * history, events on or after it are recent.
+ *
+ * 2020 is where the organisation's own story breaks. Everything before it is
+ * the New York chapter's original run, imported from the old Strikingly site as
+ * a record; everything after is the current organisation, whose past events are
+ * still worth showing as cards. A date is the phase-1 stand-in for an explicit
+ * `archive` flag on each entry — see {@link splitArchive}.
+ */
+export const ARCHIVE_BEFORE = '2020-01-01';
+
+/**
+ * Split already-past events into the `recent` few that stay as cards and the
+ * `archive` that folds away by year.
+ *
+ * Both halves keep the order they arrived in, which from `splitEvents` is
+ * newest-first. The cutoff is a parameter rather than read from module state,
+ * so a caller — and a test — can move it without reaching inside.
+ *
+ * Why split at all: 41 past events rendered as one grid of cards buries the
+ * eight that are actually recent under thirty-three from a decade ago. The
+ * archive is worth keeping and worth finding; it is not worth being the first
+ * thing a visitor scrolls past.
+ */
+export function splitArchive<T extends EventLike>(
+  past: readonly T[],
+  before: string | Date = ARCHIVE_BEFORE,
+): { recent: T[]; archive: T[] } {
+  const cutoff = toEventDate(before).valueOf();
+  const recent: T[] = [];
+  const archive: T[] = [];
+  for (const event of past) {
+    (toEventDate(event.date).valueOf() < cutoff ? archive : recent).push(event);
+  }
+  return { recent, archive };
+}
+
+/**
+ * Group events by calendar year, newest year first, keeping each year's events
+ * in the order they arrived.
+ *
+ * The year comes from `getUTCFullYear`, NOT `getFullYear`, and that is the
+ * whole reason this is a named function with a test of its own. A date-only
+ * entry like `2015-01-01` parses as UTC midnight; read in any timezone behind
+ * UTC — which is every US timezone, so most of this site's readers — its LOCAL
+ * year is 2014. A New Year's Day event would file itself under the previous
+ * year on their machine and not on the author's, which is the worst kind of bug
+ * to go looking for.
+ */
+export function groupByYear<T extends EventLike>(
+  events: readonly T[],
+): { year: number; events: T[] }[] {
+  const byYear = new Map<number, T[]>();
+  for (const event of events) {
+    const year = toEventDate(event.date).getUTCFullYear();
+    const bucket = byYear.get(year);
+    if (bucket) bucket.push(event);
+    else byYear.set(year, [event]);
+  }
+  return [...byYear.entries()]
+    .sort((a, b) => b[0] - a[0])
+    .map(([year, yearEvents]) => ({ year, events: yearEvents }));
+}

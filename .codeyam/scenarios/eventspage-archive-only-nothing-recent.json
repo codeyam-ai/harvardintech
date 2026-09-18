@@ -1,0 +1,13 @@
+{
+  "name": "EventsPage - Archive Only, Nothing Recent",
+  "id": "0aac3921-56aa-4319-91dc-de2709d38eaa",
+  "url": "/isolated-components/EventsPage-ArchiveOnly",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsPage",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventsPage.astro",
+  "description": "Nothing recent enough to show as a card, so the Past Events grid and its Luma link both drop out and the folded archive is the whole page. The counterpart to the state above, and what a chapter with a long history and a quiet present actually looks like - the page still reads as finished rather than empty."
+}

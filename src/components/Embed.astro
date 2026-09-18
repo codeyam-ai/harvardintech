@@ -21,13 +21,21 @@ const html = embedHtml?.trim();
 
 {
   url ? (
+    // A 16:9 box rather than `min-height: 400px`: every embed this renders
+    // today is a video, and a fixed minimum height letterboxes it on a phone
+    // and crops it on a wide screen. `allowfullscreen` (plus the matching
+    // `allow` policy, which is what the sandbox attribute gates) is what lets a
+    // recording fill the screen — an hour-long panel is close to unwatchable in
+    // a column. Existing non-video embeds only gain the ability.
     <iframe
       class="embed-frame"
       src={url}
       title={title}
       loading="lazy"
       sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-      style="width: 100%; min-height: 400px; border: 0;"
+      allow="fullscreen; picture-in-picture"
+      allowfullscreen
+      style="width: 100%; aspect-ratio: 16 / 9; min-height: 240px; border: 0;"
     />
   ) : html ? (
     <div class="embed-html" set:html={html} />

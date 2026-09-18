@@ -1,0 +1,13 @@
+{
+  "name": "WebinarCard - Recording Whose Host Lost It",
+  "id": "288091c1-8228-402d-904c-0e7f9eaca715",
+  "url": "/isolated-components/WebinarCard-NoCover",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "WebinarCard",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/WebinarCard.astro",
+  "description": "A card for a recording with no cover still. The provider returns a generic colour-bars placeholder for an upload it has lost - the same bytes for every dead one - so the card shows a plain tinted block instead. The alternative would put a colour chart on the page under alt text calling it a video still."
+}

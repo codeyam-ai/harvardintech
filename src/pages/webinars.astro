@@ -1,0 +1,33 @@
+---
+// /webinars — the 2020 recordings, back at the address they used to live at.
+//
+// The old Strikingly site had a /webinars page. Eleven sessions were recorded
+// during the first months of the pandemic, and the page went away with the rest
+// of that site; this route brings both the recordings and the URL back, so a
+// link to it from 2020 still lands somewhere real. That is also why `webinars`
+// is reserved in `src/lib/sitePages.ts` and why the old `/webinars` redirect was
+// removed — a redirect would win over this route and the page would never be
+// reachable.
+//
+// The posts themselves are ordinary blog entries tagged `series: webinars` —
+// see `src/lib/webinars.ts` for why they are not a collection of their own.
+// This file reads the collection; `WebinarsPage` renders it.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WebinarsPage from '../components/WebinarsPage.astro';
+import { publishedEntries } from '../lib/drafts';
+import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
+import { webinarPosts } from '../lib/webinars';
+
+// Draft filtering matters more here than on most listings: five of the eleven
+// recordings are drafts precisely because their video host no longer has the
+// video, so a listing that ignored the flag would publish five dead players.
+const posts = webinarPosts(publishedEntries(await getCollection('blog'), INCLUDE_DRAFTS));
+---
+
+<BaseLayout
+  title="Webinars"
+  description="Recordings from the Harvard in Tech webinar series, first broadcast in 2020."
+>
+  <WebinarsPage posts={posts} />
+</BaseLayout>

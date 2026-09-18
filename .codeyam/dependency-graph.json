@@ -200,6 +200,22 @@
       "imports": [],
       "importedBy": []
     },
+    "scripts/import-archive-events.mjs": {
+      "imports": [
+        "src/lib/strikinglyArchive.js"
+      ],
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts"
+      ]
+    },
+    "scripts/import-webinars.mjs": {
+      "imports": [
+        "src/lib/strikinglyArchive.js"
+      ],
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts"
+      ]
+    },
     "scripts/ours-shot.mjs": {
       "imports": [],
       "importedBy": []
@@ -207,6 +223,14 @@
     "scripts/section-shot.mjs": {
       "imports": [],
       "importedBy": []
+    },
+    "scripts/snapshot-strikingly.mjs": {
+      "imports": [
+        "src/lib/strikinglyArchive.js"
+      ],
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts"
+      ]
     },
     "src/components/Analytics.astro": {
       "imports": [
@@ -396,10 +420,43 @@
         "src/components/EventsSection.astro"
       ]
     },
+    "src/components/EventsArchive.astro": {
+      "imports": [
+        "src/components/EventsArchiveYear.astro",
+        "src/lib/events.ts"
+      ],
+      "importedBy": [
+        "src/components/EventsPage.astro",
+        "src/pages/isolated-components/EventsArchive.astro"
+      ]
+    },
+    "src/components/EventsArchiveItem.astro": {
+      "imports": [
+        "src/lib/events.ts"
+      ],
+      "importedBy": [
+        "src/components/EventsArchiveYear.astro",
+        "src/pages/isolated-components/EventsArchiveItem.astro"
+      ]
+    },
+    "src/components/EventsArchiveYear.astro": {
+      "imports": [
+        "src/components/EventsArchiveItem.astro",
+        "src/lib/events.ts"
+      ],
+      "importedBy": [
+        "src/components/EventsArchive.astro",
+        "src/pages/isolated-components/EventsArchiveYear.astro"
+      ]
+    },
     "src/components/EventsPage.astro": {
       "imports": [
         "src/components/EventsSection.astro",
-        "src/lib/events.ts"
+        "src/components/EventsArchive.astro",
+        "src/components/PastEventsMore.astro",
+        "src/components/WebinarsPointer.astro",
+        "src/lib/events.ts",
+        "src/lib/luma.ts"
       ],
       "importedBy": [
         "src/pages/events.astro",
@@ -563,6 +620,15 @@
         "src/pages/isolated-components/PageNarrowBody.astro"
       ]
     },
+    "src/components/PastEventsMore.astro": {
+      "imports": [
+        "src/lib/externalLink.ts"
+      ],
+      "importedBy": [
+        "src/components/EventsPage.astro",
+        "src/pages/isolated-components/PastEventsMore.astro"
+      ]
+    },
     "src/components/PreviewGate.astro": {
       "imports": [
         "src/lib/previewGate.ts"
@@ -626,6 +692,33 @@
       "importedBy": [
         "src/pages/volunteer.astro",
         "src/pages/isolated-components/[name].astro"
+      ]
+    },
+    "src/components/WebinarCard.astro": {
+      "imports": [],
+      "importedBy": [
+        "src/components/WebinarsPage.astro",
+        "src/pages/isolated-components/WebinarCard-NoCover.astro",
+        "src/pages/isolated-components/WebinarCard.astro"
+      ]
+    },
+    "src/components/WebinarsPage.astro": {
+      "imports": [
+        "src/components/WebinarCard.astro",
+        "src/lib/webinars.ts"
+      ],
+      "importedBy": [
+        "src/pages/webinars.astro",
+        "src/pages/isolated-components/WebinarsPage.astro",
+        "src/pages/isolated-components/WebinarsPage-Single.astro",
+        "src/pages/isolated-components/WebinarsPage-Empty.astro"
+      ]
+    },
+    "src/components/WebinarsPointer.astro": {
+      "imports": [],
+      "importedBy": [
+        "src/components/EventsPage.astro",
+        "src/pages/isolated-components/WebinarsPointer.astro"
       ]
     },
     "src/components/cutover/DecisionCard.astro": {
@@ -1661,6 +1754,7 @@
         "src/lib/externalLink.ts"
       ],
       "importedBy": [
+        "src/pages/webinars.astro",
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/events.astro",
         "src/pages/chapters/[slug].astro",
@@ -1672,6 +1766,14 @@
         "src/pages/sponsor.astro",
         "src/pages/communities/[slug].astro"
       ]
+    },
+    "src/lib/archiveImporters.test.ts": {
+      "imports": [
+        "scripts/import-archive-events.mjs",
+        "scripts/import-webinars.mjs",
+        "scripts/snapshot-strikingly.mjs"
+      ],
+      "importedBy": []
     },
     "src/lib/areaIcons.test.ts": {
       "imports": [
@@ -2020,6 +2122,7 @@
         "src/lib/homeSectionsContent.ts",
         "src/lib/momentumSectionsContent.ts",
         "src/lib/draftVisibility.test.ts",
+        "src/pages/webinars.astro",
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/events.astro",
         "src/pages/chapters/[slug].astro",
@@ -2050,6 +2153,7 @@
         "src/lib/drafts.test.ts",
         "src/lib/nav.test.ts",
         "src/components/BlogPostBody.astro",
+        "src/pages/webinars.astro",
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/events.astro",
         "src/pages/chapters/[slug].astro",
@@ -2117,8 +2221,11 @@
         "src/lib/events.test.ts",
         "src/lib/projects.ts",
         "src/components/ChapterPage.astro",
+        "src/components/EventsArchive.astro",
         "src/components/ChapterEvents.astro",
         "src/components/EventCard.astro",
+        "src/components/EventsArchiveItem.astro",
+        "src/components/EventsArchiveYear.astro",
         "src/components/landing/ContentHub.astro",
         "src/components/landing/UpcomingEvents.astro",
         "src/components/EventsPage.astro",
@@ -2128,6 +2235,10 @@
         "src/pages/index.astro",
         "src/pages/communities/[slug].astro"
       ]
+    },
+    "src/lib/eventsArchiveContent.test.ts": {
+      "imports": [],
+      "importedBy": []
     },
     "src/lib/externalLink.test.ts": {
       "imports": [
@@ -2147,6 +2258,7 @@
         "src/components/volunteer/VolunteerProjectCardLinks.astro",
         "src/components/volunteer/VolunteerProjectsEmpty.astro",
         "src/components/LumaSubscribe.astro",
+        "src/components/PastEventsMore.astro",
         "src/components/sponsor/SponsorInquiry.astro",
         "src/components/EventCard.astro",
         "src/components/ChapterConnect.astro",
@@ -2313,6 +2425,7 @@
       "imports": [],
       "importedBy": [
         "src/components/landing/UpcomingEvents.astro",
+        "src/components/EventsPage.astro",
         "src/pages/events.astro"
       ]
     },
@@ -2812,6 +2925,21 @@
         "src/components/SponsorPage.astro"
       ]
     },
+    "src/lib/strikinglyArchive.js": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts",
+        "scripts/import-webinars.mjs",
+        "scripts/snapshot-strikingly.mjs",
+        "scripts/import-archive-events.mjs"
+      ]
+    },
+    "src/lib/strikinglyArchive.test.ts": {
+      "imports": [
+        "src/lib/strikinglyArchive.js"
+      ],
+      "importedBy": []
+    },
     "src/lib/supporterBadge.test.ts": {
       "imports": [
         "src/lib/supporterBadge.ts",
@@ -2914,6 +3042,20 @@
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/volunteer.astro",
         "src/pages/index.astro"
+      ]
+    },
+    "src/lib/webinars.test.ts": {
+      "imports": [
+        "src/lib/webinars.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/webinars.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/webinars.test.ts",
+        "src/components/WebinarsPage.astro",
+        "src/pages/webinars.astro"
       ]
     },
     "src/pages/404.astro": {
@@ -3203,6 +3345,27 @@
     },
     "src/pages/isolated-components/DeployStatus-Verifying.astro": {
       "imports": [
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsArchive.astro": {
+      "imports": [
+        "src/components/EventsArchive.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsArchiveItem.astro": {
+      "imports": [
+        "src/components/EventsArchiveItem.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsArchiveYear.astro": {
+      "imports": [
+        "src/components/EventsArchiveYear.astro",
         "src/styles/tokens.css"
       ],
       "importedBy": []
@@ -3506,6 +3669,13 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/PastEventsMore.astro": {
+      "imports": [
+        "src/components/PastEventsMore.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/SitePageBody.astro": {
       "imports": [
         "src/components/pages/SitePageBody.astro",
@@ -3681,6 +3851,48 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/WebinarCard-NoCover.astro": {
+      "imports": [
+        "src/components/WebinarCard.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarCard.astro": {
+      "imports": [
+        "src/components/WebinarCard.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarsPage-Empty.astro": {
+      "imports": [
+        "src/components/WebinarsPage.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarsPage-Single.astro": {
+      "imports": [
+        "src/components/WebinarsPage.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarsPage.astro": {
+      "imports": [
+        "src/components/WebinarsPage.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarsPointer.astro": {
+      "imports": [
+        "src/components/WebinarsPointer.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/[name].astro": {
       "imports": [
         "src/components/Greeting.tsx",
@@ -3791,6 +4003,16 @@
       ],
       "importedBy": []
     },
+    "src/pages/webinars.astro": {
+      "imports": [
+        "src/layouts/BaseLayout.astro",
+        "src/components/WebinarsPage.astro",
+        "src/lib/drafts.ts",
+        "src/lib/draftVisibility.ts",
+        "src/lib/webinars.ts"
+      ],
+      "importedBy": []
+    },
     "src/styles/cutover-runbook.css": {
       "imports": [],
       "importedBy": [
@@ -3808,6 +4030,7 @@
         "src/layouts/BaseLayout.astro",
         "src/pages/404.astro",
         "src/pages/isolated-components/MomentumHero-VideoMissing.astro",
+        "src/pages/isolated-components/WebinarCard-NoCover.astro",
         "src/pages/isolated-components/AccomplishmentCard.astro",
         "src/pages/isolated-components/BoardMemberTile.astro",
         "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro",
@@ -3822,6 +4045,7 @@
         "src/pages/isolated-components/MomentumClose-Split.astro",
         "src/pages/isolated-components/VolunteerHero.astro",
         "src/pages/isolated-components/LumaSubscribe.astro",
+        "src/pages/isolated-components/WebinarsPage.astro",
         "src/pages/isolated-components/OrderArrows-BottomRow.astro",
         "src/pages/isolated-components/GivePhoto.astro",
         "src/pages/isolated-components/MomentumHero.astro",
@@ -3836,10 +4060,13 @@
         "src/pages/isolated-components/StepTick-Done.astro",
         "src/pages/isolated-components/BoardMemberTile-Initials.astro",
         "src/pages/isolated-components/DeployStatus-Publishing.astro",
+        "src/pages/isolated-components/PastEventsMore.astro",
+        "src/pages/isolated-components/WebinarsPage-Single.astro",
         "src/pages/isolated-components/OrderArrows-TopRow.astro",
         "src/pages/isolated-components/PageNarrowBody.astro",
         "src/pages/isolated-components/FormingChapterCta-NoEmail.astro",
         "src/pages/isolated-components/BlogPostBody.astro",
+        "src/pages/isolated-components/EventsArchive.astro",
         "src/pages/isolated-components/MomentumTestimonials.astro",
         "src/pages/isolated-components/SitePageHeader-LongTitle.astro",
         "src/pages/isolated-components/GiveClose.astro",
@@ -3848,6 +4075,7 @@
         "src/pages/isolated-components/StepTick.astro",
         "src/pages/isolated-components/GiftPillars-Numbered.astro",
         "src/pages/isolated-components/MomentumHero-Video.astro",
+        "src/pages/isolated-components/EventsArchiveItem.astro",
         "src/pages/isolated-components/GalleryLightbox.astro",
         "src/pages/isolated-components/VolunteerProjectMeta.astro",
         "src/pages/isolated-components/DeployChip-StillUpdating.astro",
@@ -3858,6 +4086,7 @@
         "src/pages/isolated-components/VolunteerProjectPage.astro",
         "src/pages/isolated-components/VolunteerProjectCta.astro",
         "src/pages/isolated-components/GivingCard.astro",
+        "src/pages/isolated-components/EventsArchiveYear.astro",
         "src/pages/isolated-components/GiftPillars.astro",
         "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro",
         "src/pages/isolated-components/VolunteerProjectCardLinks.astro",
@@ -3867,6 +4096,7 @@
         "src/pages/isolated-components/ComingSoon.astro",
         "src/pages/isolated-components/SitePageHeader.astro",
         "src/pages/isolated-components/StagingBar-Reviewing.astro",
+        "src/pages/isolated-components/WebinarsPage-Empty.astro",
         "src/pages/isolated-components/VolunteerProjectCard.astro",
         "src/pages/isolated-components/VolunteerProjectPhoto.astro",
         "src/pages/isolated-components/VolunteerProjectHeader.astro",
@@ -3886,10 +4116,12 @@
         "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro",
         "src/pages/isolated-components/GoalMeter-WithLink.astro",
         "src/pages/isolated-components/GiveStatement.astro",
+        "src/pages/isolated-components/WebinarsPointer.astro",
         "src/pages/isolated-components/GiftPillarCard.astro",
         "src/pages/isolated-components/BoardMemberTile-NoBio.astro",
         "src/pages/isolated-components/DeployStatus-Live.astro",
         "src/pages/isolated-components/[name].astro",
+        "src/pages/isolated-components/WebinarCard.astro",
         "src/pages/isolated-components/DeployChip-Live.astro",
         "src/pages/isolated-components/GiveRecognition.astro",
         "src/pages/isolated-components/DeployStatus-StillUpdating.astro",
@@ -4049,6 +4281,45 @@
         "src/lib/previewGate.ts::assertPassphraseConfigured",
         "src/lib/previewGate.ts::substitutePassphrase",
         "src/lib/redirects.ts::redirectsForBase"
+      ],
+      "importedBy": []
+    },
+    "scripts/import-archive-events.mjs::__file_root__": {
+      "filePath": "scripts/import-archive-events.mjs",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/strikinglyArchive.js::eventFrontmatter",
+        "src/lib/strikinglyArchive.js::flattenWriteup",
+        "src/lib/strikinglyArchive.js::slugify"
+      ],
+      "importedBy": []
+    },
+    "scripts/import-webinars.mjs::__file_root__": {
+      "filePath": "scripts/import-webinars.mjs",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/strikinglyArchive.js::slugify",
+        "src/lib/strikinglyArchive.js::webinarPostBody"
+      ],
+      "importedBy": []
+    },
+    "scripts/snapshot-strikingly.mjs::__file_root__": {
+      "filePath": "scripts/snapshot-strikingly.mjs",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/strikinglyArchive.js::archiveItems",
+        "src/lib/strikinglyArchive.js::cleanTitleText",
+        "src/lib/strikinglyArchive.js::cleanWriteup",
+        "src/lib/strikinglyArchive.js::featuredEventItem",
+        "src/lib/strikinglyArchive.js::galleryItems",
+        "src/lib/strikinglyArchive.js::pageByPath",
+        "src/lib/strikinglyArchive.js::parseArchiveDate",
+        "src/lib/strikinglyArchive.js::slugify",
+        "src/lib/strikinglyArchive.js::storeFromHtml",
+        "src/lib/strikinglyArchive.js::strikinglyImageFallbackUrl",
+        "src/lib/strikinglyArchive.js::strikinglyImageUrl",
+        "src/lib/strikinglyArchive.js::videoProviderFor",
+        "src/lib/strikinglyArchive.js::webinarItems"
       ],
       "importedBy": []
     },
@@ -4254,13 +4525,54 @@
         "src/components/EventsSection.astro::__file_root__"
       ]
     },
+    "src/components/EventsArchive.astro::__file_root__": {
+      "filePath": "src/components/EventsArchive.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/EventsArchiveYear.astro::__file_root__",
+        "src/lib/events.ts::EventLike",
+        "src/lib/events.ts::groupByYear"
+      ],
+      "importedBy": [
+        "src/components/EventsPage.astro::__file_root__",
+        "src/pages/isolated-components/EventsArchive.astro::__file_root__"
+      ]
+    },
+    "src/components/EventsArchiveItem.astro::__file_root__": {
+      "filePath": "src/components/EventsArchiveItem.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/events.ts::EventLike",
+        "src/lib/events.ts::toEventDate"
+      ],
+      "importedBy": [
+        "src/components/EventsArchiveYear.astro::__file_root__",
+        "src/pages/isolated-components/EventsArchiveItem.astro::__file_root__"
+      ]
+    },
+    "src/components/EventsArchiveYear.astro::__file_root__": {
+      "filePath": "src/components/EventsArchiveYear.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/EventsArchiveItem.astro::__file_root__",
+        "src/lib/events.ts::EventLike"
+      ],
+      "importedBy": [
+        "src/pages/isolated-components/EventsArchiveYear.astro::__file_root__"
+      ]
+    },
     "src/components/EventsPage.astro::__file_root__": {
       "filePath": "src/components/EventsPage.astro",
       "name": "__file_root__",
       "imports": [
         "src/components/EventsSection.astro::__file_root__",
+        "src/components/EventsArchive.astro::__file_root__",
+        "src/components/PastEventsMore.astro::__file_root__",
+        "src/components/WebinarsPointer.astro::__file_root__",
         "src/lib/events.ts::EventLike",
-        "src/lib/events.ts::splitEvents"
+        "src/lib/events.ts::splitArchive",
+        "src/lib/events.ts::splitEvents",
+        "src/lib/luma.ts::__file_root__"
       ],
       "importedBy": [
         "src/pages/events.astro::__file_root__",
@@ -4448,6 +4760,17 @@
         "src/pages/isolated-components/PageNarrowBody.astro::__file_root__"
       ]
     },
+    "src/components/PastEventsMore.astro::__file_root__": {
+      "filePath": "src/components/PastEventsMore.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs"
+      ],
+      "importedBy": [
+        "src/components/EventsPage.astro::__file_root__",
+        "src/pages/isolated-components/PastEventsMore.astro::__file_root__"
+      ]
+    },
     "src/components/PreviewGate.astro::__file_root__": {
       "filePath": "src/components/PreviewGate.astro",
       "name": "__file_root__",
@@ -4523,6 +4846,38 @@
       "importedBy": [
         "src/pages/volunteer.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
+      ]
+    },
+    "src/components/WebinarCard.astro::__file_root__": {
+      "filePath": "src/components/WebinarCard.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/WebinarCard-NoCover.astro::__file_root__",
+        "src/pages/isolated-components/WebinarCard.astro::__file_root__"
+      ]
+    },
+    "src/components/WebinarsPage.astro::__file_root__": {
+      "filePath": "src/components/WebinarsPage.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/WebinarCard.astro::__file_root__",
+        "src/lib/webinars.ts::WebinarEntryLike",
+        "src/lib/webinars.ts::webinarYear"
+      ],
+      "importedBy": [
+        "src/pages/webinars.astro::__file_root__",
+        "src/pages/isolated-components/WebinarsPage.astro::__file_root__",
+        "src/pages/isolated-components/WebinarsPage-Single.astro::__file_root__",
+        "src/pages/isolated-components/WebinarsPage-Empty.astro::__file_root__"
+      ]
+    },
+    "src/components/WebinarsPointer.astro::__file_root__": {
+      "filePath": "src/components/WebinarsPointer.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/WebinarsPointer.astro::__file_root__"
       ]
     },
     "src/components/cutover/DecisionCard.astro::__file_root__": {
@@ -5788,6 +6143,7 @@
         "src/lib/externalLink.ts::externalLinkAttrs"
       ],
       "importedBy": [
+        "src/pages/webinars.astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/events.astro::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
@@ -5799,6 +6155,16 @@
         "src/pages/sponsor.astro::__file_root__",
         "src/pages/communities/[slug].astro::__file_root__"
       ]
+    },
+    "src/lib/archiveImporters.test.ts::__file_root__": {
+      "filePath": "src/lib/archiveImporters.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "scripts/import-archive-events.mjs::__file_root__",
+        "scripts/import-webinars.mjs::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ],
+      "importedBy": []
     },
     "src/lib/areaIcons.test.ts::__file_root__": {
       "filePath": "src/lib/areaIcons.test.ts",
@@ -6586,6 +6952,7 @@
       "importedBy": [
         "src/lib/homeSectionsContent.ts::__file_root__",
         "src/lib/momentumSectionsContent.ts::__file_root__",
+        "src/pages/webinars.astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/events.astro::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
@@ -6671,6 +7038,7 @@
         "src/lib/momentumSectionsContent.ts::__file_root__",
         "src/lib/drafts.test.ts::__file_root__",
         "src/lib/nav.test.ts::__file_root__",
+        "src/pages/webinars.astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/events.astro::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
@@ -6743,9 +7111,12 @@
       "filePath": "src/lib/events.test.ts",
       "name": "__file_root__",
       "imports": [
+        "src/lib/events.ts::__file_root__",
         "src/lib/events.ts::eventsTaggedTo",
         "src/lib/events.ts::formatEventDate",
+        "src/lib/events.ts::groupByYear",
         "src/lib/events.ts::recentPastEvents",
+        "src/lib/events.ts::splitArchive",
         "src/lib/events.ts::splitEvents",
         "src/lib/events.ts::toEventDate",
         "src/lib/events.ts::unmatchedChapterTags"
@@ -6758,8 +7129,11 @@
       "imports": [],
       "importedBy": [
         "src/components/ChapterPage.astro::__file_root__",
+        "src/components/EventsArchive.astro::__file_root__",
         "src/components/ChapterEvents.astro::__file_root__",
         "src/components/EventCard.astro::__file_root__",
+        "src/components/EventsArchiveItem.astro::__file_root__",
+        "src/components/EventsArchiveYear.astro::__file_root__",
         "src/components/landing/UpcomingEvents.astro::__file_root__",
         "src/components/EventsPage.astro::__file_root__",
         "src/components/EventsSection.astro::__file_root__",
@@ -6784,6 +7158,14 @@
         "src/components/landing/ContentHub.astro::__file_root__"
       ]
     },
+    "src/lib/events.ts::groupByYear": {
+      "filePath": "src/lib/events.ts",
+      "name": "groupByYear",
+      "imports": [],
+      "importedBy": [
+        "src/components/EventsArchive.astro::__file_root__"
+      ]
+    },
     "src/lib/events.ts::recentPastEvents": {
       "filePath": "src/lib/events.ts",
       "name": "recentPastEvents",
@@ -6791,6 +7173,14 @@
       "importedBy": [
         "src/pages/chapters/[slug].astro::__file_root__",
         "src/pages/communities/[slug].astro::__file_root__"
+      ]
+    },
+    "src/lib/events.ts::splitArchive": {
+      "filePath": "src/lib/events.ts",
+      "name": "splitArchive",
+      "imports": [],
+      "importedBy": [
+        "src/components/EventsPage.astro::__file_root__"
       ]
     },
     "src/lib/events.ts::splitEvents": {
@@ -6802,6 +7192,14 @@
         "src/pages/chapters/[slug].astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/communities/[slug].astro::__file_root__"
+      ]
+    },
+    "src/lib/events.ts::toEventDate": {
+      "filePath": "src/lib/events.ts",
+      "name": "toEventDate",
+      "imports": [],
+      "importedBy": [
+        "src/components/EventsArchiveItem.astro::__file_root__"
       ]
     },
     "src/lib/events.ts::unmatchedChapterTags": {
@@ -6833,6 +7231,7 @@
         "src/components/volunteer/VolunteerProjectCardLinks.astro::__file_root__",
         "src/components/volunteer/VolunteerProjectsEmpty.astro::__file_root__",
         "src/components/LumaSubscribe.astro::__file_root__",
+        "src/components/PastEventsMore.astro::__file_root__",
         "src/components/sponsor/SponsorInquiry.astro::__file_root__",
         "src/components/EventCard.astro::__file_root__",
         "src/components/ChapterConnect.astro::__file_root__",
@@ -7268,6 +7667,7 @@
       "imports": [],
       "importedBy": [
         "src/components/landing/UpcomingEvents.astro::__file_root__",
+        "src/components/EventsPage.astro::__file_root__",
         "src/pages/events.astro::__file_root__"
       ]
     },
@@ -8474,6 +8874,236 @@
         "src/components/sponsor/SponsorWall.astro::__file_root__"
       ]
     },
+    "src/lib/strikinglyArchive.js::archiveItems": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "archiveItems",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::cleanTitleText": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "cleanTitleText",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::cleanWriteup": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "cleanWriteup",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::eventFrontmatter": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "eventFrontmatter",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/import-archive-events.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::featuredEventItem": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "featuredEventItem",
+      "imports": [],
+      "importedBy": [
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::flattenWriteup": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "flattenWriteup",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/import-archive-events.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::galleryItems": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "galleryItems",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::pageByPath": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "pageByPath",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::parseArchiveDate": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "parseArchiveDate",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::parseVimeoMetadata": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "parseVimeoMetadata",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::parseWistiaMetadata": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "parseWistiaMetadata",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::parseYouTubeMetadata": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "parseYouTubeMetadata",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::richTextToParagraphs": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "richTextToParagraphs",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::richTextToPlain": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "richTextToPlain",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::slugify": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "slugify",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/import-webinars.mjs::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__",
+        "scripts/import-archive-events.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::storeFromHtml": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "storeFromHtml",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::strikinglyImageFallbackUrl": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "strikinglyImageFallbackUrl",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::strikinglyImageUrl": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "strikinglyImageUrl",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::toEmbedUrl": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "toEmbedUrl",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::videoProviderFor": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "videoProviderFor",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::webinarItems": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "webinarItems",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/snapshot-strikingly.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::webinarPostBody": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "webinarPostBody",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__",
+        "scripts/import-webinars.mjs::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.js::yamlQuote": {
+      "filePath": "src/lib/strikinglyArchive.js",
+      "name": "yamlQuote",
+      "imports": [],
+      "importedBy": [
+        "src/lib/strikinglyArchive.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/strikinglyArchive.test.ts::__file_root__": {
+      "filePath": "src/lib/strikinglyArchive.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/strikinglyArchive.js::archiveItems",
+        "src/lib/strikinglyArchive.js::cleanTitleText",
+        "src/lib/strikinglyArchive.js::cleanWriteup",
+        "src/lib/strikinglyArchive.js::eventFrontmatter",
+        "src/lib/strikinglyArchive.js::flattenWriteup",
+        "src/lib/strikinglyArchive.js::galleryItems",
+        "src/lib/strikinglyArchive.js::pageByPath",
+        "src/lib/strikinglyArchive.js::parseArchiveDate",
+        "src/lib/strikinglyArchive.js::parseVimeoMetadata",
+        "src/lib/strikinglyArchive.js::parseWistiaMetadata",
+        "src/lib/strikinglyArchive.js::parseYouTubeMetadata",
+        "src/lib/strikinglyArchive.js::richTextToParagraphs",
+        "src/lib/strikinglyArchive.js::richTextToPlain",
+        "src/lib/strikinglyArchive.js::slugify",
+        "src/lib/strikinglyArchive.js::storeFromHtml",
+        "src/lib/strikinglyArchive.js::strikinglyImageFallbackUrl",
+        "src/lib/strikinglyArchive.js::strikinglyImageUrl",
+        "src/lib/strikinglyArchive.js::toEmbedUrl",
+        "src/lib/strikinglyArchive.js::videoProviderFor",
+        "src/lib/strikinglyArchive.js::webinarItems",
+        "src/lib/strikinglyArchive.js::webinarPostBody",
+        "src/lib/strikinglyArchive.js::yamlQuote"
+      ],
+      "importedBy": []
+    },
     "src/lib/supporterBadge.test.ts::__file_root__": {
       "filePath": "src/lib/supporterBadge.test.ts",
       "name": "__file_root__",
@@ -8686,6 +9316,52 @@
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/volunteer.astro::__file_root__",
         "src/pages/index.astro::__file_root__"
+      ]
+    },
+    "src/lib/webinars.test.ts::__file_root__": {
+      "filePath": "src/lib/webinars.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/webinars.ts::WebinarEntryLike",
+        "src/lib/webinars.ts::__file_root__",
+        "src/lib/webinars.ts::webinarPosts",
+        "src/lib/webinars.ts::webinarYear"
+      ],
+      "importedBy": []
+    },
+    "src/lib/webinars.ts::WebinarEntryLike": {
+      "filePath": "src/lib/webinars.ts",
+      "name": "WebinarEntryLike",
+      "imports": [],
+      "importedBy": [
+        "src/lib/webinars.test.ts::__file_root__",
+        "src/components/WebinarsPage.astro::__file_root__"
+      ]
+    },
+    "src/lib/webinars.ts::__file_root__": {
+      "filePath": "src/lib/webinars.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/webinars.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/webinars.ts::webinarPosts": {
+      "filePath": "src/lib/webinars.ts",
+      "name": "webinarPosts",
+      "imports": [],
+      "importedBy": [
+        "src/lib/webinars.test.ts::__file_root__",
+        "src/pages/webinars.astro::__file_root__"
+      ]
+    },
+    "src/lib/webinars.ts::webinarYear": {
+      "filePath": "src/lib/webinars.ts",
+      "name": "webinarYear",
+      "imports": [],
+      "importedBy": [
+        "src/lib/webinars.test.ts::__file_root__",
+        "src/components/WebinarsPage.astro::__file_root__"
       ]
     },
     "src/pages/404.astro::__file_root__": {
@@ -9067,6 +9743,33 @@
       "filePath": "src/pages/isolated-components/DeployStatus-Verifying.astro",
       "name": "__file_root__",
       "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsArchive.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventsArchive.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/EventsArchive.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsArchiveItem.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventsArchiveItem.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/EventsArchiveItem.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsArchiveYear.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventsArchiveYear.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/EventsArchiveYear.astro::__file_root__",
         "src/styles/tokens.css::__file_root__"
       ],
       "importedBy": []
@@ -9456,6 +10159,15 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/PastEventsMore.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/PastEventsMore.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/PastEventsMore.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/SitePageBody.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/SitePageBody.astro",
       "name": "__file_root__",
@@ -9681,6 +10393,60 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/WebinarCard-NoCover.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarCard-NoCover.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/WebinarCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarCard.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarCard.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/WebinarCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarsPage-Empty.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarsPage-Empty.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarsPage-Single.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarsPage-Single.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarsPage.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarsPage.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/WebinarsPointer.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarsPointer.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/WebinarsPointer.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/[name].astro::__file_root__": {
       "filePath": "src/pages/isolated-components/[name].astro",
       "name": "__file_root__",
@@ -9812,6 +10578,18 @@
       ],
       "importedBy": []
     },
+    "src/pages/webinars.astro::__file_root__": {
+      "filePath": "src/pages/webinars.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/layouts/BaseLayout.astro::__file_root__",
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/lib/drafts.ts::publishedEntries",
+        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
+        "src/lib/webinars.ts::webinarPosts"
+      ],
+      "importedBy": []
+    },
     "src/styles/cutover-runbook.css::__file_root__": {
       "filePath": "src/styles/cutover-runbook.css",
       "name": "__file_root__",
@@ -9833,6 +10611,7 @@
         "src/layouts/BaseLayout.astro::__file_root__",
         "src/pages/404.astro::__file_root__",
         "src/pages/isolated-components/MomentumHero-VideoMissing.astro::__file_root__",
+        "src/pages/isolated-components/WebinarCard-NoCover.astro::__file_root__",
         "src/pages/isolated-components/AccomplishmentCard.astro::__file_root__",
         "src/pages/isolated-components/BoardMemberTile.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro::__file_root__",
@@ -9847,6 +10626,7 @@
         "src/pages/isolated-components/MomentumClose-Split.astro::__file_root__",
         "src/pages/isolated-components/VolunteerHero.astro::__file_root__",
         "src/pages/isolated-components/LumaSubscribe.astro::__file_root__",
+        "src/pages/isolated-components/WebinarsPage.astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-BottomRow.astro::__file_root__",
         "src/pages/isolated-components/GivePhoto.astro::__file_root__",
         "src/pages/isolated-components/MomentumHero.astro::__file_root__",
@@ -9861,10 +10641,13 @@
         "src/pages/isolated-components/StepTick-Done.astro::__file_root__",
         "src/pages/isolated-components/BoardMemberTile-Initials.astro::__file_root__",
         "src/pages/isolated-components/DeployStatus-Publishing.astro::__file_root__",
+        "src/pages/isolated-components/PastEventsMore.astro::__file_root__",
+        "src/pages/isolated-components/WebinarsPage-Single.astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-TopRow.astro::__file_root__",
         "src/pages/isolated-components/PageNarrowBody.astro::__file_root__",
         "src/pages/isolated-components/FormingChapterCta-NoEmail.astro::__file_root__",
         "src/pages/isolated-components/BlogPostBody.astro::__file_root__",
+        "src/pages/isolated-components/EventsArchive.astro::__file_root__",
         "src/pages/isolated-components/MomentumTestimonials.astro::__file_root__",
         "src/pages/isolated-components/SitePageHeader-LongTitle.astro::__file_root__",
         "src/pages/isolated-components/GiveClose.astro::__file_root__",
@@ -9873,6 +10656,7 @@
         "src/pages/isolated-components/StepTick.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars-Numbered.astro::__file_root__",
         "src/pages/isolated-components/MomentumHero-Video.astro::__file_root__",
+        "src/pages/isolated-components/EventsArchiveItem.astro::__file_root__",
         "src/pages/isolated-components/GalleryLightbox.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectMeta.astro::__file_root__",
         "src/pages/isolated-components/DeployChip-StillUpdating.astro::__file_root__",
@@ -9883,6 +10667,7 @@
         "src/pages/isolated-components/VolunteerProjectPage.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectCta.astro::__file_root__",
         "src/pages/isolated-components/GivingCard.astro::__file_root__",
+        "src/pages/isolated-components/EventsArchiveYear.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars.astro::__file_root__",
         "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectCardLinks.astro::__file_root__",
@@ -9892,6 +10677,7 @@
         "src/pages/isolated-components/ComingSoon.astro::__file_root__",
         "src/pages/isolated-components/SitePageHeader.astro::__file_root__",
         "src/pages/isolated-components/StagingBar-Reviewing.astro::__file_root__",
+        "src/pages/isolated-components/WebinarsPage-Empty.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectCard.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectPhoto.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectHeader.astro::__file_root__",
@@ -9911,10 +10697,12 @@
         "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro::__file_root__",
         "src/pages/isolated-components/GoalMeter-WithLink.astro::__file_root__",
         "src/pages/isolated-components/GiveStatement.astro::__file_root__",
+        "src/pages/isolated-components/WebinarsPointer.astro::__file_root__",
         "src/pages/isolated-components/GiftPillarCard.astro::__file_root__",
         "src/pages/isolated-components/BoardMemberTile-NoBio.astro::__file_root__",
         "src/pages/isolated-components/DeployStatus-Live.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__",
+        "src/pages/isolated-components/WebinarCard.astro::__file_root__",
         "src/pages/isolated-components/DeployChip-Live.astro::__file_root__",
         "src/pages/isolated-components/GiveRecognition.astro::__file_root__",
         "src/pages/isolated-components/DeployStatus-StillUpdating.astro::__file_root__",
@@ -9927,5 +10715,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-17T14:28:45Z"
+  "lastUpdated": "2026-09-18T15:47:12Z"
 }

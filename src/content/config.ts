@@ -94,6 +94,12 @@ const blog = defineCollection({
     date: z.coerce.date(),
     summary: z.string().optional(),
     coverImage: z.string().optional(),
+    // Groups a post into a named series. The only value today is `webinars`,
+    // which is what puts a post on /webinars — the 2020 recordings came back as
+    // ordinary blog posts rather than a collection of their own, so they reuse
+    // this schema, the per-post route and the embed field, and gain one page
+    // that lists them.
+    series: z.string().optional(),
     metaTitle: z.string().optional(),
     metaDescription: z.string().optional(),
     ogImage: z.string().optional(),

@@ -26,6 +26,16 @@
           "label": "Cover image",
           "type": "image",
           "optional": true
+        },
+        {
+          "name": "series",
+          "label": "Series",
+          "type": "select",
+          "optional": true,
+          "hint": "Leave blank for an ordinary post. Setting it to Webinars also lists this post on the Webinars page, alongside the 2020 recordings; the post still lives at its own address either way.",
+          "options": [
+            "webinars"
+          ]
         }
       ]
     },

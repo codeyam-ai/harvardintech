@@ -56,6 +56,7 @@ const ROUTE_AND_ASSET_SLUGS: readonly string[] = [
   'events',
   'sponsor',
   'volunteer',
+  'webinars',
   // Route directories under src/pages/
   'blog',
   'chapters',

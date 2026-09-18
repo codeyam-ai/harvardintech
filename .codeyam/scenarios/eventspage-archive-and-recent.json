@@ -1,0 +1,13 @@
+{
+  "name": "EventsPage - Archive And Recent",
+  "id": "f8cd38b6-fb04-48fa-b56d-4bb919d81b55",
+  "url": "/isolated-components/EventsPage-Archive",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsPage",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventsPage.astro",
+  "description": "The events body on its own, away from the Luma calendar that sits above it on the real page: one recent past event as a card, the link out to Luma's full past list, and the imported 2013-2018 history folded into a closed row per year. This is the state the /events route reaches too, shown here because the calendar embed is tall enough to push the archive off the first screen."
+}

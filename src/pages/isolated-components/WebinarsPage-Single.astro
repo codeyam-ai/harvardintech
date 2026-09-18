@@ -1,0 +1,43 @@
+---
+import Component from "../../../src/components/WebinarsPage.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for WebinarsPage with exactly ONE recording published —
+// codeyam screenshots the #codeyam-capture wrapper by navigating to
+// /isolated-components/WebinarsPage-Single.
+//
+// The empty-to-many boundary, and a real one: five of the eleven recordings are
+// already unpublished because their video host lost the uploads, so a handful
+// more going the same way leaves exactly this.
+//
+// It is worth its own frame because the grid is `auto-fit` with a 280px
+// minimum: with one card there is nothing to share the row with, so the card
+// stretches to the full 960px measure — a 16:9 cover blown up to a banner. This
+// capture is what makes that visible rather than a surprise in production.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: WebinarsPage-Single</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 1100px;">
+      <Component
+        posts={[
+          {
+            id: 'webinar-covid-19-is-telemedicine-the-future-of-health-care',
+            data: {
+              title: 'COVID-19: Is Telemedicine the Future of Health Care?',
+              date: '2020-05-25',
+              summary: 'A seven-person panel, with Harvard in Tech Seattle',
+              coverImage: '/images/webinars/covid-19-is-telemedicine-the-future-of-health-care.jpg',
+              series: 'webinars',
+            },
+          },
+        ]}
+      />
+    </div>
+  </body>
+</html>

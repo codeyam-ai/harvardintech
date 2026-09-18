@@ -1,0 +1,54 @@
+---
+import Component from "../../../src/components/EventsArchive.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EventsArchive — codeyam screenshots the #codeyam-capture wrapper
+// by navigating to /isolated-components/EventsArchive.
+
+// Three years with different counts, because a fold is only worth looking at
+// when the years differ: a year holding one event proves the "1 event"
+// singular, and a year holding two proves it keeps its own newest-first order.
+const events = [
+  {
+    title: 'Summer Social',
+    date: '2018-08-18',
+    location: 'New York, NY',
+    description:
+      '200+ Technologists came together to hear a panel moderated by Umang Dua, Co-Founder of Handy, Annie Wang, Co-founder at Her Campus Media, and Aaron Shapiro, Former CEO of Huge.',
+  },
+  {
+    title: 'Crypto + Blockchain Circle: The Future of Crypto Exchanges',
+    date: '2018-03-20',
+    location: 'R3 offices, New York, NY',
+    description:
+      'Harvard in Tech hosted its second Crypto + Blockchain event at R3\u2019s offices, on the future of crypto exchanges and the impact of increasing regulatory scrutiny.',
+  },
+  {
+    title: 'Design Leaders in Tech',
+    date: '2016-11-02',
+    location: 'New York, NY',
+    description:
+      'Leading design experts on what design leadership looks like inside a growing product org.',
+  },
+  {
+    title: 'Fireside Chat with Andrew McLaughlin',
+    date: '2013-11-21',
+    location: 'New York, NY',
+    description:
+      'Andrew McLaughlin (CEO, Digg, and former Deputy Chief Technology Officer of the United States) on NYC tech, the future of content, and the intersection of tech and politics.',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EventsArchive</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 920px;">
+      <Component events={events} />
+    </div>
+  </body>
+</html>

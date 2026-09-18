@@ -131,8 +131,17 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "REDIRECT_TARGETS › covers the section paths that had no index of their own",
-      "line": 28,
+      "line": 31,
       "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "`/webinars` is the one sitemap path that must NOT be here. It redirected to /events only while the 2020 recordings had no home on this site; they now have one, and `src/pages/webinars.astro` answers that address directly. A redirect writes a real file at the same path and WINS over the route, so re-adding an entry here would make the page unreachable while everything still built and every other test stayed green — which is exactly the silent shadowing `shadowedPageSlugs` exists to catch.",
+      "file": "src/lib/redirects.test.ts",
+      "format": "vitest",
+      "key": "REDIRECT_TARGETS › does not redirect a path that is now a real page",
+      "line": 25,
+      "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
     {
@@ -140,7 +149,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "REDIRECT_TARGETS › does not redirect the retired welcome post while the blog is hidden",
-      "line": 46,
+      "line": 49,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -149,7 +158,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "REDIRECT_TARGETS › never redirects a path to itself",
-      "line": 51,
+      "line": 54,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -158,7 +167,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "REDIRECT_TARGETS › points every page target at the canonical trailing-slash form",
-      "line": 37,
+      "line": 40,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -1368,6 +1377,96 @@
       "key": "class year › refuses to guess at anything else",
       "line": 162,
       "registeredAt": "2026-08-05T19:34:11Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every one of these was read off the old site and confirmed by eye. They are corrected because they are plainly mistakes rather than house style — \"M icrosoft\" is a stray space, not a company.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanTitleText › applies the whole title typo table",
+      "line": 89,
+      "registeredAt": "2026-09-18T14:28:12.972169802+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Every event on this site is ours, so the prefix carries no information and only costs width in a fold row.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanTitleText › drops a leading \"Harvard in Tech\"",
+      "line": 106,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Both are artefacts of lifting a title out of a page where the separator led into the next line — a heading that ends on a comma reads as truncated.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanTitleText › drops a trailing separator and a space before punctuation",
+      "line": 112,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "It must NOT strip the trailing organisations: where that list begins is a judgement call with no reliable marker, so it is recorded per event in curated-events.json and never guessed here.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanTitleText › leaves a trailing organisation list alone",
+      "line": 119,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Zero-width spaces and left-to-right marks survive a naive trim and sort wrong while looking perfectly clean.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanTitleText › removes invisible characters and collapses whitespace",
+      "line": 82,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A deliberately SHORT table: a write-up is somebody's prose and the historical record, so only outright errors are corrected — two misspelled surnames, a mangled \"teach-in\", a doubled word, one subject-verb slip.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanWriteup and flattenWriteup › applies the write-up typo table",
+      "line": 130,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The importer feeds this straight into a YAML string, so a missing write-up has to come back as empty rather than \"undefined\" appearing on a card.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanWriteup and flattenWriteup › flattens an empty write-up to an empty string",
+      "line": 156,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The events collection has no body, so the write-up has to survive as one frontmatter string — this is the step that makes it one.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanWriteup and flattenWriteup › flattens paragraphs to a single line",
+      "line": 150,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A write-up is somebody's prose and the historical record, so paragraph structure survives cleaning.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanWriteup and flattenWriteup › keeps paragraph breaks",
+      "line": 138,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The old editor left these throughout the copy; they are typography, not wording, so fixing them does not touch what anybody wrote.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "cleanWriteup and flattenWriteup › removes a stray space before punctuation",
+      "line": 144,
+      "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
     {
@@ -3247,11 +3346,47 @@
       "runner": "tests"
     },
     {
+      "description": "The one undated event rides on a placeholder date, and this flag is the only thing keeping that invented date off the public site.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "eventFrontmatter › marks a draft entry",
+      "line": 310,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "An absent optional key renders nothing; `location: \"\"` would render an empty line on the card instead.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "eventFrontmatter › omits absent optional fields rather than writing them empty",
+      "line": 301,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "No body: an event is a card, not an article, so the write-up rides in `description` and the file ends at the closing fence.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "eventFrontmatter › writes frontmatter only, with no body",
+      "line": 318,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The exact bytes of the 33 committed archive entries.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "eventFrontmatter › writes the full entry when every field is present",
+      "line": 285,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Every optional field is carried through, because the event card renders them — dropping one here would blank a card with no error anywhere.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › carries the optional fields the event cards render",
-      "line": 233,
+      "line": 236,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3260,7 +3395,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › does not match a tag that only looks like the owner id",
-      "line": 254,
+      "line": 257,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3269,7 +3404,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › excludes events with no tag at all",
-      "line": 262,
+      "line": 265,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3278,7 +3413,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › handles an event with no communities key",
-      "line": 202,
+      "line": 205,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -3287,7 +3422,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches a community id through the same chapter tag",
-      "line": 225,
+      "line": 228,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3296,7 +3431,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches an owner named in the communities list",
-      "line": 277,
+      "line": 280,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -3305,7 +3440,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches any id in the communities list, with no chapter tag at all",
-      "line": 300,
+      "line": 303,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -3314,7 +3449,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns a doubly-matching event only once",
-      "line": 293,
+      "line": 296,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -3323,7 +3458,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns nothing when no event is tagged to the owner",
-      "line": 269,
+      "line": 272,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3332,7 +3467,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns only the events tagged to the given owner",
-      "line": 217,
+      "line": 220,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3341,7 +3476,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › still matches the chapter tag on a dual-tagged event",
-      "line": 285,
+      "line": 288,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -3588,7 +3723,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › does not zero-pad single-digit days",
-      "line": 39,
+      "line": 42,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -3597,7 +3732,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › formats a Date instance the same as its ISO string",
-      "line": 33,
+      "line": 36,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -3606,7 +3741,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › formats an ISO date as Month D, YYYY",
-      "line": 28,
+      "line": 31,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -4049,6 +4184,42 @@
       "key": "goalMetersMissingWidgetId › treats an empty or whitespace-only widget id as missing",
       "line": 143,
       "registeredAt": "2026-08-17T17:02:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The reason this function exists rather than an inline getFullYear(). A date-only entry parses as UTC midnight, so reading its LOCAL year anywhere behind UTC — every US timezone, i.e. most of this site's readers — files a New Year's Day event under the previous year, on their machine and not on the author's.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "groupByYear › files a January 1st event under its own year in a timezone behind UTC",
+      "line": 451,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Sorting the years must not disturb the events inside one: they arrive newest-first from `splitEvents` and the fold shows them that way.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "groupByYear › keeps the order events arrived in within a year",
+      "line": 440,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A site with no imported history hits this path, and `EventsArchive` keys its entire render off the group count — an empty list is what makes the whole section disappear rather than render a heading over nothing.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "groupByYear › returns an empty list unchanged",
+      "line": 470,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The folds read downward from the most recent year, matching how the rest of the page orders past events — and the grouping key is a Map, whose insertion order follows the input rather than the year.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "groupByYear › returns the newest year first",
+      "line": 432,
+      "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
     {
@@ -4580,6 +4751,105 @@
       "key": "iconKeyFor › returns null for an unknown or missing value",
       "line": 30,
       "registeredAt": "2026-09-11T20:41:41.728464747+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The upcoming featured event is not part of the history and would otherwise be imported as a 34th archive entry.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-archive-events › ignores the featured record that is not archive history",
+      "line": 108,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Re-running the importer must be free. Anything else makes phase 2 - which re-runs it to add photos and speakers - a rewrite of all 33 files.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-archive-events › is a no-op on a second run",
+      "line": 116,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "An editor who corrects a title in the CMS must not have it silently reverted by the next import.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-archive-events › leaves an edited entry alone until --force is passed",
+      "line": 124,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The undated event must never reach the public site on its placeholder date.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-archive-events › marks the undated event a draft and gives it the default location",
+      "line": 95,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A curated row with no matching snapshot record is a torn input, not something to import half of.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-archive-events › reports a curated event with no snapshot record",
+      "line": 138,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The end-to-end shape: a curated row plus its snapshot record becomes a file named for its own date, carrying the stated venue and the write-up flattened to one line.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-archive-events › writes one entry per curated event, named for its date",
+      "line": 78,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "W6 was never a recording we hosted, only a link to a page that no longer resolves, so it is dropped rather than imported as a dead link.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-webinars › drops the entry the table marks as not ours",
+      "line": 225,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Re-running the importer must be free. Anything else makes phase 2 - which re-runs it to add photos and speakers - a rewrite of all 33 files.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-webinars › is a no-op on a second run",
+      "line": 116,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The load-bearing rule of the whole webinars import: a recording whose host has lost it is written to the repo but never published, and carries NO cover — what the provider returns for one is a colour-bars placeholder, not a still from the video.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-webinars › keeps a lost recording as a draft with no cover",
+      "line": 211,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A live recording publishes with its real date, its player and its cover.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-webinars › publishes a recording the provider still has",
+      "line": 193,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The media library must not list a file the site does not have.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "import-webinars › records a media asset only for the cover it actually copied",
+      "line": 232,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
       "runner": "tests"
     },
     {
@@ -7104,6 +7374,51 @@
       "runner": "tests"
     },
     {
+      "description": "\"May 23nd\" is not a real ordinal — it is a typist's slip on the live site. The suffix is matched and then ignored precisely so a slip like this cannot drop a real event on the floor.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "parseArchiveDate › reads a malformed ordinal as the day it obviously means",
+      "line": 49,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every one of these is a real title form from the old site. They differ in separator, in month spelling and in whether an ordinal suffix is present, and a parser that handled only the tidy ones would silently drop events.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "parseArchiveDate › reads every date form the old site actually used",
+      "line": 31,
+      "registeredAt": "2026-09-18T14:28:12.972169802+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Same refusal for a word in the month position that is not a month — the guard against reading an ordinary title as a dated one.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "parseArchiveDate › returns a null date for a month it does not recognise",
+      "line": 74,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The one undated event. Returning null rather than guessing is what keeps a made-up date off the public site — the importer ships this entry as a draft.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "parseArchiveDate › returns a null date for a title with no date at all",
+      "line": 58,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A day out of range means the title was not what this parser thought it was. Refusing beats emitting `2019-04-47`, which would reach a filename and a schema before anyone noticed.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "parseArchiveDate › returns a null date rather than a nonsense one for an impossible day",
+      "line": 68,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
       "description": "The ordinary case: the passphrase the reviewer was given opens the page.",
       "file": "src/lib/reviewGate.test.ts",
       "format": "vitest",
@@ -7759,7 +8074,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › does not mutate its input",
-      "line": 362,
+      "line": 365,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -7768,7 +8083,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › honours an explicit limit",
-      "line": 345,
+      "line": 348,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -7777,7 +8092,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › preserves the order it was given",
-      "line": 328,
+      "line": 331,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -7786,7 +8101,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns at most three events by default",
-      "line": 320,
+      "line": 323,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -7795,7 +8110,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns everything when there are fewer than the limit",
-      "line": 339,
+      "line": 342,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -7804,7 +8119,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns nothing for a limit of zero or less",
-      "line": 353,
+      "line": 356,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -7813,7 +8128,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "redirectsForBase › accepts a base with or without its own trailing slash",
-      "line": 95,
+      "line": 98,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -7822,7 +8137,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "redirectsForBase › leaves every target alone when the site is served from the domain root",
-      "line": 61,
+      "line": 64,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -7831,7 +8146,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "redirectsForBase › leaves the sources alone, since Astro already resolves those against the base",
-      "line": 86,
+      "line": 89,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -7840,7 +8155,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "redirectsForBase › prefixes the base onto a fragment target without losing the anchor",
-      "line": 80,
+      "line": 83,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -7849,7 +8164,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "redirectsForBase › prefixes the base onto every target on a project-subpath build",
-      "line": 70,
+      "line": 73,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -7858,7 +8173,7 @@
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
       "key": "redirectsForBase › returns a new map rather than mutating the shared one",
-      "line": 101,
+      "line": 104,
       "registeredAt": "2026-09-16T16:08:26Z",
       "runner": "tests"
     },
@@ -8369,6 +8684,33 @@
       "key": "reviewOutline › takes the direction names from the list it is given",
       "line": 65,
       "registeredAt": "2026-08-05T19:34:11Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Sponsor lists are full of ampersands, so an undecoded `&amp;` would reach a published title verbatim.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "richText helpers › decodes entities and strips tags",
+      "line": 441,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The counterpart to the single-line form above: a webinar post keeps its paragraphs because it renders as an article body, not a card. A BLANK line between them, not a single newline — markdown reads one newline as a soft wrap and would run the two paragraphs together.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "richText helpers › keeps paragraph breaks when asked for paragraphs",
+      "line": 451,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The titles arrive as \"Tech Talk<br>with HLS Professor\". Without treating a block boundary as a space they read \"Tech Talkwith HLS Professor\", which is exactly how the raw data looks.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "richText helpers › treats a line break as a space rather than gluing words together",
+      "line": 433,
+      "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
     {
@@ -9844,6 +10186,51 @@
       "runner": "tests"
     },
     {
+      "description": "The slug becomes a committed filename and, for a webinar, a public URL — so punctuation in a title must not reach either.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "slugify › builds a filename-safe slug",
+      "line": 576,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Speaker and venue names carry accents; stripping the character outright would turn \"Café\" into \"Caf\" rather than \"Cafe\".",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "slugify › folds accents instead of losing the letters",
+      "line": 590,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The slug is capped at 80 characters, and a long title can put the cut exactly on a separator — leaving a filename ending in `-.md`.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "slugify › never ends on a hyphen, even when truncation lands on one",
+      "line": 596,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Dropping it would collide \"Ideas & Conversation\" with \"Ideas Conversation\"; spelling it out keeps the two apart and keeps the slug readable.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "slugify › spells out an ampersand rather than dropping it",
+      "line": 584,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "`--from` reads saved HTML instead of the network and `--dry-run` writes nothing, so the parse-and-plan half of the snapshot is exercised here with no live site involved — which matters, because the real run can only happen once, before the domain moves.",
+      "file": "src/lib/archiveImporters.test.ts",
+      "format": "vitest",
+      "key": "snapshot-strikingly › parses saved pages and plans the capture without touching the network",
+      "line": 284,
+      "registeredAt": "2026-09-18T14:23:34.908338011+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "A longer label that merely contains the word is someone's own wording, not the bare network name, so it is not rewritten.",
       "file": "src/lib/socialLabel.test.ts",
       "format": "vitest",
@@ -10024,11 +10411,56 @@
       "runner": "tests"
     },
     {
+      "description": "The cutoff is a parameter so a caller — or a test — can move it without reaching into module state.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "splitArchive › accepts a caller-supplied cutoff",
+      "line": 402,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The page calls this with no cutoff, so the exported constant is what the site actually runs on — the parameter exists for tests and future callers, not to let the two drift apart.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "splitArchive › defaults its cutoff to ARCHIVE_BEFORE",
+      "line": 412,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "`splitEvents` hands over its `past` list newest-first, and the page renders both halves in the order they arrive — so a split that reordered either one would silently scramble the cards and the folds.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "splitArchive › keeps the order of both halves",
+      "line": 388,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The boundary is the whole point of the cutoff, so both sides of it are pinned: the last day of 2019 is history, the first day of 2020 is not.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "splitArchive › puts the day before the cutoff in the archive and the cutoff day in recent",
+      "line": 378,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A brand-new site with no past events at all takes this path, and both halves feed sections that check `.length` — an undefined half would throw rather than render nothing.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "splitArchive › returns two empty halves for an empty list",
+      "line": 421,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
       "description": "The original input array is not mutated by sorting.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › does not mutate the input array order",
-      "line": 99,
+      "line": 102,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10037,7 +10469,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › handles an empty event list",
-      "line": 65,
+      "line": 68,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10046,7 +10478,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns no past events when all are upcoming",
-      "line": 78,
+      "line": 81,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10055,7 +10487,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns no upcoming events when every event has passed",
-      "line": 90,
+      "line": 93,
       "registeredAt": "2026-08-05T20:56:12Z",
       "runner": "tests"
     },
@@ -10064,7 +10496,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns past events sorted most recent first",
-      "line": 59,
+      "line": 62,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10073,7 +10505,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns upcoming events sorted soonest first",
-      "line": 53,
+      "line": 56,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10082,7 +10514,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › treats an event exactly at now as upcoming",
-      "line": 70,
+      "line": 73,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10288,6 +10720,87 @@
       "key": "sponsorLevelsFrom › sorts a level with no order pin after the pinned ones",
       "line": 228,
       "registeredAt": "2026-08-04T13:24:17.810417709+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Every page of the site is listed in one store, so the snapshot has to pick the right one out — and say so plainly when a path is not there.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "storeFromHtml › finds a page by its path",
+      "line": 535,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The store JSON contains braces inside strings, so a regex that matched to a closing brace would stop early or swallow the rest of the document.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "storeFromHtml › parses the embedded store out of a page",
+      "line": 523,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The end-to-end shape of one imported event: the three text fields and the photo all have to come off the same repeatable item, or an entry ends up with somebody else's write-up.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "storeFromHtml › reads the archive items with their dates, write-ups and photos",
+      "line": 543,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A webinar's video lives on a Media component rather than in the text, and the link it carries is a watch page, not something an iframe can load.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "storeFromHtml › reads the webinar items with a player URL derived from the video link",
+      "line": 554,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The L.A. page has a gallery with nothing in it. \"This page had a gallery and it was empty\" is a fact worth recording, not the same as \"this page had no gallery\" — so the empty one is retained rather than filtered away.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "storeFromHtml › retains a gallery that is present but empty",
+      "line": 565,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Null rather than a throw is how a caller tells \"not a Strikingly page\" from \"a Strikingly page with nothing on it\".",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "storeFromHtml › returns null when the marker is absent",
+      "line": 529,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "This URL shape is the only way the archive photos can be fetched at all, and only until the domain moves — getting it wrong means the snapshot comes back empty with no second chance.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "strikinglyImageUrl › builds the custom-images URL from a storage key and format",
+      "line": 363,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The second URL the snapshot tries when the direct one 404s. It is the transform the live page itself requests, so it exists for anything the site actually displayed.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "strikinglyImageUrl › builds the rendered-page transform as the fallback form",
+      "line": 378,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Storage keys arrive JSON-escaped in the page source (`117929\\/DSC00341`), so the escape is stripped here rather than at every call site.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "strikinglyImageUrl › strips the JSON escaping the page source carries",
+      "line": 371,
+      "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
     {
@@ -10588,6 +11101,24 @@
       "runner": "tests"
     },
     {
+      "description": "A bare `2026-09-28` is UTC midnight, which `splitEvents` reads as past from 8 PM ET on the 27th — so a build on the day itself would drop the ticket link while the doors were still open.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the Sept 28 event › carries a time and an offset, not a bare date",
+      "line": 159,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The link is the entire point of the entry while the event is upcoming, and `EventCard` renders it only when the event has not passed — so a missing link is invisible until the one week it matters.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the Sept 28 event › is present and carries its ticket link",
+      "line": 151,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
       "description": "Initials leak the withheld name: \"RKW\" beside \"Anonymous supporter\" names them to anyone who knows them, so the anonymous case gets a mark that identifies nobody.",
       "file": "src/lib/donorNetwork.test.ts",
       "format": "vitest",
@@ -10684,6 +11215,87 @@
       "key": "the committed media manifest › records an alt value for every asset, empty or otherwise",
       "line": 140,
       "registeredAt": "2026-07-29T16:26:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Rule T2: invisible characters look clean and sort wrong.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › carries no invisible characters in any title or write-up",
+      "line": 88,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The write-up is the whole point of importing the text ahead of the photos.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › carries the original write-up on every entry",
+      "line": 129,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The raw titles ran into their sponsor lists, so several ended on a comma or semicolon once that list was moved off. One left behind reads as a sentence cut in half.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › ends no title on a dangling separator",
+      "line": 97,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The filename convention is `YYYY-MM-DD-<slug>.md`, and four events share the title \"Summer Social\" across different years — the date prefix is the only thing keeping them from overwriting one another on a re-import.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › files every entry under a filename matching its own date",
+      "line": 138,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Rule V1/V2: every archive event is from the New York era, and the three with a stated venue keep it. An entry with no location at all would render a card with a missing line.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › gives every archive entry a location",
+      "line": 106,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The curated table and the content directory are two halves of one record. A count mismatch means the importer skipped an entry or wrote a duplicate under a second filename — both silent, because the site still builds.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › imported every curated event, and only those",
+      "line": 58,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Rule V1/V3: a venue is used ONLY where the original stated one, and is never inferred from a sponsor or host name. Exactly three events qualify, so this list is also the guard against a fourth being invented.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › keeps the three venues the original site actually stated",
+      "line": 115,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Rule T1: the date belongs in the `date` field, not at the head of the title. A title still carrying its date is the signal the cleaning pass was skipped for that entry.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › leaves no date at the head of any title",
+      "line": 79,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Exactly one event on the old site carried no date. It ships as a draft on a placeholder date so the file validates, and the draft flag is the ONLY thing keeping that invented date off the public site.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the imported archive entries › publishes the 32 dated events and holds back the one with no known date",
+      "line": 68,
+      "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
     {
@@ -10912,11 +11524,47 @@
       "runner": "tests"
     },
     {
+      "description": "W9's URL carries a Mailchimp campaign id and an unsubstituted [UNIQID] placeholder. Neither belongs in a permanent embed.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "toEmbedUrl › drops the tracking query string",
+      "line": 408,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "W6 links to somebody else's write-up page rather than a recording. Returning undefined is what stops a non-player being put inside an iframe; the caller renders a link instead.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "toEmbedUrl › returns undefined for a host that is not a video provider",
+      "line": 417,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A recording with no link at all must not produce an iframe pointed at nothing; the post simply carries no embed.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "toEmbedUrl › returns undefined for an empty or missing URL",
+      "line": 423,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One test rather than a case each: these are four spellings of a single rule, and a per-case name would put a raw URL — including a '?' the test registry rejects — into the emitted test name.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "toEmbedUrl › turns every supported watch link into its player URL",
+      "line": 389,
+      "registeredAt": "2026-09-18T14:28:12.972169802+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "An ISO date string is parsed into a Date.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "toEventDate › parses an ISO date string into a Date",
-      "line": 19,
+      "line": 22,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -10925,7 +11573,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "toEventDate › returns a Date instance unchanged",
-      "line": 13,
+      "line": 16,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -11150,7 +11798,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › accepts a communities tag that matches a known id",
-      "line": 183,
+      "line": 186,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11159,7 +11807,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › catches a tag that differs only by whitespace",
-      "line": 130,
+      "line": 133,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -11168,7 +11816,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › handles an empty event list",
-      "line": 65,
+      "line": 68,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -11177,7 +11825,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › handles an event with no communities key",
-      "line": 202,
+      "line": 205,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11186,7 +11834,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › names a chapter tag that matches no chapter",
-      "line": 109,
+      "line": 112,
       "registeredAt": "2026-07-28T20:50:40Z",
       "runner": "tests"
     },
@@ -11195,7 +11843,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports a bad chapter tag and a bad community tag together",
-      "line": 193,
+      "line": 196,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11204,7 +11852,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports a typo in the communities list",
-      "line": 173,
+      "line": 176,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11213,7 +11861,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports each distinct tag once, in first-seen order",
-      "line": 137,
+      "line": 140,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -11222,7 +11870,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports every tag when there are no chapters at all",
-      "line": 164,
+      "line": 167,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -11231,7 +11879,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports nothing when every tag matches a chapter",
-      "line": 120,
+      "line": 123,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -11240,7 +11888,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › treats a blank tag as untagged",
-      "line": 148,
+      "line": 151,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -11278,6 +11926,78 @@
       "key": "unresolvedNavUrls › resolves a fragment against its page",
       "line": 399,
       "registeredAt": "2026-07-28T15:22:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The older epoch shape is still accepted, so a provider reverting its serialization does not silently undate a recording.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "video provider metadata › accepts the older Wistia epoch shape",
+      "line": 223,
+      "registeredAt": "2026-09-18T14:26:13.016409608+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The Wistia request is built from the media URL, not guessed.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "video provider metadata › builds the Wistia media JSON URL from the watch URL",
+      "line": 249,
+      "registeredAt": "2026-09-18T14:26:13.016409608+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "W6 links to somebody else's write-up page rather than a recording, so no provider claims it and the snapshot records a link status instead.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "video provider metadata › claims no provider for a host that is not a video site",
+      "line": 243,
+      "registeredAt": "2026-09-18T14:26:13.016409608+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "THE case this whole rule exists for. Vimeo answers for an upload it has lost with a perfectly valid oEmbed document — an iframe, a width, a video id — and no title, no duration, no date. Nothing is an error, so a missing title is the only evidence the recording is gone. Five of the eleven 2020 webinars are in this state; reading this as \"available\" would publish five posts whose players cannot play.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "video provider metadata › reads a Vimeo stub with no title as UNAVAILABLE, not merely undated",
+      "line": 177,
+      "registeredAt": "2026-09-18T14:26:13.016409608+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Wistia spells it `created_at`. Reading `createdAt` alone — the plausible camelCase guess — reported BOTH Wistia recordings as undated, which would have shipped two live webinars as drafts.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "video provider metadata › reads a Wistia media document via created_at",
+      "line": 209,
+      "registeredAt": "2026-09-18T14:26:13.016409608+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "YouTube carries both fields in the watch page's markup.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "video provider metadata › reads a YouTube watch page",
+      "line": 194,
+      "registeredAt": "2026-09-18T14:26:13.016409608+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The rule that decides whether a recording is published at all. A live Vimeo video answers with a title and an upload date.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "video provider metadata › reads a live Vimeo video as available and dated",
+      "line": 165,
+      "registeredAt": "2026-09-18T14:26:13.016409608+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "One test rather than a case each, for the same reason as toEmbedUrl above: a raw URL in an emitted test name is what the registry chokes on.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "video provider metadata › routes each recording to the host that claims it",
+      "line": 229,
+      "registeredAt": "2026-09-18T14:28:12.972169802+00:00",
       "runner": "tests"
     },
     {
@@ -11323,6 +12043,105 @@
       "key": "visibleGalleryPhotos › returns the first cap photos when collapsed",
       "line": 218,
       "registeredAt": "2026-08-07T19:09:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A webinar IS an article, so unlike an event its write-up stays a rendered body with its paragraphs intact.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "webinarPostBody › keeps the write-up as the post body",
+      "line": 328,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A recording the provider has lost gets no cover and no player — both keys drop out rather than being written empty.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "webinarPostBody › omits the cover and the embed when the recording is gone",
+      "line": 345,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The route passes the array it got from `getCollection`; sorting in place would reorder the caller's own list for every later consumer.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarPosts › does not mutate its input",
+      "line": 67,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A DIFFERENT series must not leak onto the page. The field is deliberately a free string so more series can be added later, and each gets its own listing — a substring or truthiness check here would break that.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarPosts › excludes a post in some other series",
+      "line": 53,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "`series` is a CMS select with a single option, so anything else in there is a hand-edit. Casing and stray whitespace are forgiven because they are typing, not intent — a post vanishing over a capital W would be baffling.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarPosts › ignores case and surrounding whitespace on the tag",
+      "line": 44,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The webinars live in the blog collection alongside ordinary posts, so this filter is the only thing deciding what /webinars shows. Without it the page would list every blog post the site has.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarPosts › keeps only the posts tagged as webinars",
+      "line": 19,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The page's empty state is real and reachable: every recording is one CMS toggle from being unpublished, and five already are.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarPosts › returns nothing when no post carries the tag",
+      "line": 61,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The listing is chronological so the series reads as a run, and collection order is not date order — the files arrive alphabetically by filename.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarPosts › sorts newest first",
+      "line": 31,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Astro's `z.coerce.date()` hands the route a Date, while seeds and tests pass strings; both paths reach this function.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarYear › accepts a Date as well as a string",
+      "line": 104,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Same rule as `groupByYear` in events.ts, and the same reason: a date-only value is UTC midnight, so a local read in any US timezone reports the previous year for anything dated 1 January — wrong on the reader's machine and right on the author's, which is the worst way for a bug to behave.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarYear › files a January 1st recording under its own year in a timezone behind UTC",
+      "line": 89,
+      "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The year is all the card shows of the date, so it has to be right from the date-only strings the frontmatter actually carries.",
+      "file": "src/lib/webinars.test.ts",
+      "format": "vitest",
+      "key": "webinarYear › reads the year from a date-only string",
+      "line": 81,
+      "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
     {
@@ -11665,6 +12484,33 @@
       "key": "withoutHiddenSections › returns the menu unchanged when nothing is hidden",
       "line": 375,
       "registeredAt": "2026-08-03T21:22:17Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Backslashes must be escaped BEFORE quotes. Doing it the other way round would put a backslash in front of the quote and then escape THAT backslash, leaving the quote bare again.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "yamlQuote › escapes a backslash without double-escaping a following quote",
+      "line": 271,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Event titles carry quotes (a talk on \"How To Speak Tech\"), and an unescaped one ends the YAML scalar early and breaks the whole entry.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "yamlQuote › escapes an embedded double quote",
+      "line": 262,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A missing summary or location must still produce valid YAML. Emitting a bare `undefined` would parse as the string \"undefined\" and put that word on the page.",
+      "file": "src/lib/strikinglyArchive.test.ts",
+      "format": "vitest",
+      "key": "yamlQuote › renders a missing value as an empty scalar",
+      "line": 278,
+      "registeredAt": "2026-09-18T14:17:19.766562251+00:00",
       "runner": "tests"
     }
   ],

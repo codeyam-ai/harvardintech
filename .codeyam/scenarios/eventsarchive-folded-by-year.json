@@ -1,0 +1,13 @@
+{
+  "name": "EventsArchive - Folded By Year",
+  "id": "0dc5b359-91cf-4152-89f6-327dee12a0c2",
+  "url": "/isolated-components/EventsArchive",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsArchive",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventsArchive.astro",
+  "description": "The archive block on its own: a heading whose year range is derived from the events it was actually given, one line explaining what the section is, and a closed fold per year with its event count. Three years with different counts, so the singular 'event' and the plural both appear."
+}

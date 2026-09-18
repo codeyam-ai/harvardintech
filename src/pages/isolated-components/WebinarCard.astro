@@ -1,0 +1,31 @@
+---
+import Component from "../../../src/components/WebinarCard.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for WebinarCard — codeyam screenshots the #codeyam-capture wrapper
+// by navigating to /isolated-components/WebinarCard.
+
+// A real provider still under a title long enough to wrap, so the capture shows
+// both the 16:9 crop holding and the heading running to two lines.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: WebinarCard</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 340px;">
+      <ul style="list-style: none; margin: 0; padding: 0;">
+        <Component
+          slug="webinar-covid-19-is-telemedicine-the-future-of-health-care"
+          title="COVID-19: Is Telemedicine the Future of Health Care?"
+          year={2020}
+          summary="A seven-person panel, with Harvard in Tech Seattle"
+          coverImage="/images/webinars/covid-19-is-telemedicine-the-future-of-health-care.jpg"
+        />
+      </ul>
+    </div>
+  </body>
+</html>

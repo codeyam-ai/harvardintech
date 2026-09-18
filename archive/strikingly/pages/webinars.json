@@ -1,0 +1,1146 @@
+{
+  "type": "Page",
+  "id": "f_52c73a3f-6ed6-4eca-ae26-88fbede4a457",
+  "defaultValue": null,
+  "sections": [
+    {
+      "type": "Slide",
+      "id": "f_05a1fef9-45e4-4308-9420-3a7907e99be7",
+      "defaultValue": true,
+      "template_id": null,
+      "template_name": "media",
+      "template_version": null,
+      "components": {
+        "slideSettings": {
+          "type": "SlideSettings",
+          "id": "f_0d30a12d-9cff-4b28-b63d-5a75ebdec9ad",
+          "defaultValue": true,
+          "show_nav": true,
+          "show_nav_multi_mode": null,
+          "nameChanged": null,
+          "hidden_section": true,
+          "hidden_mobile_section": true,
+          "name": "Big Media",
+          "sync_key": null,
+          "layout_variation": "media-center-text",
+          "display_settings": {},
+          "padding": {},
+          "layout_config": {
+            "isNewMobileLayout": true
+          }
+        },
+        "text1": {
+          "type": "RichText",
+          "id": "f_3676b13d-d8b8-47cd-8084-9e0b26a2cf1f",
+          "defaultValue": false,
+          "alignment": null,
+          "value": "<p>Webinars</p>",
+          "backupValue": null,
+          "version": 1,
+          "lineAlignment": {
+            "firstLineTextAlign": null,
+            "lastLineTextAlign": null
+          }
+        },
+        "text2": {
+          "type": "RichText",
+          "id": "f_922eedd1-0bda-4e11-a98e-14edde8a3e0d",
+          "defaultValue": false,
+          "alignment": null,
+          "value": "",
+          "backupValue": null,
+          "version": 1,
+          "lineAlignment": {
+            "firstLineTextAlign": null,
+            "lastLineTextAlign": null
+          }
+        },
+        "background1": {
+          "type": "Background",
+          "id": "f_7fef39d2-e413-4aa0-affc-7ac0ae7e6dd4",
+          "defaultValue": true,
+          "url": "",
+          "textColor": "light",
+          "backgroundVariation": "",
+          "sizing": "cover",
+          "userClassName": null,
+          "linkUrl": null,
+          "linkTarget": null,
+          "videoUrl": "",
+          "videoHtml": "",
+          "storageKey": null,
+          "storage": null,
+          "format": null,
+          "h": null,
+          "w": null,
+          "s": null,
+          "useImage": null,
+          "noCompression": null,
+          "focus": {},
+          "backgroundColor": {}
+        },
+        "repeatable1": {
+          "type": "Repeatable",
+          "id": "f_3af9cbaf-9b2c-47ae-97f3-670797f0e003",
+          "defaultValue": false,
+          "list": [
+            {
+              "type": "RepeatableItem",
+              "id": "f_93db5803-6e9b-4e8f-b132-a3920542dba0",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_fd5913fa-75b3-46f1-8092-d6e31391c213",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_bec07bc5-3f65-4a09-b6de-dc5dcf5e377c",
+                  "defaultValue": true,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_cad37be0-b51e-4c45-a7e7-254ccdb64c36",
+                    "defaultValue": true,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F516712836%3Fapp_id%3D122963&dntp=1&wmode=transparent&display_name=Vimeo&url=https%3A%2F%2Fvimeo.com%2F516712836&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1069926247_960.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=vimeo\" width=\"700\" height=\"438\" scrolling=\"no\" title=\"Vimeo embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://vimeo.com/516712836",
+                    "thumbnail_url": "https://i.vimeocdn.com/video/1069926247_960.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_2c977305-2cb6-4ec1-82c3-69f181a1275a",
+                    "defaultValue": true,
+                    "link_url": "https://youtu.be/NbIq-FBp_A8",
+                    "thumb_url": "!",
+                    "url": "!",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": "798883/695030_270712",
+                    "storage": "s",
+                    "storagePrefix": null,
+                    "format": "png",
+                    "h": 270,
+                    "w": 990,
+                    "s": 44844,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_d60d28ab-5b1a-4dfc-95c0-f47998843c5a",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\"><strong>COVID-19 and Clean Air: How the Pandemic Has Created Opportunities for Technological Advances with Atmofizer</strong></p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_9b6d39a3-0254-43c2-854d-a8c8ff013d48",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_9f5f3ec2-989c-4782-b5c7-1a9cbde6a182",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Clean air in indoor spaces is becoming a commodity just like clean water.<br><br>When you hear 99.97% in combination with air purification systems, rest assured, it is not what it seems:<br><br>The revolutionary Atmofizer technology is disrupting an industry that has not seen innovations for decades, but instead added more toxins into our air we breathe daily.<br><br>Prof. Dr. Gregor Luthe and entrepreneur Torsten Maehle give insights on how their invention uses ultra sonic waves to agglomerate and merge the world’s most deadly and toxic ultra fine particles and viruses. Atmofizer is the world's cleanest, most effective and sustainable air filtration technology which no longer uses a traditional filter.<br><br><strong>Torsten Maehle, Co-Founder</strong><br>German-American entrepreneur with 15+ years of experience in start-ups and business development. His career includes leadership roles in an e-sports ventures, international restaurant franchise, LED lighting company, and other start-up companies. Studied Business Administration at the University of Kiel, Germany.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\"><strong>Prof. Dr. Gregor Luthe</strong></p><p style=\"text-align: left;\">Boy wonder - gifted - teachers frozen in awe - skipped several classes? Are you kidding me? Are you serious when you say that! Gregor Luthe ended up in the special school with a learning disability. He did come then<br>back to secondary school. But up to the ninth grade, beads of sweat stood on his forehead before every transfer.<br> </p><p style=\"text-align: left;\">But then the turning point that nobody would have thought possible. Gregor Luthe switched to the Franciscan Mission School in Bardel near Bad Bentheim. Here he met a teacher who recognized his hidden talent and his hidden high giftedness.</p><p style=\"text-align: left;\"><br>Gregor Luthe literally blossomed and from then on everything was easy for him. He made his Abitur as the best of his year.</p><p style=\"text-align: left;\"><br>He then studied chemistry, biology and physics at the University of Münster. In 2002 he received his PhD from the Free University of Amsterdam.</p><p style=\"text-align: left;\"><br>The chemist is a trained toxicologist under Pof. Dr. Larry Robertson of the University of Iowa and a nanotechnologist. In 2012, Gregor Luthe from Saxion University of Applied Sciences in Enschede was appointed head of the new Nanotechnology Chair.</p><p style=\"text-align: left;\"><br>Here, too, he taught successfully and was very popular with his students because of his unconventional manner. In 2013 the Dutch journal “ScienceGuide” selected him as one of the 15 most inspiring professors in the Netherlands.<br>For over ten years, Dr. Greogor Luthe Visiting Professor of Human Toxicology at the University of Iowa, one of the top 10 universities in the United States.</p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_9e4fc4d2-51eb-4f2c-90fd-bc3f5deac036",
+              "defaultValue": true,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_c5cfcd76-93dc-4f66-b0d9-9a85bcba3fa0",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_9746959f-fc74-4cc7-bdfd-a8fb404d95e7",
+                  "defaultValue": false,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_664498a6-72c6-4bc3-9575-6899f924bd40",
+                    "defaultValue": false,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F413168012%3Fapp_id%3D122963&dntp=1&wmode=transparent&display_name=Vimeo&url=https%3A%2F%2Fvimeo.com%2F413168012&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F885812709_1280.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=vimeo\" width=\"700\" height=\"394\" scrolling=\"no\" title=\"Vimeo embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://vimeo.com/413168012",
+                    "thumbnail_url": "https://i.vimeocdn.com/video/885812709_1280.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_ebd110c3-9be9-4db4-a9a9-51b589361491",
+                    "defaultValue": true,
+                    "link_url": null,
+                    "thumb_url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                    "url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": null,
+                    "storage": null,
+                    "storagePrefix": null,
+                    "format": null,
+                    "h": null,
+                    "w": null,
+                    "s": null,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_c94139aa-327d-4f01-b05c-40e464b42dce",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_63078ff3-0bf8-4413-bbf2-bd0853f517fd",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_d2058dce-f241-4fff-b8ac-42b3c6e5eb73",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Genoa Telepsychiatry's EVP &amp; GM, Samir Malik, joined us to shed light on the power telepsychiatry wields in closing access gaps for underserved patient populations during times of crisis like these, and within our broader healthcare system.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">Genoa Telepsychiatry is the nation’s leading provider of outpatient telepsychiatry with a mission to increase access to behavioral healthcare in underserved communities. During the COVID-19 health crisis, Genoa Telepsychiatry is offering clinics and providers free telemedicine support – including tech setup, training, and workflow development – free of charge through June.</p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_f9d6e1a3-4d4b-488b-9a44-ec0f8032417f",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_b6846a5a-9262-45d2-9ede-4eb033706d2c",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_c1cd36df-bdf5-4998-9ba4-435d4063ca39",
+                  "defaultValue": false,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_664498a6-72c6-4bc3-9575-6899f924bd40",
+                    "defaultValue": false,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F413178887%3Fapp_id%3D122963&dntp=1&wmode=transparent&display_name=Vimeo&url=https%3A%2F%2Fvimeo.com%2F413178887&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F885827892_640.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=vimeo\" width=\"640\" height=\"360\" scrolling=\"no\" title=\"Vimeo embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://vimeo.com/413178887",
+                    "thumbnail_url": "https://i.vimeocdn.com/video/885827892_640.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_ebd110c3-9be9-4db4-a9a9-51b589361491",
+                    "defaultValue": true,
+                    "link_url": null,
+                    "thumb_url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                    "url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": null,
+                    "storage": null,
+                    "storagePrefix": null,
+                    "format": null,
+                    "h": null,
+                    "w": null,
+                    "s": null,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_36a75393-8f05-4c47-b0e0-9dedf4f4cd47",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_b93c5414-aa8e-45d4-a56b-28f0955d49de",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_3b503d2f-a3de-4780-b85e-7d9223044992",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Experts predict that COVID-19 will change the way we live - some moderately, others dramatically. Many of those changes are intrinsically related to the use of technology and tech leadership. But what are those changes and how can we stay ahead?</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">In this webinar, we will discuss the impact of the coronavirus in technology, markets, business, and culture. We will look at current events such as Zoom's security issues, Apple &amp; Google's partnership on contact tracing, corporate responses and the paradigms of working from home. We will deep dive into growing technologies that were booming before the crisis such as AI and review potential shits. Finally, we will discuss how to be prepared for the months ahead and predict the needs of consumers and companies with the growing demand for technology infrastructure and services.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">Rodrigo Salvaterra is the Global Business Engineer, responsible for Strategic Programs and Emerging Technologies at J.P. Morgan Chase. He holds a A.L.B. degree major in Economics from Harvard University and is pursuing a Master's degree in Management also at Harvard. He is a member of the American Economic Association and performs various volunteer activities at community banks on Data Science and Analytics improving their capacity in reaching underserved and low-income families. He started his career at a very young age as a developer building managerial software for small business.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">Later, he worked in the software, utilities, and financial industries where he increased his passion for technology aligned with business, finance, and banking. He worked for more than a decade as an advisor and consultant for large corporations such as IBM, HP, Barclays Capital, Citigroup, and Thomson Reuters in different markets including Brazil, UK, and the US. He also studied Business Administration and Computer Science in universities abroad. He gives speeches on innovation globally and writes about Artificial Intelligence, Economics, and Management. He is an advocate for democratized state-of-art technology, making it accessible to everyone and bringing academia and business together.</p><p style=\"text-align: left;\">.</p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_54df64e5-9471-4761-ae8f-d2a2a403266f",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_2905cb44-e474-480c-9db2-75f48c325cd6",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_11492dc4-1aac-4a6a-a4b2-3e33eac12aba",
+                  "defaultValue": false,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_664498a6-72c6-4bc3-9575-6899f924bd40",
+                    "defaultValue": false,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Ffast.wistia.net%2Fembed%2Fiframe%2F46kd8ic53q&wmode=transparent&display_name=Wistia%2C+Inc.&url=https%3A%2F%2Fourgroundswell.wistia.com%2Fmedias%2F46kd8ic53q&image=https%3A%2F%2Fembed-ssl.wistia.com%2Fdeliveries%2F4948bfeb5df331c1ebe6d37e0d5f280a091729a1.jpg%3Fimage_crop_resized%3D960x524&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=wistia\" width=\"700\" height=\"394\" scrolling=\"no\" title=\"Wistia, Inc. embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://ourgroundswell.wistia.com/medias/46kd8ic53q",
+                    "thumbnail_url": "https://embed-ssl.wistia.com/deliveries/4948bfeb5df331c1ebe6d37e0d5f280a091729a1.jpg?image_crop_resized=960x524",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_ebd110c3-9be9-4db4-a9a9-51b589361491",
+                    "defaultValue": true,
+                    "link_url": null,
+                    "thumb_url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                    "url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": null,
+                    "storage": null,
+                    "storagePrefix": null,
+                    "format": null,
+                    "h": null,
+                    "w": null,
+                    "s": null,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_360a5b9f-3a5f-437e-b7b7-a7e6b46a5252",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_0df49a03-e34e-404c-9465-d16efb477e74",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_c9878e0e-15fe-405a-9781-9a9240b24072",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\"><strong>Review of the existing data on the impact of COVID-19 on pregnancy outcomes, and role of telemedicine in risk mitigation and outcome improvement. Presented by: </strong></p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">Dr. Eduardo Vadia, a board-certified pulmonary and critical care physician and co-founder of Access Physicians, is committed to merging his comprehensive bedside experience with technology innovation to craft scalable care delivery platforms that integrate healthcare networks, drive clinical outcomes, and personalize healthcare for individual patients and their healthcare systems.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">In addition to his role at Access Physicians, Dr. Vadia is a part-time faculty physician with UT Southwestern’s Pulmonary &amp; Critical Care Division. Dr. Vadia trained at UT Southwestern for his Internal Medicine Residency, Chief Medical Residency, and Pulmonary-Critical Care Fellowship. He received his medical degree from the University of Miami School of Medicine and his bachelor’s degree from Boston College.</p><p style=\"text-align: left;\">Speaker: Sina Haeri, MD, MHSA</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">Sina Haeri is the director of Maternal-Fetal Medicine Telehealth at Access Physicians, and co-founder of TelePerinatal.com. Prior to joining Access Physicians, he created the high-risk telemedicine platform in Central Texas, and helped in using it as a model for the HCA national teleMFM platform. A life-long UCLA Bruin, he received his postgraduate training at Georgetown University/Medstar Health in Washington (OBGYN), UNC-Chapel Hill (Maternal-Fetal Medicine), UCLA (Pathology), and served 12-years in the US Army Medical Command.</p><p> </p><p style=\"text-align: left;\"> </p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_a14be833-83fe-49d3-845c-c5b9cc46add5",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_e59c2a93-3d12-46b8-aa3f-c45404350676",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_816b3c33-3c13-46d7-acd1-754f3ca817d6",
+                  "defaultValue": true,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_cad37be0-b51e-4c45-a7e7-254ccdb64c36",
+                    "defaultValue": true,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Ffast.wistia.net%2Fembed%2Fiframe%2Fi3xpv4s280&wmode=transparent&display_name=Wistia%2C+Inc.&url=https%3A%2F%2Fchristinelenzo.wistia.com%2Fmedias%2Fi3xpv4s280&image=https%3A%2F%2Fembed-ssl.wistia.com%2Fdeliveries%2F417d2750a0ed2e8498dc12ad5645b41d26da92e7.jpg%3Fimage_crop_resized%3D640x360&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=wistia\" width=\"640\" height=\"360\" scrolling=\"no\" title=\"Wistia, Inc. embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://christinelenzo.wistia.com/medias/i3xpv4s280",
+                    "thumbnail_url": "https://embed-ssl.wistia.com/deliveries/417d2750a0ed2e8498dc12ad5645b41d26da92e7.jpg?image_crop_resized=640x360",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_2c977305-2cb6-4ec1-82c3-69f181a1275a",
+                    "defaultValue": true,
+                    "link_url": "https://goodhealthoutcomes.com/prlx_harvard_webinar",
+                    "thumb_url": "!",
+                    "url": "!",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": "798883/695030_270712",
+                    "storage": "s",
+                    "storagePrefix": null,
+                    "format": "png",
+                    "h": 270,
+                    "w": 990,
+                    "s": 44844,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_1a956c31-a906-4e63-943c-337d82dcf1dc",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_e6d0ba3a-a13d-482c-9dc7-1ef53f26baa6",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_4a1277e2-303b-4caf-b2aa-258bd4a9bca9",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Technology and system integration continue to drive a more effective supply chain. But cybersecurity is a critical factor in success. Confidential information has been exposed, exploited and illegally used. Supply management can implement frameworks, processes and solutions that minimize risk. Between routine training, audits and emerging technologies, businesses and supply chains can remain secure.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\"><strong>Jim Fleming</strong> is a Program Manager and Faculty at the Institute for Supply Management (ISM). He is a Certified Professional in Supply Management (CPSM), a Certified Professional in Supplier Diversity (CPSD) and spent over 30 years working in Engineering and Supply Management senior management roles for the Intel Corporation. He retired from Intel in 2014 and pursued his passion for education by joining ISM.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\"><strong>Charlotte de Brabandt </strong>has been climbing mountains her entire life. The first were snowy peaks in the Swiss Alps, since then, her mountains have become more metaphorical — but she still makes sure that she and what she believes in reaches the summit. Charlotte de Brabandt is a world renowned speaker, working together with highly motivated individuals and help them thrive in this new digital world as well as master their mind. Within the past years, she spoke at two TEDx events, featured in NBC, Fox, CNBC, Forbes, multiple international events up-to 80000 people and multiple Fortune 500 companies. Charlotte de Brabandt is a Technology and Negotiation Keynote Speaker &amp; Host with ample global industry experience in the field of automotive, timepieces, technology, pharma, consumer goods and medical devices. She has been known for specializing in digital technologies, automation and AI. Furthermore she is a member of Harvard in Technology's AI committee.</p><p> </p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_3749cbac-0642-480e-afda-5a7e75a3fb56",
+              "defaultValue": true,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_64a89d2e-063f-4193-a803-dd2c979cf8bf",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_f0f38479-22e4-4503-bbba-0fe3acfc28a1",
+                  "defaultValue": true,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_cad37be0-b51e-4c45-a7e7-254ccdb64c36",
+                    "defaultValue": true,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FS4c48202-D8%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DS4c48202-D8&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FS4c48202-D8%2Fhqdefault.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=youtube\" width=\"640\" height=\"360\" scrolling=\"no\" title=\"YouTube embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://youtu.be/S4c48202-D8",
+                    "thumbnail_url": "https://i.ytimg.com/vi/S4c48202-D8/hqdefault.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_2c977305-2cb6-4ec1-82c3-69f181a1275a",
+                    "defaultValue": true,
+                    "link_url": null,
+                    "thumb_url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                    "url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": null,
+                    "storage": null,
+                    "storagePrefix": null,
+                    "format": null,
+                    "h": 900,
+                    "w": 1600,
+                    "s": null,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_01b5d75f-ff58-4241-a789-eee6e8b1a890",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_0777fff0-c971-4fdf-8907-4d5a2a2f122a",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_241d9863-cc25-483e-ac31-3bb9fe98adcd",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Description: Video discussion with Harvard Prof. Mark Esposito on EduTech solutions to COVID 19. Educational Technology can inform, influence public behavior, improve social networking to reduce isolation, and support overall health.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\"><strong>COVID 19 EduTech Key Takeaways:</strong><br>1. Tools for collaboration can help us cope with Social Distancing - Microsoft Teams, Facebook, LinkedIn, Skype, Zoom, Google Hangout and other social media and communications tools.<br>2. Physical &amp; mental health are equally important. Activities can help bring a sense of normalcy to the crisis, Virtual birthday parties: Evite, Garage Band, XBOX Kinect, virtual personal fitness: Flight.<br>3. Lack of effective global emergency broadcast system that is clear, consistent and unified to manage pandemic.<br>4. Leadership matters. We are a Global Society and need to behave in a way to benefit the global community. Global governance and collaboration required across countries.<br>5. Stay safe, keep learning and be part of discussion.<br>#Harvard #HBS #PLD #HarvardinTech #HarvardinTechSeattle #HIT #HITS #HITSeattle #Pandemic, #COVID19 #Edutech #Leadershipmatters #PeopleMatter #GlobalCommunity #leadershipgoals</p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_970a951b-2bac-47d7-8330-9f3059861b01",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_159cfe4d-9080-4e54-8ed3-e799edd6c08a",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_fda0b832-da9c-4e31-aa33-2d2eec6c2b86",
+                  "defaultValue": true,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_cad37be0-b51e-4c45-a7e7-254ccdb64c36",
+                    "defaultValue": true,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FS4c48202-D8%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DS4c48202-D8&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FS4c48202-D8%2Fhqdefault.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=youtube\" width=\"640\" height=\"360\" scrolling=\"no\" title=\"YouTube embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://goodhealthoutcomes.com/prlx_harvard_webinar",
+                    "thumbnail_url": "https://i.ytimg.com/vi/S4c48202-D8/hqdefault.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_2c977305-2cb6-4ec1-82c3-69f181a1275a",
+                    "defaultValue": true,
+                    "link_url": "https://goodhealthoutcomes.com/prlx_harvard_webinar",
+                    "thumb_url": "!",
+                    "url": "!",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": "798883/695030_270712",
+                    "storage": "s",
+                    "storagePrefix": null,
+                    "format": "png",
+                    "h": 270,
+                    "w": 990,
+                    "s": 44844,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "image"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_010c86e7-0d03-430a-9dac-609cef1569f2",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_fda6c3fc-5ae8-43b5-9ddb-9bd7f0409051",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_aebf8d00-79ef-4a4b-8253-e403a257d266",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">COVID-19 Testing, Telehealth and Technology and Data DrivenSolutions<br> </p><p style=\"text-align: left;\">The live webinar, entitled “Covid-19 Testing, Telehealth and Technology and Data Driven Solutions” will be hosted broadcast by Proactive Investors, Inc. and will feature Dr. David Stark, President of Parallax Diagnostics and Nathaniel T. Bradley, President of Parallax Health Management. The interactive webinar will present the current state and challenges facing the United States medical community and its citizens affected by the Coronavirus Pandemic. The discussion which will last 20 minutes and include a questions and answers session that will focus on diagnostic testing, the importance of remote patient monitoring (RPM), and the key technologies and data related to public and private solutions addressing the current crisis.</p><p> </p><p> </p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_eeb652ab-c235-4af3-ad52-317802a0daec",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_07d7c65b-d2d7-47b8-93a1-c58e94e059b6",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_e13c56f7-3a26-4673-b7cc-9e94c8932e84",
+                  "defaultValue": true,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_cad37be0-b51e-4c45-a7e7-254ccdb64c36",
+                    "defaultValue": true,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FNbIq-FBp_A8%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DNbIq-FBp_A8&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FNbIq-FBp_A8%2Fhqdefault.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=youtube\" width=\"640\" height=\"360\" scrolling=\"no\" title=\"YouTube embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://youtu.be/NbIq-FBp_A8",
+                    "thumbnail_url": "https://i.ytimg.com/vi/NbIq-FBp_A8/hqdefault.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_2c977305-2cb6-4ec1-82c3-69f181a1275a",
+                    "defaultValue": true,
+                    "link_url": "https://youtu.be/NbIq-FBp_A8",
+                    "thumb_url": "!",
+                    "url": "!",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": "798883/695030_270712",
+                    "storage": "s",
+                    "storagePrefix": null,
+                    "format": "png",
+                    "h": 270,
+                    "w": 990,
+                    "s": 44844,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_acc4f7cc-8f5b-4abc-91a5-d277f551882f",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_38805bd6-79fb-467b-ac55-cefac79006f1",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_d3d5d2d1-8aa0-4240-b277-b1a7c7d4bd64",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Harvard in Tech Seattle presents video discussion with <b>Mayor Kate Gallego</b> of Phoenix on reopening the economy during COVID 19 pandemic. We have explored what are the precautions needed to re-open the economy, what kind of support needed in city, state and fed. level, and also with the changes how do we prepare ahead for technology infrastructure and services needed.</p><p style=\"text-align: left;\"><b>Key Takeaways:</b> </p><p style=\"text-align: left;\">1. By practicing Social Distancing we are saving lives. </p><p style=\"text-align: left;\">2. It is safer to reopen the Economy when COVID 19 is in 14 consecutive days downward trend (CDC recommended ) 3. Testing is critical in controlling the COVID 19 pandemic. However, we are not yet conducting enough testing. </p><p style=\"text-align: left;\">4. We are all in this together.</p><p> </p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_3ad3b3cc-e9ef-41bd-bf2e-1427041afa7b",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_abf608cb-9efc-4fae-95ad-4410e6bdd478",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_a2c0b18b-120e-49c0-828b-7967375e1c23",
+                  "defaultValue": true,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_cad37be0-b51e-4c45-a7e7-254ccdb64c36",
+                    "defaultValue": true,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FkcjF1y6kcco%3Fwmode%3Dtransparent%26feature%3Doembed&wmode=transparent&display_name=YouTube&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DkcjF1y6kcco&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FkcjF1y6kcco%2Fhqdefault.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=youtube\" width=\"640\" height=\"360\" scrolling=\"no\" title=\"YouTube embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://youtu.be/kcjF1y6kcco",
+                    "thumbnail_url": "https://i.ytimg.com/vi/kcjF1y6kcco/hqdefault.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_2c977305-2cb6-4ec1-82c3-69f181a1275a",
+                    "defaultValue": true,
+                    "link_url": "https://youtu.be/NbIq-FBp_A8",
+                    "thumb_url": "!",
+                    "url": "!",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": "798883/695030_270712",
+                    "storage": "s",
+                    "storagePrefix": null,
+                    "format": "png",
+                    "h": 270,
+                    "w": 990,
+                    "s": 44844,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_bc6bd642-479f-43cc-a47a-9e903c1fa774",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_f11bf2d1-411d-4ad5-b20e-78954da2c07b",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_a432efdd-87d7-41a6-b19a-4a3ba6d7b4ca",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Harvard in Tech Seattle presents, COVID 19 - Is Telemedicine the Future of Health Care?</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\"><span class=\"s-text-color-black\">With: </span><a target=\"_blank\" href=\"https://www.linkedin.com/in/greg-j-ab5430/\"><span class=\"s-text-color-black\">Greg Jarzabek</span></a><span class=\"s-text-color-black\"> </span><a target=\"_blank\" href=\"https://www.linkedin.com/in/ACoAAAFZJ0YBtHKLMQzTI6icnOc_DLoV42UC88E/\"><span class=\"s-text-color-black\">M. Myra S. White</span></a><span class=\"s-text-color-black\">, </span><a target=\"_blank\" href=\"https://www.linkedin.com/in/ACoAAA79q54BQsJy2aZnbosrMYwNPyLs8sT4GdQ/\"><span class=\"s-text-color-black\">Hassaan Ebrahim</span></a><span class=\"s-text-color-black\">, </span><a target=\"_blank\" href=\"https://www.linkedin.com/in/ACoAAADJx00B6i1rkLpb-JWPOKQtBtYPTMQYa6M/\"><span class=\"s-text-color-black\">Debbi Gillotti</span></a><span class=\"s-text-color-black\">, </span><a target=\"_blank\" href=\"https://www.linkedin.com/in/ACoAAAJ9RiEBUkkDS9BhEN9DwByEjCWwA_pfRBE/\"><span class=\"s-text-color-black\">Chad Hiner RN, MS</span></a><span class=\"s-text-color-black\">, </span><a target=\"_blank\" href=\"https://www.linkedin.com/in/ACoAAAAxX3kBfq4tucsWYk50ATTokyK5aqSumGc/\"><span class=\"s-text-color-black\">Roger Hackett</span></a><span class=\"s-text-color-black\"> and </span><a target=\"_blank\" href=\"https://www.linkedin.com/in/ACoAAAGClFgBB6uAbhY_E1EBrJ5gK8QwIHadTV0/\"><span class=\"s-text-color-black\">Mahenoor Yusuf</span></a><span class=\"s-text-color-black\"> Key Takeaways: 1. Telemedicine Technology combines hardware diagnostics, software platforms, and Medical Practice guidance &amp; services. The menu of services possible is expansive, and COVID 19 demonstrates the need to expedite availability. 2. Telemedicine has global reach that can restructure the supply and demand for healthcare. 3. The Rural Urban Divide, and the low income vs. high income divide can be addressed through hybrid offerings via extended reach in the USA and overseas. Regulation and policy across states, and across borders needs to be streamlined and optimized for shared value. 4. Telemedicine can provide a cost effective alternative to cover many existing gaps in the current medical system. These include follow up medical treatment, clarification, diagnostics, and maintenance of care e.g. remedial exercises, and medication adherence. 5. Telemedicine is powerful, and the privacy, governance, and innovation mindset are important to establish Social acceptance. 6. Telemedicine is the future of medicine, and it is critical that all stakeholders are at the table to make sure it is the right future.</span></p><p> </p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_77365a12-db9c-466d-9bb2-3030a0be0dd2",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_fd7661bb-e1ec-435d-a768-725ecc04f449",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_a93bdd61-9b11-44ac-b7a9-ba7cb8c18fc4",
+                  "defaultValue": true,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_cad37be0-b51e-4c45-a7e7-254ccdb64c36",
+                    "defaultValue": true,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F422004140%3Fapp_id%3D122963&dntp=1&wmode=transparent&display_name=Vimeo&url=https%3A%2F%2Fvimeo.com%2F422004140&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F897847210_640.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=vimeo\" width=\"640\" height=\"360\" scrolling=\"no\" title=\"Vimeo embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://vimeo.com/422004140?mc_cid=f5a0f5076c&mc_eid=[UNIQID]",
+                    "thumbnail_url": "https://i.vimeocdn.com/video/897847210_640.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_2c977305-2cb6-4ec1-82c3-69f181a1275a",
+                    "defaultValue": true,
+                    "link_url": "https://youtu.be/NbIq-FBp_A8",
+                    "thumb_url": "!",
+                    "url": "!",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": "798883/695030_270712",
+                    "storage": "s",
+                    "storagePrefix": null,
+                    "format": "png",
+                    "h": 270,
+                    "w": 990,
+                    "s": 44844,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_962e1787-4602-47b7-8bec-bad7219361e3",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_f943bce2-60f7-435c-a50b-0754bdb1343e",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_9ddbdb42-6d01-4008-a4d2-e85f7ab86c5f",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Harvard in Tech and COVID Foundation Interfaith Webinar</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">Where do we get the moral strength to deal with an ambiguous and isolating crisis? How can the world's religious, spiritual, and ethical traditions help us at this time ― not only in terms of mental health, but how can we also bring out the best, bravest, most loving and helpful parts of ourselves in the midst of fear, exhaustion, anger, and grief?</p><p style=\"text-align: left;\">Join the Covid Foundation and Harvard in Tech for a webinar featuring prominent religious and nonreligious leaders in the Harvard community, including a diverse group of Harvard Chaplains, an inspiring mindfulness teacher, and the current President of Harvard College's Interfaith student fellowship.</p><p style=\"text-align: left;\"><br>Greg M. Epstein serves as the Humanist Chaplain at Harvard and MIT, and he is the author of the New York Times bestselling book, “Good Without God: What a Billion Nonreligious People Do Believe.” In addition to his most recent writing as the Ethicist in Residence at leading Silicon Valley publication TechCrunch, Greg’s writing has appeared in CNN.com, The Washington Post and Newsweek, among others. In 2005, he received ordination as a Humanist Rabbi from the International Institute for Secular Humanistic Judaism. He holds a B.A. (Religion and Chinese) and an M.A. (Judaic Studies) from the University of Michigan, Ann Arbor, and a Masters of Theological Studies from the Harvard Divinity School. harvardhumanist.org / @gregmepstein<br> </p><p style=\"text-align: left;\">Lama Rod Owens is an author, activist and authorized Lama, or Buddhist teacher, in the Kagyu School of Tibetan Buddhism and is considered one of the leaders of his generation of Buddhist teachers. He holds a Master of Divinity degree in Buddhist Studies from Harvard Divinity School and is a co-author of Radical Dharma: Talking Race, Love, and Liberation. Owens is the co-founder of Bhumisparsha, a Buddhist tantric practice and study community. Has been published in Buddhadharma, Lion’s Roar, Tricycle and The Harvard Divinity Bulletin, and offers talks, retreats and workshops in more than seven countries. His next book, Love and Rage: The Path of Liberation Through Anger comes out in June 2020. He can be reached at lamarod.com.</p><p style=\"text-align: left;\"><br>Rabbi Jonah C. Steinberg, Ph.D. Born in Canada and raised in downtown Toronto and in Vienna, Austria, Jonah received his BA at Brown University, and his MA, MPhil. and PhD. degrees at Columbia University. He served as Visiting Instructor of Talmud and Rabbinics at the Jewish Theological Seminary of America, taught at the Ziegler School of Rabbinic Studies of the American Jewish University, and headed the program in Rabbinic Literature and Civilization at the Reconstructionist Rabbinical College before becoming Associate Dean of the Rabbinical School of Hebrew College. Jonah has received the New Scholar Award from Harvard’s Journal of Feminist Studies in Religion and has published articles exploring rabbinic sources and traditions and ways in which this legacy can inspire us today.</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">Pat and Tammy McLeod serve as Harvard Chaplains for Cru, an interdenominational Christian ministry. Tammy is also the Director of College Ministry at Park Street Church in Boston. She received her MA in Spiritual Formation from Gordon-Conwell Theological Seminary. Pat holds an MA in Theological Studies from the International School of Theology and an MA in Science &amp; Religion and a PhD in Practical Theology from Boston University. They are founding members of the Mamelodi Initiative in the township of Mamelodi, South Africa—a project that connects Harvard students with at-risk youth in a mentoring and educational program to prepare them for college. Pat and Tammy, certified instructors for Interpersonal Communication Programs, Inc., have been married for more than three decades and are parents to four grown children. They coauthored the book Hit Hard: One Family’s Journey of Letting God of What Was and Learning to Live Well with What Is in which they share their journey into the world of ambiguous loss that began after their son suffered a traumatic brain injury playing football. Zach’s story received media coverage by ABC, NBC, CBS, and NPR.Recently they started COVID-19 Conversations on their website hoping to help others be resilient in ambiguous loss. patandtammymcleod.com Facebook:@patandtammymcleod Instagram:@patandtammymcleod</p><p style=\"text-align: left;\"> </p><p style=\"text-align: left;\">Sana Shareef is a sophomore at Harvard College studying Religion and Human, Developmental, and Regenerative Biology. She serves as President of the Facilitators for Religious, Ethical, and Spiritual Inquiry (FRESI) and is very involved in the Harvard College Interfaith Forum. She is also involved in public service initiatives at the Institute of Politics and conducts hematopoietic stem cell research at MGH. Sana is not only passionate about interfaith efforts and peace building, but also the interplay between faith and medicine</p><p style=\"text-align: left;\"> </p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            },
+            {
+              "type": "RepeatableItem",
+              "id": "f_51a1a775-2f8f-4339-8817-881bef121c12",
+              "defaultValue": null,
+              "components": {
+                "button1": {
+                  "type": "Button",
+                  "id": "f_863ae940-c4b4-451b-8851-1b5df47f0d17",
+                  "defaultValue": true,
+                  "text": "",
+                  "link_type": null,
+                  "page_id": null,
+                  "section_id": null,
+                  "url": "",
+                  "new_target": null
+                },
+                "media1": {
+                  "type": "Media",
+                  "id": "f_dab7b54d-075c-401f-aeab-a79ed1b2f1ed",
+                  "defaultValue": true,
+                  "video": {
+                    "type": "Video",
+                    "id": "f_cad37be0-b51e-4c45-a7e7-254ccdb64c36",
+                    "defaultValue": true,
+                    "html": "<iframe class=\"embedly-embed\" src=\"//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F418466741%3Fapp_id%3D122963&dntp=1&wmode=transparent&display_name=Vimeo&url=https%3A%2F%2Fvimeo.com%2F418466741&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F893045735_295x166.jpg&key=9cb34c0390b4469e854e4dba4580a892&type=text%2Fhtml&schema=vimeo\" width=\"426\" height=\"240\" scrolling=\"no\" title=\"Vimeo embed\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\"></iframe>",
+                    "url": "https://vimeo.com/418466741",
+                    "thumbnail_url": "https://i.vimeocdn.com/video/893045735_295x166.jpg",
+                    "maxwidth": 700,
+                    "description": null
+                  },
+                  "image": {
+                    "type": "Image",
+                    "id": "f_2c977305-2cb6-4ec1-82c3-69f181a1275a",
+                    "defaultValue": true,
+                    "link_url": "https://youtu.be/NbIq-FBp_A8",
+                    "thumb_url": "!",
+                    "url": "!",
+                    "caption": "",
+                    "description": "",
+                    "storageKey": "798883/695030_270712",
+                    "storage": "s",
+                    "storagePrefix": null,
+                    "format": "png",
+                    "h": 270,
+                    "w": 990,
+                    "s": 44844,
+                    "new_target": true,
+                    "noCompression": null,
+                    "cropMode": null,
+                    "focus": {}
+                  },
+                  "current": "video"
+                },
+                "text1": {
+                  "type": "RichText",
+                  "id": "f_9b7f81df-741b-4d05-ad72-85e34ceaa038",
+                  "defaultValue": false,
+                  "alignment": null,
+                  "value": "",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": null,
+                    "lastLineTextAlign": null
+                  }
+                },
+                "text2": {
+                  "type": "RichText",
+                  "id": "f_2ada78a4-a8c0-4b8d-90b7-1a96ad368f74",
+                  "defaultValue": true,
+                  "value": "",
+                  "backupValue": null,
+                  "version": null
+                },
+                "text3": {
+                  "type": "RichText",
+                  "id": "f_6678777c-d6d7-4231-bd69-8bdee7d36ab7",
+                  "defaultValue": false,
+                  "value": "<p style=\"text-align: left;\">Join Harvard in Tech's webinar featuring Marcus Brauchli on the latest trends in media consumption and how the media and technology is expanding to growth markets around the word.<br> </p><p style=\"text-align: left;\">Marcus Brauchli is co-founder and managing partner of North Base Media, a partnership that invests in media and technology companies in growth markets. He serves as an advisor or director of several, including leading news sites in the Philippines and Taiwan, a business-information provider in Africa, and Poland's main business-media group. Before establishing North Base, Mr. Brauchli was a vice president of the Washington Post Co. and executive editor of The Washington Post, overseeing its news and content operations, including new media, video and digital innovation. During his editorship, the Post won seven Pulitzers. Before joining The Post, Mr. Brauchli was editor of The Wall Street Journal, where he also was responsible for the Dow Jones Industrial Average and MarketWatch. Mr. Brauchli spent 15 years as a correspondent and bureau chief, living in Hong Kong, Shanghai, Tokyo and Stockholm.<br><br>Mr. Brauchli is a native of Boulder, Colo., and a 1983 graduate of Columbia University. He was a 1991-92 Nieman Fellow at Harvard University. He has served on the boards of the Overseas Press Club, the Foreign Correspondents' Club of Hong, the Knight-Bagehot Fellowships and the International Center for Journalists. He is chairman of the Arthur F. Burns Fellowship, a trustee of the Smithsonian's Hirshhorn Museum and Sculpture Garden, and an advisor to the Prix Pictet in photography. He also is a member of the Council on Foreign Relations and the Washington Economic Club.</p><p> </p>",
+                  "backupValue": null,
+                  "version": 1,
+                  "lineAlignment": {
+                    "firstLineTextAlign": "left",
+                    "lastLineTextAlign": "left"
+                  }
+                }
+              }
+            }
+          ],
+          "components": {
+            "button1": {
+              "type": "Button",
+              "id": "f_76685311-36b6-45b8-9098-a34faa99b7e5",
+              "defaultValue": true,
+              "text": "",
+              "link_type": null,
+              "page_id": null,
+              "section_id": null,
+              "url": "",
+              "new_target": null
+            },
+            "media1": {
+              "type": "Media",
+              "id": "f_456d3182-bed1-41df-b53b-f1a6120055ad",
+              "defaultValue": true,
+              "video": {
+                "type": "Video",
+                "id": "f_166a923a-89e0-420c-8fb5-7130138f067d",
+                "defaultValue": true,
+                "html": "",
+                "url": "https://vimeo.com/18150336",
+                "thumbnail_url": null,
+                "maxwidth": 700,
+                "description": null
+              },
+              "image": {
+                "type": "Image",
+                "id": "f_1f2376be-3061-4a6b-a99c-eda83d6f9112",
+                "defaultValue": true,
+                "link_url": null,
+                "thumb_url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                "url": "https://uploads.strikinglycdn.com/static/backgrounds/striking-pack-3/7.jpg",
+                "caption": "",
+                "description": "",
+                "storageKey": null,
+                "storage": null,
+                "storagePrefix": null,
+                "format": null,
+                "h": null,
+                "w": null,
+                "s": null,
+                "new_target": true,
+                "noCompression": null,
+                "cropMode": null,
+                "focus": {}
+              },
+              "current": "image"
+            },
+            "text1": {
+              "type": "RichText",
+              "id": "f_c2b0c997-a35a-4560-991a-dd7e37bf33a2",
+              "defaultValue": true,
+              "value": "Some caption here",
+              "backupValue": null,
+              "version": null
+            },
+            "text2": {
+              "type": "RichText",
+              "id": "f_d19707d7-8095-424c-857c-095ba77776fc",
+              "defaultValue": true,
+              "value": "",
+              "backupValue": null,
+              "version": null
+            },
+            "text3": {
+              "type": "RichText",
+              "id": "f_b744c7ca-771d-4ba1-8ec2-d1137062ec2c",
+              "defaultValue": true,
+              "value": "A sentence or two describing this item.",
+              "backupValue": null,
+              "version": null
+            }
+          }
+        }
+      }
+    }
+  ],
+  "title": "Webinars",
+  "description": null,
+  "uid": "6f92260b-230e-45d4-a581-fc95376bfcaf",
+  "path": "/webinars",
+  "pageTitle": null,
+  "pagePassword": null,
+  "memberOnly": null,
+  "paidMemberOnly": null,
+  "buySpecificProductList": {},
+  "specificTierList": {},
+  "pwdPrompt": null,
+  "autoPath": true,
+  "authorized": true
+}

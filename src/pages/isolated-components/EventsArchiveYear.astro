@@ -1,0 +1,48 @@
+---
+import Component from "../../../src/components/EventsArchiveYear.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EventsArchiveYear — codeyam screenshots the #codeyam-capture wrapper
+// by navigating to /isolated-components/EventsArchiveYear.
+
+// One year of events. This page serves BOTH registered states, because the
+// component takes no `open` prop and adding one purely to stage a screenshot
+// would be inventing API for the camera:
+//   - "EventsArchiveYear - One Closed Fold" captures it as rendered, which is
+//     the closed row a reader first meets: year, chevron, and the count that
+//     has to read "2 events" rather than "2events".
+//   - "EventsArchiveYear - Opened" drives a real click on the year through the
+//     scenario's `interactions`, so the opened rows are captured from the
+//     actual behaviour and the click replays on every recapture.
+const events = [
+  {
+    title: 'Summer Social',
+    date: '2018-08-18',
+    location: 'New York, NY',
+    description:
+      '200+ Technologists came together to hear a panel moderated by Umang Dua, Co-Founder of Handy, and Aaron Shapiro, Former CEO of Huge.',
+  },
+  {
+    title: 'Crypto + Blockchain Circle: The Future of Crypto Exchanges',
+    date: '2018-03-20',
+    location: 'R3 offices, New York, NY',
+    description:
+      'Harvard in Tech hosted its second Crypto + Blockchain event at R3\u2019s offices, on the future of crypto exchanges and the impact of increasing regulatory scrutiny.',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EventsArchiveYear</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 920px;">
+      <ol style="list-style: none; margin: 0; padding: 0;">
+        <Component year={2018} events={events} />
+      </ol>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+---
+// One row inside an opened archive year: the day, the title, the venue where
+// the original site stated one, and the write-up as it was published.
+//
+// A ROW, not a card. These are 2013-2019 events imported from the old site as a
+// record — nobody is deciding whether to attend one. A card grid would give
+// thirty-three historical entries the same visual weight as the events actually
+// coming up, which is the opposite of what the page is for.
+import { toEventDate, type EventLike } from '../lib/events';
+
+interface Props {
+  event: EventLike;
+}
+const { event } = Astro.props as Props;
+
+/** "Aug 18" — the day within its year, since the year is the fold's own label.
+ *  Forced to UTC: a date-only entry is UTC midnight, and rendering it in a
+ *  timezone behind UTC would show the previous day. */
+const day = toEventDate(event.date).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<li class="archive-item">
+  <div class="archive-item__head">
+    <span class="archive-item__date">{day}</span>
+    <h3 class="archive-item__title">{event.title}</h3>
+  </div>
+  {event.location && <p class="archive-item__location">{event.location}</p>}
+  {event.description && <p class="archive-item__text">{event.description}</p>}
+</li>
+
+<style>
+  .archive-item + .archive-item {
+    margin-top: var(--space-md);
+  }
+
+  .archive-item__head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .archive-item__date {
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    /* Enough for "Sept 28" so the titles line up down the column, but it gives
+       way rather than truncating when a locale renders something longer. */
+    min-width: 4.5rem;
+  }
+
+  .archive-item__title {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .archive-item__location,
+  .archive-item__text {
+    color: var(--color-muted);
+    /* Indented to clear the date column so the prose forms one edge. */
+    margin: 0.25rem 0 0 5.25rem;
+    font-size: 0.9rem;
+  }
+
+  .archive-item__location {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 600px) {
+    .archive-item__location,
+    .archive-item__text {
+      margin-left: 0;
+    }
+  }
+</style>

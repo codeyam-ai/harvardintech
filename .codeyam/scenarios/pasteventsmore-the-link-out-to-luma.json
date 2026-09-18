@@ -1,0 +1,13 @@
+{
+  "name": "PastEventsMore - The Link Out To Luma",
+  "id": "3248494a-c401-4fe0-9e76-09bd07c79af1",
+  "url": "/isolated-components/PastEventsMore",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "PastEventsMore",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/PastEventsMore.astro",
+  "description": "The one line under the recent past-event cards offering the rest of the history on Luma. It exists because the page deliberately shows only the most recent few as cards, and this is the escape hatch for a reader who wants more but not the 2013 archive."
+}

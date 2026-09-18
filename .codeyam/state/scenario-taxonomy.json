@@ -295,6 +295,34 @@
         "status": "covered"
       }
     },
+    "EventsPage": {
+      "empty": {
+        "status": "covered"
+      },
+      "single": {
+        "status": "covered"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "covered"
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Statically built from the events collection at build time. The Luma calendar above this body loads in its own iframe and owns its pending state; this component never has one."
+      },
+      "edge": {
+        "status": "covered"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "No runtime data source to fail. A malformed entry fails the build, which is a build error rather than a page state."
+      },
+      "key-interaction": {
+        "status": "covered"
+      }
+    },
     "EventsRoute": {
       "empty": {
         "status": "n-a",
@@ -444,6 +472,36 @@
       },
       "key-interaction": {
         "status": "covered"
+      }
+    },
+    "WebinarsPage": {
+      "empty": {
+        "status": "covered"
+      },
+      "single": {
+        "status": "added"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "The grid wraps to more rows and has no overflow or truncation treatment, so every count above typical renders as more of the same card. The eleven recordings are a closed historical set that cannot grow."
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Statically built from the content collection at build time. There is no fetch, so the page never has a pending state."
+      },
+      "edge": {
+        "status": "covered"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "No runtime data source to fail. A bad entry fails the build instead, which is a build error rather than a page state."
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "The only action is following a card through to its post, where the recording plays. That destination is a blog post with its own scenarios; nothing on this view has interaction-only state."
       }
     },
     "public/cutover-runbook.html": {

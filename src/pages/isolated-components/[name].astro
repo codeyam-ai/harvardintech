@@ -108,11 +108,52 @@ const SAMPLE_EVENTS = [
     link: 'https://www.harvardintech.com/events/spring-founder-dinner',
   },
 ];
+// The imported New York history, 2013-2019. Three years with different counts,
+// because the fold is only worth looking at when the years differ — one year
+// with a single event proves the "1 event" singular, and two 2018 entries prove
+// a year keeps its own newest-first order inside the fold.
+const SAMPLE_ARCHIVE_EVENTS = [
+  {
+    title: 'Summer Social',
+    date: '2018-08-18',
+    location: 'New York, NY',
+    description:
+      '200+ Technologists came together to hear a panel moderated by Umang Dua, Co-Founder of Handy, Annie Wang, Co-founder at Her Campus Media, Charles-Albert Gorra, CEO and co-founder of Rebag, and Aaron Shapiro, Former CEO of Huge.',
+  },
+  {
+    title: 'Crypto + Blockchain Circle: The Future of Crypto Exchanges',
+    date: '2018-03-20',
+    location: 'R3 offices, New York, NY',
+    description:
+      'Harvard in Tech hosted its second Crypto + Blockchain event at R3’s offices, on the future of crypto exchanges and the impact of increasing regulatory scrutiny.',
+  },
+  {
+    title: 'Design Leaders in Tech',
+    date: '2016-11-02',
+    location: 'New York, NY',
+    description:
+      'Leading design experts from Yieldmo, Etsy, Google, LearnVest-Northern Mutual and Foossa on what design leadership looks like inside a growing product org.',
+  },
+  {
+    title: 'Fireside Chat with Andrew McLaughlin',
+    date: '2013-11-21',
+    location: 'New York, NY',
+    description:
+      'Andrew McLaughlin (CEO, Digg, and former Deputy Chief Technology Officer of the United States) on NYC tech, the future of content, and the intersection of tech and politics.',
+  },
+];
 // NOTE: no `as const` — these fixtures feed components whose props are mutable
 // arrays (`EventLike[]`), so a deeply-readonly literal would fail the type check.
 const eventsPageStates = {
   Default: { events: SAMPLE_EVENTS, now: '2026-06-13' },
   Empty: { events: [] as typeof SAMPLE_EVENTS, now: '2026-06-13' },
+  // Recent cards AND the folded archive together — the real shape of /events
+  // once the history is imported.
+  Archive: { events: [...SAMPLE_EVENTS, ...SAMPLE_ARCHIVE_EVENTS], now: '2026-06-13' },
+  // Nothing recent enough to card, so Past Events and its Luma link both drop
+  // out and the archive is the only thing left. This is what a chapter with a
+  // long history and a quiet present actually looks like.
+  ArchiveOnly: { events: SAMPLE_ARCHIVE_EVENTS, now: '2026-06-13' },
 };
 
 // ChapterPage states: a full NYC-style chapter — full-bleed city hero, Sign Up
@@ -907,6 +948,8 @@ export async function getStaticPaths() {
     { params: { name: 'EmbedForm-Unconfigured' } },
     { params: { name: 'EventsPage' } },
     { params: { name: 'EventsPage-Empty' } },
+    { params: { name: 'EventsPage-Archive' } },
+    { params: { name: 'EventsPage-ArchiveOnly' } },
     { params: { name: 'ChapterPage' } },
     { params: { name: 'ChapterPage-Sparse' } },
     { params: { name: 'ChapterPage-Forming' } },

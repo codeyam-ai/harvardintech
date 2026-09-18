@@ -1,0 +1,13 @@
+{
+  "name": "EventsArchiveItem - A Row With Venue And Write-Up",
+  "id": "a6e2c6b7-f9dc-4e12-87e2-542b79e02485",
+  "url": "/isolated-components/EventsArchiveItem",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsArchiveItem",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventsArchiveItem.astro",
+  "description": "One archive row carrying everything it can: the day in its own column, the title beside it, a venue the original site actually stated, and the full write-up as published. Both optional fields are present here, so the indent that lines the prose up under the title is visible."
+}

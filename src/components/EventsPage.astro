@@ -1,11 +1,23 @@
 ---
-// Full Events page body: an intro header, an "Upcoming" section, and a "Past
-// Events" section, split from a single flat `events` array against `now` (build
-// time on the static site) via the pure splitEvents helper. Accepts a plain
-// array so it renders from getCollection() on the /events route and from
-// isolated-component scenarios (rich / no-upcoming / empty states).
+// Full Events page body: an intro header, the recent "Past Events" cards, the
+// folded 2013-2019 archive, and a line out to the webinar recordings. Split
+// from a single flat `events` array against `now` (build time on the static
+// site) via the pure splitEvents / splitArchive helpers. Accepts a plain array
+// so it renders from getCollection() on the /events route and from
+// isolated-component scenarios (rich / archive-only / empty states).
+//
+// There is NO "Upcoming" list here. The Luma calendar embed sits directly above
+// this body on /events and is the live, always-current answer to "what's next";
+// a second upcoming list underneath it showed the same events twice, from a
+// source that only refreshes when the site is rebuilt (owner, 2026-09-14).
+// Past events are the opposite case — Luma does not keep them, so this page is
+// the only place they exist.
 import EventsSection from './EventsSection.astro';
-import { splitEvents, type EventLike } from '../lib/events';
+import EventsArchive from './EventsArchive.astro';
+import PastEventsMore from './PastEventsMore.astro';
+import WebinarsPointer from './WebinarsPointer.astro';
+import { splitEvents, splitArchive, type EventLike } from '../lib/events';
+import { LUMA_CALENDAR_URL } from '../lib/luma';
 
 // No Eventbrite button: Luma is the one events system (owner, 2026-09-14), and
 // the Luma calendar sits above this body on /events.
@@ -15,7 +27,8 @@ interface Props {
 }
 const { events = [], now } = Astro.props;
 
-const { upcoming, past } = splitEvents(events, now ?? new Date());
+const { past } = splitEvents(events, now ?? new Date());
+const { recent, archive } = splitArchive(past);
 ---
 
 <section class="s-section">
@@ -27,17 +40,16 @@ const { upcoming, past } = splitEvents(events, now ?? new Date());
       connected online.
     </p>
 
-    <EventsSection
-      title="Upcoming"
-      events={upcoming}
-      variant="upcoming"
-      emptyMessage="No upcoming events right now. Sign up for our mailing list to hear about the next one."
-    />
-
     {
-      past.length > 0 ? (
-        <EventsSection title="Past Events" events={past} variant="past" marginTop="var(--space-xl)" />
+      recent.length > 0 ? (
+        <EventsSection title="Past Events" events={recent} variant="past" marginTop="var(--space-xl)" />
       ) : null
     }
+
+    {recent.length > 0 ? <PastEventsMore calendarUrl={LUMA_CALENDAR_URL} /> : null}
+
+    <EventsArchive events={archive} />
+
+    <WebinarsPointer />
   </div>
 </section>

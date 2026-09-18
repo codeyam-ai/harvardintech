@@ -1,0 +1,38 @@
+---
+import Component from "../../../src/components/WebinarCard.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for WebinarCard with NO cover image — codeyam screenshots the
+// #codeyam-capture wrapper by navigating to
+// /isolated-components/WebinarCard-NoCover.
+//
+// A separate prerendered page rather than a `?s=` switch: this is a static
+// build, so query params are empty at build time.
+//
+// The state this exists to pin: a recording whose video host has lost the
+// upload. What the provider returns for one is not a still from the video but a
+// generic colour-bars placeholder — identical bytes for every dead upload — so
+// the card must fall back to a plain tinted block. Shipping the placeholder
+// instead would put a colour chart on the page under alt text calling it a
+// video still, which is why the absence is meaningful rather than a gap.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: WebinarCard-NoCover</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 340px;">
+      <ul style="list-style: none; margin: 0; padding: 0;">
+        <Component
+          slug="webinar-media-and-technology-in-growth-markets"
+          title="Media and Technology in Growth Markets"
+          year={2020}
+          summary="Marcus Brauchli, North Base Media"
+        />
+      </ul>
+    </div>
+  </body>
+</html>

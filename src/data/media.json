@@ -37,6 +37,20 @@
       "sizeBytes": 297523
     },
     {
+      "filename": "gallery/hit-bod.webp",
+      "url": "/images/gallery/hit-bod.webp",
+      "alt": "Black-and-white headshot portrait of a woman with long dark hair against a plain light background",
+      "sizeBytes": 3392
+    },
+    {
+      "filename": "gallery/91e99da2-9e81-4620-815f-0fc1f87c9eb9-1-105-c.webp",
+      "url": "/images/gallery/91e99da2-9e81-4620-815f-0fc1f87c9eb9-1-105-c.webp",
+      "alt": "A moderator with a microphone introducing seven panellists seated on stools at a Harvard Alumni in Tech engineering panel, in a brick-walled venue with tall arched windows",
+      "sizeBytes": 131692,
+      "width": 1024,
+      "height": 768
+    },
+    {
       "filename": "gallery/event-01.jpg",
       "url": "/images/gallery/event-01.jpg",
       "alt": "A speaker in a dark suit addressing a seated audience at an evening Harvard Alumni in Tech talk",
@@ -412,20 +426,43 @@
       "alt": "Four smiling volunteers in red VOLUNTEER sweatshirts standing arm in arm outdoors, two holding rubbish bags after a community clean-up"
     },
     {
-      "filename": "gallery/91e99da2-9e81-4620-815f-0fc1f87c9eb9-1-105-c.webp",
-      "url": "/images/gallery/91e99da2-9e81-4620-815f-0fc1f87c9eb9-1-105-c.webp",
-      "alt": "A moderator with a microphone introducing seven panellists seated on stools at a Harvard Alumni in Tech engineering panel, in a brick-walled venue with tall arched windows",
-      "sizeBytes": 131692,
-      "width": 1024,
-      "height": 768
-    },
-    {
       "filename": "untitled-design-4.webp",
       "url": "/images/untitled-design-4.webp",
+      "alt": "Thirteen Harvard in Tech members posed together on stage at the 2016 Summer Social, in front of a large screen showing the event title and the evening's panellist line-up",
       "sizeBytes": 162222,
       "originalSizeBytes": 4748134,
       "width": 2048,
       "height": 1152
+    },
+    {
+      "filename": "webinars/covid-19-is-telemedicine-the-future-of-health-care.jpg",
+      "url": "/images/webinars/covid-19-is-telemedicine-the-future-of-health-care.jpg",
+      "alt": "Video still from COVID-19: Is Telemedicine the Future of Health Care?",
+      "sizeBytes": 12454
+    },
+    {
+      "filename": "webinars/covid-19-pregnancy-outcomes-and-telemedicine.jpg",
+      "url": "/images/webinars/covid-19-pregnancy-outcomes-and-telemedicine.jpg",
+      "alt": "Video still from COVID-19, Pregnancy Outcomes and Telemedicine",
+      "sizeBytes": 51566
+    },
+    {
+      "filename": "webinars/cybersecurity-in-the-supply-chain.jpg",
+      "url": "/images/webinars/cybersecurity-in-the-supply-chain.jpg",
+      "alt": "Video still from Cybersecurity in the Supply Chain",
+      "sizeBytes": 85302
+    },
+    {
+      "filename": "webinars/edutech-solutions-to-covid-19.jpg",
+      "url": "/images/webinars/edutech-solutions-to-covid-19.jpg",
+      "alt": "Video still from EduTech Solutions to COVID-19",
+      "sizeBytes": 11615
+    },
+    {
+      "filename": "webinars/reopening-the-economy-during-covid-19.jpg",
+      "url": "/images/webinars/reopening-the-economy-during-covid-19.jpg",
+      "alt": "Video still from Reopening the Economy During COVID-19",
+      "sizeBytes": 13152
     }
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "name": "WebinarsPage - Recordings With And Without A Cover",
+  "id": "be5a5c60-7e70-4ba0-9fb9-cb762e2c49be",
+  "url": "/isolated-components/WebinarsPage",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "WebinarsPage",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/WebinarsPage.astro",
+  "description": "The webinars listing body: the heading, what the series was, and a responsive grid of recordings. Three cards carry their real provider still and a fourth carries none - the real case for a recording whose video host lost the upload, where the card shows a plain block instead of captioning a placeholder as a video still."
+}

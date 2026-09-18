@@ -1,0 +1,19 @@
+{
+  "name": "EventsArchiveYear - Opened",
+  "id": "86f44c7f-e77e-480c-88b3-1d33bda71592",
+  "url": "/isolated-components/EventsArchiveYear",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsArchiveYear",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventsArchiveYear.astro",
+  "description": "The same fold after a reader clicks the year: the chevron turns and the events appear in place, each with its date, its venue where the original site stated one, and the write-up as published. This is interaction-only state - the component takes no open prop, so the capture drives a real click rather than staging the state, and the click replays on every recapture.",
+  "interactions": [
+    {
+      "action": "click",
+      "text": "2018"
+    }
+  ]
+}

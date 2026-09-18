@@ -1,6 +1,6 @@
 {
   "name": "EventsPage - Upcoming and Past",
-  "id": "cec6512d-c320-4599-bed3-419cf8f0cc84",
+  "id": "fc84000a-a4d7-44d1-8898-f8d0b2c83788",
   "url": "/isolated-components/EventsPage",
   "dimensions": [
     "Desktop"
@@ -8,5 +8,6 @@
   "mocks": {},
   "componentName": "EventsPage",
   "scenarioType": "component",
-  "pageFilePath": "src/components/EventsPage.astro"
+  "pageFilePath": "src/components/EventsPage.astro",
+  "description": "The EventsPage component."
 }

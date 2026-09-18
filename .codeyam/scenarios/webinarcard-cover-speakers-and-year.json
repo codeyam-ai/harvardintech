@@ -1,0 +1,13 @@
+{
+  "name": "WebinarCard - Cover, Speakers And Year",
+  "id": "3b18e479-2628-490b-8c3d-a7a7b089ee96",
+  "url": "/isolated-components/WebinarCard",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "WebinarCard",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/WebinarCard.astro",
+  "description": "One recording's card at its real column width: the 16:9 cover crop, a title long enough to wrap to two lines, the speaker line and the year. The whole card is one link, because the cover is the part a reader aims at."
+}

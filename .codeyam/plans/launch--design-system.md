@@ -3,8 +3,9 @@ title: "launch -- Design System"
 mode: ui
 createdAt: "2026-09-14T17:35:40Z"
 prefix: "launch"
-order: 8
+order: 6
 source: manual
+dependsOn: ["launch--responsive-audit-of-every-public-page"]
 ---
 
 ## Summary

@@ -1,0 +1,89 @@
+{
+  "name": "Events Route - Archive Folded By Year",
+  "id": "a6845be5-8830-4eb7-bcdb-605972e7c17b",
+  "url": "/events",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "events": [
+      {
+        "date": "@today-120d",
+        "location": "New York, NY",
+        "slug": "2024-10-10-harvard-in-tech",
+        "title": "Harvard Alumni in Tech: Welcome to NYC Mixer"
+      },
+      {
+        "date": "@today-300d",
+        "location": "New York, NY",
+        "slug": "2025-05-22-harvard-in-tech",
+        "title": "Harvard Alumni in Tech: Spring Social"
+      },
+      {
+        "date": "@today-500d",
+        "location": "Denver, Colorado",
+        "slug": "2026-04-24-harvard-alumni-in-tech-colorado-co-working-afternoon",
+        "title": "Harvard Alumni in Tech Colorado Co-Working Afternoon"
+      },
+      {
+        "date": "2018-08-18",
+        "description": "200+ Technologists came together to hear a panel moderated by Umang Dua, Co-Founder of Handy, Annie Wang, Co-founder at Her Campus Media, Charles-Albert Gorra, CEO and co-founder of Rebag, and Aaron Shapiro, Former CEO of Huge.",
+        "location": "New York, NY",
+        "slug": "2018-08-18-summer-social",
+        "title": "Summer Social"
+      },
+      {
+        "date": "2018-06-11",
+        "description": "Our GDPR teach-in with Katherine Gardner from Gunderson Dettmer provided insights into the EU regulation affecting almost every company's data privacy standards.",
+        "location": "New York, NY",
+        "slug": "2018-06-11-gdpr-teach-in-with-katherine-gardner",
+        "title": "GDPR Teach-in with Katherine Gardner"
+      },
+      {
+        "date": "2018-03-20",
+        "description": "On March 20, 2018, Harvard in Tech hosted its second Crypto + Blockchain event at R3's offices on the topic of the future of crypto exchanges and the impact of increasing regulatory scrutiny. Moderator Mitchell Dong from crypto arbitrage fund Pythagoras Investment Management discussed how the crypto industry is addressing new challenges with a financial services lawyer and representatives from three exchanges and a venture capital firm.",
+        "location": "R3 offices, New York, NY",
+        "slug": "2018-03-20-crypto-blockchain-circle-the-future-of-crypto-exchanges",
+        "title": "Crypto + Blockchain Circle: The Future of Crypto Exchanges"
+      },
+      {
+        "date": "2016-11-02",
+        "description": "Harvard in Tech was excited to welcome and hear from leading design experts, including David Goligorsky (Head of Design, Yieldmo), Alex Wright (Senior Director of User Experience, Etsy), Heather Cassano (Director of User Experience, Google), Abigail Gray (VP, Head of Design, LearnVest-Northern Mutual), Lee-Sean Huang (Co-Founder/Creative Director, Foossa).",
+        "location": "New York, NY",
+        "slug": "2016-11-02-design-leaders-in-tech",
+        "title": "Design Leaders in Tech"
+      },
+      {
+        "date": "2016-02-03",
+        "description": "A fireside chat with cybersecurity expert Marc Goodman (HKS) who spent a career in law enforcement and technology. He has served as a street police officer, senior adviser to Interpol and futurist-in-residence with the FBI.",
+        "location": "New York, NY",
+        "slug": "2016-02-03-fireside-chat-with-marc-goodman",
+        "title": "Fireside Chat with Marc Goodman"
+      },
+      {
+        "date": "2013-11-21",
+        "description": "Andrew McLaughlin (CEO, Digg, and former Deputy Chief Technology Officer of the United States) shared his thoughts about NYC tech, the future of content, and the intersection of tech & politics.",
+        "location": "New York, NY",
+        "slug": "2013-11-21-fireside-chat-with-andrew-mclaughlin",
+        "title": "Fireside Chat with Andrew McLaughlin"
+      },
+      {
+        "date": "2013-08-13",
+        "description": "200+ Technologists came together to hear a panel moderated by Thomas Eisenmann (HBS Professor) that included Adam Valkin (General Catalyst), David Teten (ff Ventures), Lucy Deland (Paperless Post), Dave Eisenberg (Floored), Amy Jain (BaubleBar) and Aaron Schildkrout (HowAboutWe).",
+        "location": "New York, NY",
+        "slug": "2013-08-13-summer-social",
+        "title": "Summer Social"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/events.astro",
+  "description": "The /events page once the New York chapter's history is back on it, with a year opened. A reader clicks 2018 and the events appear in place, each with its date, its venue where the original site stated one, and the write-up as published. The click is part of the scenario because a resting capture of this route frames only the Luma calendar - the archive sits below it - so without driving the fold the shot would prove nothing about the archive.",
+  "interactions": [
+    {
+      "action": "click",
+      "text": "2018"
+    }
+  ]
+}

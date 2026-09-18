@@ -1,0 +1,13 @@
+{
+  "name": "WebinarsPage - A Single Recording",
+  "id": "9c8b9e5d-077e-4521-8574-5ae0299a0ac8",
+  "url": "/isolated-components/WebinarsPage-Single",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "WebinarsPage",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/WebinarsPage.astro",
+  "description": "The empty-to-many boundary, and a reachable one: five of the eleven recordings are already unpublished because their video host lost the uploads. A lone card holds a single column width and lines up with the rows above it, rather than stretching across the whole measure and blowing its cover up into a soft banner - which is what this page did until the grid moved from auto-fit to auto-fill, and what this frame now pins."
+}

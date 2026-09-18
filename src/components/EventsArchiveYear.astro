@@ -1,0 +1,80 @@
+---
+// One year of the archive: a closed disclosure row that opens to its events.
+//
+// Native <details>/<summary> is the whole mechanism — no JavaScript, no state.
+// That is not minimalism for its own sake: it is keyboard-operable and
+// expandable-by-find-in-page for free, and find-in-page is how anyone actually
+// reaches a 2015 event.
+import EventsArchiveItem from './EventsArchiveItem.astro';
+import type { EventLike } from '../lib/events';
+
+interface Props {
+  year: number;
+  events: EventLike[];
+}
+const { year, events } = Astro.props as Props;
+---
+
+<details class="archive-year">
+  <summary>
+    <span class="archive-year__label">{year}</span>
+    {/* One expression, not two with a space between them — Astro collapses
+        whitespace BETWEEN expressions, which rendered "2events". */}
+    <span class="archive-year__count">
+      {`${events.length} ${events.length === 1 ? 'event' : 'events'}`}
+    </span>
+  </summary>
+  <ol class="archive-list">
+    {events.map((event) => <EventsArchiveItem event={event} />)}
+  </ol>
+</details>
+
+<style>
+  .archive-year {
+    border-top: 1px solid var(--color-border, #e5e5e5);
+  }
+  .archive-year:last-of-type {
+    border-bottom: 1px solid var(--color-border, #e5e5e5);
+  }
+
+  .archive-year > summary {
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: 0.9rem 0.25rem;
+    list-style: none;
+    font-weight: 600;
+  }
+  /* Safari renders its own disclosure triangle through a pseudo-element the
+     standard `list-style: none` above does not reach. */
+  .archive-year > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .archive-year__label {
+    font-size: 1.05rem;
+  }
+  .archive-year__label::before {
+    content: '\203a';
+    display: inline-block;
+    margin-right: 0.6rem;
+    transition: transform 0.15s ease;
+  }
+  .archive-year[open] .archive-year__label::before {
+    transform: rotate(90deg);
+  }
+
+  .archive-year__count {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+
+  .archive-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 var(--space-md);
+  }
+</style>

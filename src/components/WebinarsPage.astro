@@ -1,0 +1,75 @@
+---
+// The body of /webinars: the heading, what the series was, and the grid of
+// recordings — or the line that stands in for it when none are published.
+//
+// Split from the route for the same reason `EventsPage` is: the route's job is
+// to read the collection and hand over a plain array, and this component's job
+// is to render it. That split is what lets the page be shown as an
+// isolated-component scenario in any state, including the empty one, without a
+// seeded content collection behind it.
+//
+// It LISTS; it does not play. Each recording plays on its own /blog/<slug>
+// page, because ten third-party players on one listing means ten sets of
+// trackers and a page that takes seconds to settle — for a page whose only job
+// is helping someone choose which recording to watch.
+import WebinarCard from './WebinarCard.astro';
+import { webinarYear, type WebinarEntryLike } from '../lib/webinars';
+
+interface Props {
+  posts?: WebinarEntryLike[];
+}
+const { posts = [] } = Astro.props as Props;
+---
+
+<section class="s-section">
+  <div class="s-inner">
+    <h1 class="s-title" style="text-align: center;">Webinars</h1>
+    <p
+      style="color: var(--color-muted); max-width: var(--text-width); margin: 0 auto var(--space-xl); text-align: center;"
+    >
+      In the first months of the pandemic, Harvard in Tech ran a series of
+      online sessions on what COVID-19 was changing — in healthcare, in
+      education, in supply chains and in how we work. These are the recordings.
+    </p>
+
+    {
+      posts.length === 0 ? (
+        <p style="color: var(--color-muted); text-align: center;">
+          No recordings are published right now.
+        </p>
+      ) : (
+        <ul class="webinar-grid">
+          {posts.map((post) => (
+            <WebinarCard
+              slug={post.id}
+              title={post.data.title}
+              year={webinarYear(post.data.date)}
+              summary={post.data.summary}
+              coverImage={post.data.coverImage}
+            />
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .webinar-grid {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 960px;
+    display: grid;
+    gap: var(--space-lg);
+    /* `auto-fill`, NOT `auto-fit`. They are identical while the row is full and
+       differ exactly when it is not: `auto-fit` collapses the empty tracks and
+       lets the remaining cards stretch across them, so a single published
+       recording became one 960px-wide card with its 480x360 provider still
+       scaled up into a soft banner. `auto-fill` keeps the empty tracks, so the
+       last row lines up with the rows above it however few cards are in it.
+       This is reachable, not hypothetical: five of the eleven recordings are
+       already unpublished because their video host lost the uploads. */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+</style>

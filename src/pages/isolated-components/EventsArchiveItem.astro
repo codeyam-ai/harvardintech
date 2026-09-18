@@ -1,0 +1,33 @@
+---
+import Component from "../../../src/components/EventsArchiveItem.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EventsArchiveItem — codeyam screenshots the #codeyam-capture wrapper
+// by navigating to /isolated-components/EventsArchiveItem.
+
+// The richest row available: a stated venue AND a long write-up, so the capture
+// shows the indent holding and the prose wrapping. A row with neither is the
+// same component with two branches skipped.
+const event = {
+  title: 'Crypto + Blockchain Circle: The Future of Crypto Exchanges',
+  date: '2018-03-20',
+  location: 'R3 offices, New York, NY',
+  description:
+    'On March 20, 2018, Harvard in Tech hosted its second Crypto + Blockchain event at R3\u2019s offices on the topic of the future of crypto exchanges and the impact of increasing regulatory scrutiny. Moderator Mitchell Dong from Pythagoras Investment Management discussed how the industry is addressing new challenges with a financial services lawyer and representatives from three exchanges and a venture capital firm.',
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EventsArchiveItem</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 760px;">
+      <ol style="list-style: none; margin: 0; padding: 0;">
+        <Component event={event} />
+      </ol>
+    </div>
+  </body>
+</html>

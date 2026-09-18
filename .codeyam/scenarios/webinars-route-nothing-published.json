@@ -1,0 +1,23 @@
+{
+  "name": "Webinars Route - Nothing Published",
+  "id": "68aadb92-744d-44ec-af5e-0b6bf9e08c40",
+  "url": "/webinars",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "blog": [
+      {
+        "body": "An ordinary blog post with no series tag. It proves the listing filters on the series field rather than simply showing every post.",
+        "date": "2026-05-16",
+        "slug": "an-ordinary-post-that-is-not-a-webinar",
+        "summary": "What we learned running a full day of heads-down work together",
+        "title": "Notes from the London chapter's first co-working day"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/webinars.astro",
+  "description": "The webinars page with every recording unpublished - the state the site is one CMS toggle away from, and the state it would be in if the remaining video hosts also lost their copies. The heading and the explanation of what the series was still stand; only the grid is replaced by a plain line saying nothing is published."
+}

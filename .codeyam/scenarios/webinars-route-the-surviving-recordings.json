@@ -1,0 +1,66 @@
+{
+  "name": "Webinars Route - The Surviving Recordings",
+  "id": "18d615f6-98a3-4e61-baea-c7025762632f",
+  "url": "/webinars",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "blog": [
+      {
+        "body": "A panel on whether the shift to remote care that the pandemic forced would outlast it.",
+        "coverImage": "/images/webinars/covid-19-is-telemedicine-the-future-of-health-care.jpg",
+        "date": "2020-05-25",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/kcjF1y6kcco",
+        "series": "webinars",
+        "slug": "webinar-covid-19-is-telemedicine-the-future-of-health-care",
+        "summary": "A seven-person panel, with Harvard in Tech Seattle",
+        "title": "COVID-19: Is Telemedicine the Future of Health Care?"
+      },
+      {
+        "body": "The Mayor of Phoenix on the decisions a city faces when it starts to reopen.",
+        "coverImage": "/images/webinars/reopening-the-economy-during-covid-19.jpg",
+        "date": "2020-05-03",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/NbIq-FBp_A8",
+        "series": "webinars",
+        "slug": "webinar-reopening-the-economy-during-covid-19",
+        "summary": "Mayor Kate Gallego of Phoenix, with Harvard in Tech Seattle",
+        "title": "Reopening the Economy During COVID-19"
+      },
+      {
+        "body": "Where supply chains are exposed once procurement moves online in a hurry.",
+        "coverImage": "/images/webinars/cybersecurity-in-the-supply-chain.jpg",
+        "date": "2020-05-01",
+        "embedUrl": "https://fast.wistia.net/embed/iframe/i3xpv4s280",
+        "series": "webinars",
+        "slug": "webinar-cybersecurity-in-the-supply-chain",
+        "summary": "Jim Fleming (ISM) and Charlotte de Brabandt",
+        "title": "Cybersecurity in the Supply Chain"
+      },
+      {
+        "body": "Educational technology as a way to inform, reduce isolation and keep people learning.",
+        "coverImage": "/images/webinars/edutech-solutions-to-covid-19.jpg",
+        "date": "2020-04-09",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/S4c48202-D8",
+        "series": "webinars",
+        "slug": "webinar-edutech-solutions-to-covid-19",
+        "summary": "Prof. Mark Esposito, with Harvard in Tech Seattle",
+        "title": "EduTech Solutions to COVID-19"
+      },
+      {
+        "body": "What the first months of the pandemic meant for pregnancy care, and where telemedicine helped.",
+        "coverImage": "/images/webinars/covid-19-pregnancy-outcomes-and-telemedicine.jpg",
+        "date": "2020-04-07",
+        "embedUrl": "https://fast.wistia.net/embed/iframe/46kd8ic53q",
+        "series": "webinars",
+        "slug": "webinar-covid-19-pregnancy-outcomes-and-telemedicine",
+        "summary": "Dr. Eduardo Vadia and Dr. Sina Haeri, Access Physicians",
+        "title": "COVID-19, Pregnancy Outcomes and Telemedicine"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/webinars.astro",
+  "description": "The /webinars page as the public sees it: the five 2020 sessions whose video hosts still have the recording, each with its real provider still, speaker line and year, linking through to the post where it plays. The other five are in the repo as drafts - Vimeo has lost those uploads - so this is deliberately five cards and not eleven."
+}

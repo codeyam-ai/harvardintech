@@ -135,6 +135,40 @@
     ]
   },
   {
+    "description": "The folded 2013-2019 history at the foot of the events page. Groups the archive by year, derives its heading range from the events it was given rather than hardcoding one, and renders nothing at all when there is no archive. Thirty-three imported events cost seven fold rows here instead of thirty-three photo cards standing between a visitor and the rest of the page.",
+    "filePath": "src/components/EventsArchive.astro",
+    "name": "EventsArchive",
+    "scenarios": [
+      "eventsarchive-folded-by-year"
+    ],
+    "tags": [
+      "events-archive"
+    ]
+  },
+  {
+    "description": "One row inside an opened archive year: the day, the title, the venue where the original site stated one, and the write-up as published. A row rather than a card, because nobody is deciding whether to attend a 2015 event and a card grid would give history the same weight as what is coming up.",
+    "filePath": "src/components/EventsArchiveItem.astro",
+    "name": "EventsArchiveItem",
+    "scenarios": [
+      "eventsarchiveitem-a-row-with-venue-and-write-up"
+    ],
+    "tags": [
+      "events-archive"
+    ]
+  },
+  {
+    "description": "One year of the archive as a closed disclosure row that opens to its events. Native details/summary is the whole mechanism - no JavaScript, keyboard-operable, and expandable by find-in-page, which is how anyone actually reaches a 2015 event.",
+    "filePath": "src/components/EventsArchiveYear.astro",
+    "name": "EventsArchiveYear",
+    "scenarios": [
+      "eventsarchiveyear-one-closed-fold",
+      "eventsarchiveyear-opened"
+    ],
+    "tags": [
+      "events-archive"
+    ]
+  },
+  {
     "description": "Full Events page body: intro header plus Upcoming and Past sections, split from a flat events array via splitEvents. Reused by the /events route and isolated scenarios.",
     "filePath": "src/components/EventsPage.astro",
     "name": "EventsPage",
@@ -261,6 +295,17 @@
     ]
   },
   {
+    "description": "The line under the recent past-event cards pointing at Luma's full past list. The page shows only the most recent few on purpose, and this is the escape hatch for a reader who wants the rest without the 2013 archive.",
+    "filePath": "src/components/PastEventsMore.astro",
+    "name": "PastEventsMore",
+    "scenarios": [
+      "pasteventsmore-the-link-out-to-luma"
+    ],
+    "tags": [
+      "events-archive"
+    ]
+  },
+  {
     "description": "The header's primary menu: a taxonomy mega-menu rendered to three levels — a top-level item with no children is a plain link, with children it becomes a dropdown, and if any of those children themselves have children the panel splits into titled columns. The panel opens with CSS alone via hover and focus-within, so it works before hydration and for keyboard users. It renders whatever tree it is handed and cannot tell the hand-authored groups from nav.json apart from the Chapters group the layout derives from the chapters collection, which is deliberate: derived and authored items must be indistinguishable to a visitor.",
     "filePath": "src/components/nav/PrimaryNav.astro",
     "name": "PrimaryNav",
@@ -307,6 +352,42 @@
     ]
   },
   {
+    "description": "One recording's card - cover still, title, speaker line and year - with the whole card as a single link, since the cover is the part a reader aims at. A missing cover is meaningful rather than a fallback: a recording whose host lost the video has no real still, so the card shows a plain block instead of captioning a provider placeholder as a video still.",
+    "filePath": "src/components/WebinarCard.astro",
+    "name": "WebinarCard",
+    "scenarios": [
+      "webinarcard-cover-speakers-and-year",
+      "webinarcard-recording-whose-host-lost-it"
+    ],
+    "tags": [
+      "webinars"
+    ]
+  },
+  {
+    "description": "The body of the webinars page: heading, what the series was, and a grid of recordings or the line that stands in when none are published. It lists but never plays - each recording plays on its own post page, because ten third-party players on one listing means ten sets of trackers on a page whose only job is helping someone choose.",
+    "filePath": "src/components/WebinarsPage.astro",
+    "name": "WebinarsPage",
+    "scenarios": [
+      "webinarspage-recordings-with-and-without-a-cover",
+      "webinarspage-a-single-recording",
+      "webinarspage-nothing-published"
+    ],
+    "tags": [
+      "webinars"
+    ]
+  },
+  {
+    "description": "The closing line of the events page, pointing at the 2020 recordings. It closes a real navigation gap: a reader who has just scrolled the archive is the one looking for the webinars, and those sit under Content Hub in the menu, nowhere near Events.",
+    "filePath": "src/components/WebinarsPointer.astro",
+    "name": "WebinarsPointer",
+    "scenarios": [
+      "webinarspointer-the-line-to-the-recordings"
+    ],
+    "tags": [
+      "webinars"
+    ]
+  },
+  {
     "description": "The alt text to render for a site-relative image URL, resolved from the media library manifest with the render site's current value as the fallback. Adopting it can never make an image's alt worse than it was: an image with no record, or a record nobody has written alt for, keeps what the component already emitted. An explicit empty string in the manifest is a real answer — 'this image is decorative' — and wins over the fallback via `??` rather than collapsing under a truthiness check, which is the distinction the whole media-manifest feature rests on.",
     "filePath": "src/lib/media.ts",
     "name": "altFor",
@@ -337,6 +418,15 @@
     "testFile": "src/lib/cutoverTicks.test.ts"
   },
   {
+    "description": "Reads the past-events list off a Strikingly page, located by its Past Events heading rather than a section index, with each item's raw title, subtitle, write-up, link and photo. Falls back to the longest repeatable so a renamed heading degrades to a warning rather than an empty archive.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "archiveItems",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "Returns the pictogram for a Focus areas row from its label, so a CMS-reworded area keeps its icon; unknown labels get none rather than a wrong one.",
     "filePath": "src/lib/areaIcons.ts",
     "name": "areaIcon",
@@ -365,6 +455,15 @@
     "filePath": "src/lib/cutoverProgress.ts",
     "name": "blockingDecisions",
     "testFile": "src/lib/cutoverProgress.test.ts"
+  },
+  {
+    "description": "The paragraph-preserving text of a named RichText component, for a write-up that becomes a rendered markdown body.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "bodyOf",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "Returns the monochrome currentColor brand glyph (X, LinkedIn, Medium, Facebook, envelope, document) for an icon field or label, or null when none resolves.",
@@ -466,6 +565,24 @@
     "testFile": "src/lib/donorImport.test.ts"
   },
   {
+    "description": "Cleans an imported event title: invisible characters removed, whitespace collapsed, a typo table applied, a leading Harvard in Tech dropped and a dangling separator trimmed. Deliberately does NOT strip the trailing sponsor list, which has no reliable marker and is recorded per event instead.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "cleanTitleText",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "Cleans an imported write-up while preserving its paragraphs and wording: only invisible characters, stray spaces before punctuation and a short vetoable typo table are changed, because the text is the historical record.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "cleanWriteup",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "Where each school's cluster of supporters sits, distributed on a phyllotaxis spiral — the golden angle a sunflower packs its seeds on — rather than a grid. A grid of ceil(sqrt(n)) columns leaves its last row part-empty at any non-square count, and with thirteen schools that is a visibly bare corner: precisely the large empty area the design direction rules out. The spiral fills the ellipse evenly at ANY count and without leaving rows and columns legible in the finished picture, which is also what 'organic' asks for.",
     "filePath": "src/lib/momentumNetwork.ts",
     "name": "clusterCentres",
@@ -533,6 +650,15 @@
     "filePath": "src/lib/collectionRegistryDrift.ts",
     "name": "declaredFieldNames",
     "testFile": "src/lib/collectionRegistryDrift.test.ts"
+  },
+  {
+    "description": "Decodes the named and numeric HTML entities the Strikingly copy contains. Deliberately a small explicit table rather than a parser, so an unknown entity survives visibly instead of being silently mangled.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "decodeEntities",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "A design direction's id as every surface writes it: zero-padded to two digits. It exists because the page contradicted itself — variations.js carries num as a NUMBER, so the card badge and the full-screen bar rendered '3' while the contents list, the open questions, the README and the doc outline all said '03'. The whole purpose of the id scheme is that a reviewer writing '3' in a doc means exactly one thing, so a card labelled differently from the line they type under reintroduces the ambiguity the renumbering removed. A value that is not a number returns nothing rather than a guess, since a wrong id points a comment at the wrong design.",
@@ -604,6 +730,30 @@
     "testFile": "src/lib/donors.test.ts"
   },
   {
+    "description": "Downloads one Strikingly image, trying the direct URL then the rendered-page transform, and reports BOTH failures rather than falling back silently - a direct form that has stopped working is the early warning that the CDN is going away.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "downloadImage",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "untestabilityReason": {
+      "justification": "A bare network call plus its status check; the response is handed straight back and every decision made from it lives in main or in src/lib, which the integration tests cover.",
+      "kind": "platform-glue"
+    }
+  },
+  {
+    "description": "Downloads an absolute URL, used for the webinar thumbnails, which the video providers host rather than Strikingly.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "downloadUrl",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "untestabilityReason": {
+      "justification": "A bare network call plus its status check; the response is handed straight back and every decision made from it lives in main or in src/lib, which the integration tests cover.",
+      "kind": "platform-glue"
+    }
+  },
+  {
     "description": "Returns the shared inbox only for the six surfaces allowed to show it - footer, homepage contact, forming chapter, sponsor inquiry, llms.txt and structured data - and undefined everywhere else, which is how the owner's sparingly rule is enforced in one place.",
     "filePath": "src/lib/contact.ts",
     "name": "emailFor",
@@ -622,6 +772,18 @@
     "testFile": "src/lib/sectionGroups.test.ts"
   },
   {
+    "description": "Creates a directory and its parents before a file is written into it.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "ensureDir",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "untestabilityReason": {
+      "justification": "One recursive mkdir call, no branching.",
+      "kind": "trivial-wrapper"
+    }
+  },
+  {
     "description": "Returns true only for the exact string '1', so every other value — unset, empty, '0', 'false', and notably 'true' — reads as off. The shared on/off rule for the two build-time deploy flags that separate the publishing tracks: PREVIEW_GATE, read by previewGate.ts, and INCLUDE_DRAFTS, read by draftVisibility.ts, both set per track by .github/workflows/deploy.yml. Deliberately strict rather than permissive because these flags decide whether unpublished drafts reach the public site and whether the review site is gated at all, so a typo in a workflow env block must fail closed rather than have its intent guessed at. Pure and parameterised rather than reading process.env itself, so the rule is testable without faking the environment.",
     "filePath": "src/lib/envFlag.ts",
     "name": "envFlagEnabled",
@@ -632,6 +794,15 @@
     "filePath": "src/lib/eventDateParts.ts",
     "name": "eventDateParts",
     "testFile": "src/lib/eventDateParts.test.ts"
+  },
+  {
+    "description": "The complete markdown file for one imported archive event - frontmatter only, no body, because an event is a card rather than an article. Absent optional keys are omitted rather than written empty, since an empty location renders a blank line on the card. Lives here so the exact bytes of the 33 committed entries are pinned by a test.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "eventFrontmatter",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "The events belonging to one chapter or community, projected into the EventLike shape the event cards render. The match is an exact string comparison against the owner's collection id, because that is what /chapters/<slug> and /communities/<slug> are keyed on — a near-miss like 'New York City' for 'nyc', or a stray trailing space, belongs to nobody, which is exactly the case unmatchedChapterTags reports, so the two are two halves of one rule. An untagged event is excluded here and still appears on /events. Extracted from the two [slug].astro routes, which held this projection verbatim once communities started reusing the chapter tag.",
@@ -658,6 +829,15 @@
     "testFile": "src/lib/supporterBadge.test.ts"
   },
   {
+    "description": "The single upcoming event featured on the old events page, identified as the lone repeatable item carrying its own ticket link. Returned separately from the archive because it is not history.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "featuredEventItem",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "Reads one optional presence field as a string off a value of any shape. It exists so the rules in this module can take `unknown` rather than an all-optional interface, which TypeScript treats as a weak type and would reject for a chapter carrying none of those fields — the default case and most of the roster.",
     "filePath": "src/lib/localPresence.ts",
     "name": "field",
@@ -674,6 +854,15 @@
     "filePath": "src/lib/team.ts",
     "name": "filterActiveBoardMembers",
     "testFile": "src/lib/team.test.ts"
+  },
+  {
+    "description": "Flattens a multi-paragraph write-up to the single line an event's description frontmatter holds, since the events collection has no body. Lives here rather than in the importer script so it is reachable by vitest, whose include is src.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "flattenWriteup",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "Formats an event date as a long en-US date string (e.g. 'September 24, 2026') for display on event cards.",
@@ -704,6 +893,15 @@
     "filePath": "src/lib/gallery.ts",
     "name": "galleryColumns",
     "testFile": "src/lib/gallery.test.ts"
+  },
+  {
+    "description": "Reads every gallery on a Strikingly page, whose photos live under sources rather than list. An empty gallery is retained rather than filtered out, because had-a-gallery-and-it-was-empty is a fact worth recording.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "galleryItems",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "Pure decision for the Event Gallery fade-in: returns true when every tile should be shown immediately instead of animated — when the user prefers reduced motion, or the browser lacks IntersectionObserver (old browsers / SSR) so tiles never get stuck invisible.",
@@ -799,6 +997,15 @@
     "testFile": "src/lib/momentumSections.test.ts"
   },
   {
+    "description": "Groups events by calendar year, newest year first, preserving each year's internal order. Reads the year in UTC so a date-only January 1st entry does not file itself under the previous year for readers in timezones behind UTC.",
+    "filePath": "src/lib/events.ts",
+    "name": "groupByYear",
+    "tags": [
+      "events-archive"
+    ],
+    "testFile": "src/lib/events.test.ts"
+  },
+  {
     "description": "Donors grouped into the recognition wall's bands, in the order the giving levels are declared, so the wall reads top-down from the largest commitment. Within a band the site-wide rule applies: the optional order pin first, then alphabetically by the DISPLAYED name — sorting by a withheld real name would break the alphabetical run at every anonymous card and hint at its first letter. A level with no donors is omitted rather than headed over nothing; a donor whose tier matches no declared level is not dropped but collects in a trailing 'Other supporters' group, so a renamed level or a typo costs an editor a visible mistake rather than a silently missing gift.",
     "filePath": "src/lib/donors.ts",
     "name": "groupDonorsByTier",
@@ -823,6 +1030,18 @@
     "testFile": "src/lib/sponsors.test.ts"
   },
   {
+    "description": "The HTTP status of an external page the archive only links to, recorded so a decision to keep or drop that link rests on evidence rather than assumption.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "headStatus",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "untestabilityReason": {
+      "justification": "A bare network call plus its status check; the response is handed straight back and every decision made from it lives in main or in src/lib, which the integration tests cover.",
+      "kind": "platform-glue"
+    }
+  },
+  {
     "description": "A network-band heading with its asterisked runs turned into em, everything else escaped. The band wants one emphasised phrase in a different colour — 'A grid, *lit from within*.' — and the heading is a single CMS string; splitting it into two fields would make an editor assemble a sentence out of parts and forbid them moving the emphasis, while hardcoding the span in the component would take the heading away from the CMS entirely, which several plans on this page exist to prevent. Escaping runs FIRST and over the whole string, so the only markup that can reach the page is the em this function puts there — the value is repo-committed rather than user-submitted, which lowers the stakes without removing them, since a CMS writes this field and set:html renders whatever it is handed. The asterisk match is non-greedy and refuses to span an asterisk, so an unclosed one prints literally instead of swallowing the rest of the heading.",
     "filePath": "src/lib/momentumNetwork.ts",
     "name": "headlineHtml",
@@ -845,6 +1064,15 @@
     "filePath": "src/lib/brandIcons.ts",
     "name": "iconKeyFor",
     "testFile": "src/lib/brandIcons.test.ts"
+  },
+  {
+    "description": "The image record on a Strikingly Media component, normalized to the storage key, format, dimensions and link the snapshot saves.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "imageOf",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "Decides whether the @codeyam/cms admin area ships in a build: only under astro dev or on the gated review track, never on the public build. The admin pages embed each entry's raw markdown in their static HTML while the CMS sign-in gate is client-side only, so wherever /admin deploys every draft's full source is publicly fetchable — putting it on the public domain would defeat the point of phasing content. Dev keeps it so the codeyam Live Preview retains its admin scenarios. Extracted from astro.config.mjs because that file can only be exercised by a real astro build and cannot be imported under vitest.",
@@ -1111,6 +1339,15 @@
     ]
   },
   {
+    "description": "Reads one page, from a saved directory when --from is given and over the network otherwise, so a capture can be re-parsed long after the site is gone.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "loadPage",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
     "description": "Reads the pillars collection into the card shape GiftPillars already took from copy.pillars, passing each icon through resolvePillarIcon so whatever an editor typed becomes one of the three drawn glyphs. Migrated out of donatePage.json for the same reason the accomplishment cards were, and renames description to body for the same reserved-field-id reason.",
     "filePath": "src/lib/donatePageContent.ts",
     "name": "loadPillars",
@@ -1156,6 +1393,33 @@
     "filePath": "src/lib/donorImport.js",
     "name": "looksAnonymous",
     "testFile": "src/lib/donorImport.test.ts"
+  },
+  {
+    "description": "Joins the snapshot manifest to the hand-reviewed title table and writes the 33 event entries, giving the undated one a draft flag so its placeholder date never reaches the public site, and leaving alone any file edited since it was imported so a CMS correction survives a re-run.",
+    "filePath": "scripts/import-archive-events.mjs",
+    "name": "main",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
+    "description": "Writes the webinar posts from the manifest, copies each surviving cover into public/images/webinars, and prunes media records whose file is no longer on disk so the media library never lists a file the site does not have.",
+    "filePath": "scripts/import-webinars.mjs",
+    "name": "main",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
+    "description": "Drives the whole snapshot: reads each page (from the network, or from saved HTML with --from), parses its store, downloads every image and thumbnail, and writes the manifest. Returns ok:false rather than exiting so it stays importable. Drives its event loop from whichever of the home/events lists actually loaded, so a page that failed to fetch costs only what that page uniquely held rather than the entire archive.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "main",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
   },
   {
     "description": "One row of the bi-weekly supporter spreadsheet, re-keyed from its human column headings onto the field names every import rule reads. The seam worth having a function for: the rules read row.gradYear while the file says 'Class Year', so a renamed heading yields undefined for every row — normalizeGradYear then returns null fourteen times and the import reports 'no usable class year' for the whole file while looking like it worked. A column the donors collection has nowhere to put is dropped rather than carried, since carrying it would imply the wall can show it; a heading the file omits stays absent rather than becoming an empty string, because 'not supplied' and 'supplied blank' are different answers downstream.",
@@ -1314,6 +1578,15 @@
     "testFile": "src/lib/momentumSections.test.ts"
   },
   {
+    "description": "Finds one page inside a Strikingly store by its path. Every page of the site is listed in each store, but only the requested one has its sections hydrated, which is why the snapshot fetches each URL separately.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "pageByPath",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "Splits page entries into the ones that get a route and the ones dropped for colliding with an existing address, returning both plus the warning. Extracted from getStaticPaths, where the shadow list was computed twice and nothing could be tested because getStaticPaths only runs inside a real Astro build.",
     "filePath": "src/lib/sitePages.ts",
     "name": "pageRouteEntries",
@@ -1344,6 +1617,69 @@
     "testFile": "src/lib/parallax.test.ts"
   },
   {
+    "description": "Reads the date at the head of an archive event title, across every separator and month spelling the old site used, and returns it with the remaining title. Matches but ignores the ordinal suffix so a typo like 23nd cannot drop a real event, and returns a null date rather than guessing for the one undated event.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "parseArchiveDate",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "Reads the events importer flags: --dry-run and --force.",
+    "filePath": "scripts/import-archive-events.mjs",
+    "name": "parseArgs",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
+    "description": "Reads the webinars importer flags: --dry-run and --force.",
+    "filePath": "scripts/import-webinars.mjs",
+    "name": "parseArgs",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
+    "description": "Reads the snapshot script flags: --dry-run, --from and --out. Takes argv as an argument rather than reading process.argv, which is what lets the integration test drive the script.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "parseArgs",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
+    "description": "What Vimeo still knows about a recording, read out of its oEmbed document. The available flag is the load-bearing one: Vimeo answers for an upload it has LOST with a perfectly valid document carrying an iframe and a video id but no title, no duration and no date, so a missing title is the only evidence the recording is gone. Five of the eleven 2020 webinars are in that state, and this rule is what keeps them off the public site.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "parseVimeoMetadata",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "The same three fields from a Wistia media JSON document. Reads created_at, with the older createdAt epoch shape still accepted - reading the camelCase spelling alone reported both Wistia recordings as undated, which would have shipped two live webinars as drafts.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "parseWistiaMetadata",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "The same three fields read off a YouTube watch page's markup.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "parseYouTubeMetadata",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "Whether a typed passphrase opens one of the review artifacts. Surrounding whitespace is forgiven because the passphrase is shared out of band and arrives pasted out of an email, carrying a trailing space more often than not; case is not, since a case-insensitive passphrase is a materially weaker one and case is not a likely error when pasting. The case worth having a function for at all: an empty expected passphrase never opens the gate. Trimming an empty string still equals an empty string, so the bare comparison this replaced would have admitted anyone who merely clicked the button had the build ever substituted a blank value. build.py refuses to emit one; this is the same guard at the point the decision is actually made, because a published page outlives the build that produced it. Plain JavaScript with a UMD wrapper for the same reason donorNetwork.js is: build.py inlines it verbatim into a self-contained page that must work from a file:// open and under a CSP blocking every host, while vitest imports it as CommonJS. Distinct from previewGate.ts, which is server-only, decides whether the whole site build is gated, and un-gates on the public track by design; it stays the source of the passphrase value, which build.py parses out of it.",
     "filePath": "src/lib/reviewGate.js",
     "name": "passphraseAccepted",
@@ -1360,6 +1696,15 @@
     "filePath": "src/lib/networkSound.ts",
     "name": "playActivationTone",
     "testFile": "src/lib/networkSound.test.ts"
+  },
+  {
+    "description": "Maps one snapshot record and its hand-written title onto webinarPostBody, deciding the draft flag from whether the provider gave a date and whether it still has the recording.",
+    "filePath": "scripts/import-webinars.mjs",
+    "name": "postBody",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
   },
   {
     "description": "The editor's value for a copy field if it holds anything, otherwise the value committed in JSON. Whitespace-only counts as empty, because a field an editor cleared usually still holds the newline the textarea left behind and treating that as real copy puts a blank heading on the live page. The returned value is trimmed. The deliberate consequence is that a field cannot be blanked from the CMS while the JSON still carries a value: emptying a heading is a two-step edit, which is the right trade when the opposite choice's failure mode is a live page with a missing headline.",
@@ -1390,6 +1735,15 @@
     "filePath": "src/lib/projects.ts",
     "name": "projectPath",
     "testFile": "src/lib/projects.test.ts"
+  },
+  {
+    "description": "Asks a video host what it still knows about a recording. Now a bare fetch that hands the response to the provider table in src/lib - the availability rule it used to inline, which is what keeps five lost recordings off the public site, is unit-tested there.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "providerMetadata",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/archiveImporters.test.ts"
   },
   {
     "description": "Returns a new array of the content-collection entries fit to publish, keeping every entry whose draft flag is not explicitly true — so an absent flag, which is the state of every existing entry and what the CMS writes when the Draft toggle is off, means live, and a hand-written draft false is treated the same as absent. Pass includeDrafts to keep drafts in the list; every call site takes it from the shared INCLUDE_DRAFTS constant in draftVisibility.ts, so drafts stay visible under astro dev for author preview and on the review track, and are omitted from the public build. The flag is an explicit parameter rather than an internal env read so both halves of the rule are testable without faking the environment. Does not mutate the input.",
@@ -1444,6 +1798,15 @@
     "testFile": "src/lib/projects.test.ts"
   },
   {
+    "description": "The repeatable item list on a Strikingly section, or an empty list when the section has none.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "repeatableList",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "Trims the configured contact address and returns undefined when it is blank or absent, so no surface can render a dead mailto link.",
     "filePath": "src/lib/contact.ts",
     "name": "resolveContactEmail",
@@ -1490,6 +1853,24 @@
     "filePath": "src/lib/reviewOutline.js",
     "name": "reviewOutline",
     "testFile": "src/lib/reviewOutline.test.ts"
+  },
+  {
+    "description": "The same text with paragraph breaks preserved as blank lines, for a write-up that becomes a rendered markdown body rather than a card's description.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "richTextToParagraphs",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "The visible single-line text of a Strikingly rich-text value. Block tags become a space first, which is what stops Tech Talk<br>with HLS Professor reading as one glued word.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "richTextToPlain",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "A seeded pseudo-random generator (mulberry32) giving each direction a reproducible layout. Determinism is the point: a network that reshuffles between renders reads as a different design, so a reviewer would be rating noise — and a screenshot they already commented on would stop matching the page.",
@@ -1576,10 +1957,31 @@
     "testFile": "src/lib/momentumSections.test.ts"
   },
   {
+    "description": "Projects a Strikingly page's sections into index, heading and components, so the item readers can locate a section by its heading rather than its position.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "sectionsOf",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "The group filter a card loader applies, with the distinction its callers depend on: no argument means no filtering at all, while a supplied group — the empty string included — selects that band through cardsInGroup. The difference is load-bearing rather than pedantic, because cardsInGroup with the same undefined matches blank to blank and returns only the ungrouped cards. A loader that always filtered would therefore hide every grouped card from a caller that just wants the collection, and /donate is exactly that caller: it loads each card set once and lets the page component select per band. It lives beside cardsInGroup rather than in donatePageContent because that module imports astro:content and so cannot be unit-tested.",
     "filePath": "src/lib/sectionGroups.ts",
     "name": "selectGroup",
     "testFile": "src/lib/sectionGroups.test.ts"
+  },
+  {
+    "description": "The hex sha256 of a buffer, used to skip an unchanged file on a re-run and to spot a thumbnail reused between two recordings.",
+    "filePath": "scripts/snapshot-strikingly.mjs",
+    "name": "sha256",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "untestabilityReason": {
+      "justification": "A single hash call, no branching.",
+      "kind": "trivial-wrapper"
+    }
   },
   {
     "description": "The page slugs something else already answers for, in input order. Returns the offending slugs rather than a boolean so the build warning can name them, and compares case- and slash-insensitively because a slug box accepts both.",
@@ -1648,6 +2050,24 @@
     "testFile": "src/lib/previewFieldsSchema.test.ts"
   },
   {
+    "description": "The first complete JSON value at the head of a string, by a brace-depth scan that tracks strings and escapes. This is what lets the embedded store be parsed at all: it is followed by more JavaScript, and its JSON contains braces inside strings, so a regex either stops early or swallows the rest of the document.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "sliceFirstJsonValue",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "Builds a filename- and URL-safe slug from a title: accents folded, ampersands spelled out, punctuation dropped, capped at 80 characters and never left ending on a hyphen. Shared by both importers so event filenames and webinar post slugs cannot drift apart.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "slugify",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "Returns the name a social link is shown under on the Contact band: a bare \"Twitter\" or \"X\" reads as \"X (Twitter)\", every other label passes through unchanged.",
     "filePath": "src/lib/socialLabel.ts",
     "name": "socialDisplayLabel",
@@ -1678,6 +2098,15 @@
     "testFile": "src/lib/networkSound.test.ts"
   },
   {
+    "description": "Splits an already-past event list into the recent few that stay as cards and the older ones that fold away by year, at a cutoff defaulting to ARCHIVE_BEFORE (2020-01-01). Both halves keep their incoming newest-first order.",
+    "filePath": "src/lib/events.ts",
+    "name": "splitArchive",
+    "tags": [
+      "events-archive"
+    ],
+    "testFile": "src/lib/events.test.ts"
+  },
+  {
     "description": "Splits a flat event list into upcoming (date >= now, soonest first) and past (date < now, most recent first) relative to a reference time; events at now count as upcoming.",
     "filePath": "src/lib/events.ts",
     "name": "splitEvents",
@@ -1706,6 +2135,33 @@
     "filePath": "src/lib/pageCopyMerge.ts",
     "name": "sponsorLevelsFrom",
     "testFile": "src/lib/pageCopyMerge.test.ts"
+  },
+  {
+    "description": "Extracts the $S.stores object embedded in a rendered Strikingly page, by brace-depth scan rather than regex because the JSON contains braces inside strings. Returns null when the marker is absent, distinguishing a non-Strikingly page from an empty one.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "storeFromHtml",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "The rendered-page transform of a Strikingly image URL, tried when the direct form returns a 404. It is what the live page itself requests, so it exists for anything the site actually displayed.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "strikinglyImageFallbackUrl",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "Builds the Strikingly CDN download URL for an image from its storage key and format, stripping the JSON escaping the page source carries. The only way the archive photos can be fetched, and only until the domain moves.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "strikinglyImageUrl",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "Strips line comments from the content-config source so a prose colon inside one is never read as a schema key, with a guard that leaves a protocol URL in a string literal alone. Block comments are deliberately NOT stripped: every collection loader carries a recursive markdown glob whose text contains both a block-comment opener and, a line later, a closer, so a naive block-comment regex matches from one loader to the next and eats the entire schema between them — which is exactly how the built-in collections once came back with zero keys.",
@@ -1756,6 +2212,15 @@
     "testFile": "src/lib/momentumNetwork.test.ts"
   },
   {
+    "description": "The plain single-line text of a named RichText component on a Strikingly section or repeatable item.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "textOf",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "N items spread evenly across a larger list, used to place supporters through points sampled from a letterform. Taking the first N instead would fill the top of the first glyph and leave the rest of the word empty, because the sampler emits points in scan order. Returns a copy, so a caller cannot mutate the sampled source.",
     "filePath": "src/lib/donorNetwork.js",
     "name": "thin",
@@ -1784,6 +2249,15 @@
     "filePath": "src/lib/momentumSections.ts",
     "name": "tintedFlags",
     "testFile": "src/lib/momentumSections.test.ts"
+  },
+  {
+    "description": "Turns a Vimeo, YouTube or Wistia link into its player URL, dropping tracking query strings. Returns undefined for anything that is not a video host, so a link to an ordinary web page is rendered as a link rather than put inside an iframe.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "toEmbedUrl",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
     "description": "Coerces a string-or-Date event date into a Date, passing existing Date instances through untouched.",
@@ -1849,10 +2323,55 @@
     }
   },
   {
+    "description": "The video host that claims a URL, or null when none does. A table lookup rather than a chain of conditionals, so the snapshot stays a bare fetch-and-hand-off and a fourth host is data rather than another branch in a script no test can reach.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "videoProviderFor",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
     "description": "The photos a gallery shows before and after its 'Show all N photos' control: the first `cap` when collapsed, everything when expanded or when no cap is given. The absent-cap case is what keeps the landing page's 40-photo wall uncapped — a default cap would silently truncate it. Pure; the caller renders from the result and its input is never mutated.",
     "filePath": "src/lib/gallery.ts",
     "name": "visibleGalleryPhotos",
     "testFile": "src/lib/gallery.test.ts"
+  },
+  {
+    "description": "Reads the webinar list off the old webinars page, pairing each write-up with its video URL, derived player URL and provider thumbnail. Only the first recording carried a title, which is why the importer names the rest by hand.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "webinarItems",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "The complete markdown file for one imported webinar post: frontmatter plus the write-up as a rendered body, since a webinar IS an article. Writes draft when the recording has no date or when the provider has lost it - the first would publish a placeholder date as fact, the second a player that cannot play.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "webinarPostBody",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "Selects the blog posts tagged series: webinars and sorts them newest first. The rule that decides what the webinars page lists, since the recordings are ordinary blog entries rather than a collection of their own.",
+    "filePath": "src/lib/webinars.ts",
+    "name": "webinarPosts",
+    "tags": [
+      "webinars"
+    ],
+    "testFile": "src/lib/webinars.test.ts"
+  },
+  {
+    "description": "The year a recording is filed under, read in UTC for the same date-only boundary reason as groupByYear. All a webinar card shows of the date.",
+    "filePath": "src/lib/webinars.ts",
+    "name": "webinarYear",
+    "tags": [
+      "webinars"
+    ],
+    "testFile": "src/lib/webinars.test.ts"
   },
   {
     "description": "Prefixes an internal absolute path with import.meta.env.BASE_URL so links resolve under either the domain root (custom domain, base /) or a project subpath (user.github.io/<repo>). External URLs, mailto, and bare hash anchors pass through untouched. Used by the header nav/logo, chapter back link, 404, and blog links for GitHub Pages deployment. It is ALSO where an internal page path picks up its trailing slash, so the site links to one canonical form of each URL instead of splitting its own traffic between /events and /events/. That normalization happens here rather than through Astro's trailingSlash: 'always', which would make the dev server and the codeyam preview 404 on every slash-less URL. Four shapes are exempt because a slash would make them wrong rather than merely different: a path already ending in one, a path carrying a fragment or query (the slash belongs before the # or ?), a path whose last segment has a file extension (an asset is a file, and /images/shield.png/ is a 404), and a protocol-relative //host URL, which is not an internal path at all.",
@@ -1889,5 +2408,14 @@
     "filePath": "src/lib/externalLink.ts",
     "name": "wwwTwin",
     "testFile": "src/lib/externalLink.test.ts"
+  },
+  {
+    "description": "A YAML double-quoted scalar. Escapes backslashes before quotes, since the other order would re-escape the backslash it just added and leave the quote bare. Shared by both importers, which each carried their own copy until they were folded together here.",
+    "filePath": "src/lib/strikinglyArchive.js",
+    "name": "yamlQuote",
+    "tags": [
+      "strikingly-archive"
+    ],
+    "testFile": "src/lib/strikinglyArchive.test.ts"
   }
 ]

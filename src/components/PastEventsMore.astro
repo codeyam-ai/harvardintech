@@ -1,0 +1,26 @@
+---
+// The line under the recent past-event cards pointing at Luma's own full list.
+//
+// The page shows only the most recent few as cards on purpose — a chapter with
+// no events coming up looks abandoned, and showing the last few proves it is
+// running, while showing all of them buries everything else. This is the escape
+// hatch for the reader who wants the rest and does not want the 2013 archive.
+import { externalLinkAttrs } from '../lib/externalLink';
+
+interface Props {
+  calendarUrl: string;
+}
+const { calendarUrl } = Astro.props as Props;
+---
+
+<p class="past-more">
+  <a href={calendarUrl} {...externalLinkAttrs(calendarUrl, Astro.url.origin)}>
+    View all past events on Luma
+  </a>
+</p>
+
+<style>
+  .past-more {
+    margin: var(--space-md) 0 0;
+  }
+</style>

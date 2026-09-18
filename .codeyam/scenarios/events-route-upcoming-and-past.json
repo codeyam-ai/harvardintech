@@ -1,6 +1,6 @@
 {
   "name": "Events Route - Upcoming and Past",
-  "id": "3c9ac10a-85d4-4ff4-9c69-10c6ebfef5e0",
+  "id": "cfb03499-b936-4535-9744-447df8a6f5f0",
   "url": "/events",
   "dimensions": [
     "Desktop"
@@ -70,5 +70,5 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/events.astro",
-  "description": "The /events page in its current real state: the live Luma calendar embed, the no-upcoming-events message, and the 8 real past events pulled from Luma. Two carry no location, exactly as Luma has them. The Upcoming/Past section structure stays even though only past events exist today."
+  "description": "The /events page for a site with NO imported history: the live Luma calendar, the recent past events as cards, and the link out to Luma's full list - and no Archive section at all, because nothing here predates 2020. The counterpart to the archive scenario, and the state every chapter but New York is in. Note there is deliberately no Upcoming list: the Luma calendar above is the live answer to what is next, and a second list underneath showed the same events twice from a source that only refreshes on a rebuild."
 }

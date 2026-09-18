@@ -10,17 +10,20 @@ describe('REDIRECT_TARGETS', () => {
   // The old sitemap (orig/sitemap_xml.html) is the definition of "must not
   // break". Every path it published needs an entry or it 404s at launch.
   it('covers every path the old sitemap published', () => {
-    for (const oldPath of [
-      '/about-us',
-      '/nyc',
-      '/san-francisco',
-      '/l-a',
-      '/japan',
-      '/volunteers',
-      '/webinars',
-    ]) {
+    for (const oldPath of ['/about-us', '/nyc', '/san-francisco', '/l-a', '/japan', '/volunteers']) {
       expect(REDIRECT_TARGETS).toHaveProperty(oldPath);
     }
+  });
+
+  // `/webinars` is the one sitemap path that must NOT be here. It redirected to
+  // /events only while the 2020 recordings had no home on this site; they now
+  // have one, and `src/pages/webinars.astro` answers that address directly. A
+  // redirect writes a real file at the same path and WINS over the route, so
+  // re-adding an entry here would make the page unreachable while everything
+  // still built and every other test stayed green — which is exactly the silent
+  // shadowing `shadowedPageSlugs` exists to catch.
+  it('does not redirect a path that is now a real page', () => {
+    expect(REDIRECT_TARGETS).not.toHaveProperty('/webinars');
   });
 
   // These look like index pages because a real page sits one level below them,
@@ -72,7 +75,7 @@ describe('redirectsForBase', () => {
 
     expect(map['/nyc']).toBe('/harvardintech/chapters/nyc/');
     expect(map['/volunteers']).toBe('/harvardintech/volunteer/');
-    expect(map['/webinars']).toBe('/harvardintech/events/');
+    expect(map['/about-us']).toBe('/harvardintech/#about');
   });
 
   // A homepage-anchor target needs the base too, and the fragment must survive

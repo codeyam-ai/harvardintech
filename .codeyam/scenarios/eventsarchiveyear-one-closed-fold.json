@@ -1,0 +1,13 @@
+{
+  "name": "EventsArchiveYear - One Closed Fold",
+  "id": "1747f6fe-ba10-4629-bbd0-3a7da1c158d6",
+  "url": "/isolated-components/EventsArchiveYear",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsArchiveYear",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventsArchiveYear.astro",
+  "description": "A single year's disclosure row as a reader first meets it - the year, its chevron, and the count reading '2 events'. Closed on purpose: the component takes no open prop, and the opened state is demonstrated by driving a real click on the events page rather than by staging it here."
+}

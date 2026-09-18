@@ -1,0 +1,25 @@
+{
+  "provenAt": "2026-09-18T13:33:17Z",
+  "slug": "launch--history-events-archive-and-webinars",
+  "paths": [
+    "src/lib/redirects.ts"
+  ],
+  "runScope": [
+    "src/lib/redirects.ts"
+  ],
+  "tests": {
+    "REDIRECT_TARGETS › does not redirect a path that is now a real page": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "REDIRECT_TARGETS › does not redirect a path that is now a real page"
+    ]
+  }
+}

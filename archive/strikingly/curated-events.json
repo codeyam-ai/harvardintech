@@ -1,0 +1,381 @@
+{
+  "_readme": "Hand-reviewed titles for the 33 imported archive events. The snapshot supplies each event's date, photo and write-up; this file supplies the judgement the snapshot cannot make - where a title ends and its list of host organisations begins. scripts/import-archive-events.mjs joins the two. Edit this file, not the generated markdown, and re-run the importer.",
+  "defaultLocation": "New York, NY",
+  "events": [
+    {
+      "index": 0,
+      "date": null,
+      "title": "Future of Healthcare Tech",
+      "location": "New York, NY",
+      "organizations": [
+        "HBS Healthcare Alumni Association",
+        "Cambridge Biosciences",
+        "KindBody"
+      ],
+      "draft": true
+    },
+    {
+      "index": 1,
+      "date": "2019-04-17",
+      "title": "Tech Talk with HLS Professor Susan Crawford",
+      "location": "New York, NY",
+      "organizations": []
+    },
+    {
+      "index": 2,
+      "date": "2018-08-18",
+      "title": "Summer Social",
+      "location": "New York, NY",
+      "organizations": [
+        "Handy",
+        "Her Campus",
+        "Rebag",
+        "Huge"
+      ]
+    },
+    {
+      "index": 3,
+      "date": "2018-08-07",
+      "title": "Blockchain for Good",
+      "location": "New York, NY",
+      "organizations": [],
+      "invitation": true
+    },
+    {
+      "index": 4,
+      "date": "2018-06-11",
+      "title": "GDPR Teach-in with Katherine Gardner",
+      "location": "New York, NY",
+      "organizations": [
+        "Gunderson Dettmer"
+      ]
+    },
+    {
+      "index": 5,
+      "date": "2018-06-07",
+      "title": "Women in Tech Panel",
+      "location": "New York, NY",
+      "organizations": [
+        "SVRF",
+        "Spring",
+        "Google",
+        "CN2"
+      ]
+    },
+    {
+      "index": 6,
+      "date": "2018-05-23",
+      "title": "Crypto + Blockchain Circle: Smart Contracts",
+      "location": "New York, NY",
+      "organizations": [
+        "Emergent LLP",
+        "Post Oak Labs",
+        "R3",
+        "ConsenSys",
+        "DLx Law LLP"
+      ]
+    },
+    {
+      "index": 7,
+      "date": "2018-05-22",
+      "title": "A Conversation with Facebook Co-Founder Chris Hughes",
+      "location": "New York, NY",
+      "organizations": [
+        "Work-Bench",
+        "First Republic Bank"
+      ]
+    },
+    {
+      "index": 8,
+      "date": "2018-04-30",
+      "title": "Crypto + Blockchain Circle: Crypto Investment Funds",
+      "location": "New York, NY",
+      "organizations": [
+        "Pantera Capital",
+        "Boothbay Management",
+        "Grayscale",
+        "Outlier Ventures"
+      ],
+      "topicFromWriteup": true,
+      "invitation": true
+    },
+    {
+      "index": 9,
+      "date": "2018-03-20",
+      "title": "Crypto + Blockchain Circle: The Future of Crypto Exchanges",
+      "location": "R3 offices, New York, NY",
+      "venueStated": true,
+      "organizations": [
+        "R3",
+        "Pythagoras Investment Management",
+        "Paxos",
+        "Winston & Strawn",
+        "Circle",
+        "HBUS",
+        "NEA"
+      ],
+      "topicFromWriteup": true
+    },
+    {
+      "index": 10,
+      "date": "2018-02-07",
+      "title": "Crypto + Blockchain Circle: Enterprise Applications",
+      "location": "New York, NY",
+      "organizations": [
+        "Microsoft",
+        "R3",
+        "Crowell & Moring",
+        "Comcast Ventures"
+      ],
+      "topicFromWriteup": true,
+      "invitation": true
+    },
+    {
+      "index": 11,
+      "date": "2017-12-05",
+      "title": "Startup Law Panel",
+      "location": "New York, NY",
+      "organizations": [
+        "Gunderson Dettmer",
+        "HIRSH Business Law",
+        "WilmerHale",
+        "Rent the Runway"
+      ],
+      "invitation": true
+    },
+    {
+      "index": 12,
+      "date": "2017-09-28",
+      "title": "Fall Social",
+      "location": "New York, NY",
+      "organizations": [
+        "Mic",
+        "Foursquare",
+        "Betterment",
+        "pymetrics",
+        "NextGenVest"
+      ]
+    },
+    {
+      "index": 13,
+      "date": "2017-03-07",
+      "title": "Leaders in Engineering Panel",
+      "location": "New York, NY",
+      "organizations": [
+        "Google",
+        "LinkedIn",
+        "SparkNotes / OkCupid",
+        "betaworks"
+      ]
+    },
+    {
+      "index": 14,
+      "date": "2017-02-22",
+      "title": "Emerging Founders Breakfast with Aaron Rudenstein",
+      "location": "New York, NY",
+      "organizations": [
+        "Citymaps"
+      ]
+    },
+    {
+      "index": 15,
+      "date": "2016-12-01",
+      "title": "Emerging Founders Breakfast with Derek Flanzraich",
+      "location": "New York, NY",
+      "organizations": [
+        "Greatist"
+      ]
+    },
+    {
+      "index": 16,
+      "date": "2016-11-02",
+      "title": "Design Leaders in Tech",
+      "location": "New York, NY",
+      "organizations": [
+        "Yieldmo",
+        "Etsy",
+        "Google",
+        "LearnVest",
+        "Foossa"
+      ]
+    },
+    {
+      "index": 17,
+      "date": "2016-10-26",
+      "title": "Welcome to NYC Tech",
+      "location": "New York, NY",
+      "organizations": [
+        "Sweeten",
+        "Handy",
+        "B12",
+        "Forbes"
+      ]
+    },
+    {
+      "index": 18,
+      "date": "2016-08-03",
+      "title": "Fourth Annual Summer Social",
+      "location": "New York, NY",
+      "organizations": [
+        "Cadre",
+        "Eloquii",
+        "Mic",
+        "Sweeten",
+        "Blue Apron"
+      ]
+    },
+    {
+      "index": 19,
+      "date": "2016-02-03",
+      "title": "Fireside Chat with Marc Goodman",
+      "location": "New York, NY",
+      "organizations": []
+    },
+    {
+      "index": 20,
+      "date": "2015-11-30",
+      "title": "Bitcoin Panel",
+      "location": "New York, NY",
+      "organizations": [
+        "LedgerX",
+        "MIT Media Lab",
+        "Blockchain",
+        "Berkman Center",
+        "NYTimes"
+      ]
+    },
+    {
+      "index": 21,
+      "date": "2015-11-17",
+      "title": "Welcome to NYC Tech",
+      "location": "Grand Central Tech, New York, NY",
+      "venueStated": true,
+      "organizations": [
+        "Hello Alfred",
+        "Mark43",
+        "Margaux"
+      ]
+    },
+    {
+      "index": 22,
+      "date": "2015-10-06",
+      "title": "Panel on Innovation and Biotech",
+      "location": "New York, NY",
+      "organizations": [
+        "Pfizer",
+        "Venrock",
+        "Piper Jaffray",
+        "Fierce Biotech"
+      ]
+    },
+    {
+      "index": 23,
+      "date": "2015-08-19",
+      "title": "Women in Tech Dinner with Jennifer Hyman",
+      "location": "New York, NY",
+      "organizations": [
+        "Rent the Runway"
+      ]
+    },
+    {
+      "index": 24,
+      "date": "2015-08-08",
+      "title": "Summer Social",
+      "location": "New York, NY",
+      "organizations": [
+        "Birchbox",
+        "Roivant",
+        "Launch",
+        "Bond Street",
+        "NYTimes"
+      ]
+    },
+    {
+      "index": 25,
+      "date": "2015-03-24",
+      "title": "Harvard Innovation",
+      "location": "New York, NY",
+      "organizations": [
+        "Glamsquad"
+      ]
+    },
+    {
+      "index": 26,
+      "date": "2015-02-18",
+      "title": "Seed Stage Founders Roundtable",
+      "location": "New York, NY",
+      "organizations": [
+        "ROKO Labs",
+        "Callida Energy"
+      ]
+    },
+    {
+      "index": 27,
+      "date": "2014-11-18",
+      "title": "Transitioning into Tech",
+      "location": "New York, NY",
+      "organizations": [
+        "Union Square Ventures",
+        "Hitlist",
+        "How To Speak Tech"
+      ]
+    },
+    {
+      "index": 28,
+      "date": "2014-08-13",
+      "title": "Summer Social",
+      "location": "New York, NY",
+      "organizations": [
+        "Behance",
+        "Shoptiques",
+        "Mark43",
+        "Rock Health",
+        "General Catalyst"
+      ]
+    },
+    {
+      "index": 29,
+      "date": "2014-04-08",
+      "title": "Breakfast at Trigger Media",
+      "location": "Trigger Media, New York, NY",
+      "venueStated": true,
+      "organizations": []
+    },
+    {
+      "index": 30,
+      "date": "2014-01-31",
+      "title": "HBS Tech Trek Mixer",
+      "location": "New York, NY",
+      "organizations": [
+        "eBay",
+        "AOL",
+        "Betaworks",
+        "Google",
+        "Foursquare",
+        "Thrive Capital",
+        "Warby Parker"
+      ]
+    },
+    {
+      "index": 31,
+      "date": "2013-11-21",
+      "title": "Fireside Chat with Andrew McLaughlin",
+      "location": "New York, NY",
+      "organizations": [
+        "Digg"
+      ]
+    },
+    {
+      "index": 32,
+      "date": "2013-08-13",
+      "title": "Summer Social",
+      "location": "New York, NY",
+      "organizations": [
+        "Paperless Post",
+        "Floored",
+        "BaubleBar",
+        "HowAboutWe"
+      ]
+    }
+  ]
+}
