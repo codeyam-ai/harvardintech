@@ -31,6 +31,12 @@ core.*
 __pycache__/
 *.pyc
 
+# responsive-image build output (scripts/responsive-images.mjs). Derived from
+# the committed originals in public/images on every build, so committing it
+# would just be a large, conflict-prone duplicate of files already in the repo.
+public/images/_r/
+src/data/responsiveImages.json
+
 # codeyam ephemeral artifacts. The test-cache under .codeyam/ is deliberately
 # NOT ignored — it is load-bearing and served to the UI on fresh clones.
 test-results/

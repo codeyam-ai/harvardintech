@@ -24,10 +24,8 @@ console.log('gallery downloaded:', i);
 execSync(`curl -sL --max-time 30 -o "/workspace/public/images/sections/whatsapp-banner.jpg" "https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_9000,w_1200,f_auto,q_auto/13213024/20390"`);
 console.log('whatsapp banner downloaded');
 
-// Support icons
-const icons = { trophy: '64', chat: '03', briefcase: '04', quote: '07', star: '74' };
-fs.mkdirSync('/workspace/public/images/support', { recursive: true });
-for (const [name, id] of Object.entries(icons)) {
-  execSync(`curl -sL --max-time 30 -o "/workspace/public/images/support/${name}.png" "https://assets.strikingly.com/static/icons/flat-circle-160/${id}.png"`);
-}
-console.log('support icons downloaded');
+// The support icons that used to be fetched here (trophy, chat, briefcase,
+// quote, star — flat-circle PNGs from the old Strikingly site) are gone. No page
+// ever rendered them, and re-downloading them on every run put five unused
+// third-party images of unknown licence back into the repo. Support sections use
+// inline SVG now; if icons are ever needed again they belong in brandIcons.ts.

@@ -24,7 +24,7 @@ const LANDING_IMAGE_PATHS = [
   '/images/gallery/event-01.jpg',
   '/images/sections/board.png',
   '/images/team/jane-doe.jpg',
-  '/images/sections/whatsapp.jpeg',
+  '/images/sections/whatsapp-banner.jpg',
 ];
 
 describe('landing image base paths', () => {

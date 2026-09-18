@@ -1,0 +1,495 @@
+{
+  "_comment": "Provenance for every image committed under public/images. `source` is one of own-event | stock-licensed | haa-permission | unknown. An `unknown` row must not be referenced by any published page - that is what makes this file worth keeping.",
+  "credits": [
+    {
+      "file": "bg/get-involved-bg.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site."
+    },
+    {
+      "file": "bg/hero-bg.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site."
+    },
+    {
+      "file": "chapters/nyc.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site."
+    },
+    {
+      "file": "events/founders-panel-mic.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "events/founders-portrait-pair.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "events/founders-reception-trio.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "events/founders-summit-pair.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "events/sf-attendees-phone.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "events/sf-attendees-square.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Square crop of events/sf-attendees-two.webp, made to replace the unlicensed volunteers.webp fixture."
+    },
+    {
+      "file": "events/sf-attendees-three.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "events/sf-attendees-two.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "events/sf-event-room.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "events/sf-group-brick-wall.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Supplied by the marketing team via the Website Images Drive folder, 2026-09."
+    },
+    {
+      "file": "gallery/91e99da2-9e81-4620-815f-0fc1f87c9eb9-1-105-c.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-01.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-02.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-03.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-04.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-06.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-07.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-08.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-09.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-10.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-11.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-12.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-13.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-14.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-15.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-16.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-17.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-18.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-20.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-21.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-22.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-23.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-24.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-25.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-26.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-27.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-28.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-29.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-30.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-31.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-32.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-33.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-34.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-35.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-36.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-37.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-38.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-39.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/event-40.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "gallery/hit-bod.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "harvard-shield.png",
+      "source": "haa-permission",
+      "credit": "Harvard University",
+      "licence": "pending",
+      "note": "Veritas shield, used as the 26px nav mark. Permission for use by a Shared Interest Group has NOT been granted yet - see the draft ask in the images plan."
+    },
+    {
+      "file": "hero/hero.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site."
+    },
+    {
+      "file": "og/default.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site."
+    },
+    {
+      "file": "sections/board-logo.png",
+      "source": "unknown",
+      "credit": "unknown",
+      "licence": "unknown",
+      "note": "Migrated from the Strikingly site; origin not recorded. Used only as a scenario fixture, never on a published page."
+    },
+    {
+      "file": "sections/board.png",
+      "source": "unknown",
+      "credit": "unknown",
+      "licence": "unknown",
+      "note": "Migrated from the Strikingly site; origin not recorded. Used only as a scenario fixture, never on a published page."
+    },
+    {
+      "file": "sections/whatsapp-banner.jpg",
+      "source": "unknown",
+      "credit": "unknown",
+      "licence": "unknown",
+      "note": "Migrated from the Strikingly site; origin not recorded. Used only as a scenario fixture, never on a published page."
+    },
+    {
+      "file": "team/ben-wei.png",
+      "source": "own-event",
+      "credit": "Supplied by the director",
+      "licence": "own-work",
+      "note": "Headshot supplied by the board member for use on this site."
+    },
+    {
+      "file": "team/jessica-li.png",
+      "source": "own-event",
+      "credit": "Supplied by the director",
+      "licence": "own-work",
+      "note": "Headshot supplied by the board member for use on this site."
+    },
+    {
+      "file": "team/krysia-lenzo.png",
+      "source": "own-event",
+      "credit": "Supplied by the director",
+      "licence": "own-work",
+      "note": "Headshot supplied by the board member for use on this site."
+    },
+    {
+      "file": "team/nadia-eldeib.png",
+      "source": "own-event",
+      "credit": "Supplied by the director",
+      "licence": "own-work",
+      "note": "Headshot supplied by the board member for use on this site."
+    },
+    {
+      "file": "team/peter-boyce.png",
+      "source": "own-event",
+      "credit": "Supplied by the director",
+      "licence": "own-work",
+      "note": "Headshot supplied by the board member for use on this site."
+    },
+    {
+      "file": "untitled-design-4.webp",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site."
+    },
+    {
+      "file": "webinars/covid-19-is-telemedicine-the-future-of-health-care.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "webinars/covid-19-pregnancy-outcomes-and-telemedicine.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "webinars/cybersecurity-in-the-supply-chain.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "webinars/edutech-solutions-to-covid-19.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    },
+    {
+      "file": "webinars/reopening-the-economy-during-covid-19.jpg",
+      "source": "own-event",
+      "credit": "Harvard Alumni in Tech",
+      "licence": "own-work",
+      "note": "Migrated from the Strikingly site. Photographer not individually recorded."
+    }
+  ]
+}

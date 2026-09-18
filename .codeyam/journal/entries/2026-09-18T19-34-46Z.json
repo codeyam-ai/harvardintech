@@ -1,0 +1,1199 @@
+{
+  "timestamp": "2026-09-18T19:34:46Z",
+  "title": "launch -- Images",
+  "type": "feature",
+  "userRequest": "## Summary\n\nMake every photo on the site true, sharp, and fast before launch, in five parts that each ship alone:\n\n- **A**: quick wins using files already in the repo. These are content edits only.\n- **B**: sourcing asks, one list per person.\n- **C**: the share and icon kit (favicon, og:image with an absolute URL, footer icons).\n- **D**: responsive images (a sharp-built srcset) and performance.\n- **E**: cleanup (unused files, duplicates, a licence ledger, logo permission).\n\nRe-verified on disk on 2026-09-14:\n\n- The testimonial photos `event-07` and `event-11` are both 200×200 shared-gallery shots.\n- `gallery/91e99da2-9e81-4620-815f-0fc1f87c9eb9-1-105-c.webp` is 1024×768, and `media.json` captions it as an engineering panel. No page uses it.\n- `event-05` is byte-identical to `event-03` (MD5 check).\n- **New finding:** `event-19` is byte-identical to `event-04`. The homepage 40-photo wall shows two duplicate pairs.\n- `chapters/nyc.jpg` is 550×367. `bg/get-involved-bg.jpg` is 2000×1125.\n- Board PNGs are 140×140. `BoardMemberCard.astro` renders them at 120px, and 2× screens need 240px.\n- `public/favicon.svg` is a blue square with a circle, and no shell links it.\n- `SEO.astro` outputs `og:image` exactly as passed, so a relative `/images/...` path goes out as-is.\n- No Alumni Day photo exists in the repo. The only match is the Luma listing `src/content/events/2026-06-05-harvard-alumni-in-tech-alumni-day-meetup-in-cambridge-ma.md`, which has no image.\n\n## Owner decisions (2026-09-14)\n\n- **Quick image fixes: Plan it.** Note on Mohammed Ally's testimonial: \"For the photo - why is it miscaptioned? We should have a photo of him if possible?\"\n  - Answer: `src/content/testimonials/mohammed-ally.md` sets `eventPhoto: /images/gallery/event-11.jpg`, a 200px generic stage shot (panellists under a \"harvardintech\" sign) from the shared gallery. The caption \"HIT Colorado Co-working Afternoon · Improper City\" was typed as a placeholder; the file's own body says \"The event photo is also a PLACEHOLDER\".\n  - He has no portrait on file.\n  - Action: remove the event photo now, so the card renders the quote full-width (a supported state). Ask Mohammed for a portrait and a real Colorado photo (B3).\n- **Jessica Li testimonial: Change.** Note: \"Use the correct photo.\" Her card will use the 91e99da2 SF engineering-panel webp.\n- **Wrong-city banners, headshots, photo requests, share images and favicon, faster loading, licences, logo permission (the Veritas shield, ask the HAA), social icons, the stock volunteer photo, and unused files: Plan it (all).**\n- **Boston:** the owner asked separately that Boston use \"the alumni day picture\". The repo has none, so this is a sourcing ask to Aimee (B1). The banner slot is prepared here; the chapters plan owns the copy.\n- **Communities (AI, Founders) and forming chapters (DC, Seattle)** get their own page formats in another plan. Here their image slot is optional, and a text header renders when there's no photo.\n- **Nicole's walkthrough (2026-09-14).** The London, AI and Founders banners are blurry, and Nicole is replacing them herself through the content editor.\n  - She resized photos from Harvard in Tech's Facebook page to 2400 × 1350.\n  - She is collecting them in the \"HIT Marketing Internal → Website images\" folder.\n  - She asked what size is needed; the answer is under Part B.\n\n## Open questions / needs input\n\n1. **Owner:** should `/sponsor` reuse the same SF panel photo as Jessica's testimonial, or keep `event-13` until the photographer delivers? My pick is to reuse it, because it's the only real, sharp event photo we have.\n2. **Owner:** on the homepage wall, may we drop the duplicate tiles (`event-05`, `event-19`)? That takes the wall from 40 photos to 38 (E3).\n3. **Jessica Li:** is 91e99da2 really the \"Leaders in Engineering · San Francisco\" event? The media alt text supports it, but nobody has confirmed it.\n4. **Owner:** who are the DC, Seattle and London leads? No lead names are in the repo. The asks in B1 are addressed by role until then.\n5. **Owner and the HAA:** until the HAA answers, may the header keep `harvard-shield.png` (E5)? It's in the nav on every page.\n6. **Designer:** is a crimson \"HIT\" monogram acceptable as the favicon, so the icon never depends on the shield decision?\n\n## Recommendations\n\n**Delivery of responsive images (D).**\n\n| Option | Summary | Verdict |\n|---|---|---|\n| (a) Astro `astro:assets` `<Image>` | Needs images imported from `src/`. The CMS writes string paths into `public/images`, and Astro never processes `public/`. It would mean moving the library and changing the CMS contract. | Rejected |\n| (b) Re-encode originals only, plus `width`/`height`/`loading` | Cheap, and it saves most of the bytes on the three big JPEGs. Phones still download 2000px heroes. | Included in A as step 10 |\n| (c) Build-time sharp script | Runs before `astro build`. Emits width variants for every raster in `public/images` into a gitignored folder, plus a manifest. A `<ResponsiveImg>` component adds `srcset` when a variant exists and falls back to the plain `src` otherwise. It works for CMS uploads with no CMS change, and dev keeps working with no manifest. | **Pick** |\n\nWhy (c): it's the only option that covers images Nicole uploads later. It keeps the CMS's string-path model, and it degrades to today's markup when anything is missing. The step 10 re-encode from (b) ships first, because it's free and it also shrinks the originals that (c) falls back to.\n\n**Pages with no photo.** Clear `heroImage`. `ChapterHero.astro` already falls back to `ChapterHeader`, a text header, so no new component is needed. The alternative, a generic skyline per city, repeats the wrong-city problem.\n\n## Implementation\n\n### Part A: quick wins with existing files (content edits only; no new files)\n\n1. `src/content/chapters/nyc.md`:\n   - Set `heroImage: /images/bg/get-involved-bg.jpg`.\n   - Remove the 200px `photos` rows `event-07`, `event-09` and `event-11`, leaving 11 photos.\n2. Jessica's testimonial, `src/content/testimonials/jessica-li.md`:\n   - Set `eventPhoto: /images/gallery/91e99da2-9e81-4620-815f-0fc1f87c9eb9-1-105-c.webp`.\n   - Keep the caption.\n   - Delete the \"PLACEHOLDER\" paragraph.\n3. Mohammed's testimonial, `src/content/testimonials/mohammed-ally.md`:\n   - Delete `eventPhoto` and `eventCaption`.\n   - Rewrite the body note to say \"awaiting a portrait and a Colorado photo (see the images plan)\".\n4. Sponsor banner: set `heroImage` to the 91e99da2 webp in both `src/content/sponsorPage/sponsor.md` and `src/data/sponsorPage.json`.\n   - Both are needed because `src/lib/pageCopyMerge.ts` falls back to the JSON whenever the markdown value is blank.\n5. `/donate` closing photo: set `ctaImage: /images/hero/hero.jpg` in both `src/content/pageCopy/donate.md` and `src/data/donatePage.json`.\n6. `/give` collage in `src/data/givePage.json`: replace `event-05` with `event-21`, which gives six distinct photos.\n   - Mirror the change in `src/pages/isolated-components/GiveCollage.astro`.\n7. Gallery switch-off: add `showGallery: false` to these files, so none of them shows the shared NYC-era wall:\n   - `src/content/chapters/boston-cambridge.md`, `dc-dmv.md`, `london.md`, `seattle.md` and `sf-bay-area.md`\n   - `src/content/communities/ai.md` and `founders.md`\n8. Photo-less headers:\n   - Delete `heroImage` from `ai.md` and `founders.md` (communities), and from `dc-dmv.md`, `seattle.md` and `london.md` (chapters).\n   - Reasons: DC and Seattle show NYC events, and London shows a duplicate of `event-03`.\n   - These pages then render the text `ChapterHeader`.\n   - Skip any of these whose `heroImage` Nicole has already replaced with one of her new photos (see Owner decisions). Clear only the ones still pointing at the old wrong-city or duplicate image.\n9. Boston banner slot: `boston-cambridge.md` keeps `heroImage: /images/bg/hero-bg.jpg`, a Harvard campus facade that is correct for Boston.\n   - Add a body comment naming the slot, \"replace with Alumni Day photo from Aimee\", so B1 is a one-field swap.\n10. Re-encode the three big JPEGs that pages use with a one-off `node` + sharp command (mozjpeg, quality 78, longest edge kept at 2000px), and update their `sizeBytes` in `src/data/media.json`:\n    - `bg/hero-bg.jpg` (605 KB)\n    - `bg/get-involved-bg.jpg` (489 KB)\n    - `chapters/san-francisco.jpg` (298 KB)\n    - `chapters/japan.jpg` (751 KB) is unused and gets deleted in E instead.\n\n### Part B: sourcing asks, one list per person (no code; each delivery is an A-style swap)\n\nDelivery spec for every photo: the original file, landscape at 2400px or more on the long edge for banners, and a note that says who took it and whether we may use it (this feeds E4). Uploads can go through /admin; the CMS converts them to WebP at 2048px or less.\n- **Check before relying on that last sentence.** A search of `node_modules/@codeyam/cms/src` on 2026-09-14 found no image resizing or WebP conversion, so uploads may ship at exactly the size uploaded. The build-time variants in D (option c) are what actually make phone-size copies.\n\n**Answer for Nicole's size question (2026-09-14).**\n- 2400 × 1350 (16:9) is right for a banner. Upload it as it is; the build makes the smaller copies phones need (D).\n- Banners fill the whole first screen and crop to fit: heavily at the sides on a phone, and at the top and bottom on a wide monitor. Keep the subject near the middle.\n- For photos taken from Facebook, note who took each one and whether we may use it (E4).\n\n1. **Chapter leads:**\n   - **Aimee (Boston):** the Alumni Day photo from the 2026-06-05 Cambridge meetup, which goes into the `heroImage` of `boston-cambridge.md`. Also 6–12 Boston event photos for a curated `photos` list (then `showGallery` can come back).\n   - **DC, Seattle and London leads:** one real banner from a local event, and any event photos. Until one arrives, the text header stays.\n   - **SF lead:** confirm the panel photo is from the SF event (Q3), plus more SF event photos.\n   - **NYC lead:** larger originals of the gallery shots, which are 400px today.\n2. **The board** (Ben Wei, Jessica Li, Krysia Lenzo, Nadia Eldeib, Peter Boyce): a square headshot, 600×600 or larger, with a plain background and **no circle crop**, which CSS applies. It replaces `public/images/team/*.png`.\n3. **Mohammed Ally:** a portrait for the testimonial `photo` field, and one real photo of the Colorado co-working afternoon at Improper City, with his OK on the caption.\n4. **Jessica Li:** a larger portrait. The 140px board PNG doubles as her testimonial `photo`. She also answers Q3.\n5. **Designer:** the C kit:\n   - an SVG favicon and a 180×180 apple-touch PNG\n   - a 1200×630 default share card (wordmark over the NYC skyline, **no Veritas shield** until E5 clears)\n   - a white/crimson treatment check of the brand SVG icons\n6. **Photographer (next NYC event):**\n   - wide room shots and speaker shots, for banners and the sponsor page\n   - volunteers at work, to replace the stock `volunteers.webp`\n   - consent recorded per E4\n\n### Part C: share and icon kit\n\n1. `src/lib/seo.ts` (new): `absoluteImageUrl(image, site, base)`.\n   - Returns `null` for empty input, and passes `http(s)://` URLs through unchanged.\n   - Otherwise resolves `withBase`-style against `Astro.site`, so `/images/og/default.jpg` becomes `https://…/harvardintech/images/og/default.jpg`.\n2. `src/components/SEO.astro`:\n   - Output `absoluteImageUrl(image ?? DEFAULT_OG_IMAGE, Astro.site, import.meta.env.BASE_URL)` for `og:image` and `twitter:image`.\n   - Add `og:image:width` and `og:image:height` (1200×630) when the default is used.\n   - Always output `summary_large_image`.\n3. `public/images/og/default.jpg` (new, 1200×630):\n   - Interim: a sharp crop of `bg/get-involved-bg.jpg`.\n   - Replaced by the designer card from B5.\n   - Add a record to `src/data/media.json`, so the CMS library shows it.\n4. `src/components/HeadExtras.astro` is the partial that every shell includes (`BaseLayout.astro`, `BlogPostArticle.astro`, `404.astro`, `cutover-runbook/[...path].astro`). Add:\n   - `<link rel=\"icon\" type=\"image/svg+xml\" href={withBase('/favicon.svg')}>`\n   - `<link rel=\"apple-touch-icon\" href={withBase('/apple-touch-icon.png')}>`\n5. Replace `public/favicon.svg` with a crimson \"HIT\" monogram (Q6), and add `public/apple-touch-icon.png` (new, 180×180).\n6. Footer social icons:\n   - Switch `src/components/ChapterConnect.astro` from `socialIconSrc` (the teal Strikingly PNGs) to `brandIcon()` from `src/lib/brandIcons.ts`, rendered as inline SVG exactly as `src/components/landing/ContactUs.astro` does.\n   - Then delete `src/lib/socialIcon.ts`, `src/lib/socialIcon.test.ts` and `public/images/social/*` (4 files), and their `media.json` records.\n\n### Part D: responsive images and performance\n\n1. Add `sharp` to `devDependencies` in `package.json`. It's only transitive today (0.34.5 in `node_modules`). The owner or CI runs `npm install`; this plan runs no npm.\n2. `scripts/responsive-images.mjs` (new):\n   - For each `.jpg`, `.png` and `.webp` in `public/images` wider than 640px, write `public/images/_r/<path>-<w>.webp` at widths 640, 1280 and 1920, skipping any width at or above the original.\n   - Write `src/data/responsiveImages.json` (new, generated), mapping each source to its widths.\n   - Skip work when the output is newer than the source.\n3. Add `public/images/_r/` and `src/data/responsiveImages.json` to `.gitignore`. Prefix `scripts.build` in `package.json` with `node scripts/responsive-images.mjs &&`. `.github/workflows/deploy.yml` already runs `npm run build`, so it needs no change.\n4. `src/lib/responsiveImage.ts` (new), pure logic:\n   - `variantWidths(originalWidth)`\n   - `srcsetFor(src, manifest, base)`: returns `null` for SVGs, for unknown files, or when no manifest exists (dev)\n   - `readResponsiveManifest()`: returns an empty manifest when the file is absent\n5. `src/components/ResponsiveImg.astro` (new):\n   - Wraps `<img>` with `srcset`, `sizes`, `width`, `height` (from `media.json`) and `decoding=\"async\"`.\n   - `loading` is set by the caller: `eager` for heroes, `lazy` everywhere else.\n6. Swap raw `<img>` for `ResponsiveImg` in:\n   - `ChapterHero.astro`\n   - `landing/Hero.astro` and `landing/HeroCarousel.astro`\n   - `donate/TestimonialCard.astro` and `donate/MomentumHero.astro`\n   - `sponsor/SponsorHero.astro`\n   - `give/GivePhoto.astro`\n   - `landing/GalleryTile.astro`\n   - `BoardMemberCard.astro`\n\n   The markup and CSS stay the same apart from the `srcset` attributes.\n\n### Part E: cleanup\n\n1. Delete the 12 files that no page uses today, with their `src/data/media.json` records:\n   - `sections/board-logo.png`, `sections/board-wordmark.png`, `sections/whatsapp.jpeg`\n   - `chapters/la.jpg`, `chapters/japan.jpg`\n   - `support/{briefcase,chat,quote,star,trophy}.png`\n   - After A: `chapters/nyc.jpg`\n2. **Keep** `sections/board.png` and `sections/whatsapp-banner.jpg`. The volunteer scenarios in `.codeyam/scenarios/volunteer-*.json` and the `isolated-components/Volunteer*.astro` pages use them as fixtures.\n   - Repoint the strings in `src/components/landing/landing-images.test.ts` from `whatsapp.jpeg` to `whatsapp-banner.jpg`.\n   - Remove the `support/` fetches from `scripts/download-assets.mjs`.\n3. De-duplicate the homepage wall (if Q2 is a yes):\n   - In `src/components/landing/EventGallery.astro`, build `defaults` from 1..40 excluding 5 and 19.\n   - Delete `gallery/event-05.jpg` and `gallery/event-19.jpg`, with their records.\n   - Update `src/pages/isolated-components/GalleryTile.astro` only if it points at one of those two.\n4. Licence ledger, `src/data/imageCredits.json` (new): one row per committed image, with `source` (own-event, stock-licensed, haa-permission, unknown), `credit` and `licence`.\n   - `volunteers.webp` is recorded as `unknown` (doctored stock art).\n   - Remove it from `src/content/projects/social-media-marketing-specialist-events.md` (`image` and `ogImage`). The project is `draft: true`, and `VolunteerProjectThumb.astro` and `VolunteerProjectPhoto.astro` already render without an image. Then delete the file.\n5. Logo permission:\n   - Draft the ask to the HAA (owner sends it) for use of the Veritas shield by a Shared Interest Group, as it appears in `BaseLayout.astro` (`harvard-shield.png`, 26px nav mark).\n   - Record the answer in `imageCredits.json`.\n   - If refused, swap the nav mark for the C5 monogram. That's a one-line change in `BaseLayout.astro`.\n\n## Tests\n\nRegister each new test file before `prove-red` so it can see it.\n\n- `src/lib/contentImages.test.ts` (new) reads `src/content/**/*.md` and `src/data/*.json` from disk, the same way as `chapter.photos.test.ts`, skipping `media.json`. It asserts that:\n  - every `/images/...` path it references exists under `public/`\n  - no two `givePage.json` collage entries are byte-identical (MD5 via `node:crypto`)\n  - every chapter and community `heroImage`, when set, is at least 1600px wide (sharp `metadata()`), which fails on today's 550px `nyc.jpg`\n  - every chapter without a curated `photos` list sets `showGallery: false`\n  - `mohammed-ally.md` has no `eventPhoto` until a real one lands, so the placeholder can't come back silently\n- `src/lib/seo.test.ts` (new), for `absoluteImageUrl`:\n  - a root path plus the `/harvardintech/` base plus a site gives an absolute https URL with no `//`\n  - an absolute URL passes through unchanged\n  - empty input gives `null`\n- `src/lib/responsiveImage.test.ts` (new):\n  - `variantWidths(550)` is empty and `variantWidths(2000)` is `[640,1280,1920]`\n  - `srcsetFor` gives a correct `w` descriptor string with the base prefix\n  - it returns `null` for SVGs and for missing manifest entries\n- `src/lib/siteIcons.test.ts` (new):\n  - `public/favicon.svg` exists and no longer contains the placeholder `#0066cc`\n  - `public/apple-touch-icon.png` is 180×180\n  - `public/images/og/default.jpg` is 1200×630\n- `src/lib/imageCredits.test.ts` (new):\n  - every ledger row names a file that exists\n  - every row has a `source`\n  - no content file references an image whose `source` is `unknown`\n- Existing tests:\n  - `src/lib/team.photos.test.ts`: once B2 lands, add \"headshot is at least 480px square\".\n  - `src/lib/socialIcon.test.ts` is deleted with its module (C6).\n  - `src/lib/brandIcons.test.ts` already covers the icons `ChapterConnect` will use.\n\n## Scenarios to Demonstrate\n\nContent edits don't make screenshots go stale, so recapture with `--target --force`. Capture twice to rule out the webfont race, and screen every changed PNG for wrong-page frames.\n\n- `/donate` impact band (`momentum-fund-the-impact-band-with-real-quotes`): Jessica with the SF panel photo; Mohammed's quote full-width with no photo.\n- `/donate` closing band with `hero/hero.jpg`.\n- `/sponsor` hero with the panel photo.\n- `/give` collage: six distinct photos.\n- `/chapters/nyc`: sharp skyline banner, and an 11-photo gallery with no blurry tiles.\n- `/chapters/dc-dmv`, `/chapters/seattle`, `/chapters/london`, `/communities/ai`, `/communities/founders`: text header, no gallery.\n- `/chapters/boston-cambridge` and `/chapters/sf-bay-area`: photo banner, no shared gallery.\n- Chapter \"Connect With Us\" footer with the brand SVG icons, replacing the teal PNGs.\n- The homepage wall with 38 tiles (only if Q2 is a yes), matching the `event-gallery` scenario.\n- The browser tab shows the new favicon. A link unfurl (for example, a LinkedIn post inspector) shows the default card.\n\n## Out of scope\n\n- Page formats for communities and forming chapters (another plan). This plan only leaves their image slot optional.\n- Boston page copy and chapter content (the chapters plan). This plan only prepares the banner slot.\n- Changing the CMS upload pipeline (`node_modules/@codeyam/cms/src/lib/imageCompression.ts`) or moving the library into `astro:assets`.\n- Video (`public/videos/`), the design-review mockups under `public/design-review-4ece6c14/`, and `public/donor-network.html`.\n- Re-shooting or retouching photos. B asks people for them; this plan does not produce them.",
+  "description": "Made every photo on the site true, sharp and fast before launch. Nine real event photos were sourced from the marketing team's shared Drive folder and placed one per surface — the sponsor hero, the SF chapter banner, the Founders community, the /donate closing band and Jessica Li's testimonial — while four pages that had been showing New York event photography under another city's name (DC, Seattle, London and the AI community) now render a text header instead, and Mohammed Ally's miscaptioned placeholder was removed so his quote runs full-width. Alongside the photography: absolute og:image/twitter:image on every page with a 1200x630 default card, a crimson HIT monogram favicon and apple-touch icon, a build step that pre-renders 640/1280/1920 WebP variants (the hero drops from 324 KB to 43 KB on a phone), and a cleanup pass that removed thirteen unused or duplicate files, de-duplicated the homepage wall to 38 tiles, and added a 71-row image licence ledger plus a drafted permission ask to the HAA for the Veritas shield.\n\nSCOPE VERDICT. Delivered: all five parts of the launch--images plan (A quick wins, B sourcing asks, C share and icon kit, D responsive images, E cleanup). Deferred: nothing from this plan's own scope. The project's five top-level deliverables all remain deferred, every one of them by an explicit earlier user decision (decidedBy=user) and none by agent judgement — this is a launch-polish cycle and was never scoped to close them.\n\nCarried forward, not silently dropped: six photos in the Drive folder could not be fetched because the connector hard-caps downloads at 10 MB and times out above ~5.3 MB. Two of them are Harvard campus shots that would have been the natural Boston/Cambridge banner, so Boston keeps the campus facade with a comment naming the swap; one is a higher-resolution SF engineering panel. They need re-exporting under ~5 MB. Part B's sourcing asks (board headshots, a portrait of Mohammed and a real Colorado photo, chapter-lead photography) are people-dependent by design and are recorded in the plan rather than built here.\n\nTwo defects were found and fixed in this cycle's own work rather than shipped: the first image import rendered banners at 16:9, which the full-bleed hero cropped to ceiling ductwork instead of people (now 2.4:1 attention crops); and the build script's walk() excluded its generated variant tree by a hardcoded project path rather than by directory name, so any other root would have fed the build its own output back — caught by a test written for it.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--images.md\t.codeyam/plans/completed/launch--images.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-a-single-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-curated-and-capped.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-photo-enlarged.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-show-all-revealed.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-three-photos-three-columns.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterhero-no-image-fallback.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-blog-list-drafts-and-published.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-events-the-collection-0-7-removed.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-team-board-members-in-their-own-order.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/event-gallery.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/gallerylightbox-no-caption.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-chapter-published-since-the-menu-was-written.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-the-impact-band-with-real-quotes.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-with-image--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-forming-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-blog-list-drafts-and-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-events-the-collection-0-7-removed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-team-board-members-in-their-own-order--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitypage-founders-composed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-complete--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-cutover-day--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-decisions-answered-nothing-begun--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-nothing-started--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-partway-through--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-waiting-on-one-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/event-gallery--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/event-gallery--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-archive-folded-by-year--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-archive-folded-by-year--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerytile-captioned-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerytile-keyboard-focus--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givephoto-the-strip-the-card-overlaps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero-carousel--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-sections-reordered-by-an-editor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumtestimonials-photo-led-rows--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumtestimonials-three-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-every-field-filled--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-quote-without-an-event-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-with-role--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-page-open-projects.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-photo-and-own-sign-up-link.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-retired-projects-never-suggested.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".gitignore",
+      "status": "modified"
+    },
+    {
+      "path": "README.md",
+      "status": "modified"
+    },
+    {
+      "path": "package.json",
+      "status": "modified"
+    },
+    {
+      "path": "public/favicon.svg",
+      "status": "modified"
+    },
+    {
+      "path": "public/images/bg/get-involved-bg.jpg",
+      "status": "modified"
+    },
+    {
+      "path": "public/images/bg/hero-bg.jpg",
+      "status": "modified"
+    },
+    {
+      "path": "public/images/chapters/japan.jpg",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/chapters/la.jpg",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/chapters/san-francisco.jpg",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/gallery/event-05.jpg",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/gallery/event-19.jpg",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/sections/board-wordmark.png",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/sections/whatsapp.jpeg",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/social/email.jpg",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/social/facebook.png",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/social/linkedin.svg",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/social/twitter.png",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/support/briefcase.png",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/support/chat.png",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/support/quote.png",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/support/star.png",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/support/trophy.png",
+      "status": "deleted"
+    },
+    {
+      "path": "public/images/volunteers.webp",
+      "status": "deleted"
+    },
+    {
+      "path": "scripts/download-assets.mjs",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterHero.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/HeadExtras.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/SEO.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/donate/TestimonialCard.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/give/GivePhoto.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/EventGallery.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/GalleryTile.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/Hero.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/HeroCarousel.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/landing-images.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/sponsor/SponsorHero.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/boston-cambridge.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/dc-dmv.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/london.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/nyc.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/seattle.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/sf-bay-area.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/communities/ai.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/communities/founders.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/pageCopy/donate.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/projects/social-media-marketing-specialist-events.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/sponsorPage/sponsor.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/testimonials/jessica-li.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/testimonials/mohammed-ally.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/donatePage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/givePage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/media.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/sponsorPage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/media.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/GalleryLightbox.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/GiveCollage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/VolunteerProjectPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/VolunteerProjectPhoto.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/VolunteerProjectThumb.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/haa-shield-permission-ask.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/give-page-six-photographs-no-repeats.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/responsiveimg-serves-a-photo-with-its-srcset.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/give-page-six-photographs-no-repeats--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/responsiveimg-serves-a-photo-with-its-srcset--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/responsiveimg-serves-a-photo-with-its-srcset--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/18ce3defbcd70a228ca6187f80cf8ab4a7e7cff5705665c7cca323d2dc0c5b2f.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/34e5177bfeac4ecdd794275cccd0a093fc0184ffe015ad63362493b4ebe1de31.json",
+      "status": "added"
+    },
+    {
+      "path": "public/apple-touch-icon.png",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/founders-panel-mic.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/founders-portrait-pair.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/founders-reception-trio.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/founders-summit-pair.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/sf-attendees-phone.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/sf-attendees-square.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/sf-attendees-three.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/sf-attendees-two.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/sf-event-room.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/events/sf-group-brick-wall.webp",
+      "status": "added"
+    },
+    {
+      "path": "public/images/og/default.jpg",
+      "status": "added"
+    },
+    {
+      "path": "scripts/responsive-images.mjs",
+      "status": "added"
+    },
+    {
+      "path": "src/components/ResponsiveImg.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/SiteIcons.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/data/imageCredits.json",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/contentImages.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/imageCredits.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/responsiveImage.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/responsiveImage.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/responsiveImageVariants.mjs",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/responsiveImagesScript.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/responsiveManifest.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/seo.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/seo.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/siteIcons.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/ResponsiveImg.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Blog Post - A Retained Medium Stub",
+      "screenshotPath": "blog-post-a-retained-medium-stub--desktop.png"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft",
+      "screenshotPath": "blog-preview-link-shared-draft--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo",
+      "screenshotPath": "chapter-gallery-a-single-photo--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped",
+      "screenshotPath": "chapter-gallery-curated-and-capped--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged",
+      "screenshotPath": "chapter-gallery-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed",
+      "screenshotPath": "chapter-gallery-show-all-revealed--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns",
+      "screenshotPath": "chapter-gallery-three-photos-three-columns--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter",
+      "screenshotPath": "chapter-route-events-tagged-to-this-chapter--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps",
+      "screenshotPath": "chapter-route-longest-chapter-name-wraps--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--desktop.png"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area",
+      "screenshotPath": "chapter-route-sf-bay-area--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent",
+      "screenshotPath": "chapter-route-upcoming-above-recent--desktop.png"
+    },
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - A Tick That Could Not Be Saved",
+      "screenshotPath": "cutover-runbook-a-tick-that-could-not-be-saved--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Complete",
+      "screenshotPath": "cutover-runbook-complete--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Cutover Day",
+      "screenshotPath": "cutover-runbook-cutover-day--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Decisions Answered Nothing Begun",
+      "screenshotPath": "cutover-runbook-decisions-answered-nothing-begun--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Nothing Started",
+      "screenshotPath": "cutover-runbook-nothing-started--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Partway Through",
+      "screenshotPath": "cutover-runbook-partway-through--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - The Records On A Phone",
+      "screenshotPath": "cutover-runbook-the-records-on-a-phone--mobile.png"
+    },
+    {
+      "name": "Cutover Runbook - Waiting On One Answer",
+      "screenshotPath": "cutover-runbook-waiting-on-one-answer--desktop.png"
+    },
+    {
+      "name": "Events Route - Archive Folded By Year",
+      "screenshotPath": "events-route-archive-folded-by-year--desktop.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Password Required",
+      "screenshotPath": "locked-preview-password-required--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password",
+      "screenshotPath": "locked-preview-unlocked-with-the-password--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Wrong Password",
+      "screenshotPath": "locked-preview-wrong-password--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Giving Platform Is Chosen",
+      "screenshotPath": "momentum-fund-a-giving-platform-is-chosen--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Mistyped Section Type And A Missing Photo",
+      "screenshotPath": "momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Arriving From The Email",
+      "screenshotPath": "momentum-fund-arriving-from-the-email--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Every Section Hidden",
+      "screenshotPath": "momentum-fund-every-section-hidden--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Finding Your Place In The Network",
+      "screenshotPath": "momentum-fund-filtering-the-donor-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Public Visitor",
+      "screenshotPath": "momentum-fund-public-visitor--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Donor Wall Moved To The Top",
+      "screenshotPath": "momentum-fund-the-donor-wall-moved-to-the-top--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The First Donor On The Wall",
+      "screenshotPath": "momentum-fund-the-first-donor-on-the-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Goal Meter Held As Coming Soon",
+      "screenshotPath": "momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Impact Band With Real Quotes",
+      "screenshotPath": "momentum-fund-the-impact-band-with-real-quotes--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Two Pillar Bands With Their Own Cards",
+      "screenshotPath": "momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png"
+    },
+    {
+      "name": "Privacy Page - The Written Policy",
+      "screenshotPath": "privacy-page-the-written-policy--desktop.png"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS",
+      "screenshotPath": "site-page-a-page-written-in-the-cms--desktop.png"
+    },
+    {
+      "name": "Site Page - Long Title And No Description",
+      "screenshotPath": "site-page-long-title-and-no-description--desktop.png"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall",
+      "screenshotPath": "sponsor-route-example-partner-wall--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects",
+      "screenshotPath": "volunteer-page-no-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Open Projects",
+      "screenshotPath": "volunteer-page-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS",
+      "screenshotPath": "volunteer-page-rewritten-from-the-cms--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo",
+      "screenshotPath": "volunteer-project-detail-full-description-no-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link",
+      "screenshotPath": "volunteer-project-detail-photo-and-own-sign-up-link--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested",
+      "screenshotPath": "volunteer-project-detail-retired-projects-never-suggested--desktop.png"
+    },
+    {
+      "name": "Webinars Route - Nothing Published",
+      "screenshotPath": "webinars-route-nothing-published--desktop.png"
+    },
+    {
+      "name": "Webinars Route - The Surviving Recordings",
+      "screenshotPath": "webinars-route-the-surviving-recordings--desktop.png"
+    },
+    {
+      "name": "ChapterHero - With Image",
+      "screenshotPath": "chapterhero-with-image--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Forming Chapter",
+      "screenshotPath": "chapterpage-forming-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "CommunityPage - Founders Composed",
+      "screenshotPath": "communitypage-founders-composed--desktop.png"
+    },
+    {
+      "name": "Hero Carousel",
+      "screenshotPath": "hero-carousel--desktop.png"
+    },
+    {
+      "name": "ResponsiveImg - Serves A Photo With Its Srcset",
+      "screenshotPath": "responsiveimg-serves-a-photo-with-its-srcset--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1450,
+    "passed": 1450,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1450,
+        "passed": 1450
+      }
+    ]
+  }
+}

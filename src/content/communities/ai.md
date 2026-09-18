@@ -7,7 +7,7 @@ callouts:
     text: The WhatsApp group is where papers, launches and job openings circulate between calls.
   - title: Researchers, founders and operators together
     text: People training models, people shipping them inside large companies, and people deciding whether to — in one room rather than three.
-heroImage: /images/gallery/event-22.jpg
+showGallery: false
 leads:
   - name: James Nicholson
     role: Community Lead (pilot)

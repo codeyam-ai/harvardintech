@@ -7,7 +7,8 @@ callouts:
     text: Co-working days in London so far, with more cities as founders there volunteer to host them.
   - title: No stage requirement
     text: Pre-idea through post-Series A. There is no application and nothing to qualify for beyond being alumni-affiliated and building something.
-heroImage: /images/gallery/event-20.jpg
+heroImage: /images/events/founders-summit-pair.webp
+showGallery: false
 name: Founders
 tagline: A working community for Harvard alumni who are building.
 whatsappFormUrl: https://forms.gle/GqgaCDDWhWAgpJC68

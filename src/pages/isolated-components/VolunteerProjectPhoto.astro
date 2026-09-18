@@ -5,9 +5,11 @@ import "../../../src/styles/tokens.css";
 // Isolation page for VolunteerProjectPhoto — codeyam screenshots the #codeyam-capture
 // wrapper by navigating to /isolated-components/VolunteerProjectPhoto.
 //
-// Uses `volunteers.webp` on purpose: it is the real 1200x1200 square an editor
-// actually uploaded, and the square case is the one the `max-height` bound
-// exists for. Full-bleed because the photo is full-bleed on the real page.
+// Uses a square photo on purpose: the square case is the one the `max-height`
+// bound exists for, and this is a real 1152x1152 crop of our own event
+// photography. It replaced `volunteers.webp`, which was the same shape but was
+// doctored stock art of unknown provenance — see src/data/imageCredits.json.
+// Full-bleed because the photo is full-bleed on the real page.
 //
 // The no-image branch renders nothing at all, so it has no capture of its own —
 // its absence is visible in the VolunteerProjectCta and application scenarios.
@@ -21,7 +23,7 @@ import "../../../src/styles/tokens.css";
   </head>
   <body style="margin: 0;">
     <div id="codeyam-capture">
-      <Component image="/images/volunteers.webp" />
+      <Component image="/images/events/sf-attendees-square.webp" />
     </div>
   </body>
 </html>

@@ -4,6 +4,7 @@
 // back to a plain crimson band when no photo is set, the same way ChapterHero
 // degrades — a sponsorship page with no image should still look deliberate.
 import { withBase } from '../../lib/url';
+import ResponsiveImg from '../ResponsiveImg.astro';
 
 interface Props {
   kicker?: string;
@@ -18,7 +19,7 @@ const { kicker, headline, intro, image } = Astro.props as Props;
   {
     image ? (
       <div class="sponsor-hero-bg">
-        <img src={withBase(image)} alt="" />
+        <ResponsiveImg src={image} alt="" loading="eager" />
         <div class="sponsor-hero-scrim" />
       </div>
     ) : null

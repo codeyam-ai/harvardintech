@@ -3,8 +3,6 @@ quote: Colorado did not have a chapter. We started with six people in a co-worki
 name: Mohammed Ally
 affiliation: Harvard Extension School Alumni · Class of 2023
 role: HIT Colorado Co-Event Lead
-eventPhoto: /images/gallery/event-11.jpg
-eventCaption: HIT Colorado Co-working Afternoon · Improper City
 order: 2
 ---
 
@@ -15,5 +13,9 @@ empty rather than filled with a stock face: this is a real person's quote under
 his own name, and the card is built to render without a picture, so it reads
 correctly as it is. Drop a real photo in and fill the Photo box when one arrives.
 
-The event photo is also a PLACEHOLDER from the general gallery — swap it for a
-real Colorado photo using the Event photo box.
+**There is no event photo either.** The Event photo box is deliberately empty: the
+only Colorado photo we had was a generic stage shot from the shared New York gallery
+under a caption that was never true. The card renders the quote full-width without
+it, which is a supported state. We are awaiting a portrait of Mohammed and one real
+photo of the Colorado co-working afternoon at Improper City; fill both boxes when
+they arrive.

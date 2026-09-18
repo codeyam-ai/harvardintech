@@ -9,5 +9,5 @@
   "componentName": "ChapterHero-Fallback",
   "scenarioType": "component",
   "pageFilePath": "src/components/ChapterHero.astro",
-  "description": "What a chapter with no hero photo falls back to: the centered header rather than the full-bleed band. The kicker follows it here, so a page without a photo still says which kind of page it is - chapter or community, forming or not. Before that, the fallback was the one surface where a visitor could not tell, which mattered most for exactly the new and thin entries least likely to have a photo yet."
+  "description": "What a chapter with no hero photo falls back to, and — since the launch image pass — the state four live surfaces deliberately sit in (DC, Seattle, London and the AI community), because the only photos on offer for them were New York events under another city’s name: the centered header rather than the full-bleed band. The kicker follows it here, so a page without a photo still says which kind of page it is - chapter or community, forming or not. Before that, the fallback was the one surface where a visitor could not tell, which mattered most for exactly the new and thin entries least likely to have a photo yet."
 }

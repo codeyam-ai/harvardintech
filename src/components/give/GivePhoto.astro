@@ -11,6 +11,7 @@
 // of blank ground where a picture was meant to be.
 import { altFor } from '../../lib/media';
 import { withBase } from '../../lib/url';
+import ResponsiveImg from '../ResponsiveImg.astro';
 
 interface Props {
   src?: string;
@@ -24,7 +25,11 @@ const { src, alt } = Astro.props as Props;
 {
   src ? (
     <div class="photo">
-      <img src={withBase(src)} alt={alt ?? altFor(src, 'Harvard Alumni in Tech')} />
+      <ResponsiveImg
+        src={src}
+        alt={alt ?? altFor(src, 'Harvard Alumni in Tech')}
+        sizes="(max-width: 700px) 50vw, 33vw"
+      />
     </div>
   ) : null
 }

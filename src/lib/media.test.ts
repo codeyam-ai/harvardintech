@@ -20,11 +20,27 @@ const MANIFEST_PATH = join(process.cwd(), 'src/data/media.json');
 
 const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf-8')) as MediaManifest;
 
-/** Every file under public/images, as posix paths relative to it. */
+/**
+ * Generated trees under public/images that are NOT committed assets and must
+ * not be held to the manifest.
+ *
+ * `_r/` holds the responsive width variants written by
+ * `scripts/responsive-images.mjs` before every build — gitignored, derived
+ * wholesale from the originals beside them, and absent on a fresh clone. They
+ * are not images anyone chooses or writes alt for: their alt comes from the
+ * source image's record, because that is the record the page's `<img>` uses.
+ * Requiring a record per variant would demand hundreds of them, all duplicating
+ * an alt already written, and would fail or pass depending only on whether a
+ * build had been run.
+ */
+const GENERATED_DIRS = new Set(['_r']);
+
+/** Every committed file under public/images, as posix paths relative to it. */
 function walk(dir: string, rel: string[] = []): string[] {
   const out: string[] = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (entry.name.startsWith('.')) continue;
+    if (entry.isDirectory() && rel.length === 0 && GENERATED_DIRS.has(entry.name)) continue;
     const next = [...rel, entry.name];
     if (entry.isDirectory()) out.push(...walk(join(dir, entry.name), next));
     else if (entry.isFile()) out.push(next.join('/'));

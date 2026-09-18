@@ -20,7 +20,7 @@ paths: **Local** and **Token** (paste a fine-grained GitHub PAT).
 ```bash
 npm run setup      # install dependencies (+ Playwright browser for captures)
 npm run dev        # http://127.0.0.1:4321
-npm run build      # type-check + static build into dist/
+npm run build      # responsive image variants, then type-check + static build into dist/
 npm run test       # component unit tests (vitest + jsdom)
 ```
 

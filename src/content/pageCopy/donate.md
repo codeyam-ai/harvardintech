@@ -12,7 +12,7 @@ ctaBody: |-
   Every gift to the Momentum Fund goes directly into the events, chapters, and connections that make this community worth belonging to.
 
   Join the alumni choosing to move from informal support to intentional investment, and help build what the next decade of Harvard Alumni in Tech will stand on.
-ctaImage: /images/gallery/event-02.jpg
+ctaImage: /images/events/founders-reception-trio.webp
 ctaTagline: One community. Shared momentum. A stronger network.
 ctaLabel: Become a Founding Supporter
 campaignName: The Momentum Fund

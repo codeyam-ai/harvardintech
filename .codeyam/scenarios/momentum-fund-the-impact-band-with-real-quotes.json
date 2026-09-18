@@ -27,8 +27,8 @@
     "testimonials": [
       {
         "affiliation": "Harvard University Alumni · Class of 2019",
-        "eventCaption": "Leaders in Engineering · San Francisco",
-        "eventPhoto": "/images/gallery/event-07.jpg",
+        "eventCaption": "Harvard in Tech · San Francisco",
+        "eventPhoto": "/images/events/sf-attendees-three.webp",
         "name": "Jessica Li",
         "order": 1,
         "photo": "/images/team/jessica-li.png",
@@ -38,8 +38,6 @@
       },
       {
         "affiliation": "Harvard Extension School Alumni · Class of 2023",
-        "eventCaption": "HIT Colorado Co-working Afternoon · Improper City",
-        "eventPhoto": "/images/gallery/event-11.jpg",
         "name": "Mohammed Ally",
         "order": 2,
         "quote": "Colorado did not have a chapter. We started with six people in a co-working space on a Saturday afternoon. What the fund pays for is the part nobody sees — the space, the coffee, the follow-up that turns a one-time afternoon into something people plan their month around.",
@@ -50,5 +48,11 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/donate.astro",
-  "description": "The impact band on the real page once quotes exist — the counterpart to the public-visitor scenario, where the collection is still empty and the band renders nothing at all. Both quotes are real entries with an affiliation and an event photo, and the second deliberately has no portrait: there is no photo on file for that member, and the card renders without one rather than borrowing a face that is not his. The band is ordered FIRST here so the capture reaches it at all: the redesigned hero is 680px tall and fills the 900px desktop viewport, so a band in its natural sixth position would be several screens below the fold and this frame would be indistinguishable from every other /donate scenario. Even first, only the band's aqua ground and its teal kicker clear the fold — the quotes themselves are shown in the momentumtestimonials-photo-led-rows component scenario. The same framing choice the two-pillar-bands scenario documents."
+  "description": "The impact band on the real page once quotes exist — the counterpart to the public-visitor scenario, where the collection is still empty and the band renders nothing at all. It shows the two states a quote card has side by side: the first carries a real San Francisco event photo, and the second deliberately carries NEITHER a portrait nor an event photo, so its quote runs the full width of the card. That second state is the point — there is no photo on file for that member, and the event photo he used to have was a generic New York stage shot captioned as a Colorado event it was not from. The card renders honestly without either rather than borrowing a face and a place that are not his.\n\nThe frame is scrolled to the band with a hover interaction. It used to rely on seeding the band into first position instead, and that stopped working: the hero is now rendered unconditionally at the top, so ordering can no longer lift anything above it and the capture was silently showing the hero — indistinguishable from every other /donate scenario.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": ".rows"
+    }
+  ]
 }

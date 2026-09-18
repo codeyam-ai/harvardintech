@@ -1,7 +1,7 @@
 ---
 blurb: Alumni across Seattle and the Pacific Northwest — a WhatsApp group today, a chapter as soon as someone steps up to lead it.
 city: Seattle / Pacific Northwest
-heroImage: /images/gallery/event-27.jpg
+showGallery: false
 region: Seattle, WA
 status: forming
 tagline: A Harvard Alumni in Tech chapter forming across the Pacific Northwest.

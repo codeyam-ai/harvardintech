@@ -316,6 +316,24 @@
     ]
   },
   {
+    "description": "Drop-in replacement for a raw img tag on images served from public/: adds srcset, sizes, intrinsic width/height and decoding=async when the build step produced width variants, and degrades to exactly the previous plain img when it did not.",
+    "filePath": "src/components/ResponsiveImg.astro",
+    "name": "ResponsiveImg",
+    "scenarios": [
+      "responsiveimg-serves-a-photo-with-its-srcset"
+    ]
+  },
+  {
+    "description": "The favicon and apple-touch-icon link tags, included by HeadExtras so every shell gets them. Its own component because it is the one place the site's mark appears outside the page body — the file that changes if the Veritas shield question is ever settled.",
+    "filePath": "src/components/SiteIcons.astro",
+    "name": "SiteIcons",
+    "testFile": "src/lib/siteIcons.test.ts",
+    "untestabilityReason": {
+      "justification": "Renders only two <link> elements into <head>, so it has no rendered output at all — a capture of it would be a blank frame, which would assert nothing. There is no branching and no prop surface: both hrefs are constants passed through withBase. What it actually delivers is guarded on disk by src/lib/siteIcons.test.ts, which checks the favicon and apple-touch icon exist, are the right size, and are no longer the scaffold placeholder.",
+      "kind": "trivial-wrapper"
+    }
+  },
+  {
     "description": "The floating pill mounted in AdminLayout, so it rides along on every admin page: it counts the browser staging set, opens the review drawer, commits every staged file as one commit, and owns the deploy watch. The watch lives in its own state beside the publish flow rather than being a phase of it, which is what allows publishing again while a deploy is still in flight.",
     "filePath": "node_modules/@codeyam/cms/src/components/admin/StagingBar.tsx",
     "name": "StagingBar",
@@ -386,6 +404,12 @@
     "tags": [
       "webinars"
     ]
+  },
+  {
+    "description": "Resolves a share-image path to an absolute URL for og:image and twitter:image, which crawlers refuse to resolve relatively. Unlike canonicalFor it KEEPS the deploy's base path, because a share image must name where the file is fetchable rather than where the page is advertised.",
+    "filePath": "src/lib/seo.ts",
+    "name": "absoluteImageUrl",
+    "testFile": "src/lib/seo.test.ts"
   },
   {
     "description": "The alt text to render for a site-relative image URL, resolved from the media library manifest with the render site's current value as the fallback. Adopting it can never make an image's alt worse than it was: an image with no record, or a record nobody has written alt for, keeps what the component already emitted. An explicit empty string in the manifest is a real answer — 'this image is decorative' — and wins over the fallback via `??` rather than collapsing under a truthiness check, which is the distinction the whole media-manifest feature rests on.",
@@ -1153,6 +1177,12 @@
     }
   },
   {
+    "description": "The measured width and height recorded for a source image, used to set width/height on the tag so the browser reserves layout space before the bytes arrive. media.json cannot supply this — it records only sizeBytes.",
+    "filePath": "src/lib/responsiveImage.ts",
+    "name": "intrinsicSize",
+    "testFile": "src/lib/responsiveImage.test.ts"
+  },
+  {
     "description": "Decides whether a Content Hub channel is a route INTO the blog, so the Content Hub can drop it while the blog is hidden for launch. True for the blog index and for any individual post path; false for the external channels (Medium, LinkedIn, the newsletter) that must survive the hiding, and false for a different route whose name merely begins with the same letters. It matches on the PATH rather than the label because `channels` is a CMS-editable prop: a label-based rule would silently stop hiding the card the moment an editor renamed it.",
     "filePath": "src/lib/blogVisibility.ts",
     "name": "isBlogChannel",
@@ -1413,6 +1443,15 @@
     "testFile": "src/lib/archiveImporters.test.ts"
   },
   {
+    "description": "Entry point of the responsive-image build step: walks public/images, writes 640/1280/1920 WebP variants for anything wide enough, and emits the manifest the srcset helper reads. Guarded so it runs only when the script is executed directly, never on import.",
+    "filePath": "scripts/responsive-images.mjs",
+    "name": "main",
+    "untestabilityReason": {
+      "justification": "Orchestration only: it walks the image tree, calls sharp per variant, and writes the manifest, all of which are covered by walk and newerThan (src/lib/responsiveImagesScript.test.ts) and by srcsetFor reading the manifest back (src/lib/responsiveImage.test.ts). A test of main would be the build step run a second time, with no assertion those three do not already make.",
+      "kind": "trivial-wrapper"
+    }
+  },
+  {
     "description": "Drives the whole snapshot: reads each page (from the network, or from saved HTML with --from), parses its store, downloads every image and thumbnail, and writes the manifest. Returns ok:false rather than exiting so it stays importable. Drives its event loop from whichever of the home/events lists actually loaded, so a page that failed to fetch costs only what that page uniquely held rather than the entire archive.",
     "filePath": "scripts/snapshot-strikingly.mjs",
     "name": "main",
@@ -1522,6 +1561,12 @@
     "filePath": "src/lib/momentumNetwork.ts",
     "name": "networkViewBox",
     "testFile": "src/lib/momentumNetwork.test.ts"
+  },
+  {
+    "description": "True when a generated variant is at least as new as the image it came from. This is what makes the build incremental: a variant that is still fresh is left alone, and a missing one reports false rather than throwing, which is the first-run case on a clean clone.",
+    "filePath": "scripts/responsive-images.mjs",
+    "name": "newerThan",
+    "testFile": "src/lib/responsiveImagesScript.test.ts"
   },
   {
     "description": "The gallery index `delta` steps from `current`, wrapping at both ends. Wraps rather than clamps because a lightbox is a carousel, not a list: arrowing past the last photo should reach the first, and a disabled arrow at each end is a dead control the user has to notice. Returns 0 for an empty gallery so a caller cannot index into nothing, and normalizes the negative modulo that a naive expression would produce going backwards off the front.",
@@ -1768,6 +1813,12 @@
     "filePath": "src/lib/media.ts",
     "name": "readMediaManifest",
     "testFile": "src/lib/media.test.ts"
+  },
+  {
+    "description": "Reads the gitignored responsive-image manifest off disk once per process, returning an empty manifest when it is absent. Kept separate from responsiveImage.ts so that module stays pure and filesystem-free.",
+    "filePath": "src/lib/responsiveManifest.ts",
+    "name": "readResponsiveManifest",
+    "testFile": "src/lib/responsiveImage.test.ts"
   },
   {
     "description": "Reads and JSON-parses one singleton data file from the resolved dataRoot(), so every singleton read honours the codeyam sandbox redirect. Moved here from site.ts and de-duplicated when cutoverProgress.ts grew a second identical private copy - two implementations of respecting the sandbox is how one of them ends up not respecting it. Server-only: it touches the filesystem at call time.",
@@ -2137,6 +2188,12 @@
     "testFile": "src/lib/pageCopyMerge.test.ts"
   },
   {
+    "description": "Builds the srcset string for an image from the build-time variant manifest, prefixed with the deploy base. Returns null for SVGs, unknown files, or a missing manifest, so the caller falls back to a plain img.",
+    "filePath": "src/lib/responsiveImage.ts",
+    "name": "srcsetFor",
+    "testFile": "src/lib/responsiveImage.test.ts"
+  },
+  {
     "description": "Extracts the $S.stores object embedded in a rendered Strikingly page, by brace-depth scan rather than regex because the JSON contains braces inside strings. Returns null when the marker is absent, distinguishing a non-Strikingly page from an empty one.",
     "filePath": "src/lib/strikinglyArchive.js",
     "name": "storeFromHtml",
@@ -2323,6 +2380,18 @@
     }
   },
   {
+    "description": "Where the width variant for a source image lives under public/images/_r/. Shared by the build script that writes the files and the srcset helper that reads them back, so the two cannot drift into naming different files.",
+    "filePath": "src/lib/responsiveImageVariants.mjs",
+    "name": "variantPath",
+    "testFile": "src/lib/responsiveImage.test.ts"
+  },
+  {
+    "description": "Which responsive width variants are worth rendering for an image of a given intrinsic width — strictly narrower ones only, so a small source is never upscaled into a larger file that looks no better.",
+    "filePath": "src/lib/responsiveImageVariants.mjs",
+    "name": "variantWidths",
+    "testFile": "src/lib/responsiveImage.test.ts"
+  },
+  {
     "description": "The video host that claims a URL, or null when none does. A table lookup rather than a chain of conditionals, so the snapshot stays a bare fetch-and-hand-off and a fourth host is data rather than another branch in a script no test can reach.",
     "filePath": "src/lib/strikinglyArchive.js",
     "name": "videoProviderFor",
@@ -2336,6 +2405,12 @@
     "filePath": "src/lib/gallery.ts",
     "name": "visibleGalleryPhotos",
     "testFile": "src/lib/gallery.test.ts"
+  },
+  {
+    "description": "Recursively lists every raster image under a directory for the responsive-image build step, skipping any directory named _r so the build never feeds its own generated variants back in as sources.",
+    "filePath": "scripts/responsive-images.mjs",
+    "name": "walk",
+    "testFile": "src/lib/responsiveImagesScript.test.ts"
   },
   {
     "description": "Reads the webinar list off the old webinars page, pairing each write-up with its video URL, derived player URL and provider thumbnail. Only the first recording carried a title, which is why the importer names the rest by hand.",

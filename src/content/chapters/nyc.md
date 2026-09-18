@@ -1,16 +1,13 @@
 ---
 blurb: Our founding chapter and largest community.
 city: New York City
-heroImage: /images/chapters/nyc.jpg
+heroImage: /images/bg/get-involved-bg.jpg
 photos:
   - image: /images/gallery/event-01.jpg
   - image: /images/gallery/event-03.jpg
-  - image: /images/gallery/event-07.jpg
-  - image: /images/gallery/event-09.jpg
-  - image: /images/gallery/event-11.jpg
   - image: /images/gallery/event-14.jpg
   - image: /images/gallery/event-16.jpg
-  - image: /images/gallery/event-19.jpg
+  - image: /images/gallery/event-04.jpg
   - image: /images/gallery/event-22.jpg
   - image: /images/gallery/event-25.jpg
   - image: /images/gallery/event-28.jpg

@@ -1,0 +1,66 @@
+---
+// A plain <img> plus a srcset, when the build step has variants for it.
+//
+// Drop-in for the raw <img> tags that render photos out of `public/images`. The
+// markup and inline styles are passed straight through, so swapping a call site
+// changes the bytes a phone downloads and nothing about the layout.
+//
+// When there is no manifest (a plain `astro dev`, or a build where the script
+// did not run) `srcset` and `sizes` are simply omitted and this renders exactly
+// the <img> the site shipped before. That fallback is the point: the responsive
+// pipeline is an optimisation, never a dependency.
+import { withBase } from '../lib/url';
+import { srcsetFor, intrinsicSize } from '../lib/responsiveImage';
+import { readResponsiveManifest } from '../lib/responsiveManifest';
+
+interface Props {
+  src: string;
+  alt: string;
+  /** `eager` for anything above the fold (heroes); `lazy` everywhere else. */
+  loading?: 'eager' | 'lazy';
+  /** Maps viewport width to rendered width. Defaults to full-bleed. */
+  sizes?: string;
+  class?: string;
+  style?: string;
+  width?: number;
+  height?: number;
+  /** Anything else (`data-parallax`, `id`, …) is forwarded to the <img> verbatim. */
+  [key: string]: unknown;
+}
+
+const {
+  src,
+  alt,
+  loading = 'lazy',
+  sizes = '100vw',
+  class: className,
+  style,
+  width,
+  height,
+  ...rest
+} = Astro.props;
+
+const manifest = await readResponsiveManifest();
+const srcset = srcsetFor(src, manifest, import.meta.env.BASE_URL);
+
+// Intrinsic dimensions reserve the space before the bytes land, which is most of
+// the layout shift on a photo-heavy page. The build step measured them; a caller
+// may still override, and in dev (no manifest) they are simply absent.
+const intrinsic = intrinsicSize(src, manifest);
+const finalWidth = width ?? intrinsic?.width;
+const finalHeight = height ?? intrinsic?.height;
+---
+
+<img
+  src={withBase(src)}
+  srcset={srcset ?? undefined}
+  sizes={srcset ? sizes : undefined}
+  alt={alt}
+  loading={loading}
+  decoding="async"
+  width={finalWidth}
+  height={finalHeight}
+  class={className}
+  style={style}
+  {...rest}
+/>

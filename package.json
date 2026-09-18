@@ -7,7 +7,7 @@
     "setup": "npm install",
     "postinstall": "patch-package && playwright install chromium",
     "dev": "astro dev --host 127.0.0.1",
-    "build": "astro check && astro build",
+    "build": "node scripts/responsive-images.mjs && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
@@ -28,6 +28,7 @@
     "@types/react-dom": "^19",
     "jsdom": "^25.0.1",
     "patch-package": "^8.0.1",
+    "sharp": "^0.34.5",
     "playwright": "^1.58.2",
     "typescript": "^5",
     "vitest": "^3"

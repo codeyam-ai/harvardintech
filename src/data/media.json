@@ -4,25 +4,13 @@
       "filename": "bg/get-involved-bg.jpg",
       "url": "/images/bg/get-involved-bg.jpg",
       "alt": "",
-      "sizeBytes": 488543
+      "sizeBytes": 289061
     },
     {
       "filename": "bg/hero-bg.jpg",
       "url": "/images/bg/hero-bg.jpg",
       "alt": "",
-      "sizeBytes": 604793
-    },
-    {
-      "filename": "chapters/japan.jpg",
-      "url": "/images/chapters/japan.jpg",
-      "alt": "Shibuya Crossing in Tokyo at dusk, crowds streaming across beneath illuminated billboards",
-      "sizeBytes": 750751
-    },
-    {
-      "filename": "chapters/la.jpg",
-      "url": "/images/chapters/la.jpg",
-      "alt": "The downtown Los Angeles skyline at sunset, seen through rows of tall palm trees",
-      "sizeBytes": 83200
+      "sizeBytes": 331521
     },
     {
       "filename": "chapters/nyc.jpg",
@@ -31,16 +19,64 @@
       "sizeBytes": 31143
     },
     {
-      "filename": "chapters/san-francisco.jpg",
-      "url": "/images/chapters/san-francisco.jpg",
-      "alt": "The Golden Gate Bridge at dusk with the San Francisco skyline across the bay",
-      "sizeBytes": 297523
+      "filename": "events/founders-panel-mic.webp",
+      "url": "/images/events/founders-panel-mic.webp",
+      "alt": "A speaker holding a microphone beside the moderator at a Harvard in Tech Founders panel",
+      "sizeBytes": 103566
     },
     {
-      "filename": "gallery/hit-bod.webp",
-      "url": "/images/gallery/hit-bod.webp",
-      "alt": "Black-and-white headshot portrait of a woman with long dark hair against a plain light background",
-      "sizeBytes": 3392
+      "filename": "events/founders-portrait-pair.webp",
+      "url": "/images/events/founders-portrait-pair.webp",
+      "alt": "Two attendees smiling at a Harvard in Tech Founders event",
+      "sizeBytes": 103088
+    },
+    {
+      "filename": "events/founders-reception-trio.webp",
+      "url": "/images/events/founders-reception-trio.webp",
+      "alt": "Three attendees talking at a crowded Harvard in Tech Founders reception",
+      "sizeBytes": 93944
+    },
+    {
+      "filename": "events/founders-summit-pair.webp",
+      "url": "/images/events/founders-summit-pair.webp",
+      "alt": "Two attendees in front of the speaker slide at a Harvard in Tech Founders event",
+      "sizeBytes": 67012
+    },
+    {
+      "filename": "events/sf-attendees-phone.webp",
+      "url": "/images/events/sf-attendees-phone.webp",
+      "alt": "Three attendees looking at a phone together at a Harvard in Tech San Francisco event",
+      "sizeBytes": 173192
+    },
+    {
+      "filename": "events/sf-attendees-square.webp",
+      "url": "/images/events/sf-attendees-square.webp",
+      "alt": "Two attendees smiling at a Harvard in Tech San Francisco event, cropped square",
+      "sizeBytes": 64736
+    },
+    {
+      "filename": "events/sf-attendees-three.webp",
+      "url": "/images/events/sf-attendees-three.webp",
+      "alt": "Three attendees smiling together at a Harvard in Tech San Francisco event",
+      "sizeBytes": 165800
+    },
+    {
+      "filename": "events/sf-attendees-two.webp",
+      "url": "/images/events/sf-attendees-two.webp",
+      "alt": "Two attendees smiling at a Harvard in Tech San Francisco event",
+      "sizeBytes": 115942
+    },
+    {
+      "filename": "events/sf-event-room.webp",
+      "url": "/images/events/sf-event-room.webp",
+      "alt": "Attendees seated for a talk in a brick-walled loft with tall windows at a Harvard in Tech San Francisco event",
+      "sizeBytes": 148396
+    },
+    {
+      "filename": "events/sf-group-brick-wall.webp",
+      "url": "/images/events/sf-group-brick-wall.webp",
+      "alt": "Seven attendees standing together along a brick wall at a Harvard in Tech San Francisco event",
+      "sizeBytes": 125780
     },
     {
       "filename": "gallery/91e99da2-9e81-4620-815f-0fc1f87c9eb9-1-105-c.webp",
@@ -73,12 +109,6 @@
       "url": "/images/gallery/event-04.jpg",
       "alt": "A packed room of attendees smiling toward the stage during a Harvard Alumni in Tech talk",
       "sizeBytes": 24993
-    },
-    {
-      "filename": "gallery/event-05.jpg",
-      "url": "/images/gallery/event-05.jpg",
-      "alt": "Four panelists seated in yellow chairs listening during a Harvard Alumni in Tech panel",
-      "sizeBytes": 24231
     },
     {
       "filename": "gallery/event-06.jpg",
@@ -157,12 +187,6 @@
       "url": "/images/gallery/event-18.jpg",
       "alt": "A large audience seated in an open-plan office space watching a presentation",
       "sizeBytes": 30544
-    },
-    {
-      "filename": "gallery/event-19.jpg",
-      "url": "/images/gallery/event-19.jpg",
-      "alt": "A packed room of attendees smiling toward the stage during a Harvard Alumni in Tech talk",
-      "sizeBytes": 24993
     },
     {
       "filename": "gallery/event-20.jpg",
@@ -291,6 +315,12 @@
       "sizeBytes": 20988
     },
     {
+      "filename": "gallery/hit-bod.webp",
+      "url": "/images/gallery/hit-bod.webp",
+      "alt": "Black-and-white headshot portrait of a woman with long dark hair against a plain light background",
+      "sizeBytes": 3392
+    },
+    {
       "filename": "harvard-shield.png",
       "url": "/images/harvard-shield.png",
       "alt": "",
@@ -303,16 +333,16 @@
       "sizeBytes": 116263
     },
     {
+      "filename": "og/default.jpg",
+      "url": "/images/og/default.jpg",
+      "alt": "Harvard Alumni in Tech default share card",
+      "sizeBytes": 120036
+    },
+    {
       "filename": "sections/board-logo.png",
       "url": "/images/sections/board-logo.png",
       "alt": "Harvard Alumni in Tech",
       "sizeBytes": 7754
-    },
-    {
-      "filename": "sections/board-wordmark.png",
-      "url": "/images/sections/board-wordmark.png",
-      "alt": "Board of Directors",
-      "sizeBytes": 11002
     },
     {
       "filename": "sections/board.png",
@@ -325,66 +355,6 @@
       "url": "/images/sections/whatsapp-banner.jpg",
       "alt": "Join our community on WhatsApp",
       "sizeBytes": 30163
-    },
-    {
-      "filename": "sections/whatsapp.jpeg",
-      "url": "/images/sections/whatsapp.jpeg",
-      "alt": "Join our community on WhatsApp",
-      "sizeBytes": 30163
-    },
-    {
-      "filename": "social/email.jpg",
-      "url": "/images/social/email.jpg",
-      "alt": "",
-      "sizeBytes": 2510
-    },
-    {
-      "filename": "social/facebook.png",
-      "url": "/images/social/facebook.png",
-      "alt": "",
-      "sizeBytes": 1066
-    },
-    {
-      "filename": "social/linkedin.svg",
-      "url": "/images/social/linkedin.svg",
-      "alt": "",
-      "sizeBytes": 428
-    },
-    {
-      "filename": "social/twitter.png",
-      "url": "/images/social/twitter.png",
-      "alt": "",
-      "sizeBytes": 2331
-    },
-    {
-      "filename": "support/briefcase.png",
-      "url": "/images/support/briefcase.png",
-      "alt": "Briefcase icon",
-      "sizeBytes": 2892
-    },
-    {
-      "filename": "support/chat.png",
-      "url": "/images/support/chat.png",
-      "alt": "Speech bubble icon",
-      "sizeBytes": 3903
-    },
-    {
-      "filename": "support/quote.png",
-      "url": "/images/support/quote.png",
-      "alt": "Quotation mark icon",
-      "sizeBytes": 3784
-    },
-    {
-      "filename": "support/star.png",
-      "url": "/images/support/star.png",
-      "alt": "Star icon",
-      "sizeBytes": 3571
-    },
-    {
-      "filename": "support/trophy.png",
-      "url": "/images/support/trophy.png",
-      "alt": "Trophy icon",
-      "sizeBytes": 4550
     },
     {
       "filename": "team/ben-wei.png",
@@ -415,15 +385,6 @@
       "url": "/images/team/peter-boyce.png",
       "alt": "Peter Boyce",
       "sizeBytes": 8558
-    },
-    {
-      "filename": "volunteers.webp",
-      "url": "/images/volunteers.webp",
-      "sizeBytes": 126240,
-      "originalSizeBytes": 2091397,
-      "width": 1200,
-      "height": 1200,
-      "alt": "Four smiling volunteers in red VOLUNTEER sweatshirts standing arm in arm outdoors, two holding rubbish bags after a community clean-up"
     },
     {
       "filename": "untitled-design-4.webp",

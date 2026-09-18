@@ -40,10 +40,14 @@ interface Props {
   kicker?: string;
 }
 
-const defaults = Array.from(
-  { length: 40 },
-  (_, i) => `/images/gallery/event-${String(i + 1).padStart(2, '0')}.jpg`,
-);
+// 38, not 40: event-05 was byte-identical to event-03 and event-19 to event-04,
+// so the wall showed two photos twice. The duplicates are deleted rather than
+// reordered, so this list is the source of truth for what exists on disk.
+const DUPLICATE_TILES = new Set([5, 19]);
+
+const defaults = Array.from({ length: 40 }, (_, i) => i + 1)
+  .filter((n) => !DUPLICATE_TILES.has(n))
+  .map((n) => `/images/gallery/event-${String(n).padStart(2, '0')}.jpg`);
 
 const {
   photos,

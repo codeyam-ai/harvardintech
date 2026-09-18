@@ -4,13 +4,14 @@ name: Jessica Li
 affiliation: Harvard University Alumni · Class of 2019
 role: San Francisco Event Lead
 photo: /images/team/jessica-li.png
-eventPhoto: /images/gallery/event-07.jpg
-eventCaption: Leaders in Engineering · San Francisco
+eventPhoto: /images/events/sf-attendees-three.webp
+eventCaption: Harvard in Tech · San Francisco
 order: 1
 ---
 
 A member quote for the /donate impact band.
 
-The event photo is a PLACEHOLDER from the general gallery, not a picture of this
-event — swap it for a real San Francisco photo when one is available, using the
-Event photo box.
+The event photo is a real San Francisco event photo, sourced from the marketing
+team's Website Images folder. The caption names the chapter rather than a specific
+event, because nobody has confirmed which SF event this frame is from — if you know,
+tighten the caption using the Event caption box.

@@ -1,7 +1,7 @@
 ---
 blurb: Alumni across DC, Maryland and Virginia — a WhatsApp group today, a chapter as soon as someone steps up to lead it.
 city: DC and DMV Area
-heroImage: /images/gallery/event-18.jpg
+showGallery: false
 region: Washington, DC
 status: forming
 tagline: A Harvard Alumni in Tech chapter forming across the Washington metro area.

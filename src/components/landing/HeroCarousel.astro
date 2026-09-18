@@ -10,6 +10,7 @@
 // Slides are a prop so a scenario can seed "one slide" vs "three slides" and
 // the CMS can edit copy later; the defaults reproduce the approved Atlas board.
 import { withBase } from '../../lib/url';
+import ResponsiveImg from '../ResponsiveImg.astro';
 
 // Everything but the headline is optional, matching the `heroSlides` collection
 // the homepage now feeds this from: a slide an editor has only half filled in
@@ -73,7 +74,16 @@ const {
          a single pixel. */
       slides.map((slide, i) => (
         <div class="slide">
-          {slide.image ? <img class="pho" src={withBase(slide.image)} alt="" /> : null}
+          {
+            slide.image ? (
+              <ResponsiveImg
+                class="pho"
+                src={slide.image}
+                alt=""
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            ) : null
+          }
           <div class="scrim" />
           <div class="intro-in">
             {slide.kicker ? <span class="kick" style="color:#fff">{slide.kicker}</span> : null}

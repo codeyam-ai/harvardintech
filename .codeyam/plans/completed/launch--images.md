@@ -29,6 +29,41 @@ Re-verified on disk on 2026-09-14:
 - `SEO.astro` outputs `og:image` exactly as passed, so a relative `/images/...` path goes out as-is.
 - No Alumni Day photo exists in the repo. The only match is the Luma listing `src/content/events/2026-06-05-harvard-alumni-in-tech-alumni-day-meetup-in-cambridge-ma.md`, which has no image.
 
+## Owner decisions (2026-09-18, at the confirm gate)
+
+- **Plan approved** — prototyping starts with the Part A content swaps.
+- **Q2 (duplicate tiles): YES.** Drop `event-05` and `event-19` from the homepage wall, taking it from 40 tiles to 38 (E3).
+- **Q1 (sponsor photo): SUPERSEDED.** The owner did not pick either offered option. Their answer: *"You have access to the drive with photos; I want sharp real photos that are visually distinct."*
+  - So the sponsor banner does NOT reuse Jessica's testimonial photo, and it does not keep `event-13` either.
+  - Instead, source real photos from Nicole's shared Drive folder **"Website Images"** (`14OXfiC4i1U_IAHA9ClM2AT0xpXiflGy6`, shared 2026-09-16), and give each surface a visually distinct one.
+  - Folder contents as of 2026-09-18: 17 PNGs, 2.8-11 MB each - `SF Engineering Panel`, `SF Attendees` x5, `SF` / `SF (1)` / `SF (2)`, `Campus` / `Campus (1)`, `Founders` x3 + `Founder`, `Untitled design (4)`. Two of the `SF Attendees` files share a byte size and are probably duplicates.
+  - **Consequence for Part A:** A is no longer "content edits only; no new files". Importing these adds files under `public/images/` plus `media.json` records. The A steps that pointed at existing repo files are re-pointed at imported Drive photos where one is a better fit, and each surface must get a DIFFERENT photo.
+
+### Drive sourcing outcome (2026-09-18)
+
+Downloaded to `scratchpad/drive/img/`, ready to import. **All ten are 3300x1856 (16:9)** - above the 2400px Nicole targeted, and already banner geometry.
+
+| # | File | What it shows | Best use |
+|---|---|---|---|
+| 1 | `Founder__1Pn6AZ` | Two men in front of a Founders speaker slide (Polli / Peeler / Altchek); the harvardintech handle is visible | Founders community |
+| 2 | `Founders__1ct2K4` | Speaker with a mic beside a moderator, panel slide behind; dimmer | Founders, second choice |
+| 3 | `Founders__1d6YzT` | Three people smiling at a crowded reception, lots of life behind them | /donate closing band |
+| 4 | `Founders__1pA4oR` | Two men, warm close portrait | testimonial / portrait slot |
+| 5 | `SF_1__1LGKfx` | Seven women lined up along a brick wall, bright and sharp | SF chapter banner |
+| 6 | `SF_Attendees__1VzJwT` | Tight close-up of two women | portrait slot, NOT a banner |
+| 7 | `SF_Attendees__1f93Bj` | Three women, close crop | portrait slot |
+| 8 | `SF__1QXttk` | **Wide room shot** - seated audience, brick, tall windows, plants | /sponsor banner (best banner in the set) |
+| 9 | `SF_attendees__1XfMS6` | Three women around a phone, candid | give collage |
+| 10 | `Untitled_design_4__1E7Uq1` | Stage panel, eight seated, SUMMER SOCIAL 2016 slide | wide banner, but dated 2016 |
+
+**Six files could NOT be fetched** - the Drive connector hard-caps downloads at 10 MB and reliably times out above ~5.3 MB:
+- `SF Engineering Panel` (6.99 MB) - wanted for Jessica Li's testimonial. Fall back to the repo's existing `gallery/91e99da2-...webp` (1024x768), as originally planned.
+- `Campus.png` (11.19 MB, over the hard cap) and `Campus (1).png` (8.93 MB) - these are Harvard campus shots and would have been the **ideal Boston/Cambridge banner**. Boston therefore keeps `bg/hero-bg.jpg` per A9.
+- `SF (2).png` (9.17 MB), `SF Attendees` (10.15 MB), `SF Attendees` (8.19 MB).
+- To get these, someone must re-export them under ~5 MB into the same folder, or attach them directly.
+
+**Discipline note:** every downloadable photo is from an SF or Founders event. They may go on SF surfaces and on non-geographic surfaces (sponsor, donate, give, communities). Putting one on Boston, DC, Seattle, London or NYC would recreate the exact wrong-city problem this plan exists to fix - those keep the text header per A8.
+
 ## Owner decisions (2026-09-14)
 
 - **Quick image fixes: Plan it.** Note on Mohammed Ally's testimonial: "For the photo - why is it miscaptioned? We should have a photo of him if possible?"
@@ -251,3 +286,176 @@ Content edits don't make screenshots go stale, so recapture with `--target --for
 - Changing the CMS upload pipeline (`node_modules/@codeyam/cms/src/lib/imageCompression.ts`) or moving the library into `astro:assets`.
 - Video (`public/videos/`), the design-review mockups under `public/design-review-4ece6c14/`, and `public/donor-network.html`.
 - Re-shooting or retouching photos. B asks people for them; this plan does not produce them.
+
+## Build log — Part A complete (2026-09-18)
+
+Nine photos imported from Nicole's Drive folder into `public/images/events/` as WebP,
+2048px on the long edge, 65-176 KB each, all registered in `media.json` with real alt text.
+
+**Banner crops.** The first import at a straight 16:9 rendered *badly*: the hero band is far
+wider than 16:9, so it cropped to the ceiling of the room and showed ductwork instead of
+people. The three full-bleed banners are therefore re-cropped to 2.4:1 using sharp's
+attention strategy, which centres the subject. Anything that later becomes a hero needs the
+same treatment — a plain 16:9 resize is not enough.
+
+Placed, each surface getting a different photo:
+- `/sponsor` hero -> `events/sf-event-room.webp` (speaker + seated room)
+- `/chapters/sf-bay-area` hero -> `events/sf-group-brick-wall.webp`
+- `/communities/founders` hero -> `events/founders-summit-pair.webp`
+- `/donate` closing band -> `events/founders-reception-trio.webp`
+- Jessica Li's testimonial -> `events/sf-attendees-three.webp`, caption relaxed to
+  "Harvard in Tech · San Francisco" because the specific SF event is still unconfirmed (Q3)
+
+Also done: Mohammed Ally's placeholder photo and caption removed; `/chapters/nyc` re-pointed
+at `bg/get-involved-bg.jpg` with the three 200px tiles dropped; `showGallery: false` on
+Boston, DC, London, Seattle, SF and both communities; `heroImage` cleared on DC, Seattle,
+London and AI so they render the text header; Boston keeps the campus facade with a comment
+naming the swap; give collage `event-05` -> `event-21`; `hero-bg.jpg` 591->324 KB and
+`get-involved-bg.jpg` 477->282 KB re-encoded; `media.json` byte sizes resynced.
+
+### Two traps worth remembering
+
+1. **The JSON wins over the markdown.** Editing only `sponsor.md` changed nothing —
+   `src/data/sponsorPage.json` is what renders. Both must be edited, as the plan said.
+2. **The content sandbox masks content edits.** `.codeyam/tmp/content-sandbox-active/` held a
+   stale snapshot and kept serving `event-13` through two dev-server restarts. It had to be
+   deleted (backed up to the scratchpad first) before edits appeared. After any `src/content`
+   or `src/data` edit: clear that directory, then restart the dev server — HMR alone does not
+   do it, and the preview will lie to you convincingly until you do.
+
+### Correction to Part E
+
+E1 says delete `chapters/nyc.jpg` once A re-points the NYC hero. **Do not** — it is still a
+fixture in four isolated-component pages (`VolunteerProjects`, `VolunteerProjectCard`,
+`VolunteerProjectThumb`, `[name].astro`). It was dropped from A10's re-encode list too.
+
+*(Correction to the sentence that stood here earlier: `chapters/san-francisco.jpg` was NOT
+"genuinely unused" — it was also a fixture in `[name].astro`. It only became safe to delete
+after that fixture was re-pointed at the new SF photo, which Part E below does.)*
+
+## Build log — Parts C, D and E complete (2026-09-18)
+
+**Part C — share and icon kit.** `src/lib/seo.ts` adds `absoluteImageUrl`, and `SEO.astro`
+now emits absolute `og:image` / `twitter:image` for *every* page (a default card when the page
+names none), plus `og:image:width/height` and an unconditional `summary_large_image`.
+`public/images/og/default.jpg` is a 1200x630 attention crop of the get-involved background,
+interim until the designer's card. `favicon.svg` is a crimson HIT monogram — deliberately not
+the shield, so the tab does not wait on the HAA — with a 180x180 `apple-touch-icon.png`
+rendered from it; both are linked from `HeadExtras.astro`, which every shell includes.
+
+The one thing to know about `absoluteImageUrl`: it deliberately does **not** reuse
+`canonicalFor`. A canonical URL names where a page is *advertised* (harvardintech.com) and
+strips the base path; a share image must name where the file is *fetchable*, which until the
+cutover is `codeyam-ai.github.io/harvardintech/`. Verified against the deploy env: production
+emits `https://codeyam-ai.github.io/harvardintech/images/og/default.jpg`. In dev it shows
+harvardintech.com only because `PAGES_SITE` is unset there.
+
+C6 was already half-done — `ChapterConnect` uses `brandIcon()` and `socialIcon.ts` was gone.
+Only the four teal PNGs remained; they are deleted.
+
+**Part D — responsive images.** `scripts/responsive-images.mjs` renders 640/1280/1920 WebP
+variants into `public/images/_r/` and writes `src/data/responsiveImages.json`; both gitignored,
+and `npm run build` runs the script first. `responsiveImage.ts` is the pure half (srcset +
+intrinsic size), `responsiveManifest.ts` reads the file, `ResponsiveImg.astro` renders the tag
+and forwards unknown props (`Hero.astro` needs `data-parallax` to survive). Swapped in at
+ChapterHero, landing Hero + HeroCarousel, GalleryTile, SponsorHero, GivePhoto and
+donate/TestimonialCard.
+
+The manifest carries `{width, height, variants}` rather than the plan's bare width list,
+because `media.json` records only `sizeBytes` and the tag needs intrinsic dimensions to
+reserve layout space. The build step already pays for the `metadata()` call.
+
+Measured: the hero's 640px variant is 43 KB against 324 KB for the original — about 7x less
+on a phone. Everything degrades to a plain `<img>` when the manifest is absent, which is the
+normal state in dev.
+
+**Part E — cleanup.** Eleven files deleted, each guarded by a reference check first:
+`board-wordmark.png`, `la.jpg`, `japan.jpg`, `san-francisco.jpg`, the five `support/*.png`,
+and the two duplicate tiles. The homepage wall is 38. The duplicates could be removed without
+any visual change because every reference was re-pointed at its byte-identical twin
+(`event-05` -> `event-03`, `event-19` -> `event-04`) — including three the plan did not
+list: `GalleryLightbox.astro`, the London fixture in `[name].astro`, and `nyc.md`'s own photo
+list. `media.json` is down to 71 entries; the support-icon fetches are out of
+`download-assets.mjs`; `src/data/imageCredits.json` carries all 71 rows (65 own-event,
+1 haa-permission, 5 unknown); and the unlicensed `volunteers.webp` is off the draft project
+entry. The HAA ask is drafted at `.codeyam/plans/haa-shield-permission-ask.md`.
+
+### Deferred at the prototype stage, DONE at the TDD step
+
+Deleting `sections/whatsapp.jpeg` and `volunteers.webp` was held back from Part E because
+both needed test-file edits, which are not allowed before the Demo gate. Both are now gone:
+
+- `whatsapp.jpeg` had one real reference, the fixture list in `landing-images.test.ts`,
+  re-pointed at `whatsapp-banner.jpg` exactly as E2 said.
+- `volunteers.webp` was harder than the plan assumed, and the plan's stated reason for
+  deleting it was not the blocking one. It is the only **square** image in the repo, and
+  three isolated-component pages use it deliberately: `VolunteerProjectPhoto` exists to
+  demonstrate the square case that the component's `max-height` bound was written for.
+  Deleting it outright would have removed the only fixture for that state. So a licensed
+  replacement was made instead — `events/sf-attendees-square.webp`, a 1152x1152 attention
+  crop of our own `sf-attendees-two.webp` — the three fixtures re-pointed at it, and only
+  then was the stock art deleted.
+  (The remaining `volunteers.webp` strings in `mediaCommitGuard.test.ts` and
+  `projects.test.ts` are synthetic fixture data for pure functions; they never touch disk.)
+
+The ledger is now 70 rows: 66 own-event, 1 haa-permission (the shield), and 3 `unknown` —
+all three `sections/*` fixtures that no content file references, which is what
+`imageCredits.test.ts` enforces.
+
+### Deleting an image is not finished when `src/` is clean
+
+Every deletion above was reference-checked against `src/` and `scripts/` first, and that
+still was not enough. `recapture-stale` then failed on four scenarios with
+`404 /images/gallery/event-19.jpg`, because **`.codeyam/scenarios/*.json` carry their own
+seed copies of the content** — a chapter's `heroImage`, a chapter's `photos` list — and those
+copies are not reached by a grep of the source tree.
+
+Twelve scenario files were pinning deleted images: nine on `event-05`/`event-19`, five on
+`chapters/san-francisco.jpg`, three on `volunteers.webp` (some overlapping). All were
+re-pointed the same way the source was — to the byte-identical twin, or to the licensed
+replacement — so no capture changes appearance.
+
+**So: before deleting any image, grep `.codeyam/scenarios/` as well as `src/`.** The failure
+does not appear at build time, at test time, or in `verify-images`; it appears much later as a
+capture failure, once the expensive recapture pass is already running.
+
+## Extraction plan (Deconstruct, 2026-09-18)
+
+1. **`src/components/SiteIcons.astro`** — extract the two `<link>` tags (favicon,
+   apple-touch-icon) out of `HeadExtras.astro`. That file is a composition-only
+   component — it assembles `PreviewGate`, `Analytics`, `StructuredData` and
+   `GivebutterWidgets` — and Part C added raw markup beside them. The icons are a
+   distinct concern and should be a sub-component like every other thing in there.
+
+2. **`src/lib/responsiveImageVariants.mjs`** — extract the shared variant contract.
+   This is the one with teeth. `scripts/responsive-images.mjs` (the WRITER) and
+   `src/lib/responsiveImage.ts` (the READER) each currently carry their own copy of
+   two things: the width list `[640, 1280, 1920]`, and the
+   `images/_r/<path>-<w>.webp` filename formula. Nothing ties them together. If
+   either drifts, every `srcset` on the site points at files the build never wrote —
+   and the failure is invisible: the HTML looks perfect, the `src` fallback still
+   loads, and only a network panel shows every candidate 404ing.
+   - Move `VARIANT_WIDTHS`, `variantWidths()` and `variantPath()` into a plain
+     `.mjs` so the node build script can import it directly.
+   - `responsiveImage.ts` imports and re-exports them, so its public API is
+     unchanged. `allowJs: true` (inherited from `astro/tsconfigs/base`, confirmed)
+     makes the `.ts` -> `.mjs` import legal.
+   - The script then imports the same module instead of redefining both.
+
+3. **No splits needed.** `ResponsiveImg.astro` renders a single `<img>` and is
+   already atomic. `SEO.astro` is a flat list of `<meta>` tags; splitting a meta
+   block into sub-components would add indirection with no seam behind it.
+
+4. **No page-file extraction needed.** This feature added no JSX to any page file —
+   the `src/pages/isolated-components/*` edits changed fixture data only.
+
+Already pure and correctly separated, nothing to do: `absoluteImageUrl` +
+`DEFAULT_OG_IMAGE*` (`seo.ts`); `srcsetFor`, `intrinsicSize` (`responsiveImage.ts`);
+`readResponsiveManifest` (`responsiveManifest.ts`, which exists precisely to keep the
+filesystem read out of the pure module).
+
+**Glossary registration owed** at `register-incremental`: `ResponsiveImg`, `SiteIcons`,
+`absoluteImageUrl`, `srcsetFor`, `variantWidths`, `variantPath`, `intrinsicSize`,
+`readResponsiveManifest`. Note in passing that `SEO`, `HeadExtras`, `GalleryTile` and
+`EventGallery` are all pre-existing and unregistered — pre-existing debt, called out
+here rather than folded into this cycle's scope.

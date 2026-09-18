@@ -9,5 +9,5 @@
   "componentName": "GalleryLightbox",
   "scenarioType": "component",
   "pageFilePath": "src/components/landing/GalleryLightbox.astro",
-  "description": "The viewer opened on a photo with no caption — the majority case, since the shared 40-photo set carries none. The figcaption stays hidden rather than rendering empty, so the photo sits over the backdrop with no band of dead space under it."
+  "description": "The viewer opened on a photo with no caption — the majority case, since the shared 38-photo set carries none. The figcaption stays hidden rather than rendering empty, so the photo sits over the backdrop with no band of dead space under it."
 }

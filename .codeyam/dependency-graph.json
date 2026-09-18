@@ -220,6 +220,14 @@
       "imports": [],
       "importedBy": []
     },
+    "scripts/responsive-images.mjs": {
+      "imports": [
+        "src/lib/responsiveImageVariants.mjs"
+      ],
+      "importedBy": [
+        "src/lib/responsiveImagesScript.test.ts"
+      ]
+    },
     "scripts/section-shot.mjs": {
       "imports": [],
       "importedBy": []
@@ -313,7 +321,8 @@
     "src/components/ChapterHero.astro": {
       "imports": [
         "src/components/ChapterHeader.astro",
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
       ],
       "importedBy": [
         "src/components/ChapterPage.astro",
@@ -536,7 +545,8 @@
         "src/components/GivebutterWidgets.astro",
         "src/components/PreviewGate.astro",
         "src/lib/site.ts",
-        "src/lib/integrationsContent.ts"
+        "src/lib/integrationsContent.ts",
+        "src/components/SiteIcons.astro"
       ],
       "importedBy": [
         "src/layouts/BaseLayout.astro",
@@ -637,15 +647,41 @@
         "src/components/HeadExtras.astro"
       ]
     },
+    "src/components/ResponsiveImg.astro": {
+      "imports": [
+        "src/lib/url.ts",
+        "src/lib/responsiveImage.ts",
+        "src/lib/responsiveManifest.ts"
+      ],
+      "importedBy": [
+        "src/components/ChapterHero.astro",
+        "src/components/give/GivePhoto.astro",
+        "src/components/sponsor/SponsorHero.astro",
+        "src/components/landing/Hero.astro",
+        "src/components/landing/GalleryTile.astro",
+        "src/components/landing/HeroCarousel.astro",
+        "src/components/donate/TestimonialCard.astro",
+        "src/pages/isolated-components/ResponsiveImg.astro"
+      ]
+    },
     "src/components/SEO.astro": {
       "imports": [
         "src/lib/site.ts",
-        "src/lib/canonicalUrl.ts"
+        "src/lib/canonicalUrl.ts",
+        "src/lib/seo.ts"
       ],
       "importedBy": [
         "src/layouts/BaseLayout.astro",
         "src/pages/cutover-runbook/[...path].astro",
         "src/pages/blog/[slug].astro"
+      ]
+    },
+    "src/components/SiteIcons.astro": {
+      "imports": [
+        "src/lib/url.ts"
+      ],
+      "importedBy": [
+        "src/components/HeadExtras.astro"
       ]
     },
     "src/components/SitePage.astro": {
@@ -1168,7 +1204,8 @@
     "src/components/donate/TestimonialCard.astro": {
       "imports": [
         "src/lib/media.ts",
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
       ],
       "importedBy": [
         "src/components/donate/MomentumTestimonials.astro",
@@ -1212,7 +1249,8 @@
     "src/components/give/GivePhoto.astro": {
       "imports": [
         "src/lib/media.ts",
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
       ],
       "importedBy": [
         "src/pages/give.astro",
@@ -1333,7 +1371,8 @@
     },
     "src/components/landing/GalleryTile.astro": {
       "imports": [
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
       ],
       "importedBy": [
         "src/components/landing/EventGallery.astro",
@@ -1361,7 +1400,8 @@
     },
     "src/components/landing/Hero.astro": {
       "imports": [
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
       ],
       "importedBy": [
         "src/pages/isolated-components/[name].astro"
@@ -1369,7 +1409,8 @@
     },
     "src/components/landing/HeroCarousel.astro": {
       "imports": [
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro",
@@ -1493,7 +1534,8 @@
     },
     "src/components/sponsor/SponsorHero.astro": {
       "imports": [
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
       ],
       "importedBy": [
         "src/components/SponsorPage.astro"
@@ -1901,6 +1943,10 @@
         "src/pages/index.astro",
         "src/pages/sponsor.astro"
       ]
+    },
+    "src/lib/contentImages.test.ts": {
+      "imports": [],
+      "importedBy": []
     },
     "src/lib/contentRoot.test.ts": {
       "imports": [
@@ -2360,6 +2406,10 @@
         "src/pages/index.astro"
       ]
     },
+    "src/lib/imageCredits.test.ts": {
+      "imports": [],
+      "importedBy": []
+    },
     "src/lib/integrationsContent.ts": {
       "imports": [
         "src/lib/pageCopyMerge.ts",
@@ -2737,6 +2787,45 @@
         "astro.config.mjs"
       ]
     },
+    "src/lib/responsiveImage.test.ts": {
+      "imports": [
+        "src/lib/responsiveImage.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveImage.ts": {
+      "imports": [
+        "src/lib/responsiveImageVariants.mjs",
+        "src/lib/responsiveImageVariants.mjs"
+      ],
+      "importedBy": [
+        "src/lib/responsiveManifest.ts",
+        "src/lib/responsiveImage.test.ts",
+        "src/components/ResponsiveImg.astro"
+      ]
+    },
+    "src/lib/responsiveImageVariants.mjs": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveImage.ts",
+        "src/lib/responsiveImage.ts",
+        "scripts/responsive-images.mjs"
+      ]
+    },
+    "src/lib/responsiveImagesScript.test.ts": {
+      "imports": [
+        "scripts/responsive-images.mjs"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveManifest.ts": {
+      "imports": [
+        "src/lib/responsiveImage.ts"
+      ],
+      "importedBy": [
+        "src/components/ResponsiveImg.astro"
+      ]
+    },
     "src/lib/reviewGate.js": {
       "imports": [],
       "importedBy": [
@@ -2804,6 +2893,19 @@
       ],
       "importedBy": []
     },
+    "src/lib/seo.test.ts": {
+      "imports": [
+        "src/lib/seo.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/seo.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/seo.test.ts",
+        "src/components/SEO.astro"
+      ]
+    },
     "src/lib/seoEndpoints.test.ts": {
       "imports": [
         "src/pages/robots.txt.ts",
@@ -2869,6 +2971,10 @@
         "src/pages/isolated-components/[name].astro",
         "src/pages/blog/[slug].astro"
       ]
+    },
+    "src/lib/siteIcons.test.ts": {
+      "imports": [],
+      "importedBy": []
     },
     "src/lib/sitePages.test.ts": {
       "imports": [
@@ -2992,7 +3098,9 @@
       "importedBy": [
         "src/layouts/BaseLayout.astro",
         "src/lib/url.test.ts",
+        "src/components/ResponsiveImg.astro",
         "src/components/ChapterLinks.astro",
+        "src/components/SiteIcons.astro",
         "src/components/cutover/RunbookHeader.astro",
         "src/components/JoinWhatsAppCta.astro",
         "src/components/ChapterHero.astro",
@@ -3676,6 +3784,13 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ResponsiveImg.astro": {
+      "imports": [
+        "src/components/ResponsiveImg.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/SitePageBody.astro": {
       "imports": [
         "src/components/pages/SitePageBody.astro",
@@ -4033,6 +4148,7 @@
         "src/pages/isolated-components/WebinarCard-NoCover.astro",
         "src/pages/isolated-components/AccomplishmentCard.astro",
         "src/pages/isolated-components/BoardMemberTile.astro",
+        "src/pages/isolated-components/ResponsiveImg.astro",
         "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro",
         "src/pages/isolated-components/VolunteerRelatedProjects.astro",
         "src/pages/isolated-components/JoinWhatsAppCta.astro",
@@ -4303,6 +4419,15 @@
       ],
       "importedBy": []
     },
+    "scripts/responsive-images.mjs::__file_root__": {
+      "filePath": "scripts/responsive-images.mjs",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/responsiveImageVariants.mjs::variantPath",
+        "src/lib/responsiveImageVariants.mjs::variantWidths"
+      ],
+      "importedBy": []
+    },
     "scripts/snapshot-strikingly.mjs::__file_root__": {
       "filePath": "scripts/snapshot-strikingly.mjs",
       "name": "__file_root__",
@@ -4411,7 +4536,8 @@
       "name": "__file_root__",
       "imports": [
         "src/components/ChapterHeader.astro::__file_root__",
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/components/ResponsiveImg.astro::__file_root__"
       ],
       "importedBy": [
         "src/components/ChapterPage.astro::__file_root__",
@@ -4661,7 +4787,8 @@
         "src/components/GivebutterWidgets.astro::__file_root__",
         "src/components/PreviewGate.astro::__file_root__",
         "src/lib/site.ts::settings",
-        "src/lib/integrationsContent.ts::loadIntegrations"
+        "src/lib/integrationsContent.ts::loadIntegrations",
+        "src/components/SiteIcons.astro::__file_root__"
       ],
       "importedBy": [
         "src/pages/cutover-runbook/[...path].astro::__file_root__",
@@ -4782,17 +4909,49 @@
       ],
       "importedBy": []
     },
+    "src/components/ResponsiveImg.astro::__file_root__": {
+      "filePath": "src/components/ResponsiveImg.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/url.ts::withBase",
+        "src/lib/responsiveImage.ts::intrinsicSize",
+        "src/lib/responsiveImage.ts::srcsetFor",
+        "src/lib/responsiveManifest.ts::readResponsiveManifest"
+      ],
+      "importedBy": [
+        "src/components/ChapterHero.astro::__file_root__",
+        "src/components/give/GivePhoto.astro::__file_root__",
+        "src/components/sponsor/SponsorHero.astro::__file_root__",
+        "src/components/landing/Hero.astro::__file_root__",
+        "src/components/landing/GalleryTile.astro::__file_root__",
+        "src/components/landing/HeroCarousel.astro::__file_root__",
+        "src/components/donate/TestimonialCard.astro::__file_root__",
+        "src/pages/isolated-components/ResponsiveImg.astro::__file_root__"
+      ]
+    },
     "src/components/SEO.astro::__file_root__": {
       "filePath": "src/components/SEO.astro",
       "name": "__file_root__",
       "imports": [
         "src/lib/site.ts::settings",
         "src/lib/canonicalUrl.ts::canonicalFor",
-        "src/lib/canonicalUrl.ts::canonicalOrigin"
+        "src/lib/canonicalUrl.ts::canonicalOrigin",
+        "src/lib/seo.ts::__file_root__",
+        "src/lib/seo.ts::absoluteImageUrl"
       ],
       "importedBy": [
         "src/pages/cutover-runbook/[...path].astro::__file_root__",
         "src/pages/blog/[slug].astro::__file_root__"
+      ]
+    },
+    "src/components/SiteIcons.astro::__file_root__": {
+      "filePath": "src/components/SiteIcons.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
+      "importedBy": [
+        "src/components/HeadExtras.astro::__file_root__"
       ]
     },
     "src/components/SitePage.astro::__file_root__": {
@@ -5426,7 +5585,8 @@
       "name": "__file_root__",
       "imports": [
         "src/lib/media.ts::altFor",
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/components/ResponsiveImg.astro::__file_root__"
       ],
       "importedBy": [
         "src/pages/isolated-components/TestimonialCard-Full.astro::__file_root__",
@@ -5479,7 +5639,8 @@
       "name": "__file_root__",
       "imports": [
         "src/lib/media.ts::altFor",
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/components/ResponsiveImg.astro::__file_root__"
       ],
       "importedBy": [
         "src/pages/give.astro::__file_root__",
@@ -5627,7 +5788,8 @@
       "filePath": "src/components/landing/GalleryTile.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/components/ResponsiveImg.astro::__file_root__"
       ],
       "importedBy": [
         "src/pages/isolated-components/GalleryTile.astro::__file_root__"
@@ -5659,7 +5821,8 @@
       "filePath": "src/components/landing/Hero.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/components/ResponsiveImg.astro::__file_root__"
       ],
       "importedBy": [
         "src/pages/isolated-components/[name].astro::__file_root__"
@@ -5669,7 +5832,8 @@
       "filePath": "src/components/landing/HeroCarousel.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/components/ResponsiveImg.astro::__file_root__"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro::__file_root__",
@@ -5821,7 +5985,8 @@
       "filePath": "src/components/sponsor/SponsorHero.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/components/ResponsiveImg.astro::__file_root__"
       ],
       "importedBy": [
         "src/components/SponsorPage.astro::__file_root__"
@@ -8493,6 +8658,95 @@
         "astro.config.mjs::__file_root__"
       ]
     },
+    "src/lib/responsiveImage.test.ts::__file_root__": {
+      "filePath": "src/lib/responsiveImage.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/responsiveImage.ts::ResponsiveManifest",
+        "src/lib/responsiveImage.ts::__file_root__",
+        "src/lib/responsiveImage.ts::intrinsicSize",
+        "src/lib/responsiveImage.ts::srcsetFor"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveImage.ts::ResponsiveManifest": {
+      "filePath": "src/lib/responsiveImage.ts",
+      "name": "ResponsiveManifest",
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveImage.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/responsiveImage.ts::__file_root__": {
+      "filePath": "src/lib/responsiveImage.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/responsiveImageVariants.mjs::__file_root__",
+        "src/lib/responsiveImageVariants.mjs::variantPath"
+      ],
+      "importedBy": [
+        "src/lib/responsiveImage.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/responsiveImage.ts::intrinsicSize": {
+      "filePath": "src/lib/responsiveImage.ts",
+      "name": "intrinsicSize",
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveImage.test.ts::__file_root__",
+        "src/components/ResponsiveImg.astro::__file_root__"
+      ]
+    },
+    "src/lib/responsiveImage.ts::srcsetFor": {
+      "filePath": "src/lib/responsiveImage.ts",
+      "name": "srcsetFor",
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveImage.test.ts::__file_root__",
+        "src/components/ResponsiveImg.astro::__file_root__"
+      ]
+    },
+    "src/lib/responsiveImageVariants.mjs::variantPath": {
+      "filePath": "src/lib/responsiveImageVariants.mjs",
+      "name": "variantPath",
+      "imports": [],
+      "importedBy": [
+        "scripts/responsive-images.mjs::__file_root__"
+      ]
+    },
+    "src/lib/responsiveImageVariants.mjs::variantWidths": {
+      "filePath": "src/lib/responsiveImageVariants.mjs",
+      "name": "variantWidths",
+      "imports": [],
+      "importedBy": [
+        "scripts/responsive-images.mjs::__file_root__"
+      ]
+    },
+    "src/lib/responsiveImagesScript.test.ts::__file_root__": {
+      "filePath": "src/lib/responsiveImagesScript.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "scripts/responsive-images.mjs::newerThan",
+        "scripts/responsive-images.mjs::walk"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveManifest.ts::__file_root__": {
+      "filePath": "src/lib/responsiveManifest.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/responsiveImage.ts::ResponsiveManifest"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveManifest.ts::readResponsiveManifest": {
+      "filePath": "src/lib/responsiveManifest.ts",
+      "name": "readResponsiveManifest",
+      "imports": [],
+      "importedBy": [
+        "src/components/ResponsiveImg.astro::__file_root__"
+      ]
+    },
     "src/lib/reviewGate.js::__file_root__": {
       "filePath": "src/lib/reviewGate.js",
       "name": "__file_root__",
@@ -8585,6 +8839,31 @@
         "src/lib/momentumSections.ts::__file_root__"
       ],
       "importedBy": []
+    },
+    "src/lib/seo.test.ts::__file_root__": {
+      "filePath": "src/lib/seo.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/seo.ts::__file_root__",
+        "src/lib/seo.ts::absoluteImageUrl"
+      ],
+      "importedBy": []
+    },
+    "src/lib/seo.ts::__file_root__": {
+      "filePath": "src/lib/seo.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/components/SEO.astro::__file_root__"
+      ]
+    },
+    "src/lib/seo.ts::absoluteImageUrl": {
+      "filePath": "src/lib/seo.ts",
+      "name": "absoluteImageUrl",
+      "imports": [],
+      "importedBy": [
+        "src/components/SEO.astro::__file_root__"
+      ]
     },
     "src/lib/seoEndpoints.test.ts::__file_root__": {
       "filePath": "src/lib/seoEndpoints.test.ts",
@@ -9258,7 +9537,9 @@
       "imports": [],
       "importedBy": [
         "src/lib/url.test.ts::__file_root__",
+        "src/components/ResponsiveImg.astro::__file_root__",
         "src/components/ChapterLinks.astro::__file_root__",
+        "src/components/SiteIcons.astro::__file_root__",
         "src/components/cutover/RunbookHeader.astro::__file_root__",
         "src/components/JoinWhatsAppCta.astro::__file_root__",
         "src/components/ChapterHero.astro::__file_root__",
@@ -10168,6 +10449,15 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ResponsiveImg.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ResponsiveImg.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/ResponsiveImg.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/SitePageBody.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/SitePageBody.astro",
       "name": "__file_root__",
@@ -10614,6 +10904,7 @@
         "src/pages/isolated-components/WebinarCard-NoCover.astro::__file_root__",
         "src/pages/isolated-components/AccomplishmentCard.astro::__file_root__",
         "src/pages/isolated-components/BoardMemberTile.astro::__file_root__",
+        "src/pages/isolated-components/ResponsiveImg.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro::__file_root__",
         "src/pages/isolated-components/VolunteerRelatedProjects.astro::__file_root__",
         "src/pages/isolated-components/JoinWhatsAppCta.astro::__file_root__",
@@ -10715,5 +11006,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-18T15:47:12Z"
+  "lastUpdated": "2026-09-18T19:39:15Z"
 }

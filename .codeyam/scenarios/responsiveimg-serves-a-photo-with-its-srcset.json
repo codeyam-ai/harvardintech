@@ -1,0 +1,12 @@
+{
+  "name": "ResponsiveImg - Serves A Photo With Its Srcset",
+  "id": "5e025430-a9c9-4a5b-885b-f258db131c08",
+  "url": "/isolated-components/ResponsiveImg",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ResponsiveImg",
+  "scenarioType": "component",
+  "description": "The only visual state this component has. Its two branches - the build step produced width variants, or it did not - render identically on screen; the difference is srcset/sizes/width/height in the markup, which no screenshot can show, and which src/lib/responsiveImage.test.ts pins instead. What this frame guards is that the component renders its photo at container width rather than collapsing to a broken tile, which is what a wrong path or a thrown manifest read would produce. Bounded to 760px, the widest real bounded use (the /donate testimonial event photo); the hero uses are full-bleed and unbounded."
+}

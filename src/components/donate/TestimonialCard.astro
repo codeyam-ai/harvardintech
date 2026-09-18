@@ -14,6 +14,7 @@
 // attributed quote is better with no face than with someone else's.
 import { altFor } from '../../lib/media';
 import { withBase } from '../../lib/url';
+import ResponsiveImg from '../ResponsiveImg.astro';
 
 interface Props {
   quote: string;
@@ -37,7 +38,12 @@ const { quote, name, role, affiliation, photo, eventPhoto, eventCaption, flipped
   {
     eventPhoto ? (
       <figure class="event">
-        <img src={withBase(eventPhoto)} alt={altFor(eventPhoto, name)} loading="lazy" />
+        <ResponsiveImg
+          src={eventPhoto}
+          alt={altFor(eventPhoto, name)}
+          loading="lazy"
+          sizes="(max-width: 800px) 100vw, 50vw"
+        />
         {eventCaption ? <figcaption>{eventCaption}</figcaption> : null}
       </figure>
     ) : null

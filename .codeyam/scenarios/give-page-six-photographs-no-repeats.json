@@ -1,0 +1,17 @@
+{
+  "name": "Give Page - Six Photographs, No Repeats",
+  "id": "77b66ede-b973-4ca5-ab12-1e7b1d51c178",
+  "url": "/give",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "description": "The /give collage as a visitor meets it, in the page rather than in isolation. Until now the route had no page-level scenario at all. The collage reads as ONE composition, which is why it needs a frame of its own: two of its six photographs used to be the same file shown twice, and a repeat inside a single grid is obvious to a visitor while being invisible in any per-photo capture. All six are now genuinely different images, and the test that keeps them that way compares file contents rather than filenames, because identical bytes under two different names is exactly how the duplicate hid. The frame is scrolled to the collage with a hover interaction - the page is long and the collage sits near the bottom, between the FAQ and the closing ask, so a default top-of-page capture shows the hero instead and proves nothing about it.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": ".collage-in"
+    }
+  ]
+}

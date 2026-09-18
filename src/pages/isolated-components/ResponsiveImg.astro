@@ -1,0 +1,45 @@
+---
+import Component from "../../../src/components/ResponsiveImg.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for ResponsiveImg — codeyam screenshots the #codeyam-capture
+// wrapper by navigating to /isolated-components/ResponsiveImg.
+//
+// ONE page, not several, and that is the interesting thing about this
+// component: its two branches — a srcset was built, or none was — are
+// deliberately INDISTINGUISHABLE on screen. Both render the same photo at the
+// same size; what differs is `srcset`/`sizes`/`width`/`height` in the markup,
+// which a screenshot cannot show. Splitting this into a with-variants and a
+// without-variants page would produce two identical frames and imply a visual
+// difference that does not exist.
+//
+// So the branch logic is pinned by unit tests on `srcsetFor` and
+// `intrinsicSize` (src/lib/responsiveImage.test.ts), and this scenario pins the
+// only thing that IS visual: that the component renders its image at all, at
+// the size its container gives it, rather than collapsing to a broken tile.
+//
+// Width is 760px because the widest real bounded use is the /donate testimonial
+// event photo; the full-bleed hero uses are unbounded and would just fill the
+// viewport. The photo is our own event photography, sized 2048x853 — a real
+// banner crop, so the frame shows a realistic aspect ratio rather than a square
+// placeholder.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: ResponsiveImg</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 760px;">
+      <Component
+        src="/images/events/sf-event-room.webp"
+        alt="Attendees seated for a talk in a brick-walled loft at a Harvard in Tech San Francisco event"
+        loading="eager"
+        sizes="760px"
+        style="width: 100%; height: auto; display: block;"
+      />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+---
+// The site's icon links: the browser-tab favicon and the iOS home-screen icon.
+//
+// Its own component because `HeadExtras` composes sub-components and nothing
+// else, and because these two links have one shared concern — they are the only
+// place the site's MARK appears outside the page body, so whatever the HAA
+// decides about the Veritas shield, this is the file that changes.
+//
+// The mark today is a crimson HIT monogram (`public/favicon.svg`), deliberately
+// not the shield: permission for a Shared Interest Group to use the shield is
+// still outstanding, and the browser tab should not wait on that answer.
+//
+// Both paths go through `withBase` so they resolve on the project-subpath
+// deploy (codeyam-ai.github.io/harvardintech/) as well as on the bare domain.
+import { withBase } from '../lib/url';
+---
+
+<link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+<link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
