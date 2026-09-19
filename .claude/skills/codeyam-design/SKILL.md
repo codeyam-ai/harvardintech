@@ -108,12 +108,11 @@ Every slot — anchored, exploratory, off-catalog — threads tone / palette / t
 
 **Resolve the control port FIRST — never hardcode 14199.** Every API call below (the tab-switch POST, the Step 3b lint GET, the Step 5 tab-switch, the Step 6 selection POST) must target the project's *live* editor control port, not a fixed `14199`. Resolve it once, before the first API call, and reuse it everywhere.
 
-**The project's own `.codeyam/editor.json` `proxy.controlPort` is the answer.** It is a per-project value derived from the project directory, it is committed, and the launcher now prefers it when spawning an editor — so it is stable across restarts and is what a project comes back on. Read it first, letting the gitignored `.codeyam/editor.local.json` override it (that is the layering the rest of the editor uses). `.codeyam/server-state.json` is a *confirmation* that a server is currently running on that port, not the source of the port: it is written only when a project is opened and is **deleted on graceful shutdown**, so it is absent exactly when you are looking for a server that is not up. Use it to check liveness, never to answer "what port do I open?". Use a plain file read — do **not** call any `codeyam-editor editor …` command (forbidden during design):
+**Probe the candidates — never trust a recorded port without asking it.** No single file is right everywhere. On a laptop, `.codeyam/editor.json` `proxy.controlPort` is the stable per-project port (with the gitignored `.codeyam/editor.local.json` overriding it). On a cloud VM, one editor serves on `14199` whatever the per-project value says, so `editor.json` can name a port where nothing listens — and `.codeyam/server-state.json`, written by the running server, is then the only accurate record. So collect every candidate in that order and keep the **first one whose `GET /api/health` answers with JSON**. `/api/health` needs no session token, so the probe works on every bind. Use plain file reads and `curl` — do **not** call any `codeyam-editor editor …` command (forbidden during design):
 
 ```bash
-# Resolve the control port — NOT a hardcoded 14199.
-# Precedence: editor.local.json > editor.json > server-state.json > env > 14199.
-PORT=$(python3 -c "import json,os
+# Candidates, in order: editor.local.json > editor.json > server-state.json > env > 14199.
+CANDIDATES=$(python3 -c "import json,os
 def get(p,*k):
     try:
         v=json.load(open(p))
@@ -123,13 +122,26 @@ def get(p,*k):
         if not isinstance(v,dict): return None
         v=v.get(x)
     return v
-print(get('.codeyam/editor.local.json','proxy','controlPort')
-   or get('.codeyam/editor.json','proxy','controlPort')
-   or get('.codeyam/server-state.json','controlPort')
-   or os.environ.get('CODEYAM_CONTROL_PORT') or 14199)" 2>/dev/null || echo 14199)
+for c in (get('.codeyam/editor.local.json','proxy','controlPort'),
+          get('.codeyam/editor.json','proxy','controlPort'),
+          get('.codeyam/server-state.json','controlPort'),
+          os.environ.get('CODEYAM_CONTROL_PORT'), 14199):
+    if c: print(c)" 2>/dev/null || echo 14199)
+PORT=
+for P in $(printf '%s\n' $CANDIDATES | awk '!seen[$0]++'); do
+  case "$(curl -s -m 2 "http://localhost:$P/api/health")" in
+    \{*) PORT=$P; break ;;
+  esac
+done
+echo "control port: ${PORT:-none answered}"
+
+# Session token: send it only when the file exists. A loopback bind does not
+# enforce it and may not have one; an empty "Bearer " header helps no one.
+AUTH=()
+[ -f .codeyam/session-token ] && AUTH=(-H "Authorization: Bearer $(tr -d '[:space:]' < .codeyam/session-token)")
 ```
 
-Use `http://localhost:$PORT` in every `curl` below. **A wrong port now announces itself:** an `/api/*` route that is not served returns `404` with a JSON body carrying `role` — `"launcher"` if you reached the cross-project selector, `"editor"` (plus `projectDir`) if you reached a *different* project's editor. Read `role` and re-resolve; if the port still does not answer as this project's editor, ask the user for it. An HTML body starting with `<!DOCTYPE`/`<html` from an `/api/*` call means you are talking to a build that predates that 404 — treat it exactly the same way. Never report success on a response you didn't confirm is JSON.
+If no candidate answered, ask the user for the editor port — never guess. Use `http://localhost:$PORT` and `"${AUTH[@]}"` in **every** `curl` below. A `refused: missing or invalid session token` response means `AUTH` was not sent, not that the port is wrong. **A wrong port now announces itself:** an `/api/*` route that is not served returns `404` with a JSON body carrying `role` — `"launcher"` if you reached the cross-project selector, `"editor"` (plus `projectDir`) if you reached a *different* project's editor. Read `role` and re-resolve; if the port still does not answer as this project's editor, ask the user for it. An HTML body starting with `<!DOCTYPE`/`<html` from an `/api/*` call means you are talking to a build that predates that 404 — treat it exactly the same way. Never report success on a response you didn't confirm is JSON.
 
 **Write the target manifest FIRST, before any HTML.** The UI uses this to render placeholder cards for every upcoming slot so the right pane fills in immediately. Write `.codeyam/design/project_mockups/target.json` with exactly:
 
@@ -142,12 +154,12 @@ Use `http://localhost:$PORT` in every `curl` below. **A wrong port now announces
 **The moment `target.json` is written, switch the preview to the Mockups tab.** Writing the manifest *is* the start of building, so move the user onto the Mockups tab to watch each card fill in. POST the tab-switch right after the manifest write, before the first HTML mockup:
 
 ```bash
-curl -X POST http://localhost:$PORT/api/editor-design-active-tab \
+curl -X POST http://localhost:$PORT/api/editor-design-active-tab "${AUTH[@]}" \
   -H 'Content-Type: application/json' \
   -d '{"tab":"mockups"}'
 ```
 
-Resolve the control port once (see Step 3's preamble); it is a dynamic per-project port under the launcher, not necessarily `14199`. On `connection refused`, ask the user for the editor port — never guess. This is **best-effort UX**: if the POST fails, the user can still click the Mockups tab manually, so do **not** block generation on it.
+This request is also what **opens the design view in the preview** when the design view isn't already showing, whatever surface launched you — a plain chat included. Use the `$PORT` and `AUTH` from Step 3's preamble. On `connection refused`, ask the user for the editor port — never guess. This is **best-effort UX**: if the POST fails, the user can still open the designs from the Plan tab, so do **not** block generation on it.
 
 **Filenames — zero-padded numeric prefix sets display order.**
 
@@ -223,7 +235,7 @@ The editor backend lints every mockup and exposes the findings on the same API y
 
 1. After all N files exist, read the lint findings:
    ```bash
-   curl http://localhost:$PORT/api/editor-mockups
+   curl "${AUTH[@]}" http://localhost:$PORT/api/editor-mockups
    ```
    The response is a JSON array; each entry carries a `warnings[]` of `{code, message, severity}`. Resolve the control port once (see Step 3's preamble); it is a dynamic per-project port under the launcher, not necessarily `14199`. **Validate the response shape, not just the status code:** if the body is **not** a JSON array — e.g. it starts with `<!DOCTYPE`/`<html` (the launcher selector's SPA shell, returned with HTTP 200) — the resolved port is wrong. Re-run the resolution; if it still returns HTML, ask the user for the editor port and retry. Keep the local-grep fallback below only for a genuine `connection refused`, never for an HTML 200 — a wrong-server 200 must never be mistaken for "no warnings".
 2. For **every** card with a non-empty `warnings[]`, apply the fix its `message` describes and rewrite that HTML file. The `message` is the remediation guide — e.g. *"Use single quotes inside the url() …"* (the quote-collision trap above), *"Render the content statically."* (a stray `<script>` / JS-built content), an empty media box, a remote asset, or a remote font (resolve it with the **Typography** rule: the system's `font-family` + system-font fallback, never a remote load).
@@ -254,7 +266,7 @@ When the UI dispatches an Iterate trigger (an `Iterate:` keyword followed by a f
 Once the user answers, **switch the preview to the Mockups tab as the regeneration round begins** — before writing the first refreshed/placeholder card:
 
 ```bash
-curl -X POST http://localhost:$PORT/api/editor-design-active-tab \
+curl -X POST http://localhost:$PORT/api/editor-design-active-tab "${AUTH[@]}" \
   -H 'Content-Type: application/json' \
   -d '{"tab":"mockups"}'
 ```
@@ -289,7 +301,7 @@ A message that starts with `Tweak:` comes from the Plan tab's "Tweak these desig
 When the user picks a direction with a phrase like *"Let's use 4"*, *"I want 4"*, or *"pick 4"*, POST the corresponding filename to the editor backend with `curl`:
 
 ```bash
-curl -X POST http://localhost:$PORT/api/editor-design-select \
+curl -X POST http://localhost:$PORT/api/editor-design-select "${AUTH[@]}" \
   -H 'Content-Type: application/json' \
   -d '{"filename":"04-<system>-mockup.html"}'
 ```

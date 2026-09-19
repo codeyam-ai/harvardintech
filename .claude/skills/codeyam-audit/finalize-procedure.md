@@ -164,6 +164,19 @@ Treat any verdict other than `current` as **blocking for server-routed work**:
 | `rebuild-in-flight` | A detached worker is still building. Run `rebuild-self` to re-attach; do not start a second build. |
 | `aliases-diverged` | The binary is current but the role hardlinks point at a previous generation — usually after a bare `cargo install --force`. A plain `rebuild-self` relinks them on its already-current fast path without recompiling. |
 
+> GOTCHA — **`rebuild-in-flight` can be checked, so check it before you
+> re-attach.** The probe now verifies that the recorded pid is actually a
+> `rebuild-self` worker, not just that some process holds that pid. When it throws out
+> a leftover record, its stderr says `ignoring a stale rebuild job record` and
+> why. If you still doubt the verdict, the two signatures are opposite:
+> - **No worker:** `pgrep -f rebuild-self` finds nothing, and
+>   `.codeyam/state/rebuild-self-restart.json` reads
+>   `"outcome":"succeeded"` with a `buildSha` equal to HEAD. There is nothing to
+>   attach to. Report it as a bug rather than waiting.
+> - **Genuinely mid-restart:** `pgrep` finds the worker,
+>   `codeyam-editor editor server-identity` returns nothing (the server is
+>   bouncing), and the restart record is absent. Waiting is correct here.
+
 Then make sure the *server* picked the new binary up:
 
 ```bash
@@ -250,6 +263,33 @@ still holds:
 codeyam-editor editor test-status
 ```
 
+**A warm can false-redden a partition under its own fan-out — recover that one
+partition, never the workspace.** The flag-free warm runs runners in parallel,
+and under that contention a runner can exit non-zero while its own parsed
+results report zero failures. The summary names it — *"the runner contradicts
+its own output"* — marks that partition deliberately red, and calls the run
+UNVERIFIED. Measured on `editor-improvements-87` (2026-09-16): the `ui` runner
+exited 1 with 6,470 parsed results and no failures, then exited 0 with 6,471
+when run alone, no code change — and the whole ~28-minute warm was failed by a
+runner that was fine.
+
+The warm now re-runs such a runner once, serially, before reporting it, and
+says so: `runners_recovered_by_retry` in the summary JSON, plus a `NOTE:` line
+in the human output. A non-zero count is a rescued run, not a clean one — the
+host saturated. A runner that contradicts itself on the serial retry too keeps
+its red, and its diagnostic says the retry already happened; that one is a
+genuine setup/hook/crash failure, not contention.
+
+If you still need to recover by hand, scope it to the red partition:
+
+```bash
+codeyam-editor editor refresh-tests --partition <name> --write-cache
+```
+
+**Not `--force`.** It re-runs the whole workspace and embeds the single cargo
+output blob into every cargo partition, which manufactures a fake
+multi-failure wall out of one runner's trouble.
+
 **`--findings-only` is a smaller ANSWER, not a faster run — do not reach for
 it to save time.** It skips the per-file `git log` attribution walk and the
 per-entity evidence projection, and that is genuinely all it skips. Measured
@@ -258,6 +298,16 @@ on codeyam-editor itself (1745 scenarios, a ~21-minute audit), attribution was
 fast path waits essentially the full time and learns to distrust the docs,
 which costs more than the minutes. Pick it when you want the compact
 projection: the verdict, the missing-\* arrays, and a name+count summary.
+
+**To read ONE finding's detail, use `--only <INVARIANT_ID>`.** It narrows both
+the work and the document. A scope that names no coverage-derived finding gets
+a `coverage` block holding only the totals and per-classification counts
+(`rostersOmitted: true`), not the per-entry rosters. On this repo those rosters
+alone took an `--only` document to 11.2 MB for a 13-item finding, which is big
+enough that the harness saves it to a file instead of showing it inline. An
+`--only` naming a coverage finding (`UNCOVERED_GLOSSARY_ENTRY`,
+`UNRESOLVABLE_GLOSSARY_ENTRY`, `STALE_LCOV_COVERAGE`, …) still carries the full
+rosters, and so does the unfiltered document.
 
 The lever that actually moves wall-clock is `--concurrency`, because the bulk
 of an audit is the per-scenario screenshot scan — one PNG decoded and
@@ -330,7 +380,10 @@ the RSS runaway (two sessions let `reconcile-registry` reach 2 GB because
 >
 > The audit now draws this distinction for you and lists the inlined entries
 > in their own `— inlining-suspect (a covering test ran; not debt) —` group,
-> excluded from the zero-hit count. **Neither resolution for a genuinely
+> excluded from the zero-hit count. That group is **not** part of
+> `failures[]` and never affects `passed`; under `--format json` it is the
+> sibling `inliningSuspects` array, so every entry left in `failures[]` is
+> something to fix. **Neither resolution for a genuinely
 > uncovered entry applies to that group:** do not write a duplicate test for
 > something already tested, and — the expensive one — do not record an
 > `untestabilityReason`. A `trivial-wrapper` / `platform-glue` claim
@@ -537,14 +590,30 @@ present concrete options, and wait** — do not autonomously pay these down:
 >    noise that inflated the wall. Post-fix, the list is not inflated: what it
 >    shows is what you owe.
 >
-> **Size the wall with `editor finalize-preview`** — it reports the true
-> comprehensive count that `verify-full-finalize` will block on. Do NOT size it
-> with the mid-session `editor audit-gate` / `audit --findings-only` count: that
-> one downgrades inherited debt and will **under-report** the obligation, which
-> is exactly how a run gets mis-priced and then re-scoped in front of the user.
+> **Size the Phase 2 wall with `editor audit --format json`** — the default
+> JSON projection is the STRICT comprehensive gather, the same one
+> `session-finalize` Phase 2 blocks on. Measured on this repo it reported
+> exactly the 25 `SOURCE_HAS_UNREGISTERED_ENTITY` items Phase 2 later stopped
+> at. Do NOT size it with the mid-session `editor audit-gate` /
+> `audit --findings-only` count: that one downgrades inherited debt and will
+> **under-report** the obligation, which is exactly how a run gets mis-priced
+> and then re-scoped in front of the user.
+>
+> **`editor finalize-preview` is the richer projection** when you also need
+> the walls beyond Phase 2: it runs the same strict gather, then adds the
+> Phase 3.5 screenshot-recapture obligation and the Phase 3.6
+> glossary-reconciliation ambiguity count, kept disjoint from Phase 2 so the
+> totals do not double-count. It is the costlier of the two (it also runs the
+> static checks and a full dependency-graph rebuild), so launch it
+> backgrounded; it heartbeats, prints a `[Ns] finalize-preview: <pass>` line
+> as each pass starts, and `command-status finalize-preview` reads its verdict
+> back. A run whose RSS keeps climbing past ~2 GB is a regression to report,
+> not a large project — the per-entry re-parse that once made it run 19
+> minutes silent now trips a `BLOCKED:` memory ceiling instead.
 >
 > This makes the stop-and-ask above *more* important, not less: the user is
-> authorizing real, required spend. Quote them the `finalize-preview` number.
+> authorizing real, required spend. Quote them the measured number, and say
+> which projection it came from.
 
 This is the convergence contract in practice: each run fixes all the mechanical
 drift it can, then stops at the **first** genuine judgment call with a specific,
@@ -883,6 +952,26 @@ codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.lo
 > post-integration shrink guard, so a fresh clobber should no longer occur; this
 > recovery is for a file already damaged by an older sync.
 
+> GOTCHA — **a red test during the coverage bootstrap is a test failure, not a
+> tooling failure.** On a Rust project the finalize runs `cargo llvm-cov` before
+> Phase 1 whenever source has moved. With `--no-fail-fast` the whole suite still
+> runs past a red test, but cargo-llvm-cov then exits 101 and writes **no** LCOV
+> file. An older binary reported that as `LCOV bootstrap failed: cargo llvm-cov
+> exited with status exit status: 101`, every phase `pending`, and the failing test
+> was one line in a 25,000-line transcript (search it for ` ... FAILED`). A current
+> binary rebuilds the LCOV from the run's profile data, marks the failing test's
+> partition red in the test cache, prints `the coverage run had N failing test(s):
+> <names>`, and continues. Phase 1 then re-runs that partition instead of reusing a
+> cached pass, so a test that is still red fails the finalize there, by name. That
+> red mark survives a finalize that stops earlier, for example on a Phase 0.5 static
+> gate. So a re-run that skips the (now fresh) coverage step still re-checks the
+> test. Treat the named test as the finding. Do not turn off
+> `audit.coverageBootstrap.enabled`, because that removes coverage gating, not the
+> red test. When no usable LCOV can be rebuilt (a build error, a crate the host
+> cannot build, an OOM kill) the bootstrap still bails with its original message
+> and remedies (`excludedWorkspaceCrates` first), plus a `Failing tests:` line
+> when the output named any.
+
 > GOTCHA — **infra crashes, not code bugs.** A finalize can die on a full disk
 > or an OOM. If it crashes non-deterministically, check `df -h` / free memory
 > before assuming the branch is broken.
@@ -1176,6 +1265,13 @@ footguns behind each (all observed in real CI-fix rounds):
   assertion matching the exact text of an OS-specific error passes on the host
   that produces that text and fails elsewhere. Make errors name their phase
   explicitly rather than asserting on incidental wording.
+- **Assertions against the raw spelling of a value the code escapes.** When
+  production code escapes a path before emitting it (into TOML, JSON, a shell
+  string, a URL), a test that builds its expectation from the path's raw
+  display spelling passes on POSIX — no backslashes, so escaping is a no-op —
+  and fails on Windows. Build the expectation through the same escaping helper
+  the code uses. Fix the TEST: un-escaping the emitted value turns the test
+  green by making the real output wrong.
 - **The skipped-platform-test-job trap** — a *false* green. A CI matrix runs
   each platform's TEST job only after that platform's BUILD job succeeds. When
   the build fails (e.g. an unguarded `std::os::unix::*` in a test breaks the

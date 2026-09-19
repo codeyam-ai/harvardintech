@@ -223,8 +223,51 @@ def _flagged_terms(project_dir, text):
         return []
 
 
-def _log_question_copy(project_dir, event_data):
+# Seconds to wait for the audience recorder. Like the jargon check it is an
+# observer: a slow binary costs the automatic save (the step's explicit
+# `audience --set` instruction still stands) and never delays the turn more.
+AUDIENCE_RECORD_TIMEOUT_S = 3
+
+
+def _record_audience_answer(project_dir, event_data):
+    """Save the answer to the one-time "explain or keep it brief?" question.
+
+    Asking and saving used to be two separate agent actions, and the save
+    was the one that got dropped — so the preference stayed unset and the
+    question came back. This hands every answered question to
+    `audience --record-answer`, which decides in Rust whether it was the
+    audience question (the label vocabulary lives beside the step copy that
+    defines it) and records the choice. It prints nothing and swallows every
+    failure: a hook that raises interrupts the turn.
+    """
+    try:
+        import subprocess
+
+        payload = json.dumps(
+            {
+                "tool_input": event_data.get("tool_input", {}) or {},
+                "tool_response": event_data.get("tool_response"),
+            }
+        )
+        subprocess.run(
+            [cli_command(), "editor", "audience", "--record-answer", "-"],
+            cwd=project_dir,
+            input=payload.encode("utf-8"),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=AUDIENCE_RECORD_TIMEOUT_S,
+        )
+    except Exception:
+        pass
+
+
+def _log_question_copy(project_dir, event_data, in_cycle=True):
     """Append one line per question asked, to .codeyam/logs/question-copy.jsonl.
+
+    `in_cycle=False` is a question asked outside an editor session. It is
+    logged with a null slug and step — the ad-hoc shape — even when a stale
+    `editor-step.json` from an earlier cycle is still on disk, because no
+    step was in flight when it was asked.
 
     Written under `.codeyam/logs/` deliberately: that directory is already
     gitignored, so the log needs no new ignore rule and therefore no
@@ -244,11 +287,12 @@ def _log_question_copy(project_dir, event_data):
         slug = None
         step = None
         try:
-            state_path = os.path.join(project_dir, ".codeyam", "editor-step.json")
-            with open(state_path, "r") as f:
-                state = json.load(f)
-            slug = state.get("slug")
-            step = state.get("step")
+            if in_cycle:
+                state_path = os.path.join(project_dir, ".codeyam", "editor-step.json")
+                with open(state_path, "r") as f:
+                    state = json.load(f)
+                slug = state.get("slug")
+                step = state.get("step")
         except Exception:
             pass
 
@@ -260,10 +304,15 @@ def _log_question_copy(project_dir, event_data):
         with open(log_path, "a") as f:
             for question in questions:
                 text = question.get("question", "") or ""
-                labels = [
-                    (option or {}).get("label", "")
-                    for option in (question.get("options", []) or [])
+                options = [
+                    option or {} for option in (question.get("options", []) or [])
                 ]
+                labels = [option.get("label", "") or "" for option in options]
+                # Descriptions are recorded index-aligned with the labels:
+                # `question-copy-query` judges each option on its label and
+                # description together, and descriptions are where
+                # identifiers leaked most.
+                descriptions = [option.get("description", "") or "" for option in options]
                 # Check the labels alongside the question: an option label
                 # is a question the user has to answer too, and it is where
                 # jargon leaks most.
@@ -273,10 +322,13 @@ def _log_question_copy(project_dir, event_data):
                             "ts": now,
                             "slug": slug,
                             "step": step,
+                            "header": question.get("header", "") or "",
                             "question": text,
                             "optionLabels": labels,
+                            "optionDescriptions": descriptions,
                             "flaggedTerms": _flagged_terms(
-                                project_dir, " ".join([text] + labels)
+                                project_dir,
+                                " ".join([text] + labels + descriptions),
                             ),
                         }
                     )
@@ -634,11 +686,25 @@ def emit_wedge_block(project_dir, event_data):
 
 
 def main():
-    # Only run in editor Build sessions
+    project_dir = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
+
+    # Only run in editor Build sessions — except for the question-copy
+    # observer. A question asked in a plain session on a codeyam project
+    # (plan authoring through a skill, say) reaches a user exactly as one
+    # asked mid-cycle does, and returning here first left the log blind to
+    # it: no reviewed VM had a log, because the ad-hoc path never set the
+    # flag. `.codeyam/` must exist so a non-codeyam checkout never grows one.
     if not os.environ.get("CODEYAM_EDITOR_ACTIVE"):
+        if os.path.isdir(os.path.join(project_dir, ".codeyam")):
+            event_type, event_data = detect_event()
+            if (
+                event_type == "post_tool_use"
+                and event_data.get("tool_name") == "AskUserQuestion"
+            ):
+                _log_question_copy(project_dir, event_data, in_cycle=False)
+                _record_audience_answer(project_dir, event_data)
         return
 
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
     state_path = os.path.join(project_dir, ".codeyam", "editor-step.json")
     prompt_path = os.path.join(project_dir, ".codeyam", "editor-user-prompt.txt")
 
@@ -705,6 +771,7 @@ def main():
     # observer prints nothing and changes no control flow.
     if event_type == "post_tool_use" and event_data.get("tool_name") == "AskUserQuestion":
         _log_question_copy(project_dir, event_data)
+        _record_audience_answer(project_dir, event_data)
 
     if not os.path.exists(state_path):
         # No editor-step.json — a stateless session entry. This is the exact

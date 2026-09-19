@@ -855,6 +855,10 @@ _GATING_SUBCOMMANDS = frozenset(
         # heartbeat and no status document, which is indistinguishable from
         # working. Membership here is what buys the liveness signal.
         "feature-complete",
+        # Sizes the merge wall with the same strict gather Phase 2 runs, so it
+        # takes minutes on a large project — long enough that an unwrapped run
+        # read as wedged with no status document to say otherwise.
+        "finalize-preview",
         "plan-complete",
         "pre-commit-sync",
         "preview",
@@ -1673,14 +1677,645 @@ def self_matching_pgrep_notice(pattern):
     )
 
 
+# ── write-target resolution ────────────────────────────────────────────
+#
+# The scripted-rewrite guard falls back to "every tracked path the command
+# MENTIONS" whenever a write target is opaque. That fallback is right for a
+# target that genuinely cannot be known, and wrong for the two shapes that
+# used to reach it needlessly (four refusals in one session, 2026-09-18):
+#
+#   - a target held in a variable bound to a string literal in the same
+#     command — `p = '.codeyam/tmp/batch.json'` … `open(p, 'w')`, or
+#     `P=/tmp/notes.md` … `sed -i '' 's#a.rs#b.rs#' "$P"`. Resolving the
+#     binding makes the target explicit, so the write is judged on what it
+#     actually writes rather than on the tracked paths it merely mentions;
+#   - a write construct that is itself DATA — inside a Python/JS string
+#     literal or comment, or inside a quoted argument or heredoc handed to a
+#     program that does not execute it. Quoting `open(p, 'w')` in order to
+#     test, log or describe the guard is not a write.
+#
+# Both narrow only what counts as a target. Every case this cannot settle
+# still falls through to the mention scan, so the failure direction stays a
+# refusal, never an unguarded rewrite.
+
+# Interpreters whose code this guard can read string literals in.
+_JS_INTERPRETERS = frozenset(("node", "nodejs", "bun", "deno", "tsx", "ts-node"))
+# Programs that may execute text the lexer below sees only as a quoted word
+# (`bash -c "…"`, `ssh host "…"`, `ruby -e '…'`). Their presence anywhere in a
+# command means a quoted word can no longer be assumed to be data.
+_EXECUTING_PROGRAMS = frozenset(
+    (
+        "bash", "sh", "zsh", "ksh", "dash", "fish", "eval", "source", "exec",
+        "ssh", "su", "watch", "parallel", "docker", "podman", "kubectl",
+        "script", "tmux", "screen", "ruby", "perl", "php", "lua", "osascript",
+    )
+)
+# Code that can run a string as code. A literal in such a program may be the
+# program, so its literals are not treated as data.
+_DYNAMIC_EXECUTION = re.compile(
+    r"\b(?:exec|eval|compile|Function|system|popen|subprocess|child_process|"
+    r"execSync|execFile|spawn|spawnSync|runpy)\b"
+)
+# Python string prefixes that do not interpolate. `f` does, so an f-string is
+# never data.
+_PY_LITERAL_PREFIXES = frozenset(("", "r", "u", "b", "br", "rb"))
+# A shell redirection token, which is never a script operand.
+_REDIRECT_TOKEN = re.compile(r"^[0-9&]*[<>]")
+_BARE_IDENTIFIER = re.compile(r"^[A-Za-z_$][A-Za-z0-9_$]*$")
+# The end of a statement right after an assignment's literal — so `p = 'a' + x`
+# is not read as binding `p` to `'a'`.
+_STATEMENT_END = re.compile(r"""[ \t]*(?:$|[;\n#]|//|["'`][ \t]*(?:$|[;\n|&)]))""")
+_MAX_RESOLVED_TARGETS = 16
+
+
+def _lex_shell_words(command):
+    """Position-aware shell lexing: `(commands, heredocs)`, or None for a
+    command this lexer does not model (`$'…'` quoting, an unterminated quote).
+
+    `commands` is a list of word lists, split where `_split_commands` splits.
+    Each word is `(text, start, end, quoted)`: `text` is the unquoted value
+    and `quoted` lists the `(inner_start, inner_end, quote_char)` raw ranges
+    of its quoted parts. `heredocs` lists `(command_index, body_start,
+    body_end)` for every heredoc body, attributed to the command that opened
+    it. Unlike `_split_commands`, nothing is elided — positions index the raw
+    command, which is what a construct match is reported against."""
+    if "$'" in command:
+        return None
+    commands = [[]]
+    heredocs = []
+    pending = []
+    chars = []
+    quoted = []
+    start = None
+    i = 0
+    n = len(command)
+
+    def end_word(end):
+        nonlocal chars, quoted, start
+        if start is not None:
+            commands[-1].append(("".join(chars), start, end, quoted))
+        chars, quoted, start = [], [], None
+
+    while i < n:
+        ch = command[i]
+        if ch in "'\"":
+            if start is None:
+                start = i
+            j = i + 1
+            while j < n and command[j] != ch:
+                if ch == '"' and command[j] == "\\" and j + 1 < n:
+                    j += 1
+                    if command[j] not in '"\\$`\n':
+                        chars.append("\\")
+                chars.append(command[j])
+                j += 1
+            if j >= n:
+                return None
+            quoted.append((i + 1, j, ch))
+            i = j + 1
+            continue
+        if ch == "\\":
+            if command[i + 1:i + 2] == "\n":
+                i += 2
+                continue
+            if start is None:
+                start = i
+            if i + 1 < n:
+                chars.append(command[i + 1])
+            i += 2
+            continue
+        if command.startswith("<<", i) and not command.startswith("<<<", i):
+            end_word(i)
+            cursor = i + 2
+            strip_tabs = command[cursor:cursor + 1] == "-"
+            if strip_tabs:
+                cursor += 1
+            while cursor < n and command[cursor] in " \t":
+                cursor += 1
+            if command[cursor:cursor + 1] == "\\":
+                cursor += 1
+            delimiter, cursor = _heredoc_delimiter(command, cursor)
+            if delimiter:
+                pending.append((delimiter, strip_tabs, len(commands) - 1))
+            i = max(cursor, i + 2)
+            continue
+        if ch == "\n":
+            end_word(i)
+            i += 1
+            for delimiter, strip_tabs, owner in pending:
+                body_start = i
+                while True:
+                    line_end = command.find("\n", i)
+                    if line_end == -1:
+                        line_end = n
+                    line = command[i:line_end]
+                    candidate = line.lstrip("\t") if strip_tabs else line
+                    if candidate.rstrip() == delimiter or line_end >= n:
+                        body_end = i if candidate.rstrip() == delimiter else n
+                        heredocs.append((owner, body_start, body_end))
+                        i = line_end + 1
+                        break
+                    i = line_end + 1
+            pending = []
+            commands.append([])
+            continue
+        if ch in " \t":
+            end_word(i)
+            i += 1
+            continue
+        if ch in _COMMAND_SEPARATORS and not _is_redirection_ampersand(command, i):
+            end_word(i)
+            commands.append([])
+            i += 1
+            continue
+        if start is None:
+            start = i
+        chars.append(ch)
+        i += 1
+    end_word(n)
+    for _, strip_tabs, owner in pending:
+        heredocs.append((owner, n, n))
+    return commands, heredocs
+
+
+def _interpreter_code_source(texts, index, lang):
+    """Where the interpreter at `texts[index]` reads its program from:
+    `("arg", word_index)` for `-c`/`-e` code, `("stdin", None)`, or
+    `("file", None)` for a script or module operand."""
+    j = index + 1
+    while j < len(texts):
+        tok = texts[j]
+        if _REDIRECT_TOKEN.match(tok):
+            j += 2 if tok.rstrip("0123456789&<>") == "" and tok[-1] in "<>" else 1
+            continue
+        if tok == "-":
+            return ("stdin", None)
+        if lang == "py":
+            if not tok.startswith("--") and re.match(r"^-[A-Za-z]*c$", tok):
+                return ("arg", j + 1) if j + 1 < len(texts) else ("file", None)
+            if tok == "-m":
+                return ("file", None)
+            if tok in ("-W", "-X", "-Q"):
+                j += 2
+                continue
+        elif tok in ("-e", "--eval", "-p", "--print", "-pe") or (
+            tok == "eval" and texts[index] == "deno"
+        ):
+            return ("arg", j + 1) if j + 1 < len(texts) else ("file", None)
+        if tok.startswith("-"):
+            j += 1
+            continue
+        return ("file", None)
+    return ("stdin", None)
+
+
+def _code_literal_spans(command, region, lang):
+    """Raw `(start, end)` spans of the string literals and comments in the
+    code `region` — a list of `(char, raw_index)` pairs, already shell-
+    unescaped. None when the code runs strings as code, or when a literal
+    does not terminate: either way nothing in it can be called data."""
+    text = "".join(ch for ch, _ in region)
+    if _DYNAMIC_EXECUTION.search(text):
+        return None
+    local = []
+    i = 0
+    n = len(text)
+    while i < n:
+        ch = text[i]
+        comment = (lang == "py" and ch == "#") or (lang == "js" and text.startswith("//", i))
+        if comment:
+            end = text.find("\n", i)
+            end = n if end == -1 else end
+            local.append((i, end))
+            i = end
+            continue
+        if lang == "js" and text.startswith("/*", i):
+            end = text.find("*/", i + 2)
+            if end == -1:
+                return None
+            local.append((i, end + 2))
+            i = end + 2
+            continue
+        if ch in "'\"" or (lang == "js" and ch == "`"):
+            k = i
+            while k > 0 and text[k - 1].isalpha():
+                k -= 1
+            prefix = text[k:i].lower()
+            if lang != "py" or (k > 0 and (text[k - 1].isalnum() or text[k - 1] == "_")):
+                prefix, k = "", i
+            delimiter = ch * 3 if lang == "py" and text.startswith(ch * 3, i) else ch
+            j = i + len(delimiter)
+            while j < n and not text.startswith(delimiter, j):
+                if text[j] == "\\":
+                    j += 1
+                elif text[j] == "\n" and len(delimiter) == 1 and ch != "`":
+                    return None
+                j += 1
+            if j >= n:
+                return None
+            end = j + len(delimiter)
+            interpolates = (
+                prefix not in _PY_LITERAL_PREFIXES
+                if lang == "py"
+                else ch == "`" and "${" in text[i:end]
+            )
+            if not interpolates:
+                local.append((k, end))
+            i = end
+            continue
+        i += 1
+    return [(region[s][1], region[e - 1][1] + 1) for s, e in local if e > s]
+
+
+def _quoted_region(command, word):
+    """The code inside `word` when it is ONE quoted string, as `(char,
+    raw_index)` pairs with the shell's double-quote escapes undone. None for
+    a word that is unquoted or pieced together from several parts."""
+    _, start, end, quoted = word
+    if len(quoted) != 1:
+        return None
+    inner_start, inner_end, quote = quoted[0]
+    if inner_start != start + 1 or inner_end != end - 1:
+        return None
+    region = []
+    i = inner_start
+    while i < inner_end:
+        if quote == '"' and command[i] == "\\" and i + 1 < inner_end and command[i + 1] in '"\\$`':
+            i += 1
+        region.append((command[i], i))
+        i += 1
+    return region
+
+
+def _command_program(texts):
+    """The program a lexed command runs, past wrappers and assignments."""
+    for tok in texts:
+        if tok in _COMMAND_PREFIXES or _ASSIGNMENT.match(tok):
+            continue
+        return _program_name(tok)
+    return ""
+
+
+def write_construct_data_spans(command):
+    """Raw `(start, end)` spans of `command` in which a write construct is
+    DATA rather than a write, so the scripted-rewrite guard can skip it.
+
+    Two kinds, and each fails closed:
+
+    - A string literal or comment inside code an interpreter runs — a
+      `python3 -c` argument or a `python3 - <<'EOF'` body. Skipped when that
+      code can run strings as code (`exec`, `subprocess`, …).
+    - A quoted argument, or a heredoc body, handed to a program that does not
+      execute it — a `git commit -m` message, an `echo`, a `cat` heredoc.
+      Skipped entirely when ANY word of the command could execute text: a
+      shell, `eval`, `ssh`, an interpreter reading code from its stdin, or a
+      double-quoted string carrying a command substitution.
+
+    Everything else stays in scope, exactly as before."""
+    lexed = _lex_shell_words(command)
+    if lexed is None:
+        return []
+    commands, heredocs = lexed
+    heredoc_owners = {owner for owner, _, _ in heredocs}
+    spans = []
+    code_words = set()
+    stdin_code = {}
+    fail_closed = False
+    for ci, words in enumerate(commands):
+        texts = [w[0] for w in words]
+        for wi, tok in enumerate(texts):
+            program = _program_name(tok)
+            if _PYTHON_INTERPRETER.match(program):
+                lang = "py"
+            elif program in _JS_INTERPRETERS:
+                lang = "js"
+            else:
+                if program in _EXECUTING_PROGRAMS:
+                    fail_closed = True
+                continue
+            kind, code_index = _interpreter_code_source(texts, wi, lang)
+            if kind == "arg":
+                code_words.add((ci, code_index))
+                region = _quoted_region(command, words[code_index])
+                literal = _code_literal_spans(command, region, lang) if region else None
+                spans.extend(literal or [])
+            elif kind == "stdin":
+                if ci in heredoc_owners:
+                    stdin_code[ci] = lang
+                else:
+                    fail_closed = True
+    for owner, body_start, body_end in heredocs:
+        if owner in stdin_code:
+            region = [(command[i], i) for i in range(body_start, body_end)]
+            spans.extend(_code_literal_spans(command, region, stdin_code[owner]) or [])
+        elif not fail_closed:
+            texts = [w[0] for w in commands[owner]]
+            if _command_program(texts) in _HEREDOC_DATA_CONSUMERS:
+                spans.append((body_start, body_end))
+    if fail_closed:
+        return spans
+    for ci, words in enumerate(commands):
+        for wi, word in enumerate(words):
+            if (ci, wi) in code_words:
+                continue
+            for inner_start, inner_end, quote in word[3]:
+                inner = command[inner_start:inner_end]
+                if quote == '"' and ("$(" in inner or "`" in inner):
+                    continue
+                spans.append((inner_start, inner_end))
+    return spans
+
+
+def _in_spans(position, spans):
+    return any(start <= position < end for start, end in spans)
+
+
+def _literal_value(command, index):
+    """The string literal starting at `command[index]` and the index past it,
+    when it is a plain literal ending its statement — optionally wrapped as
+    `Path("…")`. None for anything computed, escaped or interpolated."""
+    wrapped = re.match(r"(?:pathlib\.)?Path\s*\(\s*", command[index:])
+    if wrapped:
+        index += wrapped.end()
+    quote = command[index:index + 1]
+    if quote not in ("'", '"'):
+        return None
+    end = command.find(quote, index + 1)
+    if end == -1:
+        return None
+    value = command[index + 1:end]
+    if not value or "\\" in value or "\n" in value:
+        return None
+    end += 1
+    if wrapped:
+        close = re.match(r"\s*\)", command[end:])
+        if not close:
+            return None
+        end += close.end()
+    if not _STATEMENT_END.match(command, end):
+        return None
+    return value
+
+
+def resolve_identifier(command, name):
+    """Every string literal `name` is bound to in `command` — a Python or JS
+    variable (`p = "…"`) — or None when it cannot be resolved.
+
+    Resolved only when EVERY binding of `name` is a plain literal assignment.
+    Any other binding form — a computed value, a loop target, a parameter, an
+    import, `as p`, tuple unpacking, an augmented assignment — makes it
+    unresolvable. Several literal bindings resolve to all of their values,
+    since a loop may reach any of them: an extra candidate can only add a
+    refusal, never remove one."""
+    if not _BARE_IDENTIFIER.match(name):
+        return None
+    ident = re.escape(name)
+    bound = rf"(?<![\w.$]){ident}(?![\w$])"
+    other_bindings = (
+        rf"\bfor\b[^\n;:]*?{bound}[^\n;:]*?\b(?:in|of)\b",
+        rf"\bas\s+{ident}(?![\w$])",
+        rf"\b(?:def|class|function)\s+{ident}(?![\w$])",
+        rf"\bdef\s+\w+\s*\([^)]*{bound}",
+        rf"\bfunction\b[^(\n]*\([^)]*{bound}",
+        rf"\blambda\b[^:\n]*{bound}[^:\n]*:",
+        rf"\([^()\n]*{bound}[^()\n]*\)\s*=>",
+        rf"{bound}\s*=>",
+        rf"\b(?:import|global|nonlocal)\b[^\n;]*{bound}",
+        # Unpacking: `p, q = …`, `a, p = …`, `[a, p] = …` — anchored at a
+        # statement start so `open(p, mode="w")` is not read as one.
+        rf"(?:^|[;\n\"'])\s*(?:(?:const|let|var)\s+)?[\[(]?\s*{ident}(?![\w$])\s*,[^=\n;]*=(?![=>])",
+        rf"(?:^|[;\n\"'])\s*(?:(?:const|let|var)\s+)?[\[(]?\s*(?:[\w$*.]+\s*,\s*)+"
+        rf"{ident}(?![\w$])[^=\n;]*=(?![=>])",
+        rf"\{{[^}}\n]*{bound}[^}}\n]*\}}\s*=(?![=>])",
+        rf"{bound}\s*(?:\*\*|//|>>|<<|\?\?|\|\||&&|[-+*/%|&^:@])=",
+        rf"{bound}\s*:[^=\n]*=(?![=>])",
+    )
+    if any(re.search(pattern, command) for pattern in other_bindings):
+        return None
+    values = []
+    assignment = re.compile(rf"(?<![\w.$])(?:(?:const|let|var)\s+)?{ident}\s*=(?![=>])\s*")
+    for match in assignment.finditer(command):
+        value = _literal_value(command, match.end())
+        if value is None:
+            return None
+        if value not in values:
+            values.append(value)
+    return values or None
+
+
+def _shell_variable_values(command, name):
+    """Every literal a shell variable is assigned in `command` (`P=/tmp/x`),
+    or None when any binding of it is not a standalone literal assignment.
+
+    An assignment PREFIXING a program (`P=x sed … "$P"`) does not count: the
+    shell expands `"$P"` before that assignment takes effect."""
+    ident = re.escape(name)
+    if re.search(
+        rf"\bfor\s+{ident}\b|\bread\b[^;\n|&]*\b{ident}\b|\b{ident}\+=|\$\{{{ident}:?[=?]",
+        command,
+    ):
+        return None
+    values = []
+    for segment in _split_commands(command):
+        try:
+            tokens = shlex.split(segment, posix=True)
+        except ValueError:
+            return None
+        if tokens and tokens[0] in ("export", "local", "declare", "readonly", "typeset"):
+            tokens = [t for t in tokens[1:] if not t.startswith("-")]
+        standalone = all(_ASSIGNMENT.match(t) for t in tokens)
+        for tok in tokens:
+            if not _ASSIGNMENT.match(tok):
+                break
+            key, _, value = tok.partition("=")
+            if key != name:
+                continue
+            if not standalone or not value or re.search(r"[$`]", value):
+                return None
+            if value not in values:
+                values.append(value)
+    return values or None
+
+
+def _expand_shell_operand(command, operand):
+    """`operand` with its `$VAR`/`${VAR}` references replaced by their
+    literal values, as a list of candidate paths — or None when a reference
+    cannot be resolved or the operand is otherwise computed."""
+    candidates = [operand]
+    for match in re.finditer(r"\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?", operand):
+        values = _shell_variable_values(command, match.group(1))
+        if values is None:
+            return None
+        candidates = [
+            c.replace(match.group(0), v, 1) for c in candidates for v in values
+        ][:_MAX_RESOLVED_TARGETS]
+    if any(re.search(r"[$`{}]", c) for c in candidates):
+        return None
+    return candidates
+
+
+_SED_LONG_FLAGS = frozenset(
+    (
+        "--quiet", "--silent", "--in-place", "--regexp-extended", "--separate",
+        "--null-data", "--unbuffered", "--posix", "--debug", "--sandbox",
+        "--follow-symlinks", "--binary", "--expression", "--file",
+    )
+)
+
+
+def _sed_operands(tokens):
+    """The file operands of the `sed` whose arguments are `tokens`, or None
+    when an option is not understood well enough to tell a file from the
+    script."""
+    script_given = False
+    operands = []
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        if tok == "--":
+            operands.extend(tokens[i + 1:])
+            break
+        if tok.startswith("--"):
+            name = tok.split("=", 1)[0]
+            if name not in _SED_LONG_FLAGS:
+                return None
+            if name in ("--expression", "--file"):
+                script_given = True
+                if "=" not in tok:
+                    i += 1
+            i += 1
+            continue
+        if tok.startswith("-") and len(tok) > 1:
+            for j, flag in enumerate(tok[1:], start=1):
+                if flag in "ef":
+                    script_given = True
+                    if j == len(tok) - 1:
+                        i += 1
+                    break
+                if flag in "iI":
+                    # BSD spells an empty backup suffix as its own `''` argument.
+                    if j == len(tok) - 1 and i + 1 < len(tokens) and tokens[i + 1] == "":
+                        i += 1
+                    break
+                if flag not in "nErszuab":
+                    return None
+            i += 1
+            continue
+        operands.append(tok)
+        i += 1
+    if not script_given:
+        if not operands:
+            return None
+        operands = operands[1:]
+    return operands
+
+
+def _perl_operands(tokens):
+    """The file operands of the `perl` whose arguments are `tokens`, or None
+    when an option is not understood well enough to tell a file from the
+    program."""
+    code_given = False
+    operands = []
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        if tok == "--":
+            operands.extend(tokens[i + 1:])
+            break
+        if tok.startswith("-") and len(tok) > 1 and not tok.startswith("--"):
+            j = 1
+            while j < len(tok):
+                flag = tok[j]
+                if flag in "eE":
+                    code_given = True
+                    if j == len(tok) - 1:
+                        i += 1
+                    break
+                if flag == "i" or (flag in "IMmxCdDF" and j < len(tok) - 1):
+                    break
+                if flag in "0l":
+                    j += 1
+                    digits = "01234567"
+                    if flag == "0" and tok[j:j + 1] == "x":
+                        j += 1
+                        digits = "0123456789abcdefABCDEF"
+                    while j < len(tok) and tok[j] in digits:
+                        j += 1
+                    continue
+                if flag not in "acnpstTuUvwWXh":
+                    return None
+                j += 1
+            i += 1
+            continue
+        if tok.startswith("--"):
+            return None
+        operands.append(tok)
+        i += 1
+    if not code_given:
+        if not operands:
+            return None
+        operands = operands[1:]
+    return operands
+
+
+def inplace_edit_targets(command):
+    """`(found, paths)` for the in-place `sed`/`perl` edits in `command`:
+    `found` is True when there is one, and `paths` lists every file they
+    rewrite — or is None when any of them cannot be resolved (a positional
+    list fed by `xargs`/`find -exec`, an unknown option, an unresolvable
+    variable, an untokenizable command). Fails closed exactly as
+    `_has_inplace_editor` does."""
+    if not _has_inplace_editor(command):
+        return False, []
+    paths = []
+    for segment in _split_commands(command):
+        try:
+            tokens = shlex.split(segment, posix=True)
+        except ValueError:
+            return True, None
+        for index, tok in enumerate(tokens):
+            program = tok.rsplit("/", 1)[-1]
+            if program not in ("sed", "perl") or not _in_command_position(tokens, index):
+                continue
+            rest = tokens[index + 1:]
+            if not any(_INPLACE_FLAG.match(t) for t in rest):
+                continue
+            if any(t in ("xargs", "-exec", "-execdir", "parallel") for t in tokens[:index]):
+                return True, None
+            rest = [t for t in rest if not _REDIRECT_TOKEN.match(t)]
+            operands = _sed_operands(rest) if program == "sed" else _perl_operands(rest)
+            if not operands:
+                return True, None
+            for operand in operands:
+                expanded = _expand_shell_operand(command, operand)
+                if expanded is None:
+                    return True, None
+                paths.extend(expanded)
+    return True, paths or None
+
+
+def _resolved_expression(command, expr):
+    """The literal paths a write construct's target expression names — the
+    literal itself, or the values of a bare variable bound to literals — or
+    None when it cannot be resolved."""
+    literal = _string_literal(expr)
+    if literal:
+        return [literal]
+    expr = expr.strip()
+    if _BARE_IDENTIFIER.match(expr):
+        return resolve_identifier(command, expr)
+    return None
+
+
 def write_targets(command):
     """Parse `command` for in-process file-write constructs.
 
-    Returns `(explicit, opaque, append_only)`: `explicit` lists the literal
-    paths the command writes to; `opaque` is True when at least one write
-    construct targets a path that cannot be resolved statically — a variable
-    (`open(p, "w")`), or an in-place `sed`/`perl` whose file argument is
-    positional.
+    Returns `(explicit, opaque, append_only)`: `explicit` lists the paths the
+    command writes to — literal, or resolved from a variable bound to a
+    literal (`p = "…"` … `open(p, "w")`, `P=…` … `sed -i … "$P"`); `opaque`
+    is True when at least one write construct targets a path that cannot be
+    resolved statically. A construct that is data rather than code — see
+    `write_construct_data_spans` — is not a write construct at all.
 
     `append_only` is True when every construct found EXTENDS its target
     (`>>`, `open(p, "a")`) rather than replacing it. Appending is still a
@@ -1692,31 +2327,44 @@ def write_targets(command):
     opaque = False
     appending = False
     truncating = False
+    constructs = ("open", "write_", "writeFile")
+    data = write_construct_data_spans(command) if any(c in command for c in constructs) else []
+
+    def add(resolved):
+        nonlocal opaque
+        if resolved is None:
+            opaque = True
+        else:
+            explicit.extend(resolved)
 
     for match in _OPEN_CALL.finditer(command):
+        if _in_spans(match.start(), data):
+            continue
         args = _call_args(command, match.end() - 1)
         if len(args) < 2:
             continue
-        mode = _string_literal(args[1])
+        mode = _string_literal(re.sub(r"^\s*mode\s*=", "", args[1]))
         if mode is None or not set(mode) & set("wax+"):
             continue
         if "a" in mode:
             appending = True
         else:
             truncating = True
-        literal = _string_literal(args[0])
-        if literal:
-            explicit.append(literal)
-        else:
-            opaque = True
+        add(_resolved_expression(command, args[0]))
 
     for pattern in (_WRITE_TEXT, _NODE_WRITE):
         for match in pattern.finditer(command):
+            if _in_spans(match.start(), data):
+                continue
             truncating = True
             if match.group("path"):
                 explicit.append(match.group("path"))
+            elif pattern is _NODE_WRITE:
+                args = _call_args(command, command.index("(", match.start()))
+                add(_resolved_expression(command, args[0]) if args else None)
             else:
-                opaque = True
+                receiver = re.search(r"(?<![\w.)\]])([A-Za-z_]\w*)\s*$", command[:match.start()])
+                add(resolve_identifier(command, receiver.group(1)) if receiver else None)
 
     for match in _SHELL_REDIRECT.finditer(command):
         if match.group(0).startswith(">>"):
@@ -1725,9 +2373,10 @@ def write_targets(command):
             truncating = True
         explicit.append(match.group("path"))
 
-    if _has_inplace_editor(command):
-        opaque = True
+    found, paths = inplace_edit_targets(command)
+    if found:
         truncating = True
+        add(paths)
 
     return explicit, opaque, appending and not truncating
 
@@ -1826,12 +2475,14 @@ def scripted_rewrite_stage(command, project_dir):
 
     Detection is WHOLE-COMMAND, unchanged: a command qualifies only when it
     BOTH carries a write construct AND that write lands on tracked source.
-    When every write target is a literal path, only those paths are judged.
-    When a target is opaque, it falls back to every tracked source path the
-    command mentions — which is the shape the real incidents took
+    When every write target resolves — a literal path, or a variable bound to
+    literals in the same command, which is the shape the real incidents took
     (`p = "…/opencode.rs"` … `open(p, "w")`, with the assignment and the write
-    on different lines). Narrowing that fallback to a single stage silently
-    disarms the guard on exactly those cases.
+    on different lines) — only those paths are judged, so a write to a temp
+    file is not refused for the tracked paths it merely mentions. When a
+    target is still opaque, it falls back to every tracked source path the
+    command mentions. Narrowing that fallback to a single stage silently
+    disarms the guard on exactly the cases it covers.
 
     Stage ATTRIBUTION is layered on top so the refusal can name the offending
     half of a compound command. One session ran `cp <file> <backup> && perl
