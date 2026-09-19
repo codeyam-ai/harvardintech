@@ -223,11 +223,37 @@
     "testFile": "src/lib/seoEndpoints.test.ts"
   },
   {
+    "description": "The campaign's pill-shaped giving CTA — or, while the campaign is closed, the note that stands in for it. Every giving band on the campaign page routes through here, so both questions have one answer: whether there is a button at all, and where it goes. That is what makes a blank Donate URL close giving everywhere at once, and what makes pasting a platform URL open it again with no code change.",
+    "filePath": "src/components/donate/GiveButton.astro",
+    "name": "GiveButton",
+    "scenarios": [
+      "givebutton-both-variants",
+      "givebutton-giving-closed"
+    ],
+    "tags": [
+      "giving",
+      "launch"
+    ]
+  },
+  {
     "description": "Giving Campaign crimson CTA band: the fundraising ask with Donate and Sponsorship actions and no fabricated progress meter.",
     "filePath": "src/components/landing/GivingCampaign.astro",
     "name": "GivingCampaign",
     "scenarios": [
       "giving-campaign"
+    ]
+  },
+  {
+    "description": "What stands in for a giving button while the fundraising campaign is closed. Every giving CTA on the campaign page and the homepage band routes through here when the Donate URL is blank. It is deliberately not a button: the site cannot accept a gift yet, so anything shaped like an action would promise one. It renders the shared coming-soon message plus one real alternative, and takes its tone from the band rather than inheriting a colour, because the bands it appears on run from near-black to cream.",
+    "filePath": "src/components/donate/GivingSoonNote.astro",
+    "name": "GivingSoonNote",
+    "scenarios": [
+      "givingsoonnote-on-a-pale-band",
+      "givingsoonnote-on-a-dark-band"
+    ],
+    "tags": [
+      "giving",
+      "launch"
     ]
   },
   {
@@ -244,6 +270,21 @@
     "name": "GlobalCommunityCta",
     "scenarios": [
       "globalcommunitycta-three-ways-in"
+    ]
+  },
+  {
+    "description": "The fundraising progress band, in either of two modes that never both apply. With a Givebutter widget id it hands the meter to Givebutter, which reports the live total and needs no maintenance. With the id blank and figures filled in it draws its own bar from them — the mode production is in today, showing nothing raised against the 2026 goal. The percentage is what the bar is drawn to and is not derived from the money, so the two can be edited into contradicting each other.",
+    "filePath": "src/components/donate/GoalMeter.astro",
+    "name": "GoalMeter",
+    "scenarios": [
+      "goalmeter-the-2026-goal-before-launch",
+      "goalmeter-navy-chrome-with-campaign-link",
+      "goalmeter-a-campaign-name-that-runs-long",
+      "goalmeter-the-band-around-givebutter-s-meter"
+    ],
+    "tags": [
+      "giving",
+      "launch"
     ]
   },
   {
@@ -1233,6 +1274,16 @@
     "testFile": "src/lib/localPresence.test.ts"
   },
   {
+    "description": "Whether the site can accept a gift at all, true only for a non-blank trimmed donation platform URL. Every giving surface asks this one predicate before rendering a button, so \"the campaign has not opened yet\" stays a single CMS field rather than a state each band decides for itself. A blank value used to mean \"open an inquiry email\", which asked for a gift the organization could not yet accept; it now means giving is closed.",
+    "filePath": "src/lib/giving.ts",
+    "name": "isGivingOpen",
+    "tags": [
+      "giving",
+      "launch"
+    ],
+    "testFile": "src/lib/giving.test.ts"
+  },
+  {
     "description": "Whether a URL or path points inside one of INTERNAL_PATHS, after removing the subpath base. Keeps internal pages out of the public sitemap; lookalike paths such as /reviews-of-2026/ or /blog/review/ do not match.",
     "filePath": "src/lib/publishTrack.ts",
     "name": "isInternalPath",
@@ -1944,7 +1995,7 @@
     "testFile": "src/lib/contact.test.ts"
   },
   {
-    "description": "Where a giving CTA on a CAMPAIGN page points, as distinct from the button on the giving page itself (which is resolveGiveHref). The two answer different questions: a CTA on /donate means 'take me somewhere I can give', and the best answer is /give, which states the goal, the amounts and what the money funds before asking for anything; the button at the bottom of /give means 'I am giving now', which has to leave the site for the platform or open the giving-inquiry email until one exists. A configured donateUrl wins outright here, so choosing a platform sends every campaign CTA straight to it and takes /give out of the path entirely — a real checkout is a better destination than our page, and the CMS switch keeps working unchanged. Without this split the button on /give would resolve to /give and the page would link to itself, which is the failure this function exists to make impossible.",
+    "description": "Where a giving CTA on a campaign page points, or undefined when giving is closed and the caller should render the coming-soon message instead of a link. It used to fall back to the site's own /give page; that page held a checkout which could not take a payment, so pointing at it before the campaign opens walked a reader toward an ask nobody could complete. A configured donateUrl now goes straight to the platform.",
     "filePath": "src/lib/giving.ts",
     "name": "resolveGiveCtaHref",
     "testFile": "src/lib/giving.test.ts"

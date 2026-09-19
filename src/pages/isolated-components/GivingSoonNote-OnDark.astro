@@ -1,0 +1,33 @@
+---
+import Component from "../../../src/components/donate/GivingSoonNote.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for the note on a DARK band — the tone the campaign hero, the
+// network rail and the closing ask use.
+//
+// It is a separate page rather than a `?s=` state because this is a static
+// build: query params are empty at build time, so one page would capture the
+// same default frame for both tones.
+//
+// This frame is the one that matters for legibility. The note inherited its
+// colour in the first draft, which produced near-black text on this near-black
+// ground — present in the DOM, unreadable on the page. `onDark` is the band
+// telling the note which way to go, and this capture is what proves it did.
+//
+// The link is shown with its own label here: on the homepage band the note
+// points at /donate ("Read about the Momentum Fund") rather than at the
+// volunteer page, because a reader there has not yet been told what the fund is.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: GivingSoonNote-OnDark</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0b0b0f;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 420px;">
+      <Component onDark linkHref="/donate" linkLabel="Read about the Momentum Fund" />
+    </div>
+  </body>
+</html>

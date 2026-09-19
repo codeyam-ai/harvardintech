@@ -1,0 +1,12 @@
+{
+  "name": "GivingSoonNote - On A Pale Band",
+  "id": "79bc8831-14b2-42ed-be93-7b8b473a1ad0",
+  "url": "/isolated-components/GivingSoonNote",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "GivingSoonNote",
+  "scenarioType": "component",
+  "description": "What replaces a giving button while the campaign is closed, in its default tone — the one the priorities list and the empty donor wall use. It is deliberately not a button: the site cannot take a gift yet, so anything shaped like an action would promise one. The message states when the campaign opens and what the 2026 goal is, and the link underneath is the one thing a reader can actually do instead."
+}

@@ -711,7 +711,6 @@
     "src/components/SponsorPage.astro": {
       "imports": [
         "src/components/sponsor/SponsorHero.astro",
-        "src/components/sponsor/SponsorLevels.astro",
         "src/components/sponsor/SponsorWall.astro",
         "src/components/sponsor/SponsorInquiry.astro",
         "src/lib/sponsors.ts",
@@ -1088,7 +1087,6 @@
       ],
       "importedBy": [
         "src/components/MomentumFundPage.astro",
-        "src/pages/give.astro",
         "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro",
         "src/pages/isolated-components/GiftPillars-Numbered.astro",
         "src/pages/isolated-components/GiftPillars.astro"
@@ -1097,7 +1095,7 @@
     "src/components/donate/GiveButton.astro": {
       "imports": [
         "src/lib/giving.ts",
-        "src/lib/url.ts"
+        "src/components/donate/GivingSoonNote.astro"
       ],
       "importedBy": [
         "src/components/give/GiveClose.astro",
@@ -1107,7 +1105,20 @@
         "src/components/donate/GiftPillars.astro",
         "src/components/donate/DonorWallEmpty.astro",
         "src/components/donate/MomentumClose.astro",
-        "src/pages/isolated-components/GiveButton.astro"
+        "src/pages/isolated-components/GiveButton.astro",
+        "src/pages/isolated-components/GiveButton-GivingClosed.astro"
+      ]
+    },
+    "src/components/donate/GivingSoonNote.astro": {
+      "imports": [
+        "src/lib/giving.ts",
+        "src/lib/url.ts"
+      ],
+      "importedBy": [
+        "src/components/landing/GivingCampaign.astro",
+        "src/components/donate/GiveButton.astro",
+        "src/pages/isolated-components/GivingSoonNote.astro",
+        "src/pages/isolated-components/GivingSoonNote-OnDark.astro"
       ]
     },
     "src/components/donate/GoalMeter.astro": {
@@ -1118,7 +1129,8 @@
         "src/components/MomentumFundPage.astro",
         "src/pages/isolated-components/GoalMeter-LongTitle.astro",
         "src/pages/isolated-components/GoalMeter.astro",
-        "src/pages/isolated-components/GoalMeter-WithLink.astro"
+        "src/pages/isolated-components/GoalMeter-WithLink.astro",
+        "src/pages/isolated-components/GoalMeter-PreLaunch.astro"
       ]
     },
     "src/components/donate/MomentumAccomplishments.astro": {
@@ -1127,7 +1139,6 @@
       ],
       "importedBy": [
         "src/components/MomentumFundPage.astro",
-        "src/pages/give.astro",
         "src/pages/isolated-components/[name].astro"
       ]
     },
@@ -1233,7 +1244,6 @@
         "src/components/donate/GiveButton.astro"
       ],
       "importedBy": [
-        "src/pages/give.astro",
         "src/pages/isolated-components/GiveClose.astro"
       ]
     },
@@ -1243,21 +1253,18 @@
         "src/lib/url.ts"
       ],
       "importedBy": [
-        "src/pages/give.astro",
         "src/pages/isolated-components/GiveCollage.astro"
       ]
     },
     "src/components/give/GiveFaq.astro": {
       "imports": [],
       "importedBy": [
-        "src/pages/give.astro",
         "src/pages/isolated-components/GiveFaq.astro"
       ]
     },
     "src/components/give/GiveHero.astro": {
       "imports": [],
       "importedBy": [
-        "src/pages/give.astro",
         "src/pages/isolated-components/GiveHero.astro"
       ]
     },
@@ -1268,21 +1275,18 @@
         "src/components/ResponsiveImg.astro"
       ],
       "importedBy": [
-        "src/pages/give.astro",
         "src/pages/isolated-components/GivePhoto.astro"
       ]
     },
     "src/components/give/GiveRecognition.astro": {
       "imports": [],
       "importedBy": [
-        "src/pages/give.astro",
         "src/pages/isolated-components/GiveRecognition.astro"
       ]
     },
     "src/components/give/GiveStatement.astro": {
       "imports": [],
       "importedBy": [
-        "src/pages/give.astro",
         "src/pages/isolated-components/GiveStatement.astro"
       ]
     },
@@ -1291,7 +1295,6 @@
         "src/components/donate/GiveButton.astro"
       ],
       "importedBy": [
-        "src/pages/give.astro",
         "src/pages/isolated-components/GivingCard.astro"
       ]
     },
@@ -1406,7 +1409,9 @@
     },
     "src/components/landing/GivingCampaign.astro": {
       "imports": [
-        "src/lib/mailto.ts"
+        "src/components/donate/GivingSoonNote.astro",
+        "src/lib/giving.ts",
+        "src/lib/url.ts"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro",
@@ -1579,7 +1584,6 @@
         "src/components/sponsor/SponsorLevelCard.astro"
       ],
       "importedBy": [
-        "src/components/SponsorPage.astro",
         "src/pages/isolated-components/[name].astro"
       ]
     },
@@ -1818,7 +1822,6 @@
         "src/pages/chapters/[slug].astro",
         "src/pages/donate.astro",
         "src/pages/volunteer.astro",
-        "src/pages/give.astro",
         "src/pages/index.astro",
         "src/pages/[slug].astro",
         "src/pages/sponsor.astro",
@@ -2084,7 +2087,7 @@
       ],
       "importedBy": [
         "src/pages/donate.astro",
-        "src/pages/give.astro",
+        "src/pages/index.astro",
         "src/pages/isolated-components/[name].astro"
       ]
     },
@@ -2358,9 +2361,7 @@
       "imports": [
         "src/lib/contentRoot.ts"
       ],
-      "importedBy": [
-        "src/pages/give.astro"
-      ]
+      "importedBy": []
     },
     "src/lib/givebutter.test.ts": {
       "imports": [
@@ -2387,8 +2388,16 @@
       ],
       "importedBy": [
         "src/lib/giving.test.ts",
-        "src/components/donate/GiveButton.astro"
+        "src/components/landing/GivingCampaign.astro",
+        "src/components/donate/GiveButton.astro",
+        "src/components/donate/GivingSoonNote.astro"
       ]
+    },
+    "src/lib/givingContent.test.ts": {
+      "imports": [
+        "src/lib/redirects.ts"
+      ],
+      "importedBy": []
     },
     "src/lib/homeSections.test.ts": {
       "imports": [
@@ -2528,7 +2537,6 @@
         "src/lib/giving.ts",
         "src/lib/mailto.test.ts",
         "src/lib/contact.ts",
-        "src/components/landing/GivingCampaign.astro",
         "src/components/FormingChapterCta.astro"
       ]
     },
@@ -2821,6 +2829,7 @@
       "importedBy": [
         "src/lib/sitePages.ts",
         "src/lib/redirects.test.ts",
+        "src/lib/givingContent.test.ts",
         "astro.config.mjs"
       ]
     },
@@ -3002,7 +3011,6 @@
         "src/pages/cutover-runbook/[...path].astro",
         "src/pages/donate.astro",
         "src/pages/volunteer.astro",
-        "src/pages/give.astro",
         "src/pages/index.astro",
         "src/pages/sponsor.astro",
         "src/pages/isolated-components/[name].astro",
@@ -3165,9 +3173,10 @@
         "src/components/landing/OurChapters.astro",
         "src/components/landing/FocusAreas.astro",
         "src/components/landing/HeroCarousel.astro",
+        "src/components/landing/GivingCampaign.astro",
         "src/components/donate/MomentumHero.astro",
-        "src/components/donate/GiveButton.astro",
         "src/components/donate/DonorAvatar.astro",
+        "src/components/donate/GivingSoonNote.astro",
         "src/components/donate/MomentumClose.astro",
         "src/components/donate/TestimonialCard.astro",
         "src/components/donate/GiftPillarCard.astro",
@@ -3311,25 +3320,6 @@
       ],
       "importedBy": []
     },
-    "src/pages/give.astro": {
-      "imports": [
-        "src/layouts/BaseLayout.astro",
-        "src/components/give/GiveHero.astro",
-        "src/components/give/GivePhoto.astro",
-        "src/components/give/GivingCard.astro",
-        "src/components/give/GiveStatement.astro",
-        "src/components/give/GiveRecognition.astro",
-        "src/components/give/GiveFaq.astro",
-        "src/components/give/GiveCollage.astro",
-        "src/components/give/GiveClose.astro",
-        "src/components/donate/GiftPillars.astro",
-        "src/components/donate/MomentumAccomplishments.astro",
-        "src/lib/site.ts",
-        "src/lib/givePageContent.ts",
-        "src/lib/donatePageContent.ts"
-      ],
-      "importedBy": []
-    },
     "src/pages/index.astro": {
       "imports": [
         "src/layouts/BaseLayout.astro",
@@ -3341,6 +3331,7 @@
         "src/lib/draftVisibility.ts",
         "src/lib/team.ts",
         "src/lib/homeSectionsContent.ts",
+        "src/lib/donatePageContent.ts",
         "src/components/landing/HomeSections.astro"
       ],
       "importedBy": []
@@ -3594,6 +3585,13 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/GiveButton-GivingClosed.astro": {
+      "imports": [
+        "src/components/donate/GiveButton.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/GiveButton.astro": {
       "imports": [
         "src/components/donate/GiveButton.astro",
@@ -3657,6 +3655,20 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/GivingSoonNote-OnDark.astro": {
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/GivingSoonNote.astro": {
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/GlobalCommunityAction.astro": {
       "imports": [
         "src/components/GlobalCommunityAction.astro",
@@ -3672,6 +3684,13 @@
       "importedBy": []
     },
     "src/pages/isolated-components/GoalMeter-LongTitle.astro": {
+      "imports": [
+        "src/components/donate/GoalMeter.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/GoalMeter-PreLaunch.astro": {
       "imports": [
         "src/components/donate/GoalMeter.astro",
         "src/styles/tokens.css"
@@ -4227,11 +4246,13 @@
         "src/pages/isolated-components/FormingChapterCta-NoEmail.astro",
         "src/pages/isolated-components/BlogPostBody.astro",
         "src/pages/isolated-components/EventsArchive.astro",
+        "src/pages/isolated-components/GiveButton-GivingClosed.astro",
         "src/pages/isolated-components/MomentumTestimonials.astro",
         "src/pages/isolated-components/BrandMark.astro",
         "src/pages/isolated-components/SitePageHeader-LongTitle.astro",
         "src/pages/isolated-components/GiveClose.astro",
         "src/pages/isolated-components/DecisionTick-ReadOnly.astro",
+        "src/pages/isolated-components/GivingSoonNote.astro",
         "src/pages/isolated-components/DecisionTick-Decided.astro",
         "src/pages/isolated-components/StepTick.astro",
         "src/pages/isolated-components/GiftPillars-Numbered.astro",
@@ -4285,8 +4306,10 @@
         "src/pages/isolated-components/WebinarCard.astro",
         "src/pages/isolated-components/DeployChip-Live.astro",
         "src/pages/isolated-components/GiveRecognition.astro",
+        "src/pages/isolated-components/GivingSoonNote-OnDark.astro",
         "src/pages/isolated-components/DeployStatus-StillUpdating.astro",
         "src/pages/isolated-components/GalleryLightboxUncaptioned.astro",
+        "src/pages/isolated-components/GoalMeter-PreLaunch.astro",
         "src/pages/isolated-components/VolunteerProjectsEmpty.astro",
         "src/pages/isolated-components/CommunityPage.astro",
         "src/pages/isolated-components/GlobalCommunityAction.astro",
@@ -5034,7 +5057,6 @@
       "name": "__file_root__",
       "imports": [
         "src/components/sponsor/SponsorHero.astro::__file_root__",
-        "src/components/sponsor/SponsorLevels.astro::__file_root__",
         "src/components/sponsor/SponsorWall.astro::__file_root__",
         "src/components/sponsor/SponsorInquiry.astro::__file_root__",
         "src/lib/sponsors.ts::SponsorLike",
@@ -5492,7 +5514,6 @@
         "src/lib/site.ts::DonatePageCopy"
       ],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars-Numbered.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars.astro::__file_root__"
@@ -5502,15 +5523,28 @@
       "filePath": "src/components/donate/GiveButton.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/giving.ts::resolveGiveCtaHref",
+        "src/lib/giving.ts::isGivingOpen",
         "src/lib/giving.ts::resolveGiveHref",
-        "src/lib/url.ts::withBase"
+        "src/components/donate/GivingSoonNote.astro::__file_root__"
       ],
       "importedBy": [
         "src/components/donate/GiftPillars.astro::__file_root__",
         "src/components/donate/DonorWallEmpty.astro::__file_root__",
         "src/components/donate/MomentumClose.astro::__file_root__",
-        "src/pages/isolated-components/GiveButton.astro::__file_root__"
+        "src/pages/isolated-components/GiveButton.astro::__file_root__",
+        "src/pages/isolated-components/GiveButton-GivingClosed.astro::__file_root__"
+      ]
+    },
+    "src/components/donate/GivingSoonNote.astro::__file_root__": {
+      "filePath": "src/components/donate/GivingSoonNote.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/giving.ts::__file_root__",
+        "src/lib/url.ts::withBase"
+      ],
+      "importedBy": [
+        "src/pages/isolated-components/GivingSoonNote.astro::__file_root__",
+        "src/pages/isolated-components/GivingSoonNote-OnDark.astro::__file_root__"
       ]
     },
     "src/components/donate/GoalMeter.astro::__file_root__": {
@@ -5522,7 +5556,8 @@
       "importedBy": [
         "src/pages/isolated-components/GoalMeter-LongTitle.astro::__file_root__",
         "src/pages/isolated-components/GoalMeter.astro::__file_root__",
-        "src/pages/isolated-components/GoalMeter-WithLink.astro::__file_root__"
+        "src/pages/isolated-components/GoalMeter-WithLink.astro::__file_root__",
+        "src/pages/isolated-components/GoalMeter-PreLaunch.astro::__file_root__"
       ]
     },
     "src/components/donate/MomentumAccomplishments.astro::__file_root__": {
@@ -5532,7 +5567,6 @@
         "src/components/donate/AccomplishmentCard.astro::__file_root__"
       ],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ]
     },
@@ -5664,7 +5698,6 @@
         "src/components/donate/GiveButton.astro::__file_root__"
       ],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GiveClose.astro::__file_root__"
       ]
     },
@@ -5676,7 +5709,6 @@
         "src/lib/url.ts::withBase"
       ],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GiveCollage.astro::__file_root__"
       ]
     },
@@ -5685,7 +5717,6 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GiveFaq.astro::__file_root__"
       ]
     },
@@ -5694,7 +5725,6 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GiveHero.astro::__file_root__"
       ]
     },
@@ -5707,7 +5737,6 @@
         "src/components/ResponsiveImg.astro::__file_root__"
       ],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GivePhoto.astro::__file_root__"
       ]
     },
@@ -5716,7 +5745,6 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GiveRecognition.astro::__file_root__"
       ]
     },
@@ -5725,7 +5753,6 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GiveStatement.astro::__file_root__"
       ]
     },
@@ -5736,7 +5763,6 @@
         "src/components/donate/GiveButton.astro::__file_root__"
       ],
       "importedBy": [
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/GivingCard.astro::__file_root__"
       ]
     },
@@ -5875,7 +5901,10 @@
       "filePath": "src/components/landing/GivingCampaign.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/mailto.ts::buildMailto"
+        "src/components/donate/GivingSoonNote.astro::__file_root__",
+        "src/lib/giving.ts::isGivingOpen",
+        "src/lib/giving.ts::resolveGiveHref",
+        "src/lib/url.ts::withBase"
       ],
       "importedBy": [
         "src/pages/isolated-components/[name].astro::__file_root__"
@@ -6085,7 +6114,6 @@
         "src/components/sponsor/SponsorLevelCard.astro::__file_root__"
       ],
       "importedBy": [
-        "src/components/SponsorPage.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ]
     },
@@ -6379,7 +6407,6 @@
         "src/pages/chapters/[slug].astro::__file_root__",
         "src/pages/donate.astro::__file_root__",
         "src/pages/volunteer.astro::__file_root__",
-        "src/pages/give.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/[slug].astro::__file_root__",
         "src/pages/sponsor.astro::__file_root__",
@@ -6925,7 +6952,6 @@
       "imports": [],
       "importedBy": [
         "src/pages/donate.astro::__file_root__",
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ]
     },
@@ -6943,7 +6969,7 @@
       "imports": [],
       "importedBy": [
         "src/pages/donate.astro::__file_root__",
-        "src/pages/give.astro::__file_root__"
+        "src/pages/index.astro::__file_root__"
       ]
     },
     "src/lib/donatePageContent.ts::loadPillars": {
@@ -6951,8 +6977,7 @@
       "name": "loadPillars",
       "imports": [],
       "importedBy": [
-        "src/pages/donate.astro::__file_root__",
-        "src/pages/give.astro::__file_root__"
+        "src/pages/donate.astro::__file_root__"
       ]
     },
     "src/lib/donorFilter.test.ts::__file_root__": {
@@ -7558,9 +7583,7 @@
       "imports": [
         "src/lib/contentRoot.ts::readSingleton"
       ],
-      "importedBy": [
-        "src/pages/give.astro::__file_root__"
-      ]
+      "importedBy": []
     },
     "src/lib/givebutter.test.ts::__file_root__": {
       "filePath": "src/lib/givebutter.test.ts",
@@ -7583,7 +7606,7 @@
       "filePath": "src/lib/giving.test.ts",
       "name": "__file_root__",
       "imports": [
-        "src/lib/giving.ts::__file_root__",
+        "src/lib/giving.ts::isGivingOpen",
         "src/lib/giving.ts::resolveGiveCtaHref",
         "src/lib/giving.ts::resolveGiveHref"
       ],
@@ -7596,7 +7619,17 @@
         "src/lib/mailto.ts::buildMailto"
       ],
       "importedBy": [
-        "src/lib/giving.test.ts::__file_root__"
+        "src/components/donate/GivingSoonNote.astro::__file_root__"
+      ]
+    },
+    "src/lib/giving.ts::isGivingOpen": {
+      "filePath": "src/lib/giving.ts",
+      "name": "isGivingOpen",
+      "imports": [],
+      "importedBy": [
+        "src/lib/giving.test.ts::__file_root__",
+        "src/components/landing/GivingCampaign.astro::__file_root__",
+        "src/components/donate/GiveButton.astro::__file_root__"
       ]
     },
     "src/lib/giving.ts::resolveGiveCtaHref": {
@@ -7604,8 +7637,7 @@
       "name": "resolveGiveCtaHref",
       "imports": [],
       "importedBy": [
-        "src/lib/giving.test.ts::__file_root__",
-        "src/components/donate/GiveButton.astro::__file_root__"
+        "src/lib/giving.test.ts::__file_root__"
       ]
     },
     "src/lib/giving.ts::resolveGiveHref": {
@@ -7614,8 +7646,17 @@
       "imports": [],
       "importedBy": [
         "src/lib/giving.test.ts::__file_root__",
+        "src/components/landing/GivingCampaign.astro::__file_root__",
         "src/components/donate/GiveButton.astro::__file_root__"
       ]
+    },
+    "src/lib/givingContent.test.ts::__file_root__": {
+      "filePath": "src/lib/givingContent.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/redirects.ts::__file_root__"
+      ],
+      "importedBy": []
     },
     "src/lib/homeSections.test.ts::__file_root__": {
       "filePath": "src/lib/homeSections.test.ts",
@@ -7973,7 +8014,6 @@
         "src/lib/giving.ts::__file_root__",
         "src/lib/mailto.test.ts::__file_root__",
         "src/lib/contact.ts::__file_root__",
-        "src/components/landing/GivingCampaign.astro::__file_root__",
         "src/components/FormingChapterCta.astro::__file_root__"
       ]
     },
@@ -9087,7 +9127,6 @@
       "imports": [],
       "importedBy": [
         "src/pages/donate.astro::__file_root__",
-        "src/pages/give.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ]
     },
@@ -9108,7 +9147,6 @@
         "src/pages/chapters/[slug].astro::__file_root__",
         "src/pages/cutover-runbook/[...path].astro::__file_root__",
         "src/pages/donate.astro::__file_root__",
-        "src/pages/give.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/sponsor.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__",
@@ -9688,9 +9726,10 @@
         "src/components/landing/OurChapters.astro::__file_root__",
         "src/components/landing/FocusAreas.astro::__file_root__",
         "src/components/landing/HeroCarousel.astro::__file_root__",
+        "src/components/landing/GivingCampaign.astro::__file_root__",
         "src/components/donate/MomentumHero.astro::__file_root__",
-        "src/components/donate/GiveButton.astro::__file_root__",
         "src/components/donate/DonorAvatar.astro::__file_root__",
+        "src/components/donate/GivingSoonNote.astro::__file_root__",
         "src/components/donate/MomentumClose.astro::__file_root__",
         "src/components/donate/TestimonialCard.astro::__file_root__",
         "src/components/donate/GiftPillarCard.astro::__file_root__",
@@ -9911,30 +9950,6 @@
       ],
       "importedBy": []
     },
-    "src/pages/give.astro::__file_root__": {
-      "filePath": "src/pages/give.astro",
-      "name": "__file_root__",
-      "imports": [
-        "src/layouts/BaseLayout.astro::__file_root__",
-        "src/components/give/GiveHero.astro::__file_root__",
-        "src/components/give/GivePhoto.astro::__file_root__",
-        "src/components/give/GivingCard.astro::__file_root__",
-        "src/components/give/GiveStatement.astro::__file_root__",
-        "src/components/give/GiveRecognition.astro::__file_root__",
-        "src/components/give/GiveFaq.astro::__file_root__",
-        "src/components/give/GiveCollage.astro::__file_root__",
-        "src/components/give/GiveClose.astro::__file_root__",
-        "src/components/donate/GiftPillars.astro::__file_root__",
-        "src/components/donate/MomentumAccomplishments.astro::__file_root__",
-        "src/lib/site.ts::donatePage",
-        "src/lib/site.ts::settings",
-        "src/lib/givePageContent.ts::__file_root__",
-        "src/lib/donatePageContent.ts::loadAccomplishments",
-        "src/lib/donatePageContent.ts::loadDonateUrl",
-        "src/lib/donatePageContent.ts::loadPillars"
-      ],
-      "importedBy": []
-    },
     "src/pages/index.astro::__file_root__": {
       "filePath": "src/pages/index.astro",
       "name": "__file_root__",
@@ -9952,6 +9967,7 @@
         "src/lib/homeSectionsContent.ts::loadHeroSlides",
         "src/lib/homeSectionsContent.ts::loadHomeSections",
         "src/lib/homeSectionsContent.ts::loadHomeStats",
+        "src/lib/donatePageContent.ts::loadDonateUrl",
         "src/components/landing/HomeSections.astro::__file_root__"
       ],
       "importedBy": []
@@ -10277,6 +10293,15 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/GiveButton-GivingClosed.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveButton-GivingClosed.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/donate/GiveButton.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/GiveButton.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/GiveButton.astro",
       "name": "__file_root__",
@@ -10358,6 +10383,24 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/GivingSoonNote-OnDark.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GivingSoonNote-OnDark.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/GivingSoonNote.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GivingSoonNote.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/GlobalCommunityAction.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/GlobalCommunityAction.astro",
       "name": "__file_root__",
@@ -10378,6 +10421,15 @@
     },
     "src/pages/isolated-components/GoalMeter-LongTitle.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/GoalMeter-LongTitle.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/donate/GoalMeter.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/GoalMeter-PreLaunch.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GoalMeter-PreLaunch.astro",
       "name": "__file_root__",
       "imports": [
         "src/components/donate/GoalMeter.astro::__file_root__",
@@ -11069,11 +11121,13 @@
         "src/pages/isolated-components/FormingChapterCta-NoEmail.astro::__file_root__",
         "src/pages/isolated-components/BlogPostBody.astro::__file_root__",
         "src/pages/isolated-components/EventsArchive.astro::__file_root__",
+        "src/pages/isolated-components/GiveButton-GivingClosed.astro::__file_root__",
         "src/pages/isolated-components/MomentumTestimonials.astro::__file_root__",
         "src/pages/isolated-components/BrandMark.astro::__file_root__",
         "src/pages/isolated-components/SitePageHeader-LongTitle.astro::__file_root__",
         "src/pages/isolated-components/GiveClose.astro::__file_root__",
         "src/pages/isolated-components/DecisionTick-ReadOnly.astro::__file_root__",
+        "src/pages/isolated-components/GivingSoonNote.astro::__file_root__",
         "src/pages/isolated-components/DecisionTick-Decided.astro::__file_root__",
         "src/pages/isolated-components/StepTick.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars-Numbered.astro::__file_root__",
@@ -11127,8 +11181,10 @@
         "src/pages/isolated-components/WebinarCard.astro::__file_root__",
         "src/pages/isolated-components/DeployChip-Live.astro::__file_root__",
         "src/pages/isolated-components/GiveRecognition.astro::__file_root__",
+        "src/pages/isolated-components/GivingSoonNote-OnDark.astro::__file_root__",
         "src/pages/isolated-components/DeployStatus-StillUpdating.astro::__file_root__",
         "src/pages/isolated-components/GalleryLightboxUncaptioned.astro::__file_root__",
+        "src/pages/isolated-components/GoalMeter-PreLaunch.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectsEmpty.astro::__file_root__",
         "src/pages/isolated-components/CommunityPage.astro::__file_root__",
         "src/pages/isolated-components/GlobalCommunityAction.astro::__file_root__",
@@ -11137,5 +11193,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-18T21:46:57Z"
+  "lastUpdated": "2026-09-19T12:17:44Z"
 }

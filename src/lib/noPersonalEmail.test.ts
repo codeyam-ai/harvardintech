@@ -36,7 +36,10 @@ const GIVING_PENDING = [
   'src/components/donate/MomentumNetwork.astro',
   'src/components/donate/DonorWall.astro',
   'src/components/donate/GiftPillars.astro',
-  'src/pages/give.astro',
+  // `src/pages/give.astro` came off this list when the giving plan deleted the
+  // route: /give held a checkout that could not take a payment, so the address
+  // now redirects to /donate and the file that carried the personal inbox is
+  // gone rather than merely exempted.
 ];
 
 describe('public source contact rules', () => {

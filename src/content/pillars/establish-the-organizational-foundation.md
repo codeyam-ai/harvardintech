@@ -4,4 +4,5 @@ description: 'Complete the legal, filing, and organizational work required to es
 amount: '$5,000'
 group: priorities
 order: 1
+draft: true
 ---

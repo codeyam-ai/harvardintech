@@ -89,6 +89,23 @@ describe('groupSponsorsByLevel', () => {
 
     expect(groupSponsorsByLevel(sponsors, []).map((g) => g.id)).toEqual(['other']);
   });
+
+  // The DRAFTED-LEVEL case, which is now a real configuration rather than a
+  // hypothesis: the Presenting Partner level is drafted for launch, so
+  // `publishedEntries` drops it and this function is handed a level list that
+  // no longer contains `presenting`. A real Presenting-tier sponsor signed
+  // while that is true must still appear on the wall — under the trailing
+  // "Other partners" group — rather than silently vanishing because the level
+  // describing them is unpublished. State it here so that publishing or
+  // unpublishing a level can never quietly delete a partner from the page.
+  it('still shows a sponsor whose level has been drafted out of the list', () => {
+    const publishedLevels = LEVELS.filter((l) => l.id !== 'presenting');
+    const sponsors = [sponsor('a', 'Atlas Cloud', 'presenting'), sponsor('b', 'Beacon Labs', 'event')];
+
+    const groups = groupSponsorsByLevel(sponsors, publishedLevels);
+    expect(groups.map((g) => g.id)).toEqual(['event', 'other']);
+    expect(groups[1].sponsors.map((s) => s.name)).toEqual(['Atlas Cloud']);
+  });
 });
 
 describe('hasPlaceholderSponsors', () => {

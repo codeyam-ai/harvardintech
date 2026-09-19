@@ -1,0 +1,12 @@
+{
+  "name": "Giving Campaign - A Platform Is Live",
+  "id": "d583ea4d-df61-4b64-82bc-10ad21434153",
+  "url": "/isolated-components/GivingCampaign-PlatformLive",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "GivingCampaign",
+  "scenarioType": "component",
+  "description": "The launch switch seen on the homepage band. With a platform URL set the coming-soon note becomes a real Donate button pointing straight at Givebutter, and the blurb returns to the present tense. Read it against its pair, the plain Giving Campaign scenario, which takes no URL and is the state the site ships today: one CMS field is the whole difference, and no code changes between the two frames."
+}

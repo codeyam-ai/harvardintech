@@ -9,7 +9,7 @@ heroImage: /images/bg/hero-bg.jpg
 ctaKicker: The Momentum Fund
 ctaTitle: Become part of the foundation.
 ctaBody: |-
-  Every gift to the Momentum Fund goes directly into the events, chapters, and connections that make this community worth belonging to.
+  Every gift to the Momentum Fund will support the events, chapters, and connections that make this community worth belonging to.
 
   Join the alumni choosing to move from informal support to intentional investment, and help build what the next decade of Harvard Alumni in Tech will stand on.
 ctaImage: /images/events/founders-reception-trio.webp
@@ -23,7 +23,7 @@ stats:
     label: Newsletter subscribers
   - value: '4'
     label: Chapters & Growing
-donorsEmptyMessage: The Momentum Fund is just beginning, and this wall is waiting for its first names. Give today and yours will be among them.
+donorsEmptyMessage: Harvard Alumni in Tech's first fundraising campaign launches soon, with a 2026 goal of $10,000.
 donorTiers:
   - id: leadership
     name: Leadership Circle
@@ -34,7 +34,7 @@ donorTiers:
   - id: supporting
     name: Supporting Donors
     description: Every gift at every size, from alumni who wanted to be part of it.
-networkTitle: The Momentum Network — Powering Harvard Alumni in Tech
+networkTitle: The Momentum Fund
 networkTagline: Every bright light is a founding supporter — the faint ones are places still waiting. Together, they illuminate what comes next.
 networkSearchTitle: Find your place in the network
 networkCountLabel: founding supporters

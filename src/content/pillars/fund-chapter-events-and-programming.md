@@ -4,4 +4,5 @@ description: 'Bring alumni together and create meaningful opportunities across t
 amount: '$25,000 / year'
 group: priorities
 order: 3
+draft: true
 ---

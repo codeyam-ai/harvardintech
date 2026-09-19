@@ -7,9 +7,10 @@
 // LinkedIn, so the section never offers a dead link.
 //
 // The form is delegated to a third-party provider (EmbedForm), since a static
-// build cannot process a submission. With no form URL configured, EmbedForm
-// renders its unconfigured fallback, which reads as an obvious placeholder
-// rather than a broken form — the honest state until a real form exists.
+// build cannot process a submission. With no form URL configured the column is
+// not rendered at all: a box announcing that a form is "on the way" is a promise
+// with no date on it, and the email button beside it already answers the reader.
+// Set the Sponsorship page's inquiry form URL and the column returns.
 import EmbedForm from '../EmbedForm.astro';
 import { sponsorCta } from '../../lib/contact';
 import { externalLinkAttrs } from '../../lib/externalLink';
@@ -63,14 +64,18 @@ const cta = sponsorCta(formUrl, email, linkedIn?.url);
           ) : null
         }
       </div>
-      <div class="inq-form">
-        <EmbedForm
-          embedUrl={formUrl}
-          title="Sponsorship inquiry"
-          buttonLabel="Send"
-          fallbackMessage="Our sponsorship inquiry form is on the way. In the meantime, reach us using the button on the left and we will pick it up from there."
-        />
-      </div>
+      {
+        formUrl ? (
+          <div class="inq-form">
+            <EmbedForm
+              embedUrl={formUrl}
+              title="Sponsorship inquiry"
+              buttonLabel="Send"
+              fallbackMessage="Our sponsorship inquiry form is on the way. In the meantime, reach us using the button on the left and we will pick it up from there."
+            />
+          </div>
+        ) : null
+      }
     </div>
   </div>
 </section>

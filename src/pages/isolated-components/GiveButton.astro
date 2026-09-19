@@ -4,6 +4,13 @@ import "../../../src/styles/tokens.css";
 
 // Isolation page for GiveButton — codeyam screenshots the #codeyam-capture wrapper
 // by navigating to /isolated-components/GiveButton.
+//
+// A `donateUrl` is passed on purpose: the button only EXISTS while giving is
+// open. With the field blank the component renders the coming-soon note
+// instead, so without a URL here this page would capture two copies of that
+// note and stop demonstrating the two button variants it is for. The blank-URL
+// state has its own page, `GiveButton-GivingClosed`.
+const DONATE_URL = "https://givebutter.com/harvard-in-tech-momentum-fund";
 ---
 
 <html lang="en">
@@ -17,9 +24,9 @@ import "../../../src/styles/tokens.css";
       {/* Both variants: crimson on light, and the inverted one used on the
           dark closing band. */}
       <div style="display: flex; align-items: center; gap: 20px; padding: 24px;">
-        <Component label="Make a Gift" email="ben@harvardintech.com" campaignName="The Momentum Fund" />
+        <Component label="Make a Gift" email="ben@harvardintech.com" campaignName="The Momentum Fund" donateUrl={DONATE_URL} />
         <span style="background: var(--ink); padding: 20px; border-radius: 8px;">
-          <Component label="Make a Gift" email="ben@harvardintech.com" campaignName="The Momentum Fund" variant="light" />
+          <Component label="Make a Gift" email="ben@harvardintech.com" campaignName="The Momentum Fund" variant="light" donateUrl={DONATE_URL} />
         </span>
       </div>
     </div>

@@ -4619,6 +4619,15 @@
       "runner": "tests"
     },
     {
+      "description": "The DRAFTED-LEVEL case, which is now a real configuration rather than a hypothesis: the Presenting Partner level is drafted for launch, so `publishedEntries` drops it and this function is handed a level list that no longer contains `presenting`. A real Presenting-tier sponsor signed while that is true must still appear on the wall — under the trailing \"Other partners\" group — rather than silently vanishing because the level describing them is unpublished. State it here so that publishing or unpublishing a level can never quietly delete a partner from the page.",
+      "file": "src/lib/sponsors.test.ts",
+      "format": "vitest",
+      "key": "groupSponsorsByLevel › still shows a sponsor whose level has been drafted out of the list",
+      "line": 101,
+      "registeredAt": "2026-09-19T02:45:59.728853492+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Degenerate edge: a band with no cards has nothing to show, so it stays hidden rather than defaulting to visible.",
       "file": "src/lib/donorFilter.test.ts",
       "format": "vitest",
@@ -4695,7 +4704,7 @@
       "file": "src/lib/sponsors.test.ts",
       "format": "vitest",
       "key": "hasPlaceholderSponsors › reports false for no sponsors at all",
-      "line": 119,
+      "line": 136,
       "registeredAt": "2026-07-30T15:01:54Z",
       "runner": "tests"
     },
@@ -4704,7 +4713,7 @@
       "file": "src/lib/sponsors.test.ts",
       "format": "vitest",
       "key": "hasPlaceholderSponsors › reports false when every entry is a real sponsor",
-      "line": 109,
+      "line": 126,
       "registeredAt": "2026-07-30T15:01:54Z",
       "runner": "tests"
     },
@@ -4713,7 +4722,7 @@
       "file": "src/lib/sponsors.test.ts",
       "format": "vitest",
       "key": "hasPlaceholderSponsors › reports true when only some entries are placeholders",
-      "line": 98,
+      "line": 115,
       "registeredAt": "2026-07-30T15:01:54Z",
       "runner": "tests"
     },
@@ -5660,6 +5669,42 @@
       "key": "isExternalHref › judges against the live domain when no origin is given",
       "line": 54,
       "registeredAt": "2026-09-16T00:20:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Production ships with the field blank, and that must read as closed rather than as \"no opinion\".",
+      "file": "src/lib/giving.test.ts",
+      "format": "vitest",
+      "key": "isGivingOpen › is closed when no platform URL is set",
+      "line": 67,
+      "registeredAt": "2026-09-19T02:45:59.711182832+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A configured platform is the only thing that opens giving.",
+      "file": "src/lib/giving.test.ts",
+      "format": "vitest",
+      "key": "isGivingOpen › is open when a platform URL is configured",
+      "line": 61,
+      "registeredAt": "2026-09-19T02:45:59.710415899+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The CMS writes \"\" for a cleared text field, and an editor who types spaces into it has not configured a platform either.",
+      "file": "src/lib/giving.test.ts",
+      "format": "vitest",
+      "key": "isGivingOpen › treats a blank or whitespace-only URL as closed",
+      "line": 73,
+      "registeredAt": "2026-09-19T02:45:59.711920233+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Editors paste URLs with a trailing space more often than not, and that must not read as closed.",
+      "file": "src/lib/giving.test.ts",
+      "format": "vitest",
+      "key": "isGivingOpen › trims before deciding",
+      "line": 80,
+      "registeredAt": "2026-09-19T02:45:59.713188473+00:00",
       "runner": "tests"
     },
     {
@@ -7292,6 +7337,51 @@
       "runner": "tests"
     },
     {
+      "description": "The assertion that actually protects a reader: nothing the public build renders on a giving or sponsorship surface may claim a tax treatment or a charitable status the organization does not have. /give carried both and is gone; this keeps them gone.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "no public giving copy makes a legal or tax claim › is absent from every PUBLISHED giving entry",
+      "line": 86,
+      "registeredAt": "2026-09-19T02:45:59.717697608+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The committed JSON fallback for this page carries no tax-deductibility, 501(c)(6) or charitable claim, so the wording cannot return through the fallback when a CMS field is cleared.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "no public giving copy makes a legal or tax claim › is absent from src/data/donatePage.json",
+      "line": 107,
+      "registeredAt": "2026-09-19T11:55:45.146419368+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The committed JSON fallback for this page carries no tax-deductibility, 501(c)(6) or charitable claim, so the wording cannot return through the fallback when a CMS field is cleared.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "no public giving copy makes a legal or tax claim › is absent from src/data/settings.json",
+      "line": 107,
+      "registeredAt": "2026-09-19T11:55:45.203527363+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The committed JSON fallback for this page carries no tax-deductibility, 501(c)(6) or charitable claim, so the wording cannot return through the fallback when a CMS field is cleared.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "no public giving copy makes a legal or tax claim › is absent from src/data/sponsorPage.json",
+      "line": 107,
+      "registeredAt": "2026-09-19T11:55:45.175227985+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Where the old wording does survive, it must be held back by one of the two mechanisms that keep it off the public build — never merely by nobody having linked to it. Publishing such an entry unedited fails the assertion above, which is the point of keeping both.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "no public giving copy makes a legal or tax claim › survives only in drafted or preview entries",
+      "line": 97,
+      "registeredAt": "2026-09-19T02:45:59.718856914+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Selection is non-mutating, so the caller's collection is untouched.",
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
@@ -8233,7 +8323,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › keeps the prose exception to the privacy policy alone",
-      "line": 108,
+      "line": 111,
       "registeredAt": "2026-09-16T17:10:28.736462964+00:00",
       "runner": "tests"
     },
@@ -8242,7 +8332,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › names no personal inbox outside the pending giving files",
-      "line": 50,
+      "line": 53,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8251,7 +8341,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › never links Eventbrite",
-      "line": 68,
+      "line": 71,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8260,7 +8350,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › never links the WhatsApp group directly",
-      "line": 63,
+      "line": 66,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8269,7 +8359,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › offers no chapter-founding mailto",
-      "line": 73,
+      "line": 76,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8278,7 +8368,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › scans the site source",
-      "line": 44,
+      "line": 47,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8323,19 +8413,11 @@
       "runner": "tests"
     },
     {
-      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
-      "file": "src/lib/noPersonalEmail.test.ts",
-      "format": "vitest",
-      "key": "public source contact rules › src/pages/give.astro still needs its giving-plan exemption",
-      "registeredAt": "2026-09-18T20:25:49Z",
-      "runner": "tests"
-    },
-    {
       "description": "The inbox appears literally in exactly two files: settings.json, which every displayed surface reads through `emailFor`, and the privacy policy, which must name its contact point in the text.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › writes the shared inbox only in settings.json and the privacy policy",
-      "line": 97,
+      "line": 100,
       "registeredAt": "2026-09-16T17:10:49.873867504+00:00",
       "runner": "tests"
     },
@@ -8790,26 +8872,26 @@
       "file": "src/lib/giving.test.ts",
       "format": "vitest",
       "key": "resolveGiveCtaHref › agrees with resolveGiveHref once a platform is configured",
-      "line": 91,
+      "line": 119,
       "registeredAt": "2026-08-25T01:10:11Z",
       "runner": "tests"
     },
     {
-      "description": "The two resolvers must DISAGREE when no platform is set — that difference is the entire feature. If this ever passes, /give links to itself.",
+      "description": "Nothing may route a reader to /give any more. Asserted by value rather than by \"differs from resolveGiveHref\", because undefined differs from every string and that weaker claim would pass even if /give came back.",
       "file": "src/lib/giving.test.ts",
       "format": "vitest",
-      "key": "resolveGiveCtaHref › differs from resolveGiveHref when no platform is configured",
-      "line": 85,
-      "registeredAt": "2026-08-25T01:10:11Z",
+      "key": "resolveGiveCtaHref › never points at the retired giving page",
+      "line": 112,
+      "registeredAt": "2026-09-19T02:45:59.715798525+00:00",
       "runner": "tests"
     },
     {
-      "description": "The point of the whole split: with no platform, a campaign CTA goes to the giving page rather than straight to a mailto, so a visitor meets the goal and the amounts before being asked for anything.",
+      "description": "The change this feature exists for: with no platform there is NO href. It used to be /give, a page holding a checkout that could not take a payment.",
       "file": "src/lib/giving.test.ts",
       "format": "vitest",
-      "key": "resolveGiveCtaHref › falls back to the giving page when no platform is configured",
-      "line": 72,
-      "registeredAt": "2026-08-25T01:10:11Z",
+      "key": "resolveGiveCtaHref › returns undefined when no platform is configured",
+      "line": 98,
+      "registeredAt": "2026-09-19T02:45:59.714509667+00:00",
       "runner": "tests"
     },
     {
@@ -8817,7 +8899,7 @@
       "file": "src/lib/giving.test.ts",
       "format": "vitest",
       "key": "resolveGiveCtaHref › treats a blank or whitespace-only platform URL as absent",
-      "line": 78,
+      "line": 104,
       "registeredAt": "2026-08-25T01:10:11Z",
       "runner": "tests"
     },
@@ -11812,6 +11894,15 @@
       "runner": "tests"
     },
     {
+      "description": "What the $10,000 pays for has not been agreed, so the three old priorities — the 501(c)(6) filing, annual software, chapter programming — are drafted and one goal-shaped priority stands in their place. More than one published here means someone republished a priority the organization has not committed to.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the donate page shows one 2026 priority › publishes exactly one priorities pillar",
+      "line": 146,
+      "registeredAt": "2026-09-19T02:45:59.723308232+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Past events are a second REQUEST, not a later page of the first — the default response simply omits them, with no cursor to say so. Treating it as paginated is how the archive would silently come back empty.",
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
@@ -11827,6 +11918,33 @@
       "key": "the feed request › imports from the same calendar the Events page embeds",
       "line": 274,
       "registeredAt": "2026-09-18T20:25:49Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The bar is drawn to `percent` directly — it is NOT derived from the two figures above, so a non-zero value here would draw progress against $0.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the goal meter states the real pre-launch figures › draws the bar at zero",
+      "line": 135,
+      "registeredAt": "2026-09-19T02:45:59.722214408+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The campaign has not opened, so nothing has been raised. The page used to claim $20 of $100,000, which was invented.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the goal meter states the real pre-launch figures › shows nothing raised",
+      "line": 124,
+      "registeredAt": "2026-09-19T02:45:59.720004892+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The 2026 goal the owner set, replacing a $100,000 figure nobody had agreed.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the goal meter states the real pre-launch figures › shows the 2026 goal of 10,000 dollars",
+      "line": 129,
+      "registeredAt": "2026-09-19T02:45:59.721098291+00:00",
       "runner": "tests"
     },
     {
@@ -11992,6 +12110,24 @@
       "runner": "tests"
     },
     {
+      "description": "/give held a checkout that could not take a payment. The route is gone.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the retired giving page › no longer has a route",
+      "line": 184,
+      "registeredAt": "2026-09-19T02:45:59.726695971+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "...and its address still resolves, so a bookmark or an old link lands on /donate rather than a 404. The redirect lives in the map (not inline in astro.config.mjs) because `redirectsForBase` is what applies the deploy's base path to the target — an unprefixed target 404s on the subpath build.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the retired giving page › redirects to the donate page",
+      "line": 192,
+      "registeredAt": "2026-09-19T02:45:59.727894772+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The direction asks for a VISIBLE control; a button that does not say what is true is not one.",
       "file": "src/lib/momentumNetworkDom.test.ts",
       "format": "vitest",
@@ -12025,6 +12161,24 @@
       "key": "the sound control › switches off and says so",
       "line": 309,
       "registeredAt": "2026-08-19T00:32:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Shipping sample logos asserts partnerships that do not exist. The wall's own empty state is honest and is itself an invitation.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the sponsor page shows no partnership it cannot honour › keeps every example sponsor drafted",
+      "line": 170,
+      "registeredAt": "2026-09-19T02:45:59.725545784+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "\"Ways to partner\" is not rendered for launch and the Presenting level is not fleshed out, so the level stays in the CMS as a draft rather than being deleted — it comes back by publishing it.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the sponsor page shows no partnership it cannot honour › keeps the Presenting Partner level drafted",
+      "line": 164,
+      "registeredAt": "2026-09-19T02:45:59.724386081+00:00",
       "runner": "tests"
     },
     {

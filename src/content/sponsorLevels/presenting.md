@@ -7,4 +7,5 @@ benefits:
   - text: An introduction to the community through a post in our Content Hub
   - text: A standing seat in planning conversations about what the year should cover
 order: 1
+draft: true
 ---

@@ -1,0 +1,49 @@
+---
+import Component from "../../../src/components/donate/GoalMeter.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for the band as /donate ACTUALLY renders it today: no
+// Givebutter widget id, real hand-maintained figures, so the component draws
+// its own bar.
+//
+// Unlike `GoalMeter.astro` and `GoalMeter-WithLink.astro` beside it, this page
+// needs NO harness override to be visible. Those two demonstrate the widget
+// mode, which collapses to nothing in a capture because Givebutter's loader
+// never runs — so they force the band open to show their chrome. The static
+// mode has no such dependency: `showStatic` is `!widgetId && hasFigures`, so
+// with the figures set and the id blank the band renders on its own. What you
+// see here is what a visitor sees.
+//
+// The figures are the real ones as of 2026-09-14: the campaign has not opened,
+// so $0 has been raised against a 2026 goal of $10,000 and the bar sits at 0%.
+// They replaced $20 of $100,000, which was invented — and which this frame
+// exists to make impossible to restore unnoticed. Note that `percent` is what
+// the bar is drawn to; it is NOT derived from the two figures, so a non-zero
+// value here would draw progress against nothing raised.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: GoalMeter-PreLaunch</title>
+    <style is:global>
+      /* Page-like width so the heading and the meter sit in their real rhythm;
+         the fit-content wrapper would collapse the band to its text. */
+      #codeyam-capture {
+        width: 1200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="codeyam-capture">
+      <Component
+        kicker="Launching soon"
+        title="Our 2026 goal: raise $10,000."
+        raised="$0"
+        goal="$10,000"
+        percent={0}
+      />
+    </div>
+  </body>
+</html>

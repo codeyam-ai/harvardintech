@@ -2,7 +2,16 @@
 // "Giving campaign" (Atlas crimson CTA band): the fundraising ask with Donate /
 // Sponsor actions. No fabricated progress meter — real campaign totals can be
 // added later via the CMS if desired; until then this is a clean call to give.
-import { buildMailto } from '../../lib/mailto';
+//
+// It follows the same switch as /donate. Until `donateUrl` is set the campaign
+// has not opened, so there is no Donate button: both of this band's actions used
+// to open a `mailto:`, which asked for money the organization could not yet
+// take and put a personal inbox in front of a sponsor. Now the band states when
+// the campaign opens and links to the page that explains it, while Sponsorship —
+// which IS open for business — goes to /sponsor.
+import GivingSoonNote from '../donate/GivingSoonNote.astro';
+import { isGivingOpen, resolveGiveHref } from '../../lib/giving';
+import { withBase } from '../../lib/url';
 
 interface Props {
   email?: string;
@@ -13,14 +22,18 @@ interface Props {
 const {
   email = 'ben@harvardintech.com',
   headline = 'Back the mission.',
-  blurb = 'Your gift funds in-person events, new chapters, and our global community, keeping Harvard Alumni in Tech free and open to every alum in technology.',
-  // No donation platform yet — "Donate" opens a giving inquiry email (same model
-  // as Sponsorship). When a real donation link exists, pass it as `donateUrl`.
+  blurb,
   donateUrl,
 } = Astro.props as Props;
 
-const donateHref = donateUrl ?? buildMailto({ to: email, subject: 'Supporting Harvard Alumni in Tech' });
-const sponsorHref = buildMailto({ to: email, subject: 'Sponsoring Harvard Alumni in Tech' });
+const open = isGivingOpen(donateUrl);
+const donateHref = open ? resolveGiveHref({ donateUrl, email }) : undefined;
+const sponsorHref = withBase('/sponsor');
+// Pre-launch the band must not describe a gift as if one can be made today.
+const defaultBlurb = open
+  ? 'Your gift funds in-person events, new chapters, and our global community, keeping Harvard Alumni in Tech free and open to every alum in technology.'
+  : 'Our first fundraising campaign will fund in-person events, new chapters, and our global community, keeping Harvard Alumni in Tech free and open to every alum in technology.';
+const bodyText = blurb ?? defaultBlurb;
 ---
 
 <section class="giving" id="giving">
@@ -28,10 +41,22 @@ const sponsorHref = buildMailto({ to: email, subject: 'Sponsoring Harvard Alumni
     <div class="giving-copy">
       <span class="kick" style="color:#fff">Giving campaign</span>
       <h3>{headline}</h3>
-      <p>{blurb}</p>
+      <p>{bodyText}</p>
     </div>
     <div class="giving-actions">
-      <a class="btn btn-solid" href={donateHref} rel="noopener">Donate</a>
+      {
+        open ? (
+          <a class="btn btn-solid" href={donateHref} rel="noopener">
+            Donate
+          </a>
+        ) : (
+          <GivingSoonNote
+            onDark
+            linkHref="/donate"
+            linkLabel="Read about the Momentum Fund"
+          />
+        )
+      }
       <a class="btn btn-out on-dark" href={sponsorHref}>Sponsorship</a>
     </div>
   </div>

@@ -1,0 +1,12 @@
+{
+  "name": "GivingSoonNote - On A Dark Band",
+  "id": "470f8631-3dce-449e-a062-8ec1eb53d8c1",
+  "url": "/isolated-components/GivingSoonNote-OnDark",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "GivingSoonNote",
+  "scenarioType": "component",
+  "description": "The same note on the dark ground used by the campaign hero, the network rail and the closing ask, with the homepage band's link wording. This frame exists because the first draft inherited its colour and produced near-black text on a near-black band — present in the DOM and unreadable on the page. The tone is passed by the band rather than guessed, and this is what proves it arrived."
+}

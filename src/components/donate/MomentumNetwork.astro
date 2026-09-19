@@ -71,8 +71,8 @@ interface Props {
 
 const {
   kicker,
-  title = 'A grid, *lit from within*.',
-  networkTitle = 'The Momentum Network — Powering Harvard Alumni in Tech',
+  title = "Let's go further *together*.",
+  networkTitle = 'The Momentum Fund',
   // Names the unlit field, and has to. The original line — "Every light belongs
   // to a founding supporter" — became false the moment `ambientField` started
   // padding the frame, because most of the points a reader sees are not people.
@@ -198,9 +198,16 @@ const roll = supporterRoll(donors);
         >
           {pinnedGreeting}
         </p>
-        <h2 id="momentum-network-title" class="network-headline" set:html={headlineHtml(title)} />
+        <h1 id="momentum-network-title" class="network-headline" set:html={headlineHtml(title)} />
         <p class="network-empty-message">{emptyMessage ?? defaultEmptyMessage}</p>
-        <GiveButton label={ctaLabel} donateUrl={donateUrl} email={email} campaignName={campaignName} />
+        <GiveButton
+          label={ctaLabel}
+          donateUrl={donateUrl}
+          email={email}
+          campaignName={campaignName}
+          onDark
+          messageAlreadyShown
+        />
       </div>
     </section>
   ) : (
@@ -343,7 +350,7 @@ const roll = supporterRoll(donors);
           >
             {pinnedGreeting}
           </p>
-          <h2 id="momentum-network-title" class="network-headline" set:html={headlineHtml(title)} />
+          <h1 id="momentum-network-title" class="network-headline" set:html={headlineHtml(title)} />
           <p class="network-tagline">{tagline}</p>
         </div>
 
@@ -382,6 +389,7 @@ const roll = supporterRoll(donors);
               donateUrl={donateUrl}
               email={email}
               campaignName={campaignName}
+              onDark
             />
           </div>
         </div>

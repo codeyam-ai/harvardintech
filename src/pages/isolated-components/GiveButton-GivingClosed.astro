@@ -1,0 +1,43 @@
+---
+import Component from "../../../src/components/donate/GiveButton.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for the state PRODUCTION IS ACTUALLY IN: no donation platform
+// configured, so `GiveButton` renders no button at all.
+//
+// This is the whole feature in one frame. A blank Donate URL used to make every
+// giving button open a pre-addressed inquiry email — an ask for a gift the
+// organization could not yet accept, from a page quoting a campaign total
+// nobody had raised. It now means giving is CLOSED: the pill is replaced by a
+// plain sentence saying when the campaign opens, plus one thing a reader can do
+// instead. Nothing here is shaped like an action, because nothing here can take
+// a payment.
+//
+// Both tones are shown because the note is text rather than a pill, so unlike
+// the crimson button it cannot sit on any ground: the left one is a pale band
+// (the priorities list, the empty donor wall), the right one a dark band (the
+// hero, the closing ask).
+//
+// Pasting a Givebutter URL into Page settings → Donate URL turns both of these
+// back into the buttons on `GiveButton` beside it. No code change.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: GiveButton-GivingClosed</title>
+  </head>
+  <body>
+    <div id="codeyam-capture">
+      <div style="display: flex; align-items: stretch; gap: 20px; padding: 24px;">
+        <span style="background: var(--momentum-cream, #f6f1e7); padding: 24px; border-radius: 8px; width: 360px;">
+          <Component label="Make a Gift" email="ben@harvardintech.com" campaignName="The Momentum Fund" />
+        </span>
+        <span style="background: #0b0b0f; padding: 24px; border-radius: 8px; width: 360px;">
+          <Component label="Make a Gift" email="ben@harvardintech.com" campaignName="The Momentum Fund" onDark />
+        </span>
+      </div>
+    </div>
+  </body>
+</html>

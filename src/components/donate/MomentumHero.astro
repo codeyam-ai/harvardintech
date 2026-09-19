@@ -94,7 +94,13 @@ const heroVideo = video ? withBase(video) : null;
       {initialHeadline}
     </h1>
     {subhead ? <p class="sub">{subhead}</p> : null}
-    <GiveButton label={ctaLabel} donateUrl={donateUrl} email={email} campaignName={campaignName} />
+    <GiveButton
+      label={ctaLabel}
+      donateUrl={donateUrl}
+      email={email}
+      campaignName={campaignName}
+      onDark
+    />
   </div>
 </section>
 

@@ -1,0 +1,12 @@
+{
+  "name": "GiveButton - Giving Closed",
+  "id": "2165f608-ba52-4bb7-8814-8f0d56ee04bf",
+  "url": "/isolated-components/GiveButton-GivingClosed",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "GiveButton",
+  "scenarioType": "component",
+  "description": "The state production actually ships in: no donation platform configured, so the pill is gone and the note stands in its place. A blank Donate URL used to make every giving button open a pre-addressed inquiry email, asking for a gift the organization could not accept. Both tones are shown because the replacement is text rather than a pill, so unlike the crimson button it cannot sit on any ground."
+}

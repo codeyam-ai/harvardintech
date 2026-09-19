@@ -46,6 +46,15 @@ export const REDIRECT_TARGETS: Record<string, string> = {
   // reachable — which is exactly the silent shadowing `sitePages.ts` exists to
   // catch, and why `webinars` moved into its route list in the same change.
 
+  // --- retired routes ----------------------------------------------------
+  // `/give` held the campaign's checkout: an amount picker that only composed an
+  // email, plus a tax-deductibility FAQ for an organization that is not yet a
+  // non-profit. Nothing links to it any more (it was never in the nav — only the
+  // /donate buttons reached it), and its own page said it drops out of the path
+  // the moment a real platform is configured. /donate carries everything worth
+  // keeping, so it is the honest destination.
+  '/give': '/donate/',
+
   // --- section 404s ------------------------------------------------------
   // Each of these has real pages BELOW it (`/chapters/nyc/`) but no index of its
   // own, so anyone who trimmed the URL back by hand got a 404.

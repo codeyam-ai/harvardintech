@@ -1,0 +1,81 @@
+---
+// What stands in for a giving button while the campaign is closed.
+//
+// Every giving CTA on the campaign page and the homepage band routes through
+// here when `donateUrl` is blank. It is deliberately NOT a button: the site
+// cannot take a gift yet, so anything shaped like an action would promise one.
+// Plain text saying when the campaign opens, plus a real thing the reader can
+// do instead.
+//
+// The bands it appears on run from near-black to cream, so it cannot simply
+// inherit a colour: inheriting gave near-black text on the near-black hero,
+// which rendered the message all but invisible. `onDark` is the band telling it
+// which way to go, the same distinction `GiveButton`'s `light` variant already
+// draws.
+import { GIVING_SOON_MESSAGE } from '../../lib/giving';
+import { withBase } from '../../lib/url';
+
+interface Props {
+  /** Overrides the shared message where a band needs its own wording. */
+  message?: string;
+  /** False where the surrounding copy already says the campaign is coming, so
+   *  the note contributes only the link rather than repeating the sentence
+   *  immediately above it. */
+  showMessage?: boolean;
+  /** Set on the dark bands (hero, network, closing ask) so the text inverts. */
+  onDark?: boolean;
+  /** The one thing the reader CAN do here. Defaults to volunteering, which is
+   *  the real alternative on the campaign page; the homepage band points at
+   *  /donate instead, because a reader there has not yet been told what the
+   *  fund is. */
+  linkHref?: string;
+  linkLabel?: string;
+}
+const {
+  message = GIVING_SOON_MESSAGE,
+  showMessage = true,
+  onDark = false,
+  linkHref = '/volunteer',
+  linkLabel = 'Other ways to help',
+} = Astro.props as Props;
+---
+
+<p class:list={['giving-soon', onDark && 'giving-soon--on-dark']}>
+  {showMessage ? <span class="giving-soon-message">{message}</span> : null}
+  <a class="giving-soon-link" href={withBase(linkHref)}>
+    {linkLabel}<span aria-hidden="true"> →</span>
+  </a>
+</p>
+
+<style>
+  .giving-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    color: var(--momentum-navy, #031a36);
+  }
+  .giving-soon--on-dark {
+    color: #fff;
+  }
+  .giving-soon-message {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .giving-soon-link {
+    font-size: 16px;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    opacity: 0.8;
+  }
+  .giving-soon--on-dark .giving-soon-link {
+    opacity: 0.85;
+  }
+  .giving-soon-link:hover {
+    opacity: 1;
+  }
+</style>

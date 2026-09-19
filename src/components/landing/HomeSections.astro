@@ -51,6 +51,10 @@ interface Props {
   /** The volunteer form (the volunteer page's `ctaUrl`), for the Support us
    *  "Speak at an event" card. Absent → the card goes to /volunteer. */
   volunteerFormUrl?: string;
+  /** The donation platform URL from the Momentum Fund page settings. Blank or
+   *  absent means giving has not opened, and the Giving band says so instead of
+   *  offering a Donate button. */
+  donateUrl?: string;
 }
 
 const {
@@ -64,6 +68,7 @@ const {
   socials = [],
   email,
   volunteerFormUrl,
+  donateUrl,
 } = Astro.props as Props;
 ---
 
@@ -98,7 +103,7 @@ const {
     ) : section.kind === 'get-involved' ? (
       <GetInvolved />
     ) : section.kind === 'giving' ? (
-      <GivingCampaign email={email} />
+      <GivingCampaign email={email} donateUrl={donateUrl} />
     ) : section.kind === 'whatsapp' ? (
       <WhatsappCommunity />
     ) : section.kind === 'support' ? (

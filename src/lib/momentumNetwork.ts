@@ -289,8 +289,8 @@ export function shortSchoolLabel(school?: string): string | undefined {
  * A headline with `*asterisked*` runs turned into `<em>`, everything else
  * escaped.
  *
- * The band's heading wants one emphasised phrase in a different colour — "A
- * grid, *lit from within*." — and the heading is a single CMS string. The
+ * The band's heading wants one emphasised phrase in a different colour — "Let's
+ * go further *together*." — and the heading is a single CMS string. The
  * alternatives were both worse: splitting it into two fields makes an editor
  * assemble a sentence out of parts and forbids them moving the emphasis, and
  * hardcoding the span in the component takes the heading away from the CMS

@@ -4,4 +4,5 @@ description: 'Support communications, community engagement, and operations with 
 amount: '$12,000 / year'
 group: priorities
 order: 2
+draft: true
 ---

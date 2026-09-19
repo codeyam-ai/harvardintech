@@ -1,7 +1,7 @@
 ---
 kind: pillars
 kicker: Immediate priorities
-title: Where your gift goes
+title: Our 2026 priority
 group: priorities
 layout: list
 ctaLabel: Become a Founding Supporter

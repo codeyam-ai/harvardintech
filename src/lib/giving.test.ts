@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { resolveGiveHref, resolveGiveCtaHref, GIVE_PAGE_PATH } from './giving';
+import { resolveGiveHref, resolveGiveCtaHref, isGivingOpen } from './giving';
 
 const EMAIL = 'ben@harvardintech.com';
 
@@ -53,41 +53,69 @@ describe('resolveGiveHref', () => {
   });
 });
 
-// The CAMPAIGN-page CTA, as distinct from the button on the giving page itself.
-// The split exists so /give can carry a giving button without that button
-// resolving to /give — a page linking to itself.
+// Whether the site can accept a gift at all. One blank CMS field is what closes
+// every giving surface, so this predicate is the switch the whole feature turns
+// on.
+describe('isGivingOpen', () => {
+  // A configured platform is the only thing that opens giving.
+  it('is open when a platform URL is configured', () => {
+    expect(isGivingOpen('https://givebutter.com/hit')).toBe(true);
+  });
+
+  // Production ships with the field blank, and that must read as closed rather
+  // than as "no opinion".
+  it('is closed when no platform URL is set', () => {
+    expect(isGivingOpen(undefined)).toBe(false);
+  });
+
+  // The CMS writes "" for a cleared text field, and an editor who types spaces
+  // into it has not configured a platform either.
+  it('treats a blank or whitespace-only URL as closed', () => {
+    expect(isGivingOpen('')).toBe(false);
+    expect(isGivingOpen('   ')).toBe(false);
+  });
+
+  // Editors paste URLs with a trailing space more often than not, and that must
+  // not read as closed.
+  it('trims before deciding', () => {
+    expect(isGivingOpen('  https://givebutter.com/hit  ')).toBe(true);
+  });
+});
+
+// The CAMPAIGN-page CTA. It no longer has a fallback destination: while the
+// campaign is closed there is nowhere honest to send a reader, so the caller
+// renders the coming-soon message instead of a link.
 describe('resolveGiveCtaHref', () => {
-  // A configured platform wins outright: a real checkout is a better
-  // destination than our own page, and setting the CMS field takes /give out of
-  // the path entirely with no code change.
+  // A configured platform is the destination outright — no intermediate page.
   it('uses the donation platform URL when one is configured', () => {
     expect(resolveGiveCtaHref({ donateUrl: 'https://givebutter.com/hit' })).toBe(
       'https://givebutter.com/hit',
     );
   });
 
-  // The point of the whole split: with no platform, a campaign CTA goes to the
-  // giving page rather than straight to a mailto, so a visitor meets the goal
-  // and the amounts before being asked for anything.
-  it('falls back to the giving page when no platform is configured', () => {
-    expect(resolveGiveCtaHref({})).toBe(GIVE_PAGE_PATH);
+  // The change this feature exists for: with no platform there is NO href. It
+  // used to be /give, a page holding a checkout that could not take a payment.
+  it('returns undefined when no platform is configured', () => {
+    expect(resolveGiveCtaHref({})).toBeUndefined();
   });
 
   // Blank and whitespace-only are treated as absent, matching `resolveGiveHref`
   // — an editor who clears the CMS field leaves an empty string, not undefined.
   it('treats a blank or whitespace-only platform URL as absent', () => {
-    expect(resolveGiveCtaHref({ donateUrl: '' })).toBe(GIVE_PAGE_PATH);
-    expect(resolveGiveCtaHref({ donateUrl: '   ' })).toBe(GIVE_PAGE_PATH);
+    expect(resolveGiveCtaHref({ donateUrl: '' })).toBeUndefined();
+    expect(resolveGiveCtaHref({ donateUrl: '   ' })).toBeUndefined();
   });
 
-  // The two resolvers must DISAGREE when no platform is set — that difference
-  // is the entire feature. If this ever passes, /give links to itself.
-  it('differs from resolveGiveHref when no platform is configured', () => {
-    expect(resolveGiveCtaHref({})).not.toBe(resolveGiveHref({ email: EMAIL }));
+  // Nothing may route a reader to /give any more. Asserted by value rather than
+  // by "differs from resolveGiveHref", because undefined differs from every
+  // string and that weaker claim would pass even if /give came back.
+  it('never points at the retired giving page', () => {
+    expect(resolveGiveCtaHref({})).not.toBe('/give');
+    expect(resolveGiveCtaHref({ donateUrl: '' })).not.toBe('/give');
   });
 
-  // ...and AGREE when one is, so choosing a platform routes both the campaign
-  // CTA and the giving page's own button to the same place.
+  // Once a platform is configured, the campaign CTA and the giving-page button
+  // resolve to the same place.
   it('agrees with resolveGiveHref once a platform is configured', () => {
     const donateUrl = 'https://givebutter.com/hit';
     expect(resolveGiveCtaHref({ donateUrl })).toBe(resolveGiveHref({ donateUrl, email: EMAIL }));

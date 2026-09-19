@@ -1,12 +1,14 @@
 ---
-// The campaign's pill-shaped giving CTA, per the Momentum Fund mockup.
+// The campaign's pill-shaped giving CTA, per the Momentum Fund mockup — or,
+// while the campaign is closed, the note that stands in for it.
 //
-// Its own component because the page renders it twice — in the hero and in the
-// closing band — and both must resolve the same destination. `resolveGiveHref`
-// centralises that: a real donation platform when `donateUrl` is set in the
-// CMS, a giving-inquiry mailto until then.
-import { resolveGiveHref, resolveGiveCtaHref } from '../../lib/giving';
-import { withBase } from '../../lib/url';
+// Its own component because the page renders it in several bands, and all of
+// them must agree on both questions: whether there is a button at all
+// (`isGivingOpen`) and where it goes (`resolveGiveHref`). Routing every giving
+// CTA through here is what makes "the campaign has not opened yet" a single CMS
+// field rather than a decision each band takes for itself.
+import { isGivingOpen, resolveGiveHref } from '../../lib/giving';
+import GivingSoonNote from './GivingSoonNote.astro';
 
 interface Props {
   label?: string;
@@ -20,8 +22,18 @@ interface Props {
   /** Appends the campaign design's ↗ glyph. Decorative and `aria-hidden`, so
    *  the link still reads as its label alone to a screen reader. */
   glyph?: boolean;
-  /** This is the button that COMPLETES a gift, not one that leads toward it.
-   *  Only the giving page sets it — see the href note below. */
+  /** Set on the dark bands so the closed-campaign note inverts to white. The
+   *  button itself does not need this — a crimson pill reads on both — but
+   *  plain text does, and every band that renders one knows which it is. */
+  onDark?: boolean;
+  /** Set where the band's own copy already announces the campaign, so the note
+   *  shows only its link instead of repeating that sentence. */
+  messageAlreadyShown?: boolean;
+  /** Vestigial. It used to pick between linking to /give and leaving for the
+   *  platform; now a closed campaign renders no link at all and an open one
+   *  always goes straight to the platform, so both answers are the same. Kept
+   *  only because the unused /give components still pass it, and they stay
+   *  untouched pending the decision to delete them outright. */
   checkout?: boolean;
 }
 const {
@@ -31,32 +43,33 @@ const {
   campaignName,
   variant = 'crimson',
   glyph = false,
-  checkout = false,
+  onDark = false,
+  messageAlreadyShown = false,
 } = Astro.props as Props;
 
-// Two destinations, and which one this button wants is the `checkout` prop.
+// One question first: can the site take a gift at all?
 //
-// The default is the giving PAGE: a campaign CTA should land somewhere that
-// states the goal and the amounts before asking for anything. `checkout` is the
-// button on that page — the one that actually leaves for the platform, or opens
-// the inquiry email until a platform exists. See `resolveGiveCtaHref`.
-//
-// `withBase` is applied here rather than inside the resolver because the
-// resolver also returns absolute platform URLs and `mailto:` — neither of which
-// may be prefixed. `withBase` ignores anything not starting with `/`, so this is
-// safe for all three, but the reason it is safe is worth stating.
-const href = checkout
-  ? resolveGiveHref({ donateUrl, email, campaignName })
-  : withBase(resolveGiveCtaHref({ donateUrl }));
+// While `donateUrl` is blank the answer is no, and the honest thing to render is
+// the note rather than a button. There is no `withBase` here any more: an open
+// campaign always resolves to an absolute platform URL, which must never be
+// prefixed, and the closed case renders no link.
+const open = isGivingOpen(donateUrl);
+const href = open ? resolveGiveHref({ donateUrl, email, campaignName }) : undefined;
 ---
 
-<a
-  class:list={['give', variant === 'light' && 'give--light', variant === 'navy' && 'give--navy']}
-  href={href}
-  rel="noopener"
->
-  {label}{glyph ? <span class="glyph" aria-hidden="true">↗</span> : null}
-</a>
+{
+  open ? (
+    <a
+      class:list={['give', variant === 'light' && 'give--light', variant === 'navy' && 'give--navy']}
+      href={href}
+      rel="noopener"
+    >
+      {label}{glyph ? <span class="glyph" aria-hidden="true">↗</span> : null}
+    </a>
+  ) : (
+    <GivingSoonNote onDark={onDark} showMessage={!messageAlreadyShown} />
+  )
+}
 
 <style>
   .give {

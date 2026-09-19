@@ -1,11 +1,11 @@
 ---
 kind: goal-meter
-kicker: Campaign progress
-title: Our first gifts are already building momentum.
+kicker: Launching soon
+title: 'Our 2026 goal: raise $10,000.'
 linkLabel: View the campaign
 linkUrl: ''
-raised: '$20'
-goal: '$100,000'
+raised: '$0'
+goal: '$10,000'
 percent: 0
 order: 5
 ---
@@ -13,9 +13,10 @@ order: 5
 The fundraising progress band, and the one place on this page carrying figures
 somebody has to maintain by hand.
 
-THE NUMBERS BELOW ARE PLACEHOLDERS AND ARE NOT THE REAL CAMPAIGN TOTALS.
-Replace Raised, Goal and Percent with the true figures before this page is
-published, or clear all three — an empty band is honest, a wrong one is not.
+THE NUMBERS BELOW ARE REAL AS OF 2026-09-14: the campaign has not launched, so
+$0 has been raised against a 2026 goal of $10,000, and the bar is drawn at 0%.
+They replaced placeholder figures ($20 of $100,000) that were never true.
+Keep them true or clear all three — an empty band is honest, a wrong one is not.
 
 There are two ways this band can draw itself, and they never both apply:
 
@@ -30,11 +31,12 @@ There are two ways this band can draw itself, and they never both apply:
 With no widget id and no figures the band renders nothing at all, which is what
 it did before these fields existed.
 
-THIS BAND SHOWS NOTHING until the Goal meter widget ID box above is filled in.
-That is deliberate rather than broken: the ID is the one thing that cannot be
-guessed, because a wrong one would display someone else's campaign meter on our
-page. Get it from Givebutter — Dashboard, your campaign, Share, Embed — and copy
-the `id=` value out of the code they give you.
+To swap the hand-typed figures for Givebutter's live meter, fill in the Goal
+meter widget ID box above. The ID is the one thing that cannot be guessed,
+because a wrong one would display someone else's campaign meter on our page. Get
+it from Givebutter — Dashboard, your campaign, Share, Embed — and copy the `id=`
+value out of the code they give you. Once it is set, Raised, Goal and Percent
+below are ignored and nobody has to maintain them again.
 
 The Goal meter link address is blank for the same reason — it points at the
 Givebutter campaign page, and guessing it would send readers somewhere wrong. The

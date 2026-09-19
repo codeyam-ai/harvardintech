@@ -1,7 +1,7 @@
 ---
 kind: donors
-kicker: The people behind the fund
-title: A grid, *lit from within*.
+kicker: The Momentum Fund
+title: Let's go further *together*.
 order: 7
 ---
 
@@ -18,7 +18,13 @@ can be moved to the bottom, or switched off entirely, is one an edit can break.
 What this entry still controls is the WORDS: its Heading and Kicker are the
 headline and eyebrow drawn over the artwork. The heading understands
 `*asterisks*` — text between them is set in crimson italic, which is how
-"A grid, *lit from within*." gets its emphasis.
+"Let's go further *together*." gets its emphasis.
+
+The wording here is deliberately generic until the fundraising campaign opens.
+It used to speak about donors who do not exist yet ("The people behind the
+fund"), which read as a wall of names that had been taken down rather than one
+never filled in. Once real donors arrive, this is where the recognition copy
+comes back.
 
 Everything else on the wall is NOT editable in the CMS: the intro paragraph, the
 giving levels, the "no donors yet" message, the italic line under the heading,

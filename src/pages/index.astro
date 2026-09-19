@@ -20,6 +20,7 @@ import { splitEvents } from '../lib/events';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
 import { sortBoardMembers, filterActiveBoardMembers } from '../lib/team';
 import { loadHomeSections, loadHeroSlides, loadHomeStats } from '../lib/homeSectionsContent';
+import { loadDonateUrl } from '../lib/donatePageContent';
 import HomeSections from '../components/landing/HomeSections.astro';
 
 // Drafts are dropped from every section below. `INCLUDE_DRAFTS` is true under
@@ -80,6 +81,10 @@ const slides = await loadHeroSlides();
 // The volunteer form keeps its one home, the volunteer page's `ctaUrl`; the
 // Support us "Speak at an event" card borrows it rather than copying it.
 const { ctaUrl: volunteerFormUrl } = await loadVolunteerCopy(volunteerPage);
+// The Giving band follows the SAME switch as /donate, read from the same place
+// — the Momentum Fund page's Donate URL — so launching the campaign turns both
+// on from one CMS field rather than two that can disagree.
+const donateUrl = await loadDonateUrl();
 const stats = await loadHomeStats();
 
 // Advisory, never build-failing — `kind` is free text because the CMS has no
@@ -106,5 +111,6 @@ if (unknownKinds.length > 0) {
     socials={settings.socials}
     email={emailFor('contactUs', settings.contactEmail)}
     volunteerFormUrl={volunteerFormUrl}
+    donateUrl={donateUrl}
   />
 </BaseLayout>

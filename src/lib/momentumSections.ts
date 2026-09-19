@@ -54,7 +54,7 @@ export const SECTION_LABELS: Partial<Record<SectionKind, string>> = {
   accomplishments: 'What we have accomplished so far',
   pillars: 'What your gift powers',
   testimonials: 'From our community',
-  donors: 'The people behind the fund',
+  donors: 'The Momentum Fund',
   stats: 'By the numbers',
 };
 

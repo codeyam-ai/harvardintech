@@ -6,8 +6,13 @@
 // Takes plain props (copy + a flat sponsors array) rather than reading the
 // collection, so it renders from the /sponsor route AND from isolated-component
 // scenarios (with the example wall, and with no sponsors at all).
+//
+// "Ways to partner" (`SponsorLevels`) is deliberately NOT rendered for launch.
+// The levels are not fleshed out enough to put in front of a prospective
+// sponsor, so the page makes its case and opens a conversation instead of
+// selling off a rate card. Every level entry stays in the CMS, so restoring the
+// section is re-adding the one line below — nothing was deleted.
 import SponsorHero from './sponsor/SponsorHero.astro';
-import SponsorLevels from './sponsor/SponsorLevels.astro';
 import SponsorWall from './sponsor/SponsorWall.astro';
 import SponsorInquiry from './sponsor/SponsorInquiry.astro';
 import type { SponsorLike } from '../lib/sponsors';
@@ -27,8 +32,6 @@ const { copy, sponsors = [], email } = Astro.props as Props;
   intro={copy.intro}
   image={copy.heroImage}
 />
-
-<SponsorLevels title={copy.levelsTitle} intro={copy.levelsIntro} levels={copy.levels} />
 
 <SponsorWall
   title={copy.wallTitle}
