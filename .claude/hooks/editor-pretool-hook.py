@@ -3197,6 +3197,41 @@ _SED_LINE_WINDOW = re.compile(r"\d+\s*(?:,\s*(?:\d+|\+\d+|\$))?\s*[pqd]\b")
 # `awk` truncates when it guards on the record number.
 _AWK_NR = re.compile(r"\bNR\b")
 
+# A stage that REDUCES the store to a match list rather than emitting a
+# contiguous body. Truncating a match list is not reading a window of one
+# section, which is why the glossary names grep and wc as non-matches.
+_HANDOFF_REDUCER = re.compile(
+    _HANDOFF_VERB_ANCHOR + r"(grep|egrep|fgrep|rg|wc)\b", re.VERBOSE
+)
+
+
+def _handoff_idiom(stage):
+    """The truncating idiom `stage` runs, or None.
+
+    Stage-scoped on purpose: whether that truncation actually lands on the
+    hand-off's body is the CALLER's question, because the answer depends on
+    what the rest of the pipeline feeds it."""
+    head_tail = _HANDOFF_HEAD_TAIL.search(stage)
+    if head_tail:
+        return head_tail.group(1)
+    if _HANDOFF_SED.search(stage) and _SED_LINE_WINDOW.search(stage):
+        return "sed"
+    if _HANDOFF_AWK.search(stage) and _AWK_NR.search(stage):
+        return "awk"
+    return None
+
+
+def _handoff_emits_body(upstream):
+    """True when some stage in `upstream` emits a contiguous BODY of the store.
+
+    Fails CLOSED: any stage that reads the store and is not a recognised
+    reducer counts as a body emitter, so an unfamiliar reader piped into
+    `head`/`tail` is still refused."""
+    return any(
+        _HANDOFF_STORE in stage and not _HANDOFF_REDUCER.search(stage)
+        for stage in upstream
+    )
+
 
 def windowed_handoff_read(command):
     """Return the truncating idiom `command` uses to read a WINDOW of the
@@ -3212,6 +3247,13 @@ def windowed_handoff_read(command):
     and locating a section by name is how an agent legitimately discovers what
     to ask `--section` for — refusing either would break the way out.
 
+    The match is STAGE-SCOPED, not whole-command: a truncating verb counts only
+    when its own stage names the store, or when an upstream stage in the SAME
+    pipeline emits the store's body. Scanning the whole string refused
+    `grep PATTERN FILE | head` — which truncates grep's OUTPUT, not the file —
+    and refused a `head` belonging to an entirely different command joined by
+    `;`, handing the agent a refusal that named its own command as permitted.
+
     Pure and side-effect free, so the idiom set is assertable directly without
     going through captured stdout."""
     if not command:
@@ -3219,13 +3261,13 @@ def windowed_handoff_read(command):
     command = elide_heredoc_bodies(command)
     if _HANDOFF_STORE not in command:
         return None
-    head_tail = _HANDOFF_HEAD_TAIL.search(command)
-    if head_tail:
-        return head_tail.group(1)
-    if _HANDOFF_SED.search(command) and _SED_LINE_WINDOW.search(command):
-        return "sed"
-    if _HANDOFF_AWK.search(command) and _AWK_NR.search(command):
-        return "awk"
+    for pipeline in _pipelines(command):
+        for index, stage in enumerate(pipeline):
+            idiom = _handoff_idiom(stage)
+            if not idiom:
+                continue
+            if _HANDOFF_STORE in stage or _handoff_emits_body(pipeline[:index]):
+                return idiom
     return None
 
 
@@ -3589,8 +3631,8 @@ def scripted_state_read_refusal(kind):
         f"this one's, or you commit its description as this feature's body. "
         f"Either way the wrong entry is invisible in the result, which is why "
         f"the filename is not the selector and entry resolution exists.",
-        f"pick by what you are doing with it — both resolve the ACTIVE "
-        f"feature's entry, so neither needs a timestamp. TO READ THE ENTRY: "
+        f"pick by what you are doing with it — all three resolve the ACTIVE "
+        f"feature's entry, so none of them needs a timestamp. TO READ THE ENTRY: "
         f"`{cli_command()} editor journal-show` prints its title, type, "
         f"description, and references; `--format json` emits the standard "
         f"query-surface envelope, so "
@@ -3600,9 +3642,15 @@ def scripted_state_read_refusal(kind):
         f"finished message on stdout and nothing else, so "
         f"`{cli_command()} editor journal-commit-message | git commit -F -` "
         f"needs no temp file; add `--trailer '<line>'` (repeatable) for "
-        f"`Co-Authored-By:` / `Claude-Session:` lines. Both take "
-        f"`--entry <path>` to override the resolution deliberately, and both "
-        f"report on stderr which entry they chose and why.",
+        f"`Co-Authored-By:` / `Claude-Session:` lines. TO CHANGE THE ENTRY: "
+        f"`{cli_command()} editor journal-update '<json>'` patches it — omit "
+        f"`time` from the payload and it lands on the active feature's entry "
+        f"rather than on whichever entry is newest. This is the one to reach "
+        f"for instead of rewriting the JSON by hand: picking the wrong entry "
+        f"on a WRITE overwrites another feature's record, where the same "
+        f"mistake on a read merely misinforms you. All three take "
+        f"`--entry <path>` to override the resolution deliberately, and all "
+        f"three report on stderr which entry they chose and why.",
     )
 
 

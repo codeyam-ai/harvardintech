@@ -615,6 +615,35 @@ present concrete options, and wait** — do not autonomously pay these down:
 > authorizing real, required spend. Quote them the measured number, and say
 > which projection it came from.
 
+> GOTCHA — **`SLUG_FILE_EXCEEDS_BUDGET`: lift or split, never reflow.** The
+> finding names a step-library slug over its line budget, and the obvious
+> remedy — reword the prose until it fits — is the one that breaks the build.
+> The pre-split slug bodies are frozen as fixtures under
+> `crates/codeyam-editor/tests/fixtures/legacy/` and compared **line for line**
+> by `assert_lines_preserved`, so a reflowed line reads as a *dropped* line and
+> fails; `step_audit_guidance_contract.rs`, which pins literal phrases inside
+> the step files, is the second guard the same edit trips. Both are invisible
+> until the suite runs, which is precisely what step 6a exists to surface early.
+>
+> Two sanctioned mechanisms, both line-preserving:
+> 1. **Lift a block into a fragment.** The budget is measured on the RAW slug
+>    file, while `step.rs` injects the fragment at render time — so the text is
+>    authored once and still reaches the agent verbatim. This is the way the
+>    decomposition guard itself documents ("the established way to keep a slug
+>    under the ratchet is to lift a block into a fragment"):
+>    ```bash
+>    codeyam-editor editor new-step-fragment <name> --slug <slug>
+>    ```
+>    It writes the fragment body, adds the `include_str!` substitution, inserts
+>    the `{<name>_block}` placeholder into each named slug, and prints the
+>    placeholder-leak test to add.
+> 2. **Split the slug** into a companion slug, moving whole lines across.
+>
+> The rule is about the *frozen* lines, not about every line in the file. A line
+> your own branch added is absent from the legacy fixture, so nothing pins it and
+> you are free to condense it. That distinction is what makes this usable rather
+> than absolute — check the fixture before assuming a line is untouchable.
+
 This is the convergence contract in practice: each run fixes all the mechanical
 drift it can, then stops at the **first** genuine judgment call with a specific,
 answerable question. The user's answer advances the next (resumed) run.
@@ -793,8 +822,9 @@ wants current evidence and screenshots.
 ## 6. Presentability pass — treat the branch as open-source
 
 Placed *after* screenshots are refreshed (step 5) so the gallery embeds the
-final images, and *before* the finalize (step 7) so the suite validates the
-cleanup. For a branch built entirely via Fast Commit, the per-cycle finalize
+final images, and *before* step 6a so the narrowed suite validates the cleanup
+while that is still cheap — not at the finalize, which is where this used to be
+discovered. For a branch built entirely via Fast Commit, the per-cycle finalize
 bodies rendered terse (no polish), so this is where the repo finally polishes
 before merge.
 
@@ -830,13 +860,46 @@ under `--format json` the same distinction is `debug_log_patterns_source`.
 Then **assertively** remove the clearly-dead docs and debug log lines the scan
 surfaces — but **ask the user about anything uncertain** before deleting it.
 The scan only ever *lists* candidates; the judgment (and the deletion) is
-yours, and deletion is a judgment call (step 4b): when in doubt, ask. The
-step-7 finalize re-runs the suite, so a debug line a test asserted on will fail
-there — revert that one removal and re-run.
+yours, and deletion is a judgment call (step 4b): when in doubt, ask. A debug
+line a test asserted on will fail once the suite runs — step 6a catches that in
+seconds, so revert that one removal there rather than discovering it at Phase 1
+prices.
 
 > `session-finalize` also emits a self-contained presentability advisory naming
 > these same two commands, so a client with no copy of this procedure is still
 > covered.
+
+---
+
+## 6a. Verify the edits before the finalize pays for them
+
+Steps 4 and 6 both **edit source** — 4b's judgment fixes, 6's assertive removals
+— and nothing between them and step 7 ever executes what they changed. Without
+this step the finalize is the first thing to run the pass's own edits, and it
+charges Phase 1 prices to tell you a test went red.
+
+```bash
+# Narrowed to this pass's diff — the cheap scope, not the finalize's.
+codeyam-editor editor refresh-tests --changed
+```
+
+Fix every red **here**, before entering step 7. The asymmetry is the whole
+argument, and it is measured: on `editor-improvements-88` a step-4 trim of three
+step-library slug files broke two cargo tests. The finalize surfaced them at
+`CODEYAM_FINALIZE_PHASE1_FAILED` after **2986 seconds**; running the two affected
+test files directly afterwards took about **50 seconds**. Add the
+`pre-commit-sync` re-claim, the rebuild the edit forced, and the re-finalize, and
+a verdict available in under a minute cost about an hour.
+
+`--changed` is the point: it runs only the tests for the files this pass touched,
+which is exactly the set steps 4 and 6 edited. The flag-free form already has two
+jobs in this procedure — warming a cold cache in step 2, and the finalize's own
+Phase 1 — and paying for either one here would spend the cheapness that makes
+this step worth taking.
+
+This is a different failure class from the hoisted strict audit in step 7's
+`Phase 0.5/5` / `Phase 0.6` pre-flights. Those catch *audit findings* early; a
+plain red test is invisible to them, because only a test run can see it.
 
 ---
 
@@ -882,6 +945,26 @@ codeyam-editor editor pre-commit-sync          # claims the commit queue; --reco
 # The full, whole-repo finalize. Stamps lastFullFinalizeSha.
 codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.log
 ```
+
+> **A Phase 0.6 block is the CHEAP failure, and on a branch carrying audit
+> debt it is the one to expect.** The finalize runs the strict audit *twice*:
+> once as a pre-audit before Phase 1's full suite (~45-50 min here), and again
+> as Phase 2 in its own position. The pre-audit blocks immediately on every
+> finding Phase 1 could not have changed — the not-cache-derived invariants
+> (`SOURCE_HAS_UNREGISTERED_ENTITY`, `SLUG_FILE_EXCEEDS_BUDGET`, the glossary
+> ones) plus any cache-derived finding whose partitions Phase 1 is going to
+> reuse anyway. So a `Phase 0.6/5:` block costs ~3 minutes, not ~52, and the
+> fix-then-rerun loop after it is minutes per turn rather than an hour.
+> Measured on `editor-improvements-88` before this existed:
+> `phase1=passed, phase2=failed, elapsed=3128.2s` for a verdict a standalone
+> `audit --only` reached in 100-190s.
+>
+> Findings it *cannot* settle — ones derived from runner output a partition
+> Phase 1 will re-run produces — are reported as deferred and left to Phase 2,
+> which remains the authority. A clean pre-audit therefore proves nothing about
+> merge-readiness on its own; only Phase 2 advances the marker. Budget one extra
+> ~3 min audit (~6%) on a run where nothing is wrong: the asymmetry is 3 minutes
+> against 52.
 
 > GOTCHA — **the marker-stamp trap.** A `session-finalize` that *skips* the
 > comprehensive whole-repo phase can leave `lastFullFinalizeSha` unstamped even

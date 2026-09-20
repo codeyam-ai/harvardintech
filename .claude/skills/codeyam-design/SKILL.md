@@ -46,7 +46,9 @@ Then in the same message (or the next — your call), do all of the following, b
 
 **Read the project description first.** Open `.codeyam/editor.json` and read `projectDescription`. Note anything you genuinely don't understand: surface type (mobile / web / desktop), primary user (consumer / professional / internal), the one or two screens that matter most, the tone (playful / serious / clinical / editorial).
 
-**Ask any clarifying questions you actually need answered.** Good ones: *"Is this primarily mobile or desktop?"*, *"Who's the main user — a power user or a first-timer?"*, *"Should the tone read more polished-startup or playful-indie?"*. Only ask what you cannot reasonably infer. If the description already covers it, skip it.
+**Settle the surface from the questionnaire answers before you ask about it.** Read `.codeyam/state/questionnaire-draft.json` and look at `answers.appFormats`. It records the product types the user actually picked, and `"mobile"` is one of them — a stated answer, strictly better than re-inferring the surface from the free-text idea. If it names `"mobile"` and nothing else, this is a **mobile round**: compose for a phone (Step 3) and do not ask the clarifier below. Read the file directly and **fail quiet** — it is per-machine runtime state, written only while someone is mid-questionnaire and removed when onboarding ends, so a missing or unreadable file is normal and simply means fall through to asking. Use a plain file read; do **not** shell out to `codeyam-editor editor` here.
+
+**Ask any clarifying questions you actually need answered.** Good ones: *"Is this primarily mobile or desktop?"* (only when the draft above didn't settle it), *"Who's the main user — a power user or a first-timer?"*, *"Should the tone read more polished-startup or playful-indie?"*. Only ask what you cannot reasonably infer. If the description already covers it, skip it.
 
 **Ask which page to mock up — but only if it isn't obvious.** All N mockups depict **the same page of the product** in different directions — that is the whole point of the comparison. If the description makes the primary working surface obvious (a SaaS → its dashboard, a creative tool → its editor, a social app → its feed, a landing-focused product → the home / hero), pick it yourself and **tell the user in one sentence which page you chose**. Only ask if the product genuinely has multiple equally-central surfaces — and when you ask, suggest 2–3 candidate pages.
 
@@ -173,6 +175,23 @@ For `N = 2` you write `01-…` and `02-…`; for `N = 8` you go to `08-…`. Alw
 > **Known handoff gap (off-catalog):** the selection endpoint (Step 6) resolves `NN-<system>-mockup.html` back to `design_systems/<system>.md`. An off-catalog mockup has no backing markdown, so selecting it cannot yet copy a design system into `.codeyam/design/design_system.md`. This is a deliberate prototype limitation — the build-handoff for off-catalog (synthesizing `design_system.md` from the chosen mockup's actual tokens) is backend work tracked for the formal build session. Generate off-catalog mockups for *visual exploration*; flag this gap if the user picks one.
 
 **Subject stays constant; the design language and structure are the variables.** Every mockup depicts the same page so the user can directly compare directions. The same headline content, primary actions, data, and information hierarchy must be readable across all N — otherwise the comparison is meaningless.
+
+**Every mockup must declare its surface in `<head>`:**
+
+```html
+<meta name="codeyam-viewport" content="desktop">   <!-- or: tablet | mobile -->
+```
+
+Use the surface Step 1 settled. This tag is not documentation — the editor **sizes the preview from it**, and `mobile` is what puts the phone shell around the mockup. A missing tag is treated as `desktop`, so a mobile round that omits it is presented as a 1440×900 desktop screen and every phone design in the round reads wrong.
+
+**On a mobile round, compose for 390×844.** A desktop layout squeezed narrow is not a phone design:
+
+- one column — no desktop sidebar, no wide horizontal nav bar;
+- leave the top ~50px clear for the status bar;
+- real tap targets, and a bottom tab bar where the product implies one;
+- type and spacing scaled for a phone held in one hand, not a shrunk desktop page.
+
+**Do not draw a phone bezel, notch, status-bar chrome, or home indicator inside the mockup HTML.** You write the *screen*; the editor draws the *device* around it. A mockup that draws its own renders inside a second one.
 
 **Per-tier generation:**
 
