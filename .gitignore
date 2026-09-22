@@ -147,6 +147,7 @@ blob-report/
 .codeyam/reconciliation-log.jsonl
 .codeyam/runner-timing-history.json
 .codeyam/state/last-advance.txt
+.codeyam/state/last-step-show.txt
 .codeyam/state/provider-auth-verdict.json
 .codeyam/state/dependency-provision.json
 .codeyam/state/setup-provision.json

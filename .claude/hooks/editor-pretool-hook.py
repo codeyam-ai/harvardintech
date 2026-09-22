@@ -3174,6 +3174,79 @@ def inspector_nudge(command):
 # always named.
 _HANDOFF_STORE = ".codeyam/state/last-advance.txt"
 
+# The hand-off text lives in FOUR places, byte-identical, and this guard used to
+# reach one of them. The other three are what an agent actually reaches for once
+# the `cat` is truncated, so a guard on the canonical path alone was a fence
+# across the least-used door:
+#
+#   1. `.codeyam/state/last-advance.txt`      — the canonical store.
+#   2. `.codeyam/state/last-step-show.txt`    — the read-only `--show` render.
+#   3. `.codeyam/state/command-output/runs/advance-<runId>.txt`
+#                                             — the run-keyed transcript.
+#   4. the harness's persisted tool result    — an OPAQUE filename, so it is
+#                                               matched by CONTENT, below.
+#
+# Observed on the mirrors specifically: `sed -n '1,200p' …/tool-results/<id>.txt
+# | sed -n '40,200p'` at three separate steps of one session, and an
+# `awk '/━━━ ASK WHETHER TO KEEP ASKING ━━━/,…'` over the run-keyed transcript
+# in another. Identical hazard, unguarded.
+#
+# Widening this is only safe BECAUSE the delivery side landed with it: blocking
+# the mirrors while `cat` still truncated would have left no way to read a
+# hand-off at all. That is why the plan made them one change.
+_HANDOFF_PATH_MIRRORS = (
+    _HANDOFF_STORE,
+    ".codeyam/state/last-step-show.txt",
+)
+
+# The run-keyed transcript. A regex because the run id varies per invocation.
+_HANDOFF_RUN_TRANSCRIPT = re.compile(
+    r"\.codeyam/state/command-output/runs/advance-[0-9a-fA-F-]+\.txt"
+)
+
+# A harness-persisted tool result. The filename carries no hint of what is in
+# it, so the path shape only makes a file a CANDIDATE — whether it holds a
+# hand-off is decided by reading it.
+_HANDOFF_TOOL_RESULT = re.compile(r"[^\s'\"]*/tool-results/[^\s'\"]+\.txt")
+
+# What identifies a persisted tool result as holding a hand-off: the pointer
+# token `advance` prints, or the banner shape every step body is fenced with.
+# Read from a bounded prefix — enough to see a hand-off's opening banner, small
+# enough that a PreToolUse hook never stalls on a large file.
+_HANDOFF_CONTENT_MARKERS = ("CODEYAM_FULL_HANDOFF", "━━━ BEGIN STEP ")
+_HANDOFF_SNIFF_BYTES = 8192
+
+
+def _handoff_paths_in(text):
+    """Every hand-off-carrying path `text` names, opaque tool results included.
+
+    Returns the literal substrings found, so callers can test stage membership
+    the same way the single-path version did."""
+    found = [store for store in _HANDOFF_PATH_MIRRORS if store in text]
+    found.extend(match.group(0) for match in _HANDOFF_RUN_TRANSCRIPT.finditer(text))
+    found.extend(
+        match.group(0)
+        for match in _HANDOFF_TOOL_RESULT.finditer(text)
+        if _file_holds_handoff(match.group(0))
+    )
+    return found
+
+
+def _file_holds_handoff(path):
+    """True when `path` is readable and its opening bytes carry a hand-off.
+
+    Content-sniffed rather than name-matched because the harness names these
+    files by an opaque id. Fails OPEN — an unreadable or missing path is not a
+    hand-off — because this guard's job is to refuse a read of a KNOWN
+    instruction file, and refusing an unrelated tool result the agent has every
+    right to window would strand it for no benefit."""
+    try:
+        with open(path, "rb") as handle:
+            head = handle.read(_HANDOFF_SNIFF_BYTES).decode("utf-8", "replace")
+    except OSError:
+        return False
+    return any(marker in head for marker in _HANDOFF_CONTENT_MARKERS)
+
 # The command-position anchor is `_READ_VERB`'s, for the same reason: position
 # is what separates a read from an incidental mention, so the path quoted in a
 # commit message or handed to `git add` is not a hit.
@@ -3222,13 +3295,13 @@ def _handoff_idiom(stage):
 
 
 def _handoff_emits_body(upstream):
-    """True when some stage in `upstream` emits a contiguous BODY of the store.
+    """True when some stage in `upstream` emits a contiguous BODY of a store.
 
-    Fails CLOSED: any stage that reads the store and is not a recognised
+    Fails CLOSED: any stage that reads a hand-off and is not a recognised
     reducer counts as a body emitter, so an unfamiliar reader piped into
     `head`/`tail` is still refused."""
     return any(
-        _HANDOFF_STORE in stage and not _HANDOFF_REDUCER.search(stage)
+        _handoff_paths_in(stage) and not _HANDOFF_REDUCER.search(stage)
         for stage in upstream
     )
 
@@ -3237,8 +3310,10 @@ def windowed_handoff_read(command):
     """Return the truncating idiom `command` uses to read a WINDOW of the
     saved step hand-off, or None.
 
-    Fires only when the command BOTH names `.codeyam/state/last-advance.txt`
-    AND truncates it. Heredoc bodies are elided first, for the same reason
+    Fires only when the command BOTH names a hand-off-carrying file (see
+    `_handoff_paths_in` for the four of them) AND truncates it. A persisted
+    tool result is matched by CONTENT, so windowing an unrelated one is not a
+    hit. Heredoc bodies are elided first, for the same reason
     every other guard elides them: a commit message that quotes the path is
     prose, not a read.
 
@@ -3259,14 +3334,14 @@ def windowed_handoff_read(command):
     if not command:
         return None
     command = elide_heredoc_bodies(command)
-    if _HANDOFF_STORE not in command:
+    if not _handoff_paths_in(command):
         return None
     for pipeline in _pipelines(command):
         for index, stage in enumerate(pipeline):
             idiom = _handoff_idiom(stage)
             if not idiom:
                 continue
-            if _HANDOFF_STORE in stage or _handoff_emits_body(pipeline[:index]):
+            if _handoff_paths_in(stage) or _handoff_emits_body(pipeline[:index]):
                 return idiom
     return None
 
@@ -3289,7 +3364,7 @@ def windowed_handoff_read_tool(tool_input):
     complete alternatives the refusal points at."""
     tool_input = tool_input or {}
     path = str(tool_input.get("file_path") or "").replace("\\", "/")
-    if not path.endswith(_HANDOFF_STORE):
+    if not _handoff_paths_in(path):
         return None
     if tool_input.get("offset") is None and tool_input.get("limit") is None:
         return None
@@ -3313,22 +3388,25 @@ def windowed_handoff_read_refusal(idiom):
     was copied exactly — so the recovery has to say the named form reaches the
     same answer without any of it."""
     return (
-        f"this reads a WINDOW of the saved step hand-off (`{_HANDOFF_STORE}`) "
-        f"with `{idiom}`. That file is an instruction file, and a window of one "
-        f"is the single read shape with no trustworthy interpretation: the "
-        f"lines that come back are accurate, and nothing in them tells you a "
-        f"section body was cut. A window that ends on a `━━━ … ━━━` banner "
-        f"hands back a heading with no body — it reads as complete and is not, "
-        f"which is how a whole section's instructions went unexecuted and were "
-        f"caught only turns later.",
-        f"read it WHOLE or by NAMED SECTION, never by line range: "
-        f"`{cli_command()} editor step-handoff --section <NAME>` returns one "
-        f"complete section (run it bare to list the sections this hand-off "
-        f"actually has), and `cat {_HANDOFF_STORE}` returns all of it. Line "
-        f"numbers printed by `step-handoff` are NOT a licence to `sed` the "
-        f"range back — the named form gives the same answer with none of the "
-        f"arithmetic. `grep`, `wc -l`, and a bare `cat` of this file are "
-        f"unaffected.",
+        f"this reads a WINDOW of a saved step hand-off with `{idiom}`. That is "
+        f"an instruction file, and a window of one is the single read shape "
+        f"with no trustworthy interpretation: the lines that come back are "
+        f"accurate, and nothing in them tells you a section body was cut. A "
+        f"window that ends on a `━━━ … ━━━` banner hands back a heading with "
+        f"no body — it reads as complete and is not, which is how a whole "
+        f"section's instructions went unexecuted and were caught only turns "
+        f"later. The same text lives in `{_HANDOFF_STORE}`, in the run-keyed "
+        f"transcript, and in the harness's persisted tool result, so this "
+        f"applies wherever you reached it.",
+        f"read it by NAMED SECTION: `{cli_command()} editor step-handoff "
+        f"--section <NAME>` returns one COMPLETE section, marks which sections "
+        f"are REQUIRED, and now reports any required section your request did "
+        f"not show — so narrowing no longer risks dropping an instruction "
+        f"silently. Run it bare to list the sections this hand-off has. `cat "
+        f"{_HANDOFF_STORE}` still returns all of it. Line numbers printed by "
+        f"`step-handoff` are NOT a licence to `sed` the range back — the named "
+        f"form gives the same answer with none of the arithmetic. `grep`, "
+        f"`wc -l`, and a bare `cat` of this file are unaffected.",
     )
 
 
@@ -3964,7 +4042,7 @@ def main():
                 next_action,
                 detail=idiom,
                 evidence=(
-                    f"the command names `{_HANDOFF_STORE}` in a read position and "
+                    f"the command names a hand-off file in a read position and "
                     f"truncates it with `{idiom}`; a whole-file `cat`, a `grep`, "
                     f"and a `wc -l` of the same path are not matched"
                 ),

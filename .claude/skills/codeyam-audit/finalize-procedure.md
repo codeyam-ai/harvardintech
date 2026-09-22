@@ -214,10 +214,25 @@ marker. Note `--findings-only` deliberately omits the array; the default
 
 **Read `cacheFreshness` BEFORE you quote the user a number.** The same
 document carries a `cacheFreshness` sibling —
-`{green, stale, red, nonGreenPartitions[], cacheDependentFindings}` — and it
-is present on every projection (`--format json`, `--findings-only`,
+`{green, stale, red, nonGreenPartitions[], nonGreenCauses{}, cacheDependentFindings}`
+— and it is present on every projection (`--format json`, `--findings-only`,
 `--summary-only --format json`), green or not, so its absence means an old
-binary, never a green cache. When `nonGreenPartitions` is non-empty, the
+binary, never a green cache.
+
+`green` counts only partitions nothing has invalidated, which includes
+invalidation a partition did not cause itself: a partition whose own sources
+never moved is still not green when it shares a runner with one that drifted,
+because a single runner invocation wrote both of their caches. `nonGreenCauses`
+maps each attributed partition to which check named it — `own-hash-drift`,
+`runner-coupled`, or `aggregate-behind` — so you can tell the drift you just
+caused from the drift you inherited without re-deriving it. Treat all of them
+as equally untrustworthy for pricing: they differ in what they say about the
+edit, not in how much doubt they cast. (Before this split, runner-coupled
+partitions were counted green here, so this sibling read `19 green / 1 stale`
+on a tree where `editor test-status` reported 8 stale — and the refresh that
+ratio priced as unnecessary removed 35 of 36 findings.)
+
+When `nonGreenPartitions` is non-empty, the
 finding count is an **upper bound, not a debt estimate**:
 `cacheDependentFindings` of the total are derived from runner output or
 coverage those partitions produce, and they dissolve on a refresh. Measured
