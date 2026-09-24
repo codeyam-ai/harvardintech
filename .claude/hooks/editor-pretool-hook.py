@@ -3174,8 +3174,8 @@ def inspector_nudge(command):
 # always named.
 _HANDOFF_STORE = ".codeyam/state/last-advance.txt"
 
-# The hand-off text lives in FOUR places, byte-identical, and this guard used to
-# reach one of them. The other three are what an agent actually reaches for once
+# The hand-off text lives in FIVE places, byte-identical, and this guard used to
+# reach one of them. The other four are what an agent actually reaches for once
 # the `cat` is truncated, so a guard on the canonical path alone was a fence
 # across the least-used door:
 #
@@ -3185,11 +3185,22 @@ _HANDOFF_STORE = ".codeyam/state/last-advance.txt"
 #                                             — the run-keyed transcript.
 #   4. the harness's persisted tool result    — an OPAQUE filename, so it is
 #                                               matched by CONTENT, below.
+#   5. the harness's task output for a
+#      BACKGROUNDED command                   — likewise matched by CONTENT.
 #
 # Observed on the mirrors specifically: `sed -n '1,200p' …/tool-results/<id>.txt
 # | sed -n '40,200p'` at three separate steps of one session, and an
 # `awk '/━━━ ASK WHETHER TO KEEP ASKING ━━━/,…'` over the run-keyed transcript
 # in another. Identical hazard, unguarded.
+#
+# Door 5 is the MOST travelled of the five, not a corner case: `advance` is in
+# `_GATING_SUBCOMMANDS`, so every advance is auto-backgrounded and its hand-off
+# lands in the task output, which the agent then retrieves with `wait-for`. One
+# session windowed exactly that FOURTEEN times, once per step, with
+# `wait-for … | sed -n '/BEGIN STEP/,$p' | head -12` — a window that starts AT
+# the banner, so the checklist the trailer says is "printed above this trailer"
+# is discarded wholesale, and then ends on another banner, handing back a
+# heading with no body. It reads as complete and is not.
 #
 # Widening this is only safe BECAUSE the delivery side landed with it: blocking
 # the mirrors while `cat` still truncated would have left no way to read a
@@ -3209,6 +3220,25 @@ _HANDOFF_RUN_TRANSCRIPT = re.compile(
 # hand-off is decided by reading it.
 _HANDOFF_TOOL_RESULT = re.compile(r"[^\s'\"]*/tool-results/[^\s'\"]+\.txt")
 
+# A harness task output for a backgrounded command. Same deal as the tool
+# result above: the id is opaque, so the path shape only makes a file a
+# CANDIDATE and the content sniff decides. This is where every backgrounded
+# `advance` puts its hand-off.
+#
+# Deliberately NOT anchored on the `/tmp/claude-<uid>/<project>/<session>/`
+# prefix, for the same reason spelled out for `_HARNESS_TOOL_RESULT_TRANSCRIPT`
+# below: that prefix is not stable — `/tmp/claude-0/-workspace/…` in a fleet
+# container, `/tmp/claude-501/-Users-…/…` on a laptop. The `/tasks/` segment is
+# the part that does not move. Requiring the literal leading slash keeps
+# `my-tasks/x.output` out.
+_HANDOFF_TASK_OUTPUT = re.compile(r"[^\s'\"]*/tasks/[^/\s'\"]+\.output\b")
+
+# The two shapes above are the CONTENT-SNIFFED ones: both are named by an
+# opaque harness id, so neither can be decided from the path alone. Grouped so
+# the sweep below states that strategy once — a sixth door of this kind is one
+# entry here, not another copy of the same three lines.
+_HANDOFF_CONTENT_SNIFFED = (_HANDOFF_TOOL_RESULT, _HANDOFF_TASK_OUTPUT)
+
 # What identifies a persisted tool result as holding a hand-off: the pointer
 # token `advance` prints, or the banner shape every step body is fenced with.
 # Read from a bounded prefix — enough to see a hand-off's opening banner, small
@@ -3224,11 +3254,18 @@ def _handoff_paths_in(text):
     the same way the single-path version did."""
     found = [store for store in _HANDOFF_PATH_MIRRORS if store in text]
     found.extend(match.group(0) for match in _HANDOFF_RUN_TRANSCRIPT.finditer(text))
-    found.extend(
-        match.group(0)
-        for match in _HANDOFF_TOOL_RESULT.finditer(text)
-        if _file_holds_handoff(match.group(0))
-    )
+    # Content-gated, and for the task output the reason is sharper than for the
+    # tool result: a task output is only a hand-off SOMETIMES. Most backgrounded
+    # commands are test runs, commits, rebuilds — outputs an agent has every
+    # right to window. Measured across eight sessions: 49 windowed `wait-for`
+    # reads, of which 14 carried a hand-off. Refusing the other 35 would strand
+    # agents for no benefit, which is what the sniff's fail-open exists to avoid.
+    for pattern in _HANDOFF_CONTENT_SNIFFED:
+        found.extend(
+            match.group(0)
+            for match in pattern.finditer(text)
+            if _file_holds_handoff(match.group(0))
+        )
     return found
 
 
@@ -3311,11 +3348,11 @@ def windowed_handoff_read(command):
     saved step hand-off, or None.
 
     Fires only when the command BOTH names a hand-off-carrying file (see
-    `_handoff_paths_in` for the four of them) AND truncates it. A persisted
-    tool result is matched by CONTENT, so windowing an unrelated one is not a
-    hit. Heredoc bodies are elided first, for the same reason
-    every other guard elides them: a commit message that quotes the path is
-    prose, not a read.
+    `_handoff_paths_in` for the five of them) AND truncates it. A persisted
+    tool result and a backgrounded command's task output are matched by
+    CONTENT, so windowing an unrelated one is not a hit. Heredoc bodies are
+    elided first, for the same reason every other guard elides them: a commit
+    message that quotes the path is prose, not a read.
 
     A bare `cat`, a `grep`, and a `wc -l` of the same path are deliberately
     NOT matches. Reading the file whole is the recovery this guard points at,
