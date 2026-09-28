@@ -3,10 +3,12 @@
   "id": "7244d707-4abf-469e-b054-e115ca08f025",
   "url": "/isolated-components/UpcomingEvents-Empty",
   "dimensions": [
+    "Mobile",
     "Desktop"
   ],
   "mocks": {},
   "componentName": "UpcomingEvents-Empty",
   "scenarioType": "component",
-  "pageFilePath": "src/components/landing/UpcomingEvents.astro"
+  "pageFilePath": "src/components/landing/UpcomingEvents.astro",
+  "description": "The homepage events band with nothing scheduled. It states the absence ONCE, in the line under the heading, and puts the two subscribe buttons directly beneath it. A second panel to the right used to repeat the same words, No upcoming events, and - with no date column to align against in the empty state - hung off the grid; both went, and the buttons moved up from 52px below the lede to 28px, so the sentence now points at the thing it is telling you to do. Mobile is captured too because the band is one of the surfaces the expanded navigation used to bury below the fold at that width."
 }

@@ -267,12 +267,34 @@ h3 {
   padding: 12px 18px;
 }
 
-@media (max-width: 900px) {
+/* The body's gutters collapse WITH the header, at the nav's own breakpoint.
+   They used to part company at 900 while the header collapsed at 1040, so for
+   the 140px between them the wordmark sat on a 24px inset above 48px body
+   gutters — the page's left edge visibly moved as you crossed the band, and
+   iPad landscape (1024) lands inside it. Audit F4, 2026-09-28.
+
+   1040 is the nav's number and is in the standard set; `launch--design-system`
+   owns what happens to 900 for everything else, which is why only `.wrap` moved
+   here and `.sec-head` below did not. */
+@media (max-width: 1040px) {
   .wrap {
     padding: 0 24px;
   }
+}
+
+@media (max-width: 900px) {
   .sec-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* One edge at phone width too: the header and footer drop to a 16px gutter at
+   520 (a 390px row cannot hold the wordmark, Subscribe and the menu button at
+   24px), so the body follows them down rather than re-opening a narrower
+   version of the same mismatch. */
+@media (max-width: 520px) {
+  .wrap {
+    padding: 0 16px;
   }
 }

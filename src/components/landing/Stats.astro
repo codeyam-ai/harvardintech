@@ -74,4 +74,23 @@ const {
       border-top: 1px solid var(--line);
     }
   }
+  /* At 390px two columns leave 195px each, and 48px of side padding left 99px
+     of that for a 44px figure like "8,500+" that needs ~150px. A grid item's
+     automatic minimum is its content, so the track could not shrink and the
+     whole band pushed the page into a sideways scroll. `min-width: 0` lets the
+     track shrink; the smaller padding and figure mean it no longer has to.
+     This width was never reviewed before — the expanded nav hid every band
+     below it (audit F1). */
+  @media (max-width: 520px) {
+    .stat {
+      min-width: 0;
+      padding: 28px 16px;
+    }
+    .v {
+      font-size: 34px;
+    }
+    .l {
+      letter-spacing: 0.06em;
+    }
+  }
 </style>

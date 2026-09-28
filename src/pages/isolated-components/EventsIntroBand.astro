@@ -1,0 +1,30 @@
+---
+import Component from "../../../src/components/EventsIntroBand.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EventsIntroBand — the same title and standfirst as
+// EventsIntro, but wrapped in the site band that `/events` actually renders.
+//
+// Captured separately from EventsIntro because what distinguishes the two is
+// exactly the thing a picture shows and prose does not: the band's own spacing.
+// It closes with NO bottom padding, so the Luma calendar that follows it on the
+// route reads as part of the same block rather than a second one. That single
+// rule is the whole reason this component exists, and this is where it is
+// visible.
+//
+// Full width and no wrapper padding: the band IS the page-width section and
+// brings its own gutters, so bounding it here would misreport where it breathes.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EventsIntroBand</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component />
+    </div>
+  </body>
+</html>

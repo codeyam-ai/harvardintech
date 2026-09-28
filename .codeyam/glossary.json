@@ -177,6 +177,30 @@
     ]
   },
   {
+    "description": "The /events page's title and standfirst, and nothing else - no band, no padding of its own. Split out of EventsPage so the route can render it ABOVE the Luma calendar: the page used to open on the embed's own heading, so a visitor's first line of text was Luma's rather than the site's. Deliberately not a section, because each caller supplies its own wrapper - EventsIntroBand on the route, EventsPage's existing inner column when it renders the intro itself - which is what keeps both on the site's shared band rhythm instead of inventing a second one.",
+    "filePath": "src/components/EventsIntro.astro",
+    "name": "EventsIntro",
+    "scenarios": [
+      "eventsintro-the-page-s-own-title"
+    ],
+    "tags": [
+      "events",
+      "responsive"
+    ]
+  },
+  {
+    "description": "EventsIntro wrapped in the site's standard section, as /events renders it above the Luma calendar. It exists so pages/events.astro stays imports-and-composition with no raw markup of its own. Its one rule of substance is that the band closes with no bottom padding: the standfirst introduces the calendar directly beneath it, so the two read as one block rather than the band shutting with 78px of nothing only for the calendar's own 78px to follow.",
+    "filePath": "src/components/EventsIntroBand.astro",
+    "name": "EventsIntroBand",
+    "scenarios": [
+      "eventsintroband-closing-flush-against-the-calendar"
+    ],
+    "tags": [
+      "events",
+      "responsive"
+    ]
+  },
+  {
     "description": "Full Events page body: intro header plus Upcoming and Past sections, split from a flat events array via splitEvents. Reused by the /events route and isolated scenarios.",
     "filePath": "src/components/EventsPage.astro",
     "name": "EventsPage",
@@ -549,6 +573,16 @@
     "filePath": "src/lib/mailto.ts",
     "name": "buildMailto",
     "testFile": "src/lib/mailto.test.ts"
+  },
+  {
+    "description": "Builds the menu button `initNavDisclosure` inserts: a type=button element carrying aria-expanded, aria-controls pointing at the nav, and an aria-label, with a decorative bars span and the visible word Menu beside it. The bars are aria-hidden so a screen reader is given the word rather than a picture of a control. Exercised through initNavDisclosure's own tests, which assert the attributes and placement it produces.",
+    "filePath": "src/lib/navDisclosure.ts",
+    "name": "buildToggle",
+    "tags": [
+      "navigation",
+      "accessibility"
+    ],
+    "testFile": "src/lib/navDisclosure.test.ts"
   },
   {
     "description": "Comparator for CMS-authored lists: ascending `order`, with entries that have no `order` sorted last rather than hoisted to the front.",
@@ -1209,6 +1243,17 @@
     "filePath": "src/lib/momentumNetworkDom.ts",
     "name": "initMomentumNetwork",
     "testFile": "src/lib/momentumNetworkDom.test.ts"
+  },
+  {
+    "description": "Upgrades the header's no-JS `<details>` menu into a button disclosure on screens 1040px and narrower. Inserts a `.nav-toggle` button as a SIBLING of the drawer — the shell is display:contents, so the button lands in the header row beside the wordmark while the drawer keeps its own full-width row; inside the `<details>` it could not, because the spec makes display:contents compute to block there. Drives a `data-open` attribute that all the CSS keys on, closes on Escape with focus returned to the button, closes on any menu link click so same-page anchors like /#events do not strand the visitor behind the panel, resets on a bfcache restore, and clears its state when the breakpoint stops matching so the desktop hover mega-menu is untouched. Pure DOM in and out, so the whole contract is testable in jsdom.",
+    "filePath": "src/lib/navDisclosure.ts",
+    "name": "initNavDisclosure",
+    "tags": [
+      "navigation",
+      "responsive",
+      "progressive-enhancement"
+    ],
+    "testFile": "src/lib/navDisclosure.test.ts"
   },
   {
     "description": "Idempotent client-side DOM wiring for the banner parallax: no-op under SSR/vitest and on re-invocation. When parallaxEnabled (read via matchMedia) is true, sizes every [data-parallax] <img> to 100vh and, on a rAF-throttled scroll/resize listener, sets translateY(parallaxOffset(rootTop)) so the photo stays fixed while its [data-parallax-root] section scrolls over it; otherwise leaves the images as static object-fit: cover. Hoisted from Hero.astro and GetInvolved.astro.",
@@ -2545,6 +2590,26 @@
       "justification": "A React hook over the CMS package's localStorage-backed session store and its window event subscription. Its observable behaviour — which branch of each tick control renders — is covered by the runbook's signed-out and signed-in component scenarios.",
       "kind": "platform-glue"
     }
+  },
+  {
+    "description": "The crimson strip's full line for wide screens: the lede 'A global community' followed by every chapter city, dot-separated. With no chapters it degrades to the lede alone rather than leaving a dangling separator. The city list is derived from the chapters collection, so the line can never fall behind the chapters the site actually has.",
+    "filePath": "src/lib/utilityBar.ts",
+    "name": "utilityLine",
+    "tags": [
+      "navigation",
+      "responsive"
+    ],
+    "testFile": "src/lib/utilityBar.test.ts"
+  },
+  {
+    "description": "The crimson strip's narrow-screen line: the lede alone, with no chapter count, for every input including an empty list. The owner chose this over 'A global community and 6 chapters' on 2026-09-28 — a phone visitor is not at the top of the page for a chapter count, and the chapters are one tap into the menu below. It replaces a line of roughly seventy letter-spaced monospace characters that wrapped to three lines on a 390px phone and cost a third of the first screen before the logo. Takes the city list it does not read, so the signature matches utilityLine and restoring a derived count later is a change to this function alone.",
+    "filePath": "src/lib/utilityBar.ts",
+    "name": "utilityLineCompact",
+    "tags": [
+      "navigation",
+      "responsive"
+    ],
+    "testFile": "src/lib/utilityBar.test.ts"
   },
   {
     "description": "Where the width variant for a source image lives under public/images/_r/. Shared by the build script that writes the files and the srcset helper that reads them back, so the two cannot drift into naming different files.",

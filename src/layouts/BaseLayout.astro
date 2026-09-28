@@ -109,6 +109,16 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
       rel="stylesheet"
     />
     <SEO title={title} description={description} image={image} noindex={noindex} />
+    {/* Marks the document as JavaScript-capable BEFORE first paint, which is the
+        only reason this is inline in <head> rather than a module like everything
+        else. The phone menu ships as an OPEN <details> so it works without
+        JavaScript; the CSS that rests it closed keys off this flag, so without
+        it the five nav panels would render open for the moment before
+        navDisclosure.ts loads and then collapse — a flash on every page load on
+        every phone. See src/components/nav/PrimaryNav.astro. */}
+    <script is:inline>
+      document.documentElement.setAttribute('data-js', '');
+    </script>
     <HeadExtras />
   </head>
   <body>
@@ -120,7 +130,7 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
         <span class="brand-word">Harvard Alumni in Tech</span>
       </a>
 
-      <PrimaryNav items={navItems} />
+      <PrimaryNav items={navItems} subscribeUrl={subscribeUrl} />
 
       <a class="btn btn-solid nav-cta" href={subscribeUrl} rel="noopener">Subscribe</a>
     </header>
@@ -254,6 +264,12 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
         .site-nav {
           flex-wrap: wrap;
           padding: 16px 24px;
+          /* The 24px gap is between the brand and the button, not between the
+             header row and the menu panel that wraps under it — as a row gap it
+             left a visible band of nothing under the header whenever the menu
+             was open. The drawer supplies its own top padding. */
+          column-gap: 24px;
+          row-gap: 0;
         }
       }
       @media (max-width: 720px) {
@@ -264,6 +280,21 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
         }
         .foot-links {
           flex-wrap: wrap;
+        }
+      }
+      /* At 390px the header row is wordmark + menu button and nothing else:
+         Subscribe moves inside the menu (PrimaryNav), because three items on
+         one row here pushes the wordmark to a second line. The 16px gutters
+         are the phone floor — 24px costs a tenth of the usable width. */
+      @media (max-width: 520px) {
+        .site-nav {
+          padding: 14px 16px;
+        }
+        .nav-cta {
+          display: none;
+        }
+        .foot-in {
+          padding: 28px 16px;
         }
       }
     </style>

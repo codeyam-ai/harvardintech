@@ -1,0 +1,58 @@
+{
+  "name": "Harvard in Tech - Phone Menu Open",
+  "id": "08b16f42-cdaf-44da-bef1-d347fe7e8858",
+  "url": "/",
+  "dimensions": [
+    "Mobile",
+    "Tablet"
+  ],
+  "mocks": {},
+  "seed": {
+    "team": [
+      {
+        "name": "Ben Wei",
+        "order": 1,
+        "photo": "/images/team/ben-wei.png",
+        "role": "Founder · Harvard C'08",
+        "slug": "ben-wei"
+      },
+      {
+        "name": "Peter Boyce",
+        "order": 2,
+        "photo": "/images/team/peter-boyce.png",
+        "role": "Founder · Harvard C'13",
+        "slug": "peter-boyce"
+      },
+      {
+        "name": "Krysia Lenzo",
+        "order": 3,
+        "photo": "/images/team/krysia-lenzo.png",
+        "role": "Executive Director · Harvard C'12",
+        "slug": "krysia-lenzo"
+      },
+      {
+        "name": "Jessica Li",
+        "order": 4,
+        "photo": "/images/team/jessica-li.png",
+        "role": "Director of Operations · Harvard C'19",
+        "slug": "jessica-li"
+      },
+      {
+        "name": "Nadia Eldeib",
+        "order": 5,
+        "photo": "/images/team/nadia-eldeib.png",
+        "role": "Director of Growth · Harvard C'13",
+        "slug": "nadia-eldeib"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/index.astro",
+  "description": "The header menu open on a phone and on an iPad, driven by a real click on the Menu button. It is the counterpart to the landing-page frames beside it, which show the same header at rest, and the pair is the whole point: at rest the visitor sees the hero, and the navigation is there when they ask for it. Before this, at every width of 1040px and under, all five dropdown panels rendered OPEN and stacked down the page - so on a 390px phone no page showed any of its own content on the first screen at all, and at 768 a page's own heading started roughly 1,800px down. Tablet is captured alongside Mobile deliberately: the defect was never phone-only, and iPad portrait was just as broken. The click is part of the scenario because the open menu is interaction-only state - a resting capture of this route can never show it, and the click replays on every recapture so the frame cannot quietly go stale.",
+  "interactions": [
+    {
+      "action": "click",
+      "selector": ".nav-toggle"
+    }
+  ]
+}

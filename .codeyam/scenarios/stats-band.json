@@ -3,10 +3,12 @@
   "id": "8ad8150f-e5d5-4749-ace2-925f357fbd3e",
   "url": "/isolated-components/Stats",
   "dimensions": [
+    "Mobile",
     "Desktop"
   ],
   "mocks": {},
   "componentName": "Stats",
   "scenarioType": "component",
-  "pageFilePath": "src/components/landing/Stats.astro"
+  "pageFilePath": "src/components/landing/Stats.astro",
+  "description": "The homepage's five figures. Mobile is the frame that matters: at 390px the band drops to two columns of 195px, and 48px of side padding left 99px of each for a 44px figure like 8,500+ that needs about 150. A grid track's automatic minimum is its own content, so it could not shrink - the band pushed the whole page into a sideways scroll, with the second column sliced off at the screen edge. The fix is a smaller figure and gutter at phone width plus a track allowed to shrink. Nobody had seen this: until the navigation stopped rendering every dropdown open, no band below the header was visible at this width at all."
 }

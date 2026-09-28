@@ -3,10 +3,11 @@
   "id": "b1f316b6-7f13-42f0-b6f8-d611cbbf7418",
   "url": "/isolated-components/UtilityBar-Empty",
   "dimensions": [
+    "Mobile",
     "Desktop"
   ],
   "mocks": {},
   "componentName": "UtilityBar",
   "scenarioType": "component",
-  "description": "With no chapters the strip degrades to the lede alone. Guards the trailing-separator bug: joining an empty list onto the prefix would ship a line ending in a bare middot."
+  "description": "With no chapters the strip degrades to the lede alone. Guards the trailing-separator bug: joining an empty list onto the prefix would ship a line ending in a bare middot. The two widths are deliberately IDENTICAL here, and that is the assertion: with no chapters to drop, the narrow line and the full line say the same thing. Set this pair against the derived-cities scenario, where they differ, and the compact rule is visible as a rule rather than as a coincidence of this seed."
 }

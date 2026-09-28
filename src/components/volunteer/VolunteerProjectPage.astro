@@ -80,4 +80,22 @@ const {
   .proj-page {
     padding: 0 0 72px;
   }
+
+  /* `.proj-page` is deliberately edge-to-edge so the cover photo and the
+     related-projects band can run full-bleed — but the prose sits directly
+     inside it, and `.s-narrow` carries no gutter of its own. Below the 760px
+     reading measure that left the heading and every paragraph flush against
+     both bezels. Only the text is inset; the full-bleed siblings are untouched.
+     Not caught before because the expanded nav hid every page's body at these
+     widths (audit F1, 2026-09-28). */
+  @media (max-width: 800px) {
+    .proj-page > .s-narrow {
+      padding-inline: 24px;
+    }
+  }
+  @media (max-width: 520px) {
+    .proj-page > .s-narrow {
+      padding-inline: 16px;
+    }
+  }
 </style>

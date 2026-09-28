@@ -1,0 +1,1119 @@
+{
+  "timestamp": "2026-09-28T21:05:13Z",
+  "title": "The navigation gets out of the way, and the site works on a phone",
+  "type": "feature",
+  "userRequest": "# Launch: Mobile And Layout\n\n## Summary\n\n**What \"phone menu\" means, in plain terms.** On any screen 1040px wide or narrower (every phone, most tablets), the site's header has no menu button. Instead, `src/components/nav/PrimaryNav.astro` turns off its hover dropdowns and lays **every dropdown panel out open, one below another** (Programs, Chapters, Communities, Content Hub, Membership). So on a phone, the first screen and more is only links. The hero, the events and everything else are pushed far below. The committed `harvard-in-tech-landing-page--mobile.png` (390px wide) shows red city bar, logo, Subscribe, then menu panels to the bottom of the frame. Above that, the crimson city bar (`src/components/nav/UtilityBar.astro`) wraps to three lines. Phone visitors today see a wall of navigation, not the site.\n\nThis plan makes the site mobile adaptive in five pieces:\n1. A real phone menu. A hamburger button opens and closes the menu. It is accessible, works without JavaScript and closes when you navigate.\n2. The city bar stays one line on phones.\n3. The homepage \"No upcoming events\" state says it once, with no stray card.\n4. `/events` shows each event once. The Luma embed covers upcoming events, the site's own list covers past events, and the embed box is sized so it isn't mostly empty.\n5. Every public page gets phone-size (390x844) scenarios, plus a responsive checklist for the main components.\n\nNote on the audit: it counted three mobile screenshots. Seven `*--mobile.png` files are committed: landing, momentum-fund x2, supporter-network x2, volunteer project page and cutover runbook. None cover events, chapters, communities, sponsor, blog, CMS-written pages or the board. `/give` and 404 have no scenario at all.\n\n## Owner decisions (2026-09-14)\n\n- **Phone menu:** Plan it. \"Give me more context on what is meant by 'phone menu' but yes we want this site to be mobile adaptive.\"\n- **Check every page on a phone:** Plan it.\n- **\"No upcoming events\" appears twice, and the misaligned card:** Plan it.\n- **The mostly-empty events calendar box:** Plan it.\n- **The city bar wrapping:** Plan it.\n- **The Luma calendar:** Keep. \"Fix so events aren't duped between embedding Luma and other stuff on the apge.\"\n- **Broader goal:** \"we want this site to be mobile adaptive\"\n- **Events page, after Nicole's walkthrough (2026-09-14).** Nicole asked to remove the Upcoming list under the calendar, which this plan already does (C). The owner decided that a \"View all past events\" link after the past events goes to Luma (step 8).\n\n## Open questions / needs input\n\n1. **Answered (2026-09-14).** The Eventbrite \"View Upcoming Events\" button goes (`launch--contact-and-calls-to-action`: Luma only). In its place, after the past events, a \"View all past events\" link goes to Luma (step 8).\n2. **For the owner / content editors.** Once `/events` shows only *past* events from the `events` collection, is someone still adding each event to the CMS after it happens? The homepage \"Upcoming events\" band also reads this collection. If editors stop adding upcoming events there, the homepage goes to its empty state even while Luma has events. Decide: keep entering upcoming events in the CMS (for the homepage), or a later plan switches the homepage to link to Luma.\n3. **For the owner.** On phones the city bar would read \"A global community · 6 chapters\". OK, or would you rather show only \"A global community\"?\n4. **For the implementer (verify, no owner input needed).** Can the Luma embed tell the page its content height (postMessage)? If yes, size the iframe to it. If not, use the fixed responsive height in step 6.\n\n## Recommendations\n\n**Events de-duplication (the main call).** Options:\n- **A. Embed only.** Remove the site's list from `/events`. Simplest, but the event archive disappears, and Luma's embed shows only upcoming events.\n- **B. Site list only.** Drop the embed. Keeps the look consistent, but the list goes stale unless editors copy every Luma event into the CMS. It also contradicts the owner's \"Keep\".\n- **C. Embed for upcoming + site list for past events only.** ← **Pick.**\n\nWhy C: Luma is where events are actually created, so its embed is the live, always-correct upcoming view (and it keeps RSVP/Waitlist in one place). Luma's embed has no past-event archive (see the comment in `src/components/LumaCalendar.astro`). The site's past-events list fills that gap without overlapping. The two halves never show the same event. If `LUMA_EMBED_URL` is ever emptied, the page falls back to the site's upcoming list, so the page never goes blank.\n\n**Phone menu.** A: a slide-in overlay drawer. B: an in-flow disclosure panel under the header row. ← **Pick B.** It needs no scroll-lock or focus trap, has the fewest failure modes, and matches the owner's ask for a disclosure.\n\n**\"No upcoming events\" twice.** A: keep the lede under the heading and delete the right-hand \"No upcoming events\" card. B: keep the card and drop the lede. ← **Pick A.** The lede explains *and* points at the buttons directly beneath it. Deleting the card also removes the misaligned element.\n\n**City bar.** A: horizontal scroll or marquee. B: ellipsis truncation. C: a compact line on phones (\"A global community · N chapters\"). ← **Pick C.** It is readable, derived from data and never wraps.\n\n## Implementation\n\n1. **Phone-menu helper (new), `src/lib/navDisclosure.ts`.** Export `initNavDisclosure(root: HTMLElement, mql: MediaQueryList)`, a pure DOM function so it can be tested in jsdom, following the pattern of `src/lib/momentumNetworkDom.ts`. Its job is to upgrade the no-JS `<details>` into a button disclosure:\n   - Insert `<button type=\"button\" class=\"nav-toggle\" aria-expanded=\"false\" aria-controls=\"site-menu\" aria-label=\"Menu\">` (a hamburger icon plus the visible text \"Menu\"). Hide the `<summary>`, force `details.open = true`, and drive visibility from a `data-open` attribute on the header. The inner `<details>` is then inert, and the button is the single control.\n   - **Toggle:** clicking the button flips `aria-expanded` and `data-open`. Focus stays on the button when opening (disclosure pattern, no trap).\n   - **Escape** while focus is inside the menu closes it and returns focus to the button.\n   - **Close on navigation:** any `click` on an `a[href]` inside `#site-menu` closes the menu. This matters for same-page links like `/#events` and `/#board`, which don't reload. On `pageshow` with `event.persisted` (back/forward cache), reset to closed.\n   - **Breakpoint:** when `mql` (`(max-width: 1040px)`) stops matching, clear the state and remove `hidden`, so the desktop hover mega-menu is untouched.\n2. **`src/components/nav/PrimaryNav.astro`.** Wrap the existing `<nav class=\"links\">` in `<details class=\"nav-drawer\" open>` with `<summary class=\"nav-summary\">Menu</summary>`, and give the nav `id=\"site-menu\"`. `open` in the markup means desktop and no-JS always render the menu. At ≤1040px, no-JS users get a working native summary toggle (starting open, as today, but collapsible). Add `<script>` importing `initNavDisclosure`. Astro bundles and defers it, and it closes the menu on phones at startup. To avoid the menu flashing open on phones, put a tiny `is:inline` script right after the header that sets `data-js` on `<html>`, plus a CSS rule `html[data-js] .nav-drawer:not([data-open]) .links { display:none }` under the 1040px query.\n   Mobile styles inside the drawer: replace the card chrome on `.mega-in` (no border, shadow or crimson top rule) with compact headed lists. Group labels (`.nav-top`) become static headings, and leaf links are ≥44px tall. Leave the desktop `:hover` / `:focus-within` rules as they are.\n3. **`src/layouts/BaseLayout.astro`.** At ≤1040px the header row is brand · Subscribe · Menu button on one line, and the menu panel opens full width beneath it (`order: 3`, already set in PrimaryNav). At ≤520px, hide `.nav-cta` in the header and render a second Subscribe link as the last item inside `#site-menu`. A 390px row can't fit the wordmark, Subscribe and Menu. Also reduce `.site-nav`/`.foot-in` side padding to 16px at ≤520px.\n4. **City bar helper (new), `src/lib/utilityBar.ts`.** Export `utilityLine(cities)` (today's full line, moved out of the component) and `utilityLineCompact(cities)` → `\"A global community · 6 chapters\"` (`\"· 1 chapter\"`; with no cities, the lede alone).\n5. **`src/components/nav/UtilityBar.astro`.** Render both lines as two spans, `.util-full` and `.util-compact`. At ≤720px show only the compact one, with `white-space: nowrap; overflow: hidden; text-overflow: ellipsis` as a safety net. Swap them with CSS `display` only (no `aria-hidden`), so screen readers read whichever one is visible.\n6. **`src/components/landing/UpcomingEvents.astro`, empty state.** Delete the `.ue-none` block (lines 71–74) and its CSS, and change `.ue-empty` from a two-column grid to a single row of the CTA buttons, placed directly under the lede (`margin-top: 28px`). Update the header comment, which currently describes the right-hand panel. The populated state is unchanged.\n7. **`src/lib/events.ts`.** Add `eventsPageSections(events, now, { embedActive })` → `{ upcoming, past }`, where `upcoming` is `[]` when `embedActive` is true. It is built on the existing `splitEvents`.\n8. **`src/components/EventsPage.astro`.** Add a prop `embedActive?: boolean` (default `false`, so the isolated `EventsPage` scenarios in `src/pages/isolated-components/[name].astro` keep their meaning) and use `eventsPageSections`. When `embedActive` is true:\n   - drop the \"Upcoming\" section and the \"View Upcoming Events\" button;\n   - the intro stays;\n   - the Past Events section shows, or nothing shows if there are none;\n   - after the past events, a \"View all past events\" link goes to `LUMA_CALENDAR_URL`, opening in a new tab through the contact plan's `externalLinkAttrs`.\n     - Nicole believes Luma can link straight to past events. Use that address if the calendar has one; otherwise use the calendar itself.\n     - When `launch--history-events-archive-and-webinars` has shipped, its Archive block sits below this link.\n\n   Otherwise (no embed), the Upcoming section stays and the Eventbrite button is removed (open question 1).\n9. **`src/pages/events.astro`.** Pass `embedActive={Boolean(LUMA_EMBED_URL)}`. Order: intro header (moved above the embed, so the page opens with its title rather than \"Full events calendar\"), Luma embed, then Past events.\n10. **`src/components/LumaCalendar.astro`, empty box and alignment.** Replace the fixed `height={640}` with CSS `height: clamp(420px, 70vh, 640px)` on the iframe (`520px` at ≤640px). Move the inline border and radius into `.luma-frame` with `overflow: hidden`, so the scrollbar gutter no longer shows as a white strip inside the border (visible in `events-route-upcoming-and-past--desktop.png`). Set `display:block` to kill the inline-iframe baseline gap. Put the frame in the same `.s-inner` width as the list below it, so the two left edges line up. If open question 4 finds a height postMessage, set height from it instead.\n11. **Responsive sweep.** Walk the checklist below against every component listed. Fix only what fails at 390px or 768px, and record anything bigger as a follow-up rather than growing this plan.\n\n### Responsive audit checklist\n\n**Superseded in part by `docs/responsive-audit-2026-09-18.md` (audit run\n2026-09-28).** The list below was written without evidence; the audit captured\nevery public page at 390 / 768 / 1280 / 1440 and the findings are there. Read it\nbefore starting step 11 — two of its results change this plan's scope:\n\n- **F1 — the nav renders every dropdown panel EXPANDED at ≤1040px.** This plan\n  already decided on a hamburger, but two things were not known when it did.\n  The failure is **not phone-only**: 768 (iPad portrait) is equally broken. And\n  the menu does not merely fail to collapse — all five panels (Programs,\n  Chapters, Communities, Content Hub, Membership) render open and stacked, so on\n  a 390px phone **no page shows any content on the first screen**, and at 768 the\n  page's own heading starts roughly 1,800px down. This is the site's most severe\n  public defect, and the hamburger work must give the panels a closed resting\n  state and must cover 768, not just phones.\n- **F4 — the 901–1040px dead band.** The nav collapses at ≤1040px while `.wrap`\n  keeps 48px desktop gutters until ≤900px (`src/styles/tokens.css:174`, `:270`),\n  so for a 140px range the header sits on a 24px inset above 48px body gutters.\n  iPad landscape (1024) is inside it. This plan owns the nav half of the fix;\n  the breakpoint number needs agreeing with `launch--design-system`.\n\nBreakpoints in use today (measured 2026-09-28, by how many rules use each): 820\n(11), 900 (10), 720 (8), 640 (8), 520 (5), 560 (4), 1040 (2), 600 (2), and five\nused exactly once — 1080, 1000, 880, 760, 620. **Standardise new rules on\n1040 / 820 / 640 / 520.** The five singletons are the cheap wins. But note the\nhole: **900 is the second most-used breakpoint and is not in that set**, and it\ncarries `.wrap`'s gutter change, which is half of F4 — so it needs a decision\nrather than being left behind.\n\nVerify at **390 (Mobile), 768 (Tablet), 1280 (Laptop), 1440 (Desktop)** — the\naudit added Laptop and Tablet coverage, and every representative scenario now\ncarries all four, so a `recapture-stale` re-reviews the whole site at once:\n- [ ] No horizontal scroll: `document.documentElement.scrollWidth <= innerWidth`. Watch `white-space: nowrap` (`.brand-word`, `.mega-in`), fixed `min-width`, and 48px side paddings.\n- [ ] Tap targets ≥44px; body text ≥16px; mono kickers don't wrap mid-word.\n- [ ] Nothing works only on hover: nav, `.ue-row:hover` lift and card hovers need a tap/focus equivalent or are decorative only.\n- [ ] Grids collapse: `repeat(auto-fit, minmax(280px,1fr))` in `EventsSection.astro` fits 390 minus gutters; two-column grids stack at ≤820.\n- [ ] Media: images `max-width:100%`; iframes (`LumaCalendar`, `Embed`, `EmbedForm`, `GivebutterWidgets`) are full width with sane heights.\n- [ ] Focus is visible on every link/button, and there's no focus on hidden menu items when closed.\n- [ ] `prefers-reduced-motion` respected (HeroCarousel, parallax).\n\nComponents to sweep: `BaseLayout` header/footer, `PrimaryNav`, `UtilityBar`, landing `Hero`/`HeroCarousel`/`Stats`/`UpcomingEvents`/`OurChapters`/`EventGallery`/`BoardOfDirectors`/`ContactUs`, `EventsPage`/`EventCard`/`LumaCalendar`, `ChapterPage`/`ChapterHero`/`ChapterEvents`, `VolunteerPage`, `SponsorPage`, `BlogPostArticle`, `pages/SitePageHeader`/`SitePageBody`, the `give/*` sections, and `src/pages/404.astro`.\n\n## Tests\n\nRegister each new test file in `.codeyam/test-registry.json` before prove-red (registered names are `describe › it`).\n\n- `src/lib/navDisclosure.test.ts` (new, jsdom). Asserts:\n  - the button is inserted with `aria-expanded=\"false\"` and `aria-controls=\"site-menu\"`, and the summary is hidden;\n  - a click flips `aria-expanded` and `data-open`;\n  - Escape inside the menu closes it and focuses the button;\n  - clicking an `a[href]` inside closes it (including `/#events`);\n  - `pageshow` with `persisted` resets to closed;\n  - the media query changing to desktop clears state;\n  - without calling `init`, `<details open>` markup leaves links reachable (the no-JS contract).\n- `src/lib/utilityBar.test.ts` (new). Asserts the full line matches today's text; compact gives `\"A global community · 6 chapters\"`, singular `\"1 chapter\"`, and the lede alone for `[]`.\n- `src/lib/events.test.ts` (existing). New `describe('eventsPageSections')`:\n  - with `embedActive`, `upcoming` is empty and `past` equals `splitEvents(...).past`;\n  - without it, both match `splitEvents`;\n  - **no event appears in both halves** for a mixed fixture.\n- `.astro` markup (empty state, iframe sizing) isn't importable in vitest (`vitest.config.ts`). It is covered by the scenarios below.\n\n## Scenarios to Demonstrate\n\nMobile = 390x844, Tablet = 768x1024 (`.codeyam/editor.json` `screenSizes`). \"Add Mobile\" means adding `\"Mobile\"` to the file's `dimensions`. Capture **one at a time** (concurrent captures have baked wrong pages into frames), and screen every changed PNG.\n\n| Page | Scenario (`.codeyam/scenarios/…`) | Change |\n|---|---|---|\n| Home, menu closed | `harvard-in-tech-landing-page.json` | add Tablet (already Mobile) |\n| Home, menu open | `harvard-in-tech-phone-menu-open.json` (new) | url `/`, Mobile + Tablet, `interactions: [{action:\"click\", selector:\".nav-toggle\"}]` |\n| Home, no events | `harvard-in-tech-no-upcoming-events.json` | add Mobile |\n| Home, board | `harvard-in-tech-board-of-directors.json` | add Mobile |\n| Events | `events-route-upcoming-and-past.json` | add Mobile; now shows embed + past only, ending with the \"View all past events\" link to Luma |\n| Events, nothing past | `events-route-embed-no-past-events.json` (new) | url `/events`, seed only future events, Desktop + Mobile |\n| Chapters | `chapter-route-new-york-city.json`, `chapter-route-longest-chapter-name-wraps.json` | add Mobile |\n| Communities | `community-route-founders-with-leads-and-events.json` | add Mobile |\n| Volunteer | `volunteer-page-open-projects.json` | add Mobile |\n| Sponsor | `sponsor-route-example-partner-wall.json` | add Mobile |\n| Blog | `blog-post-welcome.json` | add Mobile, after `launch--content-and-pages` retargets it to a remaining post (the Welcome post becomes a draft) |\n| CMS-written page | `site-page-a-page-written-in-the-cms.json`, `site-page-long-title-and-no-description.json` | add Mobile |\n| Give | `give-route-public-visitor.json` (new) | url `/give`, `pageFilePath: src/pages/give.astro`, Desktop + Mobile |\n| 404 | `not-found-page.json` (new) | url `/this-page-does-not-exist`, `pageFilePath: src/pages/404.astro`, Desktop + Mobile. Verify dev serves 404.astro for it |\n| City bar | `utilitybar-derived-cities.json`, `utilitybar-no-chapters.json` | add Mobile |\n| Empty events band | `upcoming-events-empty.json` | add Mobile |\n| Luma block | `luma-calendar.json` | add Mobile |\n| Menu component | `primarynav-derived-chapters.json` | add Mobile |\n\nDonate/momentum-fund and the volunteer project page already have Mobile.\n\nKey frames to check:\n- the phone landing frame shows the hero within the first screen;\n- the menu-open frame shows grouped links with a Subscribe link at the bottom;\n- the no-events frame shows the message once;\n- the events frame shows no event in both the embed and the list, and ends with the \"View all past events\" link.\n\n## Out of scope\n\n- The `/admin` CMS UI (the `@codeyam/cms` package) and the internal cutover runbook: not public, and the runbook already has a phone scenario.\n- Switching the homepage \"Upcoming events\" band to read from Luma (open question 2 → a separate plan if wanted).\n- The hard-coded chapter list in the `/events` intro copy (`src/components/EventsPage.astro`): a content fix, not layout.\n- Rewriting existing one-off breakpoints that already pass the checklist.\n- Nested accordions inside the phone menu. Revisit only if the open menu proves too long in the menu-open scenario.",
+  "description": "At every width of 1040px and under, this site rendered its navigation with all five dropdown panels open and stacked down the page. It lives in BaseLayout, so it was every page: on a 390px phone no page showed any of its own content on the first screen, and at 768 a page's own heading started roughly 1,800px down. That is now a Menu button with a closed resting state. The markup ships as an open <details> wrapping the nav, so with JavaScript off every link is present and a native summary collapses it; src/lib/navDisclosure.ts upgrades that summary into a button carrying aria-expanded and aria-controls, closing on Escape with focus returned, on any menu link click, and on a back/forward restore, and clearing its state entirely above the breakpoint so the desktop hover mega-menu is untouched.\n\nThe button had to sit BESIDE the wordmark rather than inside the drawer, and that is where the one real design constraint showed up: `display: contents` is ignored on a <details> element (the spec makes it compute to `block`), so the disclosure cannot be dissolved into the header's flex row. A transparent .nav-shell wrapper holds the button and the drawer as siblings, the button takes the header row, the drawer takes a full-width row beneath it, and when closed the drawer is hidden outright rather than left as an empty flex item that the header's row gap would pad into a visible band of nothing.\n\nAlongside it: the crimson strip now renders two lines and swaps them with CSS at 720px, showing the lede alone on phones (the owner's choice on 2026-09-28 over a chapter count) in place of roughly seventy letter-spaced characters that wrapped to three lines; the homepage empty-events band states the absence once in its lede instead of echoing it in a right-hand panel that hung off the grid with no date column to align to; /events opens with its own title and standfirst via the new EventsIntro / EventsIntroBand pair, where it used to open on the Luma embed's heading so a visitor's first line of text belonged to a third party; and .wrap's gutters now collapse at the nav's own 1040 breakpoint rather than at 900, closing the 140px band in which the header sat on a 24px inset above 48px body gutters and iPad landscape landed.\n\nTwo defects were found that no plan had named, both invisible until the nav stopped burying every page. The homepage figures band pushed the whole page into a sideways scroll at 390px: two columns of 195px with 48px of side padding left 99px for a 44px figure needing about 150, and a grid track's automatic minimum is its own content, so it could not shrink. And the volunteer project page's prose sat flush against both bezels, because .proj-page is deliberately edge-to-edge for its full-bleed photo while .s-narrow carries no gutter of its own. Both are fixed at phone width only.\n\nSCOPE VERDICT - DELIVERED: audit findings F1 (the expanded navigation, the site's most severe public defect) and F4 (the 901-1040px dead band), both routed to this plan by docs/responsive-audit-2026-09-18.md, plus the plan's own city-bar, duplicate-empty-state and events-ordering items. DEFERRED: all five project deliverables remain open and every one was deferred by the user, not by this cycle - reproducing the full site, publishing live on GitHub Pages, the local content admin, the cloud content admin, and protecting it with a password or GitHub sign-in. None were in this plan's scope, and no deliverable was deferred on the agent's own judgement.\n\nThree of the plan's implementation steps were found ALREADY SHIPPED and were not rebuilt: the eventsPageSections helper and the embedActive prop are moot because EventsPage no longer has an Upcoming list at all, and the Luma frame sizing was already in place, its own comment recording that Luma does not report its content height - which also answers the plan's open question 4. Two planned scenarios were dropped for reasons found in the code: /give has no page, it 301s to /donate/, and /404 cannot hold a committed frame until the capture harness accepts a declared non-200 status.\n\nOne finding was accepted rather than fixed, on the user's explicit decision. Recapturing every page's frames left three /donate scenarios byte-identical. Their seeds genuinely differ - one renders four headings where another renders one - but everything that differs sits below the fold, which is audit finding F9, already routed to the giving plan; one of them is named for a supporter wall the page no longer renders at all. None of the three could be reframed: one legitimately shows a bare page, one's subject is gone, and the third's band is display:none in its own seed. A separate session is recomposing that page now. The three were recorded in .codeyam/audit-baseline.json, which holds exactly those entries and nothing else; they leave it on their own once the underlying page is fixed.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/audit-baseline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--mobile-and-layout.md\t.codeyam/plans/completed/launch--mobile-and-layout.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/luma-calendar.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-archive-folded-by-year--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-archive-folded-by-year--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-archive-and-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-archive-only-nothing-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-no-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/luma-calendar--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-communities-derived--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-derived-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-no-chapters-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-sixth-chapter-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-derived-cities--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-no-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/stats-band.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/upcoming-events-empty.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/utilitybar-derived-cities.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/utilitybar-no-chapters.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/b4d5013d31da142a3e747ceff8a94c9d1f18019e6c287697744705bafcdca3cf.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/d8af1da71a437486c0a683a0e8aedf415ff7dfc9c548da7d5ae0bbf2db8ab385.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/EventsPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/Stats.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/UpcomingEvents.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/nav/PrimaryNav.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/nav/UtilityBar.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/events.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/styles/tokens.css",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/eventsintro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/eventsintroband.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/primarynav.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/stats.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/utilitybar.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/events-route-the-calendar-with-no-past-events-yet.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/eventsintro-the-page-s-own-title.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/eventsintroband-closing-flush-against-the-calendar.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-phone-menu-open.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintro-the-page-s-own-title--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintro-the-page-s-own-title--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintro-the-page-s-own-title--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/luma-calendar--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/luma-calendar--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-derived-cities--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-derived-cities--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-no-chapters--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-no-chapters--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/194db854aad8aeeb127fca37cecfab1a0e19e225d77d5fcb817f292c1ff62f48.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/21513a04143d3b6b662ef46b187b33c16122eb1cdb817371d3c795fec794f2e4.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/318a5f2affae836f8b2855756b43991b66a76874852aa8b0f5c37105754813f8.json",
+      "status": "added"
+    },
+    {
+      "path": "src/components/EventsIntro.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/EventsIntroBand.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/navDisclosure.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/navDisclosure.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/utilityBar.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/utilityBar.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/EventsIntro.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/EventsIntroBand.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Blog Post - A Retained Medium Stub",
+      "screenshotPath": "blog-post-a-retained-medium-stub--mobile.png"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft",
+      "screenshotPath": "blog-preview-link-shared-draft--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo",
+      "screenshotPath": "chapter-gallery-a-single-photo--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped",
+      "screenshotPath": "chapter-gallery-curated-and-capped--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged",
+      "screenshotPath": "chapter-gallery-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed",
+      "screenshotPath": "chapter-gallery-show-all-revealed--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns",
+      "screenshotPath": "chapter-gallery-three-photos-three-columns--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter",
+      "screenshotPath": "chapter-route-events-tagged-to-this-chapter--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps",
+      "screenshotPath": "chapter-route-longest-chapter-name-wraps--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--mobile.png"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area",
+      "screenshotPath": "chapter-route-sf-bay-area--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent",
+      "screenshotPath": "chapter-route-upcoming-above-recent--desktop.png"
+    },
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--mobile.png"
+    },
+    {
+      "name": "Events Route - Archive Folded By Year",
+      "screenshotPath": "events-route-archive-folded-by-year--desktop.png"
+    },
+    {
+      "name": "Events Route - The Calendar With No Past Events Yet",
+      "screenshotPath": "events-route-the-calendar-with-no-past-events-yet--mobile.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Board On Four Sizes",
+      "screenshotPath": "harvard-in-tech-board-on-four-sizes--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapters On Four Sizes",
+      "screenshotPath": "harvard-in-tech-chapters-on-four-sizes--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact On Four Sizes",
+      "screenshotPath": "harvard-in-tech-contact-on-four-sizes--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Phone Menu Open",
+      "screenshotPath": "harvard-in-tech-phone-menu-open--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Password Required",
+      "screenshotPath": "locked-preview-password-required--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password",
+      "screenshotPath": "locked-preview-unlocked-with-the-password--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Wrong Password",
+      "screenshotPath": "locked-preview-wrong-password--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Giving Platform Is Chosen",
+      "screenshotPath": "momentum-fund-a-giving-platform-is-chosen--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Mistyped Section Type And A Missing Photo",
+      "screenshotPath": "momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Arriving From The Email",
+      "screenshotPath": "momentum-fund-arriving-from-the-email--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Every Section Hidden",
+      "screenshotPath": "momentum-fund-every-section-hidden--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Finding Your Place In The Network",
+      "screenshotPath": "momentum-fund-filtering-the-donor-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Public Visitor",
+      "screenshotPath": "momentum-fund-public-visitor--mobile.png"
+    },
+    {
+      "name": "Momentum Fund - The Donor Wall Moved To The Top",
+      "screenshotPath": "momentum-fund-the-donor-wall-moved-to-the-top--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The First Donor On The Wall",
+      "screenshotPath": "momentum-fund-the-first-donor-on-the-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Goal Meter Held As Coming Soon",
+      "screenshotPath": "momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Impact Band With Real Quotes",
+      "screenshotPath": "momentum-fund-the-impact-band-with-real-quotes--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Two Pillar Bands With Their Own Cards",
+      "screenshotPath": "momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png"
+    },
+    {
+      "name": "Privacy Page - The Written Policy",
+      "screenshotPath": "privacy-page-the-written-policy--desktop.png"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS",
+      "screenshotPath": "site-page-a-page-written-in-the-cms--mobile.png"
+    },
+    {
+      "name": "Site Page - Long Title And No Description",
+      "screenshotPath": "site-page-long-title-and-no-description--desktop.png"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall",
+      "screenshotPath": "sponsor-route-example-partner-wall--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects",
+      "screenshotPath": "volunteer-page-no-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Open Projects",
+      "screenshotPath": "volunteer-page-open-projects--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS",
+      "screenshotPath": "volunteer-page-rewritten-from-the-cms--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo",
+      "screenshotPath": "volunteer-project-detail-full-description-no-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link",
+      "screenshotPath": "volunteer-project-detail-photo-and-own-sign-up-link--mobile.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested",
+      "screenshotPath": "volunteer-project-detail-retired-projects-never-suggested--desktop.png"
+    },
+    {
+      "name": "Webinars Route - Nothing Published",
+      "screenshotPath": "webinars-route-nothing-published--desktop.png"
+    },
+    {
+      "name": "Webinars Route - The Surviving Recordings",
+      "screenshotPath": "webinars-route-the-surviving-recordings--mobile.png"
+    },
+    {
+      "name": "EventsIntro - The Page's Own Title",
+      "screenshotPath": "eventsintro-the-page-s-own-title--mobile.png"
+    },
+    {
+      "name": "EventsIntroBand - Closing Flush Against The Calendar",
+      "screenshotPath": "eventsintroband-closing-flush-against-the-calendar--mobile.png"
+    },
+    {
+      "name": "EventsPage - Archive And Recent",
+      "screenshotPath": "eventspage-archive-and-recent--desktop.png"
+    },
+    {
+      "name": "EventsPage - Archive Only, Nothing Recent",
+      "screenshotPath": "eventspage-archive-only-nothing-recent--desktop.png"
+    },
+    {
+      "name": "EventsPage - Upcoming and Past",
+      "screenshotPath": "eventspage-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Communities Derived",
+      "screenshotPath": "primarynav-communities-derived--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Derived Chapters",
+      "screenshotPath": "primarynav-derived-chapters--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - No Chapters Yet",
+      "screenshotPath": "primarynav-no-chapters-yet--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Sixth Chapter Published",
+      "screenshotPath": "primarynav-sixth-chapter-published--desktop.png"
+    },
+    {
+      "name": "Stats Band",
+      "screenshotPath": "stats-band--mobile.png"
+    },
+    {
+      "name": "UtilityBar - Derived Cities",
+      "screenshotPath": "utilitybar-derived-cities--mobile.png"
+    },
+    {
+      "name": "UtilityBar - No Chapters",
+      "screenshotPath": "utilitybar-no-chapters--mobile.png"
+    }
+  ],
+  "testResults": {
+    "total": 25,
+    "passed": 25,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 25,
+        "passed": 25
+      }
+    ]
+  }
+}

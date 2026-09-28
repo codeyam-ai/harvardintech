@@ -38,8 +38,8 @@ Note on the audit: it counted three mobile screenshots. Seven `*--mobile.png` fi
 
 1. **Answered (2026-09-14).** The Eventbrite "View Upcoming Events" button goes (`launch--contact-and-calls-to-action`: Luma only). In its place, after the past events, a "View all past events" link goes to Luma (step 8).
 2. **For the owner / content editors.** Once `/events` shows only *past* events from the `events` collection, is someone still adding each event to the CMS after it happens? The homepage "Upcoming events" band also reads this collection. If editors stop adding upcoming events there, the homepage goes to its empty state even while Luma has events. Decide: keep entering upcoming events in the CMS (for the homepage), or a later plan switches the homepage to link to Luma.
-3. **For the owner.** On phones the city bar would read "A global community · 6 chapters". OK, or would you rather show only "A global community"?
-4. **For the implementer (verify, no owner input needed).** Can the Luma embed tell the page its content height (postMessage)? If yes, size the iframe to it. If not, use the fixed responsive height in step 6.
+3. **Answered (2026-09-28).** The owner chose the shortest compact line: on phones the city bar shows **"A global community"** alone, with no chapter count.
+4. **Answered (2026-09-28).** No — `src/components/LumaCalendar.astro` records in its own comment that Luma does not report its content height by postMessage, so the fixed responsive height is the answer. It is already in place; step 10 is done.
 
 ## Recommendations
 
@@ -54,7 +54,7 @@ Why C: Luma is where events are actually created, so its embed is the live, alwa
 
 **"No upcoming events" twice.** A: keep the lede under the heading and delete the right-hand "No upcoming events" card. B: keep the card and drop the lede. ← **Pick A.** The lede explains *and* points at the buttons directly beneath it. Deleting the card also removes the misaligned element.
 
-**City bar.** A: horizontal scroll or marquee. B: ellipsis truncation. C: a compact line on phones ("A global community · N chapters"). ← **Pick C.** It is readable, derived from data and never wraps.
+**City bar.** A: horizontal scroll or marquee. B: ellipsis truncation. C: a compact line on phones. ← **Pick C.** It is readable and never wraps. Per open question 3 (answered 2026-09-28) the compact line is the lede alone, **"A global community"** — no chapter count on phones. The full line, chapter count included, still renders above 720px.
 
 ## Implementation
 
@@ -67,7 +67,7 @@ Why C: Luma is where events are actually created, so its embed is the live, alwa
 2. **`src/components/nav/PrimaryNav.astro`.** Wrap the existing `<nav class="links">` in `<details class="nav-drawer" open>` with `<summary class="nav-summary">Menu</summary>`, and give the nav `id="site-menu"`. `open` in the markup means desktop and no-JS always render the menu. At ≤1040px, no-JS users get a working native summary toggle (starting open, as today, but collapsible). Add `<script>` importing `initNavDisclosure`. Astro bundles and defers it, and it closes the menu on phones at startup. To avoid the menu flashing open on phones, put a tiny `is:inline` script right after the header that sets `data-js` on `<html>`, plus a CSS rule `html[data-js] .nav-drawer:not([data-open]) .links { display:none }` under the 1040px query.
    Mobile styles inside the drawer: replace the card chrome on `.mega-in` (no border, shadow or crimson top rule) with compact headed lists. Group labels (`.nav-top`) become static headings, and leaf links are ≥44px tall. Leave the desktop `:hover` / `:focus-within` rules as they are.
 3. **`src/layouts/BaseLayout.astro`.** At ≤1040px the header row is brand · Subscribe · Menu button on one line, and the menu panel opens full width beneath it (`order: 3`, already set in PrimaryNav). At ≤520px, hide `.nav-cta` in the header and render a second Subscribe link as the last item inside `#site-menu`. A 390px row can't fit the wordmark, Subscribe and Menu. Also reduce `.site-nav`/`.foot-in` side padding to 16px at ≤520px.
-4. **City bar helper (new), `src/lib/utilityBar.ts`.** Export `utilityLine(cities)` (today's full line, moved out of the component) and `utilityLineCompact(cities)` → `"A global community · 6 chapters"` (`"· 1 chapter"`; with no cities, the lede alone).
+4. **City bar helper (new), `src/lib/utilityBar.ts`.** Export `utilityLine(cities)` (today's full line, moved out of the component) and `utilityLineCompact(cities)` → `"A global community"`, constant for every input including `[]` (owner decision, open question 3). It still takes `cities` so the signature does not change if the count is wanted back later.
 5. **`src/components/nav/UtilityBar.astro`.** Render both lines as two spans, `.util-full` and `.util-compact`. At ≤720px show only the compact one, with `white-space: nowrap; overflow: hidden; text-overflow: ellipsis` as a safety net. Swap them with CSS `display` only (no `aria-hidden`), so screen readers read whichever one is visible.
 6. **`src/components/landing/UpcomingEvents.astro`, empty state.** Delete the `.ue-none` block (lines 71–74) and its CSS, and change `.ue-empty` from a two-column grid to a single row of the CTA buttons, placed directly under the lede (`margin-top: 28px`). Update the header comment, which currently describes the right-hand panel. The populated state is unchanged.
 7. **`src/lib/events.ts`.** Add `eventsPageSections(events, now, { embedActive })` → `{ upcoming, past }`, where `upcoming` is `[]` when `embedActive` is true. It is built on the existing `splitEvents`.
@@ -81,7 +81,7 @@ Why C: Luma is where events are actually created, so its embed is the live, alwa
 
    Otherwise (no embed), the Upcoming section stays and the Eventbrite button is removed (open question 1).
 9. **`src/pages/events.astro`.** Pass `embedActive={Boolean(LUMA_EMBED_URL)}`. Order: intro header (moved above the embed, so the page opens with its title rather than "Full events calendar"), Luma embed, then Past events.
-10. **`src/components/LumaCalendar.astro`, empty box and alignment.** Replace the fixed `height={640}` with CSS `height: clamp(420px, 70vh, 640px)` on the iframe (`520px` at ≤640px). Move the inline border and radius into `.luma-frame` with `overflow: hidden`, so the scrollbar gutter no longer shows as a white strip inside the border (visible in `events-route-upcoming-and-past--desktop.png`). Set `display:block` to kill the inline-iframe baseline gap. Put the frame in the same `.s-inner` width as the list below it, so the two left edges line up. If open question 4 finds a height postMessage, set height from it instead.
+10. **`src/components/LumaCalendar.astro`, empty box and alignment. ALREADY DONE (verified 2026-09-28) — skip this step.** `.luma-frame` exists, and the iframe is already `display:block` with `border:0`, `border-radius: 8px` and `height: clamp(340px, 46vh, 540px)`. Only re-check the `.s-inner` left-edge alignment against the list below it during the step 11 sweep. Original text kept for the record: Replace the fixed `height={640}` with CSS `height: clamp(420px, 70vh, 640px)` on the iframe (`520px` at ≤640px). Move the inline border and radius into `.luma-frame` with `overflow: hidden`, so the scrollbar gutter no longer shows as a white strip inside the border (visible in `events-route-upcoming-and-past--desktop.png`). Set `display:block` to kill the inline-iframe baseline gap. Put the frame in the same `.s-inner` width as the list below it, so the two left edges line up. If open question 4 finds a height postMessage, set height from it instead.
 11. **Responsive sweep.** Walk the checklist below against every component listed. Fix only what fails at 390px or 768px, and record anything bigger as a follow-up rather than growing this plan.
 
 ### Responsive audit checklist
@@ -139,7 +139,7 @@ Register each new test file in `.codeyam/test-registry.json` before prove-red (r
   - `pageshow` with `persisted` resets to closed;
   - the media query changing to desktop clears state;
   - without calling `init`, `<details open>` markup leaves links reachable (the no-JS contract).
-- `src/lib/utilityBar.test.ts` (new). Asserts the full line matches today's text; compact gives `"A global community · 6 chapters"`, singular `"1 chapter"`, and the lede alone for `[]`.
+- `src/lib/utilityBar.test.ts` (new). Asserts the full line matches today's text and still carries the chapter count; compact gives `"A global community"` for a many-city list, a one-city list and `[]` alike — no chapter count in any of the three.
 - `src/lib/events.test.ts` (existing). New `describe('eventsPageSections')`:
   - with `embedActive`, `upcoming` is empty and `past` equals `splitEvents(...).past`;
   - without it, both match `splitEvents`;

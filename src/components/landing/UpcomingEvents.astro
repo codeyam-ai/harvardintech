@@ -10,12 +10,16 @@
 // number carries the scan weight.
 //
 // Empty state (production's day-one default) keeps the two subscribe paths —
-// the org's Luma calendar (primary) and the mailing list (secondary) — and
-// states the absence plainly in the same right-hand column the dates would
-// occupy, so the section holds its shape whether or not anything is scheduled.
+// the org's Luma calendar (primary) and the mailing list (secondary).
 // Its explanatory line sits INSIDE the head, directly under the heading, so it
 // reads as part of the heading block rather than as a stranded caption above
 // the buttons.
+//
+// It states the absence ONCE. A right-hand card also reading "No upcoming
+// events" used to sit beside the buttons, echoing the line above it and — with
+// no date column to align to in the empty state — hanging off the grid. The
+// lede is the better of the two: it explains the absence AND points straight
+// down at the buttons that do something about it.
 import type { EventLike } from '../../lib/events';
 import { LUMA_CALENDAR_URL } from '../../lib/luma';
 import { eventDateParts } from '../../lib/eventDateParts';
@@ -59,19 +63,13 @@ const count = String(events.length).padStart(2, '0');
 
     {
       isEmpty ? (
-        <div class="ue-empty">
-          <div class="ue-cta">
-            <a class="btn btn-solid" href={lumaUrl} rel="noopener" target="_blank">
-              Subscribe to our Luma calendar
-            </a>
-            <a class="btn btn-out" href={newsletterUrl} rel="noopener">
-              Subscribe to our newsletter
-            </a>
-          </div>
-          <div class="ue-none">
-            <span class="ue-none-k">Calendar</span>
-            <span class="ue-none-t">No upcoming events</span>
-          </div>
+        <div class="ue-cta ue-cta-empty">
+          <a class="btn btn-solid" href={lumaUrl} rel="noopener" target="_blank">
+            Subscribe to our Luma calendar
+          </a>
+          <a class="btn btn-out" href={newsletterUrl} rel="noopener">
+            Subscribe to our newsletter
+          </a>
         </div>
       ) : (
         <Fragment>
@@ -232,43 +230,11 @@ const count = String(events.length).padStart(2, '0');
     max-width: 56ch;
     margin: 10px 0 0;
   }
-  .ue-empty {
-    display: grid;
-    grid-template-columns: 1.35fr 0.65fr;
-    gap: 32px;
-    align-items: center;
-    margin-top: 52px;
-  }
-  .ue-none {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-height: 132px;
-    padding: 26px 20px;
-    /* Paper on the section's tinted ground, matching the event rows — the panel
-       has to be the same object as a row, since it stands where they stand. */
-    background: #fff;
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--crimson);
-    text-align: center;
-  }
-  .ue-none-k {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--crimson);
-  }
-  .ue-none-t {
-    font-family: var(--font-serif);
-    font-size: 24px;
-    /* Tight leading so the line box hugs the glyphs. At 1.2 the box carried
-       ~5px of dead space below the text, which centred the BOX correctly while
-       leaving the words looking high in the panel. */
-    line-height: 1.05;
-    color: var(--ink);
+  /* One row of buttons under the lede, not a two-column grid: with the
+     right-hand panel gone there is no second column to balance, and 52px of
+     air separated the lede from the buttons it was pointing at. */
+  .ue-cta-empty {
+    margin-top: 28px;
   }
 
   .ue-cta {
@@ -295,9 +261,8 @@ const count = String(events.length).padStart(2, '0');
     .ue-d {
       font-size: 32px;
     }
-    .ue-empty {
-      grid-template-columns: 1fr;
-      margin-top: 36px;
+    .ue-cta-empty {
+      margin-top: 22px;
     }
     .ue-cta {
       gap: 16px;

@@ -1,0 +1,27 @@
+---
+// The /events page's title band: EventsIntro wrapped in the site's standard
+// section, sitting above the Luma calendar.
+//
+// It exists so `pages/events.astro` stays imports-and-composition with no raw
+// markup of its own. The band is a separate component from `EventsIntro` on
+// purpose: `EventsPage` renders the same heading and standfirst INSIDE its own
+// `.s-inner`, so the intro itself has to stay band-less and each caller brings
+// its own wrapper.
+import EventsIntro from './EventsIntro.astro';
+---
+
+<section class="s-section events-intro-band">
+  <div class="s-inner">
+    <EventsIntro />
+  </div>
+</section>
+
+<style>
+  .events-intro-band {
+    text-align: center;
+    /* The intro and the calendar read as one block — the standfirst introduces
+       the calendar directly beneath it — so the band does not close with a full
+       78px below the text only for the calendar's own 78px to follow it. */
+    padding-bottom: 0;
+  }
+</style>

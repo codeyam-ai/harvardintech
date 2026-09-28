@@ -1,0 +1,14 @@
+{
+  "name": "EventsIntroBand - Closing Flush Against The Calendar",
+  "id": "fb9f2dbf-24fb-48c3-9661-390f099f0bce",
+  "url": "/isolated-components/EventsIntroBand",
+  "dimensions": [
+    "Mobile",
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsIntroBand",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventsIntroBand.astro",
+  "description": "The same title and standfirst wrapped in the band /events actually renders. Captured apart from EventsIntro because the only thing separating them is spacing, which a picture shows and prose does not: this band closes with NO bottom padding, so the Luma calendar following it on the route reads as one block with it rather than a second one. Without that rule the standfirst would end, 78px of nothing would follow, and the calendar's own 78px would follow that - the standfirst introduces the calendar directly, so the two belong together. The band exists at all so pages/events.astro stays imports and composition with no raw markup of its own."
+}

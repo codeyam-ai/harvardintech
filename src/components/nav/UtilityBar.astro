@@ -6,16 +6,27 @@
 // `lib/nav.ts`), not hand-maintained, so it can never fall behind the chapters
 // the site actually has. With no chapters it degrades to the lede alone rather
 // than leaving a dangling separator.
+//
+// Two forms, both always rendered, swapped by CSS alone at 720px. The full line
+// is ~70 characters of letter-spaced monospace, which wrapped to THREE lines on
+// a 390px phone and pushed the logo a third of the way down the first screen.
+// The narrow form is the lede by itself (owner, 2026-09-28) — a phone visitor
+// is not here for a chapter count, and the chapters are one tap into the menu.
+//
+// The swap is `display` rather than `aria-hidden`, so assistive technology
+// reads whichever line is actually visible and never both.
+import { utilityLine, utilityLineCompact } from '../../lib/utilityBar';
+
 interface Props {
   cities: string[];
 }
 const { cities } = Astro.props as Props;
-
-const LEDE = 'A global community';
-const line = cities.length > 0 ? `${LEDE} · ${cities.join(' · ')}` : LEDE;
 ---
 
-<div class="util">{line}</div>
+<div class="util">
+  <span class="util-full">{utilityLine(cities)}</span>
+  <span class="util-compact">{utilityLineCompact(cities)}</span>
+</div>
 
 <style>
   .util {
@@ -27,5 +38,23 @@ const line = cities.length > 0 ? `${LEDE} · ${cities.join(' · ')}` : LEDE;
     text-transform: uppercase;
     text-align: center;
     padding: 6px 16px;
+  }
+  .util-compact {
+    display: none;
+  }
+
+  @media (max-width: 720px) {
+    .util-full {
+      display: none;
+    }
+    .util-compact {
+      display: block;
+      /* A safety net, not the mechanism: the compact line is short by
+         construction, but a future lede should truncate rather than wrap and
+         re-create the defect this replaced. */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 </style>

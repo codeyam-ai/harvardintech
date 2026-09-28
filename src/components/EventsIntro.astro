@@ -1,0 +1,31 @@
+---
+// The /events page's title and standfirst, and nothing else — no band, no
+// padding of its own.
+//
+// Split out of EventsPage so the route can render it ABOVE the Luma calendar.
+// It used to sit below, which meant the page opened on the embed's own heading
+// ("Full events calendar") and a visitor's first line of text was Luma's rather
+// than the site's — a page that does not say what it is until you have scrolled
+// past a third-party frame.
+//
+// Deliberately NOT a section: each caller puts it inside its own `.s-section` /
+// `.s-inner`, so it sits on the site's shared band rhythm rather than inventing
+// a second one beside it. EventsPage still renders it by default, which is what
+// keeps the isolated-component scenarios of the events body unchanged; the
+// route passes `showIntro={false}` because it places this itself, higher up.
+---
+
+<h1 class="s-title">Events</h1>
+<p class="events-lede">
+  In-person events, panels, and gatherings across our Boston &amp; Cambridge, New
+  York, London, DC &amp; DMV, and Seattle chapters, plus a global community
+  connected online.
+</p>
+
+<style>
+  .events-lede {
+    color: var(--color-muted);
+    max-width: var(--text-width);
+    margin: 0 auto var(--space-lg);
+  }
+</style>

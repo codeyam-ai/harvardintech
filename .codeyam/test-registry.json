@@ -5455,6 +5455,138 @@
       "runner": "tests"
     },
     {
+      "description": "Crossing up to desktop clears the state, so the hover mega-menu is never rendered against a stale `data-open` left behind by a phone-width session.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › clears the open state when the breakpoint stops matching",
+      "line": 171,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Escape closes AND returns focus to the control that opened it — otherwise focus is stranded inside a region that is no longer visible.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › closes on Escape and returns focus to the button",
+      "line": 102,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Tapping a menu link that leads to another route closes the menu first, so the next page never arrives with the panel still covering it.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › closes when a link to another route inside the menu is clicked",
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The case that matters most: a same-page anchor such as /#events scrolls without reloading, so this handler is the only thing that can close the menu. Without it the visitor lands behind the panel they just used.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › closes when a same-page anchor inside the menu is clicked",
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An outbound link closes the menu as well, so coming back via the browser's back button does not restore a stale open panel.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › closes when an external link inside the menu is clicked",
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No menu on the page at all — every other route's layout — must not throw.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › does nothing when there is no drawer to upgrade",
+      "line": 192,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The core interaction. `data-open` is the hook every CSS rule keys on.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › flips aria-expanded and data-open on click",
+      "line": 88,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "<details> is forced open and left that way: the nav stays in the DOM and CSS alone decides whether it is seen, which is what leaves desktop alone.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › forces the details open so the nav is never removed from the DOM",
+      "line": 82,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Escape with the menu already closed must not steal focus to the button.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › ignores Escape when the menu is already closed",
+      "line": 115,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The upgrade itself: a button the native summary cannot be, carrying the relationship to the region it controls that <details> has no way to state.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › inserts a toggle button wired to the menu and hides the summary",
+      "line": 60,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Calling twice must not stack a second button or a second set of listeners.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › is a no-op when it has already run on the same shell",
+      "line": 183,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An ordinary load is not a restore and must not disturb an open menu.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › leaves an open menu alone on a non-persisted pageshow",
+      "line": 158,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The button must be a SIBLING of the <details>, not inside it. The shell is display:contents so the button lands in the header row beside the wordmark; inside the drawer it would be dragged onto the drawer's own full-width row.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › places the button outside the details element",
+      "line": 73,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Teardown detaches what it attached, so the breakpoint listener cannot outlive the menu it was driving.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › removes its media query listener on teardown",
+      "line": 202,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Back/forward restores the live DOM from the bfcache, open menu and all.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "initNavDisclosure › resets to closed on a restored bfcache page",
+      "line": 145,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
       "description": "No [data-parallax] images on the page → a clean no-op, not a throw.",
       "file": "src/lib/parallax.test.ts",
       "format": "vitest",
@@ -12286,6 +12418,24 @@
       "runner": "tests"
     },
     {
+      "description": "The summary is hidden rather than deleted, so removing the button would hand control back to the native element rather than stranding the menu.",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "the no-JavaScript contract › hides the native summary without removing it",
+      "line": 240,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The markup ships as `<details open>` so a visitor without JavaScript still has every link and a native control to collapse them. This module is the one thing that could take that away, so what is asserted here is that it does NOT: after the upgrade the links are all still in the document and the details is still open, in both menu states. That the SERVER renders this shape is not assertable here — vitest does not import `.astro` (see vitest.config.ts), so PrimaryNav's output is covered by its ca",
+      "file": "src/lib/navDisclosure.test.ts",
+      "format": "vitest",
+      "key": "the no-JavaScript contract › removes no link and never closes the details, open or closed",
+      "line": 222,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
       "description": "A relative URL is what the capture navigates to; an absolute one would leave the site under test.",
       "file": "src/lib/publicRoutes.test.ts",
       "format": "vitest",
@@ -13118,6 +13268,75 @@
       "key": "unresolvedNavUrls › resolves a fragment against its page",
       "line": 399,
       "registeredAt": "2026-07-28T15:22:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No chapters degrades to the lede ALONE. The failure this guards is a trailing separator with nothing after it, which is what a naive join gives.",
+      "file": "src/lib/utilityBar.test.ts",
+      "format": "vitest",
+      "key": "utilityLine › drops the separator entirely when there are no cities",
+      "line": 29,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One chapter still gets a separator — there is something on both sides of it.",
+      "file": "src/lib/utilityBar.test.ts",
+      "format": "vitest",
+      "key": "utilityLine › joins a single city to the lede",
+      "line": 23,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The wide-screen line: the lede, then every chapter, dot-separated. This is the text the strip has always shown and the assertion that keeps it.",
+      "file": "src/lib/utilityBar.test.ts",
+      "format": "vitest",
+      "key": "utilityLine › lists the lede and every city",
+      "line": 16,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The defect this replaced: ~70 characters of letter-spaced monospace wrapped to three lines on a 390px phone. A count or a separator creeping back in is the first step toward that, so both are asserted absent.",
+      "file": "src/lib/utilityBar.test.ts",
+      "format": "vitest",
+      "key": "utilityLineCompact › carries no chapter count and no separator",
+      "line": 50,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "It is always shorter than the line it stands in for, whenever there is anything to shorten.",
+      "file": "src/lib/utilityBar.test.ts",
+      "format": "vitest",
+      "key": "utilityLineCompact › is shorter than the full line whenever chapters exist",
+      "line": 59,
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A full chapter list still renders as the lede by itself on a phone, with no chapter count appended - the owner's choice on 2026-09-28.",
+      "file": "src/lib/utilityBar.test.ts",
+      "format": "vitest",
+      "key": "utilityLineCompact › returns the lede alone for a full chapter list",
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One chapter renders the same compact line as six, so the strip's length cannot vary with how many chapters exist.",
+      "file": "src/lib/utilityBar.test.ts",
+      "format": "vitest",
+      "key": "utilityLineCompact › returns the lede alone for a single city",
+      "registeredAt": "2026-09-28T19:29:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty chapter list renders the lede by itself too, matching every other input rather than degrading to a different shape.",
+      "file": "src/lib/utilityBar.test.ts",
+      "format": "vitest",
+      "key": "utilityLineCompact › returns the lede alone for no cities at all",
+      "registeredAt": "2026-09-28T19:29:42Z",
       "runner": "tests"
     },
     {

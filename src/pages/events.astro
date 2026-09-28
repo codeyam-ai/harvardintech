@@ -11,6 +11,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EventsPage from '../components/EventsPage.astro';
+import EventsIntroBand from '../components/EventsIntroBand.astro';
 import LumaCalendar from '../components/LumaCalendar.astro';
 import { LUMA_CALENDAR_URL, LUMA_EMBED_URL } from '../lib/luma';
 import { publishedEntries } from '../lib/drafts';
@@ -24,6 +25,9 @@ const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS).m
 ---
 
 <BaseLayout title="Events" description="Upcoming and past Harvard Alumni in Tech events.">
+  {/* The page's own title first, so it opens saying what it is rather than
+      handing the first line to the Luma embed's "Full events calendar". */}
+  <EventsIntroBand />
   <LumaCalendar calendarUrl={LUMA_CALENDAR_URL} embedUrl={LUMA_EMBED_URL} />
-  <EventsPage events={events} />
+  <EventsPage events={events} showIntro={false} />
 </BaseLayout>

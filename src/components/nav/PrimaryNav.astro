@@ -14,6 +14,15 @@
 // The panel opens with CSS alone (`:hover` / `:focus-within`) — no JS, so it
 // works before hydration and for keyboard users.
 //
+// At 1040px and below there is no hover to open anything, so the whole menu
+// collapses behind one button instead. The markup for that is a `<details open>`
+// wrapping the nav: with JavaScript off the menu is present and a native summary
+// collapses it, and `navDisclosure.ts` upgrades the summary to a button when
+// JavaScript runs. The panels then render as flat headed lists rather than
+// floating cards — which is the fix for the site's worst public defect, a phone
+// or iPad where all five panels rendered open and stacked and no page showed
+// any of its own content on the first screen.
+//
 // Outside links (the Content Hub's Medium and LinkedIn entries) open in a new
 // tab through the one site-wide rule in src/lib/externalLink.ts.
 import { externalLinkAttrs } from '../../lib/externalLink';
@@ -22,11 +31,29 @@ import type { NavItem } from '../../lib/site';
 
 interface Props {
   items: NavItem[];
+  /**
+   * The Subscribe link, repeated as the last item in the menu.
+   *
+   * Only rendered at 520px and under, where the header row cannot hold the
+   * wordmark, Subscribe and the menu button at once — the header drops its
+   * button and this one takes over, so the call to action is never simply
+   * absent on a phone.
+   */
+  subscribeUrl?: string;
 }
-const { items } = Astro.props as Props;
+const { items, subscribeUrl } = Astro.props as Props;
 ---
 
-<nav class="links" aria-label="Primary">
+{/* The shell is `display: contents` — a wrapper that keeps the button and the
+    drawer inside this component without adding a box to the header's flex row.
+    It exists because `display: contents` is IGNORED on <details> (the spec
+    makes it compute to `block` there), so the button cannot simply live inside
+    the disclosure: it would be trapped in the drawer's full-width row and sit
+    under the wordmark instead of beside it. */}
+<div class="nav-shell">
+  <details class="nav-drawer" open>
+    <summary class="nav-summary">Menu</summary>
+    <nav class="links" id="site-menu" aria-label="Primary">
   {
     items.map((item) =>
       item.children && item.children.length > 0 ? (
@@ -75,10 +102,26 @@ const { items } = Astro.props as Props;
         <a class="nav-top" href={withBase(item.url ?? '/')} {...externalLinkAttrs(item.url, Astro.url.origin)}>
           {item.label}
         </a>
-      ),
-    )
-  }
-</nav>
+        ),
+      )
+    }
+      {subscribeUrl ? (
+        <a class="nav-menu-cta btn btn-solid" href={subscribeUrl} rel="noopener">
+          Subscribe
+        </a>
+      ) : null}
+    </nav>
+  </details>
+</div>
+
+<script>
+  import { initNavDisclosure } from '../../lib/navDisclosure';
+
+  // Astro bundles and defers this, so it runs after the markup is parsed. The
+  // menu is already usable by then — this only adds the button.
+  const shell = document.querySelector<HTMLElement>('.nav-shell');
+  if (shell) initNavDisclosure(shell, window.matchMedia('(max-width: 1040px)'));
+</script>
 
 <style>
   .links {
@@ -87,6 +130,51 @@ const { items } = Astro.props as Props;
     gap: 26px;
     font-size: 13px;
     font-weight: 600;
+  }
+
+  /* The shell adds no box of its own at any width: the header's flex row sees
+     the button and the drawer, never this wrapper. */
+  .nav-shell {
+    display: contents;
+  }
+
+  /* Above the breakpoint the drawer is a plain wrapper: the summary and the
+     button are both gone and `.links` sits in the header row exactly as it did
+     before any of this existed. */
+  .nav-summary {
+    display: none;
+  }
+  /* The button is inserted by navDisclosure.ts, so it is addressed through
+     :global() — a scoped selector never matches an element the server did not
+     render, and the rules would silently do nothing. */
+  .nav-shell :global(.nav-toggle) {
+    display: none;
+    align-items: center;
+    gap: 9px;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 9px 14px;
+    min-height: 44px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  /* One element, three bars: the middle is the box, the outer two its shadows. */
+  .nav-shell :global(.nav-toggle-bars) {
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+    box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor;
+  }
+  /* Open is worth showing as well as announcing — `aria-expanded` alone is
+     invisible to everyone not using a screen reader. */
+  .nav-shell :global(.nav-toggle[aria-expanded='true']) {
+    background: var(--crimson);
+    border-color: var(--crimson);
+    color: #fff;
   }
   .nav-item {
     position: relative;
@@ -170,27 +258,142 @@ const { items } = Astro.props as Props;
     font-weight: 700 !important;
   }
 
-  /* On narrow widths the menu wraps to its own row under the wordmark and the
-     panels sit inline rather than floating, so every group stays reachable
-     without hover. The `.site-nav` half of this breakpoint lives in the layout. */
+  /* The header keeps its own Subscribe button until 520px, so this copy stays
+     out of the way everywhere above that. */
+  .nav-menu-cta {
+    display: none;
+  }
+
+  /* Below the breakpoint there is no hover to open anything, so the menu moves
+     to its own row under the wordmark and collapses behind the button. The
+     panels render inline as flat headed lists — every group stays reachable
+     without hover, but only once the visitor asks for the menu.
+     The `.site-nav` half of this breakpoint lives in the layout. */
   @media (max-width: 1040px) {
-    .links {
+    .nav-drawer {
       order: 3;
       width: 100%;
-      flex-wrap: wrap;
-      gap: 18px;
+    }
+    /* The no-JS control. A native summary collapses the menu on its own, which
+       is why the markup ships as <details> rather than a div. */
+    .nav-summary {
+      display: block;
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 0;
+      min-height: 44px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .nav-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* The button sits in the header row (order 2, after the wordmark and
+       Subscribe); the drawer takes a row of its own beneath all three. */
+    .nav-shell :global(.nav-toggle) {
+      display: inline-flex;
+      order: 2;
+    }
+
+    /* `data-js` is set in <head> before first paint (BaseLayout), so the panels
+       never flash open on a phone while the module loads. With JavaScript off
+       neither rule applies and the native summary above is the control. */
+    :global(html[data-js]) .nav-summary {
+      display: none;
+    }
+    /* The whole drawer goes, not just the links inside it: an empty <details>
+       is still a full-width flex item, and the header's 24px row gap would
+       leave a band of dead space under the wordmark with nothing in it. */
+    :global(html[data-js]) .nav-shell:not([data-open]) .nav-drawer {
+      display: none;
+    }
+
+    .links {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      gap: 0;
+      padding: 8px 0 4px;
+    }
+    .nav-item {
+      position: static;
+    }
+    /* A group label becomes a heading: its panel is already open below it, so
+       there is nothing left for it to toggle. */
+    .nav-top {
+      width: 100%;
+      padding: 14px 0 4px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      cursor: default;
+    }
+    .nav-top:hover {
+      color: var(--crimson);
+    }
+    .caret {
+      display: none;
+    }
+    /* A top-level item with no children is still a link, so it keeps link
+       sizing and a full tap target rather than being dressed as a heading. */
+    a.nav-top {
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-transform: none;
+      color: var(--ink);
+      min-height: 44px;
+      padding: 0;
+      cursor: pointer;
     }
     .mega {
       position: static;
       transform: none;
-      padding-top: 8px;
+      padding-top: 0;
       opacity: 1;
       visibility: visible;
     }
+    /* No card chrome in the drawer: this is one list, not five stacked panels. */
     .mega-in {
-      flex-wrap: wrap;
+      display: block;
+      background: none;
+      border: 0;
+      border-radius: 0;
       box-shadow: none;
+      padding: 0;
       white-space: normal;
+    }
+    .mega-col {
+      min-width: 0;
+      gap: 0;
+    }
+    .mega-h {
+      padding: 10px 0 2px;
+      margin-bottom: 0;
+      color: var(--ink-3);
+    }
+    .mega-col a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding-left: 12px;
+      border-left: 2px solid var(--line);
+      font-size: 15px;
+    }
+  }
+
+  /* A 390px row cannot hold the wordmark, Subscribe and the menu button, so at
+     this width the header drops its Subscribe and the menu carries it instead —
+     as the last item, after the links, where a reader ends up anyway. */
+  @media (max-width: 520px) {
+    .nav-menu-cta {
+      display: inline-flex;
+      align-self: flex-start;
+      margin-top: 16px;
     }
   }
 </style>

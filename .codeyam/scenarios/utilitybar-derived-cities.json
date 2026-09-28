@@ -3,10 +3,11 @@
   "id": "0c5ea032-45a3-4e2c-beb7-a44c0393e3f0",
   "url": "/isolated-components/UtilityBar",
   "dimensions": [
+    "Mobile",
     "Desktop"
   ],
   "mocks": {},
   "componentName": "UtilityBar",
   "scenarioType": "component",
-  "description": "The crimson strip above the header, reading the same derived chapter labels the menu does. This line used to be built by hunting nav.json for a group called Chapters, so it went stale invisibly whenever the chapter list moved on — DC and DMV Area is the label that was wrong before this change."
+  "description": "The crimson strip above the header, reading the same derived chapter labels the menu does. This line used to be built by hunting nav.json for a group called Chapters, so it went stale invisibly whenever the chapter list moved on — DC and DMV Area is the label that was wrong before this change. Captured at both widths because the strip now renders TWO lines and swaps them with CSS alone: the Desktop frame is the full list, the Mobile frame is the lede by itself. The full line is about seventy characters of letter-spaced monospace, which wrapped to three lines on a 390px phone and spent a third of the first screen before the visitor reached the logo. The owner chose the bare lede over a chapter count on 2026-09-28 — the two frames side by side are what that decision looks like."
 }

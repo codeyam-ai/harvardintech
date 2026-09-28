@@ -1,0 +1,14 @@
+{
+  "name": "EventsIntro - The Page's Own Title",
+  "id": "372d7140-98c4-4448-aee3-d3b9ec7aaef1",
+  "url": "/isolated-components/EventsIntro",
+  "dimensions": [
+    "Mobile",
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsIntro",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventsIntro.astro",
+  "description": "The /events title and standfirst on their own, with no band around them. It takes no props - the copy is fixed - so what this frame is for is the relationship between the two: a serif heading over a standfirst capped at the 760px reading measure, centred. That matters because the component is placed by two different callers, the route above the Luma calendar and EventsPage inside its own section, and has to look identical in both. It was split out of EventsPage so the route could render it ABOVE the embed: the page used to open on Luma's own heading, Full events calendar, so a visitor's first line of text was the third party's rather than the site's."
+}

@@ -1,0 +1,31 @@
+---
+import Component from "../../../src/components/EventsIntro.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EventsIntro — the /events page's title and standfirst on
+// their own, with no band around them.
+//
+// It takes no props: the heading and the copy are fixed. What the capture is
+// for is the RELATIONSHIP between them — the serif title over a standfirst
+// capped at the 760px reading measure, centred — because this component exists
+// to be placed by two different callers and has to look the same in both.
+//
+// Width and centring match `.s-inner`, its real container in both of them: the
+// 1220px content column with centred text. Its own lede caps itself narrower.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EventsIntro</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div
+      id="codeyam-capture"
+      style="padding: var(--space-lg); width: 100%; max-width: var(--content-width); text-align: center;"
+    >
+      <Component />
+    </div>
+  </body>
+</html>

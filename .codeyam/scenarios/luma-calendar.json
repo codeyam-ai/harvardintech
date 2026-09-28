@@ -3,10 +3,12 @@
   "id": "8c47a00c-f472-4d84-a83c-8a33b077591d",
   "url": "/isolated-components/LumaCalendar",
   "dimensions": [
+    "Mobile",
     "Desktop"
   ],
   "mocks": {},
   "componentName": "LumaCalendar",
   "scenarioType": "component",
-  "pageFilePath": "src/components/LumaCalendar.astro"
+  "pageFilePath": "src/components/LumaCalendar.astro",
+  "description": "The live Luma calendar embed as /events renders it. The frame height tracks the viewport rather than sitting at a fixed 640, which is why both widths are worth keeping: the embed is deliberately sized nearer the LOW end of what the calendar can hold, because the org usually has one or two events in flight and Luma pads the rest of its panel with flat grey - an over-tall frame reads as a half-empty box every quiet week, while a short one only costs a scroll on a busy one. Luma does not report its own content height, so this is a judgement the site has to make rather than a number it can ask for."
 }

@@ -10857,6 +10857,159 @@
       "pass|full|2026-09-18T19:38:13.568Z"
     ]
   },
+  "initNavDisclosure › clears the open state when the breakpoint stops matching": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › closes on Escape and returns focus to the button": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › closes when a link to another route inside the menu is clicked": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z",
+      "pass|full|2026-09-28T19:31:10.530Z"
+    ]
+  },
+  "initNavDisclosure › closes when a same-page anchor inside the menu is clicked": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z",
+      "pass|full|2026-09-28T19:31:10.530Z"
+    ]
+  },
+  "initNavDisclosure › closes when an external link inside the menu is clicked": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z",
+      "pass|full|2026-09-28T19:31:10.530Z"
+    ]
+  },
+  "initNavDisclosure › does nothing when there is no drawer to upgrade": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › flips aria-expanded and data-open on click": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › forces the details open so the nav is never removed from the DOM": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › ignores Escape when the menu is already closed": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › inserts a toggle button wired to the menu and hides the summary": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › is a no-op when it has already run on the same shell": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › leaves an open menu alone on a non-persisted pageshow": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › places the button outside the details element": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › removes its media query listener on teardown": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "initNavDisclosure › resets to closed on a restored bfcache page": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
   "initParallax › is a no-op when there are no parallax images": {
     "file": "src/lib/parallax.test.ts",
     "lastRunAt": "2026-09-28T17:20:19.876Z",
@@ -24369,6 +24522,26 @@
       "pass|changed|2026-09-18T20:23:09.097Z"
     ]
   },
+  "the no-JavaScript contract › hides the native summary without removing it": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "the no-JavaScript contract › removes no link and never closes the details, open or closed": {
+    "file": "src/lib/navDisclosure.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
   "the public audit route inventory › audits only same-site URLs": {
     "file": "src/lib/publicRoutes.test.ts",
     "lastRunAt": "2026-09-28T17:20:19.876Z",
@@ -25971,6 +26144,89 @@
       "pass|changed|2026-09-18T19:30:01.282Z",
       "pass|changed|2026-09-18T19:29:14.656Z",
       "pass|changed|2026-09-18T18:26:53.329Z"
+    ]
+  },
+  "utilityLine › drops the separator entirely when there are no cities": {
+    "file": "src/lib/utilityBar.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "utilityLine › joins a single city to the lede": {
+    "file": "src/lib/utilityBar.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "utilityLine › lists the lede and every city": {
+    "file": "src/lib/utilityBar.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "utilityLineCompact › carries no chapter count and no separator": {
+    "file": "src/lib/utilityBar.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "utilityLineCompact › is shorter than the full line whenever chapters exist": {
+    "file": "src/lib/utilityBar.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z"
+    ]
+  },
+  "utilityLineCompact › returns the lede alone for a full chapter list": {
+    "file": "src/lib/utilityBar.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z",
+      "pass|full|2026-09-28T19:31:10.530Z"
+    ]
+  },
+  "utilityLineCompact › returns the lede alone for a single city": {
+    "file": "src/lib/utilityBar.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z",
+      "pass|full|2026-09-28T19:31:10.530Z"
+    ]
+  },
+  "utilityLineCompact › returns the lede alone for no cities at all": {
+    "file": "src/lib/utilityBar.test.ts",
+    "lastRunAt": "2026-09-28T19:32:38.454Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-09-28T19:32:38.454Z",
+      "pass|changed|2026-09-28T19:32:30.106Z",
+      "pass|full|2026-09-28T19:31:10.530Z"
     ]
   },
   "variantPath › accepts a root-absolute path as well as a public-relative one": {

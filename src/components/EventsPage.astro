@@ -12,6 +12,7 @@
 // source that only refreshes when the site is rebuilt (owner, 2026-09-14).
 // Past events are the opposite case — Luma does not keep them, so this page is
 // the only place they exist.
+import EventsIntro from './EventsIntro.astro';
 import EventsSection from './EventsSection.astro';
 import EventsArchive from './EventsArchive.astro';
 import PastEventsMore from './PastEventsMore.astro';
@@ -24,8 +25,17 @@ import { LUMA_CALENDAR_URL } from '../lib/luma';
 interface Props {
   events?: EventLike[];
   now?: string | Date;
+  /**
+   * Render the page's own title and standfirst.
+   *
+   * The /events route turns this OFF and renders EventsIntro itself, above the
+   * Luma calendar — otherwise the page opens on the embed's heading instead of
+   * its own. It defaults to on so this component still stands alone in the
+   * isolated-component scenarios, which capture the body away from the route.
+   */
+  showIntro?: boolean;
 }
-const { events = [], now } = Astro.props;
+const { events = [], now, showIntro = true } = Astro.props;
 
 const { past } = splitEvents(events, now ?? new Date());
 const { recent, archive } = splitArchive(past);
@@ -33,12 +43,7 @@ const { recent, archive } = splitArchive(past);
 
 <section class="s-section">
   <div class="s-inner" style="text-align: center;">
-    <h1 class="s-title">Events</h1>
-    <p style="color: var(--color-muted); max-width: var(--text-width); margin: 0 auto var(--space-lg);">
-      In-person events, panels, and gatherings across our Boston &amp; Cambridge, New
-      York, London, DC &amp; DMV, and Seattle chapters, plus a global community
-      connected online.
-    </p>
+    {showIntro ? <EventsIntro /> : null}
 
     {
       recent.length > 0 ? (

@@ -473,8 +473,26 @@
         "src/pages/isolated-components/EventsArchiveYear.astro"
       ]
     },
+    "src/components/EventsIntro.astro": {
+      "imports": [],
+      "importedBy": [
+        "src/components/EventsIntroBand.astro",
+        "src/components/EventsPage.astro",
+        "src/pages/isolated-components/EventsIntro.astro"
+      ]
+    },
+    "src/components/EventsIntroBand.astro": {
+      "imports": [
+        "src/components/EventsIntro.astro"
+      ],
+      "importedBy": [
+        "src/pages/events.astro",
+        "src/pages/isolated-components/EventsIntroBand.astro"
+      ]
+    },
     "src/components/EventsPage.astro": {
       "imports": [
+        "src/components/EventsIntro.astro",
         "src/components/EventsSection.astro",
         "src/components/EventsArchive.astro",
         "src/components/PastEventsMore.astro",
@@ -1531,7 +1549,9 @@
       ]
     },
     "src/components/nav/UtilityBar.astro": {
-      "imports": [],
+      "imports": [
+        "src/lib/utilityBar.ts"
+      ],
       "importedBy": [
         "src/layouts/BaseLayout.astro",
         "src/pages/isolated-components/[name].astro"
@@ -2660,6 +2680,18 @@
         "src/pages/isolated-components/[name].astro"
       ]
     },
+    "src/lib/navDisclosure.test.ts": {
+      "imports": [
+        "src/lib/navDisclosure.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/navDisclosure.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/navDisclosure.test.ts"
+      ]
+    },
     "src/lib/networkSound.test.ts": {
       "imports": [
         "src/lib/networkSound.ts"
@@ -3216,6 +3248,19 @@
         "src/pages/404.astro"
       ]
     },
+    "src/lib/utilityBar.test.ts": {
+      "imports": [
+        "src/lib/utilityBar.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/utilityBar.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/utilityBar.test.ts",
+        "src/components/nav/UtilityBar.astro"
+      ]
+    },
     "src/lib/volunteerPageContent.ts": {
       "imports": [
         "src/lib/pageCopyMerge.ts",
@@ -3342,6 +3387,7 @@
       "imports": [
         "src/layouts/BaseLayout.astro",
         "src/components/EventsPage.astro",
+        "src/components/EventsIntroBand.astro",
         "src/components/LumaCalendar.astro",
         "src/lib/luma.ts",
         "src/lib/drafts.ts",
@@ -3538,6 +3584,20 @@
     "src/pages/isolated-components/EventsArchiveYear.astro": {
       "imports": [
         "src/components/EventsArchiveYear.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsIntro.astro": {
+      "imports": [
+        "src/components/EventsIntro.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsIntroBand.astro": {
+      "imports": [
+        "src/components/EventsIntroBand.astro",
         "src/styles/tokens.css"
       ],
       "importedBy": []
@@ -4258,6 +4318,7 @@
         "src/pages/isolated-components/GivePhoto.astro",
         "src/pages/isolated-components/MomentumHero.astro",
         "src/pages/isolated-components/DeployStatus-Verifying.astro",
+        "src/pages/isolated-components/EventsIntro.astro",
         "src/pages/isolated-components/DecisionTick.astro",
         "src/pages/isolated-components/StagingBar-PublishAgainWhileDeploying.astro",
         "src/pages/isolated-components/GiveButton.astro",
@@ -4289,6 +4350,7 @@
         "src/pages/isolated-components/EventsArchiveItem.astro",
         "src/pages/isolated-components/GalleryLightbox.astro",
         "src/pages/isolated-components/VolunteerProjectMeta.astro",
+        "src/pages/isolated-components/EventsIntroBand.astro",
         "src/pages/isolated-components/DeployChip-StillUpdating.astro",
         "src/pages/isolated-components/CalloutCard.astro",
         "src/pages/isolated-components/GiveHero.astro",
@@ -4819,10 +4881,32 @@
         "src/pages/isolated-components/EventsArchiveYear.astro::__file_root__"
       ]
     },
+    "src/components/EventsIntro.astro::__file_root__": {
+      "filePath": "src/components/EventsIntro.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/components/EventsIntroBand.astro::__file_root__",
+        "src/components/EventsPage.astro::__file_root__",
+        "src/pages/isolated-components/EventsIntro.astro::__file_root__"
+      ]
+    },
+    "src/components/EventsIntroBand.astro::__file_root__": {
+      "filePath": "src/components/EventsIntroBand.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/EventsIntro.astro::__file_root__"
+      ],
+      "importedBy": [
+        "src/pages/events.astro::__file_root__",
+        "src/pages/isolated-components/EventsIntroBand.astro::__file_root__"
+      ]
+    },
     "src/components/EventsPage.astro::__file_root__": {
       "filePath": "src/components/EventsPage.astro",
       "name": "__file_root__",
       "imports": [
+        "src/components/EventsIntro.astro::__file_root__",
         "src/components/EventsSection.astro::__file_root__",
         "src/components/EventsArchive.astro::__file_root__",
         "src/components/PastEventsMore.astro::__file_root__",
@@ -6097,7 +6181,10 @@
     "src/components/nav/UtilityBar.astro::__file_root__": {
       "filePath": "src/components/nav/UtilityBar.astro",
       "name": "__file_root__",
-      "imports": [],
+      "imports": [
+        "src/lib/utilityBar.ts::utilityLine",
+        "src/lib/utilityBar.ts::utilityLineCompact"
+      ],
       "importedBy": [
         "src/pages/isolated-components/[name].astro::__file_root__"
       ]
@@ -8459,6 +8546,22 @@
         "src/lib/nav.test.ts::__file_root__"
       ]
     },
+    "src/lib/navDisclosure.test.ts::__file_root__": {
+      "filePath": "src/lib/navDisclosure.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/navDisclosure.ts::initNavDisclosure"
+      ],
+      "importedBy": []
+    },
+    "src/lib/navDisclosure.ts::initNavDisclosure": {
+      "filePath": "src/lib/navDisclosure.ts",
+      "name": "initNavDisclosure",
+      "imports": [],
+      "importedBy": [
+        "src/lib/navDisclosure.test.ts::__file_root__"
+      ]
+    },
     "src/lib/networkSound.test.ts::__file_root__": {
       "filePath": "src/lib/networkSound.test.ts",
       "name": "__file_root__",
@@ -9845,6 +9948,42 @@
         "src/pages/404.astro::__file_root__"
       ]
     },
+    "src/lib/utilityBar.test.ts::__file_root__": {
+      "filePath": "src/lib/utilityBar.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/utilityBar.ts::__file_root__",
+        "src/lib/utilityBar.ts::utilityLine",
+        "src/lib/utilityBar.ts::utilityLineCompact"
+      ],
+      "importedBy": []
+    },
+    "src/lib/utilityBar.ts::__file_root__": {
+      "filePath": "src/lib/utilityBar.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/utilityBar.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/utilityBar.ts::utilityLine": {
+      "filePath": "src/lib/utilityBar.ts",
+      "name": "utilityLine",
+      "imports": [],
+      "importedBy": [
+        "src/lib/utilityBar.test.ts::__file_root__",
+        "src/components/nav/UtilityBar.astro::__file_root__"
+      ]
+    },
+    "src/lib/utilityBar.ts::utilityLineCompact": {
+      "filePath": "src/lib/utilityBar.ts",
+      "name": "utilityLineCompact",
+      "imports": [],
+      "importedBy": [
+        "src/lib/utilityBar.test.ts::__file_root__",
+        "src/components/nav/UtilityBar.astro::__file_root__"
+      ]
+    },
     "src/lib/volunteerPageContent.ts::__file_root__": {
       "filePath": "src/lib/volunteerPageContent.ts",
       "name": "__file_root__",
@@ -10048,6 +10187,7 @@
       "imports": [
         "src/layouts/BaseLayout.astro::__file_root__",
         "src/components/EventsPage.astro::__file_root__",
+        "src/components/EventsIntroBand.astro::__file_root__",
         "src/components/LumaCalendar.astro::__file_root__",
         "src/lib/luma.ts::__file_root__",
         "src/lib/drafts.ts::publishedEntries",
@@ -10302,6 +10442,24 @@
       "name": "__file_root__",
       "imports": [
         "src/components/EventsArchiveYear.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsIntro.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventsIntro.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/EventsIntro.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/EventsIntroBand.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventsIntroBand.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/EventsIntroBand.astro::__file_root__",
         "src/styles/tokens.css::__file_root__"
       ],
       "importedBy": []
@@ -11209,6 +11367,7 @@
         "src/pages/isolated-components/GivePhoto.astro::__file_root__",
         "src/pages/isolated-components/MomentumHero.astro::__file_root__",
         "src/pages/isolated-components/DeployStatus-Verifying.astro::__file_root__",
+        "src/pages/isolated-components/EventsIntro.astro::__file_root__",
         "src/pages/isolated-components/DecisionTick.astro::__file_root__",
         "src/pages/isolated-components/StagingBar-PublishAgainWhileDeploying.astro::__file_root__",
         "src/pages/isolated-components/GiveButton.astro::__file_root__",
@@ -11240,6 +11399,7 @@
         "src/pages/isolated-components/EventsArchiveItem.astro::__file_root__",
         "src/pages/isolated-components/GalleryLightbox.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectMeta.astro::__file_root__",
+        "src/pages/isolated-components/EventsIntroBand.astro::__file_root__",
         "src/pages/isolated-components/DeployChip-StillUpdating.astro::__file_root__",
         "src/pages/isolated-components/CalloutCard.astro::__file_root__",
         "src/pages/isolated-components/GiveHero.astro::__file_root__",
@@ -11298,5 +11458,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-28T17:28:48Z"
+  "lastUpdated": "2026-09-28T21:08:33Z"
 }
