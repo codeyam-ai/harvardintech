@@ -89,6 +89,17 @@ The donate/give campaign look is **paused** and is not restyled by any phase.
 
 Visual change: the 404 and blog pages gain the site header, footer and fonts, and the 404's blue link becomes crimson. Elsewhere, only the footer eyebrow token changes.
 
+> **Confirmed by the responsive audit** (`docs/responsive-audit-2026-09-18.md`,
+> run 2026-09-28). Steps 1 and 2 below were written from source; the audit
+> captured both pages and confirms them from frames — findings F2 and F3. No
+> change to either step is needed. Worth knowing when you schedule this phase:
+> because `/blog/[slug]` has no nav at all, a reader arriving from search or the
+> Medium link currently has no way into the rest of the site, so step 2 fixes a
+> navigation dead-end and not only a styling gap. The audit also could not
+> capture `/404` at any width — the harness refuses an HTTP 404 response — so
+> this phase's result there cannot be verified by a committed frame until that
+> tooling gap is closed (audit §6).
+
 1. **404.** `src/pages/404.astro` renders inside `src/layouts/BaseLayout.astro` using `.wrap` / `.sec`, a `.kick` "404", an h1 and a centred pill `.btn btn-solid` home link. Drop the undefined `--color-primary` and the inline `--space-*` styles.
 2. **Blog.** Wrap `src/pages/blog/[slug].astro` in `BaseLayout`, passing `title` / `description` / `image` / `noindex` (BaseLayout already accepts all four). Delete the duplicated `SEO`, `HeadExtras` and `customBodyHtml` blocks, and swap the inline-styled `<main>` for `.wrap` with `--text-width`. `launch--content-and-pages.md` adds the `/blog/` index; this plan shapes only the post shell.
 3. **Delete the 12 unused components.** None has an importer outside the isolation harness:
@@ -124,6 +135,30 @@ Visual change: the 404 and blog pages gain the site header, footer and fonts, an
    | Favicon | `public/favicon.svg` is a `#0066cc` placeholder that no page links to. | `launch--images.md` C4–C5 (a crimson "HIT" monogram plus the `<link rel="icon">`). |
    | Nav, shield, testimonial | The nav is data-driven and clean; the `harvard-in-tech` slugs in `src/data/nav.json` are the real Medium and LinkedIn account URLs. The shield waits on the HAA permission item in `launch--images.md`. `src/content/testimonials/jessica-li.md` says "Harvard in Tech", but it is a verbatim quote. | No change. |
 5. **Tokens.** In `src/styles/tokens.css`, add a spacing and type scale (`--s-1…--s-6`, `--t-sm…--t-xl`) and `--radius-pill: 999px`. These are unused until Phase 2.
+
+   > **Four measured inputs from the responsive audit**
+   > (`docs/responsive-audit-2026-09-18.md`, run 2026-09-28). These are
+   > evidence for the scale, not new scope:
+   >
+   > - **The spacing scale needs a phone value for band padding (F7).**
+   >   `.s-section { padding: 78px var(--space-lg) }` (`tokens.css:118`) is the
+   >   only definition and no media query reduces it, so every landing band
+   >   spends 156px — 18.5% of an 844px phone viewport — on padding before any
+   >   content.
+   > - **Thirteen breakpoints, and the tail is the cheap win (S3).** By usage:
+   >   820 (11 rules), 900 (10), 720 (8), 640 (8), 520 (5), 560 (4), 1040 (2),
+   >   600 (2), and five used exactly once — 1080, 1000, 880, 760, 620.
+   >   `launch--mobile-and-layout` proposes 1040 / 820 / 640 / 520; the five
+   >   singletons are one-line moves.
+   > - **900px is the hole in that proposal.** It is the second most-used
+   >   breakpoint and is not in the proposed set, yet it carries `.wrap`'s
+   >   gutter change (`tokens.css:270`) — half of the 901–1040px dead band
+   >   (audit F4). Deciding its fate belongs to this plan, jointly with the nav
+   >   breakpoint owned by `launch--mobile-and-layout`.
+   > - **The content column cannot reach its declared width at 1280 (S4).**
+   >   `--content-width: 1220px` plus `.wrap`'s 48px gutters needs 1316px; a
+   >   Laptop viewport is 1280, so the column gets 1184px — 36px under its
+   >   maximum. Worth deciding whether the token or the gutter gives.
 
 ### Phase 2: Shared parts (half a day)
 

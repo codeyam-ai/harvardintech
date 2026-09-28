@@ -1,0 +1,92 @@
+{
+  "name": "Harvard in Tech - Chapters On Four Sizes",
+  "id": "ee87a186-3a92-4fbc-bdd6-c61ef59fbc22",
+  "url": "/",
+  "dimensions": [
+    "Mobile",
+    "Tablet",
+    "Laptop",
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "events": [
+      {
+        "body": "Join hundreds of alumni technologists for keynotes and breakout sessions on AI, climate, fintech, and the future of the startup ecosystem.",
+        "date": "@today+48d",
+        "description": "Our flagship annual gathering of Harvard founders, operators, and investors for a day of talks, panels, and networking across the technology landscape.",
+        "link": "https://www.harvardintech.com/events/summit-2026",
+        "location": "New York, NY",
+        "slug": "harvard-in-tech-summit-2026",
+        "title": "Harvard in Tech Summit 2026"
+      },
+      {
+        "date": "@today-23d",
+        "description": "An evening connecting Harvard alumni founders with active investors across the Bay Area.",
+        "link": "https://www.harvardintech.com/events/sf-mixer",
+        "location": "San Francisco, CA",
+        "slug": "founders-investors-mixer-sf",
+        "title": "Founders & Investors Mixer — San Francisco"
+      },
+      {
+        "date": "@today-1d",
+        "description": "A conversation with Harvard alumnae leading engineering, product, and venture teams.",
+        "link": "https://www.harvardintech.com/events/women-in-tech-panel",
+        "location": "Cambridge, MA",
+        "slug": "women-in-tech-panel",
+        "title": "Women in Tech Leadership Panel"
+      }
+    ],
+    "team": [
+      {
+        "active": true,
+        "name": "Ben Wei",
+        "order": 1,
+        "photo": "/images/team/ben-wei.png",
+        "role": "Founder · Harvard C'08",
+        "slug": "ben-wei"
+      },
+      {
+        "active": true,
+        "name": "Peter Boyce",
+        "order": 2,
+        "photo": "/images/team/peter-boyce.png",
+        "role": "Founder · Harvard C'13",
+        "slug": "peter-boyce"
+      },
+      {
+        "active": true,
+        "name": "Krysia Lenzo",
+        "order": 3,
+        "photo": "/images/team/krysia-lenzo.png",
+        "role": "Executive Director · Harvard C'12",
+        "slug": "krysia-lenzo"
+      },
+      {
+        "active": true,
+        "name": "Jessica Li",
+        "order": 4,
+        "photo": "/images/team/jessica-li.png",
+        "role": "Director of Operations · Harvard C'19",
+        "slug": "jessica-li"
+      },
+      {
+        "active": true,
+        "name": "Nadia Eldeib",
+        "order": 5,
+        "photo": "/images/team/nadia-eldeib.png",
+        "role": "Director of Growth · Harvard C'13",
+        "slug": "nadia-eldeib"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/index.astro",
+  "description": "The chapters band at all four widths, framed by hovering inside it. Each chapter is a card with a city and a link, so this band answers whether the card grid reflows cleanly or strands a single card on its own row at the intermediate sizes nobody has looked at.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": "#chapters"
+    }
+  ]
+}

@@ -86,9 +86,37 @@ Why C: Luma is where events are actually created, so its embed is the live, alwa
 
 ### Responsive audit checklist
 
-Breakpoints in use today (from `@media` across `src/`): 1040 (header), 900 (`src/styles/tokens.css` `.sec-head`), 820, 720, 640, 560, 520, plus one-offs at 1080/1000/880/760/620/600. **Standardise new rules on 1040 / 820 / 640 / 520.** Don't rewrite existing one-offs unless they fail a check.
+**Superseded in part by `docs/responsive-audit-2026-09-18.md` (audit run
+2026-09-28).** The list below was written without evidence; the audit captured
+every public page at 390 / 768 / 1280 / 1440 and the findings are there. Read it
+before starting step 11 — two of its results change this plan's scope:
 
-Verify at **390 (Mobile), 768 (Tablet), 1440 (Desktop)**:
+- **F1 — the nav renders every dropdown panel EXPANDED at ≤1040px.** This plan
+  already decided on a hamburger, but two things were not known when it did.
+  The failure is **not phone-only**: 768 (iPad portrait) is equally broken. And
+  the menu does not merely fail to collapse — all five panels (Programs,
+  Chapters, Communities, Content Hub, Membership) render open and stacked, so on
+  a 390px phone **no page shows any content on the first screen**, and at 768 the
+  page's own heading starts roughly 1,800px down. This is the site's most severe
+  public defect, and the hamburger work must give the panels a closed resting
+  state and must cover 768, not just phones.
+- **F4 — the 901–1040px dead band.** The nav collapses at ≤1040px while `.wrap`
+  keeps 48px desktop gutters until ≤900px (`src/styles/tokens.css:174`, `:270`),
+  so for a 140px range the header sits on a 24px inset above 48px body gutters.
+  iPad landscape (1024) is inside it. This plan owns the nav half of the fix;
+  the breakpoint number needs agreeing with `launch--design-system`.
+
+Breakpoints in use today (measured 2026-09-28, by how many rules use each): 820
+(11), 900 (10), 720 (8), 640 (8), 520 (5), 560 (4), 1040 (2), 600 (2), and five
+used exactly once — 1080, 1000, 880, 760, 620. **Standardise new rules on
+1040 / 820 / 640 / 520.** The five singletons are the cheap wins. But note the
+hole: **900 is the second most-used breakpoint and is not in that set**, and it
+carries `.wrap`'s gutter change, which is half of F4 — so it needs a decision
+rather than being left behind.
+
+Verify at **390 (Mobile), 768 (Tablet), 1280 (Laptop), 1440 (Desktop)** — the
+audit added Laptop and Tablet coverage, and every representative scenario now
+carries all four, so a `recapture-stale` re-reviews the whole site at once:
 - [ ] No horizontal scroll: `document.documentElement.scrollWidth <= innerWidth`. Watch `white-space: nowrap` (`.brand-word`, `.mega-in`), fixed `min-width`, and 48px side paddings.
 - [ ] Tap targets ≥44px; body text ≥16px; mono kickers don't wrap mid-word.
 - [ ] Nothing works only on hover: nav, `.ue-row:hover` lift and card hovers need a tap/focus equivalent or are decorative only.

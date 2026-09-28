@@ -3,8 +3,10 @@
   "id": "94feddab-28d7-414a-9d7c-5b91c5cf49c3",
   "url": "/",
   "dimensions": [
-    "Desktop",
-    "Mobile"
+    "Mobile",
+    "Tablet",
+    "Laptop",
+    "Desktop"
   ],
   "mocks": {},
   "seed": {
@@ -13,35 +15,35 @@
         "name": "Ben Wei",
         "order": 1,
         "photo": "/images/team/ben-wei.png",
-        "role": "Founder \u00b7 Harvard C'08",
+        "role": "Founder · Harvard C'08",
         "slug": "ben-wei"
       },
       {
         "name": "Peter Boyce",
         "order": 2,
         "photo": "/images/team/peter-boyce.png",
-        "role": "Founder \u00b7 Harvard C'13",
+        "role": "Founder · Harvard C'13",
         "slug": "peter-boyce"
       },
       {
         "name": "Krysia Lenzo",
         "order": 3,
         "photo": "/images/team/krysia-lenzo.png",
-        "role": "Executive Director \u00b7 Harvard C'12",
+        "role": "Executive Director · Harvard C'12",
         "slug": "krysia-lenzo"
       },
       {
         "name": "Jessica Li",
         "order": 4,
         "photo": "/images/team/jessica-li.png",
-        "role": "Director of Operations \u00b7 Harvard C'19",
+        "role": "Director of Operations · Harvard C'19",
         "slug": "jessica-li"
       },
       {
         "name": "Nadia Eldeib",
         "order": 5,
         "photo": "/images/team/nadia-eldeib.png",
-        "role": "Director of Growth \u00b7 Harvard C'13",
+        "role": "Director of Growth · Harvard C'13",
         "slug": "nadia-eldeib"
       }
     ]

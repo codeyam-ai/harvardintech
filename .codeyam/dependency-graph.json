@@ -83,15 +83,15 @@
       "imports": [],
       "importedBy": [
         ".codeyam/scenario-interactivity.js",
-        ".codeyam/capture.js",
-        ".codeyam/scenario-handlers.js"
+        ".codeyam/scenario-handlers.js",
+        ".codeyam/capture.js"
       ]
     },
     ".codeyam/scenario-metrics.js": {
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js",
-        ".codeyam/scenario-playwright.js"
+        ".codeyam/scenario-playwright.js",
+        ".codeyam/capture.js"
       ]
     },
     ".codeyam/scenario-mocks.js": {
@@ -2804,6 +2804,20 @@
         "src/pages/volunteer/projects/[slug].astro"
       ]
     },
+    "src/lib/publicRoutes.test.ts": {
+      "imports": [
+        "src/lib/publicRoutes.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/publicRoutes.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveCoverage.ts",
+        "src/lib/responsiveCoverage.test.ts",
+        "src/lib/publicRoutes.test.ts"
+      ]
+    },
     "src/lib/publishTrack.test.ts": {
       "imports": [
         "src/lib/publishTrack.ts"
@@ -2831,6 +2845,21 @@
         "src/lib/redirects.test.ts",
         "src/lib/givingContent.test.ts",
         "astro.config.mjs"
+      ]
+    },
+    "src/lib/responsiveCoverage.test.ts": {
+      "imports": [
+        "src/lib/publicRoutes.ts",
+        "src/lib/responsiveCoverage.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveCoverage.ts": {
+      "imports": [
+        "src/lib/publicRoutes.ts"
+      ],
+      "importedBy": [
+        "src/lib/responsiveCoverage.test.ts"
       ]
     },
     "src/lib/responsiveImage.test.ts": {
@@ -4347,9 +4376,9 @@
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}": {
+    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  assertAppPortReachable,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}",
+      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}",
       "imports": [
         ".codeyam/scenario-playwright.js::__file_root__"
       ],
@@ -4360,6 +4389,14 @@
       "name": "{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n  unmockedRouteFrom,\n}",
       "imports": [
         ".codeyam/scenario-mocks.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/capture.js::{\n  buildCounterpartProbe,\n  subpathHydrationEscalation,\n  waitForHydration,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "name": "{\n  buildCounterpartProbe,\n  subpathHydrationEscalation,\n  waitForHydration,\n}",
+      "imports": [
+        ".codeyam/scenario-interactivity.js::__file_root__"
       ],
       "importedBy": []
     },
@@ -4387,13 +4424,13 @@
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  waitForHydration,\n}": {
-      "filePath": ".codeyam/capture.js",
-      "name": "{\n  waitForHydration,\n}",
-      "imports": [
-        ".codeyam/scenario-interactivity.js::__file_root__"
-      ],
-      "importedBy": []
+    ".codeyam/scenario-handlers.js::__file_root__": {
+      "filePath": ".codeyam/scenario-handlers.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}"
+      ]
     },
     ".codeyam/scenario-handlers.js::{ createIssue }": {
       "filePath": ".codeyam/scenario-handlers.js",
@@ -4408,7 +4445,7 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js::{\n  waitForHydration,\n}"
+        ".codeyam/capture.js::{\n  buildCounterpartProbe,\n  subpathHydrationEscalation,\n  waitForHydration,\n}"
       ]
     },
     ".codeyam/scenario-interactivity.js::{ createIssue }": {
@@ -4424,8 +4461,8 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}",
-        ".codeyam/scenario-handlers.js::{ createIssue }"
+        ".codeyam/scenario-handlers.js::{ createIssue }",
+        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}"
       ]
     },
     ".codeyam/scenario-metrics.js::__file_root__": {
@@ -4433,8 +4470,8 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
-        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}"
+        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}",
+        ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}"
       ]
     },
     ".codeyam/scenario-mocks.js::__file_root__": {
@@ -4443,6 +4480,14 @@
       "imports": [],
       "importedBy": [
         ".codeyam/capture.js::{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n  unmockedRouteFrom,\n}"
+      ]
+    },
+    ".codeyam/scenario-playwright.js::__file_root__": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}"
       ]
     },
     ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}": {
@@ -8749,6 +8794,14 @@
         "src/pages/volunteer/projects/[slug].astro::__file_root__"
       ]
     },
+    "src/lib/publicRoutes.test.ts::__file_root__": {
+      "filePath": "src/lib/publicRoutes.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/publicRoutes.ts::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/lib/publishTrack.test.ts::__file_root__": {
       "filePath": "src/lib/publishTrack.test.ts",
       "name": "__file_root__",
@@ -8817,6 +8870,58 @@
       "imports": [],
       "importedBy": [
         "astro.config.mjs::__file_root__"
+      ]
+    },
+    "src/lib/responsiveCoverage.test.ts::__file_root__": {
+      "filePath": "src/lib/responsiveCoverage.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/publicRoutes.ts::__file_root__",
+        "src/lib/responsiveCoverage.ts::ScenarioLike",
+        "src/lib/responsiveCoverage.ts::missingSizes",
+        "src/lib/responsiveCoverage.ts::routeCoverage",
+        "src/lib/responsiveCoverage.ts::uncoveredRoutes"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveCoverage.ts::ScenarioLike": {
+      "filePath": "src/lib/responsiveCoverage.ts",
+      "name": "ScenarioLike",
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveCoverage.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/responsiveCoverage.ts::__file_root__": {
+      "filePath": "src/lib/responsiveCoverage.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/publicRoutes.ts::PublicRoute"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveCoverage.ts::missingSizes": {
+      "filePath": "src/lib/responsiveCoverage.ts",
+      "name": "missingSizes",
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveCoverage.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/responsiveCoverage.ts::routeCoverage": {
+      "filePath": "src/lib/responsiveCoverage.ts",
+      "name": "routeCoverage",
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveCoverage.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/responsiveCoverage.ts::uncoveredRoutes": {
+      "filePath": "src/lib/responsiveCoverage.ts",
+      "name": "uncoveredRoutes",
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveCoverage.test.ts::__file_root__"
       ]
     },
     "src/lib/responsiveImage.test.ts::__file_root__": {
@@ -11193,5 +11298,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-19T12:17:44Z"
+  "lastUpdated": "2026-09-28T17:21:19Z"
 }

@@ -1634,6 +1634,16 @@
     "testFile": "src/lib/collectionRegistryDrift.test.ts"
   },
   {
+    "description": "The required screen sizes a single scenario does not carry, or an empty list when it carries them all. A scenario with no dimensions at all is missing every one — absent is deliberately not a pass, because an un-sized scenario is the shape a hand-written JSON file takes before anyone has thought about widths.",
+    "filePath": "src/lib/responsiveCoverage.ts",
+    "name": "missingSizes",
+    "tags": [
+      "responsive",
+      "launch"
+    ],
+    "testFile": "src/lib/responsiveCoverage.test.ts"
+  },
+  {
     "description": "Pulls the `name` parameter out of a full URL or a bare query string, returning null when absent or unparseable.",
     "filePath": "src/lib/personalize.ts",
     "name": "nameFromSearch",
@@ -2079,6 +2089,16 @@
     "testFile": "src/lib/drafts.test.ts"
   },
   {
+    "description": "Per public route, which scenarios render it and which required sizes they cover BETWEEN them. Coverage is a union rather than a per-scenario property, because this corpus really is shaped that way: two scenarios on one page, one carrying phone and one carrying desktop, together satisfy it. Scenarios whose page matches no declared route are ignored rather than an error — most of the corpus is isolated components the audit deliberately leaves desktop-only, and a rule that threw on them could not be run against the real directory at all.",
+    "filePath": "src/lib/responsiveCoverage.ts",
+    "name": "routeCoverage",
+    "tags": [
+      "responsive",
+      "launch"
+    ],
+    "testFile": "src/lib/responsiveCoverage.test.ts"
+  },
+  {
     "description": "Everything wrong with, or undecidable about, one upload row, each carrying a severity. Blocking means the row cannot become a supporter without a human — no name at all, an anonymity request sitting in the name column, or a re-import that would unmask someone already anonymous. Review means it can land but a decision was deferred, which is where an ordinary duplicate and a missing school or class year sit. Nothing is auto-corrected: that is the contract, because each wrong guess costs a misstated giving level, an unearned badge, or a published name, and only the last is beyond repair by a later edit.",
     "filePath": "src/lib/donorImport.js",
     "name": "rowIssues",
@@ -2476,6 +2496,16 @@
     "filePath": "src/lib/pageCopyMerge.ts",
     "name": "toSponsorLevels",
     "testFile": "src/lib/pageCopyMerge.test.ts"
+  },
+  {
+    "description": "The route keys still short of a required size. It returns keys rather than file paths so the failure message names the page a developer has to go and look at: 'not-found' is actionable where 'src/pages/404.astro' makes them work it out. This is what the committed-scenario guard asserts is empty, so a public page losing its multi-size coverage fails a test instead of going unnoticed.",
+    "filePath": "src/lib/responsiveCoverage.ts",
+    "name": "uncoveredRoutes",
+    "tags": [
+      "responsive",
+      "launch"
+    ],
+    "testFile": "src/lib/responsiveCoverage.test.ts"
   },
   {
     "description": "Registry-declared keys with no counterpart in the content schema — the dangerous direction of registry drift. The CMS happily renders the input, an editor fills it in, and the build then rejects the entry against the Zod schema, so the failure lands on a deploy rather than on the person who added the field. Extracted from src/data/collections.test.ts alongside the other drift rules.",

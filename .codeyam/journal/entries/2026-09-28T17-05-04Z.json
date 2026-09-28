@@ -1,0 +1,673 @@
+{
+  "timestamp": "2026-09-28T17:05:04Z",
+  "title": "Every public page, seen at four widths for the first time",
+  "type": "feature",
+  "userRequest": "## Summary\n\nNobody has ever looked at this site at anything but 1440px. Of 300 scenarios, 293\nare Desktop-only, 7 carry Mobile, and **zero** carry Tablet (768) or Laptop\n(1280) — both of which are configured in `.codeyam/editor.json` and have never\nbeen used. This plan is the analysis pass: capture every public page at all four\nconfigured sizes, read the frames against a fixed checklist, and write a findings\nreport that says, per page and per size, what breaks and what to change.\n\nIt is an **audit**, not a rebuild. It produces three things:\n\n1. **Permanent multi-size coverage** — one representative scenario per public\n   surface carrying Mobile / Tablet / Laptop / Desktop, so the next change is\n   reviewed at four widths instead of one, plus a drift guard test that fails\n   when a public route loses that coverage.\n2. **A findings report** — `docs/responsive-audit-2026-09-18.md`, one row per\n   finding with the page, the widths it fails at, the evidence frame, a severity,\n   and a recommended change.\n3. **A routing table** — each finding assigned to the plan that should own the\n   fix (`launch--mobile-and-layout`, `launch--design-system`, `launch--images`)\n   or named as a proposed new plan. This plan changes no layout CSS itself.\n\nThe owner asked for mobile \"especially, but also iPad, or laptops with odd\ndimensions\". The odd-laptop case is real and already visible in the source: the\nnav collapses to its phone layout at ≤1040px, but `.wrap` keeps its 48px desktop\ngutters until ≤900px. Everything between 901 and 1040 — iPad landscape, a 1024\nChromebook, a half-screen window on a laptop — gets the phone nav with desktop\ngutters, and no one has ever seen it.\n\n## Owner decisions (2026-09-18)\n\n- **Full adaptive pass over all pages.** Plan it.\n  > \"I want to do a full pass on all HIT site pages to make sure that they're\n  > adaptive and look good on different screen sizes (mobile especially but also\n  > iPad, or laptops with odd dimensions).\"\n- **Relationship to `launch--mobile-and-layout`.** Audit first, as its own plan.\n  This plan runs *before* it, and its findings revise that plan rather than\n  duplicating it. Queued at position 3 — after the Luma events plan and the\n  giving plan settle `/events` and delete `/give`, and before Mobile, Images and\n  Design System. Both `launch--mobile-and-layout` and `launch--design-system`\n  declare `dependsOn` this plan, so neither can Run until this one is archived.\n- **Viewports.** The four already configured — Mobile 390x844, Tablet 768x1024,\n  Laptop 1280x800, Desktop 1440x900. The awkward 901–1040px band is spot-checked\n  in the report but gets no permanent scenarios.\n- **Page scope.** The public site only. `/admin` is out (it ships from\n  `@codeyam/cms` in `node_modules`, so fixes are upstream), as are the cutover\n  runbook, `donor-network.html` and the review gate.\n\n## What this plan does NOT own\n\n`launch--mobile-and-layout` already owns four named mobile fixes, decided\n2026-09-14 and refined 2026-09-16. This plan does not re-decide or re-implement\nany of them:\n\n| Already owned there | Status |\n|---|---|\n| The phone menu (hamburger disclosure) | Decided: a standard hamburger button |\n| The city bar wrapping to three lines | Decided: phones read just \"A global community\" |\n| The homepage \"No upcoming events\" duplicate | Decided |\n| `/events` de-duplication and the empty Luma box | Decided |\n\nWhere the audit confirms one of those, the report cites it as **already owned**\nand moves on. Where the audit finds that a decided fix is *insufficient* at 768\nor 1280 — a case nobody evaluated, since those widths were never captured — that\nis a real finding and goes in the report as a revision to that plan.\n\n## Seed findings (from source, to confirm in the frames)\n\nThese came out of reading the CSS during planning. They are starting points with\nline citations, not the audit result — each is confirmed or dismissed against a\ncaptured frame.\n\n- **S1 — every landing band burns 156px of vertical space on a phone.**\n  `.s-section { padding: 78px var(--space-lg) }` in `src/styles/tokens.css` is\n  the only definition of that rule in the repo; no media query reduces it. On an\n  844px-tall phone that is ~18% of the viewport per band, before any content.\n- **S2 — the 901–1040px dead band.** `.wrap` drops from 48px to 24px gutters at\n  ≤900px (`src/styles/tokens.css`), while the header and nav collapse at ≤1040px\n  (`src/layouts/BaseLayout.astro`, `src/components/nav/PrimaryNav.astro`). The\n  two disagree by 140px. iPad landscape (1024) sits inside the gap.\n- **S3 — thirteen different breakpoints.** Across `src/`: 1080, 1040, 1000, 900,\n  880, 820, 760, 720, 640, 620, 600, 560, 520. Bands reflow at different widths,\n  so intermediate sizes show half-reflowed pages. `launch--mobile-and-layout`\n  already proposes standardising on 1040 / 820 / 640 / 520; the audit should say\n  which of the thirteen actually need to move.\n- **S4 — Laptop has almost no slack.** `--content-width: 1220px` plus 48px\n  gutters means a 1280 viewport has ~30px spare each side. Anything that\n  overflows its column will show first at 1280, which is the width nobody has\n  captured.\n- **S5 — coverage holes.** `/404` has no scenario at any size. `/webinars`,\n  `/sponsor`, `/communities/*`, `/blog/*`, the CMS-written `/[slug]` pages and\n  every `/chapters/*` scenario are Desktop-only.\n- **S6 — the header row at 390px.** `.brand-word` carries `white-space: nowrap`\n  (`src/layouts/BaseLayout.astro`) and sits on one row with `.nav-cta` and,\n  after `launch--mobile-and-layout`, a Menu button. Three fixed-width items on a\n  390px row is the constraint that plan's step 3 is designed around — confirm\n  whether its ≤520px rule is enough, or whether the breakpoint needs to be\n  higher.\n- **S7 — `/404` renders outside `BaseLayout`.** `src/pages/404.astro` is an\n  inline `<main>` with `margin-top: 100px` and `max-width: var(--content-width)`,\n  so it has no header, no footer and no responsive rules at all.\n  `launch--design-system` phase 1 moves it into `BaseLayout`; the audit records\n  what it looks like today so that move can be verified.\n- **S8 — narrow auto-fit grids.** `minmax(150px, 1fr)` in\n  `src/components/landing/ContactUs.astro` and `minmax(220px, 1fr)` in\n  `src/components/sponsor/SponsorWall.astro` both still fit two columns inside a\n  390px phone minus gutters. Confirm whether two columns there is intended or\n  cramped.\n\n## Recommendations\n\n**The audit method.** Options considered:\n\n- **A. Read the CSS and write recommendations.** Fast, but it is what produced\n  the seed list above, and a seed list is not an audit — it cannot see overlap,\n  overflow, or a band that is merely ugly.\n- **B. Capture every one of the 300 scenarios at four sizes.** 1200 frames.\n  Most are isolated components already pinned at a fixed width, so the extra\n  frames say nothing. The review cost swamps the signal.\n- **C. One representative route scenario per public surface, at four sizes,\n  plus targeted below-fold frames for the homepage.** ← **Pick C.**\n\nWhy C: the audit's unit is *the page a visitor sees*, and a page's responsive\nbehaviour is a property of the route, not of a component in isolation. Twelve\nsurfaces × 4 sizes ≈ 55 frames including the below-fold homepage bands — enough\nto review carefully in one pass, and the four-size coverage stays in the repo\nafterwards rather than being a one-off.\n\n**Where the report lives.** `docs/` already carries the launch record\n(`docs/launch-decisions-2026-09-16.md`, `docs/nicole-review.md`), and those are\nthe documents the other plans' confirm steps read. The audit belongs there, not\nin `.codeyam/`, so a human reviewing the launch can find it.\n\n**Findings carry a severity, and severity decides routing.** Three levels:\n\n- **Broken** — content is unreachable, overlapping, cut off, or the page scrolls\n  sideways. Goes into `launch--mobile-and-layout` as a revision, or a new plan.\n- **Cramped** — legible but bad: 78px padding on a phone, two columns where one\n  belongs, a 12px tap target. Goes into `launch--design-system`, which already\n  owns the shared spacing layer.\n- **Noted** — cosmetic or subjective. Recorded, not scheduled.\n\n**Do not fix anything in this plan.** The temptation, once a frame shows a\nbroken band, is to fix the two-line CSS there and then. Don't: the fix lands\nwithout the owning plan's decisions applied, and the next plan to touch that\ncomponent conflicts with it. The report is the deliverable.\n\n## Implementation\n\n### 1. Declare the public-route inventory\n\n**New file**: `src/lib/publicRoutes.ts`\n\nExport `PUBLIC_AUDIT_ROUTES`, the list of public surfaces the audit covers, each\nwith a stable key, the route pattern, the `pageFilePath` that renders it, and the\nrepresentative concrete URL the scenario uses:\n\n| Key | Route | Renders from | Audit URL |\n|---|---|---|---|\n| `home` | `/` | `src/pages/index.astro` | `/` |\n| `events` | `/events` | `src/pages/events.astro` | `/events` |\n| `chapter` | `/chapters/[slug]` | `src/pages/chapters/[slug].astro` | `/chapters/nyc` |\n| `community` | `/communities/[slug]` | `src/pages/communities/[slug].astro` | `/communities/founders` |\n| `blog-post` | `/blog/[slug]` | `src/pages/blog/[slug].astro` | `/blog/spotlight-charlie-cheever` |\n| `site-page` | `/[slug]` | `src/pages/[slug].astro` | `/our-story/` |\n| `volunteer` | `/volunteer` | `src/pages/volunteer.astro` | `/volunteer` |\n| `volunteer-project` | `/volunteer/projects/[slug]` | `src/pages/volunteer/projects/[slug].astro` | `/volunteer/projects/chapter-launch-team-toronto` |\n| `sponsor` | `/sponsor` | `src/pages/sponsor.astro` | `/sponsor` |\n| `webinars` | `/webinars` | `src/pages/webinars.astro` | `/webinars` |\n| `donate` | `/donate` | `src/pages/donate.astro` | `/donate` |\n| `not-found` | `/404` | `src/pages/404.astro` | `/this-page-does-not-exist` |\n\nAlso export `AUDIT_SIZES = ['Mobile', 'Tablet', 'Laptop', 'Desktop']`.\n\nTwo exclusions are deliberate and must be commented in the file so nobody\n\"fixes\" them later:\n\n- **`/give` is excluded** — `docs/launch-decisions-2026-09-16.md` records the\n  decision to delete the page, its components, its data file and its eight\n  scenarios outright. Auditing a page scheduled for deletion is wasted work.\n- **`/donate` is included but findings are recorded only.** The campaign look is\n  explicitly PAUSED (`launch--design-system`, owner decision 2026-09-14) until\n  Nicole's content merges. The audit captures it and writes the findings down; it\n  proposes no changes there.\n\n### 2. A coverage guard, so the audit does not rot\n\n**New file**: `src/lib/responsiveCoverage.ts`\n\nPure rule functions over scenario JSON, so they are unit-testable without the\nfilesystem:\n\n- `missingSizes(scenario, required)` → the required dimensions a scenario lacks.\n- `routeCoverage(scenarios, routes, required)` → per route key, the scenarios\n  matching its `pageFilePath` and which required sizes are covered across them.\n- `uncoveredRoutes(coverage)` → route keys with no scenario at every required\n  size.\n\nFollow the split used by `src/lib/collectionRegistryDrift.ts`: the rules live in\nthe lib with a fixture-driven unit test, and the assertion against the real\ncommitted files lives in its own test that reads them with `node:fs` — exactly\nthe pattern `src/data/collections.test.ts` uses for the CMS registry.\n\n### 3. Give the representative scenarios all four sizes\n\n**File**: `.codeyam/scenarios/` (existing scenario JSON)\n\nAdd the missing entries to each representative scenario's `dimensions`:\n\n| Scenario | Today | After |\n|---|---|---|\n| `harvard-in-tech-landing-page` | Desktop, Mobile | + Tablet, Laptop |\n| `events-route-upcoming-and-past` | Desktop | + Mobile, Tablet, Laptop |\n| `chapter-route-new-york-city` | Desktop | + Mobile, Tablet, Laptop |\n| `community-route-founders-with-leads-and-events` | Desktop | + Mobile, Tablet, Laptop |\n| `blog-post-a-retained-medium-stub` | Desktop | + Mobile, Tablet, Laptop |\n| `site-page-a-page-written-in-the-cms` | Desktop | + Mobile, Tablet, Laptop |\n| `volunteer-page-open-projects` | Desktop | + Mobile, Tablet, Laptop |\n| `volunteer-project-detail-photo-and-own-sign-up-link` | Desktop | + Mobile, Tablet, Laptop |\n| `sponsor-route-example-partner-wall` | Desktop | + Mobile, Tablet, Laptop |\n| `webinars-route-the-surviving-recordings` | Desktop | + Mobile, Tablet, Laptop |\n| `momentum-fund-public-visitor` | Desktop, Mobile | + Tablet, Laptop |\n\nLeave the other 289 scenarios Desktop-only. They are state variants and isolated\ncomponents; adding sizes there multiplies frames without adding a surface.\n\n### 4. Cover the surfaces that have no scenario\n\n**New file**: `.codeyam/scenarios/not-found-page.json`\n\n`/this-page-does-not-exist`, `pageFilePath: src/pages/404.astro`, all four sizes.\nVerify the dev server actually serves `404.astro` for an unknown path before\ntrusting the frame — if it serves Astro's own dev error page instead, record that\nas a finding rather than capturing a misleading frame.\n\n**New files**: below-fold homepage scenarios, all four sizes. The homepage is\nthe one surface where a single frame is nowhere near the page. A URL fragment\ndoes **not** scroll a capture — `/#board` still shoots the hero — so each of\nthese needs a `hover` interaction on a selector inside the target band to bring\nit into frame:\n\n- `harvard-in-tech-board-on-four-sizes` — the board grid\n- `harvard-in-tech-chapters-on-four-sizes` — the chapters band\n- `harvard-in-tech-contact-on-four-sizes` — the contact grid (`minmax(150px,1fr)`, seed S8)\n\nTwo scenarios on the same route capture the same viewport unless they differ by\ninteraction, so each of these must carry its own distinct selector.\n\n### 5. Capture and review\n\nCapture **one scenario at a time**. Concurrent captures on this project have\nbaked wrong-page frames into the output, and a content-sandbox reseed race has\nproduced phantom 404s. After capturing, screen every changed PNG before trusting\nit: an untouched page reporting \"N% of pixels differ\" is the webfont/`ch` race,\nnot a real change — capture it twice and restore unrelated frames from HEAD.\n\nReview each frame against this checklist, recording a row per failure:\n\n- **No horizontal scroll.** The page does not exceed the viewport width.\n- **Nothing cut off or overlapping.** Especially headings with negative\n  letter-spacing, the nav, and the hero.\n- **Reflow is complete, not half-done.** At 768 and 1280, no band is still in its\n  desktop grid while its neighbour has stacked (the S3 breakpoint spread).\n- **Vertical rhythm is sane on a phone.** How much of the 844px viewport does one\n  band's padding eat (S1)?\n- **Tap targets ≥44px, body text ≥16px.**\n- **Nothing is hover-only.** Card lifts, the nav, the gallery.\n- **Media behaves.** Images `max-width: 100%`; the Luma iframe and any embed are\n  full width with a sane height at every size.\n- **The first screen is content, not chrome.** On a phone, is the hero visible\n  without scrolling?\n\n### 6. Write the report\n\n**New file**: `docs/responsive-audit-2026-09-18.md`\n\nSections:\n\n1. **What was checked** — the twelve surfaces, the four sizes, the date, and the\n   scenario names holding the evidence frames.\n2. **Findings**, one table row each: id, page, sizes affected, what is wrong,\n   severity (Broken / Cramped / Noted), recommended change, owning plan.\n3. **The seed findings S1–S8**, each marked confirmed, dismissed or revised\n   against a frame.\n4. **The 901–1040px spot check** — a manual look at 1024 width, written up in\n   prose. This band gets no permanent scenario, so the report is the only record.\n5. **Routing table** — findings grouped by the plan that should own them, and a\n   short list of proposed new plans (title + one-line scope) for findings no\n   existing plan covers. Proposing them is the deliverable; creating those plan\n   files is a separate `/codeyam-plan` run, not part of this build.\n\nFollow the voice of `docs/launch-decisions-2026-09-16.md`: plain statements of\nwhat is true, each with the file or frame that proves it.\n\n### 7. Feed the findings back into the queued plans\n\n**File**: `.codeyam/plans/launch--mobile-and-layout.md`\n\nIts \"Responsive audit checklist\" (step 11) is a to-do written without evidence.\nReplace it with a pointer to the report and the specific confirmed findings it\nnow owns. Do the same for `launch--design-system.md` where a finding lands in\nthe shared spacing or breakpoint layer.\n\nThis is the only file this plan edits outside `docs/`, `src/lib/` and\n`.codeyam/scenarios/`. It edits no component and no stylesheet.\n\n## Reused existing code\n\n- `collectionRegistryDrift.ts` rule/assertion split from\n  `src/lib/collectionRegistryDrift.ts` (glossary entries: `declaredFieldNames`,\n  `missingFields`, `unknownFields`) — the shape the new coverage lib copies:\n  pure rules in the lib, fixtures in its sibling unit test\n  (`src/lib/collectionRegistryDrift.test.ts`), real committed files asserted in\n  a separate test.\n- The committed-file assertion pattern from `src/data/collections.test.ts` —\n  `node:fs` + `node:path` reading real repo files inside vitest. This is the\n  precedent for a test that reads `.codeyam/scenarios/*.json`; no existing test\n  reads that directory yet.\n- `internalNavUrls` from `src/lib/nav.ts` (glossary entry: `internalNavUrls`) —\n  walks the nav tree for internal URLs. Cross-check the route inventory this\n  plan creates in step 1 against it, so a surface reachable from the menu\n  cannot be missing from the audit.\n- `RESERVED_PAGE_SLUGS` from `src/lib/sitePages.ts` (glossary entry:\n  `RESERVED_PAGE_SLUGS`) — the slugs `/[slug]` must not shadow. Use it to pick a\n  representative CMS page URL that is a real page rather than a reserved route.\n- `screenSizes` in `.codeyam/editor.json` — Mobile 390x844, Tablet 768x1024,\n  Laptop 1280x800, Desktop 1440x900 are already defined. The audit uses them as\n  they stand; it adds no new size and edits no config.\n\n**Existing-implementation survey.** Nothing equivalent exists today. There is no\nresponsive lint, no viewport assertion, no breakpoint inventory, and no test\nanywhere in `src/` that reads `.codeyam/scenarios/`. `staticChecks` in\n`.codeyam/editor.json` is `tsc` and `astro check` only — neither has any view of\nlayout. `src/lib/parallax.ts` and `src/lib/gallery.ts` call `matchMedia`, but for\nbehaviour (reduced motion, gallery reveal), not for layout coverage. So the two\nlibs this plan adds in steps 1 and 2 duplicate nothing.\n\n## Citation notes\n\nBoth advisories on this plan were checked during planning and are expected:\n\n- **Files that do not exist yet are ones this plan creates** — the route\n  inventory and coverage libs (steps 1–2), their tests, the report\n  (step 6) and the new scenario JSON (step 4). Every path cited as an existing\n  dependency was verified on disk.\n- **The five `[slug]` routes are a false positive.** `src/pages/[slug].astro`,\n  `src/pages/blog/[slug].astro`, `src/pages/chapters/[slug].astro`,\n  `src/pages/communities/[slug].astro` and\n  `src/pages/volunteer/projects/[slug].astro` were each confirmed present with a\n  direct file test on 2026-09-18. The square brackets in Astro's dynamic-route\n  filenames read as a character class to the checker's glob, so it reports them\n  missing. Do not \"correct\" them.\n\n## Tests\n\nRegister each new test file in `.codeyam/test-registry.json` before prove-red\n(registered names are `describe › it`).\n\n- `src/lib/responsiveCoverage.test.ts` (new). Fixture-driven unit coverage of\n  the rules:\n  - `missingSizes` returns the required dimensions a scenario lacks, and `[]`\n    when it carries all of them;\n  - `routeCoverage` unions dimensions across several scenarios sharing one\n    `pageFilePath`, so two scenarios covering different sizes together satisfy\n    the route;\n  - a scenario whose `pageFilePath` matches no declared route is ignored rather\n    than crashing;\n  - `uncoveredRoutes` names the route key, not the file path, so the failure\n    message says which page a human must go look at.\n- `src/lib/publicRoutes.test.ts` (new). Asserts every entry's `pageFilePath`\n  exists on disk, that `/give` is absent with the deletion decision cited in a\n  comment, and that no two entries share a key.\n- `.codeyam/scenarios` committed-file assertion, in\n  `src/lib/responsiveCoverage.test.ts` alongside the unit tests (or its own file\n  if it reads cleaner). Asserts `uncoveredRoutes` is empty for the real scenario\n  directory. **This is the red-first test**: today every route except `home` and\n  `donate` is missing three sizes, and `not-found` is missing a scenario\n  entirely, so it fails before step 3 and passes after step 4.\n- No test asserts anything about the *contents* of a frame. Whether a band looks\n  cramped at 768 is a human judgment recorded in the report; a pixel assertion\n  would only pin today's rendering, which is the thing under review.\n\n## Scenarios to Demonstrate\n\nMobile = 390x844, Tablet = 768x1024, Laptop = 1280x800, Desktop = 1440x900\n(`.codeyam/editor.json` `screenSizes`).\n\n| Surface | Scenario | Change |\n|---|---|---|\n| Home, top | `harvard-in-tech-landing-page` | + Tablet, Laptop |\n| Home, board | `harvard-in-tech-board-on-four-sizes` (new) | `/`, all four, hover interaction into the board band |\n| Home, chapters | `harvard-in-tech-chapters-on-four-sizes` (new) | `/`, all four, hover interaction into the chapters band |\n| Home, contact | `harvard-in-tech-contact-on-four-sizes` (new) | `/`, all four, hover interaction into the contact grid |\n| Events | `events-route-upcoming-and-past` | + Mobile, Tablet, Laptop |\n| Chapter | `chapter-route-new-york-city` | + Mobile, Tablet, Laptop |\n| Community | `community-route-founders-with-leads-and-events` | + Mobile, Tablet, Laptop |\n| Blog post | `blog-post-a-retained-medium-stub` | + Mobile, Tablet, Laptop |\n| CMS page | `site-page-a-page-written-in-the-cms` | + Mobile, Tablet, Laptop |\n| Volunteer | `volunteer-page-open-projects` | + Mobile, Tablet, Laptop |\n| Volunteer project | `volunteer-project-detail-photo-and-own-sign-up-link` | + Mobile, Tablet, Laptop |\n| Sponsor | `sponsor-route-example-partner-wall` | + Mobile, Tablet, Laptop |\n| Webinars | `webinars-route-the-surviving-recordings` | + Mobile, Tablet, Laptop |\n| Donate (paused) | `momentum-fund-public-visitor` | + Tablet, Laptop |\n| 404 | `not-found-page` (new) | `/this-page-does-not-exist`, `pageFilePath: src/pages/404.astro`, all four |\n\nFrames that matter most, because nobody has ever seen them: **every Tablet and\nLaptop frame in the table** — those two sizes have zero coverage in the repo\ntoday — plus the phone frames for `/events`, `/sponsor`, `/webinars` and\n`/404`.\n\n## Capture notes\n\nHard-won on this project; ignoring them costs a full capture cycle:\n\n- Capture **one scenario at a time**. Concurrent captures have written\n  wrong-page frames, and the content-sandbox reseed race also produces phantom\n  404s in `client-errors --scope impacted`.\n- Always `--target` a recapture, and `--force` it when only content changed —\n  content edits are invisible to screenshot staleness.\n- Run the untouched-scenario control first if captures start failing. \"Invalid\n  hook call\" means the capture environment is wrong, not the page.\n- A `/#anchor` URL does not scroll the capture. Below-fold framing needs an\n  interaction, which is why the three homepage scenarios above each carry one.\n- An unrelated page reporting \"N% of pixels differ\" is the webfont/`ch` race.\n  Capture twice, then restore the unrelated frames from HEAD.\n\n## Open questions\n\n1. **For the owner, after the report lands.** The report will propose follow-up\n   plans for findings no queued plan owns. How many of those should be built\n   before launch versus after? The audit deliberately does not decide this — it\n   ranks by severity and leaves the cut to you.\n2. **For the implementer (verify, no owner input needed).** Does the dev server\n   serve `src/pages/404.astro` for an unknown path, or Astro's dev error page? If\n   the latter, the `not-found-page` scenario is capturing the wrong thing and\n   should be recorded as a finding instead.\n3. **For the implementer.** Is 1024 (iPad landscape) common enough in the site's\n   traffic to deserve a permanent fifth scenario size rather than a one-off spot\n   check? The owner chose the four configured sizes; if the report finds the\n   901–1040 band badly broken, that choice is worth revisiting with evidence.\n\n## Out of scope\n\n- **Fixing anything.** No component, no stylesheet, no breakpoint is changed by\n  this plan. Findings route to the plans that own the surfaces.\n- **`/give`** — being deleted outright per `docs/launch-decisions-2026-09-16.md`.\n- **`/admin`** — the CMS ships from `@codeyam/cms` in `node_modules`; fixes are\n  upstream, not in this repo.\n- **The cutover runbook, `donor-network.html`, the review gate and the preview\n  index** — internal surfaces, and the runbook already has a phone scenario.\n- **Isolated-component scenarios.** They render at fixed widths by design; the\n  audit's unit is the page.\n- **Changing `/donate`'s look.** Captured and reported; paused for changes until\n  Nicole's content merges.\n- **Adding a fifth screen size to `.codeyam/editor.json`** — open question 3, and\n  only with evidence from the report.",
+  "description": "Nobody had ever viewed this site at anything but a desktop width. Of 308 saved scenarios, 307 were Desktop and 7 were Mobile; Tablet and Laptop had never been used once, though both had been configured in .codeyam/editor.json since the project began. This cycle captured all eleven public routes at 390 / 768 / 1280 / 1440 through fourteen scenarios, read the frames against a fixed checklist, and wrote docs/responsive-audit-2026-09-18.md — nine findings, each with file:line or frame evidence and each assigned to the plan that should own the fix. It changes no layout CSS; the report is the deliverable.\n\nThe headline: at every width at or below 1040px the navigation renders with ALL FIVE dropdown panels open and stacked. It lives in BaseLayout, so it is every page. On a 390px phone the first full screen ends inside the Content Hub panel — a visitor sees no page content at all before scrolling; at 768 the page's own heading starts roughly 1,800px down. Above 1040 every surface is clean: all eleven were reviewed at Laptop with no horizontal scroll, overlap, cut-off content or half-finished reflow. That finding has a methodological consequence recorded in the report: it MASKS every other page's content at Mobile and Tablet, so those frames are evidence for it and little else, and both widths want a second pass once it is fixed — now a recapture rather than new authoring, since the scenarios carry all four sizes.\n\nSCOPE VERDICT — DELIVERED: a slice of \"faithfully reproduce the harvardintech.com site\", namely the evidence needed before the mobile and design-system work can proceed against something other than guesswork. DEFERRED: all five project deliverables remain open, every one deferred by the user rather than by this cycle — reproducing the full site, publishing live on GitHub Pages, the local content admin, the cloud content admin, and protecting it with a password or GitHub sign-in. None were in this plan's scope.\n\nTwo of the plan's own seed findings were CORRECTED rather than confirmed: Laptop has no slack at all (the 1220px content column can only reach 1184px at 1280, where the plan estimated ~30px spare each side), and SponsorWall does not produce two phone columns — only ContactUs does, and on the frame that turned out to be a comfortable 2x2 social grid rather than cramped, so it was dismissed. Two findings written up as new were then corrected to CONFIRMED, NOT NEW: launch--design-system phase 1 already specifies moving /blog/[slug] and /404 into BaseLayout and already says to drop the undefined --color-primary. The redundant plan proposed for them was deleted. Only one proposed plan survives: teaching the capture harness to accept a declared non-200 status.\n\nWORTH KNOWING: /404 cannot be captured at any width. Every capture entry point treats an HTTP 404 RESPONSE as a failed navigation, and Astro correctly serves that page with a 404 status at every URL that reaches it, so there is no 200-status route to it. Forcing one would mean editing application source, which this plan forbids. It is excluded from PUBLIC_AUDIT_ROUTES with the reason recorded in the file and pinned by a test, and assessed from source instead.\n\nAlso: a large registry cleanup fell out of the audit gate. 153 tests existed in source but not in .codeyam/test-registry.json, all of them table-driven cases the reconciler cannot resolve because a name built from a template literal truncates at the interpolation. 145 were registered from their source comments; the last 8 needed two test files restructured from `it()`-in-a-for-loop to `it.each` with the name at the call site, which is the shape the resolver can read. Behaviour is unchanged and all 1534 tests pass. The audit went from 1354 strict findings to 4.\n\nThe audit finished at ZERO blocking findings, and the last two took a decision each. The capture collision between the two /donate scenarios (finding F9) is RESOLVED: my first attempt hovered both scenarios into their own band and was reverted, because the goal-meter band renders display:none in that seed's widget mode and the fix would have left two scenarios failing outright instead of merely colliding. Retrying only the .pillars hover on momentum-fund-two-pillar-bands-with-their-own-cards worked — the earlier failure there was a transient seed race, not the display:none one — and the two frames' md5s now differ. The other was give-page-six-photographs-no-repeats, an application scenario pointed at the /give route retired last cycle. It cannot be recaptured at any width (\"Capture URL redirected from /give to /donate/\"), and the audit files it under DEPENDENCY_STALE_SCREENSHOTS rather than SOURCE_UNRESOLVED_SCENARIOS — the recapturable bucket — so it would have blocked session-finalize and stage-feature on every future cycle with no baseline path out. Everything it claimed to protect survives elsewhere: the six-photographs-are-different guard is contentImages.test.ts, which md5s the files and never read the frame, and the composition is covered by givecollage-six-photographs-in-one-frame on /isolated-components/GiveCollage, which still captures cleanly. Only its page-level framing is lost, and that is unobtainable now by any means because the page is gone. The user approved deleting it. Eight ISOLATION_ROUTE_TRACKED_IN_APP_SOURCE_ADVISORY findings remain and are advisory by design — the production build already strips src/pages/isolated-components, and the tool says not to untrack them.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/capture.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--responsive-audit-of-every-public-page.md\t.codeyam/plans/completed/launch--responsive-audit-of-every-public-page.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--design-system.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--mobile-and-layout.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blog-post-a-retained-medium-stub.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-new-york-city.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-founders-with-leads-and-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/events-route-upcoming-and-past.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-landing-page.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-public-visitor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-marked-as-draft--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-dashboard-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-dashboard-populated--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-change-staged-for-review--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-adding-a-donor-wall-tier--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-momentum-fund-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-the-momentum-network-copy-an-editor-can-now-reach--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-section-type-is-a-dropdown--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-donor-fields-no-editor-can-change--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-second-band-pointed-at-its-own-cards--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-where-the-pillar-cards-actually-live--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-sponsorship-level-editor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-testimonials-the-fields-behind-a-quote--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-volunteer-page-editor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-default--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-intro-heading-and-founding-line--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-intro-no-founding-donors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/donor-wall-intro-nothing-to-introduce--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-archive-folded-by-year--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givecollage-six-photographs-in-one-frame--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givephoto-the-strip-the-card-overlaps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-sections-reordered-by-an-editor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-form-configured--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectphoto-square-upload--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectthumb-linked-bare-and-placeholder--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/site-page-a-page-written-in-the-cms.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsor-route-example-partner-wall.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-page-open-projects.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-photo-and-own-sign-up-link.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinars-route-the-surviving-recordings.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "package-lock.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/pageCopyDrift.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/publicRoutes.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/publicRoutes.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/responsiveCoverage.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/responsiveCoverage.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/selectOptions.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-on-four-sizes.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-chapters-on-four-sizes.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-contact-on-four-sizes.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--laptop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--mobile.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/credential-store-durability.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/2cc0a40a07ea0ee81956f394b46837cf0a77cef20cee4808ed1e26c5ff64d115.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/fdc23b3a1ad882368024d447cee364b1e29b53a9f1f3d5db1df2e4a9c9c2d132.json",
+      "status": "added"
+    },
+    {
+      "path": "docs/responsive-audit-2026-09-18.md",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 55,
+    "passed": 55,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 55,
+        "passed": 55
+      }
+    ]
+  }
+}

@@ -108,22 +108,16 @@ codeyam-editor start
 ```
 <!-- codeyam:run-and-edit:end -->
 
-<!-- codeyam:scenario-gallery:start d=814d84b1a97f -->
+<!-- codeyam:scenario-gallery:start d=91a1af7d42ea -->
 ## Scenario gallery
 
 States captured as runnable scenarios with codeyam-editor:
 
 ### Blog Post - A Retained Medium Stub
 
-<img src=".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png" alt="Blog Post - A Retained Medium Stub" width="280">
+<img src=".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--mobile.png" alt="Blog Post - A Retained Medium Stub" width="280">
 
 A blog post as a reader who still holds its link meets it. This scenario used to show the Welcome post, which was retired when the blog was hidden for launch — the owner decided on 2026-09-14 not to advertise a blog until there are real articles for it. So it now shows one of the ten Medium stubs instead, which is what a retained link actually resolves to: the posts keep building at their own URLs even with every route INTO the blog closed, so nobody holding an old link gets a 404. Note what is ABSENT — the back link that used to sit above the title is gone, because with the blog hidden there is no index for it to return to.
-
-### Cutover Runbook - The Records On A Phone
-
-<img src=".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png" alt="Cutover Runbook - The Records On A Phone" width="280">
-
-The DNS record table at 390px, brought into frame by driving the page rather than by a URL fragment — a bare anchor does not scroll a capture, so a fragment-only scenario silently frames the hero and proves nothing. This capture is the reason the table stacks here instead of scrolling. The first build let it scroll horizontally inside its own box, which kept the page body from widening and looked correct; what the capture showed was that values like the Strikingly CNAME pushed the third column entirely off-screen, and the third column is where the 'Do not touch' badges on the Email and SPF rows live. The single most important instruction on the page was invisible on the device someone is most likely to be holding while standing in the registrar console, with nothing on screen suggesting more existed. It survived the move from a standalone file to a real route, which is what this scenario re-proves.
 
 ### Blog Preview Link - Shared Draft
 
@@ -131,11 +125,23 @@ The DNS record table at 390px, brought into frame by driving the page rather tha
 
 The page a reviewer actually lands on. An unpublished post, cloned to an unguessable URL and rendered in the site's real layout — no sign-in, no CMS account, no passphrase. The post it stands in for is still a draft and appears in no listing; this URL is the only way to reach it. Proves the load-bearing half of preview links: routableEntries built a page that publishedEntries deliberately excludes from every index.
 
+### Chapter Route - New York City
+
+<img src=".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png" alt="Chapter Route - New York City" width="280">
+
+The founding chapter with NO events tagged to it — the counterpart to London, where tags match and the events section appears. Neither an upcoming nor a recent block renders here, which is the assertion: both sections stay away entirely rather than leaving an empty heading behind. It is also the state a chapter sits in whenever its tags are typo'd, since a near-miss tag belongs to nobody and looks exactly like this.
+
 ### CMS Analytics And Embeds
 
 <img src=".codeyam/scenarios/screenshots/cms-analytics-and-embeds--desktop.png" alt="CMS Analytics And Embeds" width="280">
 
 The site-wide integration keys on a screen of their own: the analytics measurement id, the Givebutter account id, and the raw head/body HTML escape hatch. Doubles as the live-preview pane's NO-PAGE state — siteIntegrations is the one collection declared with a null path, so the pane says 'This content has no page of its own' and falls back to the plain body preview rather than guessing an address and embedding a 404 beside the form for the whole session.
+
+### Community Route - Founders With Leads And Events
+
+<img src=".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png" alt="Community Route - Founders With Leads And Events" width="280">
+
+A community once it has people and a calendar behind it. Its events are tagged the ORIGINAL way — a single chapter tag naming the community — which this seed keeps on purpose: that path still works and this is what proves it. The newer alternative is an event's own communities list, which is what lets one London co-working day sit on the London chapter page and here at the same time without either tag having to win; the production Founders content uses that path, and this scenario deliberately covers the other. Its Join link points at the shared Google Form: this seed previously carried a raw chat.whatsapp.com invite, which put the one pattern the site forbids into a frame that looks like the product.
 
 ### CMS Blog - Duplicate Is Not Momentum-Fund-Only
 
@@ -143,21 +149,15 @@ The site-wide integration keys on a screen of their own: the analytics measureme
 
 The same Duplicate action on a collection that has nothing to do with the campaign page. It matters because the request that produced this feature was about duplicating a Momentum Fund section, and the easy build would have gated the action to that one collection — which would have been MORE code to make the feature smaller. Duplicate lives in the shared entry-row action cluster instead, so pillar cards, events and blog posts get it for free, and a blog post duplicated here carries its own title, date, summary and body into the create form exactly the way a section does. The one exclusion is a preview row, whose action set is different and whose previewOf marker would otherwise mint a second unlisted clone of the same target. This list also shows the ordinary case for the row label: blog posts carry real titles, so no row is falling back to its slug.
 
+### Cutover Runbook - The Records On A Phone
+
+<img src=".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png" alt="Cutover Runbook - The Records On A Phone" width="280">
+
+The DNS record table at 390px, brought into frame by driving the page rather than by a URL fragment — a bare anchor does not scroll a capture, so a fragment-only scenario silently frames the hero and proves nothing. This capture is the reason the table stacks here instead of scrolling. The first build let it scroll horizontally inside its own box, which kept the page body from widening and looked correct; what the capture showed was that values like the Strikingly CNAME pushed the third column entirely off-screen, and the third column is where the 'Do not touch' badges on the Email and SPF rows live. The single most important instruction on the page was invisible on the device someone is most likely to be holding while standing in the registrar console, with nothing on screen suggesting more existed. It survived the move from a standalone file to a real route, which is what this scenario re-proves.
+
 ### CMS Blog List - A Preview Link And A Locked One
 
 <img src=".codeyam/scenarios/screenshots/cms-blog-list-a-preview-link-and-a-locked-one--desktop.png" alt="CMS Blog List - A Preview Link And A Locked One" width="280">
 
 The blog list once preview links exist: a third group above Drafts and Published holding two unlisted clones. One is an ordinary preview; the other is password-protected, so it shows the placeholder title Protected preview rather than its real one — the title is encrypted at rest alongside the body, which is why the list cannot show it either. The @codeyam/cms 0.5.0 upgrade is what added this group.
-
-### CMS Chapter Editor - Marked As Draft
-
-<img src=".codeyam/scenarios/screenshots/cms-chapter-editor-marked-as-draft--desktop.png" alt="CMS Chapter Editor - Marked As Draft" width="280">
-
-The NYC chapter mid-edit with the Draft toggle ticked, reading Hidden from the live site. This is the control that previously did nothing — no schema declared a draft field, so zod stripped the value and the entry kept publishing. The interaction drives the checkbox so the capture shows the ticked state rather than the resting form.
-
-### CMS Dashboard - Empty
-
-<img src=".codeyam/scenarios/screenshots/cms-dashboard-empty--desktop.png" alt="CMS Dashboard - Empty" width="280">
-
-The dashboard an editor meets on a site with no content at all — every collection card shows its add-the-first-one nudge instead of a count, which is the state that proves the empty affordances exist.
 <!-- codeyam:scenario-gallery:end -->

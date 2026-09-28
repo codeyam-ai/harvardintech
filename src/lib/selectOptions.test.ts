@@ -29,6 +29,11 @@ function field(collectionId: string, fieldName: string) {
 }
 
 describe('enum-shaped fields are dropdowns, not text boxes', () => {
+  // One case per field the code validates against a fixed list. Each must be a
+  // `select` in the CMS registry rather than a text box: as free text, an editor
+  // had to type one of thirteen exact strings from a prose hint, and a typo cost
+  // them the whole band with no error anywhere — the silent-drop this suite
+  // exists to prevent.
   it.each([
     ['homeSections', 'kind'],
     ['momentumSections', 'kind'],

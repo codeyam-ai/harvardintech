@@ -105,7 +105,7 @@
       "format": "vitest",
       "key": "Mohammed Ally's testimonial › has no event photo until a real Colorado one exists",
       "line": 149,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -474,7 +474,7 @@
       "format": "vitest",
       "key": "apple-touch-icon.png › exists",
       "line": 41,
-      "registeredAt": "2026-09-18T18:27:52Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -483,7 +483,7 @@
       "format": "vitest",
       "key": "apple-touch-icon.png › is exactly 180x180",
       "line": 117,
-      "registeredAt": "2026-09-18T18:27:52Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -838,59 +838,66 @@
       "runner": "tests"
     },
     {
-      "description": "The chapter Connect row draws each logo in its own brand colour, and every brand mark carries the official value.",
+      "description": "The chapter Connect row draws each logo in its own brand colour, so every brand mark carries one. These are the official values.",
       "file": "src/lib/brandIcons.test.ts",
       "format": "vitest",
       "key": "brand colours › gives facebook its official brand colour",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 63,
+      "registeredAt": "2026-09-28T16:56:55.913220336+00:00",
       "runner": "tests"
     },
     {
-      "description": "The chapter Connect row draws each logo in its own brand colour, and every brand mark carries the official value.",
+      "description": "The chapter Connect row draws each logo in its own brand colour, so every brand mark carries one. These are the official values.",
       "file": "src/lib/brandIcons.test.ts",
       "format": "vitest",
       "key": "brand colours › gives linkedin its official brand colour",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 63,
+      "registeredAt": "2026-09-28T16:56:55.913909455+00:00",
       "runner": "tests"
     },
     {
-      "description": "The chapter Connect row draws each logo in its own brand colour, and every brand mark carries the official value.",
+      "description": "The chapter Connect row draws each logo in its own brand colour, so every brand mark carries one. These are the official values.",
       "file": "src/lib/brandIcons.test.ts",
       "format": "vitest",
       "key": "brand colours › gives medium its official brand colour",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 63,
+      "registeredAt": "2026-09-28T16:56:55.914598834+00:00",
       "runner": "tests"
     },
     {
-      "description": "The chapter Connect row draws each logo in its own brand colour, and every brand mark carries the official value.",
+      "description": "The chapter Connect row draws each logo in its own brand colour, so every brand mark carries one. These are the official values.",
       "file": "src/lib/brandIcons.test.ts",
       "format": "vitest",
       "key": "brand colours › gives x its official brand colour",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 63,
+      "registeredAt": "2026-09-28T16:56:55.915193820+00:00",
       "runner": "tests"
     },
     {
-      "description": "The generic glyphs are not brands, so they inherit the surrounding ink instead of forcing a colour of their own.",
+      "description": "The chapter Connect row draws each logo in its own brand colour, so every brand mark carries one. These are the official values.",
       "file": "src/lib/brandIcons.test.ts",
       "format": "vitest",
       "key": "brand colours › leaves the generic blog glyph uncoloured",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 63,
+      "registeredAt": "2026-09-28T16:56:55.915819356+00:00",
       "runner": "tests"
     },
     {
-      "description": "The generic glyphs are not brands, so they inherit the surrounding ink instead of forcing a colour of their own.",
+      "description": "The chapter Connect row draws each logo in its own brand colour, so every brand mark carries one. These are the official values.",
       "file": "src/lib/brandIcons.test.ts",
       "format": "vitest",
       "key": "brand colours › leaves the generic email glyph uncoloured",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 63,
+      "registeredAt": "2026-09-28T16:56:55.916645606+00:00",
       "runner": "tests"
     },
     {
-      "description": "The generic glyphs are not brands, so they inherit the surrounding ink instead of forcing a colour of their own.",
+      "description": "The chapter Connect row draws each logo in its own brand colour, so every brand mark carries one. These are the official values.",
       "file": "src/lib/brandIcons.test.ts",
       "format": "vitest",
       "key": "brand colours › leaves the generic newsletter glyph uncoloured",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 63,
+      "registeredAt": "2026-09-28T16:56:55.917318769+00:00",
       "runner": "tests"
     },
     {
@@ -1313,7 +1320,7 @@
       "format": "vitest",
       "key": "chapter and community banners › are at least 1600px wide wherever one is set",
       "line": 114,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1322,7 +1329,7 @@
       "format": "vitest",
       "key": "chapter and community banners › finds chapter and community entries to check",
       "line": 105,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1331,7 +1338,7 @@
       "format": "vitest",
       "key": "chapter and community banners › never fall back to the shared New York wall without curating their own photos",
       "line": 130,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1340,7 +1347,7 @@
       "format": "vitest",
       "key": "chapter counts agree with the content › has four active chapters and two forming",
       "line": 53,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1349,7 +1356,7 @@
       "format": "vitest",
       "key": "chapter counts agree with the content › the chapters stat equals the active-chapter count",
       "line": 59,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1358,7 +1365,7 @@
       "format": "vitest",
       "key": "chapter counts agree with the content › the donate page Chapters stat equals the same count",
       "line": 68,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1916,7 +1923,7 @@
       "format": "vitest",
       "key": "copy names no retired or forming city as active › never claims six chapters",
       "line": 106,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1925,7 +1932,7 @@
       "format": "vitest",
       "key": "copy names no retired or forming city as active › never mentions Japan or L.A.",
       "line": 92,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1934,7 +1941,7 @@
       "format": "vitest",
       "key": "copy names no retired or forming city as active › the chapter sponsor level offers no forming city",
       "line": 118,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1943,7 +1950,7 @@
       "format": "vitest",
       "key": "copy names no retired or forming city as active › the hero lede marks the forming chapters as forming",
       "line": 128,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1952,7 +1959,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › boston-cambridge.md › declares no blank photo rows",
       "line": 63,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1961,7 +1968,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › boston-cambridge.md › declares only root-absolute photo paths",
       "line": 71,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1970,7 +1977,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › boston-cambridge.md › points only at images that exist under public/",
       "line": 78,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1979,7 +1986,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › dc-dmv.md › declares no blank photo rows",
       "line": 63,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1988,7 +1995,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › dc-dmv.md › declares only root-absolute photo paths",
       "line": 71,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -1997,7 +2004,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › dc-dmv.md › points only at images that exist under public/",
       "line": 78,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2015,7 +2022,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › london.md › declares no blank photo rows",
       "line": 63,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2024,7 +2031,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › london.md › declares only root-absolute photo paths",
       "line": 71,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2033,7 +2040,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › london.md › points only at images that exist under public/",
       "line": 78,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2042,7 +2049,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › nyc.md › declares no blank photo rows",
       "line": 63,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2051,7 +2058,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › nyc.md › declares only root-absolute photo paths",
       "line": 71,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2060,7 +2067,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › nyc.md › points only at images that exist under public/",
       "line": 78,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2069,7 +2076,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › seattle.md › declares no blank photo rows",
       "line": 63,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2078,7 +2085,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › seattle.md › declares only root-absolute photo paths",
       "line": 71,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2087,7 +2094,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › seattle.md › points only at images that exist under public/",
       "line": 78,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2096,7 +2103,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › sf-bay-area.md › declares no blank photo rows",
       "line": 63,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2105,7 +2112,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › sf-bay-area.md › declares only root-absolute photo paths",
       "line": 71,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2114,7 +2121,7 @@
       "format": "vitest",
       "key": "curated chapter galleries › sf-bay-area.md › points only at images that exist under public/",
       "line": 78,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2393,7 +2400,7 @@
       "format": "vitest",
       "key": "deploy.yml track coherence › advertises harvardintech.com from the gated build",
       "line": 135,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2402,7 +2409,7 @@
       "format": "vitest",
       "key": "deploy.yml track coherence › builds with a base matching this repo",
       "line": 105,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2411,7 +2418,7 @@
       "format": "vitest",
       "key": "deploy.yml track coherence › deploys no branch other than main",
       "line": 116,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2420,7 +2427,7 @@
       "format": "vitest",
       "key": "deploy.yml track coherence › gates the build while the site is not meant to be public",
       "line": 125,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2429,7 +2436,7 @@
       "format": "vitest",
       "key": "deploy.yml track coherence › hosts the site on the codeyam-ai Pages site",
       "line": 130,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2438,7 +2445,7 @@
       "format": "vitest",
       "key": "deploy.yml track coherence › takes the gate passphrase from the secret",
       "line": 143,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -2914,7 +2921,7 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "dropdown options match the validators that enforce them › donors.school offers exactly the schools the resolver accepts",
-      "line": 71,
+      "line": 76,
       "registeredAt": "2026-08-18T18:44:27Z",
       "runner": "tests"
     },
@@ -2923,7 +2930,7 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "dropdown options match the validators that enforce them › homeSections.kind offers exactly the kinds the homepage renders",
-      "line": 45,
+      "line": 50,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -2932,7 +2939,7 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "dropdown options match the validators that enforce them › momentumSections.kind offers exactly the Momentum Fund section kinds",
-      "line": 51,
+      "line": 56,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -2941,7 +2948,7 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "dropdown options match the validators that enforce them › momentumSections.layout offers exactly the layouts",
-      "line": 62,
+      "line": 67,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -3045,83 +3052,93 @@
       "runner": "tests"
     },
     {
-      "description": "Anything off the email rule's list - the chapter Connect row, a support card - gets no address at all.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns nothing for the unlisted surface \"\"",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.918704568+00:00",
       "runner": "tests"
     },
     {
-      "description": "Anything off the email rule's list - the chapter Connect row, a support card - gets no address at all.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns nothing for the unlisted surface \"chapterConnect\"",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.920094660+00:00",
       "runner": "tests"
     },
     {
-      "description": "Anything off the email rule's list - the chapter Connect row, a support card - gets no address at all.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns nothing for the unlisted surface \"getInvolved\"",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.921359733+00:00",
       "runner": "tests"
     },
     {
-      "description": "Anything off the email rule's list - the chapter Connect row, a support card - gets no address at all.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns nothing for the unlisted surface \"supportUs\"",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.922774111+00:00",
       "runner": "tests"
     },
     {
-      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns the address for contactUs",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.924088074+00:00",
       "runner": "tests"
     },
     {
-      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns the address for footer",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.925335474+00:00",
       "runner": "tests"
     },
     {
-      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns the address for formingChapter",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.926618495+00:00",
       "runner": "tests"
     },
     {
-      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns the address for llms",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.927856557+00:00",
       "runner": "tests"
     },
     {
-      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns the address for sponsorInquiry",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.929090495+00:00",
       "runner": "tests"
     },
     {
-      "description": "Every surface named in the email rule gets the resolved shared inbox address, trimmed.",
+      "description": "Each listed surface gets the resolved address.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns the address for structuredData",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:56:55.930392233+00:00",
       "runner": "tests"
     },
     {
@@ -3323,35 +3340,39 @@
       "runner": "tests"
     },
     {
-      "description": "Asserts the donors.school field is a select control rather than a text box, so an editor picks a school from the list instead of typing a spelling the network's find-your-school search would then fail to match.",
+      "description": "One generated case in the 'enum-shaped fields are dropdowns, not text boxes' table-driven suite.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "enum-shaped fields are dropdowns, not text boxes › donors.school is a select",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 32,
+      "registeredAt": "2026-09-28T16:56:55.931381003+00:00",
       "runner": "tests"
     },
     {
-      "description": "Asserts the CMS renders homeSections.kind as a dropdown rather than a free-text box, so an editor picks from the values the code understands instead of typing one the site silently drops.",
+      "description": "One generated case in the 'enum-shaped fields are dropdowns, not text boxes' table-driven suite.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "enum-shaped fields are dropdowns, not text boxes › homeSections.kind is a select",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 32,
+      "registeredAt": "2026-09-28T16:56:55.932290318+00:00",
       "runner": "tests"
     },
     {
-      "description": "Asserts the CMS renders momentumSections.kind as a dropdown rather than a free-text box, so an editor picks from the values the code understands instead of typing one the site silently drops.",
+      "description": "One generated case in the 'enum-shaped fields are dropdowns, not text boxes' table-driven suite.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "enum-shaped fields are dropdowns, not text boxes › momentumSections.kind is a select",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 32,
+      "registeredAt": "2026-09-28T16:56:55.933223723+00:00",
       "runner": "tests"
     },
     {
-      "description": "Asserts the CMS renders momentumSections.layout as a dropdown rather than a free-text box, so an editor picks from the values the code understands instead of typing one the site silently drops.",
+      "description": "One generated case in the 'enum-shaped fields are dropdowns, not text boxes' table-driven suite.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "enum-shaped fields are dropdowns, not text boxes › momentumSections.layout is a select",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 32,
+      "registeredAt": "2026-09-28T16:56:55.934146287+00:00",
       "runner": "tests"
     },
     {
@@ -3620,7 +3641,7 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "every declared select is usable › gives each select a non-empty options list",
-      "line": 79,
+      "line": 84,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -3629,8 +3650,35 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "every declared select is usable › gives no select a duplicate or blank option",
-      "line": 90,
+      "line": 95,
       "registeredAt": "2026-08-04T18:59:29Z",
+      "runner": "tests"
+    },
+    {
+      "description": "THE RED-FIRST ASSERTION. Before the audit gives them their sizes, every route but home and donate is missing three widths and not-found has no scenario at all, so this fails naming them. It passes only once each public surface is captured at all four.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "every public page has a saved view at all four sizes › leaves no public route short of a required size",
+      "line": 145,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Non-vacuity: if the directory ever stops being read, every assertion below would pass against an empty list while proving nothing.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "every public page has a saved view at all four sizes › reads the committed scenario directory",
+      "line": 137,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Names alone, for a failure that reads at a glance above the detail.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "every public page has a saved view at all four sizes › reports no uncovered route keys",
+      "line": 154,
+      "registeredAt": "2026-09-28T16:25:07Z",
       "runner": "tests"
     },
     {
@@ -3661,75 +3709,84 @@
       "runner": "tests"
     },
     {
-      "description": "Asserts every school value already committed to a donor markdown file is still one the dropdown offers, so a value typed as free text before the list existed cannot leave the site rendering something the CMS now calls invalid. Vacuous while the donors collection ships empty; it starts biting the moment the first supporter is added.",
+      "description": "The values already committed were typed as free text. If any of them is not an option, an editor opening that entry sees an out-of-list value — which the control preserves, but which means the site is rendering something the CMS calls invalid. Worth failing over: it means the lists disagree.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed donors.school value is offered",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 111,
+      "registeredAt": "2026-09-28T16:56:55.935083653+00:00",
       "runner": "tests"
     },
     {
-      "description": "Checks every homeSections.kind value already committed as free text appears in the dropdown's options. A value that is not offered means the site renders something the CMS calls invalid, and the two lists have drifted apart.",
+      "description": "The values already committed were typed as free text. If any of them is not an option, an editor opening that entry sees an out-of-list value — which the control preserves, but which means the site is rendering something the CMS calls invalid. Worth failing over: it means the lists disagree.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed homeSections.kind value is offered",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 111,
+      "registeredAt": "2026-09-28T16:56:55.935998840+00:00",
       "runner": "tests"
     },
     {
-      "description": "Checks every momentumSections.kind value already committed as free text appears in the dropdown's options. A value that is not offered means the site renders something the CMS calls invalid, and the two lists have drifted apart.",
+      "description": "The values already committed were typed as free text. If any of them is not an option, an editor opening that entry sees an out-of-list value — which the control preserves, but which means the site is rendering something the CMS calls invalid. Worth failing over: it means the lists disagree.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed momentumSections.kind value is offered",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 111,
+      "registeredAt": "2026-09-28T16:56:55.936902204+00:00",
       "runner": "tests"
     },
     {
-      "description": "Checks every momentumSections.layout value already committed as free text appears in the dropdown's options. A value that is not offered means the site renders something the CMS calls invalid, and the two lists have drifted apart.",
+      "description": "The values already committed were typed as free text. If any of them is not an option, an editor opening that entry sees an out-of-list value — which the control preserves, but which means the site is rendering something the CMS calls invalid. Worth failing over: it means the lists disagree.",
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed momentumSections.layout value is offered",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 111,
+      "registeredAt": "2026-09-28T16:56:55.937879239+00:00",
       "runner": "tests"
     },
     {
-      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › adds nothing for #contact",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.938413417+00:00",
       "runner": "tests"
     },
     {
-      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › adds nothing for /volunteer",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.939014767+00:00",
       "runner": "tests"
     },
     {
-      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › adds nothing for mailto:hello@example.com",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.939562696+00:00",
       "runner": "tests"
     },
     {
-      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › adds nothing for tel:+15555550100",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.940085555+00:00",
       "runner": "tests"
     },
     {
-      "description": "Paths, anchors, mailto and tel links never leave the site, so they get no new-tab attributes.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › adds nothing for volunteer",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.940850873+00:00",
       "runner": "tests"
     },
     {
@@ -3751,43 +3808,48 @@
       "runner": "tests"
     },
     {
-      "description": "An http(s) link to another host leaves the site, so it opens in a new tab with noopener noreferrer.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › opens http://medium.com/harvard-in-tech in a new tab",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.941679805+00:00",
       "runner": "tests"
     },
     {
-      "description": "An http(s) link to another host leaves the site, so it opens in a new tab with noopener noreferrer.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › opens https://forms.gle/GqgaCDDWhWAgpJC68 in a new tab",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.942454498+00:00",
       "runner": "tests"
     },
     {
-      "description": "An http(s) link to another host leaves the site, so it opens in a new tab with noopener noreferrer.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › opens https://lu.ma/harvardintech in a new tab",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.943216670+00:00",
       "runner": "tests"
     },
     {
-      "description": "The live domain and its www./apex twin are always the site's own, so they stay in the same tab.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › treats the live domain https://harvardintech.com/events as internal",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.943967049+00:00",
       "runner": "tests"
     },
     {
-      "description": "The live domain and its www./apex twin are always the site's own, so they stay in the same tab.",
+      "description": "An http(s) link to another host leaves the site, so it opens in a new tab.",
       "file": "src/lib/externalLink.test.ts",
       "format": "vitest",
       "key": "externalLinkAttrs › treats the live domain https://www.harvardintech.com/ as internal",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 9,
+      "registeredAt": "2026-09-28T16:56:55.944717445+00:00",
       "runner": "tests"
     },
     {
@@ -3805,7 +3867,7 @@
       "format": "vitest",
       "key": "favicon.svg › exists",
       "line": 41,
-      "registeredAt": "2026-09-18T18:27:52Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -3814,7 +3876,7 @@
       "format": "vitest",
       "key": "favicon.svg › is not the scaffold placeholder any more",
       "line": 48,
-      "registeredAt": "2026-09-18T18:27:52Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -3823,7 +3885,7 @@
       "format": "vitest",
       "key": "favicon.svg › is parseable as an image",
       "line": 62,
-      "registeredAt": "2026-09-18T18:27:52Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -3832,7 +3894,7 @@
       "format": "vitest",
       "key": "favicon.svg › uses the brand crimson from the design tokens",
       "line": 55,
-      "registeredAt": "2026-09-18T18:27:52Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -4939,7 +5001,7 @@
       "format": "vitest",
       "key": "images referenced from content › all resolve to a file that exists under public/",
       "line": 74,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -4948,7 +5010,7 @@
       "format": "vitest",
       "key": "images referenced from content › finds content files to check",
       "line": 67,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -6923,6 +6985,42 @@
       "runner": "tests"
     },
     {
+      "description": "Extra sizes are not an error — a scenario may carry a width the audit does not require, and that is coverage, not drift.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "missingSizes › ignores sizes beyond the required set",
+      "line": 53,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The ordinary case: a scenario captured at one width owes the other three.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "missingSizes › names the required sizes a scenario lacks",
+      "line": 30,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A fully covered scenario owes nothing — this is what the audit is driving every representative surface toward.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "missingSizes › returns nothing when every required size is present",
+      "line": 40,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Absent is not a pass. A scenario with no dimensions at all is the shape a hand-written JSON file takes before anyone thinks about sizes, and it must read as missing all of them rather than as satisfying the rule vacuously.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "missingSizes › treats a scenario with no dimensions as missing every size",
+      "line": 47,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
       "description": "A band whose markdown body renders on /donate must carry no editor-facing note, or the instruction is published to visitors where the lede belongs. Keyed off KINDS_WITH_BODY so a future kind that gains a rendered body is covered the day it is added.",
       "file": "src/lib/sectionNotes.test.ts",
       "format": "vitest",
@@ -7346,30 +7444,30 @@
       "runner": "tests"
     },
     {
-      "description": "The committed JSON fallback for this page carries no tax-deductibility, 501(c)(6) or charitable claim, so the wording cannot return through the fallback when a CMS field is cleared.",
+      "description": "The committed JSON fallbacks, checked separately from the CMS content above: each one supplies the copy when its markdown field is blank, so a claim left here would return the moment an editor cleared the field — a route back in that fixing only the markdown would miss.",
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
       "key": "no public giving copy makes a legal or tax claim › is absent from src/data/donatePage.json",
-      "line": 107,
-      "registeredAt": "2026-09-19T11:55:45.146419368+00:00",
+      "line": 111,
+      "registeredAt": "2026-09-28T16:56:55.945970538+00:00",
       "runner": "tests"
     },
     {
-      "description": "The committed JSON fallback for this page carries no tax-deductibility, 501(c)(6) or charitable claim, so the wording cannot return through the fallback when a CMS field is cleared.",
+      "description": "The committed JSON fallbacks, checked separately from the CMS content above: each one supplies the copy when its markdown field is blank, so a claim left here would return the moment an editor cleared the field — a route back in that fixing only the markdown would miss.",
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
       "key": "no public giving copy makes a legal or tax claim › is absent from src/data/settings.json",
-      "line": 107,
-      "registeredAt": "2026-09-19T11:55:45.203527363+00:00",
+      "line": 111,
+      "registeredAt": "2026-09-28T16:56:55.947095378+00:00",
       "runner": "tests"
     },
     {
-      "description": "The committed JSON fallback for this page carries no tax-deductibility, 501(c)(6) or charitable claim, so the wording cannot return through the fallback when a CMS field is cleared.",
+      "description": "The committed JSON fallbacks, checked separately from the CMS content above: each one supplies the copy when its markdown field is blank, so a claim left here would return the moment an editor cleared the field — a route back in that fixing only the markdown would miss.",
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
       "key": "no public giving copy makes a legal or tax claim › is absent from src/data/sponsorPage.json",
-      "line": 107,
-      "registeredAt": "2026-09-19T11:55:45.175227985+00:00",
+      "line": 111,
+      "registeredAt": "2026-09-28T16:56:55.948200005+00:00",
       "runner": "tests"
     },
     {
@@ -7598,43 +7696,48 @@
       "runner": "tests"
     },
     {
-      "description": "Guards the Momentum Fund pair's drift check from passing vacuously by asserting the two files actually share at least one scalar key to compare.",
+      "description": "A pair sharing nothing would pass the drift check vacuously - the guard would be dead without anyone noticing, which is exactly how the drift it exists to catch got in.",
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › actually compares something for the Momentum Fund page",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 116,
+      "registeredAt": "2026-09-28T17:03:44.400207568+00:00",
       "runner": "tests"
     },
     {
-      "description": "Guards the analytics pair's drift check from passing vacuously by asserting the two files actually share at least one scalar key to compare.",
+      "description": "A pair sharing nothing would pass the drift check vacuously - the guard would be dead without anyone noticing, which is exactly how the drift it exists to catch got in.",
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › actually compares something for the analytics and embeds",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 116,
+      "registeredAt": "2026-09-28T17:03:44.471888351+00:00",
       "runner": "tests"
     },
     {
-      "description": "Guards the sponsorship pair's drift check from passing vacuously by asserting the two files actually share at least one scalar key to compare.",
+      "description": "A pair sharing nothing would pass the drift check vacuously - the guard would be dead without anyone noticing, which is exactly how the drift it exists to catch got in.",
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › actually compares something for the sponsorship page",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 116,
+      "registeredAt": "2026-09-28T17:03:44.433687348+00:00",
       "runner": "tests"
     },
     {
-      "description": "Guards the volunteer pair's drift check from passing vacuously by asserting the two files actually share at least one scalar key to compare.",
+      "description": "A pair sharing nothing would pass the drift check vacuously - the guard would be dead without anyone noticing, which is exactly how the drift it exists to catch got in.",
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › actually compares something for the volunteer page",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 116,
+      "registeredAt": "2026-09-28T17:03:44.505753563+00:00",
       "runner": "tests"
     },
     {
-      "description": "The same drift check for the Momentum Fund page's JSON fallback and its collection entry.",
+      "description": "The JSON fallback and the collection entry describe the same copy, so a key that differs between them means the page renders one value while the CMS shows another. The failure names the drifted key and both values; keep the collection's, because that is what the site renders.",
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › keeps the Momentum Fund page copy identical in both places",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 99,
+      "registeredAt": "2026-09-28T17:03:44.293703177+00:00",
       "runner": "tests"
     },
     {
@@ -7642,32 +7745,35 @@
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › keeps the analytics and donation IDs identical in both places",
-      "line": 131,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 136,
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
-      "description": "The same drift check for settings.json against the siteIntegrations entry, where a stale value is a wrong analytics or donation ID rather than wrong prose.",
+      "description": "The JSON fallback and the collection entry describe the same copy, so a key that differs between them means the page renders one value while the CMS shows another. The failure names the drifted key and both values; keep the collection's, because that is what the site renders.",
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › keeps the analytics and embeds copy identical in both places",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 99,
+      "registeredAt": "2026-09-28T17:03:44.366739105+00:00",
       "runner": "tests"
     },
     {
-      "description": "The same drift check for the sponsorship page's JSON fallback and its collection entry.",
+      "description": "The JSON fallback and the collection entry describe the same copy, so a key that differs between them means the page renders one value while the CMS shows another. The failure names the drifted key and both values; keep the collection's, because that is what the site renders.",
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › keeps the sponsorship page copy identical in both places",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 99,
+      "registeredAt": "2026-09-28T17:03:44.327480886+00:00",
       "runner": "tests"
     },
     {
-      "description": "Fails when a scalar key present in both src/data/volunteerPage.json and the volunteer collection entry holds different values, because the collection wins at render and the JSON is a silent trap for whoever edits it.",
+      "description": "The JSON fallback and the collection entry describe the same copy, so a key that differs between them means the page renders one value while the CMS shows another. The failure names the drifted key and both values; keep the collection's, because that is what the site renders.",
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › keeps the volunteer page copy identical in both places",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 99,
+      "registeredAt": "2026-09-28T17:03:35.146079422+00:00",
       "runner": "tests"
     },
     {
@@ -7675,8 +7781,8 @@
       "file": "src/lib/pageCopyDrift.test.ts",
       "format": "vitest",
       "key": "page copy drift between the JSON fallback and the collection entry › keeps the volunteer projects heading the collection actually renders",
-      "line": 121,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 126,
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -7820,7 +7926,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › handles the reviewed track repo too",
       "line": 39,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -7829,7 +7935,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › returns the repo name as a rooted path",
       "line": 34,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -7838,7 +7944,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › throws on an empty repo name rather than returning a bare slash",
       "line": 56,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -7847,7 +7953,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › tolerates surrounding slashes rather than doubling them",
       "line": 44,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -7856,7 +7962,7 @@
       "format": "vitest",
       "key": "pagesBasePathFor › trims surrounding whitespace",
       "line": 49,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -8373,43 +8479,48 @@
       "runner": "tests"
     },
     {
-      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/MomentumFundPage.astro still needs its giving-plan exemption",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 59,
+      "registeredAt": "2026-09-28T16:56:55.949067562+00:00",
       "runner": "tests"
     },
     {
-      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/donate/DonorWall.astro still needs its giving-plan exemption",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 59,
+      "registeredAt": "2026-09-28T16:56:55.949970264+00:00",
       "runner": "tests"
     },
     {
-      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/donate/GiftPillars.astro still needs its giving-plan exemption",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 59,
+      "registeredAt": "2026-09-28T16:56:55.950847573+00:00",
       "runner": "tests"
     },
     {
-      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/donate/MomentumNetwork.astro still needs its giving-plan exemption",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 59,
+      "registeredAt": "2026-09-28T16:56:55.951752974+00:00",
       "runner": "tests"
     },
     {
-      "description": "Each file still waiting on the giving plan must still carry a personal address; once it is clean it comes off the exemption list.",
+      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/landing/GivingCampaign.astro still needs its giving-plan exemption",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 59,
+      "registeredAt": "2026-09-28T16:56:55.952622702+00:00",
       "runner": "tests"
     },
     {
@@ -8526,7 +8637,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › reads the repo out of an HTTPS remote",
       "line": 78,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -8535,7 +8646,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › reads the repo out of an SSH push command",
       "line": 64,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -8544,7 +8655,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › reads the repo when the .git suffix is absent",
       "line": 71,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -8553,7 +8664,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › returns the repo, not the owner",
       "line": 85,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -8562,7 +8673,7 @@
       "format": "vitest",
       "key": "pushTargetRepo › returns undefined when the command contains no remote",
       "line": 91,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -8836,35 +8947,39 @@
       "runner": "tests"
     },
     {
-      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead mailto link.",
+      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead `mailto:`.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "resolveContactEmail › treats \"   \" as no address",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 23,
+      "registeredAt": "2026-09-28T16:56:55.953984049+00:00",
       "runner": "tests"
     },
     {
-      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead mailto link.",
+      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead `mailto:`.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "resolveContactEmail › treats \"\" as no address",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 23,
+      "registeredAt": "2026-09-28T16:56:55.955320200+00:00",
       "runner": "tests"
     },
     {
-      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead mailto link.",
+      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead `mailto:`.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "resolveContactEmail › treats null as no address",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 23,
+      "registeredAt": "2026-09-28T16:56:55.956637268+00:00",
       "runner": "tests"
     },
     {
-      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead mailto link.",
+      "description": "Blank, whitespace-only and absent all mean \"no address\", so no surface can render a dead `mailto:`.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "resolveContactEmail › treats undefined as no address",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 23,
+      "registeredAt": "2026-09-28T16:56:55.958033072+00:00",
       "runner": "tests"
     },
     {
@@ -9170,7 +9285,7 @@
       "format": "vitest",
       "key": "retired content is gone rather than hidden › the new-chapters-launched accomplishment no longer exists",
       "line": 154,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -9468,6 +9583,42 @@
       "key": "routableEntries › preserves input order and does not mutate the input",
       "line": 134,
       "registeredAt": "2026-08-12T16:58:34Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Most of the corpus is isolated components and state variants that the audit deliberately leaves Desktop-only. They must be skipped silently: a rule that threw on an unrecognised page could not be run against the real directory.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "routeCoverage › ignores a scenario whose page matches no declared route",
+      "line": 84,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A route nothing renders is uncovered rather than absent from the report — the audit has to be able to say \"this page has no saved view at all\".",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "routeCoverage › reports a route with no scenarios as missing every size",
+      "line": 75,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Partial coverage is reported as exactly what is missing, so the report can say which widths a page still needs rather than just that it is incomplete.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "routeCoverage › separates the sizes covered from the ones still missing",
+      "line": 92,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The rule that matches how this corpus is really shaped: a page's coverage is the UNION across its scenarios. Neither of these two covers the route on its own; together they do, and splitting them is legitimate authoring.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "routeCoverage › unions dimensions across several scenarios sharing one page",
+      "line": 63,
+      "registeredAt": "2026-09-28T16:25:07Z",
       "runner": "tests"
     },
     {
@@ -9944,7 +10095,7 @@
       "format": "vitest",
       "key": "seeded team headshots › ben-wei.md › declares a non-empty photo",
       "line": 37,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -9953,7 +10104,7 @@
       "format": "vitest",
       "key": "seeded team headshots › ben-wei.md › points at an image that exists under public/",
       "line": 43,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -9971,7 +10122,7 @@
       "format": "vitest",
       "key": "seeded team headshots › jessica-li.md › declares a non-empty photo",
       "line": 37,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -9980,7 +10131,7 @@
       "format": "vitest",
       "key": "seeded team headshots › jessica-li.md › points at an image that exists under public/",
       "line": 43,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -9989,7 +10140,7 @@
       "format": "vitest",
       "key": "seeded team headshots › krysia-lenzo.md › declares a non-empty photo",
       "line": 37,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -9998,7 +10149,7 @@
       "format": "vitest",
       "key": "seeded team headshots › krysia-lenzo.md › points at an image that exists under public/",
       "line": 43,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -10007,7 +10158,7 @@
       "format": "vitest",
       "key": "seeded team headshots › nadia-eldeib.md › declares a non-empty photo",
       "line": 37,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -10016,7 +10167,7 @@
       "format": "vitest",
       "key": "seeded team headshots › nadia-eldeib.md › points at an image that exists under public/",
       "line": 43,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -10025,7 +10176,7 @@
       "format": "vitest",
       "key": "seeded team headshots › peter-boyce.md › declares a non-empty photo",
       "line": 37,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -10034,7 +10185,7 @@
       "format": "vitest",
       "key": "seeded team headshots › peter-boyce.md › points at an image that exists under public/",
       "line": 43,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -10155,19 +10306,21 @@
       "runner": "tests"
     },
     {
-      "description": "This self-gated page carries the exact placeholder the build replaces with the secret, so its gate always gets a real passphrase.",
+      "description": "The build fills the secret into this exact placeholder; a page carrying anything else would ship a gate the build never fills in. Checked per page so a regression names the file that lost its placeholder.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "self-gated public pages › public/donor-network.html carries the passphrase placeholder the build fills in",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 54,
+      "registeredAt": "2026-09-28T16:56:55.958511219+00:00",
       "runner": "tests"
     },
     {
-      "description": "This self-gated page carries the exact placeholder the build replaces with the secret, so its gate always gets a real passphrase.",
+      "description": "The build fills the secret into this exact placeholder; a page carrying anything else would ship a gate the build never fills in. Checked per page so a regression names the file that lost its placeholder.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "self-gated public pages › public/review/index.html carries the passphrase placeholder the build fills in",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 54,
+      "registeredAt": "2026-09-28T16:56:55.958942887+00:00",
       "runner": "tests"
     },
     {
@@ -10621,19 +10774,21 @@
       "runner": "tests"
     },
     {
-      "description": "The contact email is optional: a blank or missing address still loads, so the site can switch to socials only without breaking the build.",
+      "description": "The contact email is optional: a blank or missing address still loads, so an editor can switch the site to socials-only without breaking the build.",
       "file": "src/lib/site.test.ts",
       "format": "vitest",
       "key": "site singletons › loads settings when the contact email is blank",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 154,
+      "registeredAt": "2026-09-28T16:56:55.960051804+00:00",
       "runner": "tests"
     },
     {
-      "description": "The contact email is optional: a blank or missing address still loads, so the site can switch to socials only without breaking the build.",
+      "description": "The contact email is optional: a blank or missing address still loads, so an editor can switch the site to socials-only without breaking the build.",
       "file": "src/lib/site.test.ts",
       "format": "vitest",
       "key": "site singletons › loads settings when the contact email is missing",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 154,
+      "registeredAt": "2026-09-28T16:56:55.961154793+00:00",
       "runner": "tests"
     },
     {
@@ -11186,27 +11341,30 @@
       "runner": "tests"
     },
     {
-      "description": "With no inquiry form and the shared inbox blanked too, LinkedIn keeps the sponsor close from dead-ending.",
+      "description": "With the address blanked too, LinkedIn keeps the section from dead-ending.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "sponsorCta › falls back to LinkedIn when the address is \"   \"",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 167,
+      "registeredAt": "2026-09-28T16:56:55.962455949+00:00",
       "runner": "tests"
     },
     {
-      "description": "With no inquiry form and the shared inbox blanked too, LinkedIn keeps the sponsor close from dead-ending.",
+      "description": "With the address blanked too, LinkedIn keeps the section from dead-ending.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "sponsorCta › falls back to LinkedIn when the address is \"\"",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 167,
+      "registeredAt": "2026-09-28T16:56:55.963759749+00:00",
       "runner": "tests"
     },
     {
-      "description": "With no inquiry form and the shared inbox blanked too, LinkedIn keeps the sponsor close from dead-ending.",
+      "description": "With the address blanked too, LinkedIn keeps the section from dead-ending.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "sponsorCta › falls back to LinkedIn when the address is undefined",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 167,
+      "registeredAt": "2026-09-28T16:56:55.965003095+00:00",
       "runner": "tests"
     },
     {
@@ -11570,115 +11728,129 @@
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › CMS_SETUP.md does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.965465621+00:00",
       "runner": "tests"
     },
     {
-      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › CMS_SETUP.md has no link to the dead pre-move preview",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.965888391+00:00",
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › DEPLOY_SETUP.md does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.966340546+00:00",
       "runner": "tests"
     },
     {
-      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › DEPLOY_SETUP.md has no link to the dead pre-move preview",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.966789505+00:00",
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › README.md does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.967207925+00:00",
       "runner": "tests"
     },
     {
-      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › README.md has no link to the dead pre-move preview",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.967627119+00:00",
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › docs/nicole-review.md does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.968043334+00:00",
       "runner": "tests"
     },
     {
-      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › docs/nicole-review.md has no link to the dead pre-move preview",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.968486524+00:00",
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › docs/scoping/README.md does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.968924424+00:00",
       "runner": "tests"
     },
     {
-      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › docs/scoping/README.md has no link to the dead pre-move preview",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.969338242+00:00",
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › docs/scoping/domain-transfer-runbook.md does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.969918049+00:00",
       "runner": "tests"
     },
     {
-      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › docs/scoping/domain-transfer-runbook.md has no link to the dead pre-move preview",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.970356927+00:00",
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › docs/scoping/harvard-key-sso.md does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.970796643+00:00",
       "runner": "tests"
     },
     {
-      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › docs/scoping/harvard-key-sso.md has no link to the dead pre-move preview",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.971219553+00:00",
       "runner": "tests"
     },
     {
@@ -11691,35 +11863,39 @@
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › public/donor-network.html does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.971661335+00:00",
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › public/review/index.html does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.972128429+00:00",
       "runner": "tests"
     },
     {
-      "description": "This file never writes down the retired preview passphrase, which is in git history and must not come back.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › src/data/cms.json does not contain the retired passphrase",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.972562734+00:00",
       "runner": "tests"
     },
     {
-      "description": "This doc carries no link to the pre-move preview host, which 404s since the repo moved to codeyam-ai; the unmoved staging host is allowed.",
+      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › src/data/cms.json has no link to the dead pre-move preview",
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "line": 34,
+      "registeredAt": "2026-09-28T16:56:55.972996143+00:00",
       "runner": "tests"
     },
     {
@@ -11728,7 +11904,7 @@
       "format": "vitest",
       "key": "the /give collage › shows six photos that are all genuinely different images",
       "line": 92,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -11863,7 +12039,7 @@
       "format": "vitest",
       "key": "the default share card › exists",
       "line": 41,
-      "registeredAt": "2026-09-18T18:27:52Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -11890,7 +12066,7 @@
       "format": "vitest",
       "key": "the default share card › is exactly the 1200x630 that SEO.astro declares for it",
       "line": 133,
-      "registeredAt": "2026-09-18T18:27:52Z",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -11953,7 +12129,7 @@
       "format": "vitest",
       "key": "the icon kit › declares a raster fallback alongside the SVG",
       "line": 75,
-      "registeredAt": "2026-09-18T21:03:35.194378910+00:00",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -11962,7 +12138,7 @@
       "format": "vitest",
       "key": "the icon kit › draws the same mark in the favicon as in the header component",
       "line": 101,
-      "registeredAt": "2026-09-18T21:03:35.194378910+00:00",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -11971,7 +12147,7 @@
       "format": "vitest",
       "key": "the icon kit › ships a root favicon.ico as well",
       "line": 92,
-      "registeredAt": "2026-09-18T21:03:35.194378910+00:00",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -11980,7 +12156,7 @@
       "format": "vitest",
       "key": "the icon kit › ships the raster fallback at exactly the 32x32 it declares",
       "line": 85,
-      "registeredAt": "2026-09-18T21:03:35.194378910+00:00",
+      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
@@ -12107,6 +12283,157 @@
       "key": "the imported archive entries › publishes the 32 dated events and holds back the one with no known date",
       "line": 68,
       "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A relative URL is what the capture navigates to; an absolute one would leave the site under test.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › audits only same-site URLs",
+      "line": 71,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › blog-post renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › chapter renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › community renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › donate renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › events renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "/404 is absent for a tooling reason, not a judgement about the page: every capture entry point refuses an HTTP 404 response, and Astro serves that page with a 404 status at every URL that reaches it, so listing it would leave the coverage guard permanently red with no way to clear it. Re-adding it here would reintroduce that, so the exclusion is pinned.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › excludes the 404 page, which the capture harness cannot photograph",
+      "line": 46,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "/give was retired by the giving plan — the route is gone and its address redirects to /donate. Auditing it would mean capturing a page no visitor can reach. If someone re-adds it here, that decision is being reversed by accident rather than on purpose.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › excludes the retired giving page",
+      "line": 36,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Keys are how findings are addressed in the report and in failure messages; two routes sharing one would make a finding ambiguous.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › gives every route a distinct key",
+      "line": 21,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › home renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Same for the rendering file: two entries on one page would double-count it.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › lists each page file once",
+      "line": 27,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every size named here must actually exist in the editor config, or captures at that name would fail rather than produce a frame.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › names only sizes the editor has configured",
+      "line": 60,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The audit's own premise: four widths, the ones already configured. A size dropped from here silently narrows every coverage assertion that uses it.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › requires the four configured sizes",
+      "line": 54,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › site-page renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › sponsor renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › volunteer renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › volunteer-project renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One case per audited route, generated from the inventory itself. It catches a page being renamed or deleted while the inventory still lists it, which would quietly shrink the audit's scope because coverage would read as complete once the page stopped being counted.",
+      "file": "src/lib/publicRoutes.test.ts",
+      "format": "vitest",
+      "key": "the public audit route inventory › webinars renders from a file that exists",
+      "registeredAt": "2026-09-28T16:25:07Z",
       "runner": "tests"
     },
     {
@@ -12548,6 +12875,24 @@
       "key": "unbackedManifestRecords › reports records the commit adds without their image bytes",
       "line": 70,
       "registeredAt": "2026-07-31T23:04:44Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The state the audit is driving toward, and what the committed assertion below checks for real.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "uncoveredRoutes › is empty when every route is fully covered",
+      "line": 110,
+      "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The failure message names the page a human must open, not the file that renders it — 'not-found' is actionable where src/pages/404.astro is a lookup.",
+      "file": "src/lib/responsiveCoverage.test.ts",
+      "format": "vitest",
+      "key": "uncoveredRoutes › names the route key rather than the file path",
+      "line": 103,
+      "registeredAt": "2026-09-28T16:25:07Z",
       "runner": "tests"
     },
     {

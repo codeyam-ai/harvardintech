@@ -89,32 +89,37 @@ const PAIRS: Array<{ label: string; json: string; md: string }> = [
   },
 ];
 
+// Flattened to tuples so the two suites below can drive them with `it.each`.
+const PAIR_CASES = PAIRS.map(({ label, json, md }) => [label, json, md] as const);
+
 describe('page copy drift between the JSON fallback and the collection entry', () => {
-  for (const { label, json, md } of PAIRS) {
-    it(`keeps the ${label} copy identical in both places`, () => {
-      const fromJson = jsonScalars(json);
-      const fromMd = frontmatterScalars(md);
+  // `it.each` rather than `it()` inside a `for` loop, though the cases are the
+  // same: a name built by interpolating into a template literal cannot be
+  // registered. The test registry derives a test's canonical name from source,
+  // and a template literal truncates at the interpolation — so these ran on
+  // every suite while being permanently unregisterable, which is how eight of
+  // them sat in the runner's output and not in the registry.
+  it.each(PAIR_CASES)('keeps the %s copy identical in both places', (_label, json, md) => {
+    const fromJson = jsonScalars(json);
+    const fromMd = frontmatterScalars(md);
 
-      const shared = Object.keys(fromJson).filter((k) => k in fromMd);
-      const drifted = shared.filter((k) => fromJson[k] !== fromMd[k]);
+    const shared = Object.keys(fromJson).filter((k) => k in fromMd);
+    const drifted = shared.filter((k) => fromJson[k] !== fromMd[k]);
 
-      // Named in the failure so the fix is obvious: keep the COLLECTION's value,
-      // because that is the one the site renders.
-      expect(
-        drifted.map((k) => `${k}: ${json} has ${JSON.stringify(fromJson[k])}, ${md} has ${JSON.stringify(fromMd[k])}`),
-      ).toEqual([]);
-    });
+    // Named in the failure so the fix is obvious: keep the COLLECTION's value,
+    // because that is the one the site renders.
+    expect(
+      drifted.map((k) => `${k}: ${json} has ${JSON.stringify(fromJson[k])}, ${md} has ${JSON.stringify(fromMd[k])}`),
+    ).toEqual([]);
+  });
 
-    // A pair sharing nothing would pass the drift check vacuously — the guard
-    // would be dead without anyone noticing, which is exactly how the drift it
-    // exists to catch got in.
-    it(`actually compares something for the ${label}`, () => {
-      const shared = Object.keys(jsonScalars(json)).filter(
-        (k) => k in frontmatterScalars(md),
-      );
-      expect(shared.length).toBeGreaterThan(0);
-    });
-  }
+  // A pair sharing nothing would pass the drift check vacuously — the guard
+  // would be dead without anyone noticing, which is exactly how the drift it
+  // exists to catch got in.
+  it.each(PAIR_CASES)('actually compares something for the %s', (_label, json, md) => {
+    const shared = Object.keys(jsonScalars(json)).filter((k) => k in frontmatterScalars(md));
+    expect(shared.length).toBeGreaterThan(0);
+  });
 
   // The specific drift that was live when this guard was written, pinned so a
   // regression is legible rather than just "some key differs".
