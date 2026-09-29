@@ -1,23 +1,21 @@
 ---
-import '../styles/tokens.css';
-import { withBase } from '../lib/url';
+// The not-found page. It used to render its own bare <html> shell with inline
+// styles and no nav, which made it the one page a lost reader could reach with
+// no way onward. Rendering it through BaseLayout is the whole fix: the header,
+// the footer and the webfonts arrive with the shell, so "go back home" is the
+// backstop rather than the only exit.
+//
+// Note for anyone verifying this page from a capture: the screenshot harness
+// cannot photograph it, because it refuses an HTTP 404 response (responsive
+// audit §6). Check it by navigating a browser to any unrouted path.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NotFound from '../components/NotFound.astro';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Page Not Found - 404</title>
-  </head>
-  <body>
-    <main style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-lg); text-align: center; margin-top: 100px;">
-      <h1 style="font-size: 3rem; margin-bottom: var(--space-sm);">404</h1>
-      <p style="font-size: 1.25rem; color: var(--color-muted); margin-bottom: var(--space-lg);">
-        Oops! The page you are looking for does not exist.
-      </p>
-      <a href={withBase('/')} style="font-size: 1.125rem; font-weight: 600; text-decoration: underline; color: var(--color-primary, #0066cc);">
-        Go back home
-      </a>
-    </main>
-  </body>
-</html>
+<BaseLayout
+  title="Page Not Found - 404"
+  description="The page you are looking for does not exist."
+  noindex
+>
+  <NotFound />
+</BaseLayout>

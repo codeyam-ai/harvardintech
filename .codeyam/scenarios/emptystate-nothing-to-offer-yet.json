@@ -1,0 +1,13 @@
+{
+  "name": "EmptyState - Nothing To Offer Yet",
+  "id": "c197664e-bf14-4e0c-9bf2-8d3350019258",
+  "url": "/isolated-components/EmptyState-NoAction",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EmptyState",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/EmptyState.astro",
+  "description": "The state the sponsor wall and the board band ship in today, where there is genuinely nothing for the reader to do yet. Worth its own frame because the actions paragraph is conditional: a link renders only with both a destination and a label, since a labelled button going nowhere is a dead end and a destination with no label is invisible. This shows the panel closing up cleanly rather than leaving the gap where the buttons would have been."
+}

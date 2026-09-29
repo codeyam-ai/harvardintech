@@ -1,0 +1,53 @@
+---
+import Component from "../../../src/components/ui/BrandGlyph.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for BrandGlyph — codeyam screenshots the #codeyam-capture
+// wrapper by navigating to /isolated-components/BrandGlyph.
+//
+// One glyph on its own is not worth a frame; what this component has to prove
+// is that ONE piece of markup serves every surface that draws an icon, so the
+// capture shows the range side by side:
+//
+//   • a brand mark resolved from a social link's `icon` (linkedin)
+//   • a brand mark resolved from a LABEL instead, which is how a CMS-entered
+//     channel gets a glyph nobody configured (the "Medium" column)
+//   • a generic, non-brand glyph (email)
+//   • an unresolvable name, which must render NOTHING rather than a gap or a
+//     broken mark — the reason the component returns null instead of a
+//     placeholder
+//
+// Each sits in `currentColor`, so the crimson comes from the surrounding text
+// and not from the component: the same markup is white on the crimson Contact
+// band without a second asset.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: BrandGlyph</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div style="display: flex; gap: 40px; align-items: flex-end; color: var(--crimson);">
+        <figure style="margin: 0; display: grid; gap: 10px; justify-items: center;">
+          <Component name="linkedin" size={32} />
+          <figcaption class="kick">by icon</figcaption>
+        </figure>
+        <figure style="margin: 0; display: grid; gap: 10px; justify-items: center;">
+          <Component name="Medium" size={32} />
+          <figcaption class="kick">by label</figcaption>
+        </figure>
+        <figure style="margin: 0; display: grid; gap: 10px; justify-items: center;">
+          <Component name="email" size={32} />
+          <figcaption class="kick">generic</figcaption>
+        </figure>
+        <figure style="margin: 0; display: grid; gap: 10px; justify-items: center;">
+          <Component name="not-a-real-channel" size={32} />
+          <figcaption class="kick">unresolved</figcaption>
+        </figure>
+      </div>
+    </div>
+  </body>
+</html>

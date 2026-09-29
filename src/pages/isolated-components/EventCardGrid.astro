@@ -1,0 +1,59 @@
+---
+import Component from "../../../src/components/EventCardGrid.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EventCardGrid — codeyam screenshots the #codeyam-capture
+// wrapper by navigating to /isolated-components/EventCardGrid.
+//
+// THREE cards, because the grid is `auto-fit` and its behaviour only shows
+// with enough of them to fill a row. The three are deliberately uneven — one
+// carries a long blurb, one a short one, one none at all — since what the
+// shared grid has to prove is that cards of different heights still line their
+// "Learn more" links up along the bottom. A row of identical cards would look
+// correct whether or not that worked.
+//
+// The middle card has no link, the state an event gets before its registration
+// page exists; its card ends after the blurb rather than showing a dead link.
+import type { EventLike } from "../../../src/lib/events";
+
+const events: EventLike[] = [
+  {
+    slug: "fall-welcome-mixer",
+    title: "Harvard in Tech Fall Welcome Mixer",
+    date: "2026-09-28",
+    location: "Private rooftop, Hudson Yards, New York, NY",
+    description:
+      "An exclusive rooftop gathering in Hudson Yards welcoming new and returning alumni for the fall, with curated tabletop conversations on what people are building.",
+    link: "https://example.com/fall-mixer",
+  },
+  {
+    slug: "spring-social",
+    title: "Harvard Alumni in Tech: Spring Social",
+    date: "2026-05-22",
+    location: "New York, NY",
+    description: "Drinks and introductions, no agenda.",
+  },
+  {
+    slug: "welcome-to-nyc",
+    title: "Harvard Alumni in Tech: Welcome to NYC Mixer",
+    date: "2026-10-10",
+    location: "New York, NY",
+    link: "https://example.com/welcome-nyc",
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EventCardGrid</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div style="width: 100%; max-width: 960px;">
+        <Component events={events} />
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "ChapterEvents - Nothing Scheduled Yet",
+  "id": "185f704c-4bad-4ac9-a26d-06e9a565749b",
+  "url": "/isolated-components/ChapterEvents-Empty",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterEvents",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ChapterEvents.astro",
+  "description": "A chapter with nothing on the calendar. This state had no frame before, for a reason worth recording: the section used to render NOTHING at all when the upcoming list was empty, so the page simply had no events block and there was nothing to photograph. A reader could not tell the difference between a quiet chapter and a section that had failed to load, and was offered no way to hear about the next one. It now shows the shared empty panel with a subscribe action — which matters more than it sounds, because on a day-one site most chapters are in exactly this state."
+}

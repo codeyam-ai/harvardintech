@@ -1,0 +1,53 @@
+---
+// One brand or section glyph, as inline SVG.
+//
+// Its own component because four surfaces had hand-rolled the same eight lines
+// — the social row, the Contact band, the Content hub cards and the focus-area
+// chips — each resolving an icon and mapping its paths into an `<svg>`. The
+// markup is small, which is exactly why it drifted: one copy carried
+// `focusable="false"` and another did not, so the same mark was reachable by
+// keyboard on one band and skipped on the next.
+//
+// Renders NOTHING when the name resolves to no icon, so a caller can pass a
+// CMS-entered channel label straight through without guarding first — an
+// unknown label costs its glyph, not the surrounding markup.
+//
+// `currentColor` is the whole colour model: the glyph inherits the surrounding
+// text colour, so the same mark is crimson on a light card and white on the
+// crimson band without a second asset. A caller that wants the brand's own
+// colour sets `color` on the element around it, from `brandIcon(...).color`.
+import { brandIcon, type BrandIcon } from '../../lib/brandIcons';
+
+interface Props {
+  /** A social link's `icon`, or a channel label — `iconKeyFor` resolves both. */
+  name?: string | null;
+  /** Falls back to this when `name` resolves to nothing. */
+  fallbackName?: string | null;
+  /** An ALREADY-RESOLVED icon, for callers using a different table. The focus
+   *  areas resolve through `areaIcons`, not `brandIcons`, and what they share
+   *  with the social row is this markup rather than the lookup — so the
+   *  resolver stays the caller's choice and only the drawing is shared. */
+  icon?: BrandIcon | null;
+  size?: number;
+}
+const { name, fallbackName, icon: resolved, size = 24 } = Astro.props as Props;
+
+const icon = resolved ?? brandIcon(name) ?? brandIcon(fallbackName);
+---
+
+{
+  icon ? (
+    <svg
+      viewBox={icon.viewBox}
+      width={size}
+      height={size}
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {icon.paths.map((d) => (
+        <path d={d} />
+      ))}
+    </svg>
+  ) : null
+}

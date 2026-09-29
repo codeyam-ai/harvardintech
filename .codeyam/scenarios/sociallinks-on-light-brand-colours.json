@@ -1,0 +1,13 @@
+{
+  "name": "SocialLinks - On Light, Brand Colours",
+  "id": "1d156301-9a9e-4db9-98ab-604bce2a1545",
+  "url": "/isolated-components/SocialLinks",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "SocialLinks",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/SocialLinks.astro",
+  "description": "The row as the chapter and community Connect sections render it: each mark in its own brand colour on a white badge. The accounts come from settings rather than a fixture, which is the point of the component — the footer, the Contact band and every chapter row read one list and cannot disagree about which accounts exist. No envelope, because a Connect row is not one of the surfaces that shows the shared inbox."
+}

@@ -21,18 +21,27 @@
 // lede is the better of the two: it explains the absence AND points straight
 // down at the buttons that do something about it.
 import type { EventLike } from '../../lib/events';
-import { LUMA_CALENDAR_URL } from '../../lib/luma';
+import { siteLinks } from '../../lib/site';
+import SectionHead from '../ui/SectionHead.astro';
 import { eventDateParts } from '../../lib/eventDateParts';
 
 interface Props {
   events?: EventLike[];
   lumaUrl?: string;
   newsletterUrl?: string;
+  /** Band copy, editable per-entry in the CMS. Each defaults to the wording
+   *  this band shipped with, so an entry that sets none looks unchanged. */
+  heading?: string;
+  kicker?: string;
+  intro?: string;
 }
 const {
   events = [],
-  lumaUrl = LUMA_CALENDAR_URL,
-  newsletterUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb',
+  lumaUrl = siteLinks().luma,
+  newsletterUrl = siteLinks().mailingList,
+  heading = 'Upcoming events',
+  kicker = 'Calendar',
+  intro,
 } = Astro.props;
 
 const isEmpty = events.length === 0;
@@ -45,21 +54,18 @@ const count = String(events.length).padStart(2, '0');
   style="background: var(--paper-2);"
 >
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">Calendar</span>
-        <h2>Upcoming events</h2>
-        {
-          isEmpty && (
-            <p class="ue-lede">
-              No upcoming events just yet. Subscribe to our Luma calendar to be the
-              first to know when the next one is announced.
-            </p>
-          )
-        }
-      </div>
+    <SectionHead
+      kicker={kicker}
+      title={heading}
+      intro={
+        intro ??
+        (isEmpty
+          ? 'No upcoming events just yet. Subscribe to our Luma calendar to be the first to know when the next one is announced.'
+          : undefined)
+      }
+    >
       {!isEmpty && <span class="kick">{count} scheduled</span>}
-    </div>
+    </SectionHead>
 
     {
       isEmpty ? (
@@ -91,7 +97,7 @@ const count = String(events.length).padStart(2, '0');
                     </h3>
                     {event.description && <p class="ue-blurb">{event.description}</p>}
                     {event.link && (
-                      <a class="ue-go" href={event.link} rel="noopener">
+                      <a class="link-more ue-go" href={event.link} rel="noopener">
                         Learn more →
                       </a>
                     )}
@@ -128,7 +134,7 @@ const count = String(events.length).padStart(2, '0');
     grid-template-columns: 1fr 150px;
     align-items: center;
     gap: 24px;
-    background: #fff;
+    background: var(--white);
     border: 1px solid var(--line);
     border-left: 3px solid var(--crimson);
     padding: 22px 26px;
@@ -174,13 +180,9 @@ const count = String(events.length).padStart(2, '0');
     margin: 2px 0 0;
     max-width: 62ch;
   }
+  /* Type and colour come from `.link-more` (tokens.css); only this row's
+     spacing is local. */
   .ue-go {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--crimson);
-    text-decoration: none;
     margin-top: 4px;
   }
   /* The date column reads as one stacked unit, divided from the body by the
@@ -221,14 +223,6 @@ const count = String(events.length).padStart(2, '0');
      is where the separation actually belongs. */
   .ue-section--empty :global(.sec-head) {
     margin-bottom: 0;
-  }
-  .ue-lede {
-    font-family: var(--font-serif);
-    font-size: 19px;
-    line-height: 1.5;
-    color: var(--ink-2);
-    max-width: 56ch;
-    margin: 10px 0 0;
   }
   /* One row of buttons under the lede, not a two-column grid: with the
      right-hand panel gone there is no second column to balance, and 52px of

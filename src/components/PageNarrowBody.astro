@@ -64,18 +64,15 @@ const hasContent = leadsVisible || links.length > 0 || hasBody;
 
 {
   hasContent ? (
-    <section class="s-section">
-      <div class="s-narrow">
-        <a
-          href={withBase(backHref)}
-          style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;"
-        >
+    <section class="sec">
+      <div class="wrap wrap--narrow">
+        <a class="link-more back" href={withBase(backHref)}>
           {backLabel}
         </a>
 
         {leadsVisible ? <ChapterLeads leads={leads} heading={leadsHeading} /> : null}
 
-        <div style="line-height: 1.8;">
+        <div class="narrow-body">
           <slot />
         </div>
 
@@ -84,3 +81,13 @@ const hasContent = leadsVisible || links.length > 0 || hasBody;
     </section>
   ) : null
 }
+
+<style>
+  .back {
+    display: inline-block;
+    margin-bottom: var(--s-5);
+  }
+  .narrow-body {
+    line-height: 1.8;
+  }
+</style>

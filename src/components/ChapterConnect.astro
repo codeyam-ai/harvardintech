@@ -13,74 +13,25 @@
 // inbox "sparingly", and a chapter or community Connect row is not one of those
 // places (see `EMAIL_SURFACES` in src/lib/contact.ts). Every social is listed in
 // its settings order, so LinkedIn appears alongside X and Facebook.
-import { brandIcon } from '../lib/brandIcons';
-import { connectLinks } from '../lib/contact';
-import { externalLinkAttrs } from '../lib/externalLink';
-import { socialDisplayLabel } from '../lib/socialLabel';
-import { settings } from '../lib/site';
-
-const links = connectLinks(settings.socials);
+import SectionHead from './ui/SectionHead.astro';
+import SocialLinks from './ui/SocialLinks.astro';
 ---
 
-<section class="s-section" id="connect" style="text-align: center;">
-  <div class="s-narrow">
-    <h2 class="s-title">Connect With Us</h2>
-    <div style="display: flex; gap: var(--space-lg); justify-content: center; align-items: center; margin-top: var(--space-md);">
-      {
-        links.map((link) => {
-          const icon = brandIcon(link.icon) ?? brandIcon(link.label);
-          return icon ? (
-            <a
-              href={link.url}
-              class="connect-badge"
-              aria-label={socialDisplayLabel(link.label)}
-              style={icon.color ? `color: ${icon.color}` : undefined}
-              {...externalLinkAttrs(link.url, Astro.url.origin)}
-            >
-              <svg
-                viewBox={icon.viewBox}
-                width="24"
-                height="24"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                {icon.paths.map((d) => (
-                  <path d={d} />
-                ))}
-              </svg>
-            </a>
-          ) : null;
-        })
-      }
+<section class="sec" id="connect">
+  <div class="wrap">
+    <SectionHead title="Connect With Us" align="center" />
+    <div class="connect-row">
+      <SocialLinks variant="on-light" size={24} />
     </div>
   </div>
 </section>
 
 <style>
-  .connect-badge {
-    display: inline-flex;
-    align-items: center;
+  /* The badges themselves live in `SocialLinks`; this only centres the row,
+     which is a decision of THIS band rather than of the component — the footer
+     renders the same component left-aligned. */
+  .connect-row {
+    display: flex;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #fff;
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: transform 0.15s ease;
-  }
-  .connect-badge:hover {
-    transform: scale(1.08);
-  }
-  .connect-badge:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 3px;
-  }
-  .connect-badge svg {
-    display: block;
-    width: 24px;
-    height: 24px;
   }
 </style>

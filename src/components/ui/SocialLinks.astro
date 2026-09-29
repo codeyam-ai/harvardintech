@@ -1,0 +1,101 @@
+---
+// The site's social row, in one place. The footer, the homepage Contact band
+// and every chapter and community Connect row render this, which is what stops
+// them disagreeing about which accounts exist — the chapter row listed a
+// retired Twitter bird as a raster badge long after the footer had moved on.
+//
+// The e-mail badge is not a prop decision: `connectLinks` synthesizes it only
+// when an address is actually set, and skips it when an editor has already
+// added a mail link as a social. So a blank `contactEmail` silently means
+// "socials only", which is the owner's rule (2026-09-15) rather than a state a
+// caller has to remember to ask for.
+import BrandGlyph from './BrandGlyph.astro';
+import { brandIcon } from '../../lib/brandIcons';
+import { connectLinks } from '../../lib/contact';
+import { externalLinkAttrs } from '../../lib/externalLink';
+import { socialDisplayLabel } from '../../lib/socialLabel';
+import { settings } from '../../lib/site';
+
+interface Props {
+  /** `on-light` shows each mark in its official brand colour on a white badge.
+   *  `on-dark` drops the badge and renders every mark in the inherited light
+   *  text colour — brand colours on `--ink` are either invisible (the X mark is
+   *  black) or shout. */
+  variant?: 'on-light' | 'on-dark';
+  /** Pass the shared inbox to offer an envelope alongside the socials. Omitted
+   *  means socials only — see the note above. */
+  email?: string;
+  /** Size of the glyph itself, in px. The badge scales with it. */
+  size?: number;
+}
+const { variant = 'on-light', email, size = 24 } = Astro.props as Props;
+
+const links = connectLinks(settings.socials, email);
+const badge = size + 24;
+---
+
+<div class:list={['socials', `socials--${variant}`]}>
+  {
+    links.map((link) => {
+      const icon = brandIcon(link.icon) ?? brandIcon(link.label);
+      if (!icon) return null;
+      return (
+        <a
+          href={link.url}
+          class="social"
+          aria-label={socialDisplayLabel(link.label)}
+          style={
+            variant === 'on-light' && icon.color ? `color: ${icon.color}` : undefined
+          }
+          {...externalLinkAttrs(link.url, Astro.url.origin)}
+        >
+          <BrandGlyph name={link.icon} fallbackName={link.label} size={size} />
+        </a>
+      );
+    })
+  }
+</div>
+
+<style define:vars={{ badge: `${badge}px`, glyph: `${size}px` }}>
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--badge);
+    height: var(--badge);
+    border-radius: 50%;
+    transition: transform 0.15s ease;
+  }
+  .social:hover {
+    transform: scale(1.08);
+  }
+  .social:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  .social svg {
+    display: block;
+    width: var(--glyph);
+    height: var(--glyph);
+  }
+
+  .socials--on-light .social {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  /* No badge on dark: a white circle on `--ink` reads as a hole punched in the
+     band. The mark inherits the surrounding text colour instead. */
+  .socials--on-dark .social {
+    color: rgba(255, 255, 255, 0.86);
+  }
+  .socials--on-dark .social:hover {
+    color: var(--white);
+  }
+</style>

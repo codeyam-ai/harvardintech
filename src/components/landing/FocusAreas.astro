@@ -11,6 +11,8 @@
 // blurb wrap to three lines and buried the link at the bottom of each column.
 import { withBase } from '../../lib/url';
 import { areaIcon } from '../../lib/areaIcons';
+import BrandGlyph from '../ui/BrandGlyph.astro';
+import SectionHead from '../ui/SectionHead.astro';
 
 interface Area {
   label: string;
@@ -27,6 +29,11 @@ interface Props {
    *  homepage passes `chapters.length`; absent (an isolated render, or a caller
    *  that supplies its own `areas`) falls back to wording with no count in it. */
   chapterCount?: number;
+  /** Band copy, editable per-entry in the CMS. Each defaults to the wording
+   *  this band shipped with, so an entry that sets none looks unchanged. */
+  heading?: string;
+  kicker?: string;
+  intro?: string;
 }
 // `chapterCount` is destructured BEFORE `areas` so the default blurb below can
 // read it — a later default may reference an earlier binding.
@@ -58,17 +65,15 @@ const {
     },
     { label: 'Membership', blurb: 'About, get involved, and support the mission.', url: '/#get-involved' },
   ],
+  heading = 'Focus areas',
+  kicker = 'Explore',
+  intro,
 } = Astro.props as Props;
 ---
 
 <section class="sec" id="focus">
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">Explore</span>
-        <h2>Focus areas</h2>
-      </div>
-    </div>
+    <SectionHead kicker={kicker} title={heading} intro={intro} />
 
     <div class="fa-list">
       {
@@ -77,25 +82,11 @@ const {
           return (
             <a class="fa" href={a.url.startsWith('http') ? a.url : withBase(a.url)}>
               <span class="fa-disc">
-                {icon && (
-                  <svg
-                    class="fa-icon"
-                    viewBox={icon.viewBox}
-                    width="26"
-                    height="26"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    {icon.paths.map((d) => (
-                      <path d={d} />
-                    ))}
-                  </svg>
-                )}
+                <BrandGlyph icon={icon} size={26} />
               </span>
               <span class="fa-l">{a.label}</span>
               <span class="fa-b">{a.blurb}</span>
-              <span class="fa-go">Explore →</span>
+              <span class="link-more fa-go">Explore →</span>
             </a>
           );
         })
@@ -142,9 +133,11 @@ const {
   }
   .fa:hover .fa-disc {
     background: var(--crimson);
-    color: #fff;
+    color: var(--white);
   }
-  .fa-icon {
+  /* `:global`, because the glyph is `BrandGlyph`'s element — see the same note
+     on the Contact band. */
+  .fa-disc :global(svg) {
     display: block;
     width: 26px;
     height: 26px;
@@ -163,12 +156,9 @@ const {
     line-height: 1.45;
     color: var(--ink-2);
   }
+  /* Type and colour come from `.link-more` (tokens.css); the no-wrap rule is
+     this row's own, so "Explore →" never breaks across two lines. */
   .fa-go {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--crimson);
     white-space: nowrap;
   }
   @media (max-width: 820px) {
@@ -184,7 +174,7 @@ const {
       height: 48px;
       grid-row: span 2;
     }
-    .fa-icon {
+    .fa-disc :global(svg) {
       width: 22px;
       height: 22px;
     }

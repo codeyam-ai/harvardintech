@@ -1,178 +1,67 @@
 ---
-// Full-bleed city header for a chapter page — faithful to harvardintech.com:
-// a background photo with a dark overlay and centered light text, an uppercase
-// "HARVARD IN TECH <CITY>" title (the "fresh" theme's flanking-rule treatment,
-// mirroring landing/Hero.astro) and the `tagline` subtitle beneath it. The
-// background is rendered as an <img> (survives the preview reverse-proxy /
-// base-path rewrite). When `heroImage` is absent we fall back to the original
-// centered ChapterHeader so a chapter with no image still renders.
-import ChapterHeader from './ChapterHeader.astro';
-import { withBase } from '../lib/url';
-import ResponsiveImg from './ResponsiveImg.astro';
+// The banner at the top of a chapter or community page.
+//
+// It is now a thin adapter over `ui/PageBanner.astro` — the same banner the
+// sponsor, volunteer, site-page and blog headers render — so a chapter no
+// longer has a header of its own design. What it keeps is the chapter-shaped
+// API (`name` / `region` / `blurb` / `tagline`) that the pages already pass.
+//
+// Two things changed in the move, both owner decisions (2026-09-14):
+//
+//   LEFT-ALIGNED, and no longer a full screen. The old header filled
+//   `100svh - header`, so on a phone a reader met a photo and a title and had
+//   to scroll before learning the page had content. It also centred the title
+//   between two 80px rules, which is what made "Seattle / Pacific Northwest"
+//   wrap mid-phrase across two centred lines.
+//
+//   THE LABEL STAYS ABOVE THE NAME. `label` is unchanged and still arrives from
+//   the page; `src/lib/pageBanner.ts` derives it. The flanking-rule treatment
+//   and the uppercase title are gone with the rest of the old header.
+//
+// `region` and `blurb` are still accepted because the pages pass them, and the
+// paper tone uses `blurb` as its lede when no `tagline` is set — that is what
+// `ChapterHeader` did for an image-less chapter. That component now has no
+// importers and is due for deletion with the rest of the unused set.
+import PageBanner from './ui/PageBanner.astro';
 
 interface Props {
-  /** The city (chapter) or community name the title is built from. */
+  /** The city (chapter) or community name. Never prefixed with the org name. */
   name: string;
   region?: string;
   blurb?: string;
   heroImage?: string;
   tagline?: string;
-  /**
-   * The small uppercase kicker above the name — "Chapter", "Chapter · Forming",
-   * "Community".
-   *
-   * This replaced a title that read "Harvard Alumni in Tech <name>". That
-   * phrasing was already strained for a city and actively wrong for a group:
-   * the AI community's banner announced "HARVARD ALUMNI IN TECH AI", which
-   * reads as a product rather than a community of people. Splitting the kind
-   * from the name lets one hero serve both, says which kind of page you are on,
-   * and gives a forming chapter somewhere honest to say so.
-   */
+  /** "Chapter", "Chapter · Forming", "Community" — see `lib/pageBanner.ts`. */
   label?: string;
 }
-const { name, region, blurb, heroImage, tagline, label = 'Chapter' } = Astro.props;
+const { name, region, blurb, heroImage, tagline, label = 'Chapter' } = Astro.props as Props;
+
+// A chapter with a photo gets the photo tone; one without falls back to paper
+// rather than to a second component. The region is appended to the lede rather
+// than to the title, so a long "Seattle / Pacific Northwest" never competes
+// with the name for the heading's line.
+const lede = tagline ?? blurb;
 ---
 
-{
-  heroImage ? (
-    <section class="chapter-hero">
-      <div style="position: absolute; inset: 0; overflow: hidden; z-index: 0;">
-        <ResponsiveImg
-          src={heroImage}
-          alt=""
-          loading="eager"
-          style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"
-        />
-        <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.39);" />
-      </div>
-      <div class="chapter-hero-inner">
-        {label ? <p class="chapter-hero-kicker">{label}</p> : null}
-        <h1 class="chapter-hero-title">{name}</h1>
-        {tagline ? <p class="chapter-hero-tagline">{tagline}</p> : null}
-      </div>
-    </section>
-  ) : (
-    <ChapterHeader name={name} region={region} blurb={blurb} label={label} />
-  )
-}
+<PageBanner
+  label={label}
+  title={name}
+  lede={lede}
+  image={heroImage}
+  tone={heroImage ? 'photo' : 'paper'}
+>
+  {region ? <p class="chapter-region">{region}</p> : null}
+</PageBanner>
 
 <style>
-  .chapter-hero {
-    position: relative;
-    box-sizing: border-box;
-    /* Fill the first screen below the header, like the live chapter pages.
-       `min-height` (not `height`) so content never clips on short screens;
-       `svh` avoids the mobile address-bar jump, with a `vh` fallback. */
-    min-height: calc(100vh - var(--header-height));
-    min-height: calc(100svh - var(--header-height));
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  /* Wider than the old flat 918px because the TITLE lives here and is the one
-     thing that legitimately wants more room: under the previous `nowrap` it
-     simply overflowed this box and used the viewport, which is why 918px never
-     appeared to constrain anything. Now that the title can wrap, that box is
-     load-bearing — left at 918px it breaks "… NEW / YORK CITY" mid-phrase. The
-     tagline below re-applies 918px for itself, so it keeps a reading measure
-     rather than stretching to this width. */
-  .chapter-hero-inner {
-    position: relative;
-    z-index: 2;
-    width: min(1280px, 94vw);
-    margin: 0 auto;
-    color: #fff;
-    text-align: center;
-  }
-  /* The kind of page, above the name. Deliberately small and wide-tracked so it
-     reads as a label rather than competing with the title it introduces. */
-  .chapter-hero-kicker {
-    font-family: var(--font-sans);
+  .chapter-region {
+    margin: var(--s-2) 0 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    color: rgba(255, 255, 255, 0.85);
-    margin: 0 0 0.75rem;
-  }
-  .chapter-hero-title {
-    text-transform: uppercase;
-    font-family: var(--font-title);
-    font-weight: 400;
-    color: #fff;
-    /* Fluid rather than a flat 58px, and allowed to WRAP. The title is
-       "<org name> <city>", so its length is content-driven, not viewport-driven:
-       "Harvard Alumni in Tech Seattle / Pacific Northwest" is 49 uppercase
-       characters and ran off BOTH edges of a 1440px viewport under the previous
-       `font-size: 58px` + `white-space: nowrap`. nowrap had nothing to give — it
-       is what forced the overflow rather than a second line. The org name got
-       longer when it was corrected, which is what surfaced this, but the rule was
-       already one long city away from clipping. */
-    font-size: clamp(34px, 3.4vw + 1rem, 58px);
-    line-height: 1.2;
-    letter-spacing: normal;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-  /* "fresh" theme title decoration: 80x2px white rules flanking the text */
-  .chapter-hero-title::before,
-  .chapter-hero-title::after {
-    content: '';
-    flex: none;
-    width: 80px;
-    height: 2px;
-    margin: 0 10px;
-    background: #fff;
-  }
-  .chapter-hero-tagline {
-    font-family: var(--font-sans);
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 29px;
-    color: #fff;
-    /* Keeps the old 918px measure now that the wrapper is wider — a one-line
-       tagline stretched to 1280px reads as a stray sentence, not a subtitle. */
-    max-width: 918px;
-    margin: 1.5rem auto 0;
-  }
-
-  /* Mobile: the title scales down, wraps left-aligned, and the flanking rules
-     collapse to a single underline beneath it — matching landing/Hero. */
-  @media (max-width: 640px) {
-    .chapter-hero {
-      padding: 24px;
-    }
-    .chapter-hero-inner {
-      text-align: left;
-    }
-    .chapter-hero-kicker {
-      font-size: 12px;
-      margin-bottom: 0.5rem;
-    }
-    .chapter-hero-title {
-      display: block;
-      text-align: left;
-      white-space: normal;
-      font-size: 36px;
-      line-height: 1.15;
-      margin: 0;
-    }
-    .chapter-hero-title::before {
-      display: none;
-    }
-    .chapter-hero-title::after {
-      display: block;
-      width: 80px;
-      margin: 1rem 0 0;
-    }
-    .chapter-hero-tagline {
-      font-size: 17px;
-      line-height: 26px;
-    }
+    /* Published by PageBanner, so this line stays legible on the photo tone as
+       well as on paper. See the note on `--banner-muted` there. */
+    color: var(--banner-muted, var(--ink-3));
   }
 </style>

@@ -1,10 +1,6 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import '../../styles/tokens.css';
-import SEO from '../../components/SEO.astro';
-import HeadExtras from '../../components/HeadExtras.astro';
-import { settings } from '../../lib/site';
-import { loadIntegrations } from '../../lib/integrationsContent';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogPostBody from '../../components/BlogPostBody.astro';
 import { isPreview, routableEntries } from '../../lib/drafts';
 import { INCLUDE_DRAFTS } from '../../lib/draftVisibility';
@@ -36,37 +32,25 @@ const { post } = Astro.props as Props;
 const { Content } = await render(post);
 
 // Per-page SEO overrides fall back to the post's own fields, then to site
-// defaults inside <SEO />. This shell renders its own <html> (it bypasses
-// BaseLayout), so it must pull in <SEO /> and <HeadExtras /> explicitly — or
-// analytics/JSON-LD/custom HTML would silently miss every blog post.
+// defaults inside <SEO />, which BaseLayout renders. This page used to carry its
+// own <html> shell and therefore its own <SEO />, <HeadExtras /> and
+// customBodyHtml injection — three copies that had to be kept in step with the
+// layout by hand, and a post with no nav at all, so a reader arriving from
+// search or the Medium link had no way into the rest of the site.
 const seoTitle = post.data.metaTitle ?? post.data.title;
 const seoDescription = post.data.metaDescription ?? post.data.summary;
 const seoImage = post.data.ogImage ?? post.data.coverImage;
-
-// Body HTML is injected per shell (it can't live in <head>), so this one needs
-// it explicitly for the same reason it needs <HeadExtras /> above.
-const { customBodyHtml } = await loadIntegrations(settings);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <SEO
-      title={seoTitle}
-      description={seoDescription}
-      image={seoImage}
-      noindex={isPreview(post)}
-    />
-    <HeadExtras />
-  </head>
-  <body>
-    <main style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-lg);">
-      <BlogPostBody post={post}>
-        <Content />
-      </BlogPostBody>
-    </main>
-
-    {customBodyHtml ? <Fragment set:html={customBodyHtml} /> : null}
-  </body>
-</html>
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  image={seoImage}
+  noindex={isPreview(post)}
+>
+  {/* No wrapper here: the post's banner runs full-bleed and each branch of
+      `BlogPostBody` brings its own reading measure for the prose beneath it. */}
+  <BlogPostBody post={post}>
+    <Content />
+  </BlogPostBody>
+</BaseLayout>

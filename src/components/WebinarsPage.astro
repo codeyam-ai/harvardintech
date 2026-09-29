@@ -13,6 +13,8 @@
 // trackers and a page that takes seconds to settle — for a page whose only job
 // is helping someone choose which recording to watch.
 import WebinarCard from './WebinarCard.astro';
+import PageBanner from './ui/PageBanner.astro';
+import EmptyState from './ui/EmptyState.astro';
 import { webinarYear, type WebinarEntryLike } from '../lib/webinars';
 
 interface Props {
@@ -21,22 +23,17 @@ interface Props {
 const { posts = [] } = Astro.props as Props;
 ---
 
-<section class="s-section">
-  <div class="s-inner">
-    <h1 class="s-title" style="text-align: center;">Webinars</h1>
-    <p
-      style="color: var(--color-muted); max-width: var(--text-width); margin: 0 auto var(--space-xl); text-align: center;"
-    >
-      In the first months of the pandemic, Harvard in Tech ran a series of
-      online sessions on what COVID-19 was changing — in healthcare, in
-      education, in supply chains and in how we work. These are the recordings.
-    </p>
+<PageBanner
+  label="Programs"
+  title="Webinars"
+  lede="In the first months of the pandemic, Harvard in Tech ran a series of online sessions on what COVID-19 was changing — in healthcare, in education, in supply chains and in how we work. These are the recordings."
+/>
 
+<section class="sec">
+  <div class="wrap">
     {
       posts.length === 0 ? (
-        <p style="color: var(--color-muted); text-align: center;">
-          No recordings are published right now.
-        </p>
+        <EmptyState title="No recordings are published right now." />
       ) : (
         <ul class="webinar-grid">
           {posts.map((post) => (

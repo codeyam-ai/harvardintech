@@ -9,5 +9,5 @@
   "componentName": "ChapterPage-Sparse",
   "scenarioType": "component",
   "pageFilePath": "src/components/ChapterPage.astro",
-  "description": "The thinnest chapter that still has to render: a city and a region, no hero photo, no leads, no body, no links. It proves the centered-header fallback and that every optional block is genuinely optional rather than leaving reserved gaps. The fixture names DC and DMV Area, having previously named Japan — a chapter the site has since retired, which made it a trap for the next reader rather than a neutral example."
+  "description": "The thinnest chapter that still has to render: a city and a region, no hero photo, no leads, no body, no links. It proves the banner's paper tone — the fallback when there is no photo, which is now the same banner every other page uses rather than a separate centred header — and that every optional block is genuinely optional rather than leaving reserved gaps. The fixture names DC and DMV Area, having previously named Japan — a chapter the site has since retired, which made it a trap for the next reader rather than a neutral example."
 }

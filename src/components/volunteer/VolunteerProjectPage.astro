@@ -53,17 +53,19 @@ const {
 <article class="proj-page">
   <VolunteerProjectPhoto image={image} />
 
-  <div class="s-narrow">
-    <VolunteerProjectHeader
-      title={title}
-      blurb={blurb}
-      commitment={commitment}
-      startDate={startDate}
-      endDate={endDate}
-      backHref={backHref}
-      backLabel={backLabel}
-    />
+  {/* The header is now a full-bleed page banner, so it sits OUTSIDE the reading
+      measure — the prose below keeps it. */}
+  <VolunteerProjectHeader
+    title={title}
+    blurb={blurb}
+    commitment={commitment}
+    startDate={startDate}
+    endDate={endDate}
+    backHref={backHref}
+    backLabel={backLabel}
+  />
 
+  <div class="wrap wrap--narrow proj-narrow">
     <VolunteerProjectBody>
       <slot />
     </VolunteerProjectBody>
@@ -81,21 +83,12 @@ const {
     padding: 0 0 72px;
   }
 
-  /* `.proj-page` is deliberately edge-to-edge so the cover photo and the
-     related-projects band can run full-bleed — but the prose sits directly
-     inside it, and `.s-narrow` carries no gutter of its own. Below the 760px
-     reading measure that left the heading and every paragraph flush against
-     both bezels. Only the text is inset; the full-bleed siblings are untouched.
-     Not caught before because the expanded nav hid every page's body at these
-     widths (audit F1, 2026-09-28). */
-  @media (max-width: 800px) {
-    .proj-page > .s-narrow {
-      padding-inline: 24px;
-    }
-  }
-  @media (max-width: 520px) {
-    .proj-page > .s-narrow {
-      padding-inline: 16px;
-    }
+  /* `.proj-page` is deliberately edge-to-edge so the cover photo, the banner and
+     the related-projects band can run full-bleed; only the prose is inset.
+     `.wrap` now carries the gutters that `.s-narrow` never had — below the 760px
+     reading measure the heading and every paragraph used to sit flush against
+     both bezels (audit F1, 2026-09-28). */
+  .proj-narrow {
+    padding-top: var(--s-5);
   }
 </style>

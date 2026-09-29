@@ -15,6 +15,7 @@
 // This file is now normalization + composition: the tile, the viewer and the
 // expand control each own their own markup and styles.
 import GalleryTile from './GalleryTile.astro';
+import SectionHead from '../ui/SectionHead.astro';
 import GalleryLightbox from './GalleryLightbox.astro';
 import GalleryExpand from './GalleryExpand.astro';
 import {
@@ -38,6 +39,8 @@ interface Props {
   cap?: number;
   heading?: string;
   kicker?: string;
+  /** One sentence under the heading, editable per-entry in the CMS. */
+  intro?: string;
 }
 
 // 38, not 40: event-05 was byte-identical to event-03 and event-19 to event-04,
@@ -55,6 +58,7 @@ const {
   cap,
   heading = 'From our events',
   kicker = 'Community',
+  intro,
 } = Astro.props;
 
 const all = toGalleryPhotos(photos ?? images ?? defaults);
@@ -72,12 +76,7 @@ const media = readMediaManifest();
 
 <section class="sec" id="gallery" data-lightbox-scope data-lightbox-index="0">
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">{kicker}</span>
-        <h2>{heading}</h2>
-      </div>
-    </div>
+    <SectionHead kicker={kicker} title={heading} intro={intro} />
     {/* ONE grid holding every photo, with the over-cap ones hidden, rather than
         a visible grid plus a second "rest" grid. Two grids reflow as two
         independent runs, so revealing the remainder left the first grid's short

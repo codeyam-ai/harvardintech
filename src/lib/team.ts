@@ -1,7 +1,7 @@
 // Pure, framework-free helpers for the team / Board of Directors feature. Kept
 // out of any `.astro` component so they can be unit-tested under vitest and
-// reused by both the landing-page BoardOfDirectors section and any isolated
-// BoardMemberCard scenario. No DOM, no Astro imports — just data in, data out.
+// reused by the landing-page BoardOfDirectors section and its tiles. No DOM, no
+// Astro imports — just data in, data out.
 
 export interface BoardMemberLike {
   slug?: string;

@@ -8,5 +8,6 @@
   "mocks": {},
   "componentName": "HeroCarousel",
   "scenarioType": "component",
-  "pageFilePath": "src/components/landing/HeroCarousel.astro"
+  "pageFilePath": "src/components/landing/HeroCarousel.astro",
+  "description": "The homepage's rotating hero: a dark stage with a crimson scrim over each slide, carrying a mono kicker, a large serif headline, a serif lede and the slide's call-to-action buttons, with dot navigation beneath. This is the one band whose buttons are the site's primary pills, so it is where the pill shape introduced by the design-system pass is most visible; the subscribe destination it links to now comes from the shared links group rather than a URL typed into this component."
 }

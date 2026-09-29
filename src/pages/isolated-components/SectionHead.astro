@@ -1,0 +1,37 @@
+---
+import Component from "../../../src/components/ui/SectionHead.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for SectionHead — codeyam screenshots the #codeyam-capture
+// wrapper by navigating to /isolated-components/SectionHead.
+//
+// The band head every Atlas section opens with, shown with all four parts
+// filled: eyebrow, heading, intro, and the right-hand action in the slot. The
+// head is a space-between row, so the counter on the right is what proves the
+// layout rather than decorating it — with only a title this would look like a
+// plain heading and demonstrate nothing.
+//
+// Bounded to the content width the real bands give it, since a head stretched
+// to the full viewport puts its two ends implausibly far apart.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: SectionHead</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div style="width: 100%; max-width: 1180px;">
+        <Component
+          kicker="A global community"
+          title="Our chapters"
+          intro="Six cities with alumni organising events, and a global community for everyone else."
+        >
+          <span class="kick">04 cities · 02 forming</span>
+        </Component>
+      </div>
+    </div>
+  </body>
+</html>

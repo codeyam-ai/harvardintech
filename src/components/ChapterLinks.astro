@@ -1,7 +1,7 @@
 ---
 // A chapter's call-to-action buttons (volunteer, host, city socials), rendered
-// as the shared blue `.s-btn` pills. Renders nothing when there are no links, so
-// a chapter without city links simply omits the section.
+// as the shared `.btn.btn-solid` pills. Renders nothing when there are no
+// links, so a chapter without city links simply omits the section.
 //
 // CMS links are usually root-relative (`/volunteer`), so each goes through
 // `withBase` to resolve under the project-subpath deploy. Outside links pass
@@ -19,11 +19,24 @@ interface Props {
 const { links = [] } = Astro.props;
 ---
 
+<style>
+  .chapter-links {
+    margin-top: var(--s-6);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+</style>
+
 {
   links.length > 0 ? (
-    <div style="margin-top: var(--space-xl); display: flex; flex-wrap: wrap; gap: var(--space-md);">
+    <div class="chapter-links">
       {links.map((link) => (
-        <a class="s-btn" href={withBase(link.url)} {...externalLinkAttrs(link.url, Astro.url.origin)}>
+        <a
+          class="btn btn-solid"
+          href={withBase(link.url)}
+          {...externalLinkAttrs(link.url, Astro.url.origin)}
+        >
           {link.label}
         </a>
       ))}

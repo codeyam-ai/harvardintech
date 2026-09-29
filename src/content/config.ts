@@ -511,10 +511,18 @@ const homeSections = defineCollection({
   loader: collectionGlob('homeSections'),
   schema: z.object({
     kind: z.string(),
-    // Overrides the heading the coming-soon placeholder announces. Blank falls
-    // back to a label derived from `kind`, so a band held back before anyone
-    // named it still reads as deliberate rather than blank.
+    // The band's heading, AND the heading the coming-soon placeholder
+    // announces. Blank falls back to a label derived from `kind`, so a band
+    // held back before anyone named it still reads as deliberate rather than
+    // blank — and a band whose copy nobody has edited keeps the heading its
+    // component was shipped with.
     title: z.string().optional(),
+    // The eyebrow above the heading and the sentence under it. Same pattern as
+    // `momentumSections.kicker`, and optional for the same reason: every band
+    // ships with copy of its own, so an absent field means "keep what the
+    // component says" rather than "render nothing".
+    kicker: z.string().optional(),
+    intro: z.string().optional(),
     order: z.number().optional(),
     comingSoon: z.boolean().optional(),
     draft: z.boolean().optional(),

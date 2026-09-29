@@ -17,6 +17,7 @@ import GlobalCommunityCta from './GlobalCommunityCta.astro';
 import EventGallery from './landing/EventGallery.astro';
 import type { EventLike } from '../lib/events';
 import { isForming } from '../lib/localPresence';
+import { bannerFor } from '../lib/pageBanner';
 
 interface Lead {
   name: string;
@@ -107,10 +108,10 @@ const {
 } = Astro.props;
 
 const forming = isForming({ status });
-// The kicker over the hero title. A forming chapter says so in the one place
-// every visitor looks first, rather than leaving them to infer it from a
-// missing leads block further down.
-const heroLabel = forming ? 'Chapter · Forming' : 'Chapter';
+// The kicker over the banner title. Derived in `lib/pageBanner.ts` so the
+// chapter page, the community page and the CMS hints cannot spell the same
+// label three ways.
+const { label: heroLabel } = bannerFor({ kind: 'chapter', status, name });
 
 // Detected HERE, not inside PageNarrowBody: that component receives this page's
 // `<slot />` forwarded into its own, which always reads as filled from in there.

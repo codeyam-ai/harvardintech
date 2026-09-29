@@ -1,11 +1,13 @@
 [
   {
-    "description": "A single Board of Directors member card: a circular B&W headshot, or an initials-avatar fallback when the member has no photo, plus name and role. Shared by the landing BoardOfDirectors section and isolated scenarios.",
-    "filePath": "src/components/BoardMemberCard.astro",
-    "name": "BoardMemberCard",
+    "description": "One brand or section glyph as inline SVG, resolved from an icon key, a label, or an already-resolved icon for callers using a different table. Four surfaces had hand-rolled the same eight lines, and being small is exactly why they drifted: one copy carried a focusable attribute and another did not, so the same mark was keyboard-reachable on one band and skipped on the next. Renders nothing when a name resolves to no icon, so a CMS-entered channel label can be passed straight through.",
+    "filePath": "src/components/ui/BrandGlyph.astro",
+    "name": "BrandGlyph",
     "scenarios": [
-      "boardmembercard-with-photo",
-      "boardmembercard-initials-fallback"
+      "brandglyph-four-ways-a-glyph-resolves"
+    ],
+    "tags": [
+      "launch-design-system"
     ]
   },
   {
@@ -140,6 +142,30 @@
       "embedform-configured-form",
       "embedform-embedded-iframe",
       "embedform-unconfigured-fallback"
+    ]
+  },
+  {
+    "description": "The soft panel a section shows when it has nothing to list, with an optional action and a quieter secondary link. The action is the reason it exists: on a day-one site most sections are empty, so this is the first thing many visitors see, and eight sections had each written their own version of it with half offering the reader nothing to do next.",
+    "filePath": "src/components/ui/EmptyState.astro",
+    "name": "EmptyState",
+    "scenarios": [
+      "emptystate-both-ways-out",
+      "emptystate-nothing-to-offer-yet"
+    ],
+    "tags": [
+      "launch-design-system"
+    ]
+  },
+  {
+    "description": "A responsive grid of event cards, shared by the chapter events sections and the /events page. Its own component because those two had byte-identical copies of the same six declarations under different class names — one would eventually have been tuned without the other, and the two surfaces would have drifted while appearing to share a definition. Uses auto-fit so a chapter with one event shows one stretched card rather than one card and two empty tracks.",
+    "filePath": "src/components/EventCardGrid.astro",
+    "name": "EventCardGrid",
+    "scenarios": [
+      "eventcardgrid-three-uneven-cards",
+      "eventcardgrid-past-events"
+    ],
+    "tags": [
+      "launch-design-system"
     ]
   },
   {
@@ -312,12 +338,6 @@
     ]
   },
   {
-    "description": "Template React island: a name greeting with an interactive click counter. Not used on the Harvard in Tech landing page; retained from the scaffold.",
-    "filePath": "src/components/Greeting.tsx",
-    "name": "Greeting",
-    "testFile": "src/components/Greeting.test.tsx"
-  },
-  {
     "description": "Sliding hero banner: a dark stage with a crimson scrim over rotating slides, each with a kicker, headline, serif lede, and CTA buttons; auto-advances with dot navigation via a track slider.",
     "filePath": "src/components/landing/HeroCarousel.astro",
     "name": "HeroCarousel",
@@ -351,12 +371,35 @@
     ]
   },
   {
+    "description": "The body of the not-found page: the code, a plain-language heading, one line of reassurance, and the way back. Its own component so the 404 route composes and nothing more, and so the state can be captured at all — the screenshot harness refuses an HTTP 404 response, so an isolated frame is the only picture this page can have. That blind spot is how it stayed a bare unstyled shell with no navigation, the one page a lost reader could reach with no way onward.",
+    "filePath": "src/components/NotFound.astro",
+    "name": "NotFound",
+    "scenarios": [
+      "notfound-the-only-frame-it-can-have"
+    ],
+    "tags": [
+      "launch-design-system"
+    ]
+  },
+  {
     "description": "Landing Our Chapters section: a row of photo cards with a crimson gradient wash linking to each chapter page, sorted by order; shows a quiet prompt when empty.",
     "filePath": "src/components/landing/OurChapters.astro",
     "name": "OurChapters",
     "scenarios": [
       "our-chapters",
       "our-chapters-empty"
+    ]
+  },
+  {
+    "description": "The one page banner. Chapters, communities, events, sponsors, volunteers, volunteer projects, CMS pages and blog posts all open with it, so a reader meets the same shape whatever page they land on. Left-aligned with the kind of page labelled above the name, both owner decisions: the centred header it replaced made a long name the page's problem, and folding the org name into the title made the AI community page announce a product rather than a group of people. The photo tone is height-capped, where the hero it replaced filled the screen and pushed every page's content below the fold.",
+    "filePath": "src/components/ui/PageBanner.astro",
+    "name": "PageBanner",
+    "scenarios": [
+      "pagebanner-paper-tone-longest-name",
+      "pagebanner-photo-tone-over-a-city"
+    ],
+    "tags": [
+      "launch-design-system"
     ]
   },
   {
@@ -397,6 +440,18 @@
     ]
   },
   {
+    "description": "The heading block every Atlas band opens with: a crimson eyebrow, the heading, an optional intro, and an optional right-hand action in the slot. It exists because the same three lines of markup were retyped in every band, which is how one section head ended up paired with four heading sizes and two eyebrow colours across the site. The band still owns its own section wrapper and content; only the head is shared.",
+    "filePath": "src/components/ui/SectionHead.astro",
+    "name": "SectionHead",
+    "scenarios": [
+      "sectionhead-kicker-title-intro-and-action",
+      "sectionhead-centered"
+    ],
+    "tags": [
+      "launch-design-system"
+    ]
+  },
+  {
     "description": "The favicon and apple-touch-icon link tags, included by HeadExtras so every shell gets them. Its own component because it is the one place the site's mark appears outside the page body — the file that changes if the Veritas shield question is ever settled.",
     "filePath": "src/components/SiteIcons.astro",
     "name": "SiteIcons",
@@ -405,6 +460,18 @@
       "justification": "Renders only two <link> elements into <head>, so it has no rendered output at all — a capture of it would be a blank frame, which would assert nothing. There is no branching and no prop surface: both hrefs are constants passed through withBase. What it actually delivers is guarded on disk by src/lib/siteIcons.test.ts, which checks the favicon and apple-touch icon exist, are the right size, and are no longer the scaffold placeholder.",
       "kind": "trivial-wrapper"
     }
+  },
+  {
+    "description": "The site's social row, in one place. The footer and every chapter and community Connect row render it, which is what stops them disagreeing about which accounts exist — the chapter row listed a retired Twitter bird as a raster badge long after the footer had moved on. Comes in an on-light variant with each mark in its brand colour on a white badge, and an on-dark variant with no badge, because a white circle on the footer's ink reads as a hole punched in the band. The e-mail badge is not a caller's decision: connectLinks synthesizes it only when an address is actually set.",
+    "filePath": "src/components/ui/SocialLinks.astro",
+    "name": "SocialLinks",
+    "scenarios": [
+      "sociallinks-on-light-brand-colours",
+      "sociallinks-on-dark-no-badges"
+    ],
+    "tags": [
+      "launch-design-system"
+    ]
   },
   {
     "description": "The floating pill mounted in AdminLayout, so it rides along on every admin page: it counts the browser staging set, opens the review drawer, commits every staged file as one commit, and owns the deploy watch. The watch lives in its own state beside the publish flow rather than being a phase of it, which is what allows publishing again while a deploy is still in flight.",
@@ -540,6 +607,15 @@
     "filePath": "src/lib/supporterBadge.ts",
     "name": "badgeFor",
     "testFile": "src/lib/supporterBadge.test.ts"
+  },
+  {
+    "description": "Derives the label above a page banner's title: Chapter, Chapter with a forming note, or Community. One module rather than a ternary per call site because three places need it and they had already drifted once, which is how the AI community page came to announce Harvard Alumni in Tech AI. The name is carried through untouched; the kind never folds into the title.",
+    "filePath": "src/lib/pageBanner.ts",
+    "name": "bannerFor",
+    "tags": [
+      "launch-design-system"
+    ],
+    "testFile": "src/lib/pageBanner.test.ts"
   },
   {
     "description": "Renders the decision ids in a step's 'Waiting on …' line as English. Replaces an inline join(' and ') that read correctly for the one and two cases the runbook has today and produced 'D1 and D2 and D3' for three — invisible because no step needs three decisions, which is exactly why it earned a function with a test. The page names what it is waiting on so the reader knows what to resolve; garbling the list undercuts the only reason it is printed.",
@@ -753,6 +829,15 @@
     "testFile": "src/lib/contentRoot.test.ts"
   },
   {
+    "description": "The same date split into month, day and year for the stacked date column on an event row, where the unpadded day carries the scan weight. Shares the UTC rule with formatLongDate, which is why both live in one module: when the two disagreed about a timezone, one event printed two different days on the same page.",
+    "filePath": "src/lib/dates.ts",
+    "name": "dateParts",
+    "tags": [
+      "launch-design-system"
+    ],
+    "testFile": "src/lib/dates.test.ts"
+  },
+  {
     "description": "The top-level frontmatter keys a registry field list declares. A list's sub-fields are row keys inside the array value rather than frontmatter keys of their own, so they are deliberately excluded — counting them would make donorTiers' id, name and description look like three missing top-level schema keys. Extracted from src/data/collections.test.ts alongside the other drift rules.",
     "filePath": "src/lib/collectionRegistryDrift.ts",
     "name": "declaredFieldNames",
@@ -918,6 +1003,15 @@
     "testFile": "src/lib/lumaFeed.test.ts"
   },
   {
+    "description": "The standfirst under the /events banner, naming the chapters that actually exist. Derived from the published collection rather than typed into the copy, which is what fixed a list that had gone stale: it omitted SF and misspelled two other chapters while the menu above it was correct. With no chapters published the clause drops out so the sentence still reads as English.",
+    "filePath": "src/lib/eventsIntro.ts",
+    "name": "eventsLede",
+    "tags": [
+      "launch-design-system"
+    ],
+    "testFile": "src/lib/eventsIntro.test.ts"
+  },
+  {
     "description": "The events belonging to one chapter or community, projected into the EventLike shape the event cards render. The match is an exact string comparison against the owner's collection id, because that is what /chapters/<slug> and /communities/<slug> are keyed on — a near-miss like 'New York City' for 'nyc', or a stray trailing space, belongs to nobody, which is exactly the case unmatchedChapterTags reports, so the two are two halves of one rule. An untagged event is excluded here and still appears on /events. Extracted from the two [slug].astro routes, which held this projection verbatim once communities started reusing the chapter tag.",
     "filePath": "src/lib/events.ts",
     "name": "eventsTaggedTo",
@@ -984,10 +1078,28 @@
     "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
+    "description": "Joins city names into a readable list with an Oxford comma. The final comma is not stylistic here: one real chapter is named DC and DMV Area, so without it the last two entries run together as a single place. Blank entries are dropped rather than printed as stray commas, because chapter labels come from content an editor types.",
+    "filePath": "src/lib/eventsIntro.ts",
+    "name": "formatCityList",
+    "tags": [
+      "launch-design-system"
+    ],
+    "testFile": "src/lib/eventsIntro.test.ts"
+  },
+  {
     "description": "Formats an event date as a long en-US date string (e.g. 'September 24, 2026') for display on event cards.",
     "filePath": "src/lib/events.ts",
     "name": "formatEventDate",
     "testFile": "src/lib/events.test.ts"
+  },
+  {
+    "description": "The site's one long-form date, as February 10, 2026. Pinned to UTC and en-US: a date-only frontmatter value parses to UTC midnight, so formatting it west of UTC would render the previous day, and an unpinned locale would reorder the output with whichever machine built the site.",
+    "filePath": "src/lib/dates.ts",
+    "name": "formatLongDate",
+    "tags": [
+      "launch-design-system"
+    ],
+    "testFile": "src/lib/dates.test.ts"
   },
   {
     "description": "A volunteer project's start and end dates as one display string, or null when it has neither so the caller renders nothing rather than an empty chip. Four cases: both dates write the shared year once (\"September 1 – December 15, 2026\") and both years across a boundary; a start alone reads \"Starts …\"; an end alone reads \"Through …\". Each date goes through `formatEventDate`, the site's single \"Month D, YYYY\" formatter, so a project date and an event date cannot drift into two formats. An inverted range formats in the order authored rather than being silently swapped — a visibly wrong range gets reported, a quietly reordered one becomes a mystery — and it never throws.",
@@ -2192,6 +2304,15 @@
     "testFile": "src/lib/homeSections.test.ts"
   },
   {
+    "description": "The CMS copy for one homepage band, with unset fields omitted rather than passed through blank. The omission is the rule: each band declares its own wording as a prop default, and an absent key is what lets that default apply, so a band an editor never opened keeps the heading it shipped with. A field cleared or filled with spaces counts as unset for the same reason.",
+    "filePath": "src/lib/homeSections.ts",
+    "name": "sectionCopy",
+    "tags": [
+      "launch-design-system"
+    ],
+    "testFile": "src/lib/homeSections.test.ts"
+  },
+  {
     "description": "What a band is called: the section's own title when it has one, otherwise the shared heading the page has always used for that kind. The slot bands took their heading from donatePage.json and ignored the title they could already carry, which is why two pillars sections were indistinguishable both on the page and in the CMS list, where the row label falls back to the slug — so letting a section USE its title is what names a duplicated band. Deliberately one field rather than two: a separate CMS label and page heading could disagree, and an editor renaming a band means both. Whitespace-only counts as blank, and no title with no fallback yields undefined rather than the string undefined, since the band components already treat a missing heading as draw-no-heading.",
     "filePath": "src/lib/momentumSections.ts",
     "name": "sectionHeading",
@@ -2288,6 +2409,15 @@
     "description": "Loads the editable settings/nav singletons from the resolved data root (sandbox-aware) via readSingleton: fs read + JSON.parse.",
     "filePath": "src/lib/site.ts",
     "name": "site",
+    "testFile": "src/lib/site.test.ts"
+  },
+  {
+    "description": "Resolves the three destinations the site links out to from more than one place, with the shipped constants as defaults. Read through this rather than off settings directly: every field is optional, so a settings file written before the links group existed, or one an editor blanked a field in, still resolves to where the site has always linked instead of rendering a button with an empty destination.",
+    "filePath": "src/lib/site.ts",
+    "name": "siteLinks",
+    "tags": [
+      "launch-design-system"
+    ],
     "testFile": "src/lib/site.test.ts"
   },
   {
@@ -2508,6 +2638,15 @@
     "filePath": "src/lib/momentumSections.ts",
     "name": "tintedFlags",
     "testFile": "src/lib/momentumSections.test.ts"
+  },
+  {
+    "description": "Coerces a string-or-Date into a Date so both callers in this module accept either. Events arrive as frontmatter strings while a blog post date is parsed into a Date by the content schema, and both branches are exercised through the public formatters.",
+    "filePath": "src/lib/dates.ts",
+    "name": "toDate",
+    "tags": [
+      "launch-design-system"
+    ],
+    "testFile": "src/lib/dates.test.ts"
   },
   {
     "description": "Turns a Vimeo, YouTube or Wistia link into its player URL, dropping tracking query strings. Returns undefined for anything that is not a video host, so a link to an ordinary web page is rendered as a link rather than put inside an iframe.",

@@ -12,6 +12,7 @@
 // Both are real integrations; the card is the honest default until the embed
 // snippet (cal-id) is available. When neither url is set it shows a fallback.
 import LumaSubscribe from './LumaSubscribe.astro';
+import SectionHead from './ui/SectionHead.astro';
 
 interface Props {
   calendarUrl?: string;
@@ -27,14 +28,13 @@ const {
 } = Astro.props as Props;
 ---
 
-<section class="luma s-section" id="calendar">
-  <div class="s-inner">
-    <div class="luma-head">
-      <h2 class="s-title--plain">{title}</h2>
-      <p class="luma-lede">
-        Everything coming up, across every chapter, live from our Luma calendar.
-      </p>
-    </div>
+<section class="luma sec" id="calendar">
+  <div class="wrap">
+    <SectionHead
+      title={title}
+      intro="Everything coming up, across every chapter, live from our Luma calendar."
+      align="center"
+    />
 
     {
       embedUrl ? (
@@ -90,21 +90,6 @@ const {
      So: hold the calendar to the same 920px column the event cards below it use,
      size the frame to the viewport instead of a fixed 640, and let Luma's own
      card be the only card. */
-  .luma-head {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  .luma-head h2 {
-    margin: 0;
-  }
-  .luma-lede {
-    font-family: var(--font-serif);
-    font-size: 16px;
-    line-height: 1.5;
-    color: var(--ink-2);
-    max-width: 48ch;
-    margin: 10px auto 0;
-  }
   .luma-frame {
     position: relative;
     width: 100%;

@@ -13,7 +13,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EventsPage from '../components/EventsPage.astro';
 import EventsIntroBand from '../components/EventsIntroBand.astro';
 import LumaCalendar from '../components/LumaCalendar.astro';
-import { LUMA_CALENDAR_URL, LUMA_EMBED_URL } from '../lib/luma';
+import { LUMA_EMBED_URL } from '../lib/luma';
+import { siteLinks } from '../lib/site';
 import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
 
@@ -28,6 +29,9 @@ const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS).m
   {/* The page's own title first, so it opens saying what it is rather than
       handing the first line to the Luma embed's "Full events calendar". */}
   <EventsIntroBand />
-  <LumaCalendar calendarUrl={LUMA_CALENDAR_URL} embedUrl={LUMA_EMBED_URL} />
+  {/* The calendar PAGE is editable through settings; the embed URL stays in
+      code because it carries the calendar id that `lumaFeed.test.ts` pins to
+      the importer — the two must name the same calendar. */}
+  <LumaCalendar calendarUrl={siteLinks().luma} embedUrl={LUMA_EMBED_URL} />
   <EventsPage events={events} showIntro={false} />
 </BaseLayout>

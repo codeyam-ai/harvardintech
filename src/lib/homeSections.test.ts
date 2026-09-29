@@ -7,6 +7,7 @@ import {
   orderedHomeSections,
   resolveVisibility,
   sectionAnchorId,
+  sectionCopy,
   unknownHomeSectionKinds,
   type HomeSectionLike,
 } from './homeSections';
@@ -184,5 +185,59 @@ describe('hiddenSectionAnchors', () => {
     const anchors = hiddenSectionAnchors([]);
     expect(anchors).not.toContain(undefined);
     expect(anchors).toHaveLength(Object.keys(HOME_SECTION_ANCHORS).length);
+  });
+});
+
+describe('sectionCopy', () => {
+  // The rule this function exists for. Each band declares its own wording as a
+  // prop default, and a key that is ABSENT is what lets that default apply — so
+  // an entry an editor has never opened must contribute no keys at all. Passing
+  // the blank fields through instead would blank every heading on the site the
+  // day these fields shipped.
+  it('returns no keys for a band with no copy set', () => {
+    expect(sectionCopy({ kind: 'board' })).toEqual({});
+  });
+
+  // The ordinary case: an editor filled all three boxes.
+  it('carries heading, kicker and intro through when all are set', () => {
+    const copy = sectionCopy({
+      kind: 'board',
+      title: 'Board of directors',
+      kicker: 'Leadership',
+      intro: 'The people steering it.',
+    });
+    expect(copy).toEqual({
+      heading: 'Board of directors',
+      kicker: 'Leadership',
+      intro: 'The people steering it.',
+    });
+  });
+
+  // A field an editor cleared is empty text, not a missing key. It has to be
+  // treated the same as never-set, or clearing one box would blank the heading
+  // rather than restoring the band's own wording.
+  it('omits a field an editor has blanked', () => {
+    const copy = sectionCopy({ kind: 'board', title: '', kicker: 'Leadership' });
+    expect(copy).not.toHaveProperty('heading');
+    expect(copy.kicker).toBe('Leadership');
+  });
+
+  // Whitespace is the same case as blank — a box holding only spaces is one an
+  // editor did not fill in, however it looks in the form.
+  it('treats a whitespace-only field as unset', () => {
+    expect(sectionCopy({ kind: 'board', title: '   ', intro: '\t\n' })).toEqual({});
+  });
+
+  // Surrounding whitespace is trimmed off what DOES carry through, so a stray
+  // trailing space in the CMS never reaches the page as a wider heading.
+  it('trims the text it carries through', () => {
+    expect(sectionCopy({ kind: 'board', title: '  Our chapters  ' }).heading).toBe('Our chapters');
+  });
+
+  // The fields are independent: one set and two blank yields exactly one key.
+  it('carries only the fields that are set', () => {
+    expect(sectionCopy({ kind: 'board', intro: 'Just the line.' })).toEqual({
+      intro: 'Just the line.',
+    });
   });
 });

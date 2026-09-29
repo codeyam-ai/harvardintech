@@ -7,8 +7,9 @@ import "../../../src/styles/tokens.css";
 //
 // Nicole's real title and blurb, because they are the awkward ones: the title
 // carries her "Specialist- Events" spacing and the blurb runs long, so this
-// capture is where the wrap behaviour is actually visible. Wrapped in `.s-narrow`
-// to match the column the header sits in on the real page.
+// capture is where the wrap behaviour is actually visible. NOT wrapped in a
+// reading column any more: the header now renders through the shared page
+// banner, which is full-bleed on the real page and supplies its own `.wrap`.
 //
 // Three headers, because the framing-detail row under the title has three states
 // and only the middle one was ever captured: a commitment and a date range
@@ -30,7 +31,7 @@ import "../../../src/styles/tokens.css";
   </head>
   <body style="margin: 0;">
     <div id="codeyam-capture">
-      <div class="s-narrow">
+      <div>
         <Component
           title="Social Media Marketing Specialist- Events"
           blurb="Help promote Harvard Alumni in Tech events from start to finish by creating and scheduling engaging social media content before, during, and after each event. This project is ideal for a volunteer who enjoys event marketing, storytelling, and turning event recordings into reusable content."

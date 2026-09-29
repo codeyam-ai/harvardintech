@@ -1,7 +1,12 @@
 ---
-// /volunteer hero: the "Join the Volunteer Team" pitch and the primary
-// sign-up CTA, over a full-bleed photo with a contrast scrim — matching the
-// homepage and /donate hero treatment.
+// The /volunteer page header: the "Join the Volunteer Team" pitch and the
+// primary sign-up CTA.
+//
+// Now the shared `ui/PageBanner.astro`, with the CTA passed through its slot.
+// The photo treatment it used to carry (a 104px-tall band with its own gradient
+// scrim and an 82px headline) was a third hero treatment on a site that now has
+// one; the banner supplies the tone, the scrim and the type.
+import PageBanner from '../ui/PageBanner.astro';
 import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 
@@ -15,67 +20,32 @@ interface Props {
   image?: string;
 }
 const { kicker, headline, intro, ctaLabel, ctaUrl, image } = Astro.props as Props;
-const heroImage = image ? withBase(image) : null;
 ---
 
-<section class="hero" style={heroImage ? `--hero-img:url('${heroImage}')` : undefined}>
-  <div class="wrap">
-    {kicker ? <span class="kick">{kicker}</span> : null}
-    <h1>{headline}</h1>
-    <p class="lede">{intro}</p>
-    {
-      ctaLabel && ctaUrl ? (
-        <a class="btn btn-solid cta" href={withBase(ctaUrl)} {...externalLinkAttrs(ctaUrl, Astro.url.origin)}>
+<PageBanner
+  label={kicker}
+  title={headline}
+  lede={intro}
+  image={image}
+  tone={image ? 'photo' : 'paper'}
+>
+  {
+    ctaLabel && ctaUrl ? (
+      <p class="vh-cta">
+        <a
+          class="btn btn-solid"
+          href={withBase(ctaUrl)}
+          {...externalLinkAttrs(ctaUrl, Astro.url.origin)}
+        >
           {ctaLabel}
         </a>
-      ) : null
-    }
-  </div>
-</section>
+      </p>
+    ) : null
+  }
+</PageBanner>
 
 <style>
-  .hero {
-    position: relative;
-    background-color: var(--ink);
-    background-image: var(--hero-img);
-    background-size: cover;
-    background-position: center;
-    border-bottom: 1px solid var(--line);
-    padding: 104px 0 96px;
-  }
-  /* Scrim: the copy sits over a photo, so it needs a guaranteed contrast floor
-     regardless of which image is used. */
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(24, 20, 21, 0.72), rgba(24, 20, 21, 0.6));
-  }
-  .hero .wrap {
-    position: relative;
-  }
-  .kick {
-    color: #fff;
-  }
-  /* Matches the homepage hero type scale (HeroCarousel .intro h1). */
-  h1 {
-    font-size: clamp(40px, 6.4vw, 82px);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    color: #fff;
-    margin: 10px 0 16px;
-    max-width: 20ch;
-  }
-  .lede {
-    font-family: var(--font-serif);
-    font-size: 21px;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.9);
-    max-width: 62ch;
-    margin: 0;
-  }
-  .cta {
-    margin-top: 28px;
+  .vh-cta {
+    margin: var(--s-4) 0 0;
   }
 </style>

@@ -1,0 +1,38 @@
+---
+import Component from "../../../src/components/ui/PageBanner.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for PageBanner — codeyam screenshots the #codeyam-capture
+// wrapper by navigating to /isolated-components/PageBanner.
+//
+// The PAPER tone, which is the one every page without a photo falls back to —
+// communities, sponsors, volunteer projects, CMS pages and blog posts all land
+// here. The photo tone has its own page, because a prerendered stack cannot
+// switch state from a query parameter.
+//
+// The name is deliberately the longest on the roster. Left-aligning the banner
+// was chosen precisely because "Seattle / Pacific Northwest" wrapped to two
+// centred lines in the header this replaced, so the capture should show the
+// case that motivated the change rather than a short one that would look fine
+// either way.
+//
+// NOT wrapped in a width div: the banner is full-bleed on every real page and
+// constrains its own contents with `.wrap`.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: PageBanner</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component
+        label="Chapter · Forming"
+        title="Seattle / Pacific Northwest"
+        lede="Alumni in the Pacific Northwest are getting a chapter started. There is a WhatsApp group already running while events are organised."
+      />
+    </div>
+  </body>
+</html>

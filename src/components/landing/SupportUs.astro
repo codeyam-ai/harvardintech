@@ -10,14 +10,25 @@
 // /volunteer. "Ways to partner" is hidden on /sponsor for launch, so nothing
 // links to `#levels`.
 import { VOLUNTEER_PATH } from '../../lib/contact';
+import SectionHead from '../ui/SectionHead.astro';
 import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 
 interface Props {
   /** The volunteer form (the volunteer page's `ctaUrl`). Absent → /volunteer. */
   volunteerFormUrl?: string;
+  /** Band copy, editable per-entry in the CMS. Each defaults to the wording
+   *  this band shipped with, so an entry that sets none looks unchanged. */
+  heading?: string;
+  kicker?: string;
+  intro?: string;
 }
-const { volunteerFormUrl } = Astro.props;
+const {
+  volunteerFormUrl,
+  heading = 'Ways to support',
+  kicker = 'Support the mission',
+  intro,
+} = Astro.props as Props;
 
 const toSponsor = { href: withBase('/sponsor'), cta: 'Start a conversation →' };
 const options = [
@@ -31,12 +42,7 @@ const options = [
 
 <section class="sec" id="support">
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">Support the mission</span>
-        <h2>Ways to support</h2>
-      </div>
-    </div>
+    <SectionHead kicker={kicker} title={heading} intro={intro} />
     <div class="support-grid">
       {
         options.map((opt) => (

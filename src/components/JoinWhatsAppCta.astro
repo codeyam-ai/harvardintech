@@ -12,6 +12,8 @@
 // comment deliberately does not repeat them, because `noPersonalEmail.test.ts`
 // scans this directory for exactly that string and cannot tell prose from a
 // live href.
+import SectionHead from './ui/SectionHead.astro';
+import { siteLinks } from '../lib/site';
 import { joinCtas } from '../lib/localPresence';
 import { externalLinkAttrs } from '../lib/externalLink';
 import { withBase } from '../lib/url';
@@ -28,7 +30,12 @@ interface Props {
 }
 const { name, whatsappFormUrl, heading, blurb } = Astro.props;
 
-const { whatsappFormUrl: href } = joinCtas({ whatsappFormUrl });
+// The entry's own override wins; otherwise the site-wide setting. Both go
+// through `joinCtas`, so a group invite is refused whichever one supplied it —
+// the guard is on the value, not on where it came from.
+const { whatsappFormUrl: href } = joinCtas({
+  whatsappFormUrl: whatsappFormUrl ?? siteLinks().whatsappJoinForm,
+});
 const title = heading ?? `Join the ${name} WhatsApp`;
 const line =
   blurb ??
@@ -42,14 +49,24 @@ const line =
 const linkAttrs = externalLinkAttrs(href, Astro.url.origin);
 ---
 
-<section class="s-section" id="join-whatsapp" style="background: var(--color-bg-blue);">
-  <div class="s-narrow" style="text-align: center;">
-    <h2 class="s-title">{title}</h2>
-    <p style="font-size: 1.1rem; color: var(--color-fg); margin: 0 auto var(--space-lg); max-width: var(--text-width);">
-      {line}
+<section class="sec join-wa" id="join-whatsapp">
+  <div class="wrap">
+    <SectionHead title={title} intro={line} align="center" />
+    <p class="join-wa-cta">
+      <a class="btn btn-solid" href={withBase(href)} {...linkAttrs}>
+        Apply to join
+      </a>
     </p>
-    <a class="s-btn" href={withBase(href)} {...linkAttrs}>
-      Apply to join
-    </a>
   </div>
 </section>
+
+<style>
+  .join-wa {
+    background: var(--paper-2);
+  }
+  .join-wa-cta {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+  }
+</style>

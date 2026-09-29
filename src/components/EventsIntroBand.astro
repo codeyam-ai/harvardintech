@@ -1,27 +1,25 @@
 ---
-// The /events page's title band: EventsIntro wrapped in the site's standard
-// section, sitting above the Luma calendar.
+// The /events page banner, above the Luma calendar.
 //
-// It exists so `pages/events.astro` stays imports-and-composition with no raw
-// markup of its own. The band is a separate component from `EventsIntro` on
-// purpose: `EventsPage` renders the same heading and standfirst INSIDE its own
-// `.s-inner`, so the intro itself has to stay band-less and each caller brings
-// its own wrapper.
-import EventsIntro from './EventsIntro.astro';
+// It is the shared `ui/PageBanner.astro` — the same banner chapters, sponsors
+// and volunteer pages render — so /events no longer opens with a heading of its
+// own design. It sits above the calendar so the page says what it is before
+// handing the first line to Luma's own "Full events calendar".
+//
+// The city list is DERIVED from the published chapters collection, the same way
+// the utility bar and the nav dropdown are, rather than typed into the copy.
+import { getCollection } from 'astro:content';
+import PageBanner from './ui/PageBanner.astro';
+import { chapterNavItems } from '../lib/nav';
+import { publishedEntries } from '../lib/drafts';
+import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
+import { eventsLede } from '../lib/eventsIntro';
+
+const chapters = publishedEntries(await getCollection('chapters'), INCLUDE_DRAFTS).map((c) => ({
+  slug: c.id,
+  ...c.data,
+}));
+const lede = eventsLede(chapterNavItems(chapters).map((c) => c.label));
 ---
 
-<section class="s-section events-intro-band">
-  <div class="s-inner">
-    <EventsIntro />
-  </div>
-</section>
-
-<style>
-  .events-intro-band {
-    text-align: center;
-    /* The intro and the calendar read as one block — the standfirst introduces
-       the calendar directly beneath it — so the band does not close with a full
-       78px below the text only for the calendar's own 78px to follow it. */
-    padding-bottom: 0;
-  }
-</style>
+<PageBanner label="Programs" title="Events" lede={lede} />

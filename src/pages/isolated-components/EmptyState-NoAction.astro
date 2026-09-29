@@ -1,0 +1,36 @@
+---
+import Component from "../../../src/components/ui/EmptyState.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EmptyState with NO action — codeyam screenshots the
+// #codeyam-capture wrapper by navigating to /isolated-components/EmptyState-NoAction.
+//
+// Its own page rather than a `?s=` switch: this is a prerendered stack, so
+// query parameters are empty at build time.
+//
+// The state that ships on the sponsor wall and the board band today, where
+// there is genuinely nothing for the reader to do yet — no partner to contact,
+// no director to read about. It is worth its own frame because the component
+// renders the actions paragraph CONDITIONALLY: a link needs both a destination
+// and a label, since a labelled button with nowhere to go is a dead end and a
+// destination with no label is invisible. This proves the panel closes up
+// cleanly instead of leaving the gap where the buttons would have been.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EmptyState-NoAction</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div style="width: 100%; max-width: 920px;">
+        <Component
+          title="No partners listed yet."
+          body="We are lining up partners for the year ahead. If you would like your organization to be the first one listed here, we would love to talk."
+        />
+      </div>
+    </div>
+  </body>
+</html>

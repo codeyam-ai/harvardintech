@@ -1,0 +1,13 @@
+{
+  "name": "EmptyState - Both Ways Out",
+  "id": "3a8e9474-5ae0-4f9f-be2f-c6d177097fd9",
+  "url": "/isolated-components/EmptyState",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EmptyState",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/EmptyState.astro",
+  "description": "The soft panel a section shows when it has nothing to list, with both its primary pill and its quieter secondary link. The action is the whole point: on a day-one site most sections are empty, so this panel is the first thing many visitors meet, and the version worth capturing is the one that gives the reader somewhere to go rather than the bare line of text it replaced."
+}

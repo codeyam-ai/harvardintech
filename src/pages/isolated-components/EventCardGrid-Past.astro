@@ -1,0 +1,58 @@
+---
+import Component from "../../../src/components/EventCardGrid.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EventCardGrid's PAST variant — codeyam screenshots the
+// #codeyam-capture wrapper by navigating to /isolated-components/EventCardGrid-Past.
+//
+// Its own page rather than a `?s=` switch: this is a prerendered stack, so
+// query parameters are empty at build time.
+//
+// Three things differ from the upcoming grid, and all three are the point:
+// the date turns from crimson to grey, the whole card dims, and the "Learn
+// more" link is dropped entirely — a past event's registration page is either
+// gone or misleading. This is the block that makes a chapter with a quiet
+// month look alive rather than abandoned, so it ships on every chapter page.
+import type { EventLike } from "../../../src/lib/events";
+
+const events: EventLike[] = [
+  {
+    slug: "fall-welcome-mixer",
+    title: "Harvard in Tech Fall Welcome Mixer",
+    date: "2025-09-28",
+    location: "Private rooftop, Hudson Yards, New York, NY",
+    description:
+      "An exclusive rooftop gathering in Hudson Yards welcoming new and returning alumni for the fall, with curated tabletop conversations on what people are building.",
+    link: "https://example.com/fall-mixer",
+  },
+  {
+    slug: "spring-social",
+    title: "Harvard Alumni in Tech: Spring Social",
+    date: "2025-05-22",
+    location: "New York, NY",
+    description: "Drinks and introductions, no agenda.",
+  },
+  {
+    slug: "welcome-to-nyc",
+    title: "Harvard Alumni in Tech: Welcome to NYC Mixer",
+    date: "2024-10-10",
+    location: "New York, NY",
+    link: "https://example.com/welcome-nyc",
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EventCardGrid-Past</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div style="width: 100%; max-width: 960px;">
+        <Component events={events} variant="past" />
+      </div>
+    </div>
+  </body>
+</html>

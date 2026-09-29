@@ -47,7 +47,9 @@ const { member, media } = Astro.props as Props;
     position: relative;
     width: 100%;
     aspect-ratio: 1;
-    border-radius: 4px;
+    /* The shared radius rather than a one-off 4px. The tile keeps its own
+       borderless look — it is a portrait, not a card. */
+    border-radius: var(--radius);
     overflow: hidden;
     background: var(--paper-2);
     display: flex;

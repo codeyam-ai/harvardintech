@@ -11,17 +11,38 @@
 // `socialIcon.ts`: on crimson they have to be white, and the original assets are
 // full-colour (one is a JPEG with a white background), so they cannot be
 // recoloured — see the note in that module.
+//
+// WHY THIS DOES NOT USE `ui/SocialLinks.astro`, which the footer and the chapter
+// Connect row both do: that part is a compact badge row. This band is the
+// section's navigation — 104px outlined discs on a responsive grid, captioned
+// with where each one leads, inverting to a white fill on hover. Serving both
+// from one component would mean three layout modes and a hover inversion inside
+// it, and the thing actually worth sharing is already shared: both read
+// `connectLinks`, so they cannot disagree about which accounts exist or about
+// when the e-mail disc appears. Only the presentation differs, deliberately.
 import { displayConnectLinks } from '../../lib/contact';
 import { externalLinkAttrs } from '../../lib/externalLink';
-import { brandIcon } from '../../lib/brandIcons';
+import BrandGlyph from '../ui/BrandGlyph.astro';
+import SectionHead from '../ui/SectionHead.astro';
 import type { SocialLink } from '../../lib/site';
 
 interface Props {
   socials: readonly SocialLink[];
   /** The shared inbox, when this surface may show it (`emailFor('contactUs', …)`). */
   email?: string;
+  /** Band copy, editable per-entry in the CMS. Each defaults to the wording
+   *  this band shipped with, so an entry that sets none looks unchanged. */
+  heading?: string;
+  kicker?: string;
+  intro?: string;
 }
-const { socials, email } = Astro.props;
+const {
+  socials,
+  email,
+  heading = 'Contact us',
+  kicker = 'Say hello',
+  intro,
+} = Astro.props as Props;
 
 // The e-mail disc is synthesized from the shared inbox, one of the few places the
 // owner's "sparingly" rule shows it (see `EMAIL_SURFACES` in src/lib/contact.ts).
@@ -29,26 +50,21 @@ const { socials, email } = Astro.props;
 // added a mail link as a social keeps that one instead of getting two envelopes.
 const links = displayConnectLinks(socials, email);
 const hasEmail = links.some((link) => link.url.trim().toLowerCase().startsWith('mailto:'));
+
+// The default invitation names the mail option only when there IS one — an
+// editor who supplies their own `intro` replaces this wholesale.
+const defaultIntro = hasEmail
+  ? "We'd love to hear from you. Reach out on any of these, or drop us a note."
+  : "We'd love to hear from you. Reach out on any of these.";
 ---
 
 <section class="sec contact" id="contact">
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">Say hello</span>
-        <h2>Contact us</h2>
-        <p class="contact-lede">
-          {hasEmail
-            ? "We'd love to hear from you. Reach out on any of these, or drop us a note."
-            : "We'd love to hear from you. Reach out on any of these."}
-        </p>
-      </div>
-    </div>
+    <SectionHead kicker={kicker} title={heading} intro={intro ?? defaultIntro} />
 
     <div class="contact-row">
       {
         links.map((link) => {
-          const icon = brandIcon(link.icon) ?? brandIcon(link.label);
           return (
             <a
               class="contact-link"
@@ -57,21 +73,7 @@ const hasEmail = links.some((link) => link.url.trim().toLowerCase().startsWith('
               {...externalLinkAttrs(link.url, Astro.url.origin)}
             >
               <span class="contact-disc">
-                {icon && (
-                  <svg
-                    class="contact-icon"
-                    viewBox={icon.viewBox}
-                    width="46"
-                    height="46"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    {icon.paths.map((d) => (
-                      <path d={d} />
-                    ))}
-                  </svg>
-                )}
+                <BrandGlyph name={link.icon} fallbackName={link.label} size={46} />
               </span>
               <span class="contact-label">{link.label}</span>
             </a>
@@ -93,14 +95,19 @@ const hasEmail = links.some((link) => link.url.trim().toLowerCase().startsWith('
   .contact :global(.sec-head) {
     margin-bottom: 0;
   }
+  /* All three reach INTO `SectionHead`, so all three need `:global`. Astro
+     scopes a style to the component that declares the MARKUP, and the eyebrow,
+     heading and intro are now that component's elements rather than this one's
+     — a bare `.contact h2` silently stops matching and the band renders dark
+     ink on crimson. */
   .contact :global(.kick) {
     color: rgba(255, 255, 255, 0.75);
   }
-  .contact h2 {
-    color: #fff;
+  .contact :global(h2) {
+    color: var(--white);
     margin-bottom: 10px;
   }
-  .contact-lede {
+  .contact :global(.sh-intro) {
     font-family: var(--font-serif);
     font-size: 19px;
     line-height: 1.5;
@@ -122,7 +129,7 @@ const hasEmail = links.some((link) => link.url.trim().toLowerCase().startsWith('
     align-items: center;
     gap: 16px;
     text-decoration: none;
-    color: #fff;
+    color: var(--white);
   }
   .contact-link:hover {
     text-decoration: none;
@@ -137,11 +144,15 @@ const hasEmail = links.some((link) => link.url.trim().toLowerCase().startsWith('
     transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
   }
   .contact-link:hover .contact-disc {
-    background: #fff;
+    background: var(--white);
     color: var(--crimson);
     transform: translateY(-2px);
   }
-  .contact-icon {
+  /* `:global`, because the glyph is `BrandGlyph`'s element and Astro scopes a
+     style to the component that declares the markup. The size is restated here
+     rather than left to the component's `size` prop because this band shrinks
+     it at phone width, and a media query cannot reach a prop. */
+  .contact-disc :global(svg) {
     display: block;
     width: 46px;
     height: 46px;
@@ -160,7 +171,7 @@ const hasEmail = links.some((link) => link.url.trim().toLowerCase().startsWith('
       width: 84px;
       height: 84px;
     }
-    .contact-icon {
+    .contact-disc :global(svg) {
       width: 38px;
       height: 38px;
     }

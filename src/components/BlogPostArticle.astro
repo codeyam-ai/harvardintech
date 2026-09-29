@@ -14,6 +14,8 @@
 // `BlogPostBody` above it — this component's job is that one entry renders the
 // same way whatever route reached it.
 import Embed from './Embed.astro';
+import PageBanner from './ui/PageBanner.astro';
+import { formatLongDate } from '../lib/dates';
 
 interface Props {
   title: string;
@@ -27,13 +29,34 @@ interface Props {
 const { title, date, embedUrl, embedHtml } = Astro.props as Props;
 ---
 
-<article style="margin-top: var(--space-lg);">
-  <h1 style="margin-bottom: var(--space-sm);">{title}</h1>
-  <time style="color: var(--color-muted);" datetime={date.toISOString()}>
-    {date.toLocaleDateString()}
-  </time>
-  <div style="margin-top: var(--space-lg);">
+<article>
+  <PageBanner label="Blog" title={title}>
+    <time class="post-date" datetime={date.toISOString()}>
+      {formatLongDate(date)}
+    </time>
+  </PageBanner>
+
+  <div class="wrap wrap--narrow post-body">
     <slot />
+    <Embed embedUrl={embedUrl} embedHtml={embedHtml} title={title} />
   </div>
-  <Embed embedUrl={embedUrl} embedHtml={embedHtml} title={title} />
 </article>
+
+<style>
+  .post-date {
+    display: block;
+    margin-top: var(--s-3);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--banner-muted, var(--ink-3));
+  }
+  /* The reading measure itself is `.wrap--narrow` (tokens.css); only the band's
+     own spacing and prose leading are local. */
+  .post-body {
+    padding-top: var(--s-6);
+    padding-bottom: var(--s-6);
+    line-height: 1.8;
+  }
+</style>

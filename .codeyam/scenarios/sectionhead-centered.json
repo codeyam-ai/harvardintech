@@ -1,0 +1,13 @@
+{
+  "name": "SectionHead - Centered",
+  "id": "8eb3f48c-69ab-483b-b293-e9f0f6a0a979",
+  "url": "/isolated-components/SectionHead-Centered",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "SectionHead",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/SectionHead.astro",
+  "description": "The centred variant, which is not a cosmetic switch: the head is a space-between flex row built for a title at one end and an action at the other, so centring means dropping the row behaviour and stacking. Six bands ship in this state today — both chapter event sections, the subscribe band, the WhatsApp join band, the forming-chapter band, the community callouts and the Luma calendar — so the left-aligned frame alone would leave the more common arrangement unpictured."
+}

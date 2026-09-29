@@ -1,0 +1,61 @@
+---
+// The heading block every Atlas band opens with: a crimson eyebrow, an h2, an
+// optional intro paragraph, and an optional right-hand action in the slot.
+//
+// This exists because the same three lines of markup had been retyped in every
+// band, which is how `.sec-head` ended up paired with four different heading
+// sizes and two different eyebrow colours across the site. The band still owns
+// its own `.sec` wrapper and its content; only the head is shared.
+interface Props {
+  kicker?: string;
+  title: string;
+  intro?: string;
+  /** Left is the Atlas default. Centre is for CTA bands and the pages that have
+   *  no content column to align against. */
+  align?: 'left' | 'center';
+  /** Heading level, for pages where this head is not the section's own h2 —
+   *  a banner already carries the h1, so a head under it must not repeat it. */
+  as?: 'h2' | 'h3';
+}
+const { kicker, title, intro, align = 'left', as = 'h2' } = Astro.props as Props;
+const Heading = as;
+const hasAction = Astro.slots.has('default');
+---
+
+<div class:list={['sec-head', align === 'center' && 'sec-head--center']}>
+  <div class="sh-text">
+    {kicker ? <span class="kick">{kicker}</span> : null}
+    <Heading>{title}</Heading>
+    {intro ? <p class="sh-intro">{intro}</p> : null}
+  </div>
+  {hasAction ? <div class="sh-action"><slot /></div> : null}
+</div>
+
+<style>
+  /* `.sec-head` (tokens.css) supplies the row, the gap and the bottom margin.
+     What is added here is only what a shared head needs and a hand-written one
+     could not have: the text column that keeps a wrapped intro off the action. */
+  .sh-text {
+    min-width: 0;
+  }
+  .sh-intro {
+    margin: var(--s-3) 0 0;
+    max-width: var(--text-width);
+    font-size: var(--t-lg);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .sh-action {
+    flex: none;
+  }
+  .sec-head--center .sh-intro {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: 640px) {
+    .sh-intro {
+      font-size: var(--t-md);
+    }
+  }
+</style>

@@ -18,7 +18,7 @@ import EventsArchive from './EventsArchive.astro';
 import PastEventsMore from './PastEventsMore.astro';
 import WebinarsPointer from './WebinarsPointer.astro';
 import { splitEvents, splitArchive, type EventLike } from '../lib/events';
-import { LUMA_CALENDAR_URL } from '../lib/luma';
+import { siteLinks } from '../lib/site';
 
 // No Eventbrite button: Luma is the one events system (owner, 2026-09-14), and
 // the Luma calendar sits above this body on /events.
@@ -41,17 +41,17 @@ const { past } = splitEvents(events, now ?? new Date());
 const { recent, archive } = splitArchive(past);
 ---
 
-<section class="s-section">
-  <div class="s-inner" style="text-align: center;">
+<section class="sec">
+  <div class="wrap">
     {showIntro ? <EventsIntro /> : null}
 
     {
       recent.length > 0 ? (
-        <EventsSection title="Past Events" events={recent} variant="past" marginTop="var(--space-xl)" />
+        <EventsSection title="Past Events" events={recent} variant="past" />
       ) : null
     }
 
-    {recent.length > 0 ? <PastEventsMore calendarUrl={LUMA_CALENDAR_URL} /> : null}
+    {recent.length > 0 ? <PastEventsMore calendarUrl={siteLinks().luma} /> : null}
 
     <EventsArchive events={archive} />
 

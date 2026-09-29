@@ -37,33 +37,6 @@
       "runner": "tests"
     },
     {
-      "description": "Clicking the button increments the hydrated counter, proving the island is genuinely interactive and not a static render.",
-      "file": "src/components/Greeting.test.tsx",
-      "format": "vitest",
-      "key": "Greeting › increments the counter on click",
-      "line": 22,
-      "registeredAt": "2026-06-13T15:22:21Z",
-      "runner": "tests"
-    },
-    {
-      "description": "The subtitle is optional: when omitted the island must not render an empty paragraph, which is what the \"missing optional prop\" scenario exercises.",
-      "file": "src/components/Greeting.test.tsx",
-      "format": "vitest",
-      "key": "Greeting › omits the subtitle when no subtitle prop is given",
-      "line": 15,
-      "registeredAt": "2026-06-13T15:22:21Z",
-      "runner": "tests"
-    },
-    {
-      "description": "The headline must include the provided name so the island renders the prop, not a hardcoded string.",
-      "file": "src/components/Greeting.test.tsx",
-      "format": "vitest",
-      "key": "Greeting › renders the name in the headline",
-      "line": 8,
-      "registeredAt": "2026-06-13T15:22:21Z",
-      "runner": "tests"
-    },
-    {
       "description": "A duplicated option is indistinguishable from its twin in the dropdown, and a blank one is indistinguishable from the control's own unset entry. Either would ship an editor a choice they cannot reason about.",
       "file": "src/lib/donors.test.ts",
       "format": "vitest",
@@ -77,7 +50,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "HOME_SECTION_LABELS › names every band a placeholder can stand in for",
-      "line": 118,
+      "line": 119,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -754,6 +727,60 @@
       "key": "badgeFor › withholds every identity field for an anonymous supporter",
       "line": 61,
       "registeredAt": "2026-08-19T00:32:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A community has no roster status, so one passed by mistake changes nothing.",
+      "file": "src/lib/pageBanner.test.ts",
+      "format": "vitest",
+      "key": "bannerFor › ignores a status on a community",
+      "line": 42,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "THE CASE THIS MODULE EXISTS FOR. A community is not a place, and the old banner folded the org name into the title — so the AI page announced \"HARVARD ALUMNI IN TECH AI\", which reads as a product launch rather than a group of people. The name is carried through untouched.",
+      "file": "src/lib/pageBanner.test.ts",
+      "format": "vitest",
+      "key": "bannerFor › labels a community without touching its name",
+      "line": 34,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "An ordinary chapter: the kind sits above the city, never folded into it.",
+      "file": "src/lib/pageBanner.test.ts",
+      "format": "vitest",
+      "key": "bannerFor › labels an active chapter",
+      "line": 6,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The title is the name verbatim — a long one is the banner's problem to wrap, not this function's to shorten.",
+      "file": "src/lib/pageBanner.test.ts",
+      "format": "vitest",
+      "key": "bannerFor › passes a long name through unchanged",
+      "line": 50,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A forming chapter says so in the one place every visitor looks first, rather than leaving them to infer it from a missing leads block further down the page.",
+      "file": "src/lib/pageBanner.test.ts",
+      "format": "vitest",
+      "key": "bannerFor › says so when a chapter is still forming",
+      "line": 16,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Any other status is an ordinary chapter. `status` is free text on the collection, so an unrecognised value must not produce a stray label.",
+      "file": "src/lib/pageBanner.test.ts",
+      "format": "vitest",
+      "key": "bannerFor › treats an unknown status as an ordinary chapter",
+      "line": 24,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
     {
@@ -2143,6 +2170,33 @@
       "runner": "tests"
     },
     {
+      "description": "Same UTC rule as above, and the reason both live in one module: when these two disagreed about a timezone, one event printed two different days.",
+      "file": "src/lib/dates.test.ts",
+      "format": "vitest",
+      "key": "dateParts › agrees with the long form about which day it is",
+      "line": 50,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The day is the scan anchor down a list of events, so it is unpadded.",
+      "file": "src/lib/dates.test.ts",
+      "format": "vitest",
+      "key": "dateParts › leaves a single-digit day unpadded",
+      "line": 63,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The three pieces the stacked date column on an event row renders.",
+      "file": "src/lib/dates.test.ts",
+      "format": "vitest",
+      "key": "dateParts › splits a date into month, day and year",
+      "line": 44,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "A `list`'s sub-fields are row keys inside the array, NOT frontmatter keys, so they must not leak into the comparison against the schema.",
       "file": "src/lib/collectionRegistryDrift.test.ts",
       "format": "vitest",
@@ -2572,6 +2626,33 @@
       "key": "deployWatch › remainingWatchMs › floors at zero once the budget is spent",
       "line": 106,
       "registeredAt": "2026-08-08T00:50:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The guard itself. A component added after this pass must read its colour from the token layer, like every component the redesign touched.",
+      "file": "src/lib/designSystem.test.ts",
+      "format": "vitest",
+      "key": "design system colour › introduces no new hand-typed colour outside the paused campaign area",
+      "line": 104,
+      "registeredAt": "2026-09-29T17:18:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Keeps the list above honest. Without this, a file cleaned up later would sit on the list forever and quietly license a new hex literal in it.",
+      "file": "src/lib/designSystem.test.ts",
+      "format": "vitest",
+      "key": "design system colour › lists no file that has already been cleaned up",
+      "line": 113,
+      "registeredAt": "2026-09-29T17:18:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The token layer is the one place colour is allowed to be literal, so the guard is only meaningful while that file actually defines the palette.",
+      "file": "src/lib/designSystem.test.ts",
+      "format": "vitest",
+      "key": "design system colour › still finds the palette defined in the token layer",
+      "line": 121,
+      "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
     {
@@ -3538,6 +3619,33 @@
       "runner": "tests"
     },
     {
+      "description": "The global line is the constant half of the sentence: it is true whether or not any city has a chapter, so it survives the empty case.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "eventsLede › always mentions the global community",
+      "line": 58,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "With nothing published the clause drops out entirely, so the sentence still reads as English instead of \"across our  chapters\".",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "eventsLede › drops the chapter clause when there are no chapters",
+      "line": 48,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The standfirst as the page renders it, built from the live roster rather than the hand-typed list it replaced — which had already gone stale, omitting SF and misspelling two other chapters.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "eventsLede › names the chapters it is given",
+      "line": 40,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Every optional field is carried through, because the event card renders them — dropping one here would blank a card with no error anywhere.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
@@ -3952,6 +4060,51 @@
       "runner": "tests"
     },
     {
+      "description": "A blank entry is dropped rather than printed as a stray comma — chapter labels come from content an editor types, so one can arrive empty.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "formatCityList › ignores blank and whitespace-only entries",
+      "line": 31,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The ordinary roster, and the reason the Oxford comma is not optional here: one of the real chapter names is \"DC and DMV Area\", so without the final comma the last two run together as one place.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "formatCityList › joins three or more cities with an Oxford comma",
+      "line": 8,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Two reads as a plain pair, with no comma.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "formatCityList › joins two cities with and",
+      "line": 15,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "One stands alone.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "formatCityList › returns a single city unchanged",
+      "line": 20,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Day one: nothing published yet.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "formatCityList › returns an empty string for no cities",
+      "line": 25,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Single-digit days are not zero-padded.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
@@ -3976,6 +4129,51 @@
       "key": "formatEventDate › formats an ISO date as Month D, YYYY",
       "line": 31,
       "registeredAt": "2026-06-13T17:26:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Accepts a Date as readily as a string, because the blog frontmatter is parsed into a Date by the content schema while events arrive as strings.",
+      "file": "src/lib/dates.test.ts",
+      "format": "vitest",
+      "key": "formatLongDate › accepts a Date as well as a string",
+      "line": 26,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "THE RULE THIS MODULE EXISTS FOR. A date-only frontmatter value parses to UTC midnight, so formatting it in any timezone west of UTC renders the PREVIOUS day. This is the bug that let the same event read \"October 22\" on a card and \"October 23\" in the stacked date column beside it.",
+      "file": "src/lib/dates.test.ts",
+      "format": "vitest",
+      "key": "formatLongDate › does not slip a day when formatted west of UTC",
+      "line": 14,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The site's one long-form date, as every event card and blog post shows it.",
+      "file": "src/lib/dates.test.ts",
+      "format": "vitest",
+      "key": "formatLongDate › formats a date as month day, year",
+      "line": 6,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The locale is pinned, so the output does not change with the machine that builds the site. A runtime default would reorder this in most of the world.",
+      "file": "src/lib/dates.test.ts",
+      "format": "vitest",
+      "key": "formatLongDate › stays en-US regardless of the host locale",
+      "line": 37,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A single-digit day carries no leading zero — \"July 4\", not \"July 04\".",
+      "file": "src/lib/dates.test.ts",
+      "format": "vitest",
+      "key": "formatLongDate › writes a single-digit day without padding",
+      "line": 31,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
     {
@@ -4910,7 +5108,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › keeps the anchor of a coming-soon band",
-      "line": 164,
+      "line": 165,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -4919,7 +5117,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › never reports an anchor for a band the menu cannot link to",
-      "line": 183,
+      "line": 184,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -4928,7 +5126,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › reports nothing when every band is shown",
-      "line": 170,
+      "line": 171,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -4937,7 +5135,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › reports the anchor of a hidden band",
-      "line": 157,
+      "line": 158,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -4946,7 +5144,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › treats a band with no entry at all as gone",
-      "line": 177,
+      "line": 178,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -7724,7 +7922,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › does not mutate the input array",
-      "line": 90,
+      "line": 91,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -7733,7 +7931,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › drops a band whose kind matches no component",
-      "line": 68,
+      "line": 69,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -7742,7 +7940,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › keeps coming-soon and hidden bands in the ordered list",
-      "line": 75,
+      "line": 76,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -7751,7 +7949,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › sorts a band with no order after every ordered band",
-      "line": 61,
+      "line": 62,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -7760,7 +7958,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › sorts bands by their order field",
-      "line": 50,
+      "line": 51,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -8561,7 +8759,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › keeps the prose exception to the privacy policy alone",
-      "line": 111,
+      "line": 116,
       "registeredAt": "2026-09-16T17:10:28.736462964+00:00",
       "runner": "tests"
     },
@@ -8570,7 +8768,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › names no personal inbox outside the pending giving files",
-      "line": 53,
+      "line": 58,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8579,7 +8777,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › never links Eventbrite",
-      "line": 71,
+      "line": 76,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8588,7 +8786,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › never links the WhatsApp group directly",
-      "line": 66,
+      "line": 71,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8597,7 +8795,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › offers no chapter-founding mailto",
-      "line": 76,
+      "line": 81,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8606,7 +8804,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › scans the site source",
-      "line": 47,
+      "line": 52,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -8617,15 +8815,6 @@
       "key": "public source contact rules › src/components/MomentumFundPage.astro still needs its giving-plan exemption",
       "line": 59,
       "registeredAt": "2026-09-28T16:56:55.949067562+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
-      "file": "src/lib/noPersonalEmail.test.ts",
-      "format": "vitest",
-      "key": "public source contact rules › src/components/donate/DonorWall.astro still needs its giving-plan exemption",
-      "line": 59,
-      "registeredAt": "2026-09-28T16:56:55.949970264+00:00",
       "runner": "tests"
     },
     {
@@ -8660,7 +8849,7 @@
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › writes the shared inbox only in settings.json and the privacy policy",
-      "line": 100,
+      "line": 105,
       "registeredAt": "2026-09-16T17:10:49.873867504+00:00",
       "runner": "tests"
     },
@@ -9371,7 +9560,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › hides a band whose Draft toggle is switched on",
-      "line": 36,
+      "line": 37,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9380,7 +9569,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › lets Draft win over coming-soon when both are switched on",
-      "line": 42,
+      "line": 43,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9389,7 +9578,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › reads an explicit false on both toggles as shown",
-      "line": 24,
+      "line": 25,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9398,7 +9587,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › renders the placeholder when coming-soon is switched on",
-      "line": 30,
+      "line": 31,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9407,7 +9596,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › shows a band with neither toggle set",
-      "line": 17,
+      "line": 18,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10118,7 +10307,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionAnchorId › agrees with the anchor table for every linked band",
-      "line": 136,
+      "line": 137,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10127,7 +10316,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionAnchorId › returns the fragment of the band anchor",
-      "line": 128,
+      "line": 129,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10136,7 +10325,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionAnchorId › returns undefined for a band the menu cannot link to",
-      "line": 143,
+      "line": 144,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10145,8 +10334,62 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionAnchorId › returns undefined for a kind that is not a band at all",
-      "line": 149,
+      "line": 150,
       "registeredAt": "2026-08-03T21:22:17Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The ordinary case: an editor filled all three boxes.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "sectionCopy › carries heading, kicker and intro through when all are set",
+      "line": 202,
+      "registeredAt": "2026-09-29T17:18:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The fields are independent: one set and two blank yields exactly one key.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "sectionCopy › carries only the fields that are set",
+      "line": 238,
+      "registeredAt": "2026-09-29T17:18:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A field an editor cleared is empty text, not a missing key. It has to be treated the same as never-set, or clearing one box would blank the heading rather than restoring the band's own wording.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "sectionCopy › omits a field an editor has blanked",
+      "line": 219,
+      "registeredAt": "2026-09-29T17:18:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The rule this function exists for. Each band declares its own wording as a prop default, and a key that is ABSENT is what lets that default apply — so an entry an editor has never opened must contribute no keys at all. Passing the blank fields through instead would blank every heading on the site the day these fields shipped.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "sectionCopy › returns no keys for a band with no copy set",
+      "line": 197,
+      "registeredAt": "2026-09-29T17:18:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Whitespace is the same case as blank — a box holding only spaces is one an editor did not fill in, however it looks in the form.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "sectionCopy › treats a whitespace-only field as unset",
+      "line": 227,
+      "registeredAt": "2026-09-29T17:18:35Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Surrounding whitespace is trimmed off what DOES carry through, so a stray trailing space in the CMS never reaches the page as a wider heading.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "sectionCopy › trims the text it carries through",
+      "line": 233,
+      "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
     {
@@ -10897,6 +11140,24 @@
       "runner": "tests"
     },
     {
+      "description": "A field an editor cleared is blank text, not a missing key. Treating it as \"use the default\" is what stops a cleared box rendering a dead button.",
+      "file": "src/lib/site.test.ts",
+      "format": "vitest",
+      "key": "site singletons › falls back for a link an editor has blanked",
+      "line": 220,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The contract `siteLinks` exists for. A settings file written before the links group existed carries no `links` key at all, and every Subscribe button on the site reads through this — so the absent case must resolve to where the site has always linked, never to an empty href.",
+      "file": "src/lib/site.test.ts",
+      "format": "vitest",
+      "key": "site singletons › falls back to the shipped destinations when settings declare no links",
+      "line": 175,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "settings + nav are read from the data root and parsed from JSON, so a sandbox data dir fully drives what the site renders",
       "file": "src/lib/site.test.ts",
       "format": "vitest",
@@ -10939,6 +11200,15 @@
       "key": "site singletons › loads the volunteer and donate page copy from the data root",
       "line": 96,
       "registeredAt": "2026-07-22T20:43:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An editor's value wins over the shipped default, which is the whole point of moving these three out of the components that had them typed in.",
+      "file": "src/lib/site.test.ts",
+      "format": "vitest",
+      "key": "site singletons › prefers the links an editor has set",
+      "line": 191,
+      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
     {
@@ -13086,7 +13356,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "unknownHomeSectionKinds › names each unrecognized kind once, in first-seen order",
-      "line": 100,
+      "line": 101,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -13095,7 +13365,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "unknownHomeSectionKinds › reports nothing when every kind is known",
-      "line": 111,
+      "line": 112,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },

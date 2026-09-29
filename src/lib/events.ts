@@ -94,14 +94,14 @@ export function toEventDate(value: string | Date): Date {
 /**
  * Format an event date as "Month D, YYYY" (e.g. "September 24, 2026") in the
  * en-US locale — the display format used across every event card.
+ *
+ * Re-exported from `src/lib/dates.ts`, which is the site's one date formatter.
+ * This used to format WITHOUT `timeZone: 'UTC'` while the stacked date column
+ * beside it used UTC, so on a build machine west of UTC the same event could
+ * read "October 22" in one place and "October 23" in the other. The shared
+ * implementation is the UTC one.
  */
-export function formatEventDate(value: string | Date): string {
-  return toEventDate(value).toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
+export { formatLongDate as formatEventDate } from './dates';
 
 /**
  * Split a flat list of events into `upcoming` (date >= now, soonest first) and

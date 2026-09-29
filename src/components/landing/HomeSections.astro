@@ -26,6 +26,7 @@ import ContactUs from './ContactUs.astro';
 import {
   HOME_SECTION_LABELS,
   resolveVisibility,
+  sectionCopy,
   sectionAnchorId,
   type HomeSectionKind,
   type HomeSectionLike,
@@ -70,6 +71,7 @@ const {
   volunteerFormUrl,
   donateUrl,
 } = Astro.props as Props;
+
 ---
 
 {
@@ -91,15 +93,15 @@ const {
     ) : section.kind === 'stats' ? (
       <Stats stats={stats.length > 0 ? stats : undefined} />
     ) : section.kind === 'events' ? (
-      <UpcomingEvents events={events} />
+      <UpcomingEvents events={events} {...sectionCopy(section)} />
     ) : section.kind === 'chapters' ? (
-      <OurChapters chapters={chapters} />
+      <OurChapters chapters={chapters} {...sectionCopy(section)} />
     ) : section.kind === 'focus' ? (
-      <FocusAreas chapterCount={chapters.length} />
+      <FocusAreas chapterCount={chapters.length} {...sectionCopy(section)} />
     ) : section.kind === 'content-hub' ? (
-      <ContentHub posts={posts} />
+      <ContentHub posts={posts} {...sectionCopy(section)} />
     ) : section.kind === 'board' ? (
-      <BoardOfDirectors members={board} />
+      <BoardOfDirectors members={board} {...sectionCopy(section)} />
     ) : section.kind === 'get-involved' ? (
       <GetInvolved />
     ) : section.kind === 'giving' ? (
@@ -107,11 +109,11 @@ const {
     ) : section.kind === 'whatsapp' ? (
       <WhatsappCommunity />
     ) : section.kind === 'support' ? (
-      <SupportUs volunteerFormUrl={volunteerFormUrl} />
+      <SupportUs volunteerFormUrl={volunteerFormUrl} {...sectionCopy(section)} />
     ) : section.kind === 'gallery' ? (
-      <EventGallery />
+      <EventGallery {...sectionCopy(section)} />
     ) : (
-      <ContactUs socials={socials} email={email} />
+      <ContactUs socials={socials} email={email} {...sectionCopy(section)} />
     ),
   )
 }

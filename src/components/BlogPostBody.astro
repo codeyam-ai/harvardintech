@@ -39,7 +39,11 @@ const locked = isLocked(post);
 
 {
   locked ? (
-    <LockedPreviewBody ciphertext={post.body ?? ''} lock={post.data.previewLock ?? ''} />
+    /* The unlock prompt carries no banner, so it brings its own reading measure
+       — the article branch gets one from `BlogPostArticle` instead. */
+    <div class="wrap wrap--narrow locked-wrap">
+      <LockedPreviewBody ciphertext={post.body ?? ''} lock={post.data.previewLock ?? ''} />
+    </div>
   ) : (
     <BlogPostArticle
       title={post.data.title}
@@ -51,3 +55,10 @@ const locked = isLocked(post);
     </BlogPostArticle>
   )
 }
+
+<style>
+  .locked-wrap {
+    padding-top: var(--s-6);
+    padding-bottom: var(--s-6);
+  }
+</style>

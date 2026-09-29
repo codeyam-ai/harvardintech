@@ -1,0 +1,39 @@
+---
+import Component from "../../../src/components/ui/PageBanner.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for PageBanner's PHOTO tone — codeyam screenshots the
+// #codeyam-capture wrapper by navigating to /isolated-components/PageBanner-Photo.
+//
+// Its own page rather than a `?s=` switch on the paper-tone one: this is a
+// prerendered stack, so query parameters are empty at build time and a single
+// switched page would capture the default frame for both states.
+//
+// This is the banner most of the site's visitors actually meet — the chapter
+// pages with a city photo — and the state that changed most in the redesign.
+// What it has to show is the contrast floor: the label, the title and the lede
+// all invert over the scrim, so the copy stays legible whatever photograph an
+// editor uploads.
+//
+// Full-bleed, no width wrapper: the photo runs edge to edge on the real page
+// and the banner constrains its own contents with `.wrap`.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: PageBanner-Photo</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component
+        label="Chapter"
+        title="New York City"
+        lede="We are the New York Chapter of Harvard Alumni in Tech."
+        image="/images/chapters/nyc.jpg"
+        tone="photo"
+      />
+    </div>
+  </body>
+</html>

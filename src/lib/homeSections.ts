@@ -59,7 +59,44 @@ export interface VisibilityFlags {
 export interface HomeSectionLike extends VisibilityFlags {
   kind: string;
   title?: string;
+  /** The eyebrow above the band's heading, and the sentence under it.
+   *
+   *  Optional, and absent means "keep the component's own copy" rather than
+   *  "render nothing" — every band ships with wording of its own, so a site
+   *  whose entries predate these fields must look exactly as it did. */
+  kicker?: string;
+  intro?: string;
   order?: number;
+}
+
+/** The editable copy for one band, as props its component understands. */
+export interface SectionCopy {
+  heading?: string;
+  kicker?: string;
+  intro?: string;
+}
+
+/**
+ * The CMS copy for one band, with unset fields OMITTED rather than passed
+ * through blank.
+ *
+ * That omission is the whole rule. Every band declares its own wording as a
+ * prop default, and a key that is ABSENT is what lets that default apply — so
+ * a band an editor has never opened keeps the heading it shipped with. Passing
+ * `''` instead would blank every heading on the site the day these fields
+ * shipped. A field an editor CLEARED, or filled with spaces, is the same case
+ * as never-set: it restores the band's own wording rather than emptying it.
+ *
+ * Lives here rather than in `HomeSections.astro`, where it started, because it
+ * is a rule about data and not about markup — and because logic inside a
+ * `.astro` file cannot be unit-tested.
+ */
+export function sectionCopy(section: HomeSectionLike): SectionCopy {
+  const copy: SectionCopy = {};
+  if (section.title?.trim()) copy.heading = section.title.trim();
+  if (section.kicker?.trim()) copy.kicker = section.kicker.trim();
+  if (section.intro?.trim()) copy.intro = section.intro.trim();
+  return copy;
 }
 
 /**

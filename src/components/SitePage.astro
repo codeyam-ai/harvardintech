@@ -16,23 +16,21 @@ interface Props {
 const { title, description } = Astro.props as Props;
 ---
 
-<article class="page">
+<article>
+  {/* Full-bleed: the banner spans the page, and only the prose under it keeps
+      the reading measure. */}
   <SitePageHeader title={title} description={description} />
-  <SitePageBody>
-    <slot />
-  </SitePageBody>
-  <slot name="embed" />
+  <div class="wrap wrap--narrow page">
+    <SitePageBody>
+      <slot />
+    </SitePageBody>
+    <slot name="embed" />
+  </div>
 </article>
 
 <style>
   .page {
-    max-width: 68ch;
-    margin: 0 auto;
-    padding: 56px var(--space-lg, 24px) 96px;
-  }
-  @media (max-width: 720px) {
-    .page {
-      padding-top: 32px;
-    }
+    padding-top: var(--s-6);
+    padding-bottom: var(--s-6);
   }
 </style>

@@ -1,0 +1,135 @@
+---
+// The one page banner. Every top-of-page header on the site — chapters,
+// communities, sponsors, volunteers, volunteer projects, CMS pages, blog posts
+// — renders through this, so a reader gets the same shape whatever page they
+// land on and a new page type does not arrive with a fifth hero.
+//
+// Two decisions are baked in, both from the owner (2026-09-14):
+//
+//  - LEFT-ALIGNED. The centred treatment it replaces made a long name the
+//    page's problem: "Seattle / Pacific Northwest" wrapped to two centred lines
+//    and pushed the lede down with it. Left-aligned, a long name simply runs on.
+//  - A LABEL ABOVE THE NAME, not folded into it. The title used to read
+//    "Harvard Alumni in Tech AI", which announced a product rather than a group
+//    of people. "Community" over "AI" says which kind of page this is and lets
+//    one banner serve a city, a community and a forming chapter alike.
+//
+// The photo tone is capped in height on purpose. The hero it replaces used
+// `100svh`, which on a phone meant a reader saw a photo and a title and had to
+// scroll before learning the page had any content at all.
+import ResponsiveImg from '../ResponsiveImg.astro';
+
+interface Props {
+  /** The kind of page — "Chapter", "Chapter · Forming", "Community", "Blog".
+   *  Rendered as the eyebrow above the title. */
+  label?: string;
+  title: string;
+  lede?: string;
+  image?: string;
+  /** `photo` needs an `image`; without one it falls back to `paper` rather than
+   *  rendering an empty dark band. */
+  tone?: 'paper' | 'photo';
+}
+const { label, title, lede, image, tone = 'paper' } = Astro.props as Props;
+
+// A photo tone with no photo is the single most likely way to misuse this, and
+// silently degrading is better than a black rectangle: `launch--images.md`
+// relies on the paper fallback for the chapters that have no hero image yet.
+const resolved = tone === 'photo' && image ? 'photo' : 'paper';
+---
+
+<section class="banner" data-tone={resolved}>
+  {
+    resolved === 'photo' ? (
+      <div class="banner-bg">
+        <ResponsiveImg src={image!} alt="" loading="eager" />
+        <div class="banner-scrim" />
+      </div>
+    ) : null
+  }
+  <div class="wrap banner-in">
+    {label ? <span class="kick">{label}</span> : null}
+    <h1>{title}</h1>
+    {lede ? <p class="banner-lede">{lede}</p> : null}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .banner {
+    position: relative;
+    padding: var(--s-6) 0;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--line);
+    /* Published for whatever a caller puts in the slot. Astro scopes styles per
+       component, so a child's own rules cannot see this banner's `data-tone` —
+       but a custom property inherits down the DOM regardless of scope, so this
+       is how slotted content picks the right ink for the tone it landed in.
+       Without it a chapter's region line rendered grey-on-photo. */
+    --banner-muted: var(--ink-3);
+  }
+  .banner[data-tone='photo'] {
+    background: var(--ink);
+    border-bottom: 0;
+    --banner-muted: rgba(255, 255, 255, 0.75);
+  }
+  .banner-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .banner-bg img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .banner-scrim {
+    position: absolute;
+    inset: 0;
+    background: var(--overlay);
+  }
+  .banner-in {
+    position: relative;
+    z-index: 2;
+  }
+  .banner h1 {
+    margin: var(--s-2) 0 0;
+    font-family: var(--font-title);
+    font-size: clamp(2rem, 1.2rem + 3vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .banner-lede {
+    margin: var(--s-3) 0 0;
+    max-width: var(--text-width);
+    font-size: var(--t-lg);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  /* On a photo the eyebrow, title and lede all sit on the scrim, so they invert
+     together. `.kick--light` is not used here because the caller passes a plain
+     `label` and should not have to know which tone it landed in. */
+  .banner[data-tone='photo'] .kick {
+    color: rgba(255, 255, 255, 0.86);
+  }
+  .banner[data-tone='photo'] h1 {
+    color: var(--white);
+  }
+  .banner[data-tone='photo'] .banner-lede {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  @media (max-width: 640px) {
+    .banner {
+      padding: var(--s-5) 0;
+    }
+    .banner-lede {
+      font-size: var(--t-md);
+    }
+  }
+</style>

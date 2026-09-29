@@ -11,6 +11,7 @@
 // Renders nothing when there are no callouts, so a page that has events instead
 // simply omits the section.
 import CalloutCard from './CalloutCard.astro';
+import SectionHead from './ui/SectionHead.astro';
 
 interface Callout {
   title: string;
@@ -25,14 +26,12 @@ const { callouts = [], heading = 'What happens here' } = Astro.props;
 
 {
   callouts.length > 0 ? (
-    <section class="s-section">
-      {/* `s-inner`, not `s-narrow`: three cards at a 240px minimum do not fit a
-          reading measure, and a narrow container silently drops them to 2 + 1
-          with one card stranded on its own row. */}
-      <div class="s-inner">
-        <h2 class="s-title" style="text-align: center;">
-          {heading}
-        </h2>
+    <section class="sec">
+      {/* Full content width, NOT the reading measure: three cards at a 240px
+          minimum do not fit a text column, and a narrow container silently
+          drops them to 2 + 1 with one card stranded on its own row. */}
+      <div class="wrap">
+        <SectionHead title={heading} align="center" />
         <ul class="callouts">
           {callouts.map((callout) => (
             <li>

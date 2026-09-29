@@ -1,0 +1,13 @@
+{
+  "name": "EventCardGrid - Three Uneven Cards",
+  "id": "d58cd9b7-426b-4abc-b67a-56bc44d1e314",
+  "url": "/isolated-components/EventCardGrid",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventCardGrid",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/EventCardGrid.astro",
+  "description": "Three cards of deliberately uneven content — a long blurb, a short one, and none at all. What the shared grid has to prove is that cards of different heights still line their Learn more links up along the bottom, and a row of identical cards would look correct whether or not that worked. The middle card has no link, the state an event is in before its registration page exists, so it ends after the blurb rather than showing a dead one."
+}

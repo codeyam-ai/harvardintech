@@ -38,7 +38,7 @@ const { title, blurb, image, applyUrl, commitment, startDate, endDate, slug } =
 const href = slug ? withBase(projectPath(slug)) : undefined;
 ---
 
-<article class="proj">
+<article class="card proj">
   <VolunteerProjectThumb image={image} href={href} />
   <div class="body">
     <h3>{href ? <a class="title-link" href={href}>{title}</a> : title}</h3>
@@ -49,19 +49,21 @@ const href = slug ? withBase(projectPath(slug)) : undefined;
 </article>
 
 <style>
+  /* `.card` supplies the frame and radius. The padding is moved OFF the card
+     and onto `.body`, because this card leads with a full-bleed thumbnail that
+     has to reach the card's edges — `overflow: hidden` is what clips it to the
+     shared radius. */
   .proj {
     display: flex;
     flex-direction: column;
-    background: var(--paper-2);
-    border: 1px solid var(--line);
-    border-radius: 6px;
+    padding: 0;
     overflow: hidden;
   }
   .body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 22px 22px 24px;
+    padding: var(--s-4);
     flex: 1;
   }
   h3 {

@@ -29,10 +29,13 @@ const { title, note = 'This section is on its way.', id } = Astro.props as Props
 </section>
 
 <style>
+  /* Still a full band, not an `EmptyState` panel — this one stands in for a
+     whole section, where the panel marks a gap INSIDE one. It draws on the same
+     surface tokens so the two read as the same family. */
   .soon {
     border-bottom: 1px solid var(--line);
     padding: 72px 24px;
-    background: #fbfafa;
+    background: var(--paper-2);
   }
   .in {
     max-width: 720px;
@@ -41,13 +44,13 @@ const { title, note = 'This section is on its way.', id } = Astro.props as Props
   }
   .tag {
     display: inline-block;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--crimson);
     border: 1px solid rgba(164, 16, 52, 0.35);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     padding: 5px 12px;
   }
   h2 {
@@ -58,7 +61,7 @@ const { title, note = 'This section is on its way.', id } = Astro.props as Props
   }
   p {
     margin: 0;
-    color: #5c5c5c;
+    color: var(--ink-2);
     font-size: 17px;
     line-height: 1.6;
   }

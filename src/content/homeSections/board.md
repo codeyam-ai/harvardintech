@@ -1,5 +1,6 @@
 ---
 kind: board
-title: Board of Directors
+title: Board of directors
+kicker: Leadership
 order: 7
 ---

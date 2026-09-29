@@ -11,7 +11,7 @@ interface Props {
 const { name, summary, benefits = [] } = Astro.props as Props;
 ---
 
-<article class="lvl">
+<article class="card lvl">
   <h3 class="lvl-name">{name}</h3>
   {summary ? <p class="lvl-sum">{summary}</p> : null}
   {
@@ -26,12 +26,13 @@ const { name, summary, benefits = [] } = Astro.props as Props;
 </article>
 
 <style>
+  /* `.card` (tokens.css) supplies the frame, radius and padding. What stays
+     local is the crimson top rule, which is this card's own accent and the one
+     thing that distinguishes a sponsorship level from any other card. */
   .lvl {
     display: flex;
     flex-direction: column;
-    background: var(--paper-2);
     border-top: 3px solid var(--crimson);
-    padding: 26px 24px 28px;
   }
   .lvl-name {
     margin: 0;

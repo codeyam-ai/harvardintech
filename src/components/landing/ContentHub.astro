@@ -14,7 +14,8 @@
 // a CMS-added channel picks up its own glyph with no code change.
 import { withBase } from '../../lib/url';
 import { formatEventDate } from '../../lib/events';
-import { brandIcon } from '../../lib/brandIcons';
+import BrandGlyph from '../ui/BrandGlyph.astro';
+import SectionHead from '../ui/SectionHead.astro';
 import { externalLinkAttrs } from '../../lib/externalLink';
 import { BLOG_ENABLED, isBlogChannel } from '../../lib/blogVisibility';
 
@@ -36,6 +37,11 @@ interface PostLike {
 interface Props {
   channels?: Channel[];
   posts?: PostLike[];
+  /** Band copy, editable per-entry in the CMS. Each defaults to the wording
+   *  this band shipped with, so an entry that sets none looks unchanged. */
+  heading?: string;
+  kicker?: string;
+  intro?: string;
 }
 const {
   channels = [
@@ -48,6 +54,9 @@ const {
     { label: 'LinkedIn newsletter', blurb: 'Our LinkedIn newsletter, in your feed.', url: 'https://www.linkedin.com/newsletters/harvard-in-tech-7056638759055880192/', external: true },
   ],
   posts = [],
+  heading = 'Content hub',
+  kicker = 'Read, watch, listen',
+  intro,
 } = Astro.props as Props;
 
 // Both ways into the blog close on one switch (`BLOG_ENABLED`), so bringing the
@@ -64,13 +73,11 @@ const visiblePosts = BLOG_ENABLED ? posts : [];
 
 <section class="sec" id="content" style="background: var(--paper-2);">
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">Read, watch, listen</span>
-        <h2>Content hub</h2>
-        {visiblePosts.length > 0 && <p class="ch-lede">Latest from the blog</p>}
-      </div>
-    </div>
+    <SectionHead
+      kicker={kicker}
+      title={heading}
+      intro={intro ?? (visiblePosts.length > 0 ? 'Latest from the blog' : undefined)}
+    />
 
     {
       visiblePosts.length > 0 && (
@@ -81,7 +88,7 @@ const visiblePosts = BLOG_ENABLED ? posts : [];
                 <span class="post-d">{formatEventDate(p.date)}</span>
                 <span class="post-t">{p.title}</span>
                 {p.summary && <span class="post-s">{p.summary}</span>}
-                <span class="post-go">Read more →</span>
+                <span class="link-more post-go">Read more →</span>
               </a>
             ))}
           </div>
@@ -92,28 +99,13 @@ const visiblePosts = BLOG_ENABLED ? posts : [];
     <div class="ch-grid">
       {
         visibleChannels.map((c) => {
-          const icon = brandIcon(c.icon) ?? brandIcon(c.label);
           return (
             <a
               class="ch"
               href={c.external ? c.url : withBase(c.url)}
               {...(c.external ? externalLinkAttrs(c.url, Astro.url.origin) : {})}
             >
-              {icon && (
-                <svg
-                  class="ch-icon"
-                  viewBox={icon.viewBox}
-                  width="26"
-                  height="26"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  {icon.paths.map((d) => (
-                    <path d={d} />
-                  ))}
-                </svg>
-              )}
+              <BrandGlyph name={c.icon} fallbackName={c.label} size={26} />
               <span class="ch-l">{c.label}</span>
               <span class="ch-go" aria-hidden="true">→</span>
             </a>
@@ -139,7 +131,7 @@ const visiblePosts = BLOG_ENABLED ? posts : [];
     display: flex;
     flex-direction: column;
     gap: 6px;
-    background: #fff;
+    background: var(--white);
     border: 1px solid var(--line);
     border-left: 3px solid var(--crimson);
     padding: 20px 22px;
@@ -176,14 +168,11 @@ const visiblePosts = BLOG_ENABLED ? posts : [];
   /* Pinned to the card's foot with `margin-top: auto`, so the three links sit on
      one line across the row however long each title runs. A span rather than a
      second <a> — the whole card is already the link. */
+  /* Type and colour come from `.link-more` (tokens.css); only the card's own
+     bottom-alignment is local. */
   .post-go {
     margin-top: auto;
     padding-top: 12px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--crimson);
   }
   .post:hover .post-go {
     text-decoration: underline;
@@ -216,7 +205,9 @@ const visiblePosts = BLOG_ENABLED ? posts : [];
     transform: translateY(-2px);
     box-shadow: 0 12px 26px rgba(30, 26, 27, 0.1);
   }
-  .ch-icon {
+  /* `:global`, because the glyph is `BrandGlyph`'s element — see the same note
+     on the Contact band. */
+  .ch :global(svg) {
     display: block;
     width: 26px;
     height: 26px;
@@ -243,14 +234,6 @@ const visiblePosts = BLOG_ENABLED ? posts : [];
   .ch:hover .ch-go {
     transform: translateX(3px);
   }
-  .ch-lede {
-    font-family: var(--font-serif);
-    font-size: 17px;
-    line-height: 1.5;
-    color: var(--ink-2);
-    margin: 10px 0 0;
-  }
-
   @media (max-width: 900px) {
     .ch-grid {
       grid-template-columns: repeat(2, 1fr);

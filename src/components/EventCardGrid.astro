@@ -1,0 +1,35 @@
+---
+// A responsive grid of event cards.
+//
+// Its own component because the chapter events section and the /events page
+// section had byte-identical copies of this grid — same six declarations, two
+// class names. One of them would eventually have been tuned without the other,
+// and the two surfaces would have drifted apart while looking like they shared
+// a definition.
+//
+// `auto-fit` (not `auto-fill`) on purpose: a chapter with one event should show
+// one card stretched across the row rather than one card and two empty tracks.
+// The webinars grid deliberately does the opposite — see the note there.
+import EventCard from './EventCard.astro';
+import type { EventLike } from '../lib/events';
+
+interface Props {
+  events: EventLike[];
+  variant?: 'upcoming' | 'past';
+}
+const { events, variant = 'upcoming' } = Astro.props as Props;
+---
+
+<div class="event-grid">
+  {events.map((event) => <EventCard event={event} variant={variant} />)}
+</div>
+
+<style>
+  .event-grid {
+    display: grid;
+    gap: var(--s-4);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    max-width: 920px;
+    margin: 0 auto;
+  }
+</style>

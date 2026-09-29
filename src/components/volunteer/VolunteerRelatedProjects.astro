@@ -13,7 +13,10 @@
 // Renders NOTHING — no heading, no empty section — when the list is empty. That
 // is the common case today, not an edge case: the collection holds one project,
 // so every detail page has no siblings to suggest and should simply end at the
-// CTA.
+// CTA. Deliberately NOT a `ui/EmptyState.astro` panel: an empty state earns its
+// place where the reader came looking for the thing that is missing, and nobody
+// arrives on a project page for its suggestions. A panel announcing there are
+// none would appear on every detail page the site currently has.
 import VolunteerProjectCard from './VolunteerProjectCard.astro';
 import type { VolunteerProjectLike } from './VolunteerProjects.astro';
 

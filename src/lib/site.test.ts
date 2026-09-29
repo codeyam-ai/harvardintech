@@ -167,4 +167,75 @@ describe('site singletons', () => {
     expect(mod.settings.siteTitle).toBe('No Inbox');
     expect(mod.settings.contactEmail || undefined).toBeUndefined();
   });
+
+  // The contract `siteLinks` exists for. A settings file written before the
+  // links group existed carries no `links` key at all, and every Subscribe
+  // button on the site reads through this — so the absent case must resolve to
+  // where the site has always linked, never to an empty href.
+  it('falls back to the shipped destinations when settings declare no links', async () => {
+    tmp = mkdtempSync(join(tmpdir(), 'site-test-'));
+    writeAllSingletons(tmp);
+
+    process.env.CODEYAM_DATA_ROOT = tmp;
+    vi.resetModules();
+    const mod = await import('./site');
+    const links = mod.siteLinks();
+
+    expect(links.mailingList).toMatch(/^https:\/\//);
+    expect(links.whatsappJoinForm).toMatch(/^https:\/\//);
+    expect(links.luma).toMatch(/^https:\/\//);
+  });
+
+  // An editor's value wins over the shipped default, which is the whole point
+  // of moving these three out of the components that had them typed in.
+  it('prefers the links an editor has set', async () => {
+    tmp = mkdtempSync(join(tmpdir(), 'site-test-'));
+    writeAllSingletons(tmp, {
+      settings: {
+        siteTitle: 'Linked',
+        description: 'A fixture site',
+        footerText: 'Footer',
+        socials: [],
+        links: {
+          mailingList: 'https://example.com/subscribe',
+          whatsappJoinForm: 'https://example.com/join',
+          luma: 'https://example.com/calendar',
+        },
+      },
+    });
+
+    process.env.CODEYAM_DATA_ROOT = tmp;
+    vi.resetModules();
+    const mod = await import('./site');
+
+    expect(mod.siteLinks()).toEqual({
+      mailingList: 'https://example.com/subscribe',
+      whatsappJoinForm: 'https://example.com/join',
+      luma: 'https://example.com/calendar',
+    });
+  });
+
+  // A field an editor cleared is blank text, not a missing key. Treating it as
+  // "use the default" is what stops a cleared box rendering a dead button.
+  it('falls back for a link an editor has blanked', async () => {
+    tmp = mkdtempSync(join(tmpdir(), 'site-test-'));
+    writeAllSingletons(tmp, {
+      settings: {
+        siteTitle: 'Half Linked',
+        description: 'A fixture site',
+        footerText: 'Footer',
+        socials: [],
+        links: { mailingList: '   ', luma: 'https://example.com/calendar' },
+      },
+    });
+
+    process.env.CODEYAM_DATA_ROOT = tmp;
+    vi.resetModules();
+    const mod = await import('./site');
+    const links = mod.siteLinks();
+
+    expect(links.mailingList).toMatch(/^https:\/\//);
+    expect(links.mailingList.trim()).toBe(links.mailingList);
+    expect(links.luma).toBe('https://example.com/calendar');
+  });
 });

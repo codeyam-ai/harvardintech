@@ -15,6 +15,8 @@
 // Server-only module — imported from `.astro` frontmatter, never a client
 // island, so `fs`/`process.env` are always available here.
 import { readSingleton } from './contentRoot';
+import { NEWSLETTER_URL, WHATSAPP_FORM_URL } from './contact';
+import { LUMA_CALENDAR_URL } from './luma';
 
 export interface SocialLink {
   label: string;
@@ -49,6 +51,27 @@ export interface SiteSettings {
   // snippet runs on every page, so only trusted markup belongs here.
   customHeadHtml?: string;
   customBodyHtml?: string;
+  /** The three destinations the site links out to from more than one place.
+   *
+   *  Before this, the Mailchimp signup was typed into FIVE components and the
+   *  Luma URLs into a module of their own, so changing where "Subscribe" goes
+   *  meant finding every copy — and one of them was always missed. There is no
+   *  Eventbrite key: Luma is the one events system (owner, 2026-09-14).
+   *
+   *  Every field is optional, and `links()` in this module supplies the current
+   *  values as defaults, so a settings file written before this existed still
+   *  parses and still links where it always did. */
+  links?: SiteLinks;
+}
+
+export interface SiteLinks {
+  /** Mailchimp signup — every "Subscribe" and "join the mailing list" button. */
+  mailingList?: string;
+  /** The Google Form that verifies Harvard affiliation before an admin adds
+   *  someone to WhatsApp. Never a group invite — see `joinCtas`. */
+  whatsappJoinForm?: string;
+  /** Public Luma calendar page visitors land on to browse and subscribe. */
+  luma?: string;
 }
 
 export interface NavItem {
@@ -168,14 +191,17 @@ export interface DonatePageCopy {
    *  production shows today: the wall starts with no names, so its empty state
    *  is the default view rather than an edge case. */
   donorsTitle?: string;
-  /** The wall's intro paragraph — still rendered by `DonorWall`, which the live
-   *  `/donate` page no longer mounts: the Momentum Network replaced the wall
-   *  there, as `ns--the-momentum-network-supporter-data-model` said it would.
-   *  So this reaches only the wall's isolated-component scenarios today. Kept
-   *  rather than deleted because those scenarios are the wall's last live
-   *  rendering, and it is deliberately NOT given a CMS field — a box that edits
-   *  nothing a visitor can see would be worse than no box. Retire it with the
-   *  wall, not before. */
+  /** The wall's intro paragraph. Rendered by NOTHING as of the design-system
+   *  pass: the Momentum Network replaced the wall on `/donate` (as
+   *  `ns--the-momentum-network-supporter-data-model` said it would), and the
+   *  `DonorWall` components and their isolated scenarios — its last live
+   *  rendering — have now been deleted with the rest of the unused set.
+   *  The FIELD stays, deliberately. `/donate` is paused pending the owner's
+   *  decision on the campaign look, and this is the worked example
+   *  `collectionRegistryDrift` uses for a stored field with no renderer, so
+   *  removing it would take a test's subject with it. It is still not given a
+   *  CMS field — a box that edits nothing a visitor can see would be worse
+   *  than no box. Retire it with the donate decision. */
   donorsIntro?: string;
   donorsEmptyMessage?: string;
   donorTiers?: { id: string; name: string; description?: string }[];
@@ -215,6 +241,23 @@ export interface DonatePageCopy {
 }
 
 export const settings = readSingleton<SiteSettings>('settings.json');
+
+/**
+ * The three shared destinations, with the code constants as defaults.
+ *
+ * Read through this rather than off `settings.links` directly: every field is
+ * optional, so a settings file written before the group existed — or one an
+ * editor blanked a field in — still resolves to where the site has always
+ * linked, instead of rendering a button with an empty href.
+ */
+export function siteLinks(): Required<SiteLinks> {
+  const configured = settings.links ?? {};
+  return {
+    mailingList: configured.mailingList?.trim() || NEWSLETTER_URL,
+    whatsappJoinForm: configured.whatsappJoinForm?.trim() || WHATSAPP_FORM_URL,
+    luma: configured.luma?.trim() || LUMA_CALENDAR_URL,
+  };
+}
 export const nav = readSingleton<SiteNav>('nav.json');
 export const volunteerPage = readSingleton<VolunteerPageCopy>('volunteerPage.json');
 export const donatePage = readSingleton<DonatePageCopy>('donatePage.json');

@@ -1,0 +1,13 @@
+{
+  "name": "SectionHead - Kicker, Title, Intro And Action",
+  "id": "5cce5241-2c94-477f-bcb7-dd1a2b9be1c4",
+  "url": "/isolated-components/SectionHead",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "SectionHead",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/SectionHead.astro",
+  "description": "The band head every Atlas section opens with, carrying all four of its parts at once: the crimson eyebrow, the heading, the intro, and the count sitting in the right-hand slot. The counter is what proves the layout rather than decorating it — the head is a space-between row, so a capture with only a title would look like a plain heading and demonstrate nothing. Bounded to the content width the real bands give it."
+}

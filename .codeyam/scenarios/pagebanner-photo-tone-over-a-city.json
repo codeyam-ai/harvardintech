@@ -1,0 +1,13 @@
+{
+  "name": "PageBanner - Photo Tone Over A City",
+  "id": "d8e2b036-73ad-4898-bcb9-a189e47c0cf4",
+  "url": "/isolated-components/PageBanner-Photo",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "PageBanner",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/PageBanner.astro",
+  "description": "The banner most visitors actually meet, and the state that changed most in the redesign: a chapter's city photograph with the label, title and lede inverted over a scrim. What it proves is the contrast floor — the copy stays legible whatever photograph an editor uploads. It replaced a full-screen header that pushed every page's real content below the fold."
+}

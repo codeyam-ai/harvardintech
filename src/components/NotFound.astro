@@ -1,0 +1,45 @@
+---
+// The body of the not-found page: the code, a plain-language heading, one line
+// of reassurance, and the way back.
+//
+// Its own component because `src/pages/404.astro` should compose and nothing
+// more — the page file now carries the layout and this, with no markup of its
+// own. That also makes the state capturable on its own, which matters here
+// more than usual: the screenshot harness cannot photograph the real route,
+// because it refuses an HTTP 404 response (responsive audit §6), so an
+// isolated capture is the only frame this state can have.
+import { withBase } from '../lib/url';
+---
+
+<div class="wrap sec nf">
+  <span class="kick">404</span>
+  <h1>This page does not exist</h1>
+  <p class="nf-lede">
+    The link may be out of date, or the page may have moved. Everything else is
+    still where you left it.
+  </p>
+  <a class="btn btn-solid" href={withBase('/')}>Go back home</a>
+</div>
+
+<style>
+  /* Centred is right HERE and nowhere else in the redesign: there is no content
+     to align a left banner against, so the block is the page. */
+  .nf {
+    text-align: center;
+  }
+  .nf h1 {
+    margin: var(--s-2) 0 0;
+    font-family: var(--font-title);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .nf-lede {
+    margin: var(--s-3) auto var(--s-5);
+    max-width: var(--text-width);
+    font-size: var(--t-lg);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+</style>

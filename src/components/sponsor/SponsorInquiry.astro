@@ -12,6 +12,7 @@
 // with no date on it, and the email button beside it already answers the reader.
 // Set the Sponsorship page's inquiry form URL and the column returns.
 import EmbedForm from '../EmbedForm.astro';
+import SectionHead from '../ui/SectionHead.astro';
 import { sponsorCta } from '../../lib/contact';
 import { externalLinkAttrs } from '../../lib/externalLink';
 import { settings } from '../../lib/site';
@@ -41,12 +42,7 @@ const cta = sponsorCta(formUrl, email, linkedIn?.url);
 
 <section class="sec" id="inquire">
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">Get in touch</span>
-        <h2>{title}</h2>
-      </div>
-    </div>
+    <SectionHead kicker="Get in touch" title={title} />
 
     <div class="inq">
       <div class="inq-copy">

@@ -1,0 +1,13 @@
+{
+  "name": "PageBanner - Paper Tone, Longest Name",
+  "id": "41321a49-ee2c-4109-a787-1481c8f4410d",
+  "url": "/isolated-components/PageBanner",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "PageBanner",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/PageBanner.astro",
+  "description": "The tone every page without a photo falls back to — communities, sponsors, volunteer projects, CMS pages and blog posts all land here. The name is deliberately the longest on the roster: left-aligning the banner was chosen because Seattle / Pacific Northwest wrapped to two centred lines in the header this replaced, so the frame shows the case that motivated the change. The forming label is the third of the three kinds the banner can announce."
+}

@@ -1,13 +1,24 @@
 ---
-// Per-chapter "Upcoming Events" section. Mirrors the live harvardintech.com SF
-// chapter page, where a featured panel/event sits between the hero and the Sign
-// Up band. Takes an already-filtered, already-sorted list of upcoming events for
-// one chapter and renders them as the shared EventCards (so chapter cards stay
-// identical to the landing UpcomingEvents section and the /events page). Renders
-// NOTHING when there are no events — the parent guards too, but keep it safe so
-// a chapter with no events shows no empty "Upcoming Events" block.
-import EventCard from './EventCard.astro';
+// Per-chapter events section — what is coming up, and (as the `past` variant)
+// the last few that happened. Takes an already-filtered, already-sorted list
+// for one chapter and renders the shared EventCards, so chapter cards stay
+// identical to the landing section and the /events page.
+//
+// The EMPTY branch differs by variant, and the difference is the point:
+//
+//   `upcoming` with nothing scheduled shows an empty state with a way to hear
+//   about the next one. This block used to render nothing at all, which on a
+//   quiet chapter left the page with no mention of events and no way to follow
+//   them — the reader could not tell the difference between "no events" and
+//   "this page forgot to load".
+//
+//   `past` with nothing stays hidden. A chapter that has not run an event yet
+//   has nothing to say here, and "no past events" is noise on a new page.
+import EventCardGrid from './EventCardGrid.astro';
+import SectionHead from './ui/SectionHead.astro';
+import EmptyState from './ui/EmptyState.astro';
 import type { EventLike } from '../lib/events';
+import { siteLinks } from '../lib/site';
 
 interface Props {
   events?: EventLike[];
@@ -19,11 +30,6 @@ interface Props {
   /**
    * `upcoming` (the default) or `past`.
    *
-   * A chapter now renders this component TWICE — what is coming up, then the
-   * last few that happened. The second block is what makes a real chapter with
-   * a quiet month look alive rather than abandoned, and it is the same list of
-   * the same cards, so it is a variant rather than a second component.
-   *
    * It carries its own heading and its own section id: two sections sharing
    * `id="chapter-events"` would be invalid HTML and would break any link to
    * either.
@@ -34,19 +40,28 @@ const { events = [], name, heading, variant = 'upcoming' } = Astro.props;
 const isPast = variant === 'past';
 const title = heading ?? (isPast ? `Recent events in ${name}` : `Upcoming Events in ${name}`);
 const sectionId = isPast ? 'chapter-past-events' : 'chapter-events';
+
+const hasEvents = events.length > 0;
+const show = hasEvents || !isPast;
 ---
 
 {
-  events.length > 0 ? (
-    <section class="s-section" id={sectionId}>
-      <div class="s-inner" style="text-align: center;">
-        <h2 class="s-title s-title--plain">{title}</h2>
-        <div style="display: grid; gap: var(--space-lg); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 920px; margin: 0 auto;">
-          {events.map((event) => (
-            <EventCard event={event} variant={variant} />
-          ))}
-        </div>
+  show ? (
+    <section class="sec" id={sectionId}>
+      <div class="wrap">
+        <SectionHead title={title} align="center" />
+        {hasEvents ? (
+          <EventCardGrid events={events} variant={variant} />
+        ) : (
+          <EmptyState
+            title={`No events scheduled in ${name} yet.`}
+            body="We'll announce the next one to the mailing list first."
+            actionHref={siteLinks().mailingList}
+            actionLabel="Get event announcements"
+          />
+        )}
       </div>
     </section>
   ) : null
 }
+

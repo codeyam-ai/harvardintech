@@ -1,0 +1,13 @@
+{
+  "name": "BrandGlyph - Four Ways A Glyph Resolves",
+  "id": "eb338d5d-b004-479e-80f6-50680020fd83",
+  "url": "/isolated-components/BrandGlyph",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "BrandGlyph",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/BrandGlyph.astro",
+  "description": "One glyph alone would not be worth a frame; what this component has to prove is that one piece of markup serves every surface that draws an icon. Four cases side by side: resolved from a social link's icon key, resolved from a label instead the way a CMS-entered channel gets a glyph nobody configured, a generic non-brand mark, and an unresolvable name that must render nothing rather than a gap or a broken mark."
+}

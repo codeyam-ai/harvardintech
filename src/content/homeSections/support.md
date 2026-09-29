@@ -1,5 +1,6 @@
 ---
 kind: support
-title: Support us
+title: Ways to support
+kicker: Support the mission
 order: 11
 ---

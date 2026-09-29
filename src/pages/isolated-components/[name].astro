@@ -1,5 +1,4 @@
 ---
-import Greeting from '../../components/Greeting.tsx';
 import EmbedForm from '../../components/EmbedForm.astro';
 import EventsPage from '../../components/EventsPage.astro';
 import LumaCalendar from '../../components/LumaCalendar.astro';
@@ -8,9 +7,7 @@ import ChapterHero from '../../components/ChapterHero.astro';
 import ChapterEvents from '../../components/ChapterEvents.astro';
 import ChapterSignUp from '../../components/ChapterSignUp.astro';
 import ChapterConnect from '../../components/ChapterConnect.astro';
-import BoardMemberCard from '../../components/BoardMemberCard.astro';
 import ContactUs from '../../components/landing/ContactUs.astro';
-import Hero from '../../components/landing/Hero.astro';
 import HeroCarousel from '../../components/landing/HeroCarousel.astro';
 import Stats from '../../components/landing/Stats.astro';
 import OurChapters from '../../components/landing/OurChapters.astro';
@@ -31,16 +28,7 @@ import SponsorWall from '../../components/sponsor/SponsorWall.astro';
 import SponsorInquiry from '../../components/sponsor/SponsorInquiry.astro';
 import MomentumAccomplishments from '../../components/donate/MomentumAccomplishments.astro';
 import MomentumNarrative from '../../components/donate/MomentumNarrative.astro';
-import DonorWall from '../../components/donate/DonorWall.astro';
 import MomentumNetwork from '../../components/donate/MomentumNetwork.astro';
-import DonorCard from '../../components/donate/DonorCard.astro';
-import DonorWallEmpty from '../../components/donate/DonorWallEmpty.astro';
-import FoundingBadge from '../../components/donate/FoundingBadge.astro';
-import DonorAvatar from '../../components/donate/DonorAvatar.astro';
-import DonorWallIntro from '../../components/donate/DonorWallIntro.astro';
-import DonorTierChips from '../../components/donate/DonorTierChips.astro';
-import DonorTierBand from '../../components/donate/DonorTierBand.astro';
-import { groupDonorsByTier } from '../../lib/donors';
 import PrimaryNav from '../../components/nav/PrimaryNav.astro';
 import UtilityBar from '../../components/nav/UtilityBar.astro';
 import { loadMomentumSections } from '../../lib/momentumSectionsContent';
@@ -61,9 +49,11 @@ import '../../styles/tokens.css';
 // Two flavors: React islands (hydrated via `client:load`) and static Astro
 // components (server-rendered, no hydration). Static output enumerates routes
 // at build time, so every name is a pre-rendered page via `getStaticPaths`.
-const islands = {
-  Greeting: { Component: Greeting, props: { name: 'Preview', subtitle: 'Isolated island' } },
-} as const;
+// Empty today. `Greeting` was the only entry and was a scaffold demo nothing
+// imported, so it went with the rest of the unused set — but the MAP stays, and
+// deliberately: it is the seam a real React island would register through, and
+// re-deriving it from scratch later costs more than the three lines it occupies.
+const islands = {} as const;
 
 // Static Astro components. A prerendered page can't read `?s=` query params at
 // render time, so each visual state is its own route name (`EmbedForm`,
@@ -310,17 +300,6 @@ const chapterEventsStates = {
 // settings and never an email, so there is no per-chapter override to prove.
 const chapterConnectStates = {
   Default: {},
-} as const;
-
-// BoardMemberCard states: a member WITH a photo (the real board headshot) vs a
-// member with NO photo, proving the initials-avatar fallback branch.
-const boardMemberCardStates = {
-  Default: {
-    member: { name: 'Krysia Lenzo', role: "Executive Director · Harvard C'12", photo: '/images/team/krysia-lenzo.png', order: 3 },
-  },
-  Initials: {
-    member: { name: 'Ada Lovelace', role: "Advisor · Harvard C'15", order: 6 },
-  },
 } as const;
 
 // ContactUs states: the live "CONTACT US" section with its real downloaded
@@ -803,22 +782,6 @@ const ANONYMITY_DONORS = [
   FULL_DONORS[2],
   FULL_DONORS[16],
 ];
-const donorWallBase = {
-  title: DONOR_COPY.donorsTitle,
-  intro: DONOR_COPY.donorsIntro,
-  emptyMessage: DONOR_COPY.donorsEmptyMessage,
-  tiers: DONOR_TIERS,
-  ctaLabel: DONOR_COPY.ctaLabel,
-  donateUrl: DONOR_COPY.donateUrl,
-  email: 'ben@harvardintech.com',
-  campaignName: DONOR_COPY.campaignName,
-};
-const donorWallStates = {
-  Default: { ...donorWallBase, donors: [] as typeof FULL_DONORS },
-  First: { ...donorWallBase, donors: FIRST_DONORS },
-  Full: { ...donorWallBase, donors: FULL_DONORS },
-  Anonymity: { ...donorWallBase, donors: ANONYMITY_DONORS },
-};
 
 // MomentumNetwork states — the visualization that replaces the wall. The same
 // supporters, so the two can be compared directly, and the states are the ones
@@ -853,84 +816,10 @@ const momentumNetworkStates = {
   Anonymity: { ...momentumNetworkBase, donors: ANONYMITY_DONORS },
 };
 
-// DonorCard states — the four card shapes, each proving one rule the wall
-// depends on: the plain named card, a founding donor with a note, an anonymous
-// entry (name, photo, and link all withheld), and the photo-less monogram.
-const donorCardStates = {
-  Default: { donor: FULL_DONORS[2], tierName: 'Leadership Circle', tierId: 'leadership' },
-  Founding: { donor: FULL_DONORS[0], tierName: 'Leadership Circle', tierId: 'leadership' },
-  Anonymous: { donor: FULL_DONORS[1], tierName: 'Leadership Circle', tierId: 'leadership' },
-  Photo: { donor: FULL_DONORS[3], tierName: 'Sustaining Donors', tierId: 'sustaining' },
-};
-
-const donorWallEmptyStates = {
-  Default: {
-    message: DONOR_COPY.donorsEmptyMessage,
-    ctaLabel: DONOR_COPY.ctaLabel,
-    donateUrl: DONOR_COPY.donateUrl,
-    email: 'ben@harvardintech.com',
-    campaignName: DONOR_COPY.campaignName,
-  },
-};
-
-// DonorAvatar states — the three marks a card can carry, which between them are
-// the whole photo/anonymity rule: a real headshot, the initials fallback, and
-// the neutral dash an anonymous donor gets INSTEAD of initials, because two
-// letters beside "Anonymous donor" name them to anyone who knows them.
-const donorAvatarStates = {
-  Default: { donor: FULL_DONORS[2] },
-  Photo: { donor: FULL_DONORS[3] },
-  Anonymous: { donor: FULL_DONORS[1] },
-};
-
-// DonorWallIntro states — the heading block, whose only real decisions are
-// whether the founding line appears and whether the intro does:
-//   • Default   — both present, the wall the campaign is working toward.
-//   • NoFounding — donors, but nobody carrying the badge, so the line explaining
-//     what founding means is omitted rather than rendered about nobody.
-//   • Empty     — no donors at all, so the intro ("every name here…") is
-//     suppressed; it would otherwise describe donors the reader cannot see.
-const donorWallIntroStates = {
-  Default: {
-    title: DONOR_COPY.donorsTitle ?? 'The Momentum Fund',
-    intro: DONOR_COPY.donorsIntro,
-    foundingCount: 4,
-    hasDonors: true,
-  },
-  NoFounding: {
-    title: DONOR_COPY.donorsTitle ?? 'The Momentum Fund',
-    intro: DONOR_COPY.donorsIntro,
-    foundingCount: 0,
-    hasDonors: true,
-  },
-  Empty: {
-    title: DONOR_COPY.donorsTitle ?? 'The Momentum Fund',
-    intro: DONOR_COPY.donorsIntro,
-    foundingCount: 0,
-    hasDonors: false,
-  },
-};
-
-// DonorTierChips — the filter row as the full wall renders it: All plus one chip
-// per band that actually has donors, including the trailing group. Inert markup
-// on its own; `initDonorFilter` is what makes it do anything, which is why the
-// resting state is worth capturing on its own.
-const donorTierChipsStates = {
-  Default: { groups: groupDonorsByTier(FULL_DONORS, DONOR_TIERS) },
-};
-
-// DonorTierBand states — one band, twice, because the two cases differ in what
-// the band is ALLOWED to say about itself:
-//   • Default   — a declared giving level, so it carries the tier description
-//     explaining what that level funds.
-//   • Unmatched — the trailing group, which has no declared description because
-//     it is not a level anyone chose. It exists so a donor tagged with a renamed
-//     or mistyped tier still reaches the page instead of vanishing.
-const DONOR_BAND_GROUPS = groupDonorsByTier(FULL_DONORS, DONOR_TIERS);
-const donorTierBandStates = {
-  Default: { group: DONOR_BAND_GROUPS[0] },
-  Unmatched: { group: DONOR_BAND_GROUPS[DONOR_BAND_GROUPS.length - 1] },
-};
+// The donor-wall pieces (DonorWall, DonorCard, DonorAvatar, FoundingBadge,
+// DonorWallIntro, DonorWallEmpty, DonorTierChips, DonorTierBand) were deleted
+// with the rest of the unused set — the wall they composed was replaced by
+// `MomentumNetwork`, which is what the donor fixtures above now feed.
 
 export async function getStaticPaths() {
   // Screenshot pages for the codeyam tooling, which only ever captures under
@@ -942,7 +831,6 @@ export async function getStaticPaths() {
   // getStaticPaths runs in an isolated scope and cannot reference the
   // module-level consts — enumerate route names inline.
   return [
-    { params: { name: 'Greeting' } },
     { params: { name: 'EmbedForm' } },
     { params: { name: 'EmbedForm-Embedded' } },
     { params: { name: 'EmbedForm-Unconfigured' } },
@@ -961,11 +849,8 @@ export async function getStaticPaths() {
     { params: { name: 'ChapterEvents-Past' } },
     { params: { name: 'ChapterSignUp' } },
     { params: { name: 'ChapterConnect' } },
-    { params: { name: 'BoardMemberCard' } },
-    { params: { name: 'BoardMemberCard-Initials' } },
     { params: { name: 'ContactUs' } },
     { params: { name: 'ContactUs-NoEmail' } },
-    { params: { name: 'Hero' } },
     { params: { name: 'WhatsappCommunity' } },
     { params: { name: 'GetInvolved' } },
     { params: { name: 'SupportUs' } },
@@ -1018,25 +903,6 @@ export async function getStaticPaths() {
     { params: { name: 'MomentumNetwork-DayOne' } },
     { params: { name: 'MomentumNetwork-First' } },
     { params: { name: 'MomentumNetwork-Anonymity' } },
-    { params: { name: 'DonorWall' } },
-    { params: { name: 'DonorWall-First' } },
-    { params: { name: 'DonorWall-Full' } },
-    { params: { name: 'DonorWall-Anonymity' } },
-    { params: { name: 'DonorCard' } },
-    { params: { name: 'DonorCard-Founding' } },
-    { params: { name: 'DonorCard-Anonymous' } },
-    { params: { name: 'DonorCard-Photo' } },
-    { params: { name: 'DonorWallEmpty' } },
-    { params: { name: 'FoundingBadge' } },
-    { params: { name: 'DonorAvatar' } },
-    { params: { name: 'DonorAvatar-Photo' } },
-    { params: { name: 'DonorAvatar-Anonymous' } },
-    { params: { name: 'DonorWallIntro' } },
-    { params: { name: 'DonorWallIntro-NoFounding' } },
-    { params: { name: 'DonorWallIntro-Empty' } },
-    { params: { name: 'DonorTierChips' } },
-    { params: { name: 'DonorTierBand' } },
-    { params: { name: 'DonorTierBand-Unmatched' } },
   ];
 }
 
@@ -1091,12 +957,6 @@ let chapterConnectProps: (typeof chapterConnectStates)[keyof typeof chapterConne
 if (name && name.startsWith('ChapterConnect')) {
   const stateKey = (name === 'ChapterConnect' ? 'Default' : name.slice('ChapterConnect-'.length)) as keyof typeof chapterConnectStates;
   chapterConnectProps = chapterConnectStates[stateKey] ?? chapterConnectStates.Default;
-}
-
-let boardMemberCardProps: (typeof boardMemberCardStates)[keyof typeof boardMemberCardStates] | null = null;
-if (name && name.startsWith('BoardMemberCard')) {
-  const stateKey = (name === 'BoardMemberCard' ? 'Default' : name.slice('BoardMemberCard-'.length)) as keyof typeof boardMemberCardStates;
-  boardMemberCardProps = boardMemberCardStates[stateKey] ?? boardMemberCardStates.Default;
 }
 
 let contactUsProps: (typeof contactUsStates)[keyof typeof contactUsStates] | null = null;
@@ -1192,17 +1052,6 @@ if (name && name.startsWith('MomentumAccomplishments')) {
 // `DonorWallEmpty` and `DonorWallIntro` must both be tested BEFORE `DonorWall`,
 // which would otherwise swallow them by prefix — the same ordering trap
 // `SponsorPage` has above.
-let donorWallEmptyProps: (typeof donorWallEmptyStates)[keyof typeof donorWallEmptyStates] | null = null;
-if (name && name.startsWith('DonorWallEmpty')) {
-  donorWallEmptyProps = donorWallEmptyStates.Default;
-}
-
-let donorWallProps: (typeof donorWallStates)[keyof typeof donorWallStates] | null = null;
-if (name && !donorWallEmptyProps && !name.startsWith('DonorWallIntro') && name.startsWith('DonorWall')) {
-  const stateKey = (name === 'DonorWall' ? 'Default' : name.slice('DonorWall-'.length)) as keyof typeof donorWallStates;
-  donorWallProps = donorWallStates[stateKey] ?? donorWallStates.Default;
-}
-
 let momentumNetworkProps: (typeof momentumNetworkStates)[keyof typeof momentumNetworkStates] | null = null;
 if (name && name.startsWith('MomentumNetwork')) {
   const stateKey = (
@@ -1211,34 +1060,6 @@ if (name && name.startsWith('MomentumNetwork')) {
   momentumNetworkProps = momentumNetworkStates[stateKey] ?? momentumNetworkStates.Default;
 }
 
-let donorCardProps: (typeof donorCardStates)[keyof typeof donorCardStates] | null = null;
-if (name && name.startsWith('DonorCard')) {
-  const stateKey = (name === 'DonorCard' ? 'Default' : name.slice('DonorCard-'.length)) as keyof typeof donorCardStates;
-  donorCardProps = donorCardStates[stateKey] ?? donorCardStates.Default;
-}
-
-let donorAvatarProps: (typeof donorAvatarStates)[keyof typeof donorAvatarStates] | null = null;
-if (name && name.startsWith('DonorAvatar')) {
-  const stateKey = (name === 'DonorAvatar' ? 'Default' : name.slice('DonorAvatar-'.length)) as keyof typeof donorAvatarStates;
-  donorAvatarProps = donorAvatarStates[stateKey] ?? donorAvatarStates.Default;
-}
-
-let donorWallIntroProps: (typeof donorWallIntroStates)[keyof typeof donorWallIntroStates] | null = null;
-if (name && name.startsWith('DonorWallIntro')) {
-  const stateKey = (name === 'DonorWallIntro' ? 'Default' : name.slice('DonorWallIntro-'.length)) as keyof typeof donorWallIntroStates;
-  donorWallIntroProps = donorWallIntroStates[stateKey] ?? donorWallIntroStates.Default;
-}
-
-let donorTierChipsProps: (typeof donorTierChipsStates)[keyof typeof donorTierChipsStates] | null = null;
-if (name && name.startsWith('DonorTierChips')) {
-  donorTierChipsProps = donorTierChipsStates.Default;
-}
-
-let donorTierBandProps: (typeof donorTierBandStates)[keyof typeof donorTierBandStates] | null = null;
-if (name && name.startsWith('DonorTierBand')) {
-  const stateKey = (name === 'DonorTierBand' ? 'Default' : name.slice('DonorTierBand-'.length)) as keyof typeof donorTierBandStates;
-  donorTierBandProps = donorTierBandStates[stateKey] ?? donorTierBandStates.Default;
-}
 ---
 
 <html lang="en">
@@ -1250,9 +1071,7 @@ if (name && name.startsWith('DonorTierBand')) {
   <body>
     <div id="codeyam-capture" style="padding: var(--space-lg);">
       {
-        name === 'Greeting' ? (
-          <Greeting {...islands.Greeting.props} client:load />
-        ) : embedFormProps ? (
+        embedFormProps ? (
           <EmbedForm {...embedFormProps} />
         ) : sponsorPageProps ? (
           <SponsorPage {...sponsorPageProps} />
@@ -1264,12 +1083,6 @@ if (name && name.startsWith('DonorTierBand')) {
           <SponsorInquiry {...sponsorInquiryProps} />
         ) : accomplishmentsProps ? (
           <MomentumAccomplishments {...accomplishmentsProps} />
-        ) : donorWallEmptyProps ? (
-          <DonorWallEmpty {...donorWallEmptyProps} />
-        ) : donorWallIntroProps ? (
-          <div style="width: 1180px; max-width: 100%;">
-            <DonorWallIntro {...donorWallIntroProps} />
-          </div>
         ) : momentumNetworkProps ? (
           /* The network is a FULL-BLEED band on /donate — it runs edge to edge
              and constrains its own contents with `.wrap`, like every other
@@ -1280,24 +1093,6 @@ if (name && name.startsWith('DonorTierBand')) {
           <div style="margin: calc(var(--space-lg) * -1);">
             <MomentumNetwork {...momentumNetworkProps} />
           </div>
-        ) : donorWallProps ? (
-          <DonorWall {...donorWallProps} />
-        ) : donorCardProps ? (
-          <div style="width: 340px;">
-            <DonorCard {...donorCardProps} />
-          </div>
-        ) : donorAvatarProps ? (
-          <DonorAvatar {...donorAvatarProps} />
-        ) : donorTierChipsProps ? (
-          <div style="width: 1180px; max-width: 100%;">
-            <DonorTierChips {...donorTierChipsProps} />
-          </div>
-        ) : donorTierBandProps ? (
-          <div style="width: 1180px; max-width: 100%;">
-            <DonorTierBand {...donorTierBandProps} />
-          </div>
-        ) : name === 'FoundingBadge' ? (
-          <FoundingBadge />
         ) : narrativeProps ? (
           <MomentumNarrative {...narrativeProps}>
             <p>
@@ -1343,16 +1138,10 @@ if (name && name.startsWith('DonorTierBand')) {
           <ChapterSignUp />
         ) : chapterConnectProps ? (
           <ChapterConnect {...chapterConnectProps} />
-        ) : boardMemberCardProps ? (
-          <div style="width: 200px;">
-            <BoardMemberCard {...boardMemberCardProps} />
-          </div>
         ) : contactUsProps ? (
           <div style="width: 960px; max-width: 100%;">
             <ContactUs {...contactUsProps} />
           </div>
-        ) : name === 'Hero' ? (
-          <Hero />
         ) : name === 'HeroCarousel' ? (
           <HeroCarousel />
         ) : name === 'Stats' ? (

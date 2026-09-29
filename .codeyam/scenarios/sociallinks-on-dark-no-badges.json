@@ -1,0 +1,13 @@
+{
+  "name": "SocialLinks - On Dark, No Badges",
+  "id": "2603c5bb-460f-4c1c-b620-6731edd6b96e",
+  "url": "/isolated-components/SocialLinks-OnDark",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "SocialLinks",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/ui/SocialLinks.astro",
+  "description": "The footer's row, which appears on every page of the site. It shows the one decision separating the two variants: on dark there is no white badge behind each mark, because a white circle on the footer's ink reads as a hole punched in the band. The marks are not in brand colours here either, since the X mark is black and would vanish; they inherit the surrounding light text instead."
+}

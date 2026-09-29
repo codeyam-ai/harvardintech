@@ -1,0 +1,29 @@
+---
+import Component from "../../../src/components/NotFound.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for NotFound — codeyam screenshots the #codeyam-capture
+// wrapper by navigating to /isolated-components/NotFound.
+//
+// This page is the ONLY frame this state can have. The screenshot harness
+// cannot photograph the real /404 route, because it refuses an HTTP 404
+// response (responsive audit §6, 2026-09-28) — so without an isolated capture
+// the not-found page would be the one surface on the site with no committed
+// picture of it at all, which is how it stayed a bare unstyled shell with no
+// navigation for as long as it did.
+//
+// The component takes no props: it is a fixed block of copy and one link.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: NotFound</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component />
+    </div>
+  </body>
+</html>

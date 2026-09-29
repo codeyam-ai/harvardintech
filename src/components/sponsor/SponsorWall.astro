@@ -14,6 +14,7 @@
 //     decoration — it is the thing that makes shipping samples honest at all.
 import SponsorPlaceholderNotice from './SponsorPlaceholderNotice.astro';
 import SponsorWallItem from './SponsorWallItem.astro';
+import EmptyState from '../ui/EmptyState.astro';
 import { groupSponsorsByLevel, hasPlaceholderSponsors, type SponsorLike } from '../../lib/sponsors';
 
 interface Level {
@@ -50,10 +51,13 @@ const showPlaceholderNotice = hasPlaceholderSponsors(sponsors);
 
     {
       groups.length === 0 ? (
-        <p class="wall-empty">
-          {emptyMessage ??
-            'We are lining up partners for the year ahead. If you would like your organization to be the first one listed here, we would love to talk.'}
-        </p>
+        <EmptyState
+          title="No partners listed yet."
+          body={
+            emptyMessage ??
+            'We are lining up partners for the year ahead. If you would like your organization to be the first one listed here, we would love to talk.'
+          }
+        />
       ) : (
         groups.map((group) => (
           <div class="wall-group">
@@ -71,14 +75,6 @@ const showPlaceholderNotice = hasPlaceholderSponsors(sponsors);
 </section>
 
 <style>
-  .wall-empty {
-    max-width: var(--text-width);
-    margin: 0;
-    color: var(--color-muted);
-    font-family: var(--font-serif);
-    font-size: 18px;
-    line-height: 1.75;
-  }
   .wall-group + .wall-group {
     margin-top: var(--space-lg);
   }

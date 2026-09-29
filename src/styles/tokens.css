@@ -17,6 +17,14 @@
   --ink-3: #928b8e;
   --paper: #ffffff;
   --paper-2: #f6f3f1;
+  /* Pure white, distinct from `--paper` on purpose. `--paper` is the page's
+     SURFACE and a theme could move it; `--white` is the literal colour that
+     text and marks sitting on crimson or ink need in order to stay legible,
+     and it must not follow the surface if that ever changes. */
+  --white: #ffffff;
+  /* The scrim over a banner photo. One value, so every photo header guarantees
+     the same contrast floor whatever image an editor picks. */
+  --overlay: rgba(0, 0, 0, 0.52);
   --line: rgba(30, 26, 27, 0.14);
 
   /* Campaign accents — scoped by convention to /donate, where the Momentum Fund
@@ -73,7 +81,30 @@
   --space-lg: 2rem;
   --space-xl: 5rem;
 
+  /* Spacing and type scales for the shared Atlas parts (SectionHead,
+     PageBanner, EmptyState, .card). The older `--space-*` set stays — give and
+     donate components still read it — and the two are not interchangeable:
+     `--space-xl` is 5rem, a BAND gap, where this scale tops out at a
+     component-sized 4rem. The small end is the point. The responsive audit
+     measured `.s-section`'s unconditional 78px of vertical padding spending
+     18.5% of an 844px phone viewport before any content, so a part built on
+     this scale can step down at a breakpoint instead of inheriting that. */
+  --s-1: 0.5rem;
+  --s-2: 0.75rem;
+  --s-3: 1rem;
+  --s-4: 1.5rem;
+  --s-5: 2.5rem;
+  --s-6: 4rem;
+
+  --t-sm: 0.875rem;
+  --t-md: 1rem;
+  --t-lg: 1.25rem;
+  --t-xl: 1.75rem;
+
   --radius: 3px;
+  /* Pill buttons everywhere (owner, 2026-09-14). One token rather than a
+     per-component `border-radius: 999px`, so the shape stays a single edit. */
+  --radius-pill: 999px;
   --content-width: 1220px;
   --text-width: 760px;
   /* Header bar height — shared by the header in BaseLayout and any full-viewport
@@ -113,55 +144,13 @@ h3 {
   color: var(--ink);
 }
 
-/* Section scaffolding shared by every landing block. In Atlas the band is a
-   full-width section with a hairline bottom rule and a centered inner column. */
-.s-section {
-  padding: 78px var(--space-lg);
-  border-bottom: 1px solid var(--line);
-}
-.s-inner {
-  max-width: var(--content-width);
-  margin: 0 auto;
-}
-.s-narrow {
-  max-width: var(--text-width);
-  margin: 0 auto;
-}
-
-/* Section title — Atlas editorial heading: bold Helvetica ink, no flanking
-   rules (the teal theme's rules are dropped for the crimson system). */
-.s-title {
-  color: var(--color-title);
-  letter-spacing: -0.02em;
-  font-size: clamp(28px, 1.2rem + 1.8vw, 44px);
-  font-weight: 800;
-  text-align: center;
-  margin: 0 0 var(--space-lg);
-}
-/* "Upcoming Events" plain variant — same Atlas heading, just no override. */
-.s-title--plain {
-  color: var(--ink);
-  font-family: var(--font-title);
-  font-size: clamp(28px, 1.2rem + 1.8vw, 44px);
-}
-
-.s-btn {
-  display: inline-block;
-  background: var(--crimson);
-  color: #fff;
-  font-family: var(--font-sans);
-  text-transform: none;
-  letter-spacing: normal;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1;
-  padding: 13px 22px;
-  border-radius: var(--radius);
-}
-.s-btn:hover {
-  background: var(--crimson-deep);
-  text-decoration: none;
-}
+/* The `.s-*` layer that used to live here — `.s-section`, `.s-inner`,
+   `.s-narrow`, `.s-title`, `.s-title--plain` and `.s-btn` — is GONE. Every
+   surface now composes `.wrap` + `.sec` with `SectionHead`, `.card`,
+   `EmptyState` and the `.btn` set below, so a band's scaffolding is the same
+   wherever it is written.
+   The `--color-*` and `--space-*` aliases above deliberately stay: the give and
+   donate components still read them, and that area is paused. */
 
 /* ─────────────────────────────────────────────────────────────────────────
    Atlas component classes — used by the redesigned homepage sections.
@@ -172,6 +161,15 @@ h3 {
   max-width: var(--content-width);
   margin: 0 auto;
   padding: 0 48px;
+}
+/* The reading column: `.wrap` at text width instead of grid width, for prose —
+   a blog post, a CMS page, a chapter's body, a volunteer project's description.
+   It overrides the property `.wrap` READS rather than restating a max-width, so
+   the gutters and the centring stay in one place and a change to them reaches
+   both widths. Six components had each written this declaration inline with
+   their own comment explaining it; this is that explanation, once. */
+.wrap--narrow {
+  --content-width: var(--text-width);
 }
 /* mono uppercase crimson eyebrow */
 .kick {
@@ -201,7 +199,10 @@ h3 {
   font-weight: 700;
   text-decoration: none;
   padding: 13px 22px;
-  border-radius: var(--radius);
+  /* Pill everywhere (owner, 2026-09-14), chosen over "square, pill for giving".
+     The campaign components under donate/ and give/ keep their OWN pill CSS
+     while that area is paused, so this is not yet the only definition. */
+  border-radius: var(--radius-pill);
 }
 .btn:hover {
   text-decoration: none;
@@ -220,6 +221,17 @@ h3 {
 .btn-out.on-dark {
   border-color: rgba(255, 255, 255, 0.55);
   color: #fff;
+}
+/* The fourth and last button: a solid LIGHT fill for use on crimson or ink,
+   where `.btn-solid` would be crimson-on-crimson and `.btn-out.on-dark` reads
+   too quiet for a primary action. These four — solid, outline, outline-on-dark
+   and light — replace the eight hand-rolled button styles the redesign found. */
+.btn-light {
+  background: var(--paper);
+  color: var(--crimson);
+}
+.btn-light:hover {
+  background: var(--paper-2);
 }
 
 /* Section wrapper for the editorial stack (used inside `.wrap`). */
@@ -251,6 +263,46 @@ h3 {
      gap belongs to `.sec-head`, which owns it deliberately; the heading
      contributes none of its own. */
   margin-bottom: 0;
+}
+/* Centred variant. `.sec-head` is a space-between flex row built for a title on
+   the left and an action on the right; centring it means stacking, so this also
+   drops the row behaviour rather than only changing `text-align`. */
+.sec-head--center {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* The "Learn more →" affordance. Six components had hand-rolled their own copy
+   — same words, five different sizes — which is why it is a token-level class
+   rather than a prop on each of them.
+   These exact values (mono, 10px, 0.08em) are the ones three of the six already
+   used, so adopting the class leaves those bands pixel-identical and only pulls
+   the outliers into line. The arrow is authored in the markup, not generated
+   here, so a screen reader announces it as part of the link text the author
+   actually wrote. */
+.link-more {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  text-decoration: none;
+}
+.link-more:hover {
+  color: var(--crimson-deep);
+  text-decoration: underline;
+}
+
+/* One card. A hairline, the shared radius and the spacing scale — no shadow and
+   no fill, because the pages that use it (chapters, sponsors, volunteer
+   projects) sit on `--paper` and a filled card there reads as a second
+   background rather than as a raised surface. */
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--s-4);
+  background: var(--paper);
 }
 
 /* Focus-area chips */

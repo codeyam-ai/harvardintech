@@ -1,21 +1,45 @@
 ---
-// The teal "Sign Up" band from the live chapter pages: a light blue section
-// with a flanking-rule "Sign Up" heading, a "Join the Harvard Alumni in Tech
-// Community" line, and a Subscribe pill. Defaults to the same MailChimp signup
-// the landing Hero uses; accepts an optional `subscribeUrl` for future
-// per-chapter overrides.
+// The subscribe band on a chapter page.
+//
+// It was the live site's teal "Sign Up" block — a pale blue band with a
+// flanking-rule heading, carried over from the Strikingly original. It is now a
+// centred Atlas CTA band: the same words, on the shared surface tokens, with
+// the shared pill button. Teal appeared nowhere else in the redesign, so the
+// band read as a leftover from a different site every time a reader scrolled
+// past it.
+//
+// Defaults to the same MailChimp signup the landing hero uses; accepts an
+// optional `subscribeUrl` for future per-chapter overrides.
+import SectionHead from './ui/SectionHead.astro';
+import { siteLinks } from '../lib/site';
+
 interface Props {
   subscribeUrl?: string;
 }
-const { subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb' } = Astro.props;
+const { subscribeUrl = siteLinks().mailingList } = Astro.props;
 ---
 
-<section class="s-section" id="sign-up" style="background: var(--color-bg-blue);">
-  <div class="s-narrow" style="text-align: center;">
-    <h2 class="s-title">Sign Up</h2>
-    <p style="font-size: 1.15rem; color: var(--color-fg); margin: 0 0 var(--space-lg);">
-      Join the Harvard Alumni in Tech Community
+<section class="sec signup" id="sign-up">
+  <div class="wrap">
+    <SectionHead
+      kicker="Stay in touch"
+      title="Sign up"
+      intro="Join the Harvard Alumni in Tech community."
+      align="center"
+    />
+    <p class="signup-cta">
+      <a class="btn btn-solid" href={subscribeUrl} rel="noopener">Subscribe</a>
     </p>
-    <a class="s-btn" href={subscribeUrl} rel="noopener">Subscribe</a>
   </div>
 </section>
+
+<style>
+  .signup {
+    background: var(--paper-2);
+  }
+  .signup-cta {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+  }
+</style>

@@ -39,7 +39,7 @@ const bodyText = blurb ?? defaultBlurb;
 <section class="giving" id="giving">
   <div class="wrap giving-in">
     <div class="giving-copy">
-      <span class="kick" style="color:#fff">Giving campaign</span>
+      <span class="kick" style="color:var(--white)">Giving campaign</span>
       <h3>{headline}</h3>
       <p>{bodyText}</p>
     </div>
@@ -65,7 +65,7 @@ const bodyText = blurb ?? defaultBlurb;
 <style>
   .giving {
     background: var(--crimson);
-    color: #fff;
+    color: var(--white);
     border-bottom: 1px solid var(--line);
   }
   .giving-in {
@@ -81,7 +81,7 @@ const bodyText = blurb ?? defaultBlurb;
     font-size: clamp(28px, 4vw, 48px);
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #fff;
+    color: var(--white);
     margin: 8px 0 10px;
   }
   .giving-copy p {
@@ -110,7 +110,7 @@ const bodyText = blurb ?? defaultBlurb;
     text-align: center;
   }
   .giving .btn-solid {
-    background: #fff;
+    background: var(--white);
     color: var(--crimson);
   }
   .giving .btn-solid:hover {

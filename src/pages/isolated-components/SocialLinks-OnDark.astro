@@ -1,0 +1,33 @@
+---
+import Component from "../../../src/components/ui/SocialLinks.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for SocialLinks' ON-DARK variant — codeyam screenshots the
+// #codeyam-capture wrapper by navigating to /isolated-components/SocialLinks-OnDark.
+//
+// Its own page rather than a `?s=` switch on the on-light one: this is a
+// prerendered stack, so query parameters are empty at build time.
+//
+// This is the footer's row, which appears on EVERY page of the site, and it
+// exists to show the one decision that separates the two variants: on dark
+// there is no white badge behind each mark. A white circle on the footer's ink
+// reads as a hole punched in the band, so the glyph inherits the surrounding
+// light text colour instead — which is also why the marks are not in their
+// brand colours here, since the X mark is black and would vanish.
+//
+// The dark ground is supplied by this page, not the component: the component
+// draws marks, and the band it sits on belongs to whatever renders it.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: SocialLinks-OnDark</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="background: var(--ink); padding: 40px var(--space-lg);">
+      <Component variant="on-dark" size={18} />
+    </div>
+  </body>
+</html>

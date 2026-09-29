@@ -5,6 +5,9 @@
 // prompt (production starts empty). Photos render as <img> for proxy-safe
 // loading, matching the other sections.
 import GlobalCommunityCta from '../GlobalCommunityCta.astro';
+import EmptyState from '../ui/EmptyState.astro';
+import SectionHead from '../ui/SectionHead.astro';
+import { siteLinks } from '../../lib/site';
 import { withBase } from '../../lib/url';
 import { altFor, readMediaManifest } from '../../lib/media';
 import { byPresence, chapterStatus, presenceSummary } from '../../lib/localPresence';
@@ -19,8 +22,18 @@ interface ChapterLike {
 }
 interface Props {
   chapters?: ChapterLike[];
+  /** Band copy, editable per-entry in the CMS. Each defaults to the wording
+   *  this band shipped with, so an entry that sets none looks unchanged. */
+  heading?: string;
+  kicker?: string;
+  intro?: string;
 }
-const { chapters = [] } = Astro.props as Props;
+const {
+  chapters = [],
+  heading = 'Our chapters',
+  kicker = 'A global community',
+  intro,
+} = Astro.props as Props;
 // Active cities first, then the ones forming — the same order the nav dropdown
 // uses, so the row and the menu never disagree about which city comes first.
 const sorted = byPresence(chapters);
@@ -35,11 +48,7 @@ const media = readMediaManifest();
 
 <section class="sec" id="chapters">
   <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kick">A global community</span>
-        <h2>Our chapters</h2>
-      </div>
+    <SectionHead kicker={kicker} title={heading} intro={intro}>
       {
         sorted.length > 0 && (
           <span class="kick">
@@ -47,13 +56,16 @@ const media = readMediaManifest();
           </span>
         )
       }
-    </div>
+    </SectionHead>
 
     {
       sorted.length === 0 ? (
-        <p style="color: var(--color-muted); font-family: var(--font-serif); font-size: 18px;">
-          Chapters are coming soon. Sign up for the mailing list to hear when one launches near you.
-        </p>
+        <EmptyState
+          title="Chapters are coming soon."
+          body="Sign up for the mailing list to hear when one launches near you."
+          actionHref={siteLinks().mailingList}
+          actionLabel="Join the mailing list"
+        />
       ) : (
         <div class="chap">
           {sorted.map((c) => (
@@ -100,7 +112,7 @@ const media = readMediaManifest();
     height: 300px;
     overflow: hidden;
     border-radius: 12px;
-    color: #fff;
+    color: var(--white);
     display: block;
     background: var(--ink);
     text-decoration: none;
@@ -150,7 +162,7 @@ const media = readMediaManifest();
     font-weight: 800;
     letter-spacing: -0.02em;
     line-height: 1.05;
-    color: #fff;
+    color: var(--white);
   }
   .cb {
     font-family: var(--font-serif);

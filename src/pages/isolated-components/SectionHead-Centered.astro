@@ -1,0 +1,39 @@
+---
+import Component from "../../../src/components/ui/SectionHead.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for SectionHead's CENTRED variant — codeyam screenshots the
+// #codeyam-capture wrapper by navigating to /isolated-components/SectionHead-Centered.
+//
+// Its own page rather than a `?s=` switch: this is a prerendered stack, so
+// query parameters are empty at build time.
+//
+// Not a cosmetic variant. `.sec-head` is a space-between flex ROW built for a
+// title at one end and an action at the other, so centring it means dropping
+// the row behaviour and stacking — which is why the modifier changes
+// `flex-direction` rather than just `text-align`. Six bands ship in this state
+// today (both chapter event sections, the subscribe band, the WhatsApp join
+// band, the forming-chapter band, the community callouts and the Luma
+// calendar), so the left-aligned frame alone would leave the more common
+// arrangement unpictured.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: SectionHead-Centered</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div style="width: 100%; max-width: 1180px;">
+        <Component
+          kicker="Stay in touch"
+          title="Sign up"
+          intro="Join the Harvard Alumni in Tech community."
+          align="center"
+        />
+      </div>
+    </div>
+  </body>
+</html>

@@ -197,7 +197,7 @@
           "label": "Tagline",
           "type": "text",
           "optional": true,
-          "hint": "Subtitle beneath the \"HARVARD IN TECH <CITY>\" title."
+          "hint": "Subtitle beneath the city name in the page banner."
         },
         {
           "name": "showGallery",
@@ -336,7 +336,7 @@
           "label": "Tagline",
           "type": "text",
           "optional": true,
-          "hint": "Subtitle beneath the \"HARVARD IN TECH <NAME>\" title."
+          "hint": "Subtitle beneath the community name in the page banner."
         },
         {
           "name": "showGallery",
@@ -827,7 +827,21 @@
           "label": "Heading",
           "type": "text",
           "optional": true,
-          "hint": "Only used by the \"coming soon\" placeholder, as the heading it announces. Blank falls back to the section's usual name."
+          "hint": "The heading shown above this section — and the one the \"coming soon\" placeholder announces. Blank keeps the section's usual heading."
+        },
+        {
+          "name": "kicker",
+          "label": "Eyebrow",
+          "type": "text",
+          "optional": true,
+          "hint": "The small line above the heading, e.g. \"A global community\". Blank keeps the section's usual one."
+        },
+        {
+          "name": "intro",
+          "label": "Intro line",
+          "type": "textarea",
+          "optional": true,
+          "hint": "One sentence under the heading. Blank keeps whatever the section says by default."
         },
         {
           "name": "order",

@@ -34,12 +34,17 @@ const GIVING_PENDING = [
   'src/components/MomentumFundPage.astro',
   'src/components/landing/GivingCampaign.astro',
   'src/components/donate/MomentumNetwork.astro',
-  'src/components/donate/DonorWall.astro',
   'src/components/donate/GiftPillars.astro',
   // `src/pages/give.astro` came off this list when the giving plan deleted the
   // route: /give held a checkout that could not take a payment, so the address
   // now redirects to /donate and the file that carried the personal inbox is
   // gone rather than merely exempted.
+  //
+  // `src/components/donate/DonorWall.astro` came off for the same reason, in the
+  // design-system pass: the Momentum Network replaced the donor wall on /donate,
+  // leaving the wall and its seven sub-components rendered by nothing, so they
+  // were deleted rather than exempted. The personal inbox they carried went with
+  // them.
 ];
 
 describe('public source contact rules', () => {

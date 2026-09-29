@@ -14,7 +14,8 @@ import HeadExtras from '../components/HeadExtras.astro';
 import BrandMark from '../components/BrandMark.astro';
 import UtilityBar from '../components/nav/UtilityBar.astro';
 import PrimaryNav from '../components/nav/PrimaryNav.astro';
-import { settings, nav } from '../lib/site';
+import SocialLinks from '../components/ui/SocialLinks.astro';
+import { settings, nav, siteLinks } from '../lib/site';
 import {
   chapterNavItems,
   withChapterGroup,
@@ -29,7 +30,6 @@ import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
 import { withBase } from '../lib/url';
 import { emailFor } from '../lib/contact';
-import { externalLinkAttrs } from '../lib/externalLink';
 
 // The footer is one of the few places the shared inbox is shown
 // (`EMAIL_SURFACES` in src/lib/contact.ts). Blank setting → no mail link.
@@ -87,7 +87,7 @@ const navItems = withoutHiddenSections(
 // collection the way a hunt for a nav group by label could.
 const utilCities = chapterItems.map((c) => c.label);
 
-const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
+const subscribeUrl = siteLinks().mailingList;
 ---
 
 <html lang="en">
@@ -142,7 +142,7 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
     <footer class="site-foot">
       <div class="wrap foot-in">
         <div class="foot-brand">
-          <span class="kick" style="color:#fff">Harvard Alumni in Tech</span>
+          <span class="kick kick--light">Harvard Alumni in Tech</span>
           <p class="foot-copy">{settings.footerText}</p>
         </div>
         <div class="foot-links">
@@ -151,13 +151,12 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
               `footerText` as plain prose, linking nowhere. A real link, next to
               the contact address, is where a reader looks for it. */}
           <a href={withBase('/privacy/')}>Privacy &amp; cookies</a>
-          {
-            settings.socials.map((s) => (
-              <a href={s.url} {...externalLinkAttrs(s.url, Astro.url.origin)}>
-                {s.label}
-              </a>
-            ))
-          }
+          {/* Icons rather than the words LINKEDIN / TWITTER / FACEBOOK, and
+              shared with the chapter and homepage Connect rows so the three can
+              no longer list different accounts. No `email` is passed: the
+              shared inbox already has its own text link to the left, and
+              `connectLinks` would otherwise synthesize a second envelope. */}
+          <SocialLinks variant="on-dark" size={18} />
         </div>
       </div>
     </footer>
@@ -171,7 +170,7 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
         justify-content: space-between;
         gap: 24px;
         padding: 11px 48px;
-        background: #fff;
+        background: var(--white);
         border-bottom: 1px solid var(--line);
       }
       /* The H lockup is TALLER than it is wide, where the shield it replaced was
@@ -251,7 +250,7 @@ const subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
         text-transform: uppercase;
       }
       .foot-links a {
-        color: #fff;
+        color: var(--white);
         text-decoration: none;
       }
       .foot-links a:hover {

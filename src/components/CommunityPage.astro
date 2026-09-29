@@ -21,6 +21,7 @@ import JoinWhatsAppCta from './JoinWhatsAppCta.astro';
 import PageNarrowBody from './PageNarrowBody.astro';
 import EventGallery from './landing/EventGallery.astro';
 import type { EventLike } from '../lib/events';
+import { bannerFor } from '../lib/pageBanner';
 
 interface Lead {
   name: string;
@@ -70,7 +71,13 @@ const {
 const hasBody = Astro.slots.has('default');
 ---
 
-<ChapterHero name={name} blurb={blurb} heroImage={heroImage} tagline={tagline} label="Community" />
+<ChapterHero
+  name={name}
+  blurb={blurb}
+  heroImage={heroImage}
+  tagline={tagline}
+  label={bannerFor({ kind: 'community', name }).label}
+/>
 
 {
   /* What this community actually does, before anything else. For a community

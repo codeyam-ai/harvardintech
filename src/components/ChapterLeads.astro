@@ -15,21 +15,41 @@ interface Props {
 const { leads = [], heading = 'Chapter Leads' } = Astro.props;
 ---
 
+<style>
+  .leads {
+    margin-bottom: var(--s-6);
+  }
+  /* The heading reuses `.kick` — the site's one eyebrow — rather than restating
+     mono/uppercase/tracking inline, which is what it did before and what made
+     it a fourth spelling of the same label. */
+  .leads .kick {
+    display: block;
+    margin: 0 0 var(--s-3);
+  }
+  .leads-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+  }
+  .lead-role {
+    display: block;
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+  }
+</style>
+
 {
   leads.length > 0 ? (
-    <div style="margin-bottom: var(--space-xl);">
-      <h2 style="text-transform: uppercase; letter-spacing: 0.08em; font-size: 1rem; margin: 0 0 var(--space-md);">
-        {heading}
-      </h2>
-      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-lg);">
+    <div class="leads">
+      <h2 class="kick">{heading}</h2>
+      <ul class="leads-list">
         {leads.map((lead) => (
           <li>
             <strong>{lead.name}</strong>
-            {lead.role ? (
-              <span style="color: var(--color-faint); display: block; font-size: 0.9rem;">
-                {lead.role}
-              </span>
-            ) : null}
+            {lead.role ? <span class="lead-role">{lead.role}</span> : null}
           </li>
         ))}
       </ul>

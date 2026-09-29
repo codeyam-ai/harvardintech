@@ -1,7 +1,12 @@
 ---
 // A single event card. `variant` controls upcoming (accent date, "Learn more"
 // link) vs past (faint date, dimmed, no link) styling. Shared by the landing
-// UpcomingEvents section and the /events page so all event cards stay identical.
+// UpcomingEvents section, the chapter pages and the /events page so all event
+// cards stay identical.
+//
+// The card's frame is the shared `.card` (tokens.css) rather than the inline
+// border/radius/padding this file used to carry, so it matches the sponsor,
+// volunteer and chapter cards instead of being a fourth card shape.
 import { formatEventDate, type EventLike } from '../lib/events';
 import { externalLinkAttrs } from '../lib/externalLink';
 
@@ -13,34 +18,16 @@ const { event, variant = 'upcoming' } = Astro.props;
 const isPast = variant === 'past';
 ---
 
-<article
-  style={`border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-lg); display: flex; flex-direction: column; text-align: left;${isPast ? ' opacity: 0.85;' : ''}`}
->
-  <time
-    style={`font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: ${isPast ? 'var(--color-faint)' : 'var(--color-accent)'};`}
-  >
-    {formatEventDate(event.date)}
-  </time>
-  <h3 style="margin: var(--space-sm) 0; font-size: 1.2rem;">{event.title}</h3>
-  {
-    event.location ? (
-      <p style="color: var(--color-faint); margin: 0 0 var(--space-sm); font-size: 0.9rem;">
-        {event.location}
-      </p>
-    ) : null
-  }
-  {
-    event.description ? (
-      <p style={`color: var(--color-muted); margin: 0${isPast ? '' : ' 0 var(--space-md)'};`}>
-        {event.description}
-      </p>
-    ) : null
-  }
+<article class:list={['card', 'ev', isPast && 'ev--past']}>
+  <time class="ev-date">{formatEventDate(event.date)}</time>
+  <h3 class="ev-title">{event.title}</h3>
+  {event.location ? <p class="ev-where">{event.location}</p> : null}
+  {event.description ? <p class="ev-blurb">{event.description}</p> : null}
   {
     !isPast && event.link ? (
       <a
+        class="link-more ev-go"
         href={event.link}
-        style="margin-top: auto; font-weight: 500;"
         {...externalLinkAttrs(event.link, Astro.url.origin)}
       >
         Learn more →
@@ -48,3 +35,52 @@ const isPast = variant === 'past';
     ) : null
   }
 </article>
+
+<style>
+  .ev {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  /* Past events stay legible but recede — they are context for the upcoming
+     list above them, not the thing the reader came for. */
+  .ev--past {
+    opacity: 0.85;
+  }
+  .ev-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--crimson);
+  }
+  .ev--past .ev-date {
+    color: var(--ink-3);
+  }
+  .ev-title {
+    margin: var(--s-2) 0;
+    font-family: var(--font-title);
+    font-size: var(--t-lg);
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .ev-where {
+    margin: 0 0 var(--s-2);
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+  }
+  .ev-blurb {
+    margin: 0 0 var(--s-3);
+    font-size: var(--t-md);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .ev--past .ev-blurb {
+    margin-bottom: 0;
+  }
+  /* Pinned to the bottom so a row of cards with different blurb lengths still
+     lines its links up. */
+  .ev-go {
+    margin-top: auto;
+  }
+</style>

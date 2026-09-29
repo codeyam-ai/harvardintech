@@ -1,0 +1,13 @@
+{
+  "name": "NotFound - The Only Frame It Can Have",
+  "id": "f625cdb0-b6c8-4018-b744-b1f55ee78683",
+  "url": "/isolated-components/NotFound",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "NotFound",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/NotFound.astro",
+  "description": "The body of the not-found page. This capture is the only picture this state can ever have: the screenshot harness refuses an HTTP 404 response, so the real route cannot be photographed. That gap is how the page stayed a bare unstyled shell with no navigation for as long as it did — a reader arriving from a stale link had no way into the rest of the site."
+}

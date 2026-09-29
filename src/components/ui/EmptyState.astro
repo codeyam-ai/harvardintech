@@ -1,0 +1,87 @@
+---
+// The soft panel a section shows when it has nothing to list (owner's choice,
+// 2026-09-14: "soft panel + button" over a bare line of text).
+//
+// The reason it is a shared part rather than a line of prose per section: on a
+// day-one site MOST sections are empty, so the empty state is the first thing
+// many visitors see. Eight sections had each written their own, and half of
+// them offered the reader nothing to do next. The optional action is the point
+// of the panel — an empty chapter should still be able to say "subscribe".
+interface Props {
+  /** What is not here yet, in the reader's terms — "No events scheduled yet". */
+  title: string;
+  /** One sentence of why, or what happens next. */
+  body?: string;
+  actionHref?: string;
+  actionLabel?: string;
+  /** A quieter second way out, for when the primary action is not the only one. */
+  secondaryHref?: string;
+  secondaryLabel?: string;
+}
+const {
+  title,
+  body,
+  actionHref,
+  actionLabel,
+  secondaryHref,
+  secondaryLabel,
+} = Astro.props as Props;
+
+// Both halves are required for a link to render at all — a labelled button with
+// no destination is a dead end, and a destination with no label is invisible.
+const hasAction = Boolean(actionHref && actionLabel);
+const hasSecondary = Boolean(secondaryHref && secondaryLabel);
+---
+
+<div class="empty">
+  <p class="empty-title">{title}</p>
+  {body ? <p class="empty-body">{body}</p> : null}
+  {
+    hasAction || hasSecondary ? (
+      <p class="empty-actions">
+        {hasAction ? (
+          <a class="btn btn-solid" href={actionHref}>
+            {actionLabel}
+          </a>
+        ) : null}
+        {hasSecondary ? (
+          <a class="link-more" href={secondaryHref}>
+            {secondaryLabel}
+          </a>
+        ) : null}
+      </p>
+    ) : null
+  }
+</div>
+
+<style>
+  .empty {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--s-5) var(--s-4);
+    text-align: center;
+  }
+  .empty-title {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: var(--t-xl);
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .empty-body {
+    margin: var(--s-2) auto 0;
+    max-width: var(--text-width);
+    font-size: var(--t-md);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .empty-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-4);
+    margin: var(--s-4) 0 0;
+  }
+</style>

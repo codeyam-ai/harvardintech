@@ -1,0 +1,37 @@
+---
+import Component from "../../../src/components/ui/EmptyState.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for EmptyState — codeyam screenshots the #codeyam-capture
+// wrapper by navigating to /isolated-components/EmptyState.
+//
+// Shown with BOTH actions, because the action is the whole point of the
+// component. On a day-one site most sections are empty, so this panel is the
+// first thing many visitors meet; the version of it worth capturing is the one
+// that gives the reader somewhere to go rather than the bare line of text it
+// replaced.
+//
+// Bounded to 920px, the width the event sections that use it are capped at.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EmptyState</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div style="width: 100%; max-width: 920px;">
+        <Component
+          title="No events scheduled in Seattle yet."
+          body="We'll announce the next one to the mailing list first."
+          actionHref="https://example.com/subscribe"
+          actionLabel="Get event announcements"
+          secondaryHref="/events"
+          secondaryLabel="See every chapter's events →"
+        />
+      </div>
+    </div>
+  </body>
+</html>

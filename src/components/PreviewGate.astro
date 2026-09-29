@@ -11,6 +11,16 @@
 // HERE at build time rather than in the client script: an exempt page then ships
 // without the overlay markup and without the passphrase, instead of shipping
 // both and asking the browser not to use them.
+//
+// THE HARDCODED COLOURS AND FONT BELOW ARE DELIBERATE — do not "clean them up"
+// into `var(--ink)` / `var(--crimson)` / `var(--font-sans)`. This is an inline
+// script that runs before first paint specifically to hide the page before the
+// real content can flash, and it builds its overlay as a string of inline
+// styles. A custom property resolves to nothing if the stylesheet defining it
+// has not arrived yet, so tokenising these would let the gate paint unstyled —
+// transparent background included — over the content it exists to cover. Every
+// other non-campaign component went through the token sweep; this one is the
+// documented exception.
 import {
   PREVIEW_GATE_ENABLED,
   PREVIEW_GATE_PASSPHRASE,
