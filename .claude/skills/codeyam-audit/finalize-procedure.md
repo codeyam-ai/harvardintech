@@ -801,6 +801,16 @@ wants current evidence and screenshots.
 > Read that line. It is there so a mis-sized run can be stopped in its first
 > seconds rather than discovered at the wall.
 >
+> The derived number is a starting estimate, not a wall. The run re-checks it
+> against the pace it is actually achieving, and when it is slower but still
+> capturing it extends the budget — up to 3x the original — printing a
+> `⏱ Budget extended …` line with the observed and assumed pace. So a slow
+> machine no longer bails 83% done and costs a second full pass (measured
+> 2026-09-24: 1,947 stale, 335 skipped at a 9,054s derived budget, 195 minutes
+> across two runs). The observed pace is recorded as the next run's estimate. A
+> run that stops producing frames is not extended, and an explicit
+> `--max-seconds` is never extended.
+>
 > A value you pass is still authoritative — an explicit `--max-seconds 300`
 > still stops at 300 and still exits `2`, because a caller who names a budget
 > means it. So prefer omitting the flag on a full sweep, and reach for an

@@ -1722,6 +1722,14 @@ _PY_LITERAL_PREFIXES = frozenset(("", "r", "u", "b", "br", "rb"))
 # A shell redirection token, which is never a script operand.
 _REDIRECT_TOKEN = re.compile(r"^[0-9&]*[<>]")
 _BARE_IDENTIFIER = re.compile(r"^[A-Za-z_$][A-Za-z0-9_$]*$")
+# An interpreter's own positional argument — `sys.argv[1]`, `process.argv[2]`.
+_ARGV_REFERENCE = re.compile(r"(?P<module>sys|process)\.argv\s*\[\s*(?P<index>\d+)\s*\]")
+_PYTHON_PROGRAM = re.compile(r"^python(?:\d+(?:\.\d+)?)?$")
+# Python flags that take no argument, so a script operand can still be found
+# past them. Anything else makes the argv layout unknowable.
+_PYTHON_BARE_FLAGS = frozenset("bBdEiIOqsSuv")
+# A redirection operator with its target in the NEXT token (`<< 'PY'`, `2> f`).
+_BARE_REDIRECT = re.compile(r"^[0-9&]*(?:<<-?|<<<|<|>>|>|&>)$")
 # The end of a statement right after an assignment's literal — so `p = 'a' + x`
 # is not read as binding `p` to `'a'`.
 _STATEMENT_END = re.compile(r"""[ \t]*(?:$|[;\n#]|//|["'`][ \t]*(?:$|[;\n|&)]))""")
@@ -2057,6 +2065,120 @@ def _literal_value(command, index):
     return value
 
 
+def _without_redirections(tokens):
+    """`tokens` with every shell redirection and its target removed, so a
+    heredoc opener (`<<'PY'`, `<< PY`) is never read as a positional argument."""
+    kept = []
+    skip = False
+    for tok in tokens:
+        if skip:
+            skip = False
+        elif _BARE_REDIRECT.match(tok):
+            skip = True
+        elif not _REDIRECT_TOKEN.match(tok):
+            kept.append(tok)
+    return kept
+
+
+def _python_argv(args):
+    """The `sys.argv` a `python` invoked with `args` sees, or None when an
+    option is not understood well enough to lay it out."""
+    for i, tok in enumerate(args):
+        if tok == "-" or not tok.startswith("-"):
+            return args[i:]
+        flags = tok[1:]
+        if flags.endswith("c") and set(flags[:-1]) <= _PYTHON_BARE_FLAGS:
+            return ["-c"] + args[i + 2:] if i + 1 < len(args) else None
+        if not flags or not set(flags) <= _PYTHON_BARE_FLAGS:
+            return None
+    return None
+
+
+def _node_argv(args):
+    """The `process.argv` a `node` invoked with `args` sees, or None when an
+    option is not understood well enough to lay it out. `node -e CODE a` puts
+    `a` at index 1; `node - a` and `node script a` put it at index 2."""
+    for i, tok in enumerate(args):
+        if tok in ("-e", "--eval", "-p", "--print"):
+            return ["node"] + args[i + 2:] if i + 1 < len(args) else None
+        if tok == "-" or not tok.startswith("-"):
+            return ["node"] + args[i:]
+        return None
+    return None
+
+
+def _argv_is_read_only(command):
+    """True when every mention of `argv` in `command` is a read of one element
+    (`sys.argv[1]`, `process.argv[2]`) that is not assigned to.
+
+    A script that can CHANGE its argv before writing — `sys.argv[1] =
+    "<tracked>"`, `from sys import argv`, `a = sys.argv` — makes the shell
+    argument say nothing about the file it opens, so resolving through it
+    would name the wrong file and could let a tracked write pass."""
+    references = list(_ARGV_REFERENCE.finditer(command))
+    if len(references) != len(re.findall(r"\bargv\b", command)):
+        return False
+    return not any(
+        re.match(r"\s*(?://|\*\*|<<|>>|[-+*/%|&^@])?=(?!=)", command[ref.end():])
+        for ref in references
+    )
+
+
+def _interpreter_invocations(command, module):
+    """The arguments of every `python*` (module `sys`) or `node` (module
+    `process`) invocation in `command`, redirections removed — or None when a
+    segment that may hold one cannot be tokenized."""
+    is_program = (
+        _PYTHON_PROGRAM.match if module == "sys"
+        else lambda name: name in ("node", "nodejs")
+    )
+    invocations = []
+    for segment in _split_commands(command):
+        try:
+            tokens = shlex.split(segment, posix=True)
+        except ValueError:
+            if re.search(r"\b(?:python|node)", segment):
+                return None
+            continue
+        for i, tok in enumerate(tokens):
+            if is_program(tok.rsplit("/", 1)[-1]) and _in_command_position(tokens, i):
+                invocations.append(_without_redirections(tokens[i + 1:]))
+    return invocations
+
+
+def interpreter_argument(command, module, index):
+    """The literal paths `sys.argv[index]` (module `sys`) or
+    `process.argv[index]` (module `process`) holds when `command` runs — or
+    None when that cannot be proven.
+
+    Proven only when argv is never mutated (`_argv_is_read_only`), `command`
+    invokes exactly ONE interpreter of that family, its options are all
+    understood, and the argument is a literal or a shell variable bound to
+    literals in the same command. This is the hop that makes `F=<path>` …
+    `python3 - "$F"` … `open(sys.argv[1], "w")` legible. Every doubt resolves
+    to None — opaque — which keeps the conservative fallback: a wrong index
+    would name the wrong file and could let a tracked write pass."""
+    if index < 1 or not _argv_is_read_only(command):
+        return None
+    invocations = _interpreter_invocations(command, module)
+    if not invocations or len(invocations) != 1:
+        return None
+    layout = _python_argv if module == "sys" else _node_argv
+    argv = layout(invocations[0])
+    if argv is None or index >= len(argv):
+        return None
+    return _expand_shell_operand(command, argv[index])
+
+
+def _argv_value(command, index):
+    """The paths an `sys.argv[N]` / `process.argv[N]` expression starting at
+    `command[index]` resolves to, when it is the whole statement — else None."""
+    match = _ARGV_REFERENCE.match(command, index)
+    if not match or not _STATEMENT_END.match(command, match.end()):
+        return None
+    return interpreter_argument(command, match.group("module"), int(match.group("index")))
+
+
 def resolve_identifier(command, name):
     """Every string literal `name` is bound to in `command` — a Python or JS
     variable (`p = "…"`) — or None when it cannot be resolved.
@@ -2096,10 +2218,10 @@ def resolve_identifier(command, name):
     assignment = re.compile(rf"(?<![\w.$])(?:(?:const|let|var)\s+)?{ident}\s*=(?![=>])\s*")
     for match in assignment.finditer(command):
         value = _literal_value(command, match.end())
-        if value is None:
+        resolved = [value] if value is not None else _argv_value(command, match.end())
+        if resolved is None:
             return None
-        if value not in values:
-            values.append(value)
+        values.extend(v for v in resolved if v not in values)
     return values or None
 
 
@@ -2296,14 +2418,18 @@ def inplace_edit_targets(command):
 
 def _resolved_expression(command, expr):
     """The literal paths a write construct's target expression names — the
-    literal itself, or the values of a bare variable bound to literals — or
-    None when it cannot be resolved."""
+    literal itself, the values of a bare variable bound to literals, or the
+    interpreter argument a `sys.argv[N]` / `process.argv[N]` holds — or None
+    when it cannot be resolved."""
     literal = _string_literal(expr)
     if literal:
         return [literal]
     expr = expr.strip()
     if _BARE_IDENTIFIER.match(expr):
         return resolve_identifier(command, expr)
+    argv = _ARGV_REFERENCE.fullmatch(expr)
+    if argv:
+        return interpreter_argument(command, argv.group("module"), int(argv.group("index")))
     return None
 
 
@@ -2312,7 +2438,9 @@ def write_targets(command):
 
     Returns `(explicit, opaque, append_only)`: `explicit` lists the paths the
     command writes to — literal, or resolved from a variable bound to a
-    literal (`p = "…"` … `open(p, "w")`, `P=…` … `sed -i … "$P"`); `opaque`
+    literal (`p = "…"` … `open(p, "w")`, `P=…` … `sed -i … "$P"`), or from an
+    interpreter argument (`F=…` … `python3 - "$F"` … `open(sys.argv[1], "w")`,
+    see `interpreter_argument`); `opaque`
     is True when at least one write construct targets a path that cannot be
     resolved statically. A construct that is data rather than code — see
     `write_construct_data_spans` — is not a write construct at all.
@@ -2467,11 +2595,18 @@ def _offending_stage(stages):
 
 
 def scripted_rewrite_stage(command, project_dir):
-    """`(tracked_path, stage, stage_count, append_only)` when `command` writes
-    tracked source off-transcript, else None. `stage` is `""` when the
-    offending half cannot be attributed; `append_only` is `write_targets`'
-    construct verdict, carried through so the refusal can describe an append
-    as an append.
+    """`(tracked_path, stage, stage_count, append_only, target_inferred)` when
+    `command` writes tracked source off-transcript, else None. `stage` is `""`
+    when the offending half cannot be attributed; `append_only` is
+    `write_targets`' construct verdict, carried through so the refusal can
+    describe an append as an append.
+
+    `target_inferred` is True when `tracked_path` came from the opaque
+    fallback below rather than from a resolved write target — the command
+    MENTIONS it, and writes somewhere the parse could not see. The refusal owes
+    that distinction: one session was told its heredoc "machine-rewrites"
+    `step_handoff.rs`, a path that appeared only inside a replacement string,
+    while the file it actually wrote was an untracked plan.
 
     Detection is WHOLE-COMMAND, unchanged: a command qualifies only when it
     BOTH carries a write construct AND that write lands on tracked source.
@@ -2496,8 +2631,10 @@ def scripted_rewrite_stage(command, project_dir):
     tracked = tracked_source_paths(candidates, project_dir)
     if not tracked:
         return None
+    resolved = eligible_pathspecs(explicit, project_dir)
+    target = next((path for path in tracked if path in resolved), tracked[0])
     stages = _split_commands(command)
-    return (tracked[0], _offending_stage(stages), len(stages), append_only)
+    return (target, _offending_stage(stages), len(stages), append_only, target not in resolved)
 
 
 def scripted_source_rewrite_target(command, project_dir):
@@ -2729,10 +2866,41 @@ def compound_stage_evidence(stage, stage_count):
     )
 
 
-def scripted_rewrite_refusal(path, append_only=False):
+def _inferred_target_refusal(path, append_only):
+    """The `(reason, next_action)` pair when the write's destination could not
+    be resolved and `path` is only a tracked file the command MENTIONS.
+
+    It must not claim the command writes `path` — that is an inference, and an
+    agent told its command rewrites a file it demonstrably never opens learns to
+    read the next refusal as a false positive. The block itself stays: erring
+    safe on an unresolvable target is what makes the guard worth having."""
+    construct = "an append" if append_only else "a scripted write"
+    return (
+        f"this command performs {construct} whose destination could not be "
+        f"resolved statically, and `{path}` is a tracked source file the command "
+        f"mentions — so it is refused as if it wrote that file. A scripted write "
+        f"computes its diff at runtime, so the change never appears in the "
+        f"transcript a reviewer reads, and it bypasses the file-state tracking "
+        f"that lets Edit refuse a file that changed underneath it.",
+        f"if the destination is NOT tracked source, make it legible and re-run: "
+        f"bind it to a literal in the same command — `p = \"path\"` … "
+        f"`open(p, \"w\")`, or `F=path` … `python3 - \"$F\"` reading "
+        f"`sys.argv[1]` — and the hook judges that path instead of every path the "
+        f"command mentions. If it IS tracked source, use the Edit tool; several "
+        f"Edit calls in ONE message run in parallel, and `replace_all: true` covers "
+        f"a replace-every-occurrence pass.",
+    )
+
+
+def scripted_rewrite_refusal(path, append_only=False, target_inferred=False):
     """The `(reason, next_action)` pair for a refused scripted write. Names the
     path that matched and the sanctioned alternatives — batching is the reason
     agents reach for a script, so the refusal has to answer it.
+
+    Branches on how the path was FOUND before anything else: a resolved target
+    gets the definite wording below, an inferred one gets
+    `_inferred_target_refusal`, which says what the hook could and could not
+    see.
 
     Branches on the CONSTRUCT, not the file. `cat >> file` is refused for the
     same two reasons a rewrite is (the diff is computed at runtime so it never
@@ -2742,6 +2910,8 @@ def scripted_rewrite_refusal(path, append_only=False):
     it a rewrite and offering replace-shaped recoveries left the agent to
     re-read the file tail and synthesize an anchor by hand — the round trip
     that made this the most-hit block on the fleet."""
+    if target_inferred:
+        return _inferred_target_refusal(path, append_only)
     if append_only:
         return (
             f"this command appends to the tracked source file `{path}`. "
@@ -2769,6 +2939,52 @@ def scripted_rewrite_refusal(path, append_only=False):
         f"an identifier across source + glossary + registry run "
         f"`{cli_command()} editor rename-symbol`. Writing to an untracked file, to "
         f"/tmp, or to the scratchpad is unaffected.",
+    )
+
+
+# ── preview-origin hand-write guard ────────────────────────────────────
+#
+# The subpath-hydration recovery is two coupled writes: `sameOriginSafe` in
+# `.codeyam/stack.json` and a `previewOrigin` in the editor config. Scripting
+# either by hand is the VM-7 incident — a python one-liner flipping
+# `sameOriginSafe` — and doing one half alone leaves the preview flagged
+# dedicated with no origin to move to. `.json` is deliberately outside
+# `SOURCE_SUFFIXES`, so the scripted-rewrite guard never saw it; this guard is
+# narrow on purpose (those keys, in those files) and names the verb that
+# performs both writes, since before it existed the refusal had nothing to offer.
+_PREVIEW_ORIGIN_KEYS = re.compile(r"sameOriginSafe|previewOrigin")
+_PREVIEW_ORIGIN_FILES = (
+    ".codeyam/stack.json",
+    ".codeyam/editor.json",
+    ".codeyam/editor.local.json",
+)
+
+
+def preview_origin_hand_write_target(command):
+    """The preview-origin config file `command` scripts a write of the preview
+    origin keys into, or None. Both halves are required: a write construct
+    landing on one of `_PREVIEW_ORIGIN_FILES`, and a mention of one of the
+    keys. Reading those files, or writing another key into them, is untouched."""
+    if not _PREVIEW_ORIGIN_KEYS.search(command):
+        return None
+    explicit, opaque, _append_only = write_targets(command)
+    if not explicit and not opaque:
+        return None
+    candidates = _path_tokens(command) if opaque else explicit
+    return next((p for p in candidates if p.endswith(_PREVIEW_ORIGIN_FILES)), None)
+
+
+def preview_origin_hand_write_refusal(path):
+    """The `(reason, next_action)` pair for a refused preview-origin hand write."""
+    return (
+        f"this command scripts a write of the preview origin into `{path}`. "
+        f"Serving the Live Preview from its own origin is two coupled writes "
+        f"(`preview.sameOriginSafe` in `.codeyam/stack.json` and a "
+        f"`previewOrigin` in the editor config); either one alone leaves the "
+        f"preview half-switched, with nowhere to move to.",
+        f"run `{cli_command()} editor preview-origin-mode dedicated --origin "
+        f"<ABSOLUTE-ORIGIN>` — it performs both writes, or neither. "
+        f"`{cli_command()} editor preview-origin-mode same-origin` undoes it.",
     )
 
 
@@ -3944,8 +4160,10 @@ def main():
     if tool_name == "Bash":
         found = scripted_rewrite_stage(tool_input.get("command", ""), project_dir)
         if found:
-            rewrite_target, stage, stage_count, append_only = found
-            reason, next_action = scripted_rewrite_refusal(rewrite_target, append_only)
+            rewrite_target, stage, stage_count, append_only, target_inferred = found
+            reason, next_action = scripted_rewrite_refusal(
+                rewrite_target, append_only, target_inferred
+            )
             evidence = resolved_context(project_dir, "git ls-files")
             compound = compound_stage_evidence(stage, stage_count)
             if compound:
@@ -3957,6 +4175,21 @@ def main():
                 next_action,
                 detail=rewrite_target,
                 evidence=evidence,
+                call=call,
+            )
+
+    # Preview-origin hand-write guard. Same scope as the guard above: a
+    # half-applied origin switch breaks the preview in any session.
+    if tool_name == "Bash":
+        origin_target = preview_origin_hand_write_target(tool_input.get("command", ""))
+        if origin_target:
+            reason, next_action = preview_origin_hand_write_refusal(origin_target)
+            block(
+                project_dir,
+                "preview-origin-hand-write",
+                reason,
+                next_action,
+                detail=origin_target,
                 call=call,
             )
 

@@ -81,6 +81,7 @@ blob-report/
 .codeyam/secrets.json
 .codeyam/setup-connections.json
 .codeyam/session-token
+.codeyam/agent-home/
 test-results/
 playwright-report/
 blob-report/
