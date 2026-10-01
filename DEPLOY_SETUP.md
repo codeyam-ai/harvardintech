@@ -220,9 +220,6 @@ the private editor build of `main` is published, behind
 One GitHub repo hosts exactly one Pages site, so a second origin genuinely
 requires a second repo. It holds only generated output; there is no source in it.
 
-One GitHub repo hosts exactly one Pages site, so a second origin genuinely
-requires a second repo. It holds only generated output; there is no source in it.
-
 1. ✅ **Create the staging repo** — `nseldeib/harvardintech-staging`. **Done, and
    it is PUBLIC.** It has to be: Pages on a private repo requires a paid plan, and
    this account is on the free tier — the API rejects it with *"Your current plan
@@ -245,11 +242,14 @@ requires a second repo. It holds only generated output; there is no source in it
    A deploy key rather than a personal access token: it is scoped to exactly one
    repo and carries no person's identity, so it survives staff changes.
 
-3. ✅ **Create the `staging` branch** off `main` and push it. **Done** — the branch
-   exists on origin and its builds are green.
-   ```bash
-   git checkout -b staging main && git push -u origin staging
-   ```
+3. ~~**Create the `staging` branch** off `main` and push it.~~ **Removed
+   2026-10-01.** This step belonged to the two-branch model the one-site decision
+   replaced on 2026-09-12: nothing has built from `staging` since 2026-08-20, the
+   content editor commits to `main`, and the launch-day review site is a second
+   build of `main` rather than a second branch. The branch was deleted once every
+   edit on it was confirmed present on `main`; its seven CMS commits are kept at
+   the tag `archive/staging` and can be restored with
+   `git push origin archive/staging:refs/heads/staging`.
 
 4. ✅ **Enable Pages on the staging repo** — **Done.** **Settings → Pages →
    Source: Deploy from a branch**, branch **`gh-pages`**, folder `/ (root)`, or:
@@ -257,9 +257,11 @@ requires a second repo. It holds only generated output; there is no source in it
    gh api -X POST repos/nseldeib/harvardintech-staging/pages \
      -f 'source[branch]=gh-pages' -f 'source[path]=/'
    ```
-   **This must come after step 3** — the API refuses with *"The gh-pages branch
-   must exist before GitHub Pages can be built"* until the first build has pushed
-   it.
+   **This must come after the first build has pushed to that repo** — the API
+   refuses with *"The gh-pages branch must exist before GitHub Pages can be
+   built"* until then. (`gh-pages` here is a branch of the hosting repo
+   `nseldeib/harvardintech-staging`, written by the deploy; it has nothing to do
+   with the deleted `staging` branch of this repo.)
 
 Then visit `https://nseldeib.github.io/harvardintech-staging/` — the passphrase
 overlay should appear. The passphrase is the `PREVIEW_GATE_PASSPHRASE` secret

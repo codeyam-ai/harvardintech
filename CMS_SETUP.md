@@ -425,15 +425,23 @@ Until 2026-09-12 a `staging` branch and a Promote workflow did this instead. Eve
 saves reached no site at all, and Promote was blocked because the branches had
 diverged. See `DEPLOY_SETUP.md`.
 
-If the promote workflow reports it could not fast-forward, `main` has changes
-`staging` does not. Content edits no longer cause this — they commit to `staging`
-now — so it means someone committed to `main` directly. It opens a pull request
-instead of guessing; review and merge that PR, or rebase `staging` on `main` and
-re-run.
+Both are gone. `promote.yml` was deleted with the one-site change, and the
+`staging` branch itself was deleted on 2026-10-01 once every edit on it was
+confirmed present on `main`. Its seven CMS commits are kept at the tag
+`archive/staging`, so nothing of Nadia's work is lost and the branch can be put
+back with `git push origin archive/staging:refs/heads/staging`.
 
-**After the Strikingly migration** the roles change: `main` becomes the public
-harvardintech.com, `staging` becomes the gated review origin, and promoting then
-means publishing to the world. See [DEPLOY_SETUP.md](./DEPLOY_SETUP.md).
+**After the Strikingly migration** the roles change, but still without a second
+branch: `main` becomes the public harvardintech.com, and the SAME branch is built
+a second time — gated, drafts visible — and published to the kept second
+repository at review.harvardintech.com. The two builds differ only in their
+environment (`PREVIEW_GATE`, `INCLUDE_DRAFTS`); see `src/lib/draftVisibility.ts`
+and [DEPLOY_SETUP.md](./DEPLOY_SETUP.md).
+
+Worth knowing before that day: with one branch, a save that is not a draft
+reaches the gated site in about two minutes today, and will reach the PUBLIC site
+in about two minutes once `main` is harvardintech.com. The Draft toggle is the
+gate, and it is per entry rather than per site.
 
 ## How `collections.json` relates to `src/content/config.ts`
 
