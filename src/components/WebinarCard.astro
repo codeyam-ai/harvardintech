@@ -11,6 +11,13 @@
 // provider returns for one is a generic colour-bars placeholder, identical for
 // every dead upload), so the card shows a plain tinted block rather than
 // captioning a colour chart as a video still.
+//
+// Both URLs go through `withBase`: the post link is written here, and
+// `coverImage` arrives site-root-relative from the post's own frontmatter. The
+// base is '/' in dev, so neither showed a fault until the subpath deploy, where
+// every card 404'd and every still was broken — see src/lib/basePath.test.ts.
+import { withBase } from '../lib/url';
+
 interface Props {
   slug: string;
   title: string;
@@ -22,12 +29,12 @@ const { slug, title, year, summary, coverImage } = Astro.props as Props;
 ---
 
 <li class="webinar-card">
-  <a class="webinar-card__link" href={`/blog/${slug}/`}>
+  <a class="webinar-card__link" href={withBase(`/blog/${slug}/`)}>
     {
       coverImage ? (
         <img
           class="webinar-card__image"
-          src={coverImage}
+          src={withBase(coverImage)}
           alt={`Video still from ${title}`}
           loading="lazy"
           width="640"

@@ -6,11 +6,12 @@
 // looking for them — but they live under Content Hub in the menu, nowhere near
 // Events. This closes that gap without duplicating the recordings onto a page
 // that already carries the calendar, the recent cards and the whole archive.
+import { withBase } from '../lib/url';
 ---
 
 <p class="webinars-pointer">
   Looking for the 2020 webinar recordings? They are on the
-  <a href="/webinars/">webinars page</a>.
+  <a href={withBase('/webinars/')}>webinars page</a>.
 </p>
 
 <style>
