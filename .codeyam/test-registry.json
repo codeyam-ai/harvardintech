@@ -5875,6 +5875,42 @@
       "runner": "tests"
     },
     {
+      "description": "A path stored in content reaches the attribute through a prop, where no scan can tell it from an external URL — so each one is named and checked. One assertion over the whole list rather than a row each: the failure names the offending file anyway, and a generated test title is a title the test registry cannot trace back to a line in this file.",
+      "file": "src/lib/basePath.test.ts",
+      "format": "vitest",
+      "key": "internal URLs carry the deploy base path › bases every content-authored path at the attribute",
+      "line": 98,
+      "registeredAt": "2026-10-01T16:00:12.081820164+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A row that no longer names a content-authored path is indistinguishable from one that does, so it has to fail rather than sit there.",
+      "file": "src/lib/basePath.test.ts",
+      "format": "vitest",
+      "key": "internal URLs carry the deploy base path › keeps every CONTENT_PATH_ATTRS row applicable",
+      "line": 112,
+      "registeredAt": "2026-10-01T15:51:52.182046131+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The scan must actually see the markup, or every assertion below passes vacuously against an empty file list.",
+      "file": "src/lib/basePath.test.ts",
+      "format": "vitest",
+      "key": "internal URLs carry the deploy base path › scans the site markup",
+      "line": 75,
+      "registeredAt": "2026-10-01T15:51:52.182046131+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A URL written out in full in the markup is the finished address, so it has to be based where it is written. This is the case that shipped broken.",
+      "file": "src/lib/basePath.test.ts",
+      "format": "vitest",
+      "key": "internal URLs carry the deploy base path › writes no root-relative URL literal outside withBase",
+      "line": 86,
+      "registeredAt": "2026-10-01T15:55:45.672597838+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The guard is only as good as its reach: menu links live up to three levels deep, and an external link has no local page to resolve against.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",

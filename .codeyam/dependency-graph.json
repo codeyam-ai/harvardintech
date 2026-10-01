@@ -772,7 +772,9 @@
       ]
     },
     "src/components/WebinarCard.astro": {
-      "imports": [],
+      "imports": [
+        "src/lib/url.ts"
+      ],
       "importedBy": [
         "src/components/WebinarsPage.astro",
         "src/pages/isolated-components/WebinarCard-NoCover.astro",
@@ -794,7 +796,9 @@
       ]
     },
     "src/components/WebinarsPointer.astro": {
-      "imports": [],
+      "imports": [
+        "src/lib/url.ts"
+      ],
       "importedBy": [
         "src/components/EventsPage.astro",
         "src/pages/isolated-components/WebinarsPointer.astro"
@@ -1885,6 +1889,10 @@
         "src/lib/areaIcons.test.ts",
         "src/components/landing/FocusAreas.astro"
       ]
+    },
+    "src/lib/basePath.test.ts": {
+      "imports": [],
+      "importedBy": []
     },
     "src/lib/blogVisibility.test.ts": {
       "imports": [
@@ -3316,7 +3324,9 @@
         "src/components/donate/GiftPillarCard.astro",
         "src/components/nav/PrimaryNav.astro",
         "src/components/FormingChapterCta.astro",
+        "src/components/WebinarsPointer.astro",
         "src/components/NotFound.astro",
+        "src/components/WebinarCard.astro",
         "src/components/GlobalCommunityAction.astro",
         "src/pages/cutover-runbook/[...path].astro"
       ]
@@ -5366,7 +5376,9 @@
     "src/components/WebinarCard.astro::__file_root__": {
       "filePath": "src/components/WebinarCard.astro",
       "name": "__file_root__",
-      "imports": [],
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
       "importedBy": [
         "src/pages/isolated-components/WebinarCard-NoCover.astro::__file_root__",
         "src/pages/isolated-components/WebinarCard.astro::__file_root__"
@@ -5392,7 +5404,9 @@
     "src/components/WebinarsPointer.astro::__file_root__": {
       "filePath": "src/components/WebinarsPointer.astro",
       "name": "__file_root__",
-      "imports": [],
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
       "importedBy": [
         "src/pages/isolated-components/WebinarsPointer.astro::__file_root__"
       ]
@@ -10105,7 +10119,9 @@
         "src/components/donate/GiftPillarCard.astro::__file_root__",
         "src/components/nav/PrimaryNav.astro::__file_root__",
         "src/components/FormingChapterCta.astro::__file_root__",
+        "src/components/WebinarsPointer.astro::__file_root__",
         "src/components/NotFound.astro::__file_root__",
+        "src/components/WebinarCard.astro::__file_root__",
         "src/components/GlobalCommunityAction.astro::__file_root__",
         "src/pages/cutover-runbook/[...path].astro::__file_root__"
       ]
@@ -11695,5 +11711,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-09-29T19:24:50Z"
+  "lastUpdated": "2026-10-01T16:08:19Z"
 }
