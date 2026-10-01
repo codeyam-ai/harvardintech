@@ -81,6 +81,8 @@ describe('internal URLs carry the deploy base path', () => {
     expect(FILES.some((f) => f.text.includes('withBase('))).toBe(true);
   });
 
+  // A URL written out in full in the markup is the finished address, so it has
+  // to be based where it is written. This is the case that shipped broken.
   it('writes no root-relative URL literal outside withBase', () => {
     const offenders = FILES.flatMap((f) =>
       [...f.text.matchAll(LITERAL_URL)].map((m) => `${f.path}: ${m[1] ?? m[2]}`),
@@ -88,6 +90,8 @@ describe('internal URLs carry the deploy base path', () => {
     expect(offenders).toEqual([]);
   });
 
+  // A path stored in content reaches the attribute through a prop, where no
+  // scan can tell it from an external URL — so each one is named and checked.
   it.each(CONTENT_PATH_ATTRS.map((r) => [r.file, r.expression]))(
     '%s bases %s at the attribute',
     (file, expression) => {
