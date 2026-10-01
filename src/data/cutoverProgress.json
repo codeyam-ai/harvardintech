@@ -5,7 +5,7 @@
     { "id": "S3", "done": false },
     { "id": "S4", "done": false },
     { "id": "S5", "done": false },
-    { "id": "S6", "done": false },
+    { "id": "S6", "done": true },
     { "id": "S7", "done": false },
     { "id": "S8", "done": false },
     { "id": "S9", "done": false }
@@ -13,8 +13,8 @@
   "decisions": [
     { "id": "D1", "answered": false },
     { "id": "D2", "answered": false },
-    { "id": "D3", "answered": false },
-    { "id": "D4", "answered": false },
+    { "id": "D3", "answered": true },
+    { "id": "D4", "answered": true },
     { "id": "D5", "answered": false }
   ]
 }
