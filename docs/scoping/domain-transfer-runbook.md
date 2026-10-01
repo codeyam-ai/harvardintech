@@ -102,7 +102,10 @@ Two things to decide:
 
 1. **Branch:** the WIP is on `atlas-homepage-events-revamp`. To publish it we
    either merge to `main` or point the deploy workflow at the branch/a preview
-   path.
+   path. *(That work reached `main` long ago, and the branch was deleted on
+   2026-10-01 along with `cms-migration`, `design-board-deck` and `redesign`.
+   `main` is now the only branch. The one that held unmerged work, `redesign`,
+   is kept at the tag `archive/redesign`.)*
 2. **Access:** per the access-model decision, the intended approach is **unlisted
    GitHub Pages URL + `noindex` + a client-side password gate** (deterrent-level
    privacy, no new host). ⚠️ Caveat: a client-side gate is a deterrent, not real
