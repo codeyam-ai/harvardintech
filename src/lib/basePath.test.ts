@@ -92,17 +92,20 @@ describe('internal URLs carry the deploy base path', () => {
 
   // A path stored in content reaches the attribute through a prop, where no
   // scan can tell it from an external URL — so each one is named and checked.
-  it.each(CONTENT_PATH_ATTRS.map((r) => [r.file, r.expression]))(
-    '%s bases %s at the attribute',
-    (file, expression) => {
+  // One assertion over the whole list rather than a row each: the failure names
+  // the offending file anyway, and a generated test title is a title the test
+  // registry cannot trace back to a line in this file.
+  it('bases every content-authored path at the attribute', () => {
+    const unbased = CONTENT_PATH_ATTRS.filter(({ file, expression }) => {
       const found = FILES.find((f) => f.path === file);
-      expect(found, `${file} no longer exists — remove it from CONTENT_PATH_ATTRS`).toBeDefined();
-      expect(
-        new RegExp(`\\b(?:${URL_ATTRS})=\\{withBase\\(${expression}\\)\\}`).test(found!.text),
-        `${file} puts ${expression} in a URL attribute without withBase — a content-authored path reaches the page unbased`,
-      ).toBe(true);
-    },
-  );
+      if (!found) return true;
+      return !new RegExp(`\\b(?:${URL_ATTRS})=\\{withBase\\(${expression}\\)\\}`).test(found.text);
+    });
+    expect(
+      unbased.map((r) => `${r.file}: ${r.expression}`),
+      'a content-authored path reaches a URL attribute without withBase',
+    ).toEqual([]);
+  });
 
   // A row that no longer names a content-authored path is indistinguishable
   // from one that does, so it has to fail rather than sit there.
