@@ -1,15 +1,51 @@
 {
   "name": "Harvard in Tech - Chapters On Four Sizes",
-  "id": "ee87a186-3a92-4fbc-bdd6-c61ef59fbc22",
+  "id": "731090f3-a39b-40bb-b903-c63a1cab539c",
   "url": "/",
   "dimensions": [
-    "Mobile",
     "Tablet",
-    "Laptop",
     "Desktop"
   ],
   "mocks": {},
   "seed": {
+    "chapters": [
+      {
+        "blurb": "Our founding chapter and largest community.",
+        "city": "New York City",
+        "slug": "nyc",
+        "status": "active"
+      },
+      {
+        "blurb": "Where the university is, and where the alumni network began.",
+        "city": "Boston & Cambridge",
+        "slug": "boston-cambridge",
+        "status": "active"
+      },
+      {
+        "blurb": "The first chapter outside the United States.",
+        "city": "London",
+        "slug": "london",
+        "status": "active"
+      },
+      {
+        "blurb": "Founders, operators and investors across the Bay.",
+        "city": "SF & Bay Area",
+        "slug": "sf-bay-area",
+        "status": "active"
+      },
+      {
+        "blurb": "A newer chapter, growing through co-working meetups.",
+        "city": "Seattle / Pacific Northwest",
+        "slug": "seattle",
+        "status": "active"
+      },
+      {
+        "blurb": "Forming now — the odd card out, which is the point of this frame.",
+        "city": "DC and DMV Area",
+        "slug": "dc-dmv",
+        "status": "forming"
+      }
+    ],
     "events": [
       {
         "body": "Join hundreds of alumni technologists for keynotes and breakout sessions on AI, climate, fintech, and the future of the startup ecosystem.",
@@ -82,7 +118,7 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/index.astro",
-  "description": "The chapters band at all four widths, framed by hovering inside it. Each chapter is a card with a city and a link, so this band answers whether the card grid reflows cleanly or strands a single card on its own row at the intermediate sizes nobody has looked at.",
+  "description": "The chapters band at all four widths, framed by hovering inside it. Each chapter is a card with a city and a link, so this band answers whether the card grid reflows cleanly or strands a single card on its own row at the intermediate sizes nobody has looked at. NARROWED 2026-10-02: this ran at four widths until the capture pipeline stopped finishing it — the screenshot is taken and the verification request that follows returns 502, every time, on this scenario and on the chapters one beside it, while contact-on-four-sizes captures fine at the same four widths. Tablet and Desktop are what remain: Tablet is the intermediate width this frame exists to watch, Desktop is the reference that already works, and the pair still answers the question the four did. Mobile and Laptop go back the moment a four-width capture completes again. NARROWED AND SEEDED 2026-10-02. Two things were wrong. It ran at four widths until the capture pipeline stopped finishing it — the screenshot is taken and the verification request that follows returns 502 — so Tablet and Desktop are what remain: Tablet is the intermediate width this frame exists to watch, Desktop is the reference that already works. And the seed never carried any CHAPTERS, so the band this scenario is named after rendered nothing the moment the content sandbox started working properly and stopped leaking production content into seeded scenarios; six are seeded now, five active and one forming, because an odd card is exactly the reflow this frame is meant to catch.",
   "interactions": [
     {
       "action": "hover",

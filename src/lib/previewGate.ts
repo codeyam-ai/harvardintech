@@ -87,11 +87,18 @@ export function substitutePassphrase(source: string, pass: string): string {
  * the whole unreleased site to get at the one page they were asked to read.
  *
  * The URL is the access mechanism instead — 128 bits of token, unguessable, not
- * linked and not indexed. That is the same trade this project already made for
- * `public/design-review-4ece6c14/`, and it is a genuine trade rather than a free
- * win: anyone who is FORWARDED the link can read the page. Content that must
- * stay unreadable takes a password-protected preview, where the bytes are
- * encrypted at rest rather than merely unlinked.
+ * linked and not indexed. It is a genuine trade rather than a free win: anyone
+ * who is FORWARDED the link can read the page. Content that must stay
+ * unreadable takes a password-protected preview, where the bytes are encrypted
+ * at rest rather than merely unlinked.
+ *
+ * This project made the same trade once elsewhere, for the board's redesign
+ * gallery at `public/design-review-4ece6c14/`, and then UNMADE it: on
+ * 2026-10-01 the owner retired that gallery rather than keep a page whose only
+ * protection was its address (runbook D3). The difference that keeps preview
+ * links exempt is scope — a preview link exposes one entry to one reviewer who
+ * was sent it, where the gallery sat at a fixed address for anyone who had ever
+ * been given it, indefinitely, with nothing to revoke.
  *
  * `noindex` is unaffected. It used to ride along with the gate, so exempting a
  * page here would once have made it indexable — `SEO.astro` now emits it from

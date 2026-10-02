@@ -95,9 +95,7 @@ describe('excludedFromBuild', () => {
   it('drops every internal path on the public track', () => {
     const excluded = excludedFromBuild(false, false);
     expect(excluded).toEqual(INTERNAL_PATHS);
-    for (const p of ['isolated-components', 'design-review-4ece6c14', 'review', 'donor-network.html']) {
-      expect(excluded).toContain(p);
-    }
+    expect(excluded).toContain('isolated-components');
   });
 });
 
@@ -106,13 +104,11 @@ describe('isInternalPath', () => {
   it('matches internal pages on the domain and under a base', () => {
     expect(isInternalPath('/isolated-components/BoardMemberTile/')).toBe(true);
     expect(isInternalPath('/harvardintech/isolated-components/BoardMemberTile/', '/harvardintech/')).toBe(true);
-    expect(isInternalPath('/design-review-4ece6c14/index.html')).toBe(true);
-    expect(isInternalPath('/review/')).toBe(true);
   });
 
   // The sitemap filter hands over absolute URLs.
   it('matches absolute URLs', () => {
-    expect(isInternalPath('https://harvardintech.com/donor-network.html')).toBe(true);
+    expect(isInternalPath('https://harvardintech.com/isolated-components/BrandMark/')).toBe(true);
   });
 
   // Real pages stay in the sitemap.

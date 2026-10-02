@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { PASSPHRASE_PLACEHOLDER } from './previewGate';
 
 // The docs the team actually sends and follows. When the repo moved from
 // `nseldeib` to `codeyam-ai`, every preview link in them went dead at once,
@@ -26,7 +25,16 @@ const DOCS = [
 
 // The staging site's hosting repo did not move, so its address stays valid.
 const DEAD_PREVIEW_LINK = /nseldeib\.github\.io\/harvardintech(?!-staging)/;
-const SELF_GATED_PAGES = ['public/review/index.html', 'public/donor-network.html'];
+// The two pages that used to self-gate were retired to `docs/archive/` on
+// 2026-10-01 and are no longer served on any track. They stay in this list for
+// the retired-passphrase check below ONLY: the point of that check is that the
+// old passphrase is in git history and must not be written down again anywhere
+// in the repo, which an archived file is still part of. The placeholder check
+// went with them — an archived file is not built, so nothing fills it in.
+const ARCHIVED_GATED_PAGES = [
+  'docs/archive/project-status-2026-09-16.html',
+  'docs/archive/supporter-recognition-review-2026-09-14.html',
+];
 
 describe('team docs', () => {
   // A link to the pre-move preview host 404s for whoever clicks it; the staging
@@ -37,7 +45,7 @@ describe('team docs', () => {
 
   // The retired passphrase is in git history, so it must never be written down
   // again — not in a doc, and not in a page that ships to the preview.
-  it.each([...DOCS, ...SELF_GATED_PAGES])('%s does not contain the retired passphrase', (rel) => {
+  it.each([...DOCS, ...ARCHIVED_GATED_PAGES])('%s does not contain the retired passphrase', (rel) => {
     expect(read(rel)).not.toContain('crimson2026');
   });
 
@@ -47,11 +55,16 @@ describe('team docs', () => {
   });
 });
 
-describe('self-gated public pages', () => {
-  // The build fills the secret into this exact placeholder; a page carrying
-  // anything else would ship a gate the build never fills in.
-  // Checked per page so a regression names the file that lost its placeholder.
-  it.each(SELF_GATED_PAGES)('%s carries the passphrase placeholder the build fills in', (rel) => {
-    expect(read(rel)).toContain(`var PASSPHRASE = '${PASSPHRASE_PLACEHOLDER}'`);
+describe('retired internal pages', () => {
+  // `public/` holds only assets now. A document that reappears there is served
+  // on every track with no gate in front of it, because the site's passphrase is
+  // an Astro component and never runs for a file Astro copies verbatim — which
+  // is exactly how the board's design gallery sat open at a guessable moment.
+  it('keeps documents out of public/', () => {
+    const offenders = fs
+      .readdirSync(path.join(REPO_ROOT, 'public'), { withFileTypes: true, recursive: true })
+      .filter((e) => e.isFile() && /\.(html?|md)$/i.test(e.name))
+      .map((e) => e.name);
+    expect(offenders).toEqual([]);
   });
 });

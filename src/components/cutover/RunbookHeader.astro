@@ -1,19 +1,17 @@
 ---
-// The page's masthead: the internal-only utility strip, the way back to the
-// status page, and the title block.
+// The page's masthead: the internal-only utility strip and the title block.
 //
-// The back link is `withBase`d rather than relative. The page it replaced was a
-// raw public/ file that could not read Astro's BASE_URL and had to hand-write
-// `./review/index.html`; as a real route that constraint is gone, and a
-// base-aware link is what keeps it working under the review track's subpath.
-import { withBase } from '../../lib/url';
+// There is no longer a way back to the status page, because there is no longer a
+// status page on the site: it was retired to `docs/archive/` on 2026-10-01 with
+// the rest of the internal documents (runbook D4), and a link to a page that is
+// not built is worse than no link. The runbook now stands alone, which is what
+// it already was for anyone who opened it directly.
 ---
 
 <div class="util">Internal · the plan for moving the domain, and where we've got to</div>
 
 <header class="page">
   <div class="wrap">
-    <div class="back"><a href={withBase('/review/index.html')}>← Project status &amp; decisions</a></div>
     <div class="kick">Domain Cutover Runbook</div>
     <h1>Moving harvardintech.com to the new site</h1>
     <p>

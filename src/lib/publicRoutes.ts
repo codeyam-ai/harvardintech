@@ -32,8 +32,10 @@ export interface PublicRoute {
  *
  * - `/admin` — it ships from `@codeyam/cms` inside `node_modules`, so any
  *   layout fix belongs upstream rather than in this repo.
- * - The cutover runbook, `donor-network.html` and the review gate — internal
- *   pages stripped from the public build.
+ * - The cutover runbook — an internal page excluded from the public build at
+ *   the route level by `includeCutoverRunbook`. The two internal documents that
+ *   used to sit beside it, the status page and the donor-wall deck, were retired
+ *   to `docs/archive/` on 2026-10-01 and are no longer routes at all.
  * - `/give` — the giving plan retired the route (it now redirects to
  *   `/donate`), so there is no page left to audit. Its components still sit in
  *   `src/components/give/` pending a separate decision to delete them, but

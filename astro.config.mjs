@@ -143,7 +143,15 @@ function codeyamContentRefresh() {
 // Raw `public/` pages that carry their own passphrase gate. They are copied into
 // `dist/` verbatim, so no component can inject the secret — the build step below
 // substitutes it into the placeholder instead.
-const SELF_GATED_FILES = ['review/index.html', 'donor-network.html'];
+//
+// EMPTY SINCE 2026-10-01, and deliberately kept rather than deleted. The two
+// pages that needed it — the project status page and the donor-wall deck — were
+// retired to `docs/archive/`, so nothing in `public/` self-gates today. The
+// mechanism stays because the next raw `public/` page that must not be read by
+// everyone needs exactly this: a component gate cannot reach a file Astro copies
+// verbatim. Add the file's path here and the placeholder to its script.
+/** @type {string[]} */
+const SELF_GATED_FILES = [];
 
 /**
  * Build-only integration: removes internal paths from `dist/` and fills in the

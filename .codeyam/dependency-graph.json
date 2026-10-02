@@ -120,67 +120,11 @@
       ],
       "importedBy": []
     },
-    "public/design-review-4ece6c14/01-atlas-mockup.html": {
+    "docs/archive/project-status-2026-09-16.html": {
       "imports": [],
       "importedBy": []
     },
-    "public/design-review-4ece6c14/02-manifesto-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/03-editorial-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/04-plinth-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/05-neo-brutalist-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/06-letters-to-sean-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/07-charter-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/08-bureau-north-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/09-beacon-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/10-marquee-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/11-community-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/12-nightfall-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/13-designer-mockup.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/design-review-4ece6c14/index.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/donor-network.html": {
-      "imports": [],
-      "importedBy": []
-    },
-    "public/review/index.html": {
+    "docs/archive/supporter-recognition-review-2026-09-14.html": {
       "imports": [],
       "importedBy": []
     },
@@ -891,9 +835,7 @@
       ]
     },
     "src/components/cutover/RunbookHeader.astro": {
-      "imports": [
-        "src/lib/url.ts"
-      ],
+      "imports": [],
       "importedBy": [
         "src/pages/cutover-runbook/[...path].astro"
       ]
@@ -1890,6 +1832,18 @@
         "src/components/landing/FocusAreas.astro"
       ]
     },
+    "src/lib/autoplay.test.ts": {
+      "imports": [
+        "src/lib/autoplay.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/autoplay.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/autoplay.test.ts"
+      ]
+    },
     "src/lib/basePath.test.ts": {
       "imports": [],
       "importedBy": []
@@ -2136,9 +2090,7 @@
       "importedBy": []
     },
     "src/lib/docLinks.test.ts": {
-      "imports": [
-        "src/lib/previewGate.ts"
-      ],
+      "imports": [],
       "importedBy": []
     },
     "src/lib/donatePageContent.ts": {
@@ -2881,7 +2833,6 @@
         "src/lib/envFlag.ts"
       ],
       "importedBy": [
-        "src/lib/docLinks.test.ts",
         "src/lib/previewGate.test.ts",
         "src/components/PreviewGate.astro",
         "src/pages/cutover-runbook/[...path].astro",
@@ -3294,7 +3245,6 @@
         "src/components/ResponsiveImg.astro",
         "src/components/ChapterLinks.astro",
         "src/components/SiteIcons.astro",
-        "src/components/cutover/RunbookHeader.astro",
         "src/components/JoinWhatsAppCta.astro",
         "src/components/give/GiveCollage.astro",
         "src/components/give/GivePhoto.astro",
@@ -5507,9 +5457,7 @@
     "src/components/cutover/RunbookHeader.astro::__file_root__": {
       "filePath": "src/components/cutover/RunbookHeader.astro",
       "name": "__file_root__",
-      "imports": [
-        "src/lib/url.ts::withBase"
-      ],
+      "imports": [],
       "importedBy": [
         "src/pages/cutover-runbook/[...path].astro::__file_root__"
       ]
@@ -6723,6 +6671,16 @@
         "src/components/landing/FocusAreas.astro::__file_root__"
       ]
     },
+    "src/lib/autoplay.test.ts::__file_root__": {
+      "filePath": "src/lib/autoplay.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/autoplay.ts::__file_root__",
+        "src/lib/autoplay.ts::autoplayEnabled",
+        "src/lib/autoplay.ts::isScenarioRender"
+      ],
+      "importedBy": []
+    },
     "src/lib/blogVisibility.test.ts::__file_root__": {
       "filePath": "src/lib/blogVisibility.test.ts",
       "name": "__file_root__",
@@ -7228,14 +7186,6 @@
       "imports": [
         "src/lib/deployTracks.ts::pagesBasePathFor",
         "src/lib/deployTracks.ts::pushTargetRepo"
-      ],
-      "importedBy": []
-    },
-    "src/lib/docLinks.test.ts::__file_root__": {
-      "filePath": "src/lib/docLinks.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/previewGate.ts::__file_root__"
       ],
       "importedBy": []
     },
@@ -10089,7 +10039,6 @@
         "src/components/ResponsiveImg.astro::__file_root__",
         "src/components/ChapterLinks.astro::__file_root__",
         "src/components/SiteIcons.astro::__file_root__",
-        "src/components/cutover/RunbookHeader.astro::__file_root__",
         "src/components/JoinWhatsAppCta.astro::__file_root__",
         "src/components/give/GiveCollage.astro::__file_root__",
         "src/components/give/GivePhoto.astro::__file_root__",
@@ -11711,5 +11660,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-01T17:12:23Z"
+  "lastUpdated": "2026-10-01T19:26:54Z"
 }

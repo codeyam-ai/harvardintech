@@ -317,9 +317,12 @@ genuinely encrypted.
 **Preview URLs are exempt from the passphrase** (`gateAppliesTo` in
 `src/lib/previewGate.ts`). Gating them would mean sending a reviewer the link and
 the site passphrase together, handing them the whole unreleased site to read one
-page. The URL is the access mechanism instead — the same trade this repo already
-made for `public/design-review-4ece6c14/`. It is a real trade: anyone forwarded
-the link can read the page, which is what password protection is for.
+page. The URL is the access mechanism instead. It is a real trade: anyone
+forwarded the link can read the page, which is what password protection is for.
+The repo made that same trade once for the board's redesign gallery and then
+unmade it — the gallery was retired on 2026-10-01 rather than left at an address
+that was its only protection. A preview link stays exempt because its scope is
+one entry and one reviewer, not a fixed address open to everyone ever sent it.
 
 ### The shareable list link
 

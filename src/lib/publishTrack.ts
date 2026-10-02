@@ -67,11 +67,21 @@ export function includeCutoverRunbook(isDev: boolean, isReviewTrack: boolean): b
  *   captures, each rendering one component in one fixed state. Some carry
  *   sample bios under real board members' names. The tooling only ever needs
  *   them under `astro dev`.
- * - `design-review-4ece6c14` — the 20 MB redesign gallery. `noindex`, but
- *   protected only by its unguessable URL.
- * - `review` and `donor-network.html` — the status page and the donor-wall
- *   deck. Kept off the public site by default until Ben and Nicole decide
- *   their fate (keep private, retire, or publish on purpose).
+ * THIS LIST IS DOWN TO ONE ENTRY, and that is the point: on 2026-10-01 the
+ * owner retired every internal document that lived inside the site (runbook D3
+ * and D4), so there is no longer a set of pages kept off the public build by
+ * configuration. What went:
+ *
+ * - `design-review-4ece6c14` — a 20 MB board gallery of thirteen redesign
+ *   concepts, `noindex` but with no gate at all, so its unguessable URL was its
+ *   only protection. Deleted; it stays in git history.
+ * - `review` and `donor-network.html` — the project status page and the
+ *   donor-wall deck, raw `public/` files each carrying its own passphrase gate,
+ *   because the site's gate is an Astro component and never runs for a file
+ *   served verbatim. Both MOVED to `docs/archive/`, not deleted: the status
+ *   page is the only written record of five questions put to the board, one of
+ *   which (member login) is still open. Out of `public/` they are not served on
+ *   any track, which is what retiring them meant.
  *
  * `public/videos/sample-backdrop.mp4` is a placeholder too, but it stays served:
  * a registered scenario plays it. Replace the folder's contents when real hero
@@ -80,12 +90,7 @@ export function includeCutoverRunbook(isDev: boolean, isReviewTrack: boolean): b
  * The cutover runbook is not listed: `includeCutoverRunbook` already keeps it
  * out of the public build at the route level.
  */
-export const INTERNAL_PATHS: readonly string[] = [
-  'isolated-components',
-  'design-review-4ece6c14',
-  'review',
-  'donor-network.html',
-];
+export const INTERNAL_PATHS: readonly string[] = ['isolated-components'];
 
 /** What the gated preview drops: only what no reviewer is meant to open. */
 const REVIEW_TRACK_EXCLUSIONS: readonly string[] = ['isolated-components'];

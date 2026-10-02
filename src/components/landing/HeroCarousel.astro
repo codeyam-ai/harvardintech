@@ -238,6 +238,15 @@ const {
 <script>
   // Dependency-free track slider: translate the flex track, sync dots, pause on
   // hover, jump on dot click. Guards on a single slide (no rotation).
+  //
+  // It advances ITSELF only when `autoplayEnabled` says so — a reader who has
+  // asked for reduced motion gets a carousel that waits to be clicked, and so
+  // does the capture harness, which cannot photograph a page that never holds
+  // still. See src/lib/autoplay.ts for why the second case is not a test-only
+  // concern. The dots keep working either way: the controls are the carousel,
+  // the timer is only its impatience.
+  import { autoplayEnabled } from '../../lib/autoplay';
+
   function initHeroCarousel() {
     document.querySelectorAll<HTMLElement>('[data-hero-carousel]').forEach((root) => {
       const track = root.querySelector<HTMLElement>('[data-track]');
@@ -246,6 +255,10 @@ const {
       if (!track || count < 2) return;
       let idx = 0;
       let timer: number | undefined;
+      const autoplay = autoplayEnabled({
+        search: window.location.search,
+        reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      });
 
       const show = (n: number) => {
         idx = (n + count) % count;
@@ -254,6 +267,7 @@ const {
       };
       const start = () => {
         stop();
+        if (!autoplay) return;
         timer = window.setInterval(() => show(idx + 1), 6000);
       };
       const stop = () => {

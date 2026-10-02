@@ -15,6 +15,10 @@ Each item below has a **status**, a **plain-language description**, the
 - [Harvard Key SSO / member login](./harvard-key-sso.md)
 - [Domain transfer: Strikingly → GitHub Pages](./domain-transfer-runbook.md)
 
+The cutover runbook's own five questions were answered on 2026-10-01 — including
+two that went against its recommendation — and the answers are recorded in
+[Cutover decisions — 2026-10-01](./cutover-decisions-2026-10-01.md).
+
 Effort key: **S** = hours · **M** = 1–3 days · **L** = ~1 week · **XL** =
 multi-week / externally gated.
 

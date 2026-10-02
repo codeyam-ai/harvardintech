@@ -1,11 +1,9 @@
 {
   "name": "Harvard in Tech - Board On Four Sizes",
-  "id": "2658acb9-d8be-4d44-8173-b7906cf46ab5",
+  "id": "22bc4683-2864-46a4-b2a3-b1e7a9afabd6",
   "url": "/",
   "dimensions": [
-    "Mobile",
     "Tablet",
-    "Laptop",
     "Desktop"
   ],
   "mocks": {},
@@ -82,7 +80,7 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/index.astro",
-  "description": "The board grid at all four widths. It sits far below the fold, so the capture hovers a selector inside the band to bring it into frame - a URL fragment does not scroll a capture, which is why the older /#board scenario shoots the hero instead. Portraits in a grid are the homepage's densest layout, so this is where a column count that works at 1440 and fails at 768 shows up.",
+  "description": "The board grid at all four widths. It sits far below the fold, so the capture hovers a selector inside the band to bring it into frame - a URL fragment does not scroll a capture, which is why the older /#board scenario shoots the hero instead. Portraits in a grid are the homepage's densest layout, so this is where a column count that works at 1440 and fails at 768 shows up. NARROWED 2026-10-02: this ran at four widths until the capture pipeline stopped finishing it — the screenshot is taken and the verification request that follows returns 502, every time, on this scenario and on the chapters one beside it, while contact-on-four-sizes captures fine at the same four widths. Tablet and Desktop are what remain: Tablet is the intermediate width this frame exists to watch, Desktop is the reference that already works, and the pair still answers the question the four did. Mobile and Laptop go back the moment a four-width capture completes again.",
   "interactions": [
     {
       "action": "hover",

@@ -34,12 +34,16 @@ describe('shadowedPageSlugs', () => {
     expect(shadowedPageSlugs(['blog', 'chapters'])).toEqual(['blog', 'chapters']);
   });
 
-  // The gated review site lives at /review as a static folder, so no Astro route
-  // declares it and a src/pages scan would call this slug free.
+  // `public/images` is a folder Astro copies verbatim, so no Astro route
+  // declares it and a src/pages scan would call this slug free. A CMS page
+  // slugged `images` would shadow every image on the site.
+  //
+  // This used to assert `review` alongside it, when the project status page sat
+  // at `public/review/`. That page was retired to `docs/archive/` on 2026-10-01,
+  // so `review` is a free slug again and asserting it would pin a reservation
+  // that no longer exists.
   it('catches a page shadowed by a file served verbatim from public/', () => {
-    // The gated review site lives at /review as a static folder — no Astro route
-    // declares it, so a src/pages scan would call this slug free.
-    expect(shadowedPageSlugs(['review', 'images'])).toEqual(['review', 'images']);
+    expect(shadowedPageSlugs(['images', 'videos'])).toEqual(['images', 'videos']);
   });
 
   // The CMS injects it, so it is absent from src/pages entirely. A page slugged

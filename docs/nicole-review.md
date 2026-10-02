@@ -48,8 +48,7 @@ because it names where the domain's records live.
 **CMS preview links are deliberately NOT behind the passphrase.** A preview link
 exists to be handed to one outside reviewer, and gating it would mean sending
 them the link and the site passphrase together — which hands them the whole unreleased
-site to read one page. The unguessable URL is the access mechanism instead, the
-same trade already made for `public/design-review-4ece6c14/`.
+site to read one page. The unguessable URL is the access mechanism instead.
 
 So a preview link is the one surface here that anyone holding the URL can read.
 The editor offers a per-preview password for exactly that gap — it encrypts the
