@@ -1,5 +1,5 @@
 ---
-title: 'Create Meaningful Connections'
+title: 'Create meaningful connections'
 description: 'Support events, roundtables, and gatherings that help alumni build valuable relationships and discover new opportunities.'
 icon: people
 order: 1

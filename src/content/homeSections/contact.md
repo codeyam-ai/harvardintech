@@ -1,6 +1,6 @@
 ---
 kind: contact
 title: Contact us
-kicker: Say hello
+kicker: Contact
 order: 13
 ---

@@ -1,0 +1,12 @@
+{
+  "name": "ChapterLeads - Two Leads, One Without A Role",
+  "id": "0870a655-767d-4316-b0c0-af9259d87192",
+  "url": "/isolated-components/ChapterLeads",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterLeads",
+  "scenarioType": "component",
+  "description": "The named-leads block as a chapter page renders it. The pair is the point: the role line is per-lead, so one lead with a role and one without is the only arrangement that shows both branches in a single frame. A chapter with no leads renders nothing at all, which is why this seeds two rather than relying on the empty default. Worth knowing when reading this frame: the heading is the site's shared eyebrow and is uppercased by CSS, so the component's default heading - changed from 'Chapter Leads' to 'Chapter leads' by the sentence-case standard - is NOT visible here. It reads CHAPTER LEADS either way. The case of that default is settled in source and by the sentence-case guard test, not by this screenshot."
+}

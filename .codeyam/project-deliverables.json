@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "derivedFromHash": "71eb56d0f96b3d74ad67fb60f8439e67ee46add35bce29974d540e821ad361a9",
-  "derivedAt": "2026-08-28T16:43:29.339708166+00:00",
+  "derivedAt": "2026-10-02T20:24:45.768117404+00:00",
   "deliverables": [
     {
       "id": "faithfully-reproduce-the-harvardintech-com-site",
@@ -52,6 +52,26 @@
       "planSlug": null,
       "note": null,
       "decidedBy": "user"
+    },
+    {
+      "id": "bring-all-content-to-publication-quality-before",
+      "text": "Bring all content to publication quality before going public: fill the supporter recognition wall, testimonials, communities and sponsors (owner ruled on 2026-10-02 that nothing ships empty or switched off)",
+      "status": "open",
+      "resolvedAt": null,
+      "resolvedInFeature": null,
+      "planSlug": null,
+      "note": null,
+      "decidedBy": null
+    },
+    {
+      "id": "identify-which-board-member-holds-the-domain",
+      "text": "Identify which board member holds the domain registrar login, get access, and add a second person to it (blocks cutover steps S1, S2 and S7)",
+      "status": "open",
+      "resolvedAt": null,
+      "resolvedInFeature": null,
+      "planSlug": null,
+      "note": null,
+      "decidedBy": null
     }
   ]
 }

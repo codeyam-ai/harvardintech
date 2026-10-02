@@ -1,6 +1,6 @@
 ---
 kind: pillars
-title: "How Your Support Will Be Used "
+title: 'How your support will be used'
 group: Immediate funding
 order: 5
 draft: true

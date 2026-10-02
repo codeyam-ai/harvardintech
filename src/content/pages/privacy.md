@@ -13,7 +13,7 @@ _Last updated: 16 September 2026._
 Harvard Alumni in Tech is a volunteer-run Shared Interest Group for Harvard
 alumni working in technology. We have no paid staff. This policy covers this
 website and the tools we use to run our events, our newsletter and our
-volunteer programme.
+volunteer program.
 
 Questions about anything on this page, or a request to see or delete what we
 hold about you: **info@harvardintech.com**.

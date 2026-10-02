@@ -1,6 +1,6 @@
 ---
 title: 'Where Harvard alumni build the future of technology.'
-kicker: 'The Official Harvard Alumni Group for Technology'
+kicker: 'The official Harvard alumni group for technology'
 lede: 'Furthering innovation and connecting alumni technologists with the resources, networks, and community to do their best work.'
 image: /images/bg/hero-bg.jpg
 order: 1

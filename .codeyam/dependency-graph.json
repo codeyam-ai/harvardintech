@@ -276,7 +276,8 @@
     "src/components/ChapterLeads.astro": {
       "imports": [],
       "importedBy": [
-        "src/components/PageNarrowBody.astro"
+        "src/components/PageNarrowBody.astro",
+        "src/pages/isolated-components/ChapterLeads.astro"
       ]
     },
     "src/components/ChapterLinks.astro": {
@@ -3024,6 +3025,10 @@
       ],
       "importedBy": []
     },
+    "src/lib/sentenceCase.test.ts": {
+      "imports": [],
+      "importedBy": []
+    },
     "src/lib/seo.test.ts": {
       "imports": [
         "src/lib/seo.ts"
@@ -3507,6 +3512,13 @@
     "src/pages/isolated-components/CalloutCard.astro": {
       "imports": [
         "src/components/CalloutCard.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/ChapterLeads.astro": {
+      "imports": [
+        "src/components/ChapterLeads.astro",
         "src/styles/tokens.css"
       ],
       "importedBy": []
@@ -4444,6 +4456,7 @@
         "src/pages/isolated-components/EventsArchiveYear.astro",
         "src/pages/isolated-components/GiftPillars.astro",
         "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro",
+        "src/pages/isolated-components/ChapterLeads.astro",
         "src/pages/isolated-components/VolunteerProjectCardLinks.astro",
         "src/pages/isolated-components/SocialLinks.astro",
         "src/pages/isolated-components/VolunteerProjects.astro",
@@ -4813,6 +4826,14 @@
         "src/components/ChapterPage.astro::__file_root__",
         "src/components/CommunityPage.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
+      ]
+    },
+    "src/components/ChapterLeads.astro::__file_root__": {
+      "filePath": "src/components/ChapterLeads.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/ChapterLeads.astro::__file_root__"
       ]
     },
     "src/components/ChapterLinks.astro::__file_root__": {
@@ -10431,6 +10452,15 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ChapterLeads.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/ComingSoon.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/ComingSoon.astro",
       "name": "__file_root__",
@@ -11605,6 +11635,7 @@
         "src/pages/isolated-components/EventsArchiveYear.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars.astro::__file_root__",
         "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro::__file_root__",
+        "src/pages/isolated-components/ChapterLeads.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectCardLinks.astro::__file_root__",
         "src/pages/isolated-components/SocialLinks.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjects.astro::__file_root__",
@@ -11660,5 +11691,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-02T00:53:06Z"
+  "lastUpdated": "2026-10-02T22:34:39Z"
 }

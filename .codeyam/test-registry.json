@@ -11302,6 +11302,42 @@
       "runner": "tests"
     },
     {
+      "description": "Fails if the copy scan collects fewer than 50 files, or misses nav.json or the privacy policy — the vacuity guard for the spelling assertion.",
+      "file": "src/lib/sentenceCase.test.ts",
+      "format": "vitest",
+      "key": "site writing standard › actually reads the copy it claims to check",
+      "line": 198,
+      "registeredAt": "2026-10-02T21:35:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Fails if the heading scan collects fewer than 40 values, or misses nav.json, the pillars collection or homeSections — without it the sentence-case assertion would pass vacuously on an empty list.",
+      "file": "src/lib/sentenceCase.test.ts",
+      "format": "vitest",
+      "key": "site writing standard › actually reads the headings it claims to check",
+      "line": 149,
+      "registeredAt": "2026-10-02T21:35:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No British spelling (programme, centre, organise, enquiry, recognise, licence and friends) survives in src/content or src/data. imageCredits.json is exempt because its licence key is a schema field name, not copy.",
+      "file": "src/lib/sentenceCase.test.ts",
+      "format": "vitest",
+      "key": "site writing standard › spells its copy in American English",
+      "line": 207,
+      "registeredAt": "2026-10-02T21:35:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every navigation label, section title, eyebrow, stat caption and page headline capitalizes only its first word and genuine proper nouns. This is what catches the nav drifting back out of step with the headings it leads to.",
+      "file": "src/lib/sentenceCase.test.ts",
+      "format": "vitest",
+      "key": "site writing standard › writes every site-authored heading in sentence case",
+      "line": 160,
+      "registeredAt": "2026-10-02T21:35:26Z",
+      "runner": "tests"
+    },
+    {
       "description": "The fix: the same input now parses. This is the assertion that would have caught the outage on the day it was introduced.",
       "file": "src/lib/previewFieldsSchema.test.ts",
       "format": "vitest",

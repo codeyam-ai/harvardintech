@@ -14,7 +14,7 @@
         "kind": "pillars",
         "order": 1,
         "slug": "pillars",
-        "title": "What Your Support Powers"
+        "title": "What your support powers"
       },
       {
         "body": "The duplicated band, renamed and pointed at its own group of cards.",
@@ -22,7 +22,7 @@
         "kind": "pillars",
         "order": 2,
         "slug": "pillars-2",
-        "title": "How Your Support Will Be Used"
+        "title": "How your support will be used"
       }
     ],
     "pillars": [
@@ -34,7 +34,7 @@
         "linkUrl": "/events",
         "order": 1,
         "slug": "create-meaningful-connections",
-        "title": "Create Meaningful Connections"
+        "title": "Create meaningful connections"
       },
       {
         "description": "Power practical content, mentorship, and conversations that help founders, innovators, and tech professionals grow.",
@@ -42,7 +42,7 @@
         "icon": "book",
         "order": 2,
         "slug": "expand-access-to-knowledge",
-        "title": "Expand Access to Knowledge"
+        "title": "Expand access to knowledge"
       },
       {
         "description": "Build the infrastructure, volunteer resources, and city chapters needed to serve more alumni and sustain the community.",
@@ -50,7 +50,7 @@
         "icon": "globe",
         "order": 3,
         "slug": "strengthen-the-network",
-        "title": "Strengthen the Network"
+        "title": "Strengthen the network"
       },
       {
         "description": "Seed funding for chapter leads in Austin, Toronto, Berlin, and Singapore — venue costs and the first three events, so a chapter can start before it can sustain itself.",
@@ -58,7 +58,7 @@
         "icon": "globe",
         "order": 1,
         "slug": "chapter-launch-fund",
-        "title": "Launch Four New City Chapters"
+        "title": "Launch four new city chapters"
       },
       {
         "description": "Two cohorts a year instead of one, with the coordination time it takes to match 200 alumni properly rather than alphabetically.",
@@ -66,7 +66,7 @@
         "icon": "people",
         "order": 2,
         "slug": "mentorship-program",
-        "title": "Run the Mentorship Cohort Year-Round"
+        "title": "Run the mentorship cohort year-round"
       },
       {
         "description": "Production for the roundtables and founder talks, so alumni in the wrong timezone stop missing the thing they joined for.",
@@ -74,13 +74,13 @@
         "icon": "book",
         "order": 3,
         "slug": "recorded-sessions",
-        "title": "Record and Open the Sessions"
+        "title": "Record and open the sessions"
       }
     ]
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/donate.astro",
-  "description": "The outcome the request describes, on the real page: one pillars section was duplicated, renamed, and pointed at its own group of cards, so 'What Your Support Powers' and 'How Your Support Will Be Used' are two distinct bands rather than the same three cards twice. Both halves of the feature are visible at once and neither works without the other — the heading comes from each section's own title (the slot bands used to take it from donatePage.json and ignore the title they could already carry), and the cards come from cardsInGroup matching the section's group against each card's. Before this, loadPillars returned every pillar entry to every pillars band, which is why a duplicated section rendered a verbatim second copy. The campaign redesign added a second thing this proves: the cards are numbered from their position WITHIN their band, so the duplicated band restarts at 01 rather than continuing at 04 — the one part of the numbering anyone could get wrong. The two bands are still ordered directly under the hero with the narrative dropped, but that framing NO LONGER fits them both in one frame: the redesigned hero is 680px tall and fills the 900px desktop capture viewport, so this frame now shows the hero and the first band's heading only. Both bands together, and the 01 / 02 / 03 restart, are visible in the isolated component scenarios instead — giftpillars-the-duplicated-band-shows-its-own-cards and giftpillars-numbered-bordered-grid — which is why that isolated frame exists.",
+  "description": "The outcome the request describes, on the real page: one pillars section was duplicated, renamed, and pointed at its own group of cards, so 'What your support powers' and 'How your support will be used' are two distinct bands rather than the same three cards twice. Both halves of the feature are visible at once and neither works without the other — the heading comes from each section's own title (the slot bands used to take it from donatePage.json and ignore the title they could already carry), and the cards come from cardsInGroup matching the section's group against each card's. Before this, loadPillars returned every pillar entry to every pillars band, which is why a duplicated section rendered a verbatim second copy. The campaign redesign added a second thing this proves: the cards are numbered from their position WITHIN their band, so the duplicated band restarts at 01 rather than continuing at 04 — the one part of the numbering anyone could get wrong. The two bands are still ordered directly under the hero with the narrative dropped, but that framing NO LONGER fits them both in one frame: the redesigned hero is 680px tall and fills the 900px desktop capture viewport, so this frame now shows the hero and the first band's heading only. Both bands together, and the 01 / 02 / 03 restart, are visible in the isolated component scenarios instead — giftpillars-the-duplicated-band-shows-its-own-cards and giftpillars-numbered-bordered-grid — which is why that isolated frame exists.",
   "interactions": [
     {
       "action": "hover",

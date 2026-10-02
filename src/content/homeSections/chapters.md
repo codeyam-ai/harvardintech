@@ -1,6 +1,6 @@
 ---
 kind: chapters
 title: Our chapters
-kicker: A global community
+kicker: Network
 order: 4
 ---

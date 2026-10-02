@@ -10,7 +10,7 @@ callouts:
 showGallery: false
 leads:
   - name: James Nicholson
-    role: Community Lead (pilot)
+    role: Community lead (pilot)
 name: AI
 tagline: A global community for Harvard alumni working in AI.
 whatsappFormUrl: https://forms.gle/GqgaCDDWhWAgpJC68
@@ -19,6 +19,6 @@ whatsappFormUrl: https://forms.gle/GqgaCDDWhWAgpJC68
 A cross-chapter community for Harvard alumni working in AI — researchers, founders,
 product leaders, and the people deploying it inside larger companies.
 
-It runs globally rather than in any one city: the bi-weekly call is the centre of it,
+It runs globally rather than in any one city: the bi-weekly call is the center of it,
 and the WhatsApp group carries the conversation in between. If you work in or near AI
 and want people to think out loud with, this is the one to join.

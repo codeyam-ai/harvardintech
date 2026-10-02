@@ -1,5 +1,5 @@
 ---
-// The "Chapter Leads" block: a heading and a wrapped list of named leads with
+// The "Chapter leads" block: a heading and a wrapped list of named leads with
 // optional roles. Renders nothing when there are no leads, so a chapter with no
 // leads listed simply omits the section.
 interface Lead {
@@ -8,11 +8,11 @@ interface Lead {
 }
 interface Props {
   leads?: Lead[];
-  /** The heading over the list. "Chapter Leads" is right for a city and wrong
-   *  for a group, so a community page passes "Community Lead" instead. */
+  /** The heading over the list. "Chapter leads" is right for a city and wrong
+   *  for a group, so a community page passes "Community lead" instead. */
   heading?: string;
 }
-const { leads = [], heading = 'Chapter Leads' } = Astro.props;
+const { leads = [], heading = 'Chapter leads' } = Astro.props;
 ---
 
 <style>

@@ -38,7 +38,7 @@ interface Props {
 }
 const { events = [], name, heading, variant = 'upcoming' } = Astro.props;
 const isPast = variant === 'past';
-const title = heading ?? (isPast ? `Recent events in ${name}` : `Upcoming Events in ${name}`);
+const title = heading ?? (isPast ? `Recent events in ${name}` : `Upcoming events in ${name}`);
 const sectionId = isPast ? 'chapter-past-events' : 'chapter-events';
 
 const hasEvents = events.length > 0;

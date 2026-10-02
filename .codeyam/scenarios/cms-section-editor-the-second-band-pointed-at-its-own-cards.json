@@ -9,18 +9,18 @@
   "seed": {
     "momentumSections": [
       {
-        "body": "The \"What Your Gift Powers\" cards. Their titles, copy, icons, and links are\nedited in **Momentum Fund gift pillars**, not here — on the admin dashboard that\ncollection sits under /donate, alongside this one.\n\nThis entry decides where the band sits on the page and, via its Heading field,\nwhat the band is called. Blank Heading keeps the shared \"What Your Gift Powers\"\ntitle, which lives in `src/data/donatePage.json` as `pillarsTitle` and needs a\ndeveloper to change; filling Heading in here renames the band yourself, and is\nwhat tells two pillars bands apart.\n\nWhich cards this band shows is the Card group box here paired with the Group box\non each pillar — type the same word in both. Blank on both sides shows the\nungrouped cards, which is how the band reads today, so leave Card group alone\nunless you are splitting the band in two.",
+        "body": "The \"What your gift powers\" cards. Their titles, copy, icons, and links are\nedited in **Momentum Fund gift pillars**, not here — on the admin dashboard that\ncollection sits under /donate, alongside this one.\n\nThis entry decides where the band sits on the page and, via its Heading field,\nwhat the band is called. Blank Heading keeps the shared \"What your gift powers\"\ntitle, which lives in `src/data/donatePage.json` as `pillarsTitle` and needs a\ndeveloper to change; filling Heading in here renames the band yourself, and is\nwhat tells two pillars bands apart.\n\nWhich cards this band shows is the Card group box here paired with the Group box\non each pillar — type the same word in both. Blank on both sides shows the\nungrouped cards, which is how the band reads today, so leave Card group alone\nunless you are splitting the band in two.",
         "kind": "pillars",
         "order": 4,
         "slug": "pillars"
       },
       {
-        "body": "The \"What Your Gift Powers\" cards. Their titles, copy, icons, and links are\nedited in **Momentum Fund gift pillars**, not here — on the admin dashboard that\ncollection sits under /donate, alongside this one.\n\nThis entry decides where the band sits on the page and, via its Heading field,\nwhat the band is called. Blank Heading keeps the shared \"What Your Gift Powers\"\ntitle, which lives in `src/data/donatePage.json` as `pillarsTitle` and needs a\ndeveloper to change; filling Heading in here renames the band yourself, and is\nwhat tells two pillars bands apart.\n\nWhich cards this band shows is the Card group box here paired with the Group box\non each pillar — type the same word in both. Blank on both sides shows the\nungrouped cards, which is how the band reads today, so leave Card group alone\nunless you are splitting the band in two.",
+        "body": "The \"What your gift powers\" cards. Their titles, copy, icons, and links are\nedited in **Momentum Fund gift pillars**, not here — on the admin dashboard that\ncollection sits under /donate, alongside this one.\n\nThis entry decides where the band sits on the page and, via its Heading field,\nwhat the band is called. Blank Heading keeps the shared \"What your gift powers\"\ntitle, which lives in `src/data/donatePage.json` as `pillarsTitle` and needs a\ndeveloper to change; filling Heading in here renames the band yourself, and is\nwhat tells two pillars bands apart.\n\nWhich cards this band shows is the Card group box here paired with the Group box\non each pillar — type the same word in both. Blank on both sides shows the\nungrouped cards, which is how the band reads today, so leave Card group alone\nunless you are splitting the band in two.",
         "group": "capital",
         "kind": "pillars",
         "order": 5,
         "slug": "pillars-2",
-        "title": "How Your Support Will Be Used"
+        "title": "How your support will be used"
       }
     ],
     "pillars": [
@@ -29,14 +29,14 @@
         "icon": "people",
         "order": 1,
         "slug": "connections",
-        "title": "Create Meaningful Connections"
+        "title": "Create meaningful connections"
       },
       {
         "description": "Fund the talks, workshops, and written guides that let members learn from each other.",
         "icon": "book",
         "order": 2,
         "slug": "learning",
-        "title": "Share What We Know"
+        "title": "Share what we know"
       },
       {
         "description": "Seed the first events in cities where alumni are ready to gather but have nowhere to start.",
@@ -52,7 +52,7 @@
         "icon": "people",
         "order": 2,
         "slug": "programming-fund",
-        "title": "Sustain Year-Round Programming"
+        "title": "Sustain year-round programming"
       }
     ]
   },

@@ -1,0 +1,35 @@
+---
+import Component from "../../../src/components/ChapterLeads.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for ChapterLeads — codeyam screenshots the #codeyam-capture
+// wrapper by navigating to /isolated-components/ChapterLeads.
+//
+// Two leads rather than one, and only one of them carrying a role, because that
+// pair is what the component actually has to decide: the role line renders per
+// lead, so a single fully-populated lead would never show the branch that omits
+// it. SF & Bay Area is the only chapter with a real lead on the roster today,
+// so Jessica Li is the live row and the second is the shape a chapter takes once
+// it has a co-lead.
+//
+// The heading is left at its default on purpose. `heading` defaults to
+// "Chapter leads", and that default is the thing worth photographing here —
+// it is one of the labels the sentence-case standard changed.
+const leads = [
+  { name: 'Jessica Li', role: 'Interim chapter lead' },
+  { name: 'Peter Boyce' },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: ChapterLeads</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <Component leads={leads} />
+    </div>
+  </body>
+</html>

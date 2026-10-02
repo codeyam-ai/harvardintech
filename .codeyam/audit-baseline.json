@@ -1,10 +1,7 @@
 {
   "checks": {
     "SCENARIO_DISTINCT_CAPTURE_COLLISION": [
-      "events-route-the-calendar-with-no-past-events-yet == events-route-upcoming-and-past",
-      "momentum-fund-every-section-hidden == momentum-fund-the-donor-wall-moved-to-the-top",
-      "momentum-fund-every-section-hidden == momentum-fund-the-goal-meter-held-as-coming-soon",
-      "momentum-fund-the-donor-wall-moved-to-the-top == momentum-fund-the-goal-meter-held-as-coming-soon"
+      "events-route-the-calendar-with-no-past-events-yet == events-route-upcoming-and-past"
     ]
   },
   "version": 1

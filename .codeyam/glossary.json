@@ -52,6 +52,14 @@
     ]
   },
   {
+    "description": "The named-leads block on a chapter or community page: an eyebrow heading over a wrapped list of leads, each a name with an optional role line. Renders nothing at all when the leads array is empty, so a chapter with nobody listed simply omits the section rather than showing an empty heading. The heading is a prop because the default wording is place-shaped: it reads 'Chapter leads' for a city and a community page passes 'Community lead(s)' instead, singular or plural by count.",
+    "filePath": "src/components/ChapterLeads.astro",
+    "name": "ChapterLeads",
+    "scenarios": [
+      "chapterleads-two-leads-one-without-a-role"
+    ]
+  },
+  {
     "description": "A single regional chapter page recomposed to match the live harvardintech.com chapter pages: a full-bleed ChapterHero, a ChapterSignUp band, the narrow content block (back link + ChapterLeads + markdown body slot + ChapterLinks), an optional EventGallery (showGallery), and a ChapterConnect social footer. Reused by the /chapters/[slug] route and isolated scenarios.",
     "filePath": "src/components/ChapterPage.astro",
     "name": "ChapterPage",

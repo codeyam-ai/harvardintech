@@ -694,14 +694,14 @@
           "label": "Heading",
           "type": "text",
           "optional": true,
-          "hint": "The heading shown above this section on the page, and the name this section goes by in this list. Fill it in to tell two sections of the same type apart — two \"pillars\" bands, for example. Blank keeps the standard heading for the section type."
+          "hint": "The heading shown above this section on the page, and the name this section goes by in this list. Fill it in to tell two sections of the same type apart — two \"pillars\" bands, for example. Blank keeps the standard heading for the section type. Use sentence case: capitalize only the first word and any proper names."
         },
         {
           "name": "kicker",
           "label": "Kicker",
           "type": "text",
           "optional": true,
-          "hint": "The small uppercase line above the heading — for example \"What your gift powers\". Works on every section type. Blank shows the heading on its own."
+          "hint": "The small uppercase line above the heading — a one- or two-word category in sentence case, for example \"Priorities\". Works on every section type. Blank shows the heading on its own."
         },
         {
           "name": "group",
@@ -827,14 +827,14 @@
           "label": "Heading",
           "type": "text",
           "optional": true,
-          "hint": "The heading shown above this section — and the one the \"coming soon\" placeholder announces. Blank keeps the section's usual heading."
+          "hint": "The heading shown above this section — and the one the \"coming soon\" placeholder announces. Blank keeps the section's usual heading. Use sentence case: capitalize only the first word and any proper names."
         },
         {
           "name": "kicker",
           "label": "Eyebrow",
           "type": "text",
           "optional": true,
-          "hint": "The small line above the heading, e.g. \"A global community\". Blank keeps the section's usual one."
+          "hint": "The small line above the heading — a one- or two-word category in sentence case, e.g. \"Network\". Blank keeps the section's usual one."
         },
         {
           "name": "intro",
@@ -868,14 +868,14 @@
           "name": "title",
           "label": "Headline",
           "type": "text",
-          "hint": "The large headline on the slide."
+          "hint": "The large headline on the slide. Use sentence case: capitalize only the first word and any proper names."
         },
         {
           "name": "kicker",
           "label": "Kicker",
           "type": "text",
           "optional": true,
-          "hint": "The small line above the headline."
+          "hint": "The small line above the headline. Keep it to a one- or two-word category, in sentence case."
         },
         {
           "name": "lede",
@@ -940,7 +940,7 @@
           "name": "label",
           "label": "Label",
           "type": "text",
-          "hint": "The small caption under the figure."
+          "hint": "The small caption under the figure. Use sentence case: capitalize only the first word and any proper names. \"Events hosted\", not \"Events Hosted\"."
         },
         {
           "name": "order",
@@ -999,7 +999,8 @@
         {
           "name": "title",
           "label": "Title",
-          "type": "text"
+          "type": "text",
+          "hint": "The card's heading. Use sentence case: capitalize only the first word and any proper names."
         },
         {
           "name": "description",
@@ -1422,21 +1423,21 @@
         },
         {
           "name": "inquiryTitle",
-          "label": "Enquiry heading",
+          "label": "Inquiry heading",
           "type": "text",
           "optional": true,
           "hint": "Heading of the \"start a conversation\" section."
         },
         {
           "name": "inquiryBody",
-          "label": "Enquiry text",
+          "label": "Inquiry text",
           "type": "textarea",
           "optional": true,
           "hint": "The paragraph under it."
         },
         {
           "name": "inquiryFormUrl",
-          "label": "Enquiry form URL",
+          "label": "Inquiry form URL",
           "type": "text",
           "optional": true,
           "hint": "A Google Form or Typeform URL. Leave BLANK to show the placeholder instead of an embedded form \u2014 clearing this box is how you take a form back down."
@@ -1520,7 +1521,7 @@
           "label": "Custom <head> HTML",
           "type": "textarea",
           "optional": true,
-          "hint": "Verification tags and pixels. This runs on EVERY page of the site, so only paste markup you trust and got from a service you recognise."
+          "hint": "Verification tags and pixels. This runs on EVERY page of the site, so only paste markup you trust and got from a service you recognize."
         },
         {
           "name": "customBodyHtml",

@@ -1,6 +1,6 @@
 ---
 kind: content-hub
 title: Content hub
-kicker: Read, watch, listen
+kicker: Content
 order: 6
 ---
