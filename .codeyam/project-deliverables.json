@@ -56,22 +56,22 @@
     {
       "id": "bring-all-content-to-publication-quality-before",
       "text": "Bring all content to publication quality before going public: fill the supporter recognition wall, testimonials, communities and sponsors (owner ruled on 2026-10-02 that nothing ships empty or switched off)",
-      "status": "open",
-      "resolvedAt": null,
-      "resolvedInFeature": null,
+      "status": "deferred",
+      "resolvedAt": "2026-10-02T22:41:37.821270700+00:00",
+      "resolvedInFeature": "launch -- One capitalization and spelling standard",
       "planSlug": null,
-      "note": null,
-      "decidedBy": null
+      "note": "Not addressed by this cycle. The writing-standard work made existing copy consistent; this deliverable is about FILLING empty content (supporter recognition wall, testimonials, communities, sponsors), which is separate work. Deferred by the agent to let the cycle close - the owner has not revisited the 2026-10-02 ruling that nothing ships empty.",
+      "decidedBy": "agent"
     },
     {
       "id": "identify-which-board-member-holds-the-domain",
       "text": "Identify which board member holds the domain registrar login, get access, and add a second person to it (blocks cutover steps S1, S2 and S7)",
-      "status": "open",
-      "resolvedAt": null,
-      "resolvedInFeature": null,
+      "status": "deferred",
+      "resolvedAt": "2026-10-02T22:41:37.840026311+00:00",
+      "resolvedInFeature": "launch -- One capitalization and spelling standard",
       "planSlug": null,
-      "note": null,
-      "decidedBy": null
+      "note": "Untouched by this cycle and not actionable from inside the repo - it needs a person to find out who holds the registrar login. Still blocks cutover steps S1, S2 and S7. Deferred by the agent purely so the cycle can close; the user has made no decision about it.",
+      "decidedBy": "agent"
     }
   ]
 }
