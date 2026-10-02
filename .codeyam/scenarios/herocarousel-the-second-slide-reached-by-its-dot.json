@@ -1,0 +1,19 @@
+{
+  "name": "HeroCarousel - The Second Slide, Reached By Its Dot",
+  "id": "3c15a4c8-e3e5-4b43-88f5-657e3bce7a6e",
+  "url": "/isolated-components/HeroCarousel",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "HeroCarousel",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/landing/HeroCarousel.astro",
+  "description": "The hero after a reader has clicked the second dot: that slide's kicker, headline, lede and buttons on the stage, with the second dot filled and the first hollow. The sibling frame shows the hero at rest on slide one; this one is here because the dots became load-bearing on 2026-10-02. The carousel used to advance itself every six seconds for everybody, and now it does so only for a reader who has not asked for reduced motion and is not the capture harness - which means that for the people who have asked, and in every screenshot this project takes, the dots are the ONLY way past the first slide. A control that is the sole route to half the content deserves a frame proving it works, and nothing here exercised a click until now.",
+  "interactions": [
+    {
+      "action": "click",
+      "selector": "[data-dots] button:nth-child(2)"
+    }
+  ]
+}

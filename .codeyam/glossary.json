@@ -603,6 +603,12 @@
     "testFile": "src/lib/previewGate.test.ts"
   },
   {
+    "description": "Whether a self-advancing element should start its timer, given the page's query string and whether the reader has asked for reduced motion. Two different kinds of reason switch it off. The reader's setting comes first: a carousel that moves on its own is the plainest case prefers-reduced-motion exists to stop, and every other moving part on this site already honoured it while the hero carousel did not. The capture harness is the second: Playwright refuses to act on an element whose bounding box is still changing between frames, so a hero that shifts every six seconds can keep a capture from settling, and the failure lands far from the hero - harvard-in-tech-board-on-four-sizes frames the board by hovering a selector below the fold. Takes both signals as data rather than reading window, which is what makes the rule testable.",
+    "filePath": "src/lib/autoplay.ts",
+    "name": "autoplayEnabled",
+    "testFile": "src/lib/autoplay.test.ts"
+  },
+  {
     "description": "The supporter badge: what it prints about the person it belongs to. Reads every field through donorPublicIdentity and donorWhy rather than off the entry, for the reason those functions exist — so an anonymous supporter's badge cannot carry what the network withholds, even though the network never offers them one. The standing line is the founding badge, or the level they gave at, or a plain label: a blank line under a name reads as missing data rather than as someone who simply gave.",
     "filePath": "src/lib/supporterBadge.ts",
     "name": "badgeFor",
@@ -1463,6 +1469,12 @@
     "filePath": "src/lib/sitePages.ts",
     "name": "isReservedPageSlug",
     "testFile": "src/lib/sitePages.test.ts"
+  },
+  {
+    "description": "Whether a page load is the capture harness photographing a scenario rather than a person reading, decided by the presence of the _codeyam_scenario parameter in a location.search string. Parses the query string rather than searching it as text, so a parameter that merely contains the flag name does not match, and keys on the flag being present rather than on its value - the same asymmetry isEmbeddedPreview documents next door, where a missed capture wastes a screenshot and a false positive leaves one reader a carousel that waits to be clicked. Pure and DOM-free: the caller passes its own location.search, which is what makes the rule testable on a statically built site where the query string is knowable only in the browser.",
+    "filePath": "src/lib/autoplay.ts",
+    "name": "isScenarioRender",
+    "testFile": "src/lib/autoplay.test.ts"
   },
   {
     "description": "Whether a supporter can be found by typing their name in the network's search box. False for anyone who asked not to be named. The live donor wall already withholds an anonymous donor's name, photo, link and initials together, and a search box is a new way to undo all four at once — so anonymity has to reach it. They remain a visible node counting toward every total and every milestone, because withholding the node instead would make the wall quietly undercount people who asked only not to be named.",

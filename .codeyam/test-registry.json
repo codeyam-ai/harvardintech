@@ -158,7 +158,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "RESERVED_PAGE_SLUGS › covers every hand-built top-level route the site ships",
-      "line": 99,
+      "line": 103,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -167,7 +167,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "RESERVED_PAGE_SLUGS › does not reserve inner segments of a multi-part redirect source",
-      "line": 142,
+      "line": 146,
       "registeredAt": "2026-09-16T17:01:02Z",
       "runner": "tests"
     },
@@ -176,7 +176,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "RESERVED_PAGE_SLUGS › holds no duplicates",
-      "line": 106,
+      "line": 110,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -185,7 +185,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "RESERVED_PAGE_SLUGS › is already normalized — lowercase and slash-free",
-      "line": 111,
+      "line": 115,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -194,7 +194,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "RESERVED_PAGE_SLUGS › reserves the old URLs that are now redirects",
-      "line": 124,
+      "line": 128,
       "registeredAt": "2026-09-16T17:01:02Z",
       "runner": "tests"
     },
@@ -203,7 +203,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "a CMS page cannot claim a redirected address › catches a redirected slug however the editor typed it",
-      "line": 157,
+      "line": 161,
       "registeredAt": "2026-09-16T17:01:02Z",
       "runner": "tests"
     },
@@ -212,7 +212,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "a CMS page cannot claim a redirected address › reports the old About URLs as shadowed",
-      "line": 151,
+      "line": 155,
       "registeredAt": "2026-09-16T17:01:02Z",
       "runner": "tests"
     },
@@ -221,7 +221,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "a CMS page cannot claim a redirected address › still lets a genuinely free slug through",
-      "line": 163,
+      "line": 167,
       "registeredAt": "2026-09-16T17:01:02Z",
       "runner": "tests"
     },
@@ -691,6 +691,33 @@
       "key": "assertPassphraseConfigured › throws when the gate is on and the passphrase is empty or blank",
       "line": 79,
       "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The reader's own setting comes first. A carousel that advances itself is exactly the motion `prefers-reduced-motion` exists to stop.",
+      "file": "src/lib/autoplay.test.ts",
+      "format": "vitest",
+      "key": "autoplayEnabled › is off when the reader asked for reduced motion",
+      "line": 33,
+      "registeredAt": "2026-10-02T00:50:01.111646012+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The case this function was written for. Playwright refuses to act on an element whose box is still moving, so a slideshow that advances every six seconds can keep a hover-framed capture from ever settling — which is how `harvard-in-tech-board-on-four-sizes` became uncapturable, its hover on `#board` timing out while the hero shifted above it.",
+      "file": "src/lib/autoplay.test.ts",
+      "format": "vitest",
+      "key": "autoplayEnabled › is off while a scenario is being captured",
+      "line": 42,
+      "registeredAt": "2026-10-02T00:50:01.111646012+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The ordinary case, which must keep working: a reader who has asked for nothing special still gets the slideshow.",
+      "file": "src/lib/autoplay.test.ts",
+      "format": "vitest",
+      "key": "autoplayEnabled › is on for an ordinary visit",
+      "line": 48,
+      "registeredAt": "2026-10-02T00:50:01.111646012+00:00",
       "runner": "tests"
     },
     {
@@ -6140,7 +6167,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "isInternalPath › does not match lookalike paths",
-      "line": 126,
+      "line": 122,
       "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
@@ -6149,7 +6176,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "isInternalPath › leaves ordinary pages alone",
-      "line": 119,
+      "line": 115,
       "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
@@ -6158,7 +6185,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "isInternalPath › matches absolute URLs",
-      "line": 114,
+      "line": 110,
       "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
@@ -6167,7 +6194,7 @@
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
       "key": "isInternalPath › matches internal pages on the domain and under a base",
-      "line": 106,
+      "line": 104,
       "registeredAt": "2026-09-14T18:19:59Z",
       "runner": "tests"
     },
@@ -6203,8 +6230,35 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "isReservedPageSlug › is true for a taken slug and false for a free one",
-      "line": 171,
+      "line": 175,
       "registeredAt": "2026-08-04T18:59:29Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Loose about the value, like `isEmbeddedPreview` next door and for the same reason: the meaning is the flag's presence, and the cost of being wrong is asymmetric — a missed capture wastes a scenario's screenshot, a false positive costs one reader a slideshow that waits to be clicked.",
+      "file": "src/lib/autoplay.test.ts",
+      "format": "vitest",
+      "key": "isScenarioRender › ignores the value",
+      "line": 17,
+      "registeredAt": "2026-10-02T00:50:01.111646012+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The capture harness opens every page with this parameter, so its presence is what distinguishes \"a tool is photographing this\" from \"a person is reading it\".",
+      "file": "src/lib/autoplay.test.ts",
+      "format": "vitest",
+      "key": "isScenarioRender › recognises the scenario parameter the capture harness adds",
+      "line": 8,
+      "registeredAt": "2026-10-02T00:50:01.111646012+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "An ordinary visit carries no such parameter.",
+      "file": "src/lib/autoplay.test.ts",
+      "format": "vitest",
+      "key": "isScenarioRender › says no for an ordinary visit",
+      "line": 23,
+      "registeredAt": "2026-10-02T00:50:01.111646012+00:00",
       "runner": "tests"
     },
     {
@@ -8156,7 +8210,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › accepts an injected reserved list so the rule is testable in isolation",
-      "line": 253,
+      "line": 257,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8165,7 +8219,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › carries the whole entry through, not just its slug",
-      "line": 259,
+      "line": 263,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8174,7 +8228,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › drops a shadowed page rather than emitting a duplicate route",
-      "line": 220,
+      "line": 224,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8183,7 +8237,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › drops every page when they are all shadowed",
-      "line": 246,
+      "line": 250,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8192,7 +8246,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › handles an empty collection",
-      "line": 239,
+      "line": 243,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8201,7 +8255,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › preserves input order among routable pages",
-      "line": 233,
+      "line": 237,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8210,7 +8264,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › routes every page when no slug is taken",
-      "line": 211,
+      "line": 215,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8219,7 +8273,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageRouteEntries › warns about what it dropped",
-      "line": 227,
+      "line": 231,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8228,7 +8282,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › always returns a title, because a page without one is unusable",
-      "line": 320,
+      "line": 324,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8237,7 +8291,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › falls back to the page’s own title and description",
-      "line": 284,
+      "line": 288,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8246,7 +8300,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › leaves description undefined when the page has neither",
-      "line": 309,
+      "line": 313,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8255,7 +8309,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › passes the share image through and drops a blank one",
-      "line": 314,
+      "line": 318,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8264,7 +8318,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › prefers the explicit SEO overrides",
-      "line": 268,
+      "line": 272,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8273,7 +8327,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › treats a cleared meta description as absent so the lede is used",
-      "line": 302,
+      "line": 306,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -8282,7 +8336,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "pageSeo › treats a cleared override as absent, never as an empty title",
-      "line": 294,
+      "line": 298,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -9646,6 +9700,15 @@
       "runner": "tests"
     },
     {
+      "description": "`public/` holds only assets now. A document that reappears there is served on every track with no gate in front of it, because the site's passphrase is an Astro component and never runs for a file Astro copies verbatim — which is exactly how the board's design gallery sat open at a guessable moment.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "retired internal pages › keeps documents out of public/",
+      "line": 63,
+      "registeredAt": "2026-10-02T00:50:01.111646012+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The reviewer pastes this into a document, where trailing spaces survive as invisible junk that shows up when they select a line.",
       "file": "src/lib/reviewOutline.test.ts",
       "format": "vitest",
@@ -10717,29 +10780,11 @@
       "runner": "tests"
     },
     {
-      "description": "The build fills the secret into this exact placeholder; a page carrying anything else would ship a gate the build never fills in. Checked per page so a regression names the file that lost its placeholder.",
-      "file": "src/lib/docLinks.test.ts",
-      "format": "vitest",
-      "key": "self-gated public pages › public/donor-network.html carries the passphrase placeholder the build fills in",
-      "line": 54,
-      "registeredAt": "2026-09-28T16:56:55.958511219+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "The build fills the secret into this exact placeholder; a page carrying anything else would ship a gate the build never fills in. Checked per page so a regression names the file that lost its placeholder.",
-      "file": "src/lib/docLinks.test.ts",
-      "format": "vitest",
-      "key": "self-gated public pages › public/review/index.html carries the passphrase placeholder the build fills in",
-      "line": 54,
-      "registeredAt": "2026-09-28T16:56:55.958942887+00:00",
-      "runner": "tests"
-    },
-    {
       "description": "Lets the shadow rule be exercised without depending on this site's routes.",
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › accepts an injected reserved list, so the rule is testable in isolation",
-      "line": 82,
+      "line": 86,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10748,7 +10793,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › catches /admin, which only exists on dev + the review track",
-      "line": 47,
+      "line": 51,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10757,7 +10802,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › catches a page shadowed by a file served verbatim from public/",
-      "line": 39,
+      "line": 45,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10784,7 +10829,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › handles an empty page list",
-      "line": 92,
+      "line": 96,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10793,7 +10838,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › ignores case and surrounding slashes, because a slug box accepts both",
-      "line": 56,
+      "line": 60,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10811,7 +10856,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › reports a slug once per occurrence rather than de-duplicating",
-      "line": 74,
+      "line": 78,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10820,7 +10865,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › returns the offending slugs in input order, so a message can name them",
-      "line": 65,
+      "line": 69,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10829,7 +10874,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedPageSlugs › treats an empty reserved list as nothing being reserved",
-      "line": 87,
+      "line": 91,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10838,7 +10883,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedSlugWarning › lists every offending slug, not just the first",
-      "line": 200,
+      "line": 204,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10847,7 +10892,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedSlugWarning › names the offending slug and where to fix it",
-      "line": 185,
+      "line": 189,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10856,7 +10901,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedSlugWarning › reads as singular for one slug and plural for several",
-      "line": 192,
+      "line": 196,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -10865,7 +10910,7 @@
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
       "key": "shadowedSlugWarning › says nothing when nothing is shadowed",
-      "line": 179,
+      "line": 183,
       "registeredAt": "2026-08-04T18:59:29Z",
       "runner": "tests"
     },
@@ -12220,6 +12265,24 @@
       "runner": "tests"
     },
     {
+      "description": "The passphrase retired on 2026-09-17 is in git history, so it must never be written down again anywhere in the repo - including in a document that was retired from the site to docs/archive/ but is still part of this repository.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/archive/project-status-2026-09-16.html does not contain the retired passphrase",
+      "line": 46,
+      "registeredAt": "2026-10-02T00:50:22.094721122+00:00",
+      "runner": "vitest"
+    },
+    {
+      "description": "The passphrase retired on 2026-09-17 is in git history, so it must never be written down again anywhere in the repo - including in a document that was retired from the site to docs/archive/ but is still part of this repository.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/archive/supporter-recognition-review-2026-09-14.html does not contain the retired passphrase",
+      "line": 46,
+      "registeredAt": "2026-10-02T00:50:22.134003528+00:00",
+      "runner": "vitest"
+    },
+    {
       "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
@@ -12254,6 +12317,24 @@
       "line": 34,
       "registeredAt": "2026-09-28T16:56:55.969338242+00:00",
       "runner": "tests"
+    },
+    {
+      "description": "The cutover decisions record is a team doc like the others, so it carries the same two guards: it must not write down the passphrase retired on 2026-09-17, and it must not link the preview host the repo moved off, which 404s for whoever clicks it.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/scoping/cutover-decisions-2026-10-01.md does not contain the retired passphrase",
+      "line": 46,
+      "registeredAt": "2026-10-02T00:50:29.365088190+00:00",
+      "runner": "vitest"
+    },
+    {
+      "description": "The cutover decisions record is a team doc like the others, so it carries the same two guards: it must not write down the passphrase retired on 2026-09-17, and it must not link the preview host the repo moved off, which 404s for whoever clicks it.",
+      "file": "src/lib/docLinks.test.ts",
+      "format": "vitest",
+      "key": "team docs › docs/scoping/cutover-decisions-2026-10-01.md has no link to the dead pre-move preview",
+      "line": 46,
+      "registeredAt": "2026-10-02T00:50:29.402051472+00:00",
+      "runner": "vitest"
     },
     {
       "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
@@ -12296,26 +12377,8 @@
       "file": "src/lib/docLinks.test.ts",
       "format": "vitest",
       "key": "team docs › points the content editor at the codeyam-ai repo",
-      "line": 45,
+      "line": 53,
       "registeredAt": "2026-09-14T18:19:59Z",
-      "runner": "tests"
-    },
-    {
-      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
-      "file": "src/lib/docLinks.test.ts",
-      "format": "vitest",
-      "key": "team docs › public/donor-network.html does not contain the retired passphrase",
-      "line": 34,
-      "registeredAt": "2026-09-28T16:56:55.971661335+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
-      "file": "src/lib/docLinks.test.ts",
-      "format": "vitest",
-      "key": "team docs › public/review/index.html does not contain the retired passphrase",
-      "line": 34,
-      "registeredAt": "2026-09-28T16:56:55.972128429+00:00",
       "runner": "tests"
     },
     {
