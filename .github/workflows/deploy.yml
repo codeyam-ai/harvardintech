@@ -124,6 +124,22 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: npm ci
+      # The deploy gate. Until 2026-10-02 this workflow ran no tests at all: the
+      # only check was the `astro check` inside `npm run build`, which type-checks
+      # but asserts nothing about behaviour. So the suites that exist to protect
+      # the launch could not actually stop a bad deploy — src/lib/previewGate's
+      # tests cover the passphrase guard, and on 2026-09-17 the retired public
+      # password shipped to the live gated site regardless.
+      #
+      # Placed BEFORE the Luma import because the next two steps have side
+      # effects that outlive the run: the import writes to src/content/events and
+      # "Commit imported events" pushes that commit to `main`. A broken tree must
+      # not get as far as writing content back to the branch.
+      #
+      # ~40s for 1600 tests across 98 files, against a build that takes minutes,
+      # so this is not a meaningful change to deploy time.
+      - name: Run tests
+        run: npm test
       # Pull anything new off the Luma calendar before building, so the site
       # does not wait for someone to re-type an event that already exists.
       #

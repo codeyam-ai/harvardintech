@@ -12,7 +12,7 @@
   ],
   "decisions": [
     { "id": "D1", "answered": false },
-    { "id": "D2", "answered": false },
+    { "id": "D2", "answered": true },
     { "id": "D3", "answered": true },
     { "id": "D4", "answered": true },
     { "id": "D5", "answered": false }
