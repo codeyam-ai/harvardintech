@@ -597,23 +597,31 @@ def _observe_task_tool_capability(project_dir, tool_name, tool_input, tool_respo
 
 
 # How long `wedge-check` is allowed to take. It is a directory listing and a
-# handful of small reads, so anything approaching this is itself a malfunction —
-# and a hook that hung would freeze the very turn-end it is instrumenting.
+# handful of small reads, plus — only when a command was launched seconds ago —
+# a wait of at most 6s for it to get past its pre-flight (the editor's
+# `EARLY_BAIL_WAIT_BUDGET`, which must stay below this). Anything approaching
+# this is itself a malfunction — and a hook that hung would freeze the very
+# turn-end it is instrumenting.
 _WEDGE_CHECK_TIMEOUT_SECS = 10
 
 
 def _wedge_notice(project_dir):
     """Ask the editor whether this turn is ending on something worth saying.
 
-    `wedge-check` composes three verdicts and this call is blind to which one
+    `wedge-check` composes five verdicts and this call is blind to which one
     came back, deliberately — the hook's job is to put the text in front of the
     agent, and the editor owns what the text says:
+      * a background command already FAILED moments ago — typically a
+        precondition refusal seconds after launch — so the long wait the turn
+        is ending on is not happening;
       * a background task is demonstrably STRANDED — its result is not coming;
       * a background task is HEALTHY but has been running past the reporting
         threshold — waiting is correct, and the user should be told rather than
         left to ask;
       * the turn is ending mid-workflow with NOTHING pending and no question
-        outstanding, so nothing will re-invoke the agent.
+        outstanding, so nothing will re-invoke the agent;
+      * a cycle just CLOSED and no closing question has been asked since, so
+        the user was never alerted that the session finished.
 
     Returns the notice text, or "" for the overwhelmingly common case of
     nothing being wrong. Every failure mode collapses to "" on purpose: the
@@ -793,6 +801,13 @@ def main():
                     "when it really is one — so do not judge build-vs-not yourself here."
                 )
                 print("</user-prompt-submit-hook>")
+        # A cycle that just closed has already wiped its step state, but its
+        # closing question may still be owed. Gated on the editor's owed
+        # marker so an ordinary stateless turn end pays no subprocess.
+        if event_type == "stop" and os.path.exists(
+            os.path.join(project_dir, ".codeyam", "run", "closing-question-owed.json")
+        ):
+            emit_wedge_block(project_dir, event_data)
         return
 
     try:

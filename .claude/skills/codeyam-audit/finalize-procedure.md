@@ -573,6 +573,21 @@ the remaining set is only the judgment calls.
 > fill-only (`None → Some`) and deliberately never overwrites a concrete
 > gate, which is exactly what a drifted entry carries.
 
+> **An unanchorable shell/TAP add whose key is a bare suite path is the
+> suite ROLLUP, not a phantom.** A TAP suite emits a parent result line
+> (`ok 48 - scripts/x.test.sh`) beside its per-case lines
+> (`scripts/x.test.sh › some case`), and the rollup is a real, runnable entry
+> of its own — so a path-shaped key with no ` › ` is still a genuine
+> `RUNNER_HAS_UNREGISTERED_TEST` even when every per-case key of that suite is
+> already registered. It is registered at `line: 1` with `file` equal to the
+> key, the same shape the registry's other rollups already carry, and
+> `register-test` needs `--line 1` for it (a rollup has no per-case line to
+> resolve, so the form without it fails with `pass --line <N>`).
+> `reconcile-registry` names this case in its skipped-add reason and prints
+> the exact command; copy that. Only when the suite file no longer exists is
+> the name residue — then clear it with a plain `refresh-tests`, not
+> `--force`.
+
 ### 4b. Judgment fixes (STOP and ask — never mass-apply)
 
 What's left needs a decision, not a script. **Surface the count and the items,
@@ -1261,6 +1276,20 @@ through `free_local_port_retry(|port| …)` (the bindable-direction helper besid
 on a fresh port when the drawn one was stolen; new offenders are caught at
 `verify-build` by the `test-port-races` static check. A *new* racy test the lint
 flags is a real bug to fix now, not a flake.
+
+**Settling "was this already failing?" — `test-on-base`, and when it cannot
+answer.** `codeyam-editor editor test-on-base <test or file> --ref <base>`
+re-runs the target in a throwaway checkout of the base and records the verdict,
+so `inherited-failures --unsettled` stops re-reporting it. It shares the
+project's installed dependency directories into that checkout (at the root and
+at the runner's `workingDir`), and runs a single vitest/jest file by naming it
+rather than through the runner's git-diff `--changed` mode, which selects
+nothing in a clean checkout. When it still collects nothing for a target that exists on the base, it reports
+**`COULD NOT RUN`** (exit `2`, nothing recorded) — the filter is right and the
+checkout could not run the runner. Do not re-check the name. Settle it with the
+two-read fallback instead: run the test directly in the working tree, and read
+`git log <base>..HEAD -- <test file> <file under test>` to see whether this
+branch touched either. A genuine **`NO MATCH`** is still the filter-miss answer.
 
 **Clear `REGISTRY_HAS_FOREIGN_HOST_GATED_TEST` mechanically, never by hand.** A
 test that gains a `#[cfg(target_os = …)]` / `#[cfg(unix)]` (or whose enclosing

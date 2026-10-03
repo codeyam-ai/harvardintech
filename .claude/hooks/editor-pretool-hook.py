@@ -708,26 +708,33 @@ def _invokes_configured_script(tokens, project_dir):
 
 
 def is_test_run_command(command, project_dir):
-    """True iff `command` invokes a test run — a common raw runner, codeyam's own
-    `refresh-tests`, or the project's configured test script.
+    """True when `command` invokes a test run — a common raw runner, codeyam's
+    own `refresh-tests`, or the project's configured test script — False when
+    it provably does not, and None when a stage cannot be tokenized.
 
     Scoped to one command at a time, so a runner in one segment says nothing
-    about the next. Fails closed: a command that cannot be tokenized counts as a
-    test run, so a malformed quote is never an evasion path — the same contract
-    `_has_inplace_editor` and `_uses_pcre_grep` carry."""
+    about the next. The caller fails closed on None, so a malformed quote is
+    never an evasion path — the same contract `_uses_pcre_grep` carries, and
+    split from True for the same reason: an apostrophe in a heredoc comment
+    used to be refused as a "test run" it never contained."""
+    undecidable = False
     for segment in _split_commands(command):
         try:
             tokens = shlex.split(segment, posix=True)
         except ValueError:
-            return True
+            undecidable = True
+            continue
         if _invokes_test_runner(tokens):
             return True
         if _invokes_configured_script(tokens, project_dir):
             return True
         payload = _shell_c_payload(tokens)
-        if payload is not None and is_test_run_command(payload, project_dir):
-            return True
-    return False
+        if payload is not None:
+            nested = is_test_run_command(payload, project_dir)
+            if nested:
+                return True
+            undecidable = undecidable or nested is None
+    return None if undecidable else False
 
 
 # --- Scripted source-rewrite guard -----------------------------------------
@@ -754,7 +761,7 @@ SOURCE_SUFFIXES = (
     ".java", ".kt", ".swift", ".m", ".mm", ".c", ".h", ".cc", ".cpp", ".hpp",
     ".cs", ".php", ".ex", ".exs", ".sh", ".bash", ".zsh", ".ps1", ".sql",
     ".svelte", ".vue", ".astro", ".css", ".scss", ".html", ".md", ".toml",
-    ".yaml", ".yml",
+    ".yaml", ".yml", ".dart",
 )
 
 # Bound the git query so a pathological command cannot spawn a huge argv.
@@ -1231,7 +1238,8 @@ def _is_pcre_flag(token):
 
 
 def _uses_pcre_grep(command):
-    """True iff `command` invokes `grep` with a PCRE flag.
+    """True when `command` invokes `grep` with a PCRE flag, False when it
+    provably does not, and None when it cannot be tokenized — undecidable.
 
     Scoped to one command and blind to quoted text, for the same reason as
     `_has_inplace_editor`: the flag is only a flag when it is an argument of an
@@ -1239,13 +1247,23 @@ def _uses_pcre_grep(command):
     the flag is the search term — and `echo 'do not use grep -P'` from reading
     as PCRE use. `git grep -P` is excluded because `grep` is not in command
     position there, and git's own PCRE support is portable across both hosts.
-    Fails closed: a command that cannot be tokenized counts as a match, so a
-    malformed quote is never an evasion path."""
+
+    The caller still fails closed on None, so a malformed quote is never an
+    evasion path. None is kept apart from True because the two refusals make
+    different claims: collapsing them told agents a PCRE flag had been FOUND in
+    commands containing no `grep` at all — an apostrophe in a heredoc comment
+    (`brief's`) was enough — and pointed them at a rewrite that could not
+    address a phantom. See `unparseable_command_refusal`.
+
+    Every segment is scanned before settling on None, so a decidable `grep -P`
+    beside an untokenizable stage still gets the refusal that fits it."""
+    undecidable = False
     for segment in _split_commands(command):
         try:
             tokens = shlex.split(segment, posix=True)
         except ValueError:
-            return True
+            undecidable = True
+            continue
         for index, tok in enumerate(tokens):
             if tok.rsplit("/", 1)[-1] != "grep":
                 continue
@@ -1253,7 +1271,7 @@ def _uses_pcre_grep(command):
                 continue
             if any(_is_pcre_flag(t) for t in tokens[index + 1:]):
                 return True
-    return False
+    return None if undecidable else False
 
 
 # git's own options that CONSUME the next argument, so the token after one is a
@@ -2942,6 +2960,56 @@ def scripted_rewrite_refusal(path, append_only=False, target_inferred=False):
     )
 
 
+def unparseable_command_refusal(command):
+    """The `(reason, next_action, evidence)` for a command this hook's
+    tokenizer cannot split, which is therefore refused unverified.
+
+    It claims only what the hook established: that tokenizing failed, on which
+    stage, and why. It names no guard, because none was evaluated — the PCRE
+    refusal used to fire here with `Evidence: a PCRE flag was found …` on
+    commands containing no `grep`, and the agent spent its retries rewriting a
+    flag that did not exist. The usual trigger is not a shell error at all:
+    `shlex` has no heredoc support, so an apostrophe inside a quoted heredoc
+    body (`# the brief's names`) reads as an unclosed quote even though bash
+    accepts the command."""
+    stage, error = command.strip(), "unknown tokenizer error"
+    for segment in _split_commands(command):
+        try:
+            shlex.split(segment, posix=True)
+        except ValueError as e:
+            stage, error = segment.strip(), str(e)
+            break
+    return (
+        "this command could not be tokenized, so the hook could not check it "
+        "against its guards and refuses it rather than guess. This is not a "
+        "finding of any rule — not `grep -P`, not a test run. The usual "
+        "cause is an apostrophe inside a heredoc body or comment (`brief's`): "
+        "bash accepts it, but the hook's tokenizer has no heredoc support and "
+        "reads it as an unclosed quote.",
+        "if this command changes a file, use the Edit tool instead — several "
+        "Edit calls in ONE message run in parallel. Otherwise remove or balance "
+        "the stray quote (reword `brief's` to `the brief`, or escape it) and "
+        "re-run.",
+        f"the tokenizer reported `{error}` on the stage: {stage}",
+    )
+
+
+def refuse_unparseable(project_dir, command, call):
+    """Refuse `command` as undecidable and exit. Every guard whose detector
+    returns None for an untokenizable command routes here, so they share one
+    reason and one `unparseable-command` fingerprint instead of each claiming
+    its own rule matched."""
+    reason, next_action, evidence = unparseable_command_refusal(command)
+    block(
+        project_dir,
+        "unparseable-command",
+        reason,
+        next_action,
+        evidence=evidence,
+        call=call,
+    )
+
+
 # ── preview-origin hand-write guard ────────────────────────────────────
 #
 # The subpath-hydration recovery is two coupled writes: `sameOriginSafe` in
@@ -3457,6 +3525,9 @@ _HANDOFF_CONTENT_SNIFFED = (_HANDOFF_TOOL_RESULT, _HANDOFF_TASK_OUTPUT)
 
 # What identifies a persisted tool result as holding a hand-off: the pointer
 # token `advance` prints, or the banner shape every step body is fenced with.
+# `step-handoff --section` answers carry neither banner (theirs are
+# `━━━ <NAME> ━━━`), so that command prints the pointer token as its first
+# stdout line — one marker here, not a second grammar to learn.
 # Read from a bounded prefix — enough to see a hand-off's opening banner, small
 # enough that a PreToolUse hook never stalls on a large file.
 _HANDOFF_CONTENT_MARKERS = ("CODEYAM_FULL_HANDOFF", "━━━ BEGIN STEP ")
@@ -3655,7 +3726,11 @@ def windowed_handoff_read_refusal(idiom):
         f"--section <NAME>` returns one COMPLETE section, marks which sections "
         f"are REQUIRED, and now reports any required section your request did "
         f"not show — so narrowing no longer risks dropping an instruction "
-        f"silently. Run it bare to list the sections this hand-off has. `cat "
+        f"silently. Run it bare to list the sections this hand-off has. If "
+        f"this window is of a persisted `--section` answer that was too large "
+        f"to show, re-run that request: an answer that large is now written "
+        f"one section per file under `.codeyam/state/handoff-sections/`, and "
+        f"it prints one `cat` line per section, each a COMPLETE read. `cat "
         f"{_HANDOFF_STORE}` still returns all of it. Line numbers printed by "
         f"`step-handoff` are NOT a licence to `sed` the range back — the named "
         f"form gives the same answer with none of the arithmetic. `grep`, "
@@ -4405,12 +4480,15 @@ def main():
         # a blocked slug can be pre-Demo or post-hardening and the two need
         # opposite advice. `_test_run_block_message` reads that from the
         # `noTestSlugs` projection.
-        if (
-            slug
-            and test_run_slugs
-            and slug not in test_run_slugs
-            and is_test_run_command(command, project_dir)
-        ):
+        #
+        # An untokenizable command (None) is refused on the honest
+        # unparseable reason rather than asserted to be a test run.
+        test_run = False
+        if slug and test_run_slugs and slug not in test_run_slugs:
+            test_run = is_test_run_command(command, project_dir)
+        if test_run is None:
+            refuse_unparseable(project_dir, command, call)
+        if test_run:
             reason, next_action = _test_run_block_message(
                 state, slug, no_test_slugs.get(slug)
             )
@@ -4594,7 +4672,15 @@ def main():
         # call after the block failed with "No such tool available: Grep". A
         # harness search tool is mentioned only conditionally, never as the
         # sole next action.
-        if _uses_pcre_grep(command):
+        #
+        # An untokenizable command is undecidable (None), not a match: it is
+        # still refused, but on its own honest reason with its own fingerprint,
+        # so it neither claims a PCRE flag it never saw nor inflates the
+        # `grep-p` recurrence count.
+        pcre = _uses_pcre_grep(command)
+        if pcre is None:
+            refuse_unparseable(project_dir, command, call)
+        if pcre:
             block(
                 project_dir,
                 "grep-p",

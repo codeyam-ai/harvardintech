@@ -552,7 +552,12 @@ ask. Rendering these three as prose leaves the user typing "commit it" by hand
   ```
   After the commit succeeds, `plan-complete` triggers a confirmation modal
   in the Plan tab offering to start another plan or return to the queued
-  changes list. Only run `plan-complete` on this branch — not on "I want
+  changes list. Its first line says whether an editor tab actually took the
+  signal (`DELIVERED`), is about to (`QUEUED`), or none is connected
+  (`QUEUED, NOT DELIVERED` — the modal appears when a tab next connects); tell
+  the user which. If asked later why the modal did not appear, answer from
+  `codeyam-editor editor plan-complete-status` rather than from the code.
+  Only run `plan-complete` on this branch — not on "I want
   changes" (which loops back to Step 6) or "Discard" (which returns to
   Step 1 with no plan saved).
 - **I want changes** — Make the requested changes to the plan file, then go back to Step 6
