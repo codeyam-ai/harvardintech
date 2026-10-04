@@ -338,7 +338,7 @@ def _repeat_notice(count, rule_count=1):
             f"ALREADY REFUSED ({count}x in the last "
             f"{_REPEAT_WINDOW_SEC // 60} minutes): this exact call was refused "
             f"before and nothing has changed since. Re-issuing it will be "
-            f"refused again — take the next valid action below instead.\n"
+            f"refused again — take the next valid action above instead.\n"
         )
     if rule_count >= _RULE_RECURRENCE_MIN:
         return (
@@ -346,7 +346,7 @@ def _repeat_notice(count, rule_count=1):
             f"project): this rule has blocked a call {rule_count} times here, "
             f"typically once each in a different session — so it is a known "
             f"recurring trap rather than a first encounter. The next valid "
-            f"action below is the canonical path; it is worth reading once "
+            f"action above is the canonical path; it is worth reading once "
             f"rather than rediscovering.\n"
         )
     return ""
@@ -449,19 +449,61 @@ def block(project_dir, rule, reason, next_action, reference="", detail="", evide
     working exactly as designed. The clause is deliberately INSIDE the reason
     rather than on a line above it, so the `BLOCKED: ` first-token contract
     that agents and `is_recovery_contract` grep for is left untouched.
+
+    The text is laid out by `refusal_text` — action first, evidence last,
+    and a repeat collapsed to two lines; see there for why.
     """
-    message = f"BLOCKED: guardrail, not a breakage — {reason}\nNext valid action: {next_action}"
-    if evidence:
-        message = f"{message}\nEvidence: {evidence}"
-    if reference:
-        message = f"{message}\n{reference}"
     if _EXPLAIN_MODE:
-        _emit_verdict("BLOCKED", rule, detail, message)
+        _emit_verdict(
+            "BLOCKED", rule, detail, refusal_text(reason, next_action, reference, evidence)
+        )
     count, rule_count = _record_refusal(
         project_dir, "\x00".join((rule, detail, call, evidence)), rule
     )
-    print(f"{_repeat_notice(count, rule_count)}{message}", file=sys.stderr)
+    # The leading newline is for the harness, which prints
+    # `PreToolUse:<Tool> hook error: [<the hook's whole shell command>]: `
+    # immediately before this text. Without it the action is glued to the
+    # end of ~130 characters of plumbing; with it, the action starts a line.
+    print(
+        "\n" + refusal_text(reason, next_action, reference, evidence, count, rule_count),
+        file=sys.stderr,
+    )
     sys.exit(2)
+
+
+def refusal_text(reason, next_action, reference="", evidence="", count=1, rule_count=1):
+    """The refusal as the agent reads it: recovery first, evidence last.
+
+    The harness prefix is the one part of the line the hook cannot control,
+    so the hook's own FIRST words are the instruction. The order used to be
+    reassurance, cause, action, evidence — and with the action sandwiched,
+    agents re-issued the identical refused `Edit` four times in a row at
+    `present-live` before reading far enough to run `editor change`, which
+    the very first refusal had named.
+
+    A repeat (`count >= 2`) is REPLACED, not prepended to: the action plus a
+    one-line `BLOCKED: ALREADY REFUSED …`, with no cause, evidence, or
+    reference. The full form was already printed once and nothing has
+    changed since (the fingerprint includes the evidence), so re-printing it
+    only re-buries the one line that matters under the same wall.
+
+    Both lines of the `BLOCKED:` / `Next valid action:` contract are present
+    in both shapes; only their order differs from the CLI's, because a CLI
+    error is read from the top of a terminal and this one is read after a
+    prefix that eats the first line's attention.
+    """
+    action = f"Next valid action: {next_action}"
+    notice = _repeat_notice(count, rule_count)
+    if count >= 2:
+        return f"{action}\nBLOCKED: {notice.rstrip()}"
+    lines = [action, f"BLOCKED: guardrail, not a breakage — {reason}"]
+    if notice:
+        lines.append(notice.rstrip())
+    if reference:
+        lines.append(reference)
+    if evidence:
+        lines.append(f"Evidence: {evidence}")
+    return "\n".join(lines)
 
 
 def resolved_context(project_dir, consulted=""):
@@ -854,6 +896,9 @@ _GATING_SUBCOMMANDS = frozenset(
         "advance",
         "analyze-imports",
         "audit",
+        # An `--scope impacted` sweep runs ~10 minutes and is routinely
+        # backgrounded and piped; unwrapped, it left no status document.
+        "client-errors",
         # The two terminal steps. Neither is slow in the ordinary case, and that
         # is exactly why they belong here: each POSTs to a handler that shells
         # out to git, so each CAN block, and each is the LAST command of its
@@ -4634,16 +4679,19 @@ def main():
             # both contract lines. Led with, it reads as a set to reason
             # about — which is how this block came to be the most-retried
             # one in the transcripts (four in a row at `backend-journal`).
-            # One named command reads as an instruction to follow.
+            # One named command reads as an instruction to follow, so the
+            # action is just that command; what it does is reference too.
             block(
                 project_dir,
                 "code-change",
                 f"This step ({_slug_label(state, slug)}) does not allow code changes.",
-                f"run `{cli_command()} editor change` to reopen the build loop — "
-                f"it MOVES the workflow cursor back to the nearest earlier slug "
-                f"that permits edits and prints the command to return here — "
-                f"then make this edit.",
-                reference=f"Code changes are allowed at slugs: {allowed}.",
+                f"run `{cli_command()} editor change`, then make this edit.",
+                reference=(
+                    f"`editor change` reopens the build loop: it MOVES the workflow "
+                    f"cursor back to the nearest earlier slug that permits edits and "
+                    f"prints the command to return here. Code changes are allowed at "
+                    f"slugs: {allowed}."
+                ),
                 detail=f"{slug}\x00{file_path}",
                 evidence=(
                     f"{resolved_context(project_dir, state_path)}; target "

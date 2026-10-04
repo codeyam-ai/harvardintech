@@ -18,8 +18,8 @@ Two `/codeyam-editor` panes on one project corrupt each other's workflow state. 
   (`holder_session_id`/`holder_pid`/`holder_acquired_at`/`holder_transcript_path`)
   and tell the user to switch to that pane or wait, then stop.
 - **`held_by_other: true`, `holder_stale: true`** — a crashed/abandoned
-  session left a stale lock. Do NOT run `step 1`. Tell the user to run
-  `codeyam-editor editor session-reset` then re-invoke, then stop.
+  session left a stale lock. Run `codeyam-editor editor workflow-reclaim` yourself (keeps the
+  workflow position; no need to ask), then continue. Never `session-reset`: it erases the position.
 
 ## Project description is mandatory
 
