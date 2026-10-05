@@ -3636,8 +3636,20 @@ _HANDOFF_AWK = re.compile(_HANDOFF_VERB_ANCHOR + r"(awk)\b", re.VERBOSE)
 # happens to contain a digit does not reach `[pqd]`.
 _SED_LINE_WINDOW = re.compile(r"\d+\s*(?:,\s*(?:\d+|\+\d+|\$))?\s*[pqd]\b")
 
+# A `sed` address that truncates by PATTERN RANGE: `/BEGIN STEP/,$p`,
+# `/^# Backend Flow/,/━━━ TASK ━━━/p`. Anchoring on a banner is the most
+# natural way to carve one section out of a hand-off, and it is the shape the
+# refusal describes — a range that ENDS on a banner hands back a heading with
+# no body. A single `/PATTERN/p` with no range is a filter, not a window.
+# Applied to LIVE output only (`_live_handoff_idiom`).
+_SED_PATTERN_WINDOW = re.compile(r"/[^/]+/\s*,\s*(?:/[^/]+/|\d+|\+\d+|\$)\s*[pqd]")
+
 # `awk` truncates when it guards on the record number.
 _AWK_NR = re.compile(r"\bNR\b")
+
+# The `sed` pattern range above, spelled in awk:
+# `awk '/━━━ ASK WHETHER TO KEEP ASKING ━━━/,/━━━/'`. Live output only.
+_AWK_PATTERN_RANGE = re.compile(r"/[^/]+/\s*,\s*/[^/]+/")
 
 # A stage that REDUCES the store to a match list rather than emitting a
 # contiguous body. Truncating a match list is not reading a window of one
@@ -3659,6 +3671,22 @@ def _handoff_idiom(stage):
     if _HANDOFF_SED.search(stage) and _SED_LINE_WINDOW.search(stage):
         return "sed"
     if _HANDOFF_AWK.search(stage) and _AWK_NR.search(stage):
+        return "awk"
+    return None
+
+
+def _live_handoff_idiom(stage):
+    """The truncating idiom `stage` runs over LIVE hand-off output, or None.
+
+    `_handoff_idiom` plus the pattern ranges. Over live output a banner-anchored
+    range is the commonest window there is — the line numbers are not known
+    until the command has run, so a pattern is what agents reach for."""
+    idiom = _handoff_idiom(stage)
+    if idiom:
+        return idiom
+    if _HANDOFF_SED.search(stage) and _SED_PATTERN_WINDOW.search(stage):
+        return "sed"
+    if _HANDOFF_AWK.search(stage) and _AWK_PATTERN_RANGE.search(stage):
         return "awk"
     return None
 
@@ -3715,6 +3743,110 @@ def windowed_handoff_read(command):
     return None
 
 
+# Door six — and it names no path at all. Every door above is a FILE the
+# hand-off was written to; this one is the LIVE stdout of the command that
+# produces it, windowed before it lands anywhere:
+# `advance 2>&1 | sed -n '/^# Backend Flow/,/━━━ TASK ━━━/p'`,
+# `step-handoff --section a,b,c | head -5`. A path sweep cannot see it because
+# there is no path to sweep, and it carries the traffic: measured across 59
+# fleet sessions, 239 windowed live reads in 42 of them, none refused, against
+# 29 refusals on the five file doors combined. A seventh producer is one entry
+# here.
+_HANDOFF_PRODUCING_SUBCOMMANDS = frozenset(("advance", "step", "step-handoff"))
+
+# The position-blind fallback for a stage `shlex` cannot tokenize, so a
+# malformed quote is never an evasion path. `step-handoff` is listed before
+# `step` because `step\b` also matches at the hyphen.
+_HANDOFF_PRODUCER_INVOCATION = re.compile(
+    r"\bcodeyam-editor(?:-dev)?\s+editor\s+(step-handoff|advance|step)\b"
+)
+
+# An inverted match passes nearly everything through, so `grep -v heartbeat`
+# is a filter, not a reducer — and it is exactly what the measured
+# banner-ended window was hidden behind.
+_INVERTED_MATCH = re.compile(r"(?:^|\s)(?:-[A-Za-z]*v[A-Za-z]*|--invert-match)\b")
+
+
+def _handoff_subcommand(stage):
+    """The hand-off-producing `codeyam-editor editor <subcommand>` that
+    `stage` RUNS, or None — `"step-handoff --section"` for a section answer,
+    the one read the command exists to make complete.
+
+    Position-aware for the reason `_gating_subcommand` is: the name is only an
+    invocation when it is the program the stage runs, so
+    `grep "editor advance" notes.md | head` is not a hit."""
+    try:
+        tokens = shlex.split(stage, posix=True)
+    except ValueError:
+        match = _HANDOFF_PRODUCER_INVOCATION.search(stage)
+        return match.group(1) if match else None
+    for index, tok in enumerate(tokens):
+        if _program_name(tok) not in _CODEYAM_CLIS:
+            continue
+        if not _in_command_position(tokens, index):
+            continue
+        rest = tokens[index + 1:]
+        if len(rest) >= 2 and rest[0] == "editor" and rest[1] in _HANDOFF_PRODUCING_SUBCOMMANDS:
+            if rest[1] == "step-handoff" and any(
+                arg == "--section" or arg.startswith("--section=") for arg in rest[2:]
+            ):
+                return "step-handoff --section"
+            return rest[1]
+    return None
+
+
+def _reduces_output(stage):
+    """True when `stage` reduces its input to a match list or a count, so a
+    window downstream of it truncates THAT, not the hand-off — the same
+    carve-out the path guard makes for `grep FILE | head`."""
+    return bool(_HANDOFF_REDUCER.search(stage)) and not _INVERTED_MATCH.search(stage)
+
+
+def windowed_live_handoff(command):
+    """`(subcommand, idiom)` when `command` pipes the LIVE output of a
+    hand-off-producing subcommand into a truncating stage, or None.
+
+    Evaluated per pipeline, so a window buried in the second of three
+    `;`/`&&`-joined commands is still seen, and a `head` belonging to a
+    different command is not. A pipe into `grep` stays allowed for the reason
+    it does on the path guard: a search is not a window and does not present
+    itself as a complete read. A bare run is never a match.
+
+    Pure, so the idiom set is assertable directly."""
+    if not command:
+        return None
+    command = elide_heredoc_bodies(command)
+    for pipeline in _pipelines(command):
+        for index, stage in enumerate(pipeline):
+            subcommand = _handoff_subcommand(stage)
+            if not subcommand:
+                continue
+            for downstream in pipeline[index + 1:]:
+                if _reduces_output(downstream):
+                    break
+                idiom = _live_handoff_idiom(downstream)
+                if idiom:
+                    return subcommand, idiom
+    return None
+
+
+def handoff_refusal_collateral(command):
+    """The pipelines of `command` that read no hand-off window — what a
+    pre-execution refusal discards along with the read.
+
+    The hook refuses the WHOLE call, so in `sed -n 392,420p <hand-off>; cargo
+    fmt` the `cargo fmt` never runs. 11 of 29 measured refusals were compound
+    like that, one of them discarding a `track-step completed` workflow
+    mutation, and nothing said so. Naming them is the fix."""
+    collateral = []
+    for pipeline in _pipelines(elide_heredoc_bodies(command or "")):
+        text = " | ".join(stage.strip() for stage in pipeline)
+        if windowed_handoff_read(text) or windowed_live_handoff(text):
+            continue
+        collateral.append(text)
+    return collateral
+
+
 def windowed_handoff_read_tool(tool_input):
     """The truncating idiom a `Read` TOOL call uses on the saved step hand-off,
     or None.
@@ -3740,8 +3872,18 @@ def windowed_handoff_read_tool(tool_input):
     return "Read offset/limit"
 
 
-def windowed_handoff_read_refusal(idiom):
+def windowed_handoff_read_refusal(idiom, subcommand=None, collateral=()):
     """The `(reason, next_action)` pair for a windowed hand-off read.
+
+    `subcommand` is set for door six — the live output of `advance`, `step`,
+    or `step-handoff` — and swaps the opening for one that names the command,
+    since there is no file in the call to point at. A `--section` answer gets
+    one more sentence: there the window is self-defeating, because the answer
+    ENDS with the line naming any required section the request did not show,
+    and a window short of the whole answer deletes exactly that line.
+
+    `collateral` lists the parts of a compound command that did not run —
+    the refusal fires before execution, so they were discarded with the read.
 
     The reason states the failure CONCRETELY — a window can end on a banner
     and yield a heading with no body. The abstract version ("you might miss
@@ -3756,8 +3898,42 @@ def windowed_handoff_read_refusal(idiom):
     — the arithmetic is the hazard, and a copied range is complete only if it
     was copied exactly — so the recovery has to say the named form reaches the
     same answer without any of it."""
+    if subcommand:
+        opening = (
+            f"this pipes the LIVE output of `{cli_command()} editor {subcommand}` "
+            f"into `{idiom}`, which reads a WINDOW of a step hand-off — the same "
+            f"text it saves to `{_HANDOFF_STORE}`. That is "
+        )
+    else:
+        opening = (
+            f"this reads a WINDOW of a saved step hand-off with `{idiom}`. That is "
+        )
+    section_clause = ""
+    if subcommand == "step-handoff --section":
+        section_clause = (
+            " For a `--section` answer the window is self-defeating: you asked "
+            "for COMPLETE sections, and the answer ends with the line "
+            "`step-handoff: N REQUIRED section(s) of this step are NOT shown "
+            "above: …` — the one signal that your narrowing dropped an "
+            "instruction. Any window short of the whole answer deletes that "
+            "trailer first."
+        )
+    live_clause = ""
+    if subcommand:
+        live_clause = (
+            "run it WITHOUT the window — the command already saves and prints "
+            "its complete answer, and a `--section` request is already as "
+            "narrow as you asked for. To narrow further, "
+        )
+    collateral_clause = ""
+    if collateral:
+        listed = "; ".join(f"`{part}`" for part in collateral)
+        collateral_clause = (
+            f" The whole call was refused before it ran, so these parts of it "
+            f"did NOT run either — re-issue them on their own: {listed}."
+        )
     return (
-        f"this reads a WINDOW of a saved step hand-off with `{idiom}`. That is "
+        f"{opening}"
         f"an instruction file, and a window of one is the single read shape "
         f"with no trustworthy interpretation: the lines that come back are "
         f"accurate, and nothing in them tells you a section body was cut. A "
@@ -3766,7 +3942,8 @@ def windowed_handoff_read_refusal(idiom):
         f"section's instructions went unexecuted and were caught only turns "
         f"later. The same text lives in `{_HANDOFF_STORE}`, in the run-keyed "
         f"transcript, and in the harness's persisted tool result, so this "
-        f"applies wherever you reached it.",
+        f"applies wherever you reached it.{section_clause}",
+        f"{live_clause}"
         f"read it by NAMED SECTION: `{cli_command()} editor step-handoff "
         f"--section <NAME>` returns one COMPLETE section, marks which sections "
         f"are REQUIRED, and now reports any required section your request did "
@@ -3779,7 +3956,8 @@ def windowed_handoff_read_refusal(idiom):
         f"{_HANDOFF_STORE}` still returns all of it. Line numbers printed by "
         f"`step-handoff` are NOT a licence to `sed` the range back — the named "
         f"form gives the same answer with none of the arithmetic. `grep`, "
-        f"`wc -l`, and a bare `cat` of this file are unaffected.",
+        f"`wc -l`, and a bare `cat` of this file are unaffected, and so is a "
+        f"pipe of the live output into `grep`.{collateral_clause}",
     )
 
 
@@ -4355,10 +4533,15 @@ def main():
     # and the shell exit code — both recoverable from the two sidecars the
     # notice names — instead of costing the command. Where the bracket's capture
     # does not exist, the original harms are all still live and so is the block.
+    #
+    # A pipe that WINDOWS a live hand-off (`advance | head`) is not advised
+    # here: the notice exits 0, which would wave through the refusal the
+    # windowed-handoff guard below exists to issue. That pipe costs
+    # instructions, not just an exit code.
     if tool_name == "Bash":
         command = tool_input.get("command", "")
         piped = piped_gating_command(command)
-        if piped:
+        if piped and not windowed_live_handoff(command):
             if not _capture_available():
                 block(
                     project_dir,
@@ -4422,9 +4605,12 @@ def main():
     # `Read`/`Glob`/`Grep` allow-branch sits after the `CODEYAM_EDITOR_ACTIVE`
     # short-circuit, so a guard that must pre-empt it cannot live below it.
     if tool_name == "Bash":
-        idiom = windowed_handoff_read(tool_input.get("command", ""))
+        command = tool_input.get("command", "")
+        idiom = windowed_handoff_read(command)
         if idiom:
-            reason, next_action = windowed_handoff_read_refusal(idiom)
+            reason, next_action = windowed_handoff_read_refusal(
+                idiom, collateral=handoff_refusal_collateral(command)
+            )
             block(
                 project_dir,
                 "windowed-handoff-read",
@@ -4435,6 +4621,27 @@ def main():
                     f"the command names a hand-off file in a read position and "
                     f"truncates it with `{idiom}`; a whole-file `cat`, a `grep`, "
                     f"and a `wc -l` of the same path are not matched"
+                ),
+                call=call,
+            )
+        live = windowed_live_handoff(command)
+        if live:
+            subcommand, idiom = live
+            reason, next_action = windowed_handoff_read_refusal(
+                idiom,
+                subcommand=subcommand,
+                collateral=handoff_refusal_collateral(command),
+            )
+            block(
+                project_dir,
+                "windowed-handoff-read",
+                reason,
+                next_action,
+                detail=idiom,
+                evidence=(
+                    f"the command pipes the live output of `editor {subcommand}` "
+                    f"into `{idiom}`; a bare run and a pipe into `grep` are not "
+                    f"matched"
                 ),
                 call=call,
             )

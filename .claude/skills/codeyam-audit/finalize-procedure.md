@@ -1249,6 +1249,30 @@ And an hour is long enough that the batching decision is worth making
 deliberately *before* the first fix, not discovered at the second. When CI hands
 you three failures, the choice is between roughly one hour and roughly four.
 
+**The case batching cannot cover: a diagnose-then-fix loop.** The advice above
+assumes CI handed you the complete failure list. Sometimes it cannot: the first
+commit exists only to make a failure *visible* (upload a log artifact, add a CI
+diagnostic step), and the fix is written from what that run reveals. The two
+commits cannot share one finalize, because the second does not exist yet. On
+`editor-improvements-94` that loop cost two whole re-stamp finalizes, ~45
+minutes each, neither of which changed a single verdict. Two things now keep it
+cheap — lean on them rather than fighting the ordering:
+
+- **A commit touching only CI provider config re-proves only the static
+  checks.** `.github/workflows/**` (and the other CI config locations) is linted
+  by the static checks and read by nothing else a finalize runs, so the audit,
+  the dependency-graph rebuild, and the screenshot guard keep their recorded
+  passes across it, and the re-finalize re-stamps the marker after re-running
+  the static checks and the cheap whole-tree guards — minutes, not the audit's
+  ~45. Keep the visibility commit to CI config alone and it lands
+  in that cheap band; mix a source edit into it and every phase that reads that
+  source re-runs, as it must. The audit's skip still requires the static checks
+  to have passed on the current tree, so a broken workflow edit cannot slip
+  through on the audit's old pass.
+- **The fix commit pays for what it touched, not for the whole branch.** Phase
+  fingerprinting re-runs only the phases whose inputs moved; that is the
+  mechanism the price above already reflects.
+
 > GOTCHA — **the queue tenure does not survive the push.** Every re-finalize
 > needs a fresh `codeyam-editor editor pre-commit-sync` first. The tenure claimed
 > for the previous finalize was released when `editor push` completed, so
