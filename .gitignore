@@ -177,6 +177,7 @@ blob-report/
 .codeyam/state/claude-launch-provenance.json
 .codeyam/state/build-requests/
 .codeyam/state/credential-store-durability.json
+.codeyam/state/inline-agent-sessions.json
 .codeyam/state/finalize-snapshot.json
 .codeyam/test-run-marker.json
 .claude/settings.local.json
