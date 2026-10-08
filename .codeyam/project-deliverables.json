@@ -46,9 +46,9 @@
     {
       "id": "the-content-admin-protected-by-a-password-and",
       "text": "The content admin protected by a password and/or GitHub sign-in",
-      "status": "deferred",
-      "resolvedAt": "2026-08-28T19:30:17.999234991+00:00",
-      "resolvedInFeature": "Upgrade The Content Admin To 0.14.0",
+      "status": "dropped",
+      "resolvedAt": "2026-10-08T20:49:20.891901472+00:00",
+      "resolvedInFeature": null,
       "planSlug": null,
       "note": null,
       "decidedBy": "user"
