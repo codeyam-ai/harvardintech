@@ -66,12 +66,12 @@
     {
       "id": "identify-which-board-member-holds-the-domain",
       "text": "Identify which board member holds the domain registrar login, get access, and add a second person to it (blocks cutover steps S1, S2 and S7)",
-      "status": "deferred",
-      "resolvedAt": "2026-10-02T22:41:37.840026311+00:00",
-      "resolvedInFeature": "launch -- One capitalization and spelling standard",
+      "status": "dropped",
+      "resolvedAt": "2026-10-08T20:49:14.329590994+00:00",
+      "resolvedInFeature": null,
       "planSlug": null,
       "note": "Untouched by this cycle and not actionable from inside the repo - it needs a person to find out who holds the registrar login. Still blocks cutover steps S1, S2 and S7. Deferred by the agent purely so the cycle can close; the user has made no decision about it.",
-      "decidedBy": "agent"
+      "decidedBy": "user"
     }
   ]
 }
