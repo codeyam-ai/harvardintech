@@ -169,6 +169,7 @@ blob-report/
 .codeyam/state/harness-tasks-dir
 .codeyam/state/tool-loading-injected.json
 .codeyam/state/refusal-fingerprints.json
+.codeyam/state/pretool-hook-inflight/
 .codeyam/state/rebase-heal.json
 .codeyam/state/rebuild-self-restart.json
 .codeyam/state/push-auto-amend.json
@@ -179,6 +180,7 @@ blob-report/
 .codeyam/state/credential-store-durability.json
 .codeyam/state/inline-agent-sessions.json
 .codeyam/state/finalize-snapshot.json
+.codeyam/state/inline-agent-sessions.json
 .codeyam/test-run-marker.json
 .claude/settings.local.json
 .claude/hooks/__pycache__/
