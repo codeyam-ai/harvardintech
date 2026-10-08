@@ -1423,6 +1423,31 @@
       "runner": "tests"
     },
     {
+      "description": "The sponsor intro in the CMS entry spells out the chapter count, and it must name the same number as the active-chapter count in the chapters collection.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "chapter counts agree with the content › the sponsor intro in content/sponsorPage/sponsor.md states the same count",
+      "registeredAt": "2026-10-08T18:23:06Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The JSON fallback for the sponsor intro supplies the copy when the CMS field is blank, so its spelled-out chapter count must match the active-chapter count too.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "chapter counts agree with the content › the sponsor intro in data/sponsorPage.json states the same count",
+      "registeredAt": "2026-10-08T18:23:06Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The stat strip's built-in figures render if the stats collection is ever empty, so its chapters number must equal the active-chapter count rather than resurfacing a stale one.",
+      "file": "src/lib/presenceConsistency.test.ts",
+      "format": "vitest",
+      "key": "chapter counts agree with the content › the stat strip fallback Chapters figure equals the same count",
+      "line": 80,
+      "registeredAt": "2026-10-08T18:23:06Z",
+      "runner": "tests"
+    },
+    {
       "description": "The menu leads with the cities that actually hold events. A visitor opening Chapters is usually looking for something to attend, and a forming chapter has nothing to attend yet — so it is listed, but listed after.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
@@ -1976,7 +2001,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "copy names no retired or forming city as active › never claims six chapters",
-      "line": 106,
+      "line": 132,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -1985,7 +2010,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "copy names no retired or forming city as active › never mentions Japan or L.A.",
-      "line": 92,
+      "line": 118,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -1994,7 +2019,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "copy names no retired or forming city as active › the chapter sponsor level offers no forming city",
-      "line": 118,
+      "line": 144,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -2003,7 +2028,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "copy names no retired or forming city as active › the hero lede marks the forming chapters as forming",
-      "line": 128,
+      "line": 154,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -9695,7 +9720,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "retired content is gone rather than hidden › the new-chapters-launched accomplishment no longer exists",
-      "line": 154,
+      "line": 180,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -12989,6 +13014,24 @@
       "format": "vitest",
       "key": "the public audit route inventory › webinars renders from a file that exists",
       "registeredAt": "2026-09-28T16:25:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The retired giving page's copy is kept for its FAQ; nothing has been raised, so its progress bar must stay at zero.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the retired giving page › draws its bar at zero",
+      "line": 208,
+      "registeredAt": "2026-10-08T18:23:06Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The retired giving page carried a 50,000 dollar goal while every live surface said 10,000; its stored goal must equal the goal meter's so resurrecting its FAQ cannot bring the contradiction back.",
+      "file": "src/lib/givingContent.test.ts",
+      "format": "vitest",
+      "key": "the retired giving page › keeps its goal equal to the goal meter",
+      "line": 199,
+      "registeredAt": "2026-10-08T18:23:06Z",
       "runner": "tests"
     },
     {

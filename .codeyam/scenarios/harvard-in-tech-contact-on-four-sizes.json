@@ -1,12 +1,10 @@
 {
   "name": "Harvard in Tech - Contact On Four Sizes",
-  "id": "91436552-18bf-4321-a1ba-92a178460905",
+  "id": "72c77ff8-cd06-43c6-a86d-450dc634e4f8",
   "url": "/",
   "dimensions": [
-    "Mobile",
     "Tablet",
-    "Laptop",
-    "Desktop"
+    "Laptop"
   ],
   "mocks": {},
   "seed": {
@@ -82,7 +80,7 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/index.astro",
-  "description": "The contact grid at all four widths. Its columns are auto-fit at a 150px minimum, which still admits two columns inside a 390px phone minus its gutters - so this frame is the evidence for whether two columns there is deliberate or cramped. The hover target is the row itself rather than the section, keeping it distinct from the other homepage band scenarios.",
+  "description": "The contact grid at all four widths. Its columns are auto-fit at a 150px minimum, which still admits two columns inside a 390px phone minus its gutters - so this frame is the evidence for whether two columns there is deliberate or cramped. The hover target is the row itself rather than the section, keeping it distinct from the other homepage band scenarios. NARROWED 2026-10-08: a four-width capture now takes longer than the editor's 60-second capture request and fails with a transport error every time, the same cause that narrowed the board and chapters scenarios. Tablet and Laptop are the two intermediate widths this frame exists to watch; Desktop and Mobile are covered by the homepage's other scenarios, which the responsive-coverage test counts together.",
   "interactions": [
     {
       "action": "hover",

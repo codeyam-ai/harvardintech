@@ -18,11 +18,11 @@ ctaLabel: Become a Founding Supporter
 campaignName: The Momentum Fund
 stats:
   - value: 100+
-    label: Events Hosted
+    label: Events hosted
   - value: 8,500+
     label: Newsletter subscribers
   - value: '4'
-    label: Chapters & Growing
+    label: City chapters and growing
 donorsEmptyMessage: Harvard Alumni in Tech's first fundraising campaign launches soon, with a 2026 goal of $10,000.
 donorTiers:
   - id: leadership

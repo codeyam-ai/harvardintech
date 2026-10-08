@@ -1,0 +1,41 @@
+{
+  "claimStartedAt": "2026-10-08T17:32:13Z",
+  "completedAt": "2026-10-08T19:29:02Z",
+  "completedBy": {
+    "agentProvider": "claude",
+    "codeyamEditorVersion": "0.1.7",
+    "currentStep": "ui-step21",
+    "machine": "codeyam-editor-codeyam-editor-1",
+    "originId": "057ec9fa-08a8-4791-b811-59ddf8ab552b",
+    "pid": 7,
+    "priority": 0,
+    "selectedPlan": "launch--make-the-sites-numbers-agree",
+    "sessionId": "a4bb8df8-5e4d-45ac-a646-c9d1c43572dd",
+    "startedAt": "2026-10-08T17:32:13Z"
+  },
+  "createdAt": "2026-10-02T20:35:15Z",
+  "deliverables": [
+    "src/components/give/GivingCard.astro",
+    "src/components/landing/Stats.astro",
+    "src/content/pageCopy/donate.md",
+    "src/content/sponsorLevels/global.md",
+    "src/content/sponsorPage/sponsor.md",
+    "src/content/stats/global-chapters.md",
+    "src/content/stats/harvard-alumni-in-tech.md",
+    "src/data/collections.json",
+    "src/data/donatePage.json",
+    "src/data/givePage.json",
+    "src/data/sponsorPage.json",
+    "src/lib/givingContent.test.ts",
+    "src/lib/presenceConsistency.test.ts",
+    "src/pages/isolated-components/GivingCard.astro",
+    "src/pages/isolated-components/GlobalCommunityCta.astro",
+    "src/pages/isolated-components/HomeSections.astro",
+    "src/pages/isolated-components/MomentumStats.astro"
+  ],
+  "journalTimestamp": "2026-10-08T19:29:02Z",
+  "mode": "ui",
+  "planFile": "completed/launch--make-the-sites-numbers-agree.md",
+  "slug": "launch--make-the-sites-numbers-agree",
+  "title": "launch -- Make the sites numbers agree"
+}

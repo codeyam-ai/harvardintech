@@ -1,5 +1,5 @@
 ---
 value: '4'
-label: 'Chapters with in-person events'
+label: 'City chapters and growing'
 order: 3
 ---

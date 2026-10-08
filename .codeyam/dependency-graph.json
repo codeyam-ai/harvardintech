@@ -90,8 +90,8 @@
     ".codeyam/scenario-metrics.js": {
       "imports": [],
       "importedBy": [
-        ".codeyam/scenario-playwright.js",
-        ".codeyam/capture.js"
+        ".codeyam/capture.js",
+        ".codeyam/scenario-playwright.js"
       ]
     },
     ".codeyam/scenario-mocks.js": {
@@ -4635,8 +4635,8 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}",
-        ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}"
+        ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
+        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}"
       ]
     },
     ".codeyam/scenario-mocks.js::__file_root__": {
@@ -4645,14 +4645,6 @@
       "imports": [],
       "importedBy": [
         ".codeyam/capture.js::{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n  unmockedRouteFrom,\n}"
-      ]
-    },
-    ".codeyam/scenario-playwright.js::__file_root__": {
-      "filePath": ".codeyam/scenario-playwright.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}"
       ]
     },
     ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}": {
@@ -11691,5 +11683,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-02T22:34:39Z"
+  "lastUpdated": "2026-10-08T20:29:25Z"
 }

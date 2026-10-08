@@ -192,4 +192,22 @@ describe('the retired giving page', () => {
   it('redirects to the donate page', () => {
     expect(REDIRECT_TARGETS['/give']).toBe('/donate/');
   });
+
+  // Its copy is kept on disk because the donor FAQ in it may come back to
+  // /donate. It carried a $50,000 goal while every live surface said $10,000,
+  // so resurrecting the FAQ would have brought the contradiction back with it.
+  it('keeps its goal equal to the goal meter', () => {
+    const give = JSON.parse(fs.readFileSync('src/data/givePage.json', 'utf8'));
+    const meter = fs.readFileSync('src/content/momentumSections/goal-meter.md', 'utf8');
+    const meterGoal = /^goal:\s*'([^']+)'\s*$/m.exec(meter)?.[1];
+
+    expect(give.goal).toBe(meterGoal);
+  });
+
+  // Nothing has been raised, so its bar must not draw progress either.
+  it('draws its bar at zero', () => {
+    const give = JSON.parse(fs.readFileSync('src/data/givePage.json', 'utf8'));
+
+    expect(give.goalPercent).toBe(0);
+  });
 });

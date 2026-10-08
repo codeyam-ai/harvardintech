@@ -67,10 +67,36 @@ describe('chapter counts agree with the content', () => {
   // the site to overstate the size of the organisation.
   it('the donate page Chapters stat equals the same count', () => {
     const donate = readFileSync(join(CONTENT, 'pageCopy/donate.md'), 'utf-8');
-    const chaptersStat = donate.match(/- value:\s*'?(\d+)'?\s*\n\s*label:\s*Chapters/);
+    // Matches any label naming chapters ("City chapters and growing"), not only
+    // one that starts with the word, so a reworded label is still checked.
+    const chaptersStat = donate.match(/- value:\s*'?(\d+)'?\s*\n\s*label:[^\n]*\b[Cc]hapters\b/);
 
     expect(chaptersStat?.[1]).toBe(String(ACTIVE_COUNT));
   });
+
+  // The stat strip's built-in figures are what the homepage shows if the stats
+  // collection is ever empty, so a stale count there resurfaces exactly when
+  // nobody is looking.
+  it('the stat strip fallback Chapters figure equals the same count', () => {
+    const stats = readFileSync(join(SRC, 'components/landing/Stats.astro'), 'utf-8');
+    const chaptersStat = stats.match(/value:\s*'(\d+)',\s*label:\s*'[^']*\b[Cc]hapters\b/);
+
+    expect(chaptersStat?.[1]).toBe(String(ACTIVE_COUNT));
+  });
+
+  // The sponsor intro spells the number out, in the CMS entry and in the JSON
+  // fallback that supplies it when the field is blank. Both said "four" beside
+  // a homepage that briefly said six; this pins them to the same count.
+  it.each(['content/sponsorPage/sponsor.md', 'data/sponsorPage.json'])(
+    'the sponsor intro in %s states the same count',
+    (file) => {
+      const words: Record<number, string> = { 3: 'three', 4: 'four', 5: 'five', 6: 'six' };
+      const intro = readFileSync(join(SRC, file), 'utf-8').toLowerCase();
+      const stated = intro.match(/\b(three|four|five|six)\b(?: city)? chapters/)?.[1];
+
+      expect(stated).toBe(words[ACTIVE_COUNT]);
+    },
+  );
 });
 
 describe('copy names no retired or forming city as active', () => {

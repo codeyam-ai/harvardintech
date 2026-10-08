@@ -1,5 +1,5 @@
 ---
-value: 'Est. 2013'
-label: 'Harvard Alumni in Tech'
+value: '2013'
+label: 'Founded'
 order: 5
 ---

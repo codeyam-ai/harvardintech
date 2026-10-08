@@ -1,0 +1,263 @@
+{
+  "timestamp": "2026-10-08T19:29:02Z",
+  "title": "Make the site's numbers agree",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThree places where the site's own numbers do not line up, found in the\n2026-10-02 content/UX/brand audit. Each is catchable by a visitor comparing two\npages, and on a fundraising site that reads as carelessness about facts rather\nthan as a typo.\n\nThe owner settled the fundraising figure on 2026-10-02: **$10,000 for now.**\n\n## 1. Six chapter pages, four claimed\n\n`src/content/chapters/` holds six entries — `boston-cambridge`, `dc-dmv`,\n`london`, `nyc`, `seattle`, `sf-bay-area` — and each is a browsable page linked\nfrom the homepage via `src/components/landing/OurChapters.astro`.\n\nThe site tells visitors there are four:\n\n- `src/content/stats/global-chapters.md` — value `4`, label\n  \"Chapters with in-person events\"\n- `src/data/donatePage.json` — `stats[2]`, value `4`, label \"Chapters & Growing\"\n- `src/content/sponsorPage/sponsor.md` and `src/data/sponsorPage.json` — the\n  intro sentence reads \"across four chapters and a global community\"\n\nSo the number itself is consistent at four; what contradicts it is that six\nchapter pages exist and are reachable. A sponsor reading \"four chapters\" and then\nclicking through finds six. The two statistic labels also disagree with each\nother on what is being counted.\n\n`src/content/chapters/dc-dmv.md` says in its own body that the chapter has nobody\norganizing events yet, which is almost certainly the origin of the gap: six\nchapters exist, fewer are currently active.\n\n**What this plan must establish first:** which chapters are actually running\nin-person events right now. Do not assume it is four because the stat says four\n— that figure predates at least one chapter page. The audit did not settle this\nand it is not inferable from the files: `london.md` mentions no events in its\nbody yet the Luma calendar's one upcoming event is a London co-working day.\n\n**Then:** say it once, in one phrasing, and use that phrasing everywhere. The\nhonest shape is two numbers, not one — \"six chapters, four running regular\nin-person events\" — which is a stronger story than a single flattened figure and\nremoves the contradiction instead of hiding it. If a single number is wanted for\nthe statistic band, count the chapters that exist and let the label carry the\nnuance.\n\n## 2. One entry in the statistics row is not a statistic\n\n`src/content/stats/` holds five entries. Four are quantities with descriptive\nlabels: `8,500+` newsletter subscribers, `750+` in WhatsApp, `4` chapters, `100+`\nevents hosted. The fifth, `harvard-alumni-in-tech.md`, is value `Est. 2013` with\nthe label \"Harvard Alumni in Tech\" — a name and a date sitting in a row of\nmeasurements, where the label slot is carrying the organization's name rather\nthan describing what was counted.\n\nRelabel it \"Founded\" so the pattern holds, or move the founding year into the\nAbout copy where it reads as history rather than as a metric. Relabelling is the\nsmaller change and keeps the band at five items, which matters to the layout.\n\n## 3. The orphaned giving page carries a $50,000 goal\n\n`src/data/givePage.json` sets `\"goal\": \"$50,000\"`. Every live surface says\n$10,000:\n\n- `src/content/momentumSections/goal-meter.md` — title \"Our 2026 goal: raise\n  $10,000.\", `goal: '$10,000'`\n- `src/data/donatePage.json` — `donorsEmptyMessage`, \"a 2026 goal of $10,000\"\n- `src/content/pillars/launch-the-2026-fundraising-campaign.md` — \"raise $10,000\"\n\n**This is not currently visible to anyone.** `/give` was retired and now\nredirects to `/donate/` (`src/lib/redirects.ts`, asserted by\n`src/lib/givingContent.test.ts`), and `src/lib/givePageContent.ts` has no `.astro`\nconsumer. The file is dead content.\n\nIt is still worth fixing rather than ignoring, for one reason: the donor FAQ in\nthat same file is valuable and may be brought back to `/donate` (a separate\npiece of work). If it returns with a $50,000 goal beside it, the contradiction\nbecomes live at exactly the moment nobody is looking for it. Set it to `$10,000`\nnow so the file is safe to resurrect.\n\nDo **not** delete the file as part of this plan — the FAQ it holds is the subject\nof its own pending decision.\n\n## Key Decisions\n\n- **$10,000 is the figure**, owner-confirmed 2026-10-02. It is already what every\n  live surface says; this plan only removes the stale outlier.\n- **The chapter count is researched, not guessed.** This plan does not ship a\n  number the audit invented.\n- **The `goal-meter` band keeps its hand-maintained figures.** Its own body\n  documents that a Givebutter widget id would make them self-updating; no widget\n  exists yet, so the figures stay manual and this plan does not change that\n  mechanism.\n\n## Verification\n\n- `npm test` green. `src/lib/givingContent.test.ts` already pins the `/give`\n  redirect, so the dead-file edit cannot quietly resurrect the route.\n- Recapture the homepage statistics band, `/donate` and `/sponsor`.\n- Grep the tree for a bare \"four chapters\" afterwards; the prose copy exists in\n  two files (`src/content/sponsorPage/sponsor.md` and the `src/data` mirror) and\n  both must agree.",
+  "description": "Every place the site states a chapter count now gives the same figure in the same words. The homepage stat strip, the donate stats band and the sponsor intro all say '4 city chapters and growing'. That is the owner's chosen phrasing, and it matches the four chapters marked active, with DC and Seattle still forming. The fifth homepage stat, which was a name and a date in a row of measurements, now reads '2013 / Founded'. The retired /give page's stored goal now matches the live $10,000 goal meter at 0% raised, so bringing its FAQ back cannot bring back a $50,000 contradiction.\n\nSCOPE VERDICT. Delivered: none of the project's seven deliverables are closed by this cycle, and all seven were already resolved before it began. Deferred by this cycle: none. No deliverable row carries decidedBy=agent.\n\nWHAT CHANGED FROM THE PLAN. The plan proposed 'six chapters, four running regular events'. At the demo the owner chose '4 city chapters and growing' instead. The existing guard test (presenceConsistency) already forbids claiming six chapters, so the first wording would have failed it. The plan said which chapters are active was not inferable from the files, but each chapter already carries a status field (four active, two forming), and the owner's launch decision sheet agrees: London is real, DC and Seattle have no organizer.\n\nALSO FOUND. /donate shows the CMS copy (pageCopy/donate.md) over donatePage.json, so its stats band still read 'Events Hosted' and 'Chapters & Growing' after the capitalization pass. Both copies now agree. That band is not switched on today, so the fix is not visible yet. Old figures also lived in the Stats component's fallback list, three isolation harnesses (HomeSections, MomentumStats, GivingCard), the CMS field hint, and the Global Community Partner benefit ('four chapter cities', now 'outside our chapter cities').\n\nNEW COVERAGE. presenceConsistency.test.ts now pins the stat strip fallback and both copies of the sponsor intro to the active-chapter count. Its donate check matches any label naming chapters, not only one starting with the word. givingContent.test.ts pins /give's goal to the goal meter and its bar to zero.\n\nWORTH KNOWING. Uncommitted edits under src/content or src/data switch the capture sandbox off, so seeded scenarios photograph production content. A full recapture in this state produced wrong frames (London 'no events', donor-wall interactions failing) and was discarded. The three seeded frames that show this copy (both homepage scenarios and the sponsor route) are re-shot after the content commit. Also, the editor's dev-server restart twice left two astro dev processes running, so the orphan had to be killed by PID before capturing.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/capture.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--make-the-sites-numbers-agree.md\t.codeyam/plans/completed/launch--make-the-sites-numbers-agree.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenario-playwright.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumstats-campaign-figures.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingcard-no-platform-connected--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingcard-no-platform-connected--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumstats-campaign-figures--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorlevels-four-partnership-levels--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/751a0d47094d1a5840cc9baadccc828584f98040e71d22d7da46d3bc4669fe63.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/c104c0d87c011b9cc225bdb410dc41fb9072ebb8b1eab69ab5fd1d1a09b8c625.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/give/GivingCard.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/Stats.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/pageCopy/donate.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/sponsorLevels/global.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/sponsorPage/sponsor.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/global-chapters.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/harvard-alumni-in-tech.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/collections.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/donatePage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/givePage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/sponsorPage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/givingContent.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/presenceConsistency.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/GivingCard.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/GlobalCommunityCta.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/HomeSections.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/MomentumStats.astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/installed-by.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/63067537ab1c6711f97453510e0d79de436960348650c120c592ff299beb4857.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/b749e8c54c063f6653faa998ca7c4a6cbe520b2386693070fdf27a92f29e1825.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/c51d3adf70e7ba8d668c094ad29cfe077d2d676bf8dce9e06283cdfe3ad665e1.json",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Harvard in Tech - Board On Four Sizes",
+      "screenshotPath": "harvard-in-tech-board-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapters On Four Sizes",
+      "screenshotPath": "harvard-in-tech-chapters-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact On Four Sizes",
+      "screenshotPath": "harvard-in-tech-contact-on-four-sizes--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Phone Menu Open",
+      "screenshotPath": "harvard-in-tech-phone-menu-open--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Stats Band",
+      "screenshotPath": "stats-band--mobile.png"
+    }
+  ],
+  "testResults": {
+    "total": 52,
+    "passed": 52,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 52,
+        "passed": 52
+      }
+    ]
+  }
+}

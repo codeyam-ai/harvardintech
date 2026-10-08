@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 922514b69a5aa92f55ca48980c16673c7a8fc2ad  source-sha256: 9f04a84846d56b79ddb0e22318f5c6ac77fa235210bc7766c9b1eaf058c70342
+// codeyam-editor: 0.1.7  build: 0f08a7d2e5ac16bc0241d2a06cbe64c889dbf26d  source-sha256: 3a1a7d9c12ee96a2806327bdfa30b8c1219adba5a09e4999b8f57ae775c8fe56
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -92,6 +92,110 @@ function isTransientLaunchCrash(error) {
   );
 }
 
+// Stable first token of the error a missing-system-library launch failure is
+// rethrown as. The Rust side keys on it (`scenario_check.rs`
+// `CAPTURE_BROWSER_DEPS_MISSING_MARKER`) to turn the failure into a blocked
+// precondition, so the two spellings must stay greppable from each other.
+const CAPTURE_BROWSER_DEPS_MISSING_MARKER = "CODEYAM_CAPTURE_BROWSER_DEPS_MISSING";
+// The two shapes a missing shared library takes in a launch error: the dynamic
+// loader's own line (Chromium starts and dies), and Playwright's host
+// validation box listing every missing library before it even spawns.
+const MISSING_SHARED_LIBRARY_PATTERNS = [
+  "error while loading shared libraries",
+  "Host system is missing dependencies",
+];
+const SHARED_LIBRARY_NAME_PATTERN = /\blib[\w+-]+(?:\.[\w+-]+)*?\.so(?:\.\d+)*/g;
+const PLAYWRIGHT_INSTALL_DEPS_COMMAND = "npx playwright install-deps chromium";
+// Nix package for the libraries Chromium most often lacks on Replit, keyed by
+// the stem before `.so`. A library outside this map still gets a remedy — it is
+// just named without a package suggestion.
+const REPLIT_NIX_PACKAGE_FOR_LIBRARY = {
+  "libglib-2.0": "pkgs.glib",
+  "libgobject-2.0": "pkgs.glib",
+  "libgio-2.0": "pkgs.glib",
+  libnss3: "pkgs.nss",
+  libnssutil3: "pkgs.nss",
+  libsmime3: "pkgs.nss",
+  libnspr4: "pkgs.nspr",
+  "libatk-1.0": "pkgs.atk",
+  "libatk-bridge-2.0": "pkgs.at-spi2-atk",
+  "libatspi": "pkgs.at-spi2-core",
+  libcups: "pkgs.cups",
+  "libdbus-1": "pkgs.dbus",
+  libdrm: "pkgs.libdrm",
+  libgbm: "pkgs.mesa",
+  libxkbcommon: "pkgs.libxkbcommon",
+  libasound: "pkgs.alsa-lib",
+  "libpango-1.0": "pkgs.pango",
+  libcairo: "pkgs.cairo",
+  libexpat: "pkgs.expat",
+  libX11: "pkgs.xorg.libX11",
+  libXcomposite: "pkgs.xorg.libXcomposite",
+  libXdamage: "pkgs.xorg.libXdamage",
+  libXext: "pkgs.xorg.libXext",
+  libXfixes: "pkgs.xorg.libXfixes",
+  libXrandr: "pkgs.xorg.libXrandr",
+  libxcb: "pkgs.xorg.libxcb",
+};
+
+// Does this launch error say the host is missing a shared library Chromium
+// needs? Not retryable and not fixed by downloading the browser again.
+function isMissingSystemLibrary(error) {
+  return (
+    !!error &&
+    typeof error.message === "string" &&
+    MISSING_SHARED_LIBRARY_PATTERNS.some((pattern) =>
+      error.message.includes(pattern),
+    )
+  );
+}
+
+// Every distinct `lib*.so*` name a missing-library launch error mentions, in
+// first-seen order. Covers both the loader line and Playwright's list.
+function missingLibraryNames(error) {
+  const message = (error && error.message) || "";
+  return [...new Set(message.match(SHARED_LIBRARY_NAME_PATTERN) || [])];
+}
+
+// The fix for the platform the capture is running on. Replit is detected by the
+// same env signals `preview_host_provider/replit.rs` uses; there system
+// packages come from replit.nix. Any other Linux host gets Playwright's own
+// dependency installer; anything else gets the library names and a hint.
+function missingLibraryRemedy(libraries, { env = process.env, platform = process.platform } = {}) {
+  const named = libraries.length > 0 ? libraries.join(", ") : "the missing libraries";
+  if (env.REPL_ID || env.REPLIT_DEV_DOMAIN) {
+    const packages = [
+      ...new Set(
+        libraries
+          .map((lib) => REPLIT_NIX_PACKAGE_FOR_LIBRARY[lib.split(".so")[0]])
+          .filter(Boolean),
+      ),
+    ];
+    const suggestion =
+      packages.length > 0 ? ` (${packages.join(", ")})` : "";
+    return `add the Nix package(s) providing ${named}${suggestion} to the \`deps\` list in replit.nix, then restart the Repl and re-run the capture`;
+  }
+  if (platform === "linux") {
+    return `install Chromium's system libraries with \`${PLAYWRIGHT_INSTALL_DEPS_COMMAND}\` (may need sudo), then re-run the capture`;
+  }
+  return `install the system package(s) that provide ${named} for this OS, then re-run the capture`;
+}
+
+// The rethrown error for a missing-library launch failure: marker line naming
+// the libraries, a `remedy:` line, then the original Playwright message as
+// diagnostic. Line-oriented so the Rust side can lift each part out.
+function missingSystemLibraryError(error, { env, platform } = {}) {
+  const libraries = missingLibraryNames(error);
+  const remedy = missingLibraryRemedy(libraries, { env, platform });
+  const wrapped = new Error(
+    `${CAPTURE_BROWSER_DEPS_MISSING_MARKER} ${libraries.join(",")}\n` +
+      `remedy: ${remedy}\n` +
+      error.message,
+  );
+  wrapped.cause = error;
+  return wrapped;
+}
+
 // Self-heal around `chromium.launch()`. Two recoverable classes:
 //
 //   1. "missing browser" — run `npx playwright install chromium` synchronously
@@ -99,6 +203,12 @@ function isTransientLaunchCrash(error) {
 //   2. transient SIGSEGV launch crash — retry the launch up to
 //      `CAPTURE_LAUNCH_SIGSEGV_RETRIES` times with a short backoff, since the
 //      crash is environmental (dbus-less cloud VM) and clears on a retry.
+//
+// A third class is diagnosed but deliberately NOT healed: a host missing a
+// system library Chromium links against. Installing system packages changes
+// the user's environment (replit.nix, apt, often root), so it is rethrown —
+// with no retry and no browser install — as `missingSystemLibraryError`,
+// naming the library and the platform's remedy.
 //
 // For any unrecognized error, or after exhausting retries, rethrow the
 // ORIGINAL Playwright error so the existing `Scenario check failed: <stderr>`
@@ -113,10 +223,15 @@ async function launchChromiumWithSelfHeal({
   install = () => execSync(PLAYWRIGHT_INSTALL_COMMAND, { stdio: "inherit" }),
   stderr = process.stderr,
   sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+  env = process.env,
+  platform = process.platform,
 } = {}) {
   try {
     return await launch();
   } catch (error) {
+    if (isMissingSystemLibrary(error)) {
+      throw missingSystemLibraryError(error, { env, platform });
+    }
     const isMissingBrowser =
       error &&
       typeof error.message === "string" &&
@@ -149,7 +264,13 @@ async function launchChromiumWithSelfHeal({
     }
     try {
       return await launch();
-    } catch (_retryError) {
+    } catch (retryError) {
+      // A fresh download onto a host without Chromium's system libraries
+      // (the common first-capture shape on Replit) fails HERE, and the
+      // original "missing browser" error would now be a lie.
+      if (isMissingSystemLibrary(retryError)) {
+        throw missingSystemLibraryError(retryError, { env, platform });
+      }
       throw error;
     }
   }
@@ -1030,11 +1151,14 @@ async function verifyStorageSeedLanded(frame, config) {
 // Rendering already reflows whitespace. Case-folding is the same argument one
 // step further: an app that lowercases a value before putting it on the page
 // has still put the value on the page.
+// Two statements rather than one chained return, so line coverage can see the
+// body run. As a single multi-line expression the whole function collapsed to
+// one instrumented line that the reporter then recorded as never executed
+// (`DA:1153,0`) while its own function counter said 105 calls — which read as
+// uncovered debt for an entity its tests exercise heavily.
 function normalizeForMatch(text) {
-  return String(text == null ? "" : text)
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLowerCase();
+  const raw = String(text == null ? "" : text);
+  return raw.replace(/\s+/g, " ").trim().toLowerCase();
 }
 
 // Does an already-normalized surface carry `value`?
@@ -2137,6 +2261,22 @@ async function runScenarioCheck(
 async function main() {
   const config = JSON.parse(process.argv[2] || "{}");
 
+  // Preview-preflight launch probe (`preview_preflight.rs`
+  // `check_capture_browser_launch`): launch and close Chromium through the same
+  // self-heal path so a missing system library surfaces before the first
+  // capture. Installing the browser is a capture-time side effect, never a
+  // preflight one, so the probe disables it.
+  if (config.probeLaunch) {
+    const browser = await launchChromiumWithSelfHeal({
+      install: () => {
+        throw new Error("browser install is disabled in the launch probe");
+      },
+    });
+    await browser.close();
+    console.log(JSON.stringify({ ok: true }));
+    return;
+  }
+
   if (!config.url) {
     console.error(
       "Usage: node scenario-check.js '{\"url\":\"...\",\"outputPath\":\"...\",\"width\":1440,\"height\":900}'",
@@ -2179,6 +2319,10 @@ module.exports = {
   main,
   launchChromiumWithSelfHeal,
   isTransientLaunchCrash,
+  isMissingSystemLibrary,
+  missingLibraryNames,
+  missingLibraryRemedy,
+  CAPTURE_BROWSER_DEPS_MISSING_MARKER,
   CAPTURE_LAUNCH_ARGS,
   CAPTURE_HOST_RESOLVER_RULES,
   CAPTURE_LAUNCH_SIGSEGV_RETRIES,

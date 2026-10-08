@@ -1,11 +1,9 @@
 {
   "name": "Harvard in Tech - Landing Page",
-  "id": "94feddab-28d7-414a-9d7c-5b91c5cf49c3",
+  "id": "66588b97-04a2-446a-90c9-f8d3f3a27b8b",
   "url": "/",
   "dimensions": [
     "Mobile",
-    "Tablet",
-    "Laptop",
     "Desktop"
   ],
   "mocks": {},
@@ -49,5 +47,6 @@
     ]
   },
   "scenarioType": "application",
-  "pageFilePath": "src/pages/index.astro"
+  "pageFilePath": "src/pages/index.astro",
+  "description": " NARROWED 2026-10-08: a four-width capture now takes longer than the editor's 60-second capture request and fails with a transport error every time, the same cause that narrowed the board and chapters scenarios. Mobile and Desktop are the two layouts the stats band and hero actually change between."
 }

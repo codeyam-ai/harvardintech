@@ -108,7 +108,7 @@ codeyam-editor start
 ```
 <!-- codeyam:run-and-edit:end -->
 
-<!-- codeyam:scenario-gallery:start d=91a1af7d42ea -->
+<!-- codeyam:scenario-gallery:start d=401017f86c49 -->
 ## Scenario gallery
 
 States captured as runnable scenarios with codeyam-editor:
@@ -125,6 +125,12 @@ A blog post as a reader who still holds its link meets it. This scenario used to
 
 The page a reviewer actually lands on. An unpublished post, cloned to an unguessable URL and rendered in the site's real layout — no sign-in, no CMS account, no passphrase. The post it stands in for is still a draft and appears in no listing; this URL is the only way to reach it. Proves the load-bearing half of preview links: routableEntries built a page that publishedEntries deliberately excludes from every index.
 
+### Harvard in Tech - Board On Four Sizes
+
+<img src=".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png" alt="Harvard in Tech - Board On Four Sizes" width="280">
+
+The board grid at all four widths. It sits far below the fold, so the capture hovers a selector inside the band to bring it into frame - a URL fragment does not scroll a capture, which is why the older /#board scenario shoots the hero instead. Portraits in a grid are the homepage's densest layout, so this is where a column count that works at 1440 and fails at 768 shows up. NARROWED 2026-10-02: this ran at four widths until the capture pipeline stopped finishing it — the screenshot is taken and the verification request that follows returns 502, every time, on this scenario and on the chapters one beside it, while contact-on-four-sizes captures fine at the same four widths. Tablet and Desktop are what remain: Tablet is the intermediate width this frame exists to watch, Desktop is the reference that already works, and the pair still answers the question the four did. Mobile and Laptop go back the moment a four-width capture completes again.
+
 ### Chapter Route - New York City
 
 <img src=".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png" alt="Chapter Route - New York City" width="280">
@@ -137,6 +143,12 @@ The founding chapter with NO events tagged to it — the counterpart to London, 
 
 The site-wide integration keys on a screen of their own: the analytics measurement id, the Givebutter account id, and the raw head/body HTML escape hatch. Doubles as the live-preview pane's NO-PAGE state — siteIntegrations is the one collection declared with a null path, so the pane says 'This content has no page of its own' and falls back to the plain body preview rather than guessing an address and embedding a 404 beside the form for the whole session.
 
+### Harvard in Tech - Chapters On Four Sizes
+
+<img src=".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--tablet.png" alt="Harvard in Tech - Chapters On Four Sizes" width="280">
+
+The chapters band at all four widths, framed by hovering inside it. Each chapter is a card with a city and a link, so this band answers whether the card grid reflows cleanly or strands a single card on its own row at the intermediate sizes nobody has looked at. NARROWED 2026-10-02: this ran at four widths until the capture pipeline stopped finishing it — the screenshot is taken and the verification request that follows returns 502, every time, on this scenario and on the chapters one beside it, while contact-on-four-sizes captures fine at the same four widths. Tablet and Desktop are what remain: Tablet is the intermediate width this frame exists to watch, Desktop is the reference that already works, and the pair still answers the question the four did. Mobile and Laptop go back the moment a four-width capture completes again. NARROWED AND SEEDED 2026-10-02. Two things were wrong. It ran at four widths until the capture pipeline stopped finishing it — the screenshot is taken and the verification request that follows returns 502 — so Tablet and Desktop are what remain: Tablet is the intermediate width this frame exists to watch, Desktop is the reference that already works. And the seed never carried any CHAPTERS, so the band this scenario is named after rendered nothing the moment the content sandbox started working properly and stopped leaking production content into seeded scenarios; six are seeded now, five active and one forming, because an odd card is exactly the reflow this frame is meant to catch.
+
 ### Community Route - Founders With Leads And Events
 
 <img src=".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png" alt="Community Route - Founders With Leads And Events" width="280">
@@ -148,16 +160,4 @@ A community once it has people and a calendar behind it. Its events are tagged t
 <img src=".codeyam/scenarios/screenshots/cms-blog-duplicate-is-not-momentum-fund-only--desktop.png" alt="CMS Blog - Duplicate Is Not Momentum-Fund-Only" width="280">
 
 The same Duplicate action on a collection that has nothing to do with the campaign page. It matters because the request that produced this feature was about duplicating a Momentum Fund section, and the easy build would have gated the action to that one collection — which would have been MORE code to make the feature smaller. Duplicate lives in the shared entry-row action cluster instead, so pillar cards, events and blog posts get it for free, and a blog post duplicated here carries its own title, date, summary and body into the create form exactly the way a section does. The one exclusion is a preview row, whose action set is different and whose previewOf marker would otherwise mint a second unlisted clone of the same target. This list also shows the ordinary case for the row label: blog posts carry real titles, so no row is falling back to its slug.
-
-### Cutover Runbook - The Records On A Phone
-
-<img src=".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png" alt="Cutover Runbook - The Records On A Phone" width="280">
-
-The DNS record table at 390px, brought into frame by driving the page rather than by a URL fragment — a bare anchor does not scroll a capture, so a fragment-only scenario silently frames the hero and proves nothing. This capture is the reason the table stacks here instead of scrolling. The first build let it scroll horizontally inside its own box, which kept the page body from widening and looked correct; what the capture showed was that values like the Strikingly CNAME pushed the third column entirely off-screen, and the third column is where the 'Do not touch' badges on the Email and SPF rows live. The single most important instruction on the page was invisible on the device someone is most likely to be holding while standing in the registrar console, with nothing on screen suggesting more existed. It survived the move from a standalone file to a real route, which is what this scenario re-proves.
-
-### CMS Blog List - A Preview Link And A Locked One
-
-<img src=".codeyam/scenarios/screenshots/cms-blog-list-a-preview-link-and-a-locked-one--desktop.png" alt="CMS Blog List - A Preview Link And A Locked One" width="280">
-
-The blog list once preview links exist: a third group above Drafts and Published holding two unlisted clones. One is an ordinary preview; the other is password-protected, so it shows the placeholder title Protected preview rather than its real one — the title is encrypted at rest alongside the body, which is why the list cannot show it either. The @codeyam/cms 0.5.0 upgrade is what added this group.
 <!-- codeyam:scenario-gallery:end -->
