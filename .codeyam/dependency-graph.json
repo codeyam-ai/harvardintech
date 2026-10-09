@@ -82,9 +82,9 @@
     ".codeyam/scenario-issues.js": {
       "imports": [],
       "importedBy": [
-        ".codeyam/scenario-interactivity.js",
+        ".codeyam/capture.js",
         ".codeyam/scenario-handlers.js",
-        ".codeyam/capture.js"
+        ".codeyam/scenario-interactivity.js"
       ]
     },
     ".codeyam/scenario-metrics.js": {
@@ -4602,9 +4602,9 @@
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}": {
+    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}",
+      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n}",
       "imports": [
         ".codeyam/scenario-playwright.js::__file_root__"
       ],
@@ -4634,9 +4634,9 @@
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}": {
+    ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  isCanvasDominated,\n  frameHasVisualContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
+      "name": "{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  isCanvasDominated,\n  frameHasVisualContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
       "imports": [
         ".codeyam/scenario-metrics.js::__file_root__"
       ],
@@ -4650,14 +4650,6 @@
       ],
       "importedBy": []
     },
-    ".codeyam/scenario-handlers.js::__file_root__": {
-      "filePath": ".codeyam/scenario-handlers.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js::{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}"
-      ]
-    },
     ".codeyam/scenario-handlers.js::{ createIssue }": {
       "filePath": ".codeyam/scenario-handlers.js",
       "name": "{ createIssue }",
@@ -4665,14 +4657,6 @@
         ".codeyam/scenario-issues.js::__file_root__"
       ],
       "importedBy": []
-    },
-    ".codeyam/scenario-interactivity.js::__file_root__": {
-      "filePath": ".codeyam/scenario-interactivity.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js::{\n  buildCounterpartProbe,\n  subpathHydrationEscalation,\n  waitForHydration,\n}"
-      ]
     },
     ".codeyam/scenario-interactivity.js::{ createIssue }": {
       "filePath": ".codeyam/scenario-interactivity.js",
@@ -4682,30 +4666,12 @@
       ],
       "importedBy": []
     },
-    ".codeyam/scenario-issues.js::__file_root__": {
-      "filePath": ".codeyam/scenario-issues.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".codeyam/scenario-handlers.js::{ createIssue }",
-        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}"
-      ]
-    },
     ".codeyam/scenario-metrics.js::__file_root__": {
       "filePath": ".codeyam/scenario-metrics.js",
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
         ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}"
-      ]
-    },
-    ".codeyam/scenario-mocks.js::__file_root__": {
-      "filePath": ".codeyam/scenario-mocks.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js::{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n  unmockedRouteFrom,\n}"
       ]
     },
     ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}": {
@@ -11832,5 +11798,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-09T00:37:46Z"
+  "lastUpdated": "2026-10-09T17:27:20Z"
 }

@@ -169,6 +169,8 @@ blob-report/
 .codeyam/state/harness-tasks-dir
 .codeyam/state/tool-loading-injected.json
 .codeyam/state/refusal-fingerprints.json
+.codeyam/state/recapture-tuning.json
+.codeyam/state/installed-by.json
 .codeyam/state/pretool-hook-inflight/
 .codeyam/state/rebase-heal.json
 .codeyam/state/rebuild-self-restart.json

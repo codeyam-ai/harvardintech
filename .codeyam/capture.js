@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 0f08a7d2e5ac16bc0241d2a06cbe64c889dbf26d  source-sha256: 3a1a7d9c12ee96a2806327bdfa30b8c1219adba5a09e4999b8f57ae775c8fe56
+// codeyam-editor: 0.1.7  build: 0a847ac3bbf2b6935e3e284ce75ee23f9b92a629  source-sha256: cf3e9d7fc7b10bb4cc3b9b366fbf97f913aecb3c369f0971093cd8930bd5b913
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -68,12 +68,75 @@ const CAPTURE_LAUNCH_ARGS = [
   // renderer doesn't crash allocating it.
   "--disable-dev-shm-usage",
   // No GPU on the headless cloud VM — avoid the GL init path that aborts.
+  // WebGL2 still works: Playwright adds `--enable-unsafe-swiftshader` on
+  // Linux, so canvas apps get software WebGL2 (verified; WebGPU does not).
   "--disable-gpu",
-  // Stub out the dbus integration Chromium reaches for at launch; the cloud
-  // base image has no dbus session bus, which is the proximate cause of the
-  // signal-11 abort.
-  "--disable-features=DBus",
 ];
+// Features the capture browser disables on top of Playwright's own list.
+// DBus: stub out the dbus integration Chromium reaches for at launch; the cloud
+// base image has no dbus session bus, which is the proximate cause of the
+// signal-11 abort.
+//
+// These are NOT a second `--disable-features=` switch. Chromium keeps only the
+// LAST value of a repeated switch (verified empirically: `--disable-features=
+// WebHID` hides `navigator.hid`, and a later `--disable-features=DBus` brings it
+// back), so appending our own switch silently re-enabled every feature
+// Playwright disables. `captureLaunchOptions` merges them into one value.
+const CAPTURE_DISABLED_FEATURES = ["DBus"];
+const DISABLE_FEATURES_PREFIX = "--disable-features=";
+
+// Playwright's own default `--disable-features=<list>` switch, exactly as it
+// will pass it, or null when it cannot be read. Read from playwright-core's
+// switch table (not part of its public exports, so it is required by file path
+// and any failure degrades to null rather than throwing).
+function playwrightDefaultDisableFeaturesArg() {
+  try {
+    const playwrightDir = path.dirname(require.resolve("playwright/package.json"));
+    const coreDir = path.dirname(
+      require.resolve("playwright-core/package.json", { paths: [playwrightDir] }),
+    );
+    const { chromiumSwitches } = require(
+      path.join(coreDir, "lib", "server", "chromium", "chromiumSwitches.js"),
+    );
+    const found = chromiumSwitches(false).find(
+      (arg) => typeof arg === "string" && arg.startsWith(DISABLE_FEATURES_PREFIX),
+    );
+    return found || null;
+  } catch (_) {
+    return null;
+  }
+}
+
+// One `--disable-features=` value carrying the default list plus `extra`,
+// de-duplicated and order-preserving.
+function mergeDisableFeaturesArg(defaultArg, extra) {
+  const base =
+    typeof defaultArg === "string" && defaultArg.startsWith(DISABLE_FEATURES_PREFIX)
+      ? defaultArg.slice(DISABLE_FEATURES_PREFIX.length).split(",")
+      : [];
+  const merged = [];
+  for (const feature of base.concat(extra)) {
+    if (feature && !merged.includes(feature)) merged.push(feature);
+  }
+  return DISABLE_FEATURES_PREFIX + merged.join(",");
+}
+
+// The `chromium.launch` args for capture. Playwright's default
+// `--disable-features` switch is suppressed via `ignoreDefaultArgs` and
+// re-supplied merged with ours. Should the suppression ever miss (its match is
+// exact-string), our merged switch is still the later one and a superset, so
+// the last-wins rule still lands every feature.
+function captureLaunchOptions({
+  defaultDisableFeaturesArg = playwrightDefaultDisableFeaturesArg(),
+} = {}) {
+  const args = [
+    ...CAPTURE_LAUNCH_ARGS,
+    mergeDisableFeaturesArg(defaultDisableFeaturesArg, CAPTURE_DISABLED_FEATURES),
+  ];
+  return defaultDisableFeaturesArg
+    ? { args, ignoreDefaultArgs: [defaultDisableFeaturesArg] }
+    : { args };
+}
 // Point Chromium's dbus client at a dead address so it never blocks on (or
 // crashes against) a missing session bus. Spread over the real env in the
 // default launcher so the laptop path keeps its normal environment.
@@ -217,7 +280,7 @@ function missingSystemLibraryError(error, { env, platform } = {}) {
 async function launchChromiumWithSelfHeal({
   launch = () =>
     chromium.launch({
-      args: CAPTURE_LAUNCH_ARGS,
+      ...captureLaunchOptions(),
       env: { ...process.env, ...CAPTURE_LAUNCH_DBUS_ENV },
     }),
   install = () => execSync(PLAYWRIGHT_INSTALL_COMMAND, { stdio: "inherit" }),
@@ -280,9 +343,29 @@ const {
   findScenarioError,
   SCENARIO_ERROR_MARKER,
   hasRenderableContent,
+  isCanvasDominated,
+  frameHasVisualContent,
   buildSettleAdvisory,
   describeBlankReason,
 } = require("./scenario-metrics");
+
+// Decode a PNG screenshot buffer to `{ width, height, data }` (RGBA) with the
+// pngjs codec Playwright already bundles, resolved through the same
+// `playwright` install capture launches — so the uniform-frame check adds no
+// dependency. Returns null when the codec or the frame cannot be read; the
+// caller then skips the pixel check rather than failing a capture on a
+// decoder problem.
+function decodeScreenshotPng(buffer) {
+  try {
+    const playwrightDir = path.dirname(require.resolve("playwright/package.json"));
+    const { PNG } = require(
+      require.resolve("playwright-core/lib/utilsBundle", { paths: [playwrightDir] }),
+    );
+    return PNG.sync.read(buffer);
+  } catch (_) {
+    return null;
+  }
+}
 
 const {
   createIssue,
@@ -303,6 +386,7 @@ const {
   loadScenarioTopLevel,
   resolveHarnessOrigin,
   waitForStablePage,
+  waitForReadySignal,
   createNetworkTracker,
   waitForNetworkQuiet,
   collectContentState,
@@ -310,7 +394,12 @@ const {
   collectVisibleTextLength,
   forceFinalVisualState,
   centerCaptureWrapper,
+  isCanvasInteraction,
+  resolveInteractionTarget,
   performInteraction,
+  pixelSnapshot,
+  samePixels,
+  waitForPixelStable,
   waitForPredicate,
   performInteractionSequence,
 } = require("./scenario-playwright");
@@ -579,6 +668,81 @@ function readStackLoadingMarkers() {
   }
 }
 
+// A cold wasm compile under software WebGL (SwiftShader on a GPU-less VM) is
+// slow, so the default wait for an app's ready signal is generous.
+const DEFAULT_READY_TIMEOUT_MS = 30000;
+
+// Normalize a declared ready signal: `readySignal` is a JS expression polled in
+// the page until truthy; `readyTimeoutMs` bounds the wait. A missing, empty, or
+// non-string signal means "no signal declared" (null), and a missing or
+// non-positive timeout falls back to the default.
+function resolveReadySignal(source) {
+  const signal =
+    source && typeof source.readySignal === "string" && source.readySignal.trim()
+      ? source.readySignal.trim()
+      : null;
+  const timeoutMs =
+    source && typeof source.readyTimeoutMs === "number" && source.readyTimeoutMs > 0
+      ? source.readyTimeoutMs
+      : DEFAULT_READY_TIMEOUT_MS;
+  return { signal, timeoutMs };
+}
+
+// Read the app's declared readiness from `.codeyam/stack.json`
+// (`capture.readySignal` / `capture.readyTimeoutMs`), beside the loading
+// markers and for the same reason: only the app knows when a canvas it paints
+// into is done — its pixels never move `innerHTML`, so DOM stability cannot
+// tell. Never throws; an unreadable stack.json declares no signal.
+function readStackReadySignal() {
+  try {
+    const raw = fs.readFileSync(path.join(".codeyam", "stack.json"), "utf8");
+    const stack = JSON.parse(raw);
+    return resolveReadySignal(stack && stack.capture);
+  } catch (_) {
+    return resolveReadySignal(null);
+  }
+}
+
+// The readiness this capture waits on: a `readySignal` injected through config
+// (unit tests, and any caller that knows better) wins; otherwise stack.json's.
+function resolveCaptureReadiness(config, readStack = readStackReadySignal) {
+  return config && typeof config.readySignal === "string"
+    ? resolveReadySignal(config)
+    : readStack();
+}
+
+// The failure for a ready signal that never turned truthy. Names the expression
+// and the wait, and points at the one thing the author controls: their app
+// never set the signal (or the expression/timeout in stack.json is wrong).
+function readySignalTimeoutIssue(readiness, url) {
+  return createIssue(
+    "ready-signal",
+    `App never signalled ready: \`${readiness.signal}\` was still falsy after ${readiness.timeoutMs}ms. Your app never set its ready signal — set it once the first frame is painted, or fix capture.readySignal / capture.readyTimeoutMs in .codeyam/stack.json`,
+    { url },
+  );
+}
+
+// A blank issue for a canvas-dominated capture whose frame is one flat color,
+// or null. A canvas-dominated page passes the DOM blank gate on its canvas's
+// bounding box alone, so the pixels it actually painted are checked here.
+// DOM-rendered pages never reach the pixel check, `allowMinimalRender` is the
+// deliberate opt-out for a scenario whose intended frame is empty, and a frame
+// that cannot be decoded is not judged (null) rather than failed.
+function canvasBlankIssue(
+  shot,
+  contentState,
+  { allowMinimalRender = false, url = null, decode = decodeScreenshotPng } = {},
+) {
+  if (allowMinimalRender || !isCanvasDominated(contentState)) return null;
+  const decoded = decode(shot);
+  if (!decoded || frameHasVisualContent(decoded)) return null;
+  return createIssue(
+    "blank",
+    "Canvas painted nothing: the page is a canvas with no visible text, and the captured frame is a single flat color. The app has not drawn its first frame (or drew it to a buffer that was never presented). Declare capture.readySignal in .codeyam/stack.json so capture waits for the first paint; if this scenario is meant to be empty, set allowMinimalRender.",
+    { url },
+  );
+}
+
 // True when the scenario being captured scripts a `/ws/terminal` transcript or
 // a WebSocket stream. Such captures need the REAL `WebSocket` so the server can
 // replay the scripted agent state into the frame — `getInitScript` keeps its
@@ -619,10 +783,56 @@ function scenarioScriptsLiveSocket(config) {
 // dead page (`false`) earns "unhydrated". `null` means the wait could not judge
 // (unknown framework, no controls, probe threw) and must keep reporting "none" —
 // never invent a hydration fault we cannot prove.
-function classifyInteractionEffect(beforeFingerprint, afterFingerprint, hydrated) {
+//
+// `pixelsChanged` is the second effect signal, for apps that paint into a
+// `<canvas>`: their DOM never changes, so a working click there used to read as
+// "none". An effect counts when EITHER signal moved; a pixel change alone also
+// rules out "unhydrated", since something on the page responded.
+function classifyInteractionEffect(
+  beforeFingerprint,
+  afterFingerprint,
+  hydrated,
+  pixelsChanged = false,
+) {
   if (beforeFingerprint !== afterFingerprint) return "changed";
+  if (pixelsChanged === true) return "changed";
   if (hydrated === false) return "unhydrated";
   return "none";
+}
+
+// Where to look for a pixel effect, and whether the pixel signal applies at all.
+// The shot is clipped to the target's box, so an unrelated spinner elsewhere on
+// the page cannot pass for an effect; page-level keyboard verbs have no target
+// and use the whole viewport (`clip: null`). A target that cannot be resolved
+// here is left for `performInteraction` to fail on with its full no-match
+// guidance, so this never throws.
+//
+// `targetIsCanvas` is what scopes the pixel signal to canvas work. On an
+// ordinary DOM control an inert click still paints a focus ring or a pressed
+// state, and counting that as an effect would hide exactly the dead handler the
+// "none" verdict exists to report.
+async function resolvePixelClip(frame, interaction, resolve = resolveInteractionTarget) {
+  if (["key", "type"].includes((interaction || {}).action)) {
+    return { clip: null, targetIsCanvas: false };
+  }
+  try {
+    const { locator } = await resolve(frame, interaction);
+    const clip = await locator.boundingBox();
+    const targetIsCanvas = await locator.evaluate(
+      (el) => el.tagName === "CANVAS" || !!el.querySelector("canvas"),
+    );
+    return { clip, targetIsCanvas: targetIsCanvas === true };
+  } catch (_) {
+    return { clip: null, targetIsCanvas: false };
+  }
+}
+
+// Which signal proved the effect: `dom` wins when both moved, because it is the
+// stronger and more specific evidence. `null` when neither moved.
+function interactionEffectSignal(beforeFingerprint, afterFingerprint, pixelsChanged) {
+  if (beforeFingerprint !== afterFingerprint) return "dom";
+  if (pixelsChanged === true) return "pixels";
+  return null;
 }
 
 async function getDOMFingerprint(frame) {
@@ -1441,8 +1651,9 @@ function seedNotLandedIssue(frame, config, showing, waitedMs) {
 //   - navigate: re-load a route (resolved relative to the initial url) using
 //     the same loader strategy as the initial load, then re-settle. Returns
 //     the new content frame so subsequent steps target the navigated page.
-//   - click / fill / press: a `performInteraction` against the current frame,
-//     then re-settle.
+//   - click / fill / press / hover / drag / wheel / key / type: a
+//     `performInteraction` against the current frame, then re-settle (on
+//     pixels too, for a canvas verb).
 //   - waitFor: hold until a visible-text / selector predicate (bounded).
 //   - capture: write a numbered filmstrip frame to the step's `outputPath`.
 // A failing step THROWS with its 1-based index and action, so the outer catch
@@ -1516,8 +1727,18 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
         case "click":
         case "fill":
         case "press":
+        case "hover":
+        case "drag":
+        case "wheel":
+        case "key":
+        case "type":
           await performInteraction(frame, step);
           await waitForStablePage(page, frame, interactionSettleMs, loadingMarkers);
+          // A canvas verb's effect is painted, and the DOM settle above reads
+          // an unchanged `innerHTML` as settled at once — wait on pixels too.
+          if (isCanvasInteraction(step)) {
+            await waitForPixelStable(page, { timeoutMs: interactionSettleMs });
+          }
           break;
         case "waitFor":
           await waitForPredicate(frame, step);
@@ -1530,7 +1751,7 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
           break;
         default:
           throw new Error(
-            `unknown step action "${step.action}" (expected navigate | click | fill | press | waitFor | capture)`,
+            `unknown step action "${step.action}" (expected navigate | click | fill | press | hover | drag | wheel | key | type | waitFor | capture)`,
           );
       }
     } catch (error) {
@@ -1569,6 +1790,8 @@ async function runScenarioCheck(
   const expectedConsoleErrors = !!(config && config.expectedConsoleErrors);
   let interactionEffect = null;
   let interactionRetried = false;
+  // `dom` | `pixels` | null — which signal proved `interactionEffect`.
+  let interactionSignal = null;
   // Non-fatal warnings raised while resolving interaction/flow targets — e.g. a
   // substring text match that hit more than one element. Surfaced on the result
   // so the agent sees the ambiguity instead of a silently-wrong first-match.
@@ -1876,6 +2099,20 @@ async function runScenarioCheck(
       stableTimeoutMs,
       loadingMarkers,
     );
+    // App-declared readiness. DOM stability cannot see a canvas paint, so an
+    // app that renders into one says when its first frame is down. Declared in
+    // stack.json (`capture.readySignal`), or injected via config by tests. A
+    // signal that never arrives FAILS the capture — falling through to a
+    // screenshot would record exactly the unpainted frame this exists to stop.
+    const readiness = resolveCaptureReadiness(config);
+    const readyOutcome = await waitForReadySignal(
+      frame,
+      readiness.signal,
+      readiness.timeoutMs,
+    );
+    if (!readyOutcome.ready) {
+      pushIssue(issues, readySignalTimeoutIssue(readiness, page.url() || url));
+    }
     // Held here — after stability, before the content/hydration assertions and
     // the screenshot — so every downstream check sees the same frame the
     // scenario asked for rather than an earlier one.
@@ -2082,8 +2319,15 @@ async function runScenarioCheck(
         probeCounterpart,
       });
     } else if (config.interaction) {
-      // Record fingerprint before interaction
+      const { clip: pixelClip, targetIsCanvas } = await resolvePixelClip(
+        frame,
+        config.interaction,
+      );
+      const canvasVerb = isCanvasInteraction(config.interaction) || targetIsCanvas;
+
+      // Record both fingerprints before interaction
       const beforeFingerprint = await getDOMFingerprint(frame);
+      const beforePixels = canvasVerb ? await pixelSnapshot(page, pixelClip) : null;
 
       // Drive the requested interaction (if any) against the settled frame,
       // then re-settle, so `preview-interact` captures the RESULT of a click /
@@ -2094,12 +2338,26 @@ async function runScenarioCheck(
         warnings: interactionWarnings,
       });
       await waitForStablePage(page, frame, 5000, loadingMarkers);
+      if (canvasVerb) {
+        await waitForPixelStable(page, { clip: pixelClip, timeoutMs: 5000 });
+      }
 
-      // Record fingerprint after interaction
+      // Record both fingerprints after interaction
       let afterFingerprint = await getDOMFingerprint(frame);
+      const pixelsMoved = async () =>
+        canvasVerb && !samePixels(beforePixels, await pixelSnapshot(page, pixelClip));
+      let pixelsChanged = await pixelsMoved();
 
-      // If unchanged and it was a click, retry once after 500ms (covers the hydration race)
-      if (beforeFingerprint === afterFingerprint && config.interaction.action === "click") {
+      // If NEITHER signal moved and it was a plain DOM click, retry once after
+      // 500ms (covers the hydration race). Never for a canvas verb: a canvas
+      // click that did land shows no DOM change, and repeating it toggles a
+      // selection straight back off.
+      if (
+        beforeFingerprint === afterFingerprint &&
+        !pixelsChanged &&
+        config.interaction.action === "click" &&
+        !canvasVerb
+      ) {
         interactionRetried = true;
         await new Promise((resolve) => setTimeout(resolve, 500));
         // The retry re-resolves the same target; suppress its ambiguity warning
@@ -2107,12 +2365,19 @@ async function runScenarioCheck(
         await performInteraction(frame, config.interaction);
         await waitForStablePage(page, frame, 5000, loadingMarkers);
         afterFingerprint = await getDOMFingerprint(frame);
+        pixelsChanged = await pixelsMoved();
       }
 
       interactionEffect = classifyInteractionEffect(
         beforeFingerprint,
         afterFingerprint,
         hydration.hydrated,
+        pixelsChanged,
+      );
+      interactionSignal = interactionEffectSignal(
+        beforeFingerprint,
+        afterFingerprint,
+        pixelsChanged,
       );
     }
 
@@ -2162,7 +2427,22 @@ async function runScenarioCheck(
     // recoverable rather than destructive.
     if (outputPath && loaded && !devServerPlaceholder) {
       fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-      await page.screenshot({ path: outputPath, fullPage: false });
+      const shot = await page.screenshot({ path: outputPath, fullPage: false });
+      // A canvas-dominated page passed the DOM blank gate on its canvas's
+      // bounding box alone, so check the pixels it actually painted. A frame
+      // that is one flat color is an unpainted (or cleared-to-black) canvas.
+      // DOM-rendered pages skip this entirely, and `allowMinimalRender` is the
+      // deliberate opt-out for a scenario whose intended frame is empty.
+      if (hasContent) {
+        const canvasIssue = canvasBlankIssue(shot, contentState, {
+          allowMinimalRender,
+          url: page.url() || url,
+        });
+        if (canvasIssue) {
+          hasContent = false;
+          pushIssue(issues, canvasIssue);
+        }
+      }
     }
 
     const result = buildResult({
@@ -2183,6 +2463,7 @@ async function runScenarioCheck(
     if (config.interaction) {
       result.interactionEffect = interactionEffect;
       result.interactionRetried = interactionRetried;
+      result.effectSignal = interactionSignal;
     }
 
     // Forward the hydration password census so the in-place auth-gate guard can
@@ -2291,6 +2572,8 @@ async function main() {
 module.exports = {
   runScenarioCheck,
   classifyInteractionEffect,
+  interactionEffectSignal,
+  resolvePixelClip,
   mergeVisibleTextLength,
   runFlowSteps,
   dumpPageState,
@@ -2324,6 +2607,17 @@ module.exports = {
   missingLibraryRemedy,
   CAPTURE_BROWSER_DEPS_MISSING_MARKER,
   CAPTURE_LAUNCH_ARGS,
+  CAPTURE_DISABLED_FEATURES,
+  captureLaunchOptions,
+  mergeDisableFeaturesArg,
+  playwrightDefaultDisableFeaturesArg,
+  DEFAULT_READY_TIMEOUT_MS,
+  resolveReadySignal,
+  readStackReadySignal,
+  resolveCaptureReadiness,
+  readySignalTimeoutIssue,
+  canvasBlankIssue,
+  decodeScreenshotPng,
   CAPTURE_HOST_RESOLVER_RULES,
   CAPTURE_LAUNCH_SIGSEGV_RETRIES,
   PLAYWRIGHT_INSTALL_COMMAND,

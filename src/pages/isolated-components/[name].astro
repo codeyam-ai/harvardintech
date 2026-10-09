@@ -398,20 +398,29 @@ const ourChaptersStates = {
 // The hand-authored half is `nav.json` minus its old Chapters group, pinned as a
 // literal here so the states stay deterministic when someone edits the real nav.
 const AUTHORED_NAV_ITEMS = [
-  { label: 'Programs', children: [{ label: 'All events', url: '/events' }] },
+  { label: 'Events', url: '/events/' },
   { label: 'Communities', children: [{ label: 'WhatsApp', url: '/#community' }] },
   {
     label: 'Content hub',
     children: [
-      { label: 'Blog', url: '/blog/welcome' },
+      { label: 'Webinars', url: '/webinars/' },
       { label: 'Medium', url: 'https://medium.com/harvard-in-tech' },
+      { label: 'Newsletter', url: 'https://mailchi.mp/0222623e1169/fbrj32e9wb' },
     ],
   },
   {
-    label: 'Membership',
+    label: 'About',
     children: [
-      { label: 'About', children: [{ label: 'Mission', url: '/#about' }, { label: 'Board', url: '/#board' }] },
-      { label: 'Support', children: [{ label: 'Donate', url: '/donate' }] },
+      { label: 'Mission', url: '/#about' },
+      { label: 'Board', url: '/#board' },
+    ],
+  },
+  {
+    label: 'Get involved',
+    children: [
+      { label: 'Volunteer', url: '/volunteer/' },
+      { label: 'Donate', url: '/donate/' },
+      { label: 'Sponsorship', url: '/sponsor/' },
     ],
   },
 ];
@@ -869,6 +878,7 @@ export async function getStaticPaths() {
     { params: { name: 'PrimaryNav-SixChapters' } },
     { params: { name: 'PrimaryNav-NoChapters' } },
     { params: { name: 'PrimaryNav-CommunitiesOpen' } },
+    { params: { name: 'PrimaryNav-GetInvolvedOpen' } },
     { params: { name: 'UtilityBar' } },
     { params: { name: 'UtilityBar-Empty' } },
     { params: { name: 'FocusAreas' } },
@@ -1151,6 +1161,7 @@ if (name && name.startsWith('MomentumNetwork')) {
             class:list={[
               'nav-stage',
               name === 'PrimaryNav-CommunitiesOpen' && 'nav-stage--communities-open',
+              name === 'PrimaryNav-GetInvolvedOpen' && 'nav-stage--get-involved-open',
               // The two chapter states are ABOUT the derived chapter links, and
               // those links live inside a dropdown that is closed at rest — so
               // without pinning it open both captured the same resting header,
@@ -1244,7 +1255,15 @@ if (name && name.startsWith('MomentumNetwork')) {
         visibility: visible;
         transform: translateX(-50%) translateY(0);
       }
-      /* Chapters is the SECOND group (Programs, Chapters, Communities), and it
+      /* Get involved is the LAST item (Events, Chapters, Communities, Content
+         hub, About, Get involved) — the dropdown that absorbed Support, so its
+         three links are the visible proof Membership was dissolved. */
+      .nav-stage--get-involved-open .links > .nav-item:nth-child(6) .mega {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+      /* Chapters is the SECOND item (Events, Chapters, Communities), and it
          is the group this module injects rather than one nav.json authors —
          which is exactly why its contents need to be visible in a capture. */
       .nav-stage--chapters-open .links > .nav-item:nth-child(2) .mega {

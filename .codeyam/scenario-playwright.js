@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 8a854ab935f77431e316772d29dab90f08481684  source-sha256: 2431d28107b19e7ef2603ae172dc62e931a2d1ce67f7a0a62aa04da89e956f7e
+// codeyam-editor: 0.1.7  build: 0a847ac3bbf2b6935e3e284ce75ee23f9b92a629  source-sha256: 95bba9fa1558c6aeeee1d54b187145d6fa074e29e0bdfdde1259256481c534d5
 const {
   hasLoadingMarkers,
   shouldStopWaitingForImages,
@@ -849,6 +849,32 @@ async function waitForStablePage(page, target, timeoutMs = 10000, loadingMarkers
   return { stabilized: false, hadLoadingMarkers: lastHadLoadingMarkers };
 }
 
+// Poll an app-declared ready-signal expression (stack.json
+// `capture.readySignal`) in `target` until it is truthy or `timeoutMs` elapses.
+// This is how a canvas app says "first frame painted": its pixels never move
+// `innerHTML`, so `waitForStablePage` reads it as settled before the wasm has
+// drawn anything. An expression that throws (the app global not yet defined)
+// counts as not-ready rather than failing the wait. Never throws; the caller
+// turns `ready: false` into a capture issue.
+async function waitForReadySignal(target, signal, timeoutMs) {
+  if (!signal) return { awaited: false, ready: true, elapsedMs: 0 };
+  const started = Date.now();
+  const guarded = `(() => { try { return !!(${signal}); } catch (_) { return false; } })()`;
+  try {
+    await target.waitForFunction(guarded, undefined, {
+      timeout: timeoutMs,
+      polling: 100,
+    });
+    const elapsedMs = Date.now() - started;
+    logCaptureTiming("ready-signal", { outcome: "ready", elapsedMs });
+    return { awaited: true, ready: true, elapsedMs };
+  } catch (_) {
+    const elapsedMs = Date.now() - started;
+    logCaptureTiming("ready-signal", { outcome: "timed-out", elapsedMs, timeoutMs });
+    return { awaited: true, ready: false, elapsedMs };
+  }
+}
+
 // `preflight` is injectable so unit tests that drive a mock page can stay
 // network-free; production callers use the default real reachability check.
 async function loadScenarioInIframe(
@@ -1206,12 +1232,72 @@ async function pickBestCandidate(baseLocator, matchCount) {
 // into the optional `warnings` array so the agent can switch to an exact
 // selector; a zero-match throws an error that spells out the substring caveat
 // and the exact-selector / URL-query-param alternatives.
-async function performInteraction(
-  frame,
-  interaction,
-  { timeoutMs = 5000, warnings } = {},
-) {
-  const { action, selector, text, value } = interaction || {};
+// Verbs that drive the page's mouse / keyboard directly rather than a located
+// element's own handlers — the canvas verbs. A `<canvas>` paints every control
+// into one element, so these aim at a position inside a DOM target (or, for
+// `key` / `type`, at whatever already has focus).
+const PAGE_KEYBOARD_ACTIONS = ["key", "type"];
+const DEFAULT_DRAG_STEPS = 10;
+
+// True for a step whose effect is painted rather than written to the DOM: any
+// positional click/hover, any drag or wheel, and page-level keyboard input.
+// Callers use it to settle on pixels instead of `innerHTML`, and to skip the
+// DOM-only hydration-race retry, which would turn one canvas click into two.
+function isCanvasInteraction(interaction) {
+  const { action, position } = interaction || {};
+  return (
+    action === "drag" ||
+    action === "wheel" ||
+    PAGE_KEYBOARD_ACTIONS.includes(action) ||
+    (position != null && (action === "click" || action === "hover"))
+  );
+}
+
+// The page that owns `frame` — its `mouse` and `keyboard` are page-level, and a
+// locator's `boundingBox()` is already in that page's viewport coordinates, so
+// a point measured from the box can be handed to `page.mouse` unchanged.
+function pageOf(frame) {
+  return typeof frame.page === "function" ? frame.page() : frame;
+}
+
+// `drag` / `wheel` need the target's box to turn a target-relative point into a
+// viewport point. A target that is not rendered has no box, and acting at
+// (0,0) instead would silently drive whatever is in the corner.
+async function targetBox(locator, targetDesc) {
+  if (typeof locator.scrollIntoViewIfNeeded === "function") {
+    await locator.scrollIntoViewIfNeeded().catch(() => {});
+  }
+  const box = await locator.boundingBox();
+  if (!box) {
+    throw new Error(`${targetDesc} has no bounding box (not rendered or not visible)`);
+  }
+  return box;
+}
+
+function pointIn(box, point) {
+  if (point && typeof point.x === "number" && typeof point.y === "number") {
+    return { x: box.x + point.x, y: box.y + point.y };
+  }
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+}
+
+// Page-level keyboard input. Deliberately not `locator.press`: a `<canvas>`
+// without `tabindex` never receives focus, so a locator-scoped press is
+// delivered nowhere. A preceding click on the canvas gives the app focus.
+async function performKeyboardInteraction(frame, { action, value }) {
+  const keyboard = pageOf(frame).keyboard;
+  if (action === "key") {
+    await keyboard.press(value || "Enter");
+  } else {
+    await keyboard.type(value ?? "");
+  }
+}
+
+// Resolve a step's target to the single element to act on. Shared by
+// `performInteraction` and by callers that need the target's box BEFORE
+// acting (the pixel-effect signal clips its before/after shots to it).
+async function resolveInteractionTarget(frame, interaction, { warnings } = {}) {
+  const { action, selector, text } = interaction || {};
 
   let baseLocator;
   let targetDesc;
@@ -1264,10 +1350,42 @@ async function performInteraction(
     );
   }
 
+  return { locator, targetDesc };
+}
+
+async function performInteraction(
+  frame,
+  interaction,
+  { timeoutMs = 5000, warnings } = {},
+) {
+  const { action, value, position, from, to, steps, button, deltaX, deltaY } =
+    interaction || {};
+
+  if (PAGE_KEYBOARD_ACTIONS.includes(action)) {
+    try {
+      await performKeyboardInteraction(frame, { action, value });
+    } catch (error) {
+      throw new Error(
+        `preview-interact: action "${action}" failed: ${error.message || String(error)}`,
+      );
+    }
+    return;
+  }
+
+  const { locator, targetDesc } = await resolveInteractionTarget(frame, interaction, {
+    warnings,
+  });
+
+  // Only the keys Playwright accepts, so an absent field never reaches it as
+  // an explicit `undefined`.
+  const pointerOpts = { timeout: timeoutMs };
+  if (position) pointerOpts.position = { x: position.x, y: position.y };
+  if (button) pointerOpts.button = button;
+
   try {
     switch (action) {
       case "click":
-        await locator.click({ timeout: timeoutMs });
+        await locator.click(pointerOpts);
         break;
       case "fill":
         await locator.fill(value ?? "", { timeout: timeoutMs });
@@ -1278,11 +1396,37 @@ async function performInteraction(
       case "hover":
         // Reveals hover-only affordances (an action bar, a tooltip) — one of the
         // most common ephemeral states a resting-render screenshot misses.
-        await locator.hover({ timeout: timeoutMs });
+        await locator.hover(pointerOpts);
         break;
+      case "drag": {
+        // Pan / select-box / move: built from raw mouse events because a canvas
+        // has no drop target for `locator.dragTo`.
+        const box = await targetBox(locator, targetDesc);
+        const mouse = pageOf(frame).mouse;
+        const start = pointIn(box, from);
+        const end = pointIn(box, to);
+        const mouseButton = { button: button || "left" };
+        await mouse.move(start.x, start.y);
+        await mouse.down(mouseButton);
+        await mouse.move(end.x, end.y, {
+          steps: typeof steps === "number" && steps > 0 ? steps : DEFAULT_DRAG_STEPS,
+        });
+        await mouse.up(mouseButton);
+        break;
+      }
+      case "wheel": {
+        // Zoom / scroll: the wheel event lands wherever the pointer is, so move
+        // there first.
+        const box = await targetBox(locator, targetDesc);
+        const mouse = pageOf(frame).mouse;
+        const at = pointIn(box, position);
+        await mouse.move(at.x, at.y);
+        await mouse.wheel(deltaX || 0, deltaY || 0);
+        break;
+      }
       default:
         throw new Error(
-          `preview-interact: unknown action "${action}" (expected click | fill | press | hover)`,
+          `preview-interact: unknown action "${action}" (expected click | fill | press | hover | drag | wheel | key | type)`,
         );
     }
   } catch (error) {
@@ -1291,6 +1435,44 @@ async function performInteraction(
         `Candidate interactive labels: ${await candidateLabelSummary(frame)}`,
     );
   }
+}
+
+// One screenshot of `page`, clipped to `clip` when given, as a Buffer. The
+// pixel half of the interaction-effect signal and of the canvas settle. A
+// failed shot returns null, which compares unequal to everything — so a flaky
+// screenshot reads as "changed / not yet settled", never as a false "inert".
+async function pixelSnapshot(page, clip) {
+  try {
+    const opts = { fullPage: false };
+    if (clip && clip.width > 0 && clip.height > 0) opts.clip = clip;
+    return await page.screenshot(opts);
+  } catch (_) {
+    return null;
+  }
+}
+
+function samePixels(a, b) {
+  return Buffer.isBuffer(a) && Buffer.isBuffer(b) && a.equals(b);
+}
+
+// Settle a canvas-painted page: `waitForStablePage` compares `innerHTML`, which
+// a canvas never changes, so after a canvas verb it reads "settled" while the
+// app is still animating a pan or zoom. Wait instead for two consecutive equal
+// screenshots, bounded by `timeoutMs` — the same "real signal, safety bound"
+// rule the DOM settle follows.
+async function waitForPixelStable(
+  page,
+  { clip, timeoutMs = 5000, intervalMs = 150, snapshot = pixelSnapshot } = {},
+) {
+  const deadline = Date.now() + timeoutMs;
+  let previous = await snapshot(page, clip);
+  while (Date.now() < deadline) {
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+    const current = await snapshot(page, clip);
+    if (samePixels(previous, current)) return true;
+    previous = current;
+  }
+  return false;
 }
 
 // Hold until a visible-text or selector predicate becomes true, bounded by a
@@ -1348,6 +1530,7 @@ async function performInteractionSequence(
     settleMs = 5000,
     loadingMarkers,
     settle = waitForStablePage,
+    pixelSettle = waitForPixelStable,
     warnings,
   } = {},
 ) {
@@ -1360,6 +1543,9 @@ async function performInteractionSequence(
       throw new Error(`interactions[${i}]: ${err.message}`);
     }
     await settle(page, frame, settleMs, loadingMarkers);
+    if (isCanvasInteraction(interactions[i])) {
+      await pixelSettle(page, { timeoutMs: settleMs });
+    }
   }
 }
 
@@ -1384,13 +1570,19 @@ module.exports = {
   createNetworkTracker,
   waitForNetworkQuiet,
   waitForStablePage,
+  waitForReadySignal,
   loadScenarioInIframe,
   loadScenarioTopLevel,
   collectInteractiveLabels,
   candidateLabelSummary,
   noMatchGuidance,
   describeMatchCandidates,
+  isCanvasInteraction,
+  resolveInteractionTarget,
   performInteraction,
+  pixelSnapshot,
+  samePixels,
+  waitForPixelStable,
   waitForPredicate,
   performInteractionSequence,
 };

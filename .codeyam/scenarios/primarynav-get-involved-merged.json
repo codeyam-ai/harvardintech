@@ -1,0 +1,12 @@
+{
+  "name": "PrimaryNav - Get Involved Merged",
+  "id": "d9e376c0-131b-4c57-9d63-847cf5f8cca1",
+  "url": "/isolated-components/PrimaryNav-GetInvolvedOpen",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "PrimaryNav",
+  "scenarioType": "component",
+  "description": "The simplified header menu with the Get involved dropdown pinned open. The top level now reads Events, Chapters, Communities, Content hub, About, Get involved: Events is a plain link instead of a dropdown holding only All events, and Membership is gone. Get involved holds Volunteer, Donate and Sponsorship together, so it is not a one-item dropdown, and Mission is two levels deep instead of three. Chapters still lands directly after Events. The panel is pinned by the isolation route, because a hover does not survive the screenshot on this route."
+}

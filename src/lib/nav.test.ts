@@ -16,11 +16,10 @@ import { publishedEntries } from './drafts';
 import { ONLINE_NOTE } from './localPresence';
 import type { NavItem } from './site';
 
-// The menu an editor sees before any chapter is derived into it: the four
-// hand-authored groups from `nav.json`, minus the Chapters group this feature
-// removes.
+// The menu an editor sees before any chapter is derived into it: the leading
+// items of `nav.json` — Events, a plain link, then the Communities group.
 const HAND_AUTHORED: NavItem[] = [
-  { label: 'Programs', children: [{ label: 'All Events', url: '/events' }] },
+  { label: 'Events', url: '/events/' },
   { label: 'Communities', children: [{ label: 'WhatsApp', url: '/#community' }] },
 ];
 
@@ -121,15 +120,26 @@ describe('withChapterGroup', () => {
 
   // Pins today's menu order. Deriving the group is only invisible to visitors if
   // it lands in the same slot the hand-listed group occupied.
-  it('inserts the group directly after Programs', () => {
+  it('inserts the group directly after Events', () => {
     const items = withChapterGroup(HAND_AUTHORED, chapterItems);
 
-    expect(items.map((i) => i.label)).toEqual(['Programs', 'Chapters', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Events', 'Chapters', 'Communities']);
   });
 
-  // Programs is editable in the CMS, so it can be renamed or deleted. That must
+  // The anchor is a plain link, not a dropdown — the slot is found by label
+  // alone, so the old Programs dropdown no longer pulls Chapters toward it.
+  it('ignores a leftover Programs item when placing the group', () => {
+    const items = withChapterGroup(
+      [{ label: 'Programs', children: [{ label: 'All events', url: '/events/' }] }, ...HAND_AUTHORED],
+      chapterItems,
+    );
+
+    expect(items.map((i) => i.label)).toEqual(['Programs', 'Events', 'Chapters', 'Communities']);
+  });
+
+  // Events is editable in the CMS, so it can be renamed or deleted. That must
   // degrade to a sensible position rather than throwing or dropping Chapters.
-  it('appends the group when there is no Programs item', () => {
+  it('appends the group when there is no Events item', () => {
     const items = withChapterGroup(
       [{ label: 'Communities', children: [{ label: 'WhatsApp', url: '/#community' }] }],
       chapterItems,
@@ -143,7 +153,7 @@ describe('withChapterGroup', () => {
   it('omits the group entirely when there are no chapters', () => {
     const items = withChapterGroup(HAND_AUTHORED, []);
 
-    expect(items.map((i) => i.label)).toEqual(['Programs', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Events', 'Communities']);
     expect(items.find((i) => i.label === 'Chapters')).toBeUndefined();
   });
 
@@ -339,18 +349,18 @@ describe('withCommunityItems', () => {
   it('leaves the surrounding menu order untouched', () => {
     const items = withCommunityItems(HAND_AUTHORED, communityItems);
 
-    expect(items.map((i) => i.label)).toEqual(['Programs', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Events', 'Communities']);
   });
 
   // Communities is editable in the CMS, so it can be renamed or deleted. A
   // published community must still reach the header rather than vanish.
   it('creates the group when nav.json no longer has one', () => {
     const items = withCommunityItems(
-      [{ label: 'Programs', children: [{ label: 'All Events', url: '/events' }] }],
+      [{ label: 'Events', url: '/events/' }],
       communityItems,
     );
 
-    expect(items.map((i) => i.label)).toEqual(['Programs', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Events', 'Communities']);
     expect(items[1].children).toEqual(communityItems);
   });
 
@@ -567,6 +577,68 @@ describe('committed nav.json', () => {
 
     expect(urls.length).toBeGreaterThan(0);
     expect(unresolvedNavUrls(urls, collectionRoutes('communities', '/communities'))).toEqual([]);
+  });
+
+  // The simplified menu from the 2026-10-02 audit: Events is a plain link and
+  // Membership is dissolved into About and Get involved. Chapters is not listed
+  // here because the layout injects it after Events at render time.
+  it('lists the simplified top-level menu in order', () => {
+    expect(nav.items.map((i) => i.label)).toEqual([
+      'Events',
+      'Communities',
+      'Content hub',
+      'About',
+      'Get involved',
+    ]);
+  });
+
+  // Events used to be a dropdown holding only All events — a click spent to
+  // reveal one choice. As a top-level item it must link straight to the page.
+  it('makes Events a plain link to the events page', () => {
+    const events = nav.items.find((i) => i.label === 'Events');
+
+    expect(events?.url).toBe('/events/');
+    expect(events?.children ?? []).toEqual([]);
+  });
+
+  // A dropdown that opens onto one item teaches visitors menus are not worth
+  // opening. Communities is exempt: its single authored link is joined at render
+  // time by the derived community pages.
+  it('has no other dropdown holding a single item', () => {
+    const singles = nav.items
+      .filter((i) => i.label !== 'Communities' && i.children?.length === 1)
+      .map((i) => i.label);
+
+    expect(singles).toEqual([]);
+  });
+
+  // Mission sat three levels deep under Membership. Two levels is the ceiling
+  // now, so no child may carry children of its own.
+  it('nests no deeper than two levels', () => {
+    const nested = nav.items.flatMap((i) => i.children ?? []).filter((c) => c.children?.length);
+
+    expect(nested.map((c) => c.label)).toEqual([]);
+  });
+
+  // Volunteer, Donate and Sponsorship share one dropdown, so Get involved is
+  // not left holding a lone Volunteer link.
+  it('groups volunteering and giving under Get involved', () => {
+    const group = nav.items.find((i) => i.label === 'Get involved');
+
+    expect(group?.children?.map((c) => c.url)).toEqual(['/volunteer/', '/donate/', '/sponsor/']);
+  });
+
+  // The newsletter link must reach the sign-up form everyone else on the site
+  // uses, not the LinkedIn newsletter page it pointed at before.
+  it('points Newsletter at the site mailing-list sign-up', () => {
+    const settings = JSON.parse(
+      fs.readFileSync(path.join(REPO_ROOT, 'src/data/settings.json'), 'utf-8'),
+    ) as { links: { mailingList: string } };
+    const newsletter = nav.items
+      .find((i) => i.label === 'Content hub')
+      ?.children?.find((c) => c.label === 'Newsletter');
+
+    expect(newsletter?.url).toBe(settings.links.mailingList);
   });
 });
 

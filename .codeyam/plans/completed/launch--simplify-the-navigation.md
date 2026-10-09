@@ -60,25 +60,39 @@ the actual community pages.
 
 ```
 Events                           -> /events/
+Chapters                            (derived from content, unchanged; stays right after Events)
 Communities
-  AI                             -> /communities/ai/
-  Founders                       -> /communities/founders/
   WhatsApp                       -> /#community
-Content Hub
+  AI / Founders                     (already derived from content, shipped since the audit)
+Content hub
   Webinars                       -> /webinars/
-  Medium / LinkedIn / Newsletter    (unchanged, external)
+  Medium / LinkedIn                 (unchanged, external)
+  Newsletter                     -> https://mailchi.mp/0222623e1169/fbrj32e9wb (Mailchimp sign-up)
 About
   Mission                        -> /#about
   Board                          -> /#board
 Get involved
   Volunteer                      -> /volunteer/
-Support
   Donate                         -> /donate/
   Sponsorship                    -> /sponsor/
 ```
 
-Six top-level items, two levels maximum, no single-item dropdowns, and the two
-orphaned community pages finally reachable.
+Six top-level items, two levels maximum, no single-item dropdowns.
+
+## Revisions at confirm (2026-10-09)
+
+- **Communities is already done.** `withCommunityItems` (`src/lib/nav.ts`) now
+  appends every published community to the Communities group, so the AI and
+  Founders pages are reachable. No work remains on that half of the plan.
+- **Chapters must follow the rename.** `withChapterGroup` inserts the derived
+  Chapters dropdown after the item labelled `Programs` (`INSERT_AFTER_LABEL`).
+  Renaming it to "Events" must update that anchor, or Chapters drops to the end.
+- **Support merges into Get involved** (owner's choice). The original shape left
+  "Get involved" holding only Volunteer, a single-item dropdown, which is the
+  defect this plan exists to remove.
+- **Newsletter points at the Mailchimp sign-up**, not the LinkedIn newsletter
+  (owner's request). Use the sign-up URL the site already uses elsewhere
+  (`src/data/settings.json`, `src/lib/contact.ts`, the hero slide).
 
 ## Key Decisions
 

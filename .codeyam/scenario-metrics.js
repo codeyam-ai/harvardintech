@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 0d14a78c00a5252fdf12a3cc1c1e955dd08f8e21  source-sha256: 38a6c6948b0693d3313d5fbe0699cc69cba672c518d8489c55e165a22eb2f066
+// codeyam-editor: 0.1.7  build: 0a847ac3bbf2b6935e3e284ce75ee23f9b92a629  source-sha256: 5255c6a90706000d2840c12e4931e1501f4f74e00c63a17a414da12fe8f03a48
 const LOADING_MARKERS = [
   "Loading scenario...",
   "Loading tests...",
@@ -209,9 +209,73 @@ function buildSettleAdvisory(stableOutcome, networkOutcome) {
   );
 }
 
+// A canvas-dominated capture: visible media (canvas/svg/video) and no visible
+// text. Its DOM says nothing about whether anything was painted — an unpainted
+// or black canvas still has a bounding box, so `hasRenderableContent` passes
+// it — so its frame's pixels are the only honest content check. Falls back to
+// the DOM text length when `visibleTextLength` was not collected.
+function isCanvasDominated(state) {
+  if (!state || !((state.mediaBboxCount || 0) > 0)) return false;
+  const textLength =
+    typeof state.visibleTextLength === "number"
+      ? state.visibleTextLength
+      : Math.max(state.bodyTextLength || 0, state.rootTextLength || 0);
+  return textLength === 0;
+}
+
+// Mirrors `frame_has_visual_content` in
+// crates/control-api/src/screenshot/frame_settle.rs, which the simulator capture
+// paths use: downsample the frame's luma to CONTENT_SAMPLE_EDGE² cells and call
+// it content when the spread between the darkest and brightest cell reaches
+// MIN_CONTENT_LUMA_SPREAD. The constants and the Rec.709 luma weights match
+// the Rust side so one frame cannot pass one and fail the other.
+const CONTENT_SAMPLE_EDGE = 32;
+const MIN_CONTENT_LUMA_SPREAD = 8;
+
+// `image` is a decoded RGBA frame: `{ width, height, data }`, 4 bytes per pixel.
+// An empty or malformed frame is not content.
+function frameHasVisualContent(image) {
+  if (
+    !image ||
+    !(image.width > 0) ||
+    !(image.height > 0) ||
+    !image.data ||
+    image.data.length < image.width * image.height * 4
+  ) {
+    return false;
+  }
+  const { width, height, data } = image;
+  const cells = CONTENT_SAMPLE_EDGE;
+  const sums = new Float64Array(cells * cells);
+  const counts = new Uint32Array(cells * cells);
+  for (let y = 0; y < height; y += 1) {
+    const cy = Math.min(cells - 1, Math.floor((y * cells) / height));
+    for (let x = 0; x < width; x += 1) {
+      const cx = Math.min(cells - 1, Math.floor((x * cells) / width));
+      const i = (y * width + x) * 4;
+      const luma = 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
+      sums[cy * cells + cx] += luma;
+      counts[cy * cells + cx] += 1;
+    }
+  }
+  let min = 255;
+  let max = 0;
+  for (let c = 0; c < sums.length; c += 1) {
+    if (counts[c] === 0) continue;
+    const mean = sums[c] / counts[c];
+    if (mean < min) min = mean;
+    if (mean > max) max = mean;
+  }
+  return Math.round(max) - Math.round(min) >= MIN_CONTENT_LUMA_SPREAD;
+}
+
 module.exports = {
   hasLoadingMarkers,
   hasRenderableContent,
+  isCanvasDominated,
+  frameHasVisualContent,
+  CONTENT_SAMPLE_EDGE,
+  MIN_CONTENT_LUMA_SPREAD,
   buildSettleAdvisory,
   describeBlankReason,
   shouldStopWaitingForImages,

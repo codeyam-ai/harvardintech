@@ -1,13 +1,8 @@
 {
   "items": [
     {
-      "label": "Programs",
-      "children": [
-        {
-          "label": "All events",
-          "url": "/events/"
-        }
-      ]
+      "label": "Events",
+      "url": "/events/"
     },
     {
       "label": "Communities",
@@ -35,47 +30,37 @@
         },
         {
           "label": "Newsletter",
-          "url": "https://www.linkedin.com/newsletters/harvard-in-tech-7056638759055880192/"
+          "url": "https://mailchi.mp/0222623e1169/fbrj32e9wb"
         }
       ]
     },
     {
-      "label": "Membership",
+      "label": "About",
       "children": [
         {
-          "label": "About",
-          "children": [
-            {
-              "label": "Mission",
-              "url": "/#about"
-            },
-            {
-              "label": "Board",
-              "url": "/#board"
-            }
-          ]
+          "label": "Mission",
+          "url": "/#about"
         },
         {
-          "label": "Get involved",
-          "children": [
-            {
-              "label": "Volunteer",
-              "url": "/volunteer/"
-            }
-          ]
+          "label": "Board",
+          "url": "/#board"
+        }
+      ]
+    },
+    {
+      "label": "Get involved",
+      "children": [
+        {
+          "label": "Volunteer",
+          "url": "/volunteer/"
         },
         {
-          "label": "Support",
-          "children": [
-            {
-              "label": "Donate",
-              "url": "/donate/"
-            },
-            {
-              "label": "Sponsorship opportunities",
-              "url": "/sponsor/"
-            }
-          ]
+          "label": "Donate",
+          "url": "/donate/"
+        },
+        {
+          "label": "Sponsorship",
+          "url": "/sponsor/"
         }
       ]
     }

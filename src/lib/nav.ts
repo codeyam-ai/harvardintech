@@ -81,7 +81,7 @@ export const LEAD_CTA_ITEM: NavItem = {
 
 /** The group the derived Chapters dropdown is inserted after, reproducing
  *  today's menu order. Absent (renamed or removed), the group is appended. */
-const INSERT_AFTER_LABEL = 'Programs';
+const INSERT_AFTER_LABEL = 'Events';
 
 /**
  * Menu items for the given chapters, ordered exactly as the "Our chapters"

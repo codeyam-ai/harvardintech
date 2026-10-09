@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 0d14a78c00a5252fdf12a3cc1c1e955dd08f8e21  source-sha256: 40e39b7207a6b9e38a20ea3e7dd8fc56a0dc95abc1fbdf8ae25a575942761e2b
+// codeyam-editor: 0.1.7  build: 0a847ac3bbf2b6935e3e284ce75ee23f9b92a629  source-sha256: 40e39b7207a6b9e38a20ea3e7dd8fc56a0dc95abc1fbdf8ae25a575942761e2b
 const { createIssue } = require("./scenario-issues");
 
 // Known substrings that mean the app refused to initialize because it was loaded

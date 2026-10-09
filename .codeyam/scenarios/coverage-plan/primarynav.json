@@ -3,10 +3,34 @@
   "surface_kind": "component",
   "states": [
     {
-      "dimension": "branches",
-      "value": "branch-1",
-      "rationale": "source-derived state branches=branch-1",
+      "dimension": "children",
+      "value": "empty",
+      "rationale": "source-derived state children=empty",
+      "status": "covered"
+    },
+    {
+      "dimension": "children",
+      "value": "one",
+      "rationale": "source-derived state children=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "children",
+      "value": "many",
+      "rationale": "source-derived state children=many",
       "status": "planned"
+    },
+    {
+      "dimension": "subscribeUrl",
+      "value": "true",
+      "rationale": "source-derived state subscribeUrl=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "subscribeUrl",
+      "value": "false",
+      "rationale": "source-derived state subscribeUrl=false",
+      "status": "covered"
     }
   ]
 }
