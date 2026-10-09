@@ -390,6 +390,18 @@
     ]
   },
   {
+    "description": "The homepage Our mission band at #mission, directly under the hero carousel and the target of the About › Mission menu link. Renders an eyebrow, a serif heading whose *emphasized* tail shows in crimson (via emphasizedHeading), the HAA-recognized SIG lede, and the entry markdown body; with no body it shows the three default goals as a row under crimson rules.",
+    "filePath": "src/components/landing/MissionStatement.astro",
+    "name": "MissionStatement",
+    "scenarios": [
+      "missionstatement-default-wording",
+      "missionstatement-edited-without-an-accent"
+    ],
+    "tags": [
+      "homepage"
+    ]
+  },
+  {
     "description": "The inside of a header menu link: the label, and under it an optional quiet note with an optional glyph — today the Online · WhatsApp group note with the globe on a forming city. The link element itself stays in PrimaryNav, whose panel and drawer rules lay the row out; both of PrimaryNav's dropdown layouts render through this component so a note cannot appear in one and be missing from the other. The note sits inside the link, keeping one tap target and reading naturally to a screen reader.",
     "filePath": "src/components/nav/NavItemLabel.astro",
     "name": "NavItemLabel",
@@ -1627,7 +1639,7 @@
     ]
   },
   {
-    "description": "Reads the homeSections collection and returns the published bands in editor order plus any unrecognized kinds for the caller to warn about. The thin astro:content edge kept out of the pure rules module, and a module rather than page frontmatter because TWO callers need the identical list: index.astro renders the bands and BaseLayout reads them to prune menu links to hidden ones. A second hand-rolled copy would drift, and the two disagreeing is exactly the menu-points-at-a-missing-band failure the visibility rule exists to prevent.",
+    "description": "Reads the homeSections collection and returns the published bands in editor order plus any unrecognized kinds for the caller to warn about. For prose bands (HOME_KINDS_WITH_BODY, today the mission statement) it also renders the entry's markdown body as Content, passing an empty body as absent so the band falls back to its default wording. The thin astro:content edge kept out of the pure rules module, and a module rather than page frontmatter because TWO callers need the identical list: index.astro renders the bands and BaseLayout reads them to prune menu links to hidden ones.",
     "filePath": "src/lib/homeSectionsContent.ts",
     "name": "loadHomeSections",
     "scenarios": [

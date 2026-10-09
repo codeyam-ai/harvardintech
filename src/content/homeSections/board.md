@@ -2,5 +2,5 @@
 kind: board
 title: Board of directors
 kicker: Leadership
-order: 7
+order: 8
 ---

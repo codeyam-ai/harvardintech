@@ -63,6 +63,12 @@
       "imports": [],
       "importedBy": []
     },
+    ".codeyam/isolation-props/MissionStatement.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/MissionStatement/[...state].astro"
+      ]
+    },
     ".codeyam/scenario-handlers.js": {
       "imports": [
         ".codeyam/scenario-issues.js"
@@ -1321,6 +1327,7 @@
       "imports": [
         "src/components/ComingSoon.astro",
         "src/components/landing/HeroCarousel.astro",
+        "src/components/landing/MissionStatement.astro",
         "src/components/landing/Stats.astro",
         "src/components/landing/UpcomingEvents.astro",
         "src/components/landing/OurChapters.astro",
@@ -1340,6 +1347,15 @@
       "importedBy": [
         "src/pages/index.astro",
         "src/pages/isolated-components/HomeSections.astro"
+      ]
+    },
+    "src/components/landing/MissionStatement.astro": {
+      "imports": [
+        "src/lib/campaignCopy.ts"
+      ],
+      "importedBy": [
+        "src/components/landing/HomeSections.astro",
+        "src/pages/isolated-components/MissionStatement/[...state].astro"
       ]
     },
     "src/components/landing/OnlineGroupEyebrow.astro": {
@@ -1914,6 +1930,7 @@
       "imports": [],
       "importedBy": [
         "src/lib/campaignCopy.test.ts",
+        "src/components/landing/MissionStatement.astro",
         "src/components/donate/MomentumMission.astro",
         "src/components/donate/MomentumClose.astro"
       ]
@@ -3962,6 +3979,14 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/MissionStatement/[...state].astro": {
+      "imports": [
+        "src/components/landing/MissionStatement.astro",
+        ".codeyam/isolation-props/MissionStatement.ts",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/MomentumClose-Split.astro": {
       "imports": [
         "src/components/donate/MomentumClose.astro",
@@ -4534,6 +4559,7 @@
         "src/pages/isolated-components/VolunteerProjects.astro",
         "src/pages/isolated-components/HomeSections.astro",
         "src/pages/isolated-components/GlobalCommunityCta.astro",
+        "src/pages/isolated-components/MissionStatement/[...state].astro",
         "src/pages/isolated-components/EventCardGrid-Past.astro",
         "src/pages/isolated-components/ComingSoon.astro",
         "src/pages/isolated-components/SitePageHeader.astro",
@@ -4661,6 +4687,14 @@
         ".codeyam/scenario-handlers.js::__file_root__"
       ],
       "importedBy": []
+    },
+    ".codeyam/isolation-props/MissionStatement.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/MissionStatement.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__"
+      ]
     },
     ".codeyam/scenario-handlers.js::{ createIssue }": {
       "filePath": ".codeyam/scenario-handlers.js",
@@ -6105,6 +6139,7 @@
       "imports": [
         "src/components/ComingSoon.astro::__file_root__",
         "src/components/landing/HeroCarousel.astro::__file_root__",
+        "src/components/landing/MissionStatement.astro::__file_root__",
         "src/components/landing/Stats.astro::__file_root__",
         "src/components/landing/UpcomingEvents.astro::__file_root__",
         "src/components/landing/OurChapters.astro::__file_root__",
@@ -6130,6 +6165,16 @@
       "importedBy": [
         "src/pages/index.astro::__file_root__",
         "src/pages/isolated-components/HomeSections.astro::__file_root__"
+      ]
+    },
+    "src/components/landing/MissionStatement.astro::__file_root__": {
+      "filePath": "src/components/landing/MissionStatement.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/campaignCopy.ts::emphasizedHeading"
+      ],
+      "importedBy": [
+        "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__"
       ]
     },
     "src/components/landing/OnlineGroupEyebrow.astro::__file_root__": {
@@ -6833,6 +6878,7 @@
       "imports": [],
       "importedBy": [
         "src/lib/campaignCopy.test.ts::__file_root__",
+        "src/components/landing/MissionStatement.astro::__file_root__",
         "src/components/donate/MomentumMission.astro::__file_root__"
       ]
     },
@@ -8015,6 +8061,7 @@
         "src/lib/order.ts::sortByOrder"
       ],
       "importedBy": [
+        "src/lib/homeSectionsContent.ts::__file_root__",
         "src/lib/selectOptions.test.ts::__file_root__",
         "src/lib/homeSections.test.ts::__file_root__",
         "src/components/landing/HomeSections.astro::__file_root__"
@@ -8098,6 +8145,7 @@
         "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
         "src/lib/order.ts::sortByOrder",
         "src/lib/homeSections.ts::HomeSectionLike",
+        "src/lib/homeSections.ts::__file_root__",
         "src/lib/homeSections.ts::orderedHomeSections",
         "src/lib/homeSections.ts::unknownHomeSectionKinds"
       ],
@@ -11061,6 +11109,16 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MissionStatement/[...state].astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/landing/MissionStatement.astro::__file_root__",
+        ".codeyam/isolation-props/MissionStatement.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/MomentumClose-Split.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/MomentumClose-Split.astro",
       "name": "__file_root__",
@@ -11768,6 +11826,7 @@
         "src/pages/isolated-components/VolunteerProjects.astro::__file_root__",
         "src/pages/isolated-components/HomeSections.astro::__file_root__",
         "src/pages/isolated-components/GlobalCommunityCta.astro::__file_root__",
+        "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__",
         "src/pages/isolated-components/EventCardGrid-Past.astro::__file_root__",
         "src/pages/isolated-components/ComingSoon.astro::__file_root__",
         "src/pages/isolated-components/SitePageHeader.astro::__file_root__",
@@ -11819,5 +11878,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-09T22:20:33Z"
+  "lastUpdated": "2026-10-09T23:43:57Z"
 }

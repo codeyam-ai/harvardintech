@@ -2,5 +2,5 @@
 kind: content-hub
 title: Content hub
 kicker: Content
-order: 6
+order: 7
 ---

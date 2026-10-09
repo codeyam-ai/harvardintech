@@ -1,0 +1,25 @@
+{
+  "provenAt": "2026-10-09T23:16:29Z",
+  "slug": "launch--add-an-our-mission-section-for-the-mission-link",
+  "paths": [
+    "src/lib/homeSections.ts"
+  ],
+  "runScope": [
+    "src/lib/homeSections.ts"
+  ],
+  "tests": {
+    "sectionAnchorId › gives the mission band its own #mission anchor while the hero keeps #about": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "sectionAnchorId › gives the mission band its own #mission anchor while the hero keeps #about"
+    ]
+  }
+}

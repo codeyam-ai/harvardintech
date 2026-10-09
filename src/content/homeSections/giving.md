@@ -1,5 +1,5 @@
 ---
 kind: giving
 title: Giving campaign
-order: 9
+order: 10
 ---

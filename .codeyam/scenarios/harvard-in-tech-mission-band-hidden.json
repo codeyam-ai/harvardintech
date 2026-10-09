@@ -1,0 +1,108 @@
+{
+  "name": "Harvard In Tech - Mission Band Hidden",
+  "id": "a2105885-4bb0-41d4-9e37-a98123ba5c2c",
+  "url": "/",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "homeSections": [
+      {
+        "kind": "hero",
+        "order": 1,
+        "slug": "hero",
+        "title": "Hero"
+      },
+      {
+        "draft": true,
+        "kicker": "Our mission",
+        "kind": "mission",
+        "order": 1.5,
+        "slug": "mission",
+        "title": "Building a global alumni community to *inspire and steward the future of tech.*"
+      },
+      {
+        "kind": "stats",
+        "order": 2,
+        "slug": "stats",
+        "title": "Stats"
+      },
+      {
+        "kind": "gallery",
+        "order": 3,
+        "slug": "gallery",
+        "title": "Event gallery"
+      },
+      {
+        "kind": "events",
+        "order": 4,
+        "slug": "events",
+        "title": "Upcoming events"
+      },
+      {
+        "kind": "chapters",
+        "order": 5,
+        "slug": "chapters",
+        "title": "Our chapters"
+      },
+      {
+        "kind": "focus",
+        "order": 6,
+        "slug": "focus",
+        "title": "Focus areas"
+      },
+      {
+        "kind": "content-hub",
+        "order": 7,
+        "slug": "content-hub",
+        "title": "Content hub"
+      },
+      {
+        "kind": "board",
+        "order": 8,
+        "slug": "board",
+        "title": "Board of Directors"
+      },
+      {
+        "kind": "get-involved",
+        "order": 9,
+        "slug": "get-involved",
+        "title": "Get involved"
+      },
+      {
+        "kind": "giving",
+        "order": 10,
+        "slug": "giving",
+        "title": "Giving campaign"
+      },
+      {
+        "kind": "whatsapp",
+        "order": 11,
+        "slug": "whatsapp",
+        "title": "WhatsApp community"
+      },
+      {
+        "kind": "support",
+        "order": 12,
+        "slug": "support",
+        "title": "Support us"
+      },
+      {
+        "kind": "contact",
+        "order": 13,
+        "slug": "contact",
+        "title": "Contact us"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/index.astro",
+  "description": "The mission band switched to Draft, so it is gone from the homepage and its menu link goes with it: the About dropdown, opened here, lists only Board. A hidden band must never leave the menu pointing at nothing; the carousel keeps #about for the old /about links.",
+  "interactions": [
+    {
+      "action": "click",
+      "selector": "header button.nav-top:has-text(\"About\")"
+    }
+  ]
+}

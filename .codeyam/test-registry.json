@@ -46,11 +46,29 @@
       "runner": "tests"
     },
     {
+      "description": "The mission band's purpose and goals are its markdown body, so the loader must render that body for it — and only for prose bands, so the other twelve bands are not rendered twice for nothing.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "HOME_KINDS_WITH_BODY › marks the mission band, and only prose bands, as carrying a body",
+      "line": 168,
+      "registeredAt": "2026-10-09T23:16:34Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every prose kind must be a real band, or its body would be rendered for an entry the homepage then drops as an unknown kind.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "HOME_KINDS_WITH_BODY › only lists kinds the homepage knows how to render",
+      "line": 176,
+      "registeredAt": "2026-10-09T23:16:34Z",
+      "runner": "tests"
+    },
+    {
       "description": "The placeholder always has a heading to show, whichever band was held back.",
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "HOME_SECTION_LABELS › names every band a placeholder can stand in for",
-      "line": 119,
+      "line": 120,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -5300,11 +5318,20 @@
       "runner": "tests"
     },
     {
+      "description": "Hiding the mission band must take the About › Mission menu item with it, while the carousel's #about — where the old /about redirects land — stays.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "hiddenSectionAnchors › drops the mission link when the mission band is hidden",
+      "line": 205,
+      "registeredAt": "2026-10-09T23:16:34Z",
+      "runner": "tests"
+    },
+    {
       "description": "The whole difference between the two states: a coming-soon band is still on the page, so its link still lands somewhere — on the placeholder.",
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › keeps the anchor of a coming-soon band",
-      "line": 165,
+      "line": 193,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -5313,7 +5340,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › never reports an anchor for a band the menu cannot link to",
-      "line": 184,
+      "line": 219,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -5322,7 +5349,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › reports nothing when every band is shown",
-      "line": 171,
+      "line": 199,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -5331,7 +5358,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › reports the anchor of a hidden band",
-      "line": 158,
+      "line": 186,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -5340,7 +5367,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "hiddenSectionAnchors › treats a band with no entry at all as gone",
-      "line": 178,
+      "line": 213,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -8181,7 +8208,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › does not mutate the input array",
-      "line": 91,
+      "line": 92,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -8190,7 +8217,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › drops a band whose kind matches no component",
-      "line": 69,
+      "line": 70,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -8199,7 +8226,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › keeps coming-soon and hidden bands in the ordered list",
-      "line": 76,
+      "line": 77,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -8208,7 +8235,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › sorts a band with no order after every ordered band",
-      "line": 62,
+      "line": 63,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -8217,7 +8244,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "orderedHomeSections › sorts bands by their order field",
-      "line": 51,
+      "line": 52,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9819,7 +9846,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › hides a band whose Draft toggle is switched on",
-      "line": 37,
+      "line": 38,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9828,7 +9855,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › lets Draft win over coming-soon when both are switched on",
-      "line": 43,
+      "line": 44,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9837,7 +9864,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › reads an explicit false on both toggles as shown",
-      "line": 25,
+      "line": 26,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9846,7 +9873,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › renders the placeholder when coming-soon is switched on",
-      "line": 31,
+      "line": 32,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -9855,7 +9882,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "resolveVisibility › shows a band with neither toggle set",
-      "line": 18,
+      "line": 19,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10575,8 +10602,17 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionAnchorId › agrees with the anchor table for every linked band",
-      "line": 137,
+      "line": 138,
       "registeredAt": "2026-08-03T21:22:17Z",
+      "runner": "tests"
+    },
+    {
+      "description": "THE REPRODUCTION TEST. The menu's Mission link landed on the hero carousel because no band owned a mission anchor. \"Mission\" needs its own band and anchor; the carousel keeps #about, where the old /about redirects land.",
+      "file": "src/lib/homeSections.test.ts",
+      "format": "vitest",
+      "key": "sectionAnchorId › gives the mission band its own #mission anchor while the hero keeps #about",
+      "line": 158,
+      "registeredAt": "2026-10-09T23:16:34Z",
       "runner": "tests"
     },
     {
@@ -10584,7 +10620,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionAnchorId › returns the fragment of the band anchor",
-      "line": 129,
+      "line": 130,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10593,7 +10629,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionAnchorId › returns undefined for a band the menu cannot link to",
-      "line": 144,
+      "line": 145,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10602,7 +10638,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionAnchorId › returns undefined for a kind that is not a band at all",
-      "line": 150,
+      "line": 151,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -10611,7 +10647,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionCopy › carries heading, kicker and intro through when all are set",
-      "line": 202,
+      "line": 237,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -10620,7 +10656,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionCopy › carries only the fields that are set",
-      "line": 238,
+      "line": 273,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -10629,7 +10665,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionCopy › omits a field an editor has blanked",
-      "line": 219,
+      "line": 254,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -10638,7 +10674,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionCopy › returns no keys for a band with no copy set",
-      "line": 197,
+      "line": 232,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -10647,7 +10683,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionCopy › treats a whitespace-only field as unset",
-      "line": 227,
+      "line": 262,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -10656,7 +10692,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "sectionCopy › trims the text it carries through",
-      "line": 233,
+      "line": 268,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -13678,7 +13714,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "unknownHomeSectionKinds › names each unrecognized kind once, in first-seen order",
-      "line": 101,
+      "line": 102,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -13687,7 +13723,7 @@
       "file": "src/lib/homeSections.test.ts",
       "format": "vitest",
       "key": "unknownHomeSectionKinds › reports nothing when every kind is known",
-      "line": 112,
+      "line": 113,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },

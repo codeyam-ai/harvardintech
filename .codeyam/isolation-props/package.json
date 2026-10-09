@@ -1,0 +1,4 @@
+{
+  "//": "Scopes the generated isolation props modules to ES modules, undoing the \"type\": \"commonjs\" that .codeyam/package.json applies to this whole directory for the capture helpers' benefit. Without it the app's bundler refuses every isolation route. Managed by codeyam-editor.",
+  "type": "module"
+}

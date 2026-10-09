@@ -23,8 +23,9 @@
 // `redirectsForBase` below — they are not usable as-is. See its comment.
 export const REDIRECT_TARGETS: Record<string, string> = {
   // --- old sitemap -------------------------------------------------------
-  // The mission hero, which is where the nav's own "Mission" link goes. There
-  // is no longer an /about page to send these to — see the plan's B.
+  // The top of the homepage (the hero carousel at #about). There is no longer
+  // an /about page to send these to — see the plan's B. The nav's own Mission
+  // link goes to the separate Our mission band at #mission.
   '/about-us': '/#about',
   '/about': '/#about',
 

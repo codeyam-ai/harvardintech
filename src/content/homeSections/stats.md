@@ -1,5 +1,5 @@
 ---
 kind: stats
 title: Stats
-order: 2
+order: 3
 ---

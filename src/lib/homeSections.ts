@@ -16,6 +16,7 @@ import { sortByOrder } from './order';
  */
 export const HOME_SECTION_KINDS = [
   'hero',
+  'mission',
   'stats',
   'events',
   'chapters',
@@ -31,6 +32,14 @@ export const HOME_SECTION_KINDS = [
 ] as const;
 
 export type HomeSectionKind = (typeof HOME_SECTION_KINDS)[number];
+
+/**
+ * The bands whose entry carries prose in its markdown body, which the loader
+ * renders and hands to the component. Every other band draws its words from
+ * frontmatter fields and its own collections, so rendering their (empty) bodies
+ * would be wasted work. Mirrors `KINDS_WITH_BODY` in `./momentumSections.ts`.
+ */
+export const HOME_KINDS_WITH_BODY = new Set<string>(['mission']);
 
 /**
  * What a band does on the published site.
@@ -67,6 +76,9 @@ export interface HomeSectionLike extends VisibilityFlags {
   kicker?: string;
   intro?: string;
   order?: number;
+  /** The component `render()` produced for the entry's markdown body — set only
+   *  for the kinds in {@link HOME_KINDS_WITH_BODY}. */
+  Content?: unknown;
 }
 
 /** The editable copy for one band, as props its component understands. */
@@ -162,7 +174,10 @@ export function unknownHomeSectionKinds(sections: readonly HomeSectionLike[]): s
  * an editor hid is the same failure in a different place.
  */
 export const HOME_SECTION_ANCHORS: Partial<Record<HomeSectionKind, string>> = {
+  // `#about` stays on the hero carousel, where the old /about and /about-us
+  // redirects land; the menu's Mission link has its own band at `#mission`.
   hero: '/#about',
+  mission: '/#mission',
   stats: '/#stats',
   events: '/#events',
   chapters: '/#chapters',
@@ -182,6 +197,7 @@ export const HOME_SECTION_ANCHORS: Partial<Record<HomeSectionKind, string>> = {
  */
 export const HOME_SECTION_LABELS: Record<HomeSectionKind, string> = {
   hero: 'Harvard Alumni in Tech',
+  mission: 'Our mission',
   stats: 'By the numbers',
   events: 'Upcoming events',
   chapters: 'Our chapters',

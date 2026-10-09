@@ -1,0 +1,12 @@
+{
+  "name": "MissionStatement - Default Wording",
+  "id": "760d0502-c2d4-42f2-a54d-5732aa528e1a",
+  "url": "/isolated-components/MissionStatement",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "MissionStatement",
+  "scenarioType": "component",
+  "description": "The Our mission band with no entry copy at all, so it renders its own wording: the OUR MISSION eyebrow, the heading 'Building a global alumni community to' with its crimson tail 'inspire and steward the future of tech.', the official HAA-recognized SIG line, and the three goals as a row under crimson rules. This is what an editor who empties the entry still gets, rather than a blank band."
+}

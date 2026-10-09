@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  HOME_KINDS_WITH_BODY,
   HOME_SECTION_ANCHORS,
   HOME_SECTION_KINDS,
   HOME_SECTION_LABELS,
@@ -150,6 +151,33 @@ describe('sectionAnchorId', () => {
   it('returns undefined for a kind that is not a band at all', () => {
     expect(sectionAnchorId('sponsors')).toBeUndefined();
   });
+
+  // THE REPRODUCTION TEST. The menu's Mission link landed on the hero carousel
+  // because no band owned a mission anchor. "Mission" needs its own band and
+  // anchor; the carousel keeps #about, where the old /about redirects land.
+  it('gives the mission band its own #mission anchor while the hero keeps #about', () => {
+    expect(sectionAnchorId('mission')).toBe('mission');
+    expect(sectionAnchorId('hero')).toBe('about');
+  });
+});
+
+describe('HOME_KINDS_WITH_BODY', () => {
+  // The mission band's purpose and goals are its markdown body, so the loader
+  // must render that body for it — and only for prose bands, so the other
+  // twelve bands are not rendered twice for nothing.
+  it('marks the mission band, and only prose bands, as carrying a body', () => {
+    expect(HOME_KINDS_WITH_BODY.has('mission')).toBe(true);
+    expect(HOME_KINDS_WITH_BODY.has('hero')).toBe(false);
+    expect(HOME_KINDS_WITH_BODY.has('stats')).toBe(false);
+  });
+
+  // Every prose kind must be a real band, or its body would be rendered for an
+  // entry the homepage then drops as an unknown kind.
+  it('only lists kinds the homepage knows how to render', () => {
+    for (const kind of HOME_KINDS_WITH_BODY) {
+      expect(HOME_SECTION_KINDS).toContain(kind);
+    }
+  });
 });
 
 describe('hiddenSectionAnchors', () => {
@@ -170,6 +198,13 @@ describe('hiddenSectionAnchors', () => {
   // The healthy state: nothing hidden means no menu item is pruned.
   it('reports nothing when every band is shown', () => {
     expect(hiddenSectionAnchors(HOME_SECTION_KINDS.map((kind) => ({ kind })))).toEqual([]);
+  });
+
+  // Hiding the mission band must take the About › Mission menu item with it,
+  // while the carousel's #about — where the old /about redirects land — stays.
+  it('drops the mission link when the mission band is hidden', () => {
+    const sections = HOME_SECTION_KINDS.map((kind) => ({ kind, draft: kind === 'mission' }));
+    expect(hiddenSectionAnchors(sections)).toEqual(['/#mission']);
   });
 
   // A band nobody has an entry for is the same broken link as a hidden one. On

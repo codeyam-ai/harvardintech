@@ -13,11 +13,16 @@
 // band that is not on the page — precisely the failure the visibility rule exists
 // to prevent.
 
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { publishedEntries } from './drafts';
 import { INCLUDE_DRAFTS } from './draftVisibility';
 import { sortByOrder } from './order';
-import { orderedHomeSections, unknownHomeSectionKinds, type HomeSectionLike } from './homeSections';
+import {
+  HOME_KINDS_WITH_BODY,
+  orderedHomeSections,
+  unknownHomeSectionKinds,
+  type HomeSectionLike,
+} from './homeSections';
 
 /** One hero slide as the carousel wants it. */
 export interface HeroSlideLike {
@@ -46,8 +51,18 @@ export async function loadHomeSections(): Promise<{
   sections: HomeSectionLike[];
   unknownKinds: string[];
 }> {
-  const entries = publishedEntries(await getCollection('homeSections'), INCLUDE_DRAFTS).map(
-    (entry) => entry.data,
+  // Only the prose bands (the mission statement) carry a markdown body; the rest
+  // draw their words from frontmatter and their own collections. An EMPTY body is
+  // passed as absent rather than as a component that renders nothing, so the
+  // band falls back to its own default wording instead of losing its paragraphs.
+  const entries = await Promise.all(
+    publishedEntries(await getCollection('homeSections'), INCLUDE_DRAFTS).map(async (entry) => ({
+      ...entry.data,
+      Content:
+        HOME_KINDS_WITH_BODY.has(entry.data.kind) && entry.body?.trim()
+          ? (await render(entry)).Content
+          : undefined,
+    })),
   );
 
   return { sections: orderedHomeSections(entries), unknownKinds: unknownHomeSectionKinds(entries) };

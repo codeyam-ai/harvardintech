@@ -805,9 +805,10 @@
           "name": "kind",
           "label": "Section type",
           "type": "select",
-          "hint": "Which band of the homepage this is.",
+          "hint": "Which band of the homepage this is. \"mission\" is the Our mission statement under the hero: it uses the Heading (end it with *emphasized words* to show them in crimson), the Eyebrow, the Intro line, and the body below for the purpose and goals.",
           "options": [
             "hero",
+            "mission",
             "stats",
             "events",
             "chapters",

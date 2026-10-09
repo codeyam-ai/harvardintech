@@ -1,0 +1,150 @@
+---
+// The homepage's "Our mission" band, directly under the hero carousel. It is
+// what the menu's About › Mission link lands on (`#mission`), so it states who
+// the organisation is in its own words rather than leaving that to rotating
+// slides.
+//
+// A SECTION KIND (`mission` in homeSections) rather than a carousel slide: a
+// slide rotates away, and a link target has to stay put. As a band it reorders,
+// drafts and holds as "coming soon" from /admin like every other one, and hiding
+// it drops the Mission menu item through `hiddenSectionAnchors`.
+//
+// The copy is the June 2026 volunteer all-hands deck's ("What is Harvard in
+// Tech?"). The kicker, heading and lede come from the entry's fields; the
+// purpose and goals are the entry's markdown body. Every piece has the deck's
+// wording as a default, so an entry an editor has emptied still renders the
+// statement rather than a blank band — the convention every band follows.
+//
+// The heading supports an emphasized tail — `…to *inspire and steward the
+// future of tech.*` renders the closing clause in crimson — through the same
+// `emphasizedHeading` rule the Momentum Fund mission band uses.
+import { emphasizedHeading } from '../../lib/campaignCopy';
+
+interface Props {
+  kicker?: string;
+  heading?: string;
+  intro?: string;
+  /** The component `render()` produced for the entry's markdown body. */
+  Body?: unknown;
+}
+
+const DEFAULT_GOALS = [
+  'A network of alumni who give back and help each other',
+  'High-quality events, resources, and interactions',
+  'Thought leaders and stewards of the broader tech community',
+];
+
+const {
+  kicker = 'Our mission',
+  heading: headingText = 'Building a global alumni community to *inspire and steward the future of tech.*',
+  intro = 'Harvard Alumni in Tech is an official Harvard Alumni Association–recognized Shared Interest Group (SIG), connecting Harvard alumni working in and passionate about technology.',
+  Body,
+} = Astro.props as Props;
+
+const heading = emphasizedHeading(headingText);
+const Content = Body as any;
+---
+
+<section class="mission" id="mission">
+  <div class="wrap">
+    <span class="kick">{kicker}</span>
+    {
+      heading ? (
+        <h2>
+          {heading.head}
+          {heading.accent ? <em>{heading.accent}</em> : null}
+          {heading.tail}
+        </h2>
+      ) : null
+    }
+    <p class="lede">{intro}</p>
+    <div class="prose">
+      {
+        Content ? (
+          <Content />
+        ) : (
+          <ul>
+            {DEFAULT_GOALS.map((goal) => (
+              <li>{goal}</li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .mission {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 76px 0;
+  }
+  /* The band keeps the site's standard `.wrap` width so its left edge lines up
+     with every other band; only the heading's line length is capped. */
+  .kick {
+    display: block;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: var(--font-title);
+    font-size: clamp(32px, 3.6vw, 50px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 24px;
+    max-width: 880px;
+  }
+  /* A colour shift, not italic or lighter — the same emphasis the Momentum Fund
+     mission band uses, so the accent reads as emphasis rather than a quote. */
+  em {
+    font-style: normal;
+    font-weight: inherit;
+    color: var(--crimson);
+  }
+  .lede {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0 0 32px;
+    max-width: var(--text-width);
+  }
+  /* The markdown body arrives through <Content />, so its elements need
+     `:global` — scoped styles do not reach rendered markdown. The goals read as
+     a short row of three rather than a list, each under a crimson rule, so the
+     band stays compact; they stack on narrow screens. */
+  .prose {
+    color: var(--ink-2);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .prose :global(p) {
+    margin: 0 0 16px;
+    max-width: var(--text-width);
+  }
+  .prose :global(ul) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+  }
+  .prose :global(li) {
+    border-top: 2px solid var(--crimson);
+    padding-top: 12px;
+  }
+  @media (max-width: 720px) {
+    .mission {
+      padding: 56px 0;
+    }
+    .lede {
+      font-size: 17px;
+      margin-bottom: 24px;
+    }
+    .prose :global(ul) {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+</style>

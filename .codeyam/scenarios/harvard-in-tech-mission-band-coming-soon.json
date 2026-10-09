@@ -1,0 +1,108 @@
+{
+  "name": "Harvard In Tech - Mission Band Coming Soon",
+  "id": "3ab48c52-807e-42bb-9ea6-44212b7eeb55",
+  "url": "/",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "homeSections": [
+      {
+        "kind": "hero",
+        "order": 1,
+        "slug": "hero",
+        "title": "Hero"
+      },
+      {
+        "comingSoon": true,
+        "kicker": "Our mission",
+        "kind": "mission",
+        "order": 1.5,
+        "slug": "mission",
+        "title": "Our mission"
+      },
+      {
+        "kind": "stats",
+        "order": 2,
+        "slug": "stats",
+        "title": "Stats"
+      },
+      {
+        "kind": "gallery",
+        "order": 3,
+        "slug": "gallery",
+        "title": "Event gallery"
+      },
+      {
+        "kind": "events",
+        "order": 4,
+        "slug": "events",
+        "title": "Upcoming events"
+      },
+      {
+        "kind": "chapters",
+        "order": 5,
+        "slug": "chapters",
+        "title": "Our chapters"
+      },
+      {
+        "kind": "focus",
+        "order": 6,
+        "slug": "focus",
+        "title": "Focus areas"
+      },
+      {
+        "kind": "content-hub",
+        "order": 7,
+        "slug": "content-hub",
+        "title": "Content hub"
+      },
+      {
+        "kind": "board",
+        "order": 8,
+        "slug": "board",
+        "title": "Board of Directors"
+      },
+      {
+        "kind": "get-involved",
+        "order": 9,
+        "slug": "get-involved",
+        "title": "Get involved"
+      },
+      {
+        "kind": "giving",
+        "order": 10,
+        "slug": "giving",
+        "title": "Giving campaign"
+      },
+      {
+        "kind": "whatsapp",
+        "order": 11,
+        "slug": "whatsapp",
+        "title": "WhatsApp community"
+      },
+      {
+        "kind": "support",
+        "order": 12,
+        "slug": "support",
+        "title": "Support us"
+      },
+      {
+        "kind": "contact",
+        "order": 13,
+        "slug": "contact",
+        "title": "Contact us"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/index.astro",
+  "description": "The mission band held back with Show as coming soon: a placeholder titled Our mission sits under the hero instead of the statement. It still carries the #mission anchor, so the About › Mission menu item stays and lands on the placeholder rather than nowhere.",
+  "interactions": [
+    {
+      "action": "hover",
+      "text": "This section is on its way."
+    }
+  ]
+}

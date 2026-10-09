@@ -1,0 +1,109 @@
+{
+  "name": "Harvard In Tech - Our Mission Band",
+  "id": "3f0ac689-13a2-4e9c-98cb-df300eda6e1a",
+  "url": "/",
+  "dimensions": [
+    "Desktop",
+    "Mobile"
+  ],
+  "mocks": {},
+  "seed": {
+    "homeSections": [
+      {
+        "kind": "hero",
+        "order": 1,
+        "slug": "hero",
+        "title": "Hero"
+      },
+      {
+        "intro": "Harvard Alumni in Tech is an official Harvard Alumni Association–recognized Shared Interest Group (SIG), connecting Harvard alumni working in and passionate about technology.",
+        "kicker": "Our mission",
+        "kind": "mission",
+        "order": 1.5,
+        "slug": "mission",
+        "title": "Building a global alumni community to *inspire and steward the future of tech.*"
+      },
+      {
+        "kind": "stats",
+        "order": 2,
+        "slug": "stats",
+        "title": "Stats"
+      },
+      {
+        "kind": "gallery",
+        "order": 3,
+        "slug": "gallery",
+        "title": "Event gallery"
+      },
+      {
+        "kind": "events",
+        "order": 4,
+        "slug": "events",
+        "title": "Upcoming events"
+      },
+      {
+        "kind": "chapters",
+        "order": 5,
+        "slug": "chapters",
+        "title": "Our chapters"
+      },
+      {
+        "kind": "focus",
+        "order": 6,
+        "slug": "focus",
+        "title": "Focus areas"
+      },
+      {
+        "kind": "content-hub",
+        "order": 7,
+        "slug": "content-hub",
+        "title": "Content hub"
+      },
+      {
+        "kind": "board",
+        "order": 8,
+        "slug": "board",
+        "title": "Board of Directors"
+      },
+      {
+        "kind": "get-involved",
+        "order": 9,
+        "slug": "get-involved",
+        "title": "Get involved"
+      },
+      {
+        "kind": "giving",
+        "order": 10,
+        "slug": "giving",
+        "title": "Giving campaign"
+      },
+      {
+        "kind": "whatsapp",
+        "order": 11,
+        "slug": "whatsapp",
+        "title": "WhatsApp community"
+      },
+      {
+        "kind": "support",
+        "order": 12,
+        "slug": "support",
+        "title": "Support us"
+      },
+      {
+        "kind": "contact",
+        "order": 13,
+        "slug": "contact",
+        "title": "Contact us"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/index.astro",
+  "description": "The Our mission band where the About › Mission link lands: directly under the hero carousel, the OUR MISSION eyebrow, the heading with its crimson tail, the official HAA-recognized SIG line and the three goals as a row, then the numbers band. The hover only scrolls the band into view, since a URL fragment does not scroll a capture.",
+  "interactions": [
+    {
+      "action": "hover",
+      "text": "inspire and steward the future of tech."
+    }
+  ]
+}

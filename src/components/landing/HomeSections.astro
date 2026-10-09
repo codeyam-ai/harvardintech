@@ -11,6 +11,7 @@
 // drops it (with a build-log warning) so a typo costs one band, not the deploy.
 import ComingSoon from '../ComingSoon.astro';
 import HeroCarousel from './HeroCarousel.astro';
+import MissionStatement from './MissionStatement.astro';
 import Stats from './Stats.astro';
 import UpcomingEvents from './UpcomingEvents.astro';
 import OurChapters from './OurChapters.astro';
@@ -90,6 +91,8 @@ const {
       />
     ) : section.kind === 'hero' ? (
       <HeroCarousel slides={slides.length > 0 ? slides : undefined} />
+    ) : section.kind === 'mission' ? (
+      <MissionStatement {...sectionCopy(section)} Body={section.Content} />
     ) : section.kind === 'stats' ? (
       <Stats stats={stats.length > 0 ? stats : undefined} />
     ) : section.kind === 'events' ? (
