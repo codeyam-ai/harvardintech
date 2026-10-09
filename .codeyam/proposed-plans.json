@@ -116,6 +116,52 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-09T00:44:54.748531077+00:00"
+    },
+    {
+      "id": "point-the-homepage-newsletter-card-at-the-mailchimp-sign-up",
+      "title": "Point the homepage newsletter card at the Mailchimp sign-up",
+      "mode": "ui",
+      "body": "## Summary\n\nOn 2026-10-09 the owner asked for the menu's Newsletter link to go to the Mailchimp sign-up rather than the LinkedIn newsletter, and the menu now does. The homepage Content Hub section still offers a \"LinkedIn newsletter\" card pointing at linkedin.com/newsletters/..., and the welcome blog post links there too, so the site sends people to two different newsletters depending on where they click.\n\n## Key Decisions\n\n- Use the one sign-up URL the site already treats as canonical: `links.mailingList` in `src/data/settings.json`, read through `siteLinks()` in `src/lib/site.ts`. Do not hard-code the URL again.\n- Rename the card to plain \"Newsletter\" with a blurb about email, since it will no longer be a LinkedIn feed item.\n- Decide with the owner whether the LinkedIn newsletter is kept anywhere at all (for example under the LinkedIn company page) or dropped.\n\n## Implementation\n\n- `src/components/landing/ContentHub.astro` line 54: replace the LinkedIn newsletter entry's label, blurb and url (via `siteLinks().mailingList`). Check the brand-icon pick in `src/lib/brandIcons.ts`, which matches on the label text.\n- `src/content/blog/welcome.md` line 19: update or remove the LinkedIn newsletter link.\n- Recapture the Content Hub component scenarios and the homepage scenarios.",
+      "reason": "The menu's Newsletter now goes to Mailchimp, but the homepage Content Hub card still says LinkedIn newsletter.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
+    },
+    {
+      "id": "retire-the-programs-label-on-the-events-and-webinars-pages",
+      "title": "Retire the Programs label on the Events and Webinars pages",
+      "mode": "ui",
+      "body": "## Summary\n\nThe navigation simplification removed the Programs dropdown; Events is now a top-level link and Webinars sits under Content hub. The small eyebrow label above the page titles still reads \"Programs\" on the Events page and the Webinars page, naming a section a visitor can no longer find in the menu. The homepage Focus Areas grid also has a \"Programs\" tile.\n\n## Key Decisions\n\n- Match each eyebrow to where the page now lives in the menu: Events page gets no section eyebrow (or \"Calendar\"), Webinars gets \"Content hub\".\n- The Focus Areas \"Programs\" tile describes a kind of activity rather than a menu section; leave it unless the owner wants the wording aligned.\n\n## Implementation\n\n- `src/components/EventsIntro.astro` line 23 and `src/components/EventsIntroBand.astro` line 25: change the `Programs` label.\n- `src/components/WebinarsPage.astro` line 27: change `label=\"Programs\"`.\n- Recapture the EventsIntro, EventsIntroBand, EventsPage and WebinarsPage scenarios plus the events and webinars route scenarios.",
+      "reason": "The menu no longer has a Programs section, but the Events and Webinars page eyebrows still say Programs.",
+      "severity": 1,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
+    },
+    {
+      "id": "screenshot-staleness-misses-data-files-the-page-reads-at-runtime",
+      "title": "Screenshot staleness misses data files the page reads at runtime",
+      "mode": "backend",
+      "body": "## What happened\n\nThis feature changed only `src/data/nav.json` (plus a few code files). The site reads that file at runtime through `readSingleton('nav.json')` in `src/lib/site.ts`, not through an import, so the screenshot staleness hash never includes it. Two seeded /donate scenarios were captured with the old menu while nav.json was stashed (the stash was needed to get the seeded captures past the dirty-content guard), and afterwards `scenario-coverage`, the strict audit and `session-finalize` Phase 3.5 all reported them as fresh. The only way to find them was to eyeball the header of each frame, and fixing them needed `recapture-stale --force --target`.\n\n## What would have helped\n\nInclude content/data files that pages read at runtime (`src/data/*.json`, `src/content/**`) in the render-input hash, at least for application scenarios on this stack, or let `stack.json` declare runtime-read data roots. A frame that shows stale data should read as stale.",
+      "reason": "Frames showing the old menu were reported fresh because nav.json is not part of the staleness hash.",
+      "severity": 4,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
+    },
+    {
+      "id": "syncing-capture-scripts-marks-every-screenshot-stale",
+      "title": "Syncing capture scripts marks every screenshot stale",
+      "mode": "backend",
+      "body": "## What happened\n\nAt Verify Prototype, `client-errors` refused to run because `.codeyam/capture.js` predated the binary and said to run `sync-capture-scripts`. After the sync, `scenario-coverage` reported 229 of 293 scenarios stale with reason \"capture pipeline changed\". The full `recapture-stale` sweep took about 38 minutes, and 247 of its captures came back pixel-identical and were restored. None of that work was related to the feature.\n\n## What would have helped\n\nTreat a capture-script sync as a re-verify rather than a staleness event, or let the sync record the new pipeline version without invalidating frames until a capture actually differs. At minimum, have `client-errors` and `sync-capture-scripts` warn up front that the sync makes the whole corpus stale and roughly how long the sweep will take.",
+      "reason": "One required script sync turned 229 untouched scenarios stale and cost a long full sweep that changed nothing.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
     }
   ]
 }
