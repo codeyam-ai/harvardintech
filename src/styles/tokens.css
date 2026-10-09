@@ -350,3 +350,22 @@ h3 {
     padding: 0 16px;
   }
 }
+
+/* The header row is pinned to the top of the screen (BaseLayout `.site-nav`),
+   so an in-page jump (`#sign-up`, `#global-community`, the homepage section
+   anchors) must land BELOW it rather than under it. Each value is the header
+   row's measured height at that breakpoint (62px, 77px, 73px) plus a little
+   breathing room above the heading. */
+html {
+  scroll-padding-top: 76px;
+}
+@media (max-width: 1040px) {
+  html {
+    scroll-padding-top: 91px;
+  }
+}
+@media (max-width: 520px) {
+  html {
+    scroll-padding-top: 87px;
+  }
+}

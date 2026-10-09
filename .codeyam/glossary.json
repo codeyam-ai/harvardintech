@@ -2848,6 +2848,15 @@
     "testFile": "src/lib/responsiveImagesScript.test.ts"
   },
   {
+    "description": "Watches a zero-height sentinel above the sticky site header and toggles data-scrolled on the header while it is pinned, so CSS can show its shadow only after the page has scrolled. Observer is injected; returns a stop function, or null when no IntersectionObserver exists.",
+    "filePath": "src/lib/pinnedHeader.ts",
+    "name": "watchPinnedHeader",
+    "tags": [
+      "navigation"
+    ],
+    "testFile": "src/lib/pinnedHeader.test.ts"
+  },
+  {
     "description": "Reads the webinar list off the old webinars page, pairing each write-up with its video URL, derived player URL and provider thumbnail. Only the first recording carried a title, which is why the importer names the rest by hand.",
     "filePath": "src/lib/strikinglyArchive.js",
     "name": "webinarItems",

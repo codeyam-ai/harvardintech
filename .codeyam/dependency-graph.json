@@ -2841,6 +2841,18 @@
         "src/lib/personalize.test.ts"
       ]
     },
+    "src/lib/pinnedHeader.test.ts": {
+      "imports": [
+        "src/lib/pinnedHeader.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/pinnedHeader.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/pinnedHeader.test.ts"
+      ]
+    },
     "src/lib/presenceConsistency.test.ts": {
       "imports": [],
       "importedBy": []
@@ -8937,6 +8949,15 @@
         "src/lib/personalize.test.ts::__file_root__"
       ]
     },
+    "src/lib/pinnedHeader.test.ts::__file_root__": {
+      "filePath": "src/lib/pinnedHeader.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/pinnedHeader.ts::ObserverCtor",
+        "src/lib/pinnedHeader.ts::watchPinnedHeader"
+      ],
+      "importedBy": []
+    },
     "src/lib/previewFieldsSchema.test.ts::__file_root__": {
       "filePath": "src/lib/previewFieldsSchema.test.ts",
       "name": "__file_root__",
@@ -11798,5 +11819,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-09T17:27:20Z"
+  "lastUpdated": "2026-10-09T22:20:33Z"
 }

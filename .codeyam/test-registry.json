@@ -14139,6 +14139,60 @@
       "runner": "tests"
     },
     {
+      "description": "Scrolling back to the top must take the shadow away again, or the header would keep a shadow over the crimson strip it no longer covers.",
+      "file": "src/lib/pinnedHeader.test.ts",
+      "format": "vitest",
+      "key": "watchPinnedHeader › clears the mark when the sentinel comes back into view",
+      "line": 87,
+      "registeredAt": "2026-10-09T20:56:50Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A browser without IntersectionObserver still gets the sticky header from CSS alone; it simply has no shadow. Nothing may throw on the way.",
+      "file": "src/lib/pinnedHeader.test.ts",
+      "format": "vitest",
+      "key": "watchPinnedHeader › does nothing when no observer is available",
+      "line": 100,
+      "registeredAt": "2026-10-09T20:56:50Z",
+      "runner": "tests"
+    },
+    {
+      "description": "At the top of the page the header must look exactly as it always has, so nothing is set until the observer reports the sentinel has gone.",
+      "file": "src/lib/pinnedHeader.test.ts",
+      "format": "vitest",
+      "key": "watchPinnedHeader › leaves the header unmarked before anything scrolls",
+      "line": 64,
+      "registeredAt": "2026-10-09T20:56:50Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The sentinel scrolling off the top of the screen is exactly the moment the header becomes pinned, which is when its shadow should appear.",
+      "file": "src/lib/pinnedHeader.test.ts",
+      "format": "vitest",
+      "key": "watchPinnedHeader › marks the header scrolled once the sentinel leaves the screen",
+      "line": 75,
+      "registeredAt": "2026-10-09T20:56:50Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The observer must watch the sentinel, not the header: a sticky header never leaves the screen, so observing it would never report a change.",
+      "file": "src/lib/pinnedHeader.test.ts",
+      "format": "vitest",
+      "key": "watchPinnedHeader › observes the sentinel rather than the header",
+      "line": 53,
+      "registeredAt": "2026-10-09T20:56:50Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The returned handle stops the watch, so a caller tearing the header down does not leave an observer holding a detached element.",
+      "file": "src/lib/pinnedHeader.test.ts",
+      "format": "vitest",
+      "key": "watchPinnedHeader › returns a stop function that disconnects the observer",
+      "line": 109,
+      "registeredAt": "2026-10-09T20:56:50Z",
+      "runner": "tests"
+    },
+    {
       "description": "A webinar IS an article, so unlike an event its write-up stays a rendered body with its paragraphs intact.",
       "file": "src/lib/strikinglyArchive.test.ts",
       "format": "vitest",

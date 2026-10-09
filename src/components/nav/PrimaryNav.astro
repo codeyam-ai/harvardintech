@@ -296,9 +296,19 @@ const { items, subscribeUrl } = Astro.props as Props;
      without hover, but only once the visitor asks for the menu.
      The `.site-nav` half of this breakpoint lives in the layout. */
   @media (max-width: 1040px) {
+    /* The header is pinned to the top of the screen (BaseLayout), and the open
+       menu lists every chapter, community and link — taller than a phone. So
+       the drawer is capped at the screen minus the header row and scrolls
+       inside itself; without this its last items would sit below the screen
+       with no way to reach them. `--nav-row-h` is set on .site-nav per
+       breakpoint. `contain` keeps a flick at the end of the list from
+       scrolling the page underneath. */
     .nav-drawer {
       order: 3;
       width: 100%;
+      max-height: calc(100dvh - var(--nav-row-h, 77px));
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
     /* The no-JS control. A native summary collapses the menu on its own, which
        is why the markup ships as <details> rather than a div. */

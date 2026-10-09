@@ -124,6 +124,10 @@ const subscribeUrl = siteLinks().mailingList;
   <body>
     <UtilityBar cities={utilCities} />
 
+    {/* A zero-height marker where the header's top edge rests. Once it scrolls
+        out of view the header is pinned to the top of the screen, which is the
+        moment its shadow should appear — see the script at the end of <body>. */}
+    <div class="nav-sentinel" aria-hidden="true"></div>
     <header class="site-nav">
       <a class="brand" href={withBase('/')}>
         <BrandMark class="brand-mark" />
@@ -162,8 +166,15 @@ const subscribeUrl = siteLinks().mailingList;
     </footer>
 
     <style>
+      /* The header floats: it scrolls up with the page until it reaches the top
+         of the screen, then stays pinned there. The crimson utility strip above
+         it is not part of the sticky element, so it scrolls away as usual.
+         `--nav-row-h` is the height of the header row alone (no open menu); the
+         mobile drawer in PrimaryNav reads it to fit itself under the row. */
       .site-nav {
-        position: relative;
+        --nav-row-h: 63px;
+        position: sticky;
+        top: 0;
         z-index: 50;
         display: flex;
         align-items: center;
@@ -172,6 +183,15 @@ const subscribeUrl = siteLinks().mailingList;
         padding: 11px 48px;
         background: var(--white);
         border-bottom: 1px solid var(--line);
+        transition: box-shadow 0.2s ease;
+      }
+      /* At the top of the page the header looks exactly as it always has; the
+         shadow only separates it from content once something passes beneath. */
+      .site-nav[data-scrolled] {
+        box-shadow: 0 6px 18px -10px rgba(30, 22, 24, 0.35);
+      }
+      .nav-sentinel {
+        height: 0;
       }
       /* The H lockup is TALLER than it is wide, where the shield it replaced was
          roughly square. At the same 26px height it therefore reads narrower, so
@@ -261,6 +281,7 @@ const subscribeUrl = siteLinks().mailingList;
          since Astro scopes styles to the component that declares the markup. */
       @media (max-width: 1040px) {
         .site-nav {
+          --nav-row-h: 77px;
           flex-wrap: wrap;
           padding: 16px 24px;
           /* The 24px gap is between the brand and the button, not between the
@@ -287,6 +308,7 @@ const subscribeUrl = siteLinks().mailingList;
          are the phone floor — 24px costs a tenth of the usable width. */
       @media (max-width: 520px) {
         .site-nav {
+          --nav-row-h: 73px;
           padding: 14px 16px;
         }
         .nav-cta {
@@ -297,6 +319,16 @@ const subscribeUrl = siteLinks().mailingList;
         }
       }
     </style>
+
+    {/* Marks the header `data-scrolled` while it is pinned, for its shadow.
+        Without JavaScript the header still sticks; it just has no shadow. */}
+    <script>
+      import { watchPinnedHeader } from '../lib/pinnedHeader';
+
+      const sentinel = document.querySelector('.nav-sentinel');
+      const header = document.querySelector('.site-nav');
+      if (sentinel && header) watchPinnedHeader(sentinel, header, window.IntersectionObserver);
+    </script>
 
     {customBodyHtml ? <Fragment set:html={customBodyHtml} /> : null}
   </body>

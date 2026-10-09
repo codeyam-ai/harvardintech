@@ -28213,6 +28213,60 @@
       "pass|changed|2026-10-02T21:33:13.836Z"
     ]
   },
+  "watchPinnedHeader › clears the mark when the sentinel comes back into view": {
+    "file": "src/lib/pinnedHeader.test.ts",
+    "lastRunAt": "2026-10-09T20:57:10.006Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-09T20:57:10.006Z"
+    ]
+  },
+  "watchPinnedHeader › does nothing when no observer is available": {
+    "file": "src/lib/pinnedHeader.test.ts",
+    "lastRunAt": "2026-10-09T20:57:10.006Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-09T20:57:10.006Z"
+    ]
+  },
+  "watchPinnedHeader › leaves the header unmarked before anything scrolls": {
+    "file": "src/lib/pinnedHeader.test.ts",
+    "lastRunAt": "2026-10-09T20:57:10.006Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-09T20:57:10.006Z"
+    ]
+  },
+  "watchPinnedHeader › marks the header scrolled once the sentinel leaves the screen": {
+    "file": "src/lib/pinnedHeader.test.ts",
+    "lastRunAt": "2026-10-09T20:57:10.006Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-09T20:57:10.006Z"
+    ]
+  },
+  "watchPinnedHeader › observes the sentinel rather than the header": {
+    "file": "src/lib/pinnedHeader.test.ts",
+    "lastRunAt": "2026-10-09T20:57:10.006Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-09T20:57:10.006Z"
+    ]
+  },
+  "watchPinnedHeader › returns a stop function that disconnects the observer": {
+    "file": "src/lib/pinnedHeader.test.ts",
+    "lastRunAt": "2026-10-09T20:57:10.006Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-09T20:57:10.006Z"
+    ]
+  },
   "webinarPostBody › keeps the write-up as the post body": {
     "file": "src/lib/strikinglyArchive.test.ts",
     "lastRunAt": "2026-10-09T17:26:16.498Z",
