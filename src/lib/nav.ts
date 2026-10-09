@@ -12,7 +12,7 @@
 // every nav item from `label` plus `children`/`url` and drops any other key, and
 // it collapses a dropdown with no children back to a plain link. A group the
 // layout injects is the only form that serializer cannot corrupt.
-import { byPresence } from './localPresence';
+import { byPresence, isForming, ONLINE_NOTE } from './localPresence';
 import type { NavItem } from './site';
 
 /**
@@ -23,9 +23,10 @@ export interface ChapterLike {
   slug: string;
   city: string;
   order?: number;
-  /** `active` or `forming`; absent means active. Ordering only — a forming
-   *  chapter is a real chapter with a real page, so it is never hidden from
-   *  the menu, just listed after the cities that have events. */
+  /** `active` or `forming`; absent means active. A forming city is shown to
+   *  visitors as an online group (a WhatsApp group with no events yet). It is
+   *  never hidden from the menu — it is listed after the cities that hold
+   *  events and noted "Online", so it does not pass for one of them. */
   status?: string;
 }
 
@@ -66,6 +67,18 @@ export const GLOBAL_COMMUNITY_ITEM: NavItem = {
  *  carrying hand-authored links (WhatsApp), so the derived items join it. */
 export const COMMUNITIES_LABEL = 'Communities';
 
+/**
+ * The dropdown's closing call to action. The chapters recruit leads and
+ * co-leads as a matter of course, so the menu asks once at the bottom rather
+ * than tagging individual cities — a per-city note goes stale the day a lead
+ * is found, and nobody remembers to untick it.
+ */
+export const LEAD_CTA_ITEM: NavItem = {
+  label: 'Lead or co-lead a chapter →',
+  url: '/volunteer/',
+  cta: true,
+};
+
 /** The group the derived Chapters dropdown is inserted after, reproducing
  *  today's menu order. Absent (renamed or removed), the group is appended. */
 const INSERT_AFTER_LABEL = 'Programs';
@@ -94,6 +107,9 @@ export function chapterNavItems(chapters: ChapterLike[]): NavItem[] {
   return byPresence(chapters).map((chapter) => ({
     label: chapter.city,
     url: `/chapters/${chapter.slug}/`,
+    // Left OFF an active chapter rather than set to undefined, so an active
+    // item stays exactly `{ label, url }`.
+    ...(isForming(chapter) ? { note: ONLINE_NOTE, noteIcon: 'online' as const } : {}),
   }));
 }
 
@@ -113,6 +129,9 @@ export function chapterNavItems(chapters: ChapterLike[]): NavItem[] {
  * NOT keep it alive on its own — a lone "Global community" under a "Chapters"
  * caret would be a menu lying about what it contains.
  *
+ * The dropdown then closes with `LEAD_CTA_ITEM`, the one place the menu asks
+ * for chapter leads and co-leads.
+ *
  * Returns a new array — the input is not mutated.
  */
 export function withChapterGroup(items: NavItem[], chapterItems: NavItem[]): NavItem[] {
@@ -120,7 +139,7 @@ export function withChapterGroup(items: NavItem[], chapterItems: NavItem[]): Nav
 
   const group: NavItem = {
     label: CHAPTERS_LABEL,
-    children: [...chapterItems, GLOBAL_COMMUNITY_ITEM],
+    children: [...chapterItems, GLOBAL_COMMUNITY_ITEM, LEAD_CTA_ITEM],
   };
   const anchor = items.findIndex((item) => item.label === INSERT_AFTER_LABEL);
   if (anchor === -1) return [...items, group];

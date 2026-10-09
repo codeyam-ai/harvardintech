@@ -7,9 +7,12 @@
 // and an empty calendar — which read as a dead chapter rather than a new one.
 // Deleting them was worse: it hid a group of alumni who are actually there.
 //
-// So the page asks for exactly the two things the chapter is missing: someone to
-// help lead it, and members in the local group. Nicole's line and a Contact us
-// button sit underneath for anyone who wants to talk to a person first — and
+// For now these cities are online groups, not chapters recruiting a lead — the
+// lead ask belongs to the cities that hold events (the Chapters menu's closing
+// "Lead or co-lead a chapter" link).
+// So the page leads with joining the local WhatsApp group, with the online
+// events as the second way in. A Contact us line sits underneath for anyone who
+// wants to bring in-person events to the city — and
 // that button renders ONLY when `emailFor('formingChapter')` returns an address,
 // which is how the shared inbox stays on its short list of approved surfaces.
 import SectionHead from './ui/SectionHead.astro';
@@ -32,10 +35,11 @@ const { name, whatsappFormUrl, volunteerUrl, contactEmail } = Astro.props;
 
 // The chapter's own override wins; otherwise the site-wide setting. Both go
 // through `joinCtas`, so a group invite is refused whichever one supplied it.
-const { whatsappFormUrl: formHref, volunteerUrl: volunteerHref } = joinCtas({
+const { whatsappFormUrl: formHref } = joinCtas({
   whatsappFormUrl: whatsappFormUrl ?? siteLinks().whatsappJoinForm,
   volunteerUrl,
 });
+const EVENTS_HREF = '/events';
 // `withBase` alone is the whole href rule: it prefixes an internal absolute
 // path with the base path and returns anything else — an https URL, a mailto,
 // an anchor — untouched. The branch this used to carry was redundant.
@@ -46,7 +50,7 @@ const origin = Astro.url.origin;
 const mailto = contactEmail
   ? buildMailto({
       to: contactEmail,
-      subject: `Getting involved with the ${name} chapter`,
+      subject: `In-person events in ${name}`,
     })
   : undefined;
 ---
@@ -54,32 +58,28 @@ const mailto = contactEmail
 <section class="sec forming" id="help-lead">
   <div class="wrap">
     {/* `balance` (below, on `.forming h2`) because the heading is city-name-long
-        and varies: "Seattle / Pacific Northwest is forming. Help lead it." wraps
-        at a different word than DC's does, and an unbalanced wrap strands the
-        final "it." alone on a second line. */}
+        and varies: "Seattle / Pacific Northwest meets online for now." wraps at a
+        different word than DC's does, and an unbalanced wrap strands the last
+        word alone on a second line. */}
     <SectionHead
-      title={`${name} is forming. Help lead it.`}
-      intro={`There are Harvard alumni in tech here and a WhatsApp group already running — what ${name} does not have yet is someone organizing events. If that could be you, or you just want to meet the alumni nearby, start with one of these.`}
+      title={`${name} meets online for now.`}
+      intro={`There are Harvard alumni in tech here and an active WhatsApp group where they find each other. Join it to meet the alumni near you, and catch our online events and webinars from anywhere.`}
       align="center"
     />
 
     <div class="forming-actions">
-      <a
-        class="btn btn-solid"
-        href={withBase(volunteerHref)}
-        {...externalLinkAttrs(volunteerHref, origin)}
-      >
-        Volunteer to lead or support
-      </a>
-      <a class="btn btn-out" href={withBase(formHref)} {...externalLinkAttrs(formHref, origin)}>
+      <a class="btn btn-solid" href={withBase(formHref)} {...externalLinkAttrs(formHref, origin)}>
         Join WhatsApp to meet local alumni
+      </a>
+      <a class="btn btn-out" href={withBase(EVENTS_HREF)}>
+        See online events
       </a>
     </div>
 
     {
       mailto ? (
         <p class="forming-contact">
-          Interested in getting involved with the {name} chapter?
+          Want to bring in-person events to {name}?
           <a href={mailto}>Contact us</a>
         </p>
       ) : null
@@ -96,8 +96,8 @@ const mailto = contactEmail
   }
   /* Wraps to one button per row on a phone rather than letting two long labels
      shrink into unreadable pills. The secondary action is `.btn-out` — the
-     shared outline button — so "volunteer to lead" reads as the bigger ask
-     without making "join WhatsApp" look like an afterthought. */
+     shared outline button — so "join WhatsApp" reads as the main way in
+     without making the online events look like an afterthought. */
   .forming-actions {
     display: flex;
     flex-wrap: wrap;

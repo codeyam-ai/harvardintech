@@ -25,6 +25,7 @@
 //
 // Outside links (the Content Hub's Medium and LinkedIn entries) open in a new
 // tab through the one site-wide rule in src/lib/externalLink.ts.
+import NavItemLabel from './NavItemLabel.astro';
 import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 import type { NavItem } from '../../lib/site';
@@ -70,8 +71,12 @@ const { items, subscribeUrl } = Astro.props as Props;
                       <Fragment>
                         <span class="mega-h">{group.label}</span>
                         {group.children.map((leaf) => (
-                          <a href={withBase(leaf.url ?? '/')} {...externalLinkAttrs(leaf.url, Astro.url.origin)}>
-                            {leaf.label}
+                          <a
+                            class:list={[{ 'has-note': leaf.note, 'nav-cta': leaf.cta }]}
+                            href={withBase(leaf.url ?? '/')}
+                            {...externalLinkAttrs(leaf.url, Astro.url.origin)}
+                          >
+                            <NavItemLabel item={leaf} />
                           </a>
                         ))}
                       </Fragment>
@@ -89,8 +94,12 @@ const { items, subscribeUrl } = Astro.props as Props;
               ) : (
                 <div class="mega-col">
                   {item.children.map((child) => (
-                    <a href={withBase(child.url ?? '/')} {...externalLinkAttrs(child.url, Astro.url.origin)}>
-                      {child.label}
+                    <a
+                      class:list={[{ 'has-note': child.note, 'nav-cta': child.cta }]}
+                      href={withBase(child.url ?? '/')}
+                      {...externalLinkAttrs(child.url, Astro.url.origin)}
+                    >
+                      <NavItemLabel item={child} />
                     </a>
                   ))}
                 </div>
@@ -257,6 +266,22 @@ const { items, subscribeUrl } = Astro.props as Props;
   .mega-h-link {
     font-weight: 700 !important;
   }
+  /* A link with a note (NavItemLabel) stacks it under the label, both
+     left-aligned. */
+  .mega-col a.has-note {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+  }
+  /* The closing call to action, set off from the cities by a hairline. */
+  .mega-col a.nav-cta {
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    color: var(--crimson);
+    font-weight: 600;
+  }
 
   /* The header keeps its own Subscribe button until 520px, so this copy stays
      out of the way everywhere above that. */
@@ -383,6 +408,19 @@ const { items, subscribeUrl } = Astro.props as Props;
       padding-left: 12px;
       border-left: 2px solid var(--line);
       font-size: 15px;
+    }
+    /* Label over note inside the 44px tap row, still left-aligned. */
+    .mega-col a.has-note {
+      justify-content: center;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+    /* In the drawer every row already carries the left rule, so the call to
+       action drops the hairline it uses to stand apart in the desktop panel. */
+    .mega-col a.nav-cta {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
     }
   }
 

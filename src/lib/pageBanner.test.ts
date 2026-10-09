@@ -10,13 +10,14 @@ describe('bannerFor', () => {
     });
   });
 
-  // A forming chapter says so in the one place every visitor looks first,
-  // rather than leaving them to infer it from a missing leads block further
-  // down the page.
-  it('says so when a chapter is still forming', () => {
-    expect(bannerFor({ kind: 'chapter', status: 'forming', name: 'Seattle' }).label).toBe(
-      'Chapter · Forming',
-    );
+  // A forming city is an online group for now, and says so in the one place
+  // every visitor looks first, rather than leaving them to infer it from a
+  // missing leads block further down the page.
+  it('labels a forming city as an online group', () => {
+    expect(bannerFor({ kind: 'chapter', status: 'forming', name: 'Seattle' })).toEqual({
+      label: 'Online group',
+      title: 'Seattle',
+    });
   });
 
   // Any other status is an ordinary chapter. `status` is free text on the

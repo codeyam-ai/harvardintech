@@ -8,16 +8,16 @@
 // banner. Both read their standfirst from `lib/eventsIntro.ts`, so the page and
 // the isolated capture cannot describe a different set of chapters.
 import { getCollection } from 'astro:content';
-import { chapterNavItems } from '../lib/nav';
 import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
-import { eventsLede } from '../lib/eventsIntro';
+import { eventsLedeFor } from '../lib/eventsIntro';
 
 const chapters = publishedEntries(await getCollection('chapters'), INCLUDE_DRAFTS).map((c) => ({
   slug: c.id,
   ...c.data,
 }));
-const lede = eventsLede(chapterNavItems(chapters).map((c) => c.label));
+// Active chapters only — see `eventsLedeFor`.
+const lede = eventsLedeFor(chapters);
 ---
 
 <span class="kick">Programs</span>

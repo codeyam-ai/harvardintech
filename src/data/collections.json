@@ -131,7 +131,7 @@
           "label": "Status",
           "type": "select",
           "optional": true,
-          "hint": "Active shows the chapter leads and its events. Forming shows \"help lead it\" instead — a volunteer call and a link to join the local WhatsApp — for a city with alumni but nobody running events yet. Blank counts as Active. Switching to Active is all it takes to promote a chapter: the web address, the menu entry and every event already tagged to it stay exactly where they are.",
+          "hint": "Active shows the chapter leads and its events. Forming presents the city as an online group for now — \"Online · WhatsApp group\" in the menu and on the homepage, and a page that leads with joining the WhatsApp group and online events — for a city with alumni but no events yet. Blank counts as Active. Switching to Active is all it takes to promote a chapter: the web address, the menu entry and every event already tagged to it stay exactly where they are.",
           "options": [
             "active",
             "forming"
@@ -150,7 +150,7 @@
           "label": "Volunteer link",
           "type": "text",
           "optional": true,
-          "hint": "Where \"Volunteer to lead or support\" points on a forming chapter. Blank uses the site's volunteer page."
+          "hint": "Not shown at the moment: a Forming city is presented as an online group and its page no longer has a volunteer button. Kept so a link entered here is not lost if that ask returns. Blank uses the site's volunteer page."
         },
         {
           "name": "callouts",

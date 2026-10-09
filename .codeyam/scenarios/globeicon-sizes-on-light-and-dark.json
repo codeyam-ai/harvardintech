@@ -1,0 +1,12 @@
+{
+  "name": "GlobeIcon - Sizes On Light And Dark",
+  "id": "ec849f57-edf5-45e0-a96b-7996fec8ffd5",
+  "url": "/isolated-components/GlobeIcon",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "GlobeIcon",
+  "scenarioType": "component",
+  "description": "The globe that marks an online group, a city with a WhatsApp group but no events yet. It renders at 12px beside the Online · WhatsApp group note in the Chapters menu and the eyebrow on the homepage cards; here it is shown at that size and enlarged to 24 and 48px so the line work can be judged. The same three sit on the white menu panel and on the dark card wash, and take the grey and the white of the text around them — the icon carries no colour of its own, which is what lets one mark serve both surfaces."
+}

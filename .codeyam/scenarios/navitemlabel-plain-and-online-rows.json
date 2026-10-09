@@ -1,0 +1,12 @@
+{
+  "name": "NavItemLabel - Plain And Online Rows",
+  "id": "38e07187-9b03-4019-b5dc-e7bdfd1df0aa",
+  "url": "/isolated-components/NavItemLabel",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "NavItemLabel",
+  "scenarioType": "component",
+  "description": "The inside of a Chapters menu link, in a stand-in for the desktop dropdown column. SF & Bay Area and Global community are plain labels. DC and DMV Area and Seattle / Pacific Northwest each carry a quiet grey second line, the globe and Online · WhatsApp group, left-aligned under the city — the treatment chosen over a pill and over per-city Looking for a co-lead notes, which were tried and removed. Both dropdown layouts render their links through this one component, so the note cannot appear in one and be missing from the other."
+}

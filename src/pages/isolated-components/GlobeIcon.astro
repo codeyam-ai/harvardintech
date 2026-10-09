@@ -1,0 +1,32 @@
+---
+import Component from "../../../src/components/ui/GlobeIcon.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for GlobeIcon — the mark for an online group (a city with a
+// WhatsApp group but no events yet). Shown at the 12px it renders at in the
+// Chapters menu note and the homepage card eyebrow, then enlarged so the line
+// work can be judged, and on both the light menu panel and the dark card wash
+// to prove it inherits the surrounding text colour rather than carrying its own.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: GlobeIcon</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); display: flex; gap: 24px; align-items: center;">
+      <div style="display: flex; gap: 20px; align-items: center; padding: 24px; background: var(--white); color: var(--ink-3); border: 1px solid var(--line); border-radius: 4px;">
+        <Component />
+        <Component size={24} />
+        <Component size={48} />
+      </div>
+      <div style="display: flex; gap: 20px; align-items: center; padding: 24px; background: var(--ink); color: var(--white); border-radius: 4px;">
+        <Component />
+        <Component size={24} />
+        <Component size={48} />
+      </div>
+    </div>
+  </body>
+</html>

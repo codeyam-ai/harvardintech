@@ -10,7 +10,8 @@
 // asks for what it actually needs:
 //
 //   active   → leads, upcoming events, recent events
-//   forming  → "help lead it": volunteer, and join the local WhatsApp
+//   forming  → an online group for now: join the local WhatsApp, and the
+//              online events (no lead ask — that belongs to the active cities)
 //
 // Promoting a chapter is therefore flipping one select in /admin. The URL, the
 // nav entry and every event tag stay exactly where they are — which is the
@@ -100,10 +101,17 @@ export function chapterStatus(entry: unknown): ChapterStatus {
   return field(entry, 'status') === 'forming' ? 'forming' : 'active';
 }
 
-/** True when this chapter has no lead yet and should ask for one. */
+/** True when this city has no events yet and is presented as an online group. */
 export function isForming(entry: unknown): boolean {
   return chapterStatus(entry) === 'forming';
 }
+
+/**
+ * What a visitor is told a forming city IS: an online group for now, not a
+ * chapter holding events. The Chapters menu note and the homepage card eyebrow
+ * both print this one string, so the two surfaces cannot drift apart.
+ */
+export const ONLINE_NOTE = 'Online · WhatsApp group';
 
 /**
  * The roster split by status, preserving each input's relative order.

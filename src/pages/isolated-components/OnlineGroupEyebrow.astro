@@ -1,0 +1,35 @@
+---
+import Component from "../../../src/components/landing/OnlineGroupEyebrow.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for OnlineGroupEyebrow — the caption over a forming city's
+// homepage card. Rendered inside a stand-in for the card's caption block (same
+// dark wash, same 16px inset, the city name and blurb beneath it) because the
+// point of the component is alignment: its left edge must sit exactly on the
+// city name's, with no pill or padding pushing it in.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: OnlineGroupEyebrow</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div
+        style="width: 360px; height: 240px; position: relative; border-radius: 10px; overflow: hidden; background: linear-gradient(180deg, var(--ink) 38%, rgba(124, 20, 36, 0.85), rgba(20, 16, 17, 0.95));"
+      >
+        <div style="position: absolute; left: 16px; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 6px;">
+          <Component />
+          <span style="font-size: 20px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; color: var(--white);">
+            Seattle / Pacific Northwest
+          </span>
+          <span style="font-family: var(--font-serif); font-size: 13px; line-height: 1.3; color: rgba(255, 255, 255, 0.85);">
+            Alumni across Seattle and the Pacific Northwest, meeting online in our WhatsApp group and at our virtual events.
+          </span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

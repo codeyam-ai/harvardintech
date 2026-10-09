@@ -1,0 +1,37 @@
+---
+// The globe that marks an online group — a city with a WhatsApp group but no
+// events yet. The Chapters menu note and the homepage card eyebrow both use it,
+// so the mark is the same everywhere a visitor meets one of these cities.
+//
+// Inline SVG so it inherits the surrounding text colour (`currentColor`) and
+// costs no request. `aria-hidden` because the words beside it already say
+// "Online"; a screen reader announcing "globe" first would add nothing.
+interface Props {
+  /** Rendered width and height in px. */
+  size?: number;
+}
+const { size = 12 } = Astro.props;
+---
+
+<svg
+  class="globe-icon"
+  width={size}
+  height={size}
+  viewBox="0 0 16 16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  aria-hidden="true"
+>
+  <circle cx="8" cy="8" r="6.2"></circle>
+  <path
+    d="M1.8 8h12.4M8 1.8c1.8 2 2.6 4 2.6 6.2S9.8 12.2 8 14.2M8 1.8C6.2 3.8 5.4 5.8 5.4 8s.8 4.2 2.6 6.2"
+  ></path>
+</svg>
+
+<style>
+  /* A fixed-size glyph beside text: never squeezed by a flex row. */
+  .globe-icon {
+    flex: none;
+  }
+</style>

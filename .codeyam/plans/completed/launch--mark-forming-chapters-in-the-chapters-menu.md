@@ -6,6 +6,18 @@ prefix: "launch"
 source: manual
 ---
 
+## Revision at the demo (2026-10-08) — supersedes the "Forming" pill below
+
+The user reviewed the pill and redirected the work. The original plan below is kept for history; where they differ, this section wins.
+
+- **DC and Seattle are online groups for now, not forming chapters asking for a lead.** The internal `status: forming` value stays (no content migration); every visitor-facing word changes: menu note "Online · WhatsApp group" with a small globe icon, homepage card eyebrow "Online · WhatsApp group" (a muted mono caption with the globe icon, flush with the city name — the user rejected a pill here too), kicker "04 cities · 2 online", banner eyebrow "Online group" (`bannerFor`), hero lede "with online groups in DC and Seattle", and `FormingChapterCta` now leads with "Join WhatsApp" + "See online events" (the "help lead it" volunteer ask is gone; a soft "bring in-person events → Contact us" line remains). The DC/Seattle markdown blurb, tagline and body were rewritten to match.
+- **Menu style: quiet grey subtitles, left-aligned (mockup B), not pills.** `NavItem` carries `note`, `noteIcon` and `cta` instead of `badge`.
+- **The lead/co-lead ask is one closing link, not per-city notes.** The dropdown always ends with "Lead or co-lead a chapter →" linking to /volunteer (`LEAD_CTA_ITEM`). A per-city "Looking for a co-lead" note and a `seekingLead` CMS checkbox were built and shown at the demo, then removed at the user's request ("remove looking for a co-lead from the dropdown"). Only the Online note remains per city.
+- **Events lede lists active chapters only** — unchanged from the original plan.
+- **Out of scope, queued separately:** refreshing /volunteer from the "Fall 2026 | HIT Volunteer Opportunities" sheet (roles and descriptions only — never volunteers' names or contact details).
+
+Scenarios to demonstrate after the revision: the desktop dropdown (co-lead notes on Boston/NYC/SF, Online notes on DC/Seattle, closing CTA); the phone drawer; the Seattle chapter page; the homepage chapter cards; the events intro.
+
 ## Summary
 
 The site already knows which chapters are running and which aren't. Each chapter has a `status` of `active` or `forming`. NYC, SF, Boston and London are active. Seattle and DC are forming, which means they have a WhatsApp group but no local lead yet. The homepage "Our chapters" cards already show a "Forming · help lead it" badge, and forming chapter pages already lead with the volunteer + apply-to-join-the-WhatsApp ask.

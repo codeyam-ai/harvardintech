@@ -10,16 +10,16 @@
 // the utility bar and the nav dropdown are, rather than typed into the copy.
 import { getCollection } from 'astro:content';
 import PageBanner from './ui/PageBanner.astro';
-import { chapterNavItems } from '../lib/nav';
 import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
-import { eventsLede } from '../lib/eventsIntro';
+import { eventsLedeFor } from '../lib/eventsIntro';
 
 const chapters = publishedEntries(await getCollection('chapters'), INCLUDE_DRAFTS).map((c) => ({
   slug: c.id,
   ...c.data,
 }));
-const lede = eventsLede(chapterNavItems(chapters).map((c) => c.label));
+// Active chapters only — see `eventsLedeFor`.
+const lede = eventsLedeFor(chapters);
 ---
 
 <PageBanner label="Programs" title="Events" lede={lede} />

@@ -1,0 +1,48 @@
+---
+// The inside of a menu link: the label, and under it an optional quiet note
+// ("Online · WhatsApp group", with the globe for an online group).
+//
+// The <a> itself stays in PrimaryNav, whose panel and drawer rules lay the row
+// out; this component owns only what goes in it. Both of PrimaryNav's dropdown
+// layouts (single column and titled columns) render their links through here,
+// so a note can never appear in one layout and be missing from the other.
+//
+// The note sits INSIDE the link, so the row stays one tap target and a screen
+// reader hears "Seattle / Pacific Northwest Online · WhatsApp group".
+import GlobeIcon from '../ui/GlobeIcon.astro';
+import type { NavItem } from '../../lib/site';
+
+interface Props {
+  item: NavItem;
+}
+const { item } = Astro.props;
+---
+
+{item.label}
+{
+  item.note && (
+    <span class="nav-note">
+      {item.noteIcon === 'online' && <GlobeIcon />}
+      {item.note}
+    </span>
+  )
+}
+
+<style>
+  /* Quiet on purpose: it qualifies the label, it should not compete with it. */
+  .nav-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+  /* The drawer's rows are a size larger throughout (PrimaryNav, same
+     breakpoint), so the note steps up with them. */
+  @media (max-width: 1040px) {
+    .nav-note {
+      font-size: 12.5px;
+    }
+  }
+</style>

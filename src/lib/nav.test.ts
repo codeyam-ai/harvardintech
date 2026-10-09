@@ -5,6 +5,7 @@ import {
   chapterNavItems,
   withChapterGroup,
   GLOBAL_COMMUNITY_ITEM,
+  LEAD_CTA_ITEM,
   communityNavItems,
   withCommunityItems,
   internalNavUrls,
@@ -12,6 +13,7 @@ import {
   withoutHiddenSections,
 } from './nav';
 import { publishedEntries } from './drafts';
+import { ONLINE_NOTE } from './localPresence';
 import type { NavItem } from './site';
 
 // The menu an editor sees before any chapter is derived into it: the four
@@ -43,12 +45,13 @@ describe('chapterNavItems', () => {
     const items = withChapterGroup(HAND_AUTHORED, chapterNavItems(chapters));
     const group = items.find((i) => i.label === 'Chapters');
 
-    // The Global community entry always closes the dropdown — asserted here as
-    // part of the whole `children` array rather than only in its own test, so
-    // this reproduction keeps pinning the FULL menu the group renders.
+    // Global community and the lead call to action always close the dropdown —
+    // asserted here as part of the whole `children` array rather than only in
+    // their own tests, so this reproduction keeps pinning the FULL menu.
     expect(group?.children).toEqual([
       { label: 'Miami', url: '/chapters/miami/' },
       GLOBAL_COMMUNITY_ITEM,
+      LEAD_CTA_ITEM,
     ]);
   });
 
@@ -155,15 +158,26 @@ describe('withChapterGroup', () => {
 
   // Most alumni are not in one of the four cities. Before this entry existed,
   // opening Chapters and finding nowhere near you was a dead end — the menu's
-  // implicit answer was "not for you". It must be LAST, after the cities.
-  it('closes the dropdown with the Global community entry', () => {
+  // implicit answer was "not for you". It comes after every city.
+  it('lists the Global community entry after the cities', () => {
     const items = withChapterGroup(HAND_AUTHORED, chapterItems);
     const group = items.find((i) => i.label === 'Chapters');
 
-    expect(group?.children).toEqual([...chapterItems, GLOBAL_COMMUNITY_ITEM]);
+    expect(group?.children?.slice(0, 2)).toEqual([...chapterItems, GLOBAL_COMMUNITY_ITEM]);
+    expect(GLOBAL_COMMUNITY_ITEM).toEqual({ label: 'Global community', url: '/#global-community' });
+  });
+
+  // The one place the menu asks for chapter leads and co-leads. It is LAST, after
+  // the global entry, and marked `cta` so it renders as a call to action rather
+  // than as one more city.
+  it('closes the dropdown with the lead call to action', () => {
+    const items = withChapterGroup(HAND_AUTHORED, chapterItems);
+    const group = items.find((i) => i.label === 'Chapters');
+
     expect(group?.children?.at(-1)).toEqual({
-      label: 'Global community',
-      url: '/#global-community',
+      label: 'Lead or co-lead a chapter →',
+      url: '/volunteer/',
+      cta: true,
     });
   });
 
@@ -175,6 +189,56 @@ describe('withChapterGroup', () => {
 
     expect(items.find((i) => i.label === 'Chapters')).toBeUndefined();
     expect(JSON.stringify(items)).not.toContain('global-community');
+    expect(JSON.stringify(items)).not.toContain('/volunteer/');
+  });
+});
+
+describe('chapterNavItems online note', () => {
+  // DC and Seattle are online groups for now. The menu says so under the city,
+  // with the globe glyph, so they do not pass for chapters that hold events.
+  it('notes a forming city as an online group', () => {
+    expect(chapterNavItems([{ slug: 'seattle', city: 'Seattle', status: 'forming' }])).toEqual([
+      { label: 'Seattle', url: '/chapters/seattle/', note: ONLINE_NOTE, noteIcon: 'online' },
+    ]);
+  });
+
+  // An active chapter carries no note at all — the key is absent, not
+  // undefined, so the rendered row is exactly the plain link it always was.
+  it('leaves an active chapter as a plain link', () => {
+    const [item] = chapterNavItems([{ slug: 'nyc', city: 'New York City', status: 'active' }]);
+
+    expect(item).toEqual({ label: 'New York City', url: '/chapters/nyc/' });
+    expect('note' in item).toBe(false);
+  });
+
+  // No status means active, so an older chapter file with no status field
+  // gets no note either.
+  it('treats a chapter with no status as active', () => {
+    const [item] = chapterNavItems([{ slug: 'london', city: 'London' }]);
+
+    expect(item.note).toBeUndefined();
+  });
+
+  // The note survives the group injection — the dropdown is built from these
+  // items, so dropping a key there would silently remove the label.
+  it('keeps the note inside the injected group', () => {
+    const items = withChapterGroup(
+      HAND_AUTHORED,
+      chapterNavItems([{ slug: 'dc-dmv', city: 'DC and DMV Area', status: 'forming' }]),
+    );
+    const group = items.find((i) => i.label === 'Chapters');
+
+    expect(group?.children?.[0].note).toBe(ONLINE_NOTE);
+  });
+
+  // The label promise the content admin makes: switching a city to active is
+  // all it takes to remove the note everywhere.
+  it('drops the note once the city is promoted to active', () => {
+    const before = chapterNavItems([{ slug: 'seattle', city: 'Seattle', status: 'forming' }]);
+    const after = chapterNavItems([{ slug: 'seattle', city: 'Seattle', status: 'active' }]);
+
+    expect(before[0].note).toBe(ONLINE_NOTE);
+    expect(after[0].note).toBeUndefined();
   });
 });
 

@@ -31,7 +31,7 @@ interface Props {
   blurb?: string;
   heroImage?: string;
   tagline?: string;
-  /** "Chapter", "Chapter · Forming", "Community" — see `lib/pageBanner.ts`. */
+  /** "Chapter", "Online group", "Community" — see `lib/pageBanner.ts`. */
   label?: string;
 }
 const { name, region, blurb, heroImage, tagline, label = 'Chapter' } = Astro.props as Props;

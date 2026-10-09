@@ -57,8 +57,6 @@ const UNPOLICED = [
 const KNOWN_RAW_COLOUR = [
   // The footer's muted body grey, lighter than `--ink-3` on the dark band.
   'src/layouts/BaseLayout.astro',
-  // A near-black used for the card wash, darker than `--ink`.
-  'src/components/landing/OurChapters.astro',
   // Card borders and fills in four near-identical greys.
   'src/components/WebinarCard.astro',
   // The archive year rule, sharing one of those greys.

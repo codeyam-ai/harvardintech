@@ -78,6 +78,18 @@ export interface NavItem {
   label: string;
   url?: string;
   children?: NavItem[];
+  // The three keys below are display-only, and only ever set on items the
+  // layout derives at render time: the CMS nav serializer rebuilds every saved
+  // item from `label`/`url`/`children` and drops any other key, so one typed
+  // into `nav.json` would not survive a save.
+  /** A quiet second line under the label ("Online · WhatsApp group"). */
+  note?: string;
+  /** A small glyph before the note. `online` is a globe, for a city that is a
+   *  WhatsApp group rather than a chapter holding events. */
+  noteIcon?: 'online';
+  /** Rendered as the dropdown's closing call to action rather than a peer of
+   *  the items above it. */
+  cta?: boolean;
 }
 
 export interface SiteNav {

@@ -5,6 +5,7 @@
 // prompt (production starts empty). Photos render as <img> for proxy-safe
 // loading, matching the other sections.
 import GlobalCommunityCta from '../GlobalCommunityCta.astro';
+import OnlineGroupEyebrow from './OnlineGroupEyebrow.astro';
 import EmptyState from '../ui/EmptyState.astro';
 import SectionHead from '../ui/SectionHead.astro';
 import { siteLinks } from '../../lib/site';
@@ -52,7 +53,7 @@ const media = readMediaManifest();
       {
         sorted.length > 0 && (
           <span class="kick">
-            {count} cities{formingCount > 0 ? ` · ${formingCount} forming` : ''}
+            {count} cities{formingCount > 0 ? ` · ${formingCount} online` : ''}
           </span>
         )
       }
@@ -75,7 +76,7 @@ const media = readMediaManifest();
               )}
               <div class="c-meta">
                 {chapterStatus(c) === 'forming' && (
-                  <span class="badge">Forming · help lead it</span>
+                  <OnlineGroupEyebrow />
                 )}
                 <span class="cn">{c.city}</span>
                 {c.blurb && <span class="cb">{c.blurb}</span>}
@@ -142,20 +143,6 @@ const media = readMediaManifest();
     display: flex;
     flex-direction: column;
     gap: 6px;
-  }
-  /* Sits above the city name rather than over the photo: the cards are
-     photographic and a floating pill competes with whatever is in the image,
-     while here it reads as part of the same caption block. */
-  .badge {
-    align-self: flex-start;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 3px 8px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.92);
-    color: var(--ink, #141011);
   }
   .cn {
     font-size: 20px;

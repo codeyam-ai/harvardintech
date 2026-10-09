@@ -1,14 +1,14 @@
 ---
-blurb: Alumni across Seattle and the Pacific Northwest — a WhatsApp group today, a chapter as soon as someone steps up to lead it.
+blurb: Alumni across Seattle and the Pacific Northwest, meeting online in our WhatsApp group and at our virtual events.
 city: Seattle / Pacific Northwest
 showGallery: false
 region: Seattle, WA
 status: forming
-tagline: A Harvard Alumni in Tech chapter forming across the Pacific Northwest.
+tagline: The Harvard Alumni in Tech online group for the Pacific Northwest.
 ---
 
 Seattle has a real concentration of Harvard alumni in cloud, devtools and consumer tech, and the Pacific Northwest WhatsApp group is where they find each other today.
 
-What is missing is someone to run events. Meetups here would not be hard to fill — the people are already in the group — they just need somebody to call them. That could be a standing coffee, a quarterly dinner, or one panel a year; the chapter becomes active the moment somebody decides.
+For now this is an online community: the WhatsApp group for introductions, questions and local news, plus the virtual events and webinars every member can join from anywhere.
 
-If you would like to lead it, or support whoever does, start below.
+Join the group below to meet the alumni near you.

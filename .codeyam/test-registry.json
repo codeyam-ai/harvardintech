@@ -761,7 +761,7 @@
       "file": "src/lib/pageBanner.test.ts",
       "format": "vitest",
       "key": "bannerFor › ignores a status on a community",
-      "line": 42,
+      "line": 43,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -770,8 +770,17 @@
       "file": "src/lib/pageBanner.test.ts",
       "format": "vitest",
       "key": "bannerFor › labels a community without touching its name",
-      "line": 34,
+      "line": 35,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A forming city is an online group for now, and says so in the one place every visitor looks first, rather than leaving them to infer it from a missing leads block further down the page.",
+      "file": "src/lib/pageBanner.test.ts",
+      "format": "vitest",
+      "key": "bannerFor › labels a forming city as an online group",
+      "line": 16,
+      "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
     {
@@ -788,16 +797,7 @@
       "file": "src/lib/pageBanner.test.ts",
       "format": "vitest",
       "key": "bannerFor › passes a long name through unchanged",
-      "line": 50,
-      "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "A forming chapter says so in the one place every visitor looks first, rather than leaving them to infer it from a missing leads block further down the page.",
-      "file": "src/lib/pageBanner.test.ts",
-      "format": "vitest",
-      "key": "bannerFor › says so when a chapter is still forming",
-      "line": 16,
+      "line": 51,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -806,7 +806,7 @@
       "file": "src/lib/pageBanner.test.ts",
       "format": "vitest",
       "key": "bannerFor › treats an unknown status as an ordinary chapter",
-      "line": 24,
+      "line": 25,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -1448,11 +1448,56 @@
       "runner": "tests"
     },
     {
+      "description": "The label promise the content admin makes: switching a city to active is all it takes to remove the note everywhere.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "chapterNavItems online note › drops the note once the city is promoted to active",
+      "line": 236,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The note survives the group injection — the dropdown is built from these items, so dropping a key there would silently remove the label.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "chapterNavItems online note › keeps the note inside the injected group",
+      "line": 224,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An active chapter carries no note at all — the key is absent, not undefined, so the rendered row is exactly the plain link it always was.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "chapterNavItems online note › leaves an active chapter as a plain link",
+      "line": 207,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "DC and Seattle are online groups for now. The menu says so under the city, with the globe glyph, so they do not pass for chapters that hold events.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "chapterNavItems online note › notes a forming city as an online group",
+      "line": 199,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No status means active, so an older chapter file with no status field gets no note either.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "chapterNavItems online note › treats a chapter with no status as active",
+      "line": 216,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
       "description": "The menu leads with the cities that actually hold events. A visitor opening Chapters is usually looking for something to attend, and a forming chapter has nothing to attend yet — so it is listed, but listed after.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems status ordering › orders active chapters before forming ones",
-      "line": 185,
+      "line": 249,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1461,7 +1506,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems status ordering › still lists every forming chapter",
-      "line": 204,
+      "line": 268,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1470,7 +1515,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › builds the url from the slug, not the city",
-      "line": 77,
+      "line": 80,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1479,7 +1524,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › includes a chapter that nav.json does not list",
-      "line": 40,
+      "line": 42,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1488,7 +1533,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › orders by the order field, falling back to city for ties and absent values",
-      "line": 57,
+      "line": 60,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1497,7 +1542,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › returns no items for no chapters",
-      "line": 85,
+      "line": 88,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1821,7 +1866,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed chapters › lists the six chapters alphabetically by city",
-      "line": 531,
+      "line": 595,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1830,7 +1875,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed chapters › pins no chapter with an order, so the roster sorts alphabetically",
-      "line": 524,
+      "line": 588,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1839,7 +1884,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › derives community links that all resolve to a page",
-      "line": 497,
+      "line": 561,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1848,7 +1893,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › does not hand-list the communities",
-      "line": 489,
+      "line": 553,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1857,7 +1902,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › no longer hand-lists the chapters",
-      "line": 483,
+      "line": 547,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1866,7 +1911,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › points every internal link at a page that exists",
-      "line": 471,
+      "line": 535,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1893,7 +1938,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › builds the url from the slug, not the name",
-      "line": 245,
+      "line": 309,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1902,7 +1947,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › honours an order pin ahead of the unpinned entries",
-      "line": 234,
+      "line": 298,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1911,7 +1956,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › orders alphabetically by name when nothing is pinned",
-      "line": 226,
+      "line": 290,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -1920,7 +1965,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › returns no items for no communities",
-      "line": 253,
+      "line": 317,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2024,12 +2069,12 @@
       "runner": "tests"
     },
     {
-      "description": "The hero lede must separate the two groups rather than listing all six as places you can turn up in person.",
+      "description": "The hero lede must separate the two groups rather than listing all six as places you can turn up in person. The forming cities are presented as online groups — the same word the menu and the homepage cards use.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
-      "key": "copy names no retired or forming city as active › the hero lede marks the forming chapters as forming",
-      "line": 154,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "key": "copy names no retired or forming city as active › the hero lede marks the forming cities as online groups",
+      "line": 155,
+      "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
     {
@@ -2685,7 +2730,7 @@
       "file": "src/lib/designSystem.test.ts",
       "format": "vitest",
       "key": "design system colour › introduces no new hand-typed colour outside the paused campaign area",
-      "line": 104,
+      "line": 102,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -2694,7 +2739,7 @@
       "file": "src/lib/designSystem.test.ts",
       "format": "vitest",
       "key": "design system colour › lists no file that has already been cleaned up",
-      "line": 113,
+      "line": 111,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -2703,7 +2748,7 @@
       "file": "src/lib/designSystem.test.ts",
       "format": "vitest",
       "key": "design system colour › still finds the palette defined in the token layer",
-      "line": 121,
+      "line": 119,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -3036,7 +3081,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "draft visibility › omits a drafted chapter from the production menu",
-      "line": 105,
+      "line": 108,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -3045,7 +3090,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "draft visibility › shows a drafted chapter while authoring",
-      "line": 111,
+      "line": 114,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -3675,7 +3720,7 @@
       "file": "src/lib/eventsIntro.test.ts",
       "format": "vitest",
       "key": "eventsLede › always mentions the global community",
-      "line": 58,
+      "line": 60,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -3684,7 +3729,7 @@
       "file": "src/lib/eventsIntro.test.ts",
       "format": "vitest",
       "key": "eventsLede › drops the chapter clause when there are no chapters",
-      "line": 48,
+      "line": 50,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -3693,8 +3738,53 @@
       "file": "src/lib/eventsIntro.test.ts",
       "format": "vitest",
       "key": "eventsLede › names the chapters it is given",
-      "line": 40,
+      "line": 42,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "With every city forming there is no in-person calendar to name, so the sentence falls back to the no-chapters form rather than \"across our chapters\" with an empty list.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "eventsLedeFor › drops the chapter clause when every city is forming",
+      "line": 98,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No chapters at all reads the same as the all-forming case.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "eventsLedeFor › handles an empty roster",
+      "line": 105,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The cities appear in the menu's order, so the sentence and the dropdown above it never list the same chapters in a different sequence.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "eventsLedeFor › lists the cities in menu order",
+      "line": 84,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "THE RULE AGAINST THE REAL ROSTER: build the lede from the committed chapter files and assert no forming city's name made it into the sentence.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "eventsLedeFor › names no forming city from the committed chapters",
+      "line": 111,
+      "registeredAt": "2026-10-08T21:38:27Z",
+      "runner": "tests"
+    },
+    {
+      "description": "\"In-person events … across our X chapters\" is a promise of a calendar. A forming city holds no events — it is an online group for now — so naming it here would promise one that is not there.",
+      "file": "src/lib/eventsIntro.test.ts",
+      "format": "vitest",
+      "key": "eventsLedeFor › names only the active chapters",
+      "line": 70,
+      "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
     {
@@ -4116,7 +4206,7 @@
       "file": "src/lib/eventsIntro.test.ts",
       "format": "vitest",
       "key": "formatCityList › ignores blank and whitespace-only entries",
-      "line": 31,
+      "line": 33,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -4125,7 +4215,7 @@
       "file": "src/lib/eventsIntro.test.ts",
       "format": "vitest",
       "key": "formatCityList › joins three or more cities with an Oxford comma",
-      "line": 8,
+      "line": 10,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -4134,7 +4224,7 @@
       "file": "src/lib/eventsIntro.test.ts",
       "format": "vitest",
       "key": "formatCityList › joins two cities with and",
-      "line": 15,
+      "line": 17,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -4143,7 +4233,7 @@
       "file": "src/lib/eventsIntro.test.ts",
       "format": "vitest",
       "key": "formatCityList › returns a single city unchanged",
-      "line": 20,
+      "line": 22,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -4152,7 +4242,7 @@
       "file": "src/lib/eventsIntro.test.ts",
       "format": "vitest",
       "key": "formatCityList › returns an empty string for no cities",
-      "line": 25,
+      "line": 27,
       "registeredAt": "2026-09-29T17:22:08.473558330+00:00",
       "runner": "tests"
     },
@@ -5967,7 +6057,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "internalNavUrls › collects site-internal urls at every level and skips external ones",
-      "line": 314,
+      "line": 378,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -9720,7 +9810,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "retired content is gone rather than hidden › the new-chapters-launched accomplishment no longer exists",
-      "line": 180,
+      "line": 181,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13687,7 +13777,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › ignores a trailing slash difference",
-      "line": 419,
+      "line": 483,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -13696,7 +13786,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › reports a url with no page behind it",
-      "line": 411,
+      "line": 475,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -13705,7 +13795,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › resolves a bare fragment against the home page",
-      "line": 405,
+      "line": 469,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -13714,7 +13804,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › resolves a fragment against its page",
-      "line": 399,
+      "line": 463,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -14287,17 +14377,17 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › appends the group when there is no Programs item",
-      "line": 129,
+      "line": 132,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
     {
-      "description": "Most alumni are not in one of the four cities. Before this entry existed, opening Chapters and finding nowhere near you was a dead end — the menu's implicit answer was \"not for you\". It must be LAST, after the cities.",
+      "description": "The one place the menu asks for chapter leads and co-leads. It is LAST, after the global entry, and marked `cta` so it renders as a call to action rather than as one more city.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
-      "key": "withChapterGroup › closes the dropdown with the Global community entry",
-      "line": 159,
-      "registeredAt": "2026-09-16T14:05:10Z",
+      "key": "withChapterGroup › closes the dropdown with the lead call to action",
+      "line": 173,
+      "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
     {
@@ -14305,7 +14395,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › does not mutate the caller list",
-      "line": 149,
+      "line": 152,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -14314,7 +14404,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › does not resurrect the group for the global entry alone",
-      "line": 173,
+      "line": 187,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -14323,8 +14413,17 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › inserts the group directly after Programs",
-      "line": 121,
+      "line": 124,
       "registeredAt": "2026-07-28T15:22:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Most alumni are not in one of the four cities. Before this entry existed, opening Chapters and finding nowhere near you was a dead end — the menu's implicit answer was \"not for you\". It comes after every city.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "withChapterGroup › lists the Global community entry after the cities",
+      "line": 162,
+      "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
     {
@@ -14332,7 +14431,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › omits the group entirely when there are no chapters",
-      "line": 140,
+      "line": 143,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -14341,7 +14440,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › appends derived items after the hand-authored ones",
-      "line": 264,
+      "line": 328,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -14350,7 +14449,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › creates the group when nav.json no longer has one",
-      "line": 283,
+      "line": 347,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -14359,7 +14458,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › does not mutate the caller list or its groups",
-      "line": 303,
+      "line": 367,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -14368,7 +14467,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › leaves the surrounding menu order untouched",
-      "line": 275,
+      "line": 339,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -14377,7 +14476,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › returns the menu unchanged when there are no communities",
-      "line": 295,
+      "line": 359,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -14386,7 +14485,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › does not mutate the input tree",
-      "line": 380,
+      "line": 444,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -14395,7 +14494,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › drops a dropdown left empty by the removal",
-      "line": 369,
+      "line": 433,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -14404,7 +14503,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › drops a link to a hidden band",
-      "line": 355,
+      "line": 419,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -14413,7 +14512,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › keeps an item that has no children to begin with",
-      "line": 388,
+      "line": 452,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -14422,7 +14521,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › leaves links to real pages alone",
-      "line": 362,
+      "line": 426,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -14431,7 +14530,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › returns the menu unchanged when nothing is hidden",
-      "line": 375,
+      "line": 439,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },

@@ -1,0 +1,29 @@
+---
+// The eyebrow over a forming city's name on its homepage card: "Online ·
+// WhatsApp group", with the globe the Chapters menu uses for the same cities.
+//
+// An eyebrow, not a pill: no background and no padding, so its left edge lines
+// up exactly with the city name and blurb beneath it, and it reads as part of
+// the same caption rather than a sticker on the photo. Muted so it qualifies
+// the city instead of competing with it.
+import GlobeIcon from '../ui/GlobeIcon.astro';
+import { ONLINE_NOTE } from '../../lib/localPresence';
+---
+
+<span class="eyebrow">
+  <GlobeIcon />
+  {ONLINE_NOTE}
+</span>
+
+<style>
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
+  }
+</style>

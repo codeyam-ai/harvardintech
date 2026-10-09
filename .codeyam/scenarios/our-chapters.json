@@ -9,5 +9,5 @@
   "componentName": "OurChapters",
   "scenarioType": "component",
   "pageFilePath": "src/components/landing/OurChapters.astro",
-  "description": "The homepage roster, now split by status. The four cities that actually hold events sort ahead of the two that are forming, and DC and Seattle carry a Forming - help lead it badge instead of pretending to a calendar they do not have. The count kicker reads 04 cities - 2 forming rather than the flat 6 the site used to claim. The fixture lists the chapters unsorted on purpose, so the frame proves the ordering is the component's work and not the data's."
+  "description": "The homepage roster, now split by status. The four cities that actually hold events sort ahead of the two that are forming, and DC and Seattle carry a quiet ONLINE · WHATSAPP GROUP eyebrow with a globe, flush with the city name, instead of pretending to a calendar they do not have — it replaced a white pill the reviewer rejected as too loud. The count kicker reads 04 cities · 2 online rather than the flat 6 the site used to claim. The fixture lists the chapters unsorted on purpose, so the frame proves the ordering is the component's work and not the data's."
 }

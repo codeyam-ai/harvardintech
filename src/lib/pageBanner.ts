@@ -1,5 +1,5 @@
 // The label that sits above the name in a page banner — "Chapter",
-// "Chapter · Forming", "Community".
+// "Online group", "Community".
 //
 // It is a module rather than a ternary at each call site because three places
 // derive it (the chapter page, the community page, and the CMS hints that tell
@@ -28,8 +28,8 @@ export function bannerFor({ kind, status, name }: BannerInput): Banner {
   if (kind === 'community') {
     return { label: 'Community', title: name };
   }
-  // A forming chapter says so in the one place every visitor looks first,
-  // rather than leaving them to infer it from a missing leads block further
-  // down the page.
-  return { label: status === 'forming' ? 'Chapter · Forming' : 'Chapter', title: name };
+  // A forming city says so in the one place every visitor looks first — it is
+  // an online group for now, not a chapter holding events — rather than
+  // leaving them to infer it from a missing leads block further down the page.
+  return { label: status === 'forming' ? 'Online group' : 'Chapter', title: name };
 }

@@ -150,14 +150,15 @@ describe('copy names no retired or forming city as active', () => {
   });
 
   // The hero lede must separate the two groups rather than listing all six as
-  // places you can turn up in person.
-  it('the hero lede marks the forming chapters as forming', () => {
+  // places you can turn up in person. The forming cities are presented as
+  // online groups — the same word the menu and the homepage cards use.
+  it('the hero lede marks the forming cities as online groups', () => {
     const lede = frontmatterValue(
       join(CONTENT, 'heroSlides/a-global-community-with-a-home-in-your-city.md'),
       'lede',
     ) ?? '';
 
-    expect(lede.toLowerCase()).toContain('forming');
+    expect(lede.toLowerCase()).toContain('online groups');
   });
 });
 

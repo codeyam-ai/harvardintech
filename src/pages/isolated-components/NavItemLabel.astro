@@ -1,0 +1,44 @@
+---
+import Component from "../../../src/components/nav/NavItemLabel.astro";
+import "../../../src/styles/tokens.css";
+import { ONLINE_NOTE } from "../../../src/lib/localPresence";
+
+// Isolation page for NavItemLabel — the inside of a Chapters menu link. Shown
+// in a stand-in for the desktop dropdown column (white panel, crimson top rule,
+// 13px links stacked label-over-note) with the two shapes it renders: a plain
+// city, and a forming city carrying the "Online · WhatsApp group" note with
+// its globe. The plain rows either side prove the note adds a line under its
+// own label and nothing else.
+const ROWS = [
+  { label: "SF & Bay Area", url: "/chapters/sf-bay-area/" },
+  { label: "DC and DMV Area", url: "/chapters/dc-dmv/", note: ONLINE_NOTE, noteIcon: "online" as const },
+  { label: "Seattle / Pacific Northwest", url: "/chapters/seattle/", note: ONLINE_NOTE, noteIcon: "online" as const },
+  { label: "Global community", url: "/#global-community" },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: NavItemLabel</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <div
+        style="display: flex; flex-direction: column; gap: 9px; min-width: 220px; padding: 22px 26px; background: var(--white); border: 1px solid var(--line); border-top: 2px solid var(--crimson); border-radius: 4px; box-shadow: 0 18px 40px rgba(30, 26, 27, 0.14);"
+      >
+        {
+          ROWS.map((item) => (
+            <a
+              href={item.url}
+              style="display: flex; flex-direction: column; align-items: flex-start; gap: 1px; color: var(--ink); font-size: 13px; font-weight: 500; text-decoration: none;"
+            >
+              <Component item={item} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </body>
+</html>

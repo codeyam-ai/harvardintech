@@ -8,5 +8,5 @@
   "mocks": {},
   "componentName": "ChapterPage",
   "scenarioType": "component",
-  "description": "The same chapter page with status forming — the state DC and Seattle are in. The leads block is replaced by a help-lead-it band, the hero kicker reads Chapter - Forming, and callouts carry what the chapter can honestly claim. The fixture deliberately PASSES a lead named Should Not Render: a forming chapter must suppress its leads rather than merely lack them, and a fixture with no leads could not tell the difference. Compare with ChapterPage - Full Chapter for the active shape."
+  "description": "The same chapter page with status forming — the state DC and Seattle are in, presented to visitors as online groups for now. The leads block is replaced by a band that reads <city> meets online for now, leading with joining the local WhatsApp group and the online events; the hero kicker reads Online group, and callouts carry what the city can honestly claim. The fixture deliberately PASSES a lead named Should Not Render: a forming chapter must suppress its leads rather than merely lack them, and a fixture with no leads could not tell the difference. Compare with ChapterPage - Full Chapter for the active shape."
 }

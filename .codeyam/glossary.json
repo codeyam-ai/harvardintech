@@ -260,7 +260,7 @@
     ]
   },
   {
-    "description": "What a forming chapter shows where an active one shows its leads: a volunteer-to-lead ask and a join-the-local-WhatsApp ask, with an optional Contact us line. It exists because rendering a lead-less city identically to New York made a new chapter look like a dead one, while deleting it would have hidden alumni who are actually there.",
+    "description": "What a forming city's page shows where an active chapter shows its leads. These cities are online groups for now, not chapters recruiting a lead, so the band reads <city> meets online for now and leads with joining the local WhatsApp group, with See online events as the second action and an optional Contact us line for anyone who wants to bring in-person events to the city. The lead ask lives in the Chapters menu instead. It exists because rendering a city with no events identically to New York made it look like a dead chapter, while deleting it would have hidden alumni who are actually there.",
     "filePath": "src/components/FormingChapterCta.astro",
     "name": "FormingChapterCta",
     "scenarios": [
@@ -331,6 +331,17 @@
     ]
   },
   {
+    "description": "The globe that marks an online group — a city with a WhatsApp group but no events yet. Used by the Chapters menu note (through NavItemLabel) and the homepage card eyebrow (OnlineGroupEyebrow), so the mark is the same everywhere a visitor meets one of these cities. Inline SVG drawn in currentColor, so it takes the colour of the text beside it and costs no request; aria-hidden because the words beside it already say Online. Size defaults to 12px.",
+    "filePath": "src/components/ui/GlobeIcon.astro",
+    "name": "GlobeIcon",
+    "scenarios": [
+      "globeicon-sizes-on-light-and-dark"
+    ],
+    "tags": [
+      "chapters"
+    ]
+  },
+  {
     "description": "The fundraising progress band, in either of two modes that never both apply. With a Givebutter widget id it hands the meter to Givebutter, which reports the live total and needs no maintenance. With the id blank and figures filled in it draws its own bar from them — the mode production is in today, showing nothing raised against the 2026 goal. The percentage is what the bar is drawn to and is not derived from the money, so the two can be edited into contradicting each other.",
     "filePath": "src/components/donate/GoalMeter.astro",
     "name": "GoalMeter",
@@ -379,6 +390,18 @@
     ]
   },
   {
+    "description": "The inside of a header menu link: the label, and under it an optional quiet note with an optional glyph — today the Online · WhatsApp group note with the globe on a forming city. The link element itself stays in PrimaryNav, whose panel and drawer rules lay the row out; both of PrimaryNav's dropdown layouts render through this component so a note cannot appear in one and be missing from the other. The note sits inside the link, keeping one tap target and reading naturally to a screen reader.",
+    "filePath": "src/components/nav/NavItemLabel.astro",
+    "name": "NavItemLabel",
+    "scenarios": [
+      "navitemlabel-plain-and-online-rows"
+    ],
+    "tags": [
+      "chapters",
+      "navigation"
+    ]
+  },
+  {
     "description": "The body of the not-found page: the code, a plain-language heading, one line of reassurance, and the way back. Its own component so the 404 route composes and nothing more, and so the state can be captured at all — the screenshot harness refuses an HTTP 404 response, so an isolated frame is the only picture this page can have. That blind spot is how it stayed a bare unstyled shell with no navigation, the one page a lost reader could reach with no way onward.",
     "filePath": "src/components/NotFound.astro",
     "name": "NotFound",
@@ -390,7 +413,18 @@
     ]
   },
   {
-    "description": "Landing Our Chapters section: a row of photo cards with a crimson gradient wash linking to each chapter page, sorted by order; shows a quiet prompt when empty.",
+    "description": "The caption over a forming city's card in the homepage Our chapters row: the globe and Online · WhatsApp group in small muted mono capitals. An eyebrow rather than a pill — no background and no padding — so its left edge lines up with the city name and blurb under it and it reads as part of the same caption; the reviewer rejected a pill here twice as too loud. The text is ONLINE_NOTE, the same string the menu prints.",
+    "filePath": "src/components/landing/OnlineGroupEyebrow.astro",
+    "name": "OnlineGroupEyebrow",
+    "scenarios": [
+      "onlinegroupeyebrow-over-a-forming-city-card"
+    ],
+    "tags": [
+      "chapters"
+    ]
+  },
+  {
+    "description": "Landing Our Chapters section: a row of photo cards with a crimson gradient wash linking to each chapter page, active cities first, then forming ones. A forming city's card carries the OnlineGroupEyebrow above its name, and the kicker counts the cities that hold events and the online groups separately, 04 cities · 2 online. Shows a quiet prompt when the collection is empty.",
     "filePath": "src/components/landing/OurChapters.astro",
     "name": "OurChapters",
     "scenarios": [
@@ -623,7 +657,7 @@
     "testFile": "src/lib/supporterBadge.test.ts"
   },
   {
-    "description": "Derives the label above a page banner's title: Chapter, Chapter with a forming note, or Community. One module rather than a ternary per call site because three places need it and they had already drifted once, which is how the AI community page came to announce Harvard Alumni in Tech AI. The name is carried through untouched; the kind never folds into the title.",
+    "description": "Derives the label above a page banner's title: Chapter, Online group for a forming city that is a WhatsApp group with no events yet, or Community. One module rather than a ternary per call site because three places need it and they had already drifted once, which is how the AI community page came to announce Harvard Alumni in Tech AI. The name is carried through untouched; the kind never folds into the title.",
     "filePath": "src/lib/pageBanner.ts",
     "name": "bannerFor",
     "tags": [
@@ -732,7 +766,7 @@
     "testFile": "src/lib/sectionGroups.test.ts"
   },
   {
-    "description": "Maps published chapters to header menu items — label from the chapter's own city, url built from its slug as /chapters/<slug>/ — ordered exactly the way the Our Chapters section orders its cards: by the order field, with city breaking ties and sorting entries that carry no order. Sharing that convention is what keeps the menu and the homepage section from ever listing the same chapters in different sequences. Callers pass chapters already draft-filtered through publishedEntries, so draft visibility stays one rule applied at every call site. Paths are returned base-agnostic and carry the canonical trailing slash the rest of the site's internal links use; the layout wraps them in withBase at render. Returns an empty list for no chapters, and does not mutate the input.",
+    "description": "Maps published chapters to header menu items — label from the chapter's own city, url built from its slug as /chapters/<slug>/ — ordered exactly the way the Our Chapters section orders its cards: active cities before forming ones, then by the order field with city breaking ties. A forming city is presented as an online group for now, so its item carries a quiet note, Online · WhatsApp group, with the globe icon; an active chapter stays exactly a plain label and url with no note key at all. Callers pass chapters already draft-filtered through publishedEntries. Paths are returned base-agnostic with the canonical trailing slash; the layout wraps them in withBase at render. Returns an empty list for no chapters, and does not mutate the input.",
     "filePath": "src/lib/nav.ts",
     "name": "chapterNavItems",
     "testFile": "src/lib/nav.test.ts"
@@ -1022,6 +1056,16 @@
     "name": "eventsLede",
     "tags": [
       "launch-design-system"
+    ],
+    "testFile": "src/lib/eventsIntro.test.ts"
+  },
+  {
+    "description": "The /events standfirst for a chapter roster: names only the ACTIVE chapters, in menu order, through eventsLede. In-person events across our X chapters promises a calendar, and a forming city holds no events — it is an online group for now — so naming it there would promise one that is not there. Promoting a city to active in the content admin adds it to the sentence with no other edit. Shared by EventsIntro and EventsIntroBand so the two cannot disagree; with every city forming, or none published, it falls back to the no-chapters sentence.",
+    "filePath": "src/lib/eventsIntro.ts",
+    "name": "eventsLedeFor",
+    "tags": [
+      "chapters",
+      "events"
     ],
     "testFile": "src/lib/eventsIntro.test.ts"
   },
@@ -2846,7 +2890,7 @@
     "testFile": "src/lib/url.test.ts"
   },
   {
-    "description": "Returns a new top-level menu with the derived Chapters dropdown inserted directly after the item labelled Programs, reproducing today's menu order, and appended when no such item exists so a rename or deletion in the CMS degrades sensibly instead of throwing or dropping the group. With no chapter items the group is omitted entirely rather than rendered as an empty dropdown — an empty dropdown is a caret opening onto nothing, and the CMS nav serializer collapses one back into a plain link pointing nowhere. Injecting the group here rather than marking it in nav.json is deliberate: the CMS rebuilds every nav item from label plus children/url and silently drops any other key, so a marker would not survive the first save from the settings editor. Does not mutate the caller's list.",
+    "description": "Returns a new top-level menu with the derived Chapters dropdown inserted directly after the item labelled Programs, and appended when no such item exists so a rename or deletion in the CMS degrades sensibly. The dropdown lists the cities, then Global community for the alumni near none of them, then closes with the call to action Lead or co-lead a chapter linking to the volunteer page — the one place the menu asks for chapter leads, rather than tagging individual cities with a note that goes stale the day a lead is found. With no chapter items the group is omitted entirely, global entry and call to action included: an empty dropdown is a caret opening onto nothing, and the CMS nav serializer collapses one back into a plain link. Injected here rather than marked in nav.json because the CMS drops unknown keys on save. Does not mutate the caller's list.",
     "filePath": "src/lib/nav.ts",
     "name": "withChapterGroup",
     "testFile": "src/lib/nav.test.ts"
