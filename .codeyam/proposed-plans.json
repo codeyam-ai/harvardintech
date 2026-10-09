@@ -21,7 +21,8 @@
       "severity": 3,
       "source": "deferred-deliverable",
       "deliverableId": "publish-the-site-live-on-github-pages-non-build",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "publish-the-site-live-on-github-pages-non-build-handled-in-a-working-session-not-the-build-flow",
       "proposedAt": "2026-10-08T20:48:25.464902862+00:00"
     },
     {
@@ -45,7 +46,8 @@
       "severity": 3,
       "source": "deferred-deliverable",
       "deliverableId": "the-content-admin-also-running-in-the-cloud-on",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "the-content-admin-also-running-in-the-cloud-on-github-pages",
       "proposedAt": "2026-10-08T20:48:25.464902862+00:00"
     },
     {
@@ -69,7 +71,8 @@
       "severity": 3,
       "source": "deferred-deliverable",
       "deliverableId": "bring-all-content-to-publication-quality-before",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "bring-all-content-to-publication-quality-before-going-public-fill-the-supporter-recognition-wall-testimonials-communities-and-sponsors-owner-ruled-on-2026-10-02-that-nothing-ships-empty-or-switched-off",
       "proposedAt": "2026-10-08T20:48:25.464902862+00:00"
     },
     {
@@ -92,7 +95,8 @@
       "reason": "You asked for the volunteer opportunities to match your sheet; it was kept out of this change.",
       "severity": 3,
       "source": "session-review",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "refresh-the-volunteer-page-from-the-fall-2026-volunteer-sheet",
       "proposedAt": "2026-10-09T00:44:54.748531077+00:00"
     },
     {
@@ -103,7 +107,8 @@
       "reason": "Seeded full-page screenshots came out empty or wrong but were reported as captured.",
       "severity": 4,
       "source": "session-review",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "seeded-scenario-captures-break-while-site-content-is-uncommitted",
       "proposedAt": "2026-10-09T00:44:54.748531077+00:00"
     },
     {
@@ -114,7 +119,8 @@
       "reason": "Online-group pages no longer show a volunteer button, so this admin field does nothing.",
       "severity": 2,
       "source": "session-review",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "remove-or-repurpose-the-unused-chapter-volunteer-link-field",
       "proposedAt": "2026-10-09T00:44:54.748531077+00:00"
     },
     {
@@ -126,7 +132,8 @@
       "severity": 2,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "point-the-homepage-newsletter-card-at-the-mailchimp-sign-up",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
     },
     {
@@ -138,7 +145,8 @@
       "severity": 1,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "retire-the-programs-label-on-the-events-and-webinars-pages",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
     },
     {
@@ -172,7 +180,8 @@
       "severity": 2,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "frame-the-past-events-section-in-the-two-events-page-scenarios",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
     },
     {

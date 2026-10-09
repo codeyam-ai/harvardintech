@@ -17,9 +17,9 @@
       "id": "publish-the-site-live-on-github-pages-non-build",
       "text": "Publish the site live on GitHub Pages (non-build: handled in a working session, not the build flow)",
       "status": "deferred",
-      "resolvedAt": "2026-08-28T19:30:17.951798769+00:00",
-      "resolvedInFeature": "Upgrade The Content Admin To 0.14.0",
-      "planSlug": null,
+      "resolvedAt": "2026-10-09T22:46:11.427267088+00:00",
+      "resolvedInFeature": null,
+      "planSlug": "publish-the-site-live-on-github-pages-non-build-handled-in-a-working-session-not-the-build-flow",
       "note": null,
       "decidedBy": "user"
     },
@@ -37,9 +37,9 @@
       "id": "the-content-admin-also-running-in-the-cloud-on",
       "text": "The content admin also running in the cloud on GitHub Pages",
       "status": "deferred",
-      "resolvedAt": "2026-08-28T19:30:17.983257851+00:00",
-      "resolvedInFeature": "Upgrade The Content Admin To 0.14.0",
-      "planSlug": null,
+      "resolvedAt": "2026-10-09T22:46:11.428103914+00:00",
+      "resolvedInFeature": null,
+      "planSlug": "the-content-admin-also-running-in-the-cloud-on-github-pages",
       "note": null,
       "decidedBy": "user"
     },
@@ -57,11 +57,11 @@
       "id": "bring-all-content-to-publication-quality-before",
       "text": "Bring all content to publication quality before going public: fill the supporter recognition wall, testimonials, communities and sponsors (owner ruled on 2026-10-02 that nothing ships empty or switched off)",
       "status": "deferred",
-      "resolvedAt": "2026-10-02T22:41:37.821270700+00:00",
-      "resolvedInFeature": "launch -- One capitalization and spelling standard",
-      "planSlug": null,
+      "resolvedAt": "2026-10-09T22:46:11.428930889+00:00",
+      "resolvedInFeature": null,
+      "planSlug": "bring-all-content-to-publication-quality-before-going-public-fill-the-supporter-recognition-wall-testimonials-communities-and-sponsors-owner-ruled-on-2026-10-02-that-nothing-ships-empty-or-switched-off",
       "note": "Not addressed by this cycle. The writing-standard work made existing copy consistent; this deliverable is about FILLING empty content (supporter recognition wall, testimonials, communities, sponsors), which is separate work. Deferred by the agent to let the cycle close - the owner has not revisited the 2026-10-02 ruling that nothing ships empty.",
-      "decidedBy": "agent"
+      "decidedBy": "user"
     },
     {
       "id": "identify-which-board-member-holds-the-domain",
