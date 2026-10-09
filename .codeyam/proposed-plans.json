@@ -162,6 +162,51 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
+    },
+    {
+      "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
+      "title": "Frame the past-events section in the two events-page scenarios",
+      "mode": "ui",
+      "body": "## Summary\n\nThe scenarios `events-route-the-calendar-with-no-past-events-yet` and `events-route-upcoming-and-past` seed different event sets, but both capture only the top of `/events` (page banner plus the Luma calendar embed). The past-events listing where they differ sits below the visible area, so the two frames are byte-identical and `scenario-review` flags the pair as a seed-error candidate. Before this was noticed they only differed by whatever the live Luma widget happened to show.\n\n## Key Decisions\n\n- Add an `interactions` hover on the past-events heading to each scenario, so each capture frames the section that proves its state (URL fragments do not scroll captures).\n- Do not mock or freeze the Luma embed here; framing past the embed avoids depending on its live content.\n\n## Implementation\n\n- `.codeyam/scenarios/events-route-the-calendar-with-no-past-events-yet.json` and `.codeyam/scenarios/events-route-upcoming-and-past.json`: add `\"interactions\": [{\"action\": \"hover\", \"text\": \"<past events heading>\"}]`, reading the heading from `src/components/EventsPage.astro`.\n- Recapture both with `--force --target` and confirm the frames now differ.",
+      "reason": "The 'no past events yet' and 'upcoming and past' events-page screenshots are identical, because the part that differs is below the visible area.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+    },
+    {
+      "id": "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+      "title": "Dev server stop and start leaves a second astro dev running",
+      "mode": "backend",
+      "body": "## What happened\n\nTwo `astro dev` processes ran all session (one on :4322 owned by the editor, a stray on :4323). The only hint was a one-line `app realigned to :4323` note on an early `preview`. A full `recapture-stale` then wrote 49 frames while the two servers raced on `.astro/data-store.json`; some captured the UnknownFilesystemError page and others captured production content instead of the seed, yet most were reported as Recaptured. `dev-server stop` left the stray alive, and a following `dev-server start` re-created the pair (supervisor respawn plus the start). Recovery meant finding the stray by hand through `/proc` socket inodes (no `ss` or `lsof` in the container), killing it by PID, discarding all 49 frames and recapturing.\n\n## What would have helped\n\n`recapture-stale` and `register` refusing to capture while more than one `astro dev` is alive, naming the stray PID and port. `dev-server stop` and `restart` guaranteeing exactly one process afterwards, and `dev-server` status reporting the count. Treating a port realignment as an error, not a note.",
+      "reason": "Two dev servers silently corrupted a full recapture: frames came out as an Astro error page or with the wrong content.",
+      "severity": 4,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+    },
+    {
+      "id": "scenario-review-counts-seed-error-candidates-without-naming-them",
+      "title": "scenario-review counts seed-error candidates without naming them",
+      "mode": "backend",
+      "body": "## What happened\n\n`scenario-review --target /` ended with `2 seed-error candidate(s)` while every row it printed was `[ok]`. Its suggested follow-up, `seeded-capture-check`, only checks native device seeds and reported OK. Finding the pair took an md5 sweep over `.codeyam/scenarios/screenshots/`.\n\n## What would have helped\n\nPrint the flagged slug pairs next to the count, and make `seeded-capture-check` cover web scenarios with a content seed, or stop recommending it for them.",
+      "reason": "The review said '2 seed-error candidates' but listed every scenario as ok, so the pair had to be found by hashing screenshots by hand.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+    },
+    {
+      "id": "preview-flow-has-no-way-to-scroll-the-page",
+      "title": "preview-flow has no way to scroll the page",
+      "mode": "backend",
+      "body": "## What happened\n\nTo demo a header that changes once the page scrolls, `preview-flow` offered navigate, click, press, fill, waitFor and capture, but no scroll. Pressing PageDown on `body` did not scroll the capture browser, so the `waitFor` timed out and no frames were kept. The workaround was clicking an inert heading lower on the page, relying on Playwright scrolling it into view.\n\n## What would have helped\n\nA `scroll` step (`{\"scroll\": 1200}` or `{\"scroll\": {\"selector\": \"...\"}}`), and the same for scenario `interactions`, where `hover` currently stands in for it.",
+      "reason": "Demoing a scroll-dependent feature took a failed PageDown attempt and a click-a-heading workaround.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
     }
   ]
 }
