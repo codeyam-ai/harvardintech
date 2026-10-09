@@ -83,6 +83,39 @@
       "deliverableId": "identify-which-board-member-holds-the-domain",
       "status": "ignored",
       "proposedAt": "2026-10-08T20:48:25.464902862+00:00"
+    },
+    {
+      "id": "refresh-the-volunteer-page-from-the-fall-2026-volunteer-sheet",
+      "title": "Refresh the volunteer page from the Fall 2026 volunteer sheet",
+      "mode": "ui",
+      "body": "## Summary\n\nThe user wants the /volunteer page brought in line with the \"Fall 2026 | HIT Volunteer Opportunities\" Google Sheet (Drive file 1YmLbinAVIhGYnJHKpy3B0aSpc7QpNoAZGggR0BcIJWc, tab \"Fall 2026\"). The sheet lists roles such as Alumni Volunteer Coordinator, City Volunteer and City Lead or Co-Lead (SF / Bay Area, Boston / Cambridge, NYC x AI Events), Founders Task Force volunteer and co-lead, and Editorial, each with a description and a point of contact. The site's volunteer projects live in the `projects` collection (`src/content/projects/*.md`) and render on /volunteer.\n\n## Key Decisions\n\n- Publish ROLES ONLY: title, description, and (if the user agrees) the point-of-contact name. Never publish the volunteer names, emails, phone numbers or availability columns the sheet also holds.\n- One project entry per distinct role, not per \"1 of ∞\" row; the sheet repeats each role across rows.\n- Confirm with the user which existing project entries (IG Content Creator, LinkedIn Engagement Specialist, Social Media Marketing Specialist, Writer) stay, merge, or retire.\n- City lead/co-lead roles link naturally from the new \"Lead or co-lead a chapter →\" item in the Chapters menu, which already points at /volunteer.\n\n## Implementation\n\n1. Read the sheet's Fall 2026 tab and draft the role list for the user to confirm.\n2. Add or update `src/content/projects/<role>.md` entries (title, blurb, active, dates, body), following the shape of `src/content/projects/ig-content-creator.md`.\n3. Update the volunteer-page scenarios (`volunteer-page-open-projects`, `volunteer-page-no-open-projects`) and recapture after the content is committed.",
+      "reason": "You asked for the volunteer opportunities to match your sheet; it was kept out of this change.",
+      "severity": 3,
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-09T00:44:54.748531077+00:00"
+    },
+    {
+      "id": "seeded-scenario-captures-break-while-site-content-is-uncommitted",
+      "title": "Seeded scenario captures break while site content is uncommitted",
+      "mode": "backend",
+      "body": "## Summary\n\nScenario capture on this Astro site cannot produce trustworthy frames of SEEDED app scenarios while any file under `src/content/` or `src/data/` is uncommitted. The content sandbox (`initContentSandbox` in `astro.config.mjs`, `.codeyam/tmp/content-sandbox/`) does not engage, so seeds are refused (\"served committed content\"). The documented workaround of stashing those files for the capture pass also failed this session: it produced frames with the chapters and communities collections EMPTY (no Chapters menu group), and `recapture-stale` reported them as clean \"Recaptured\". Every content-changing feature therefore ends with seeded frames that must be restored by hand and force-recaptured after the commit.\n\n## Key Decisions\n\n- A capture whose seed or collections did not land must fail loudly, never report \"Recaptured\".\n- The sandbox should seed from the WORKING TREE's `src/content` when it is dirty, rather than switching off, so content edits and seeded scenarios can be captured together before the commit.\n\n## Implementation\n\n1. In `astro.config.mjs` (`initContentSandbox`), seed the sandbox from the working-tree `src/content`/`src/data` when dirty, and never leave a collection directory empty across a dev-server restart (the empty-collection-dir watcher bug).\n2. Add a post-capture assertion for seeded app scenarios: when a collection the page renders is empty but the seed or production content has rows, fail the capture.\n3. Re-verify with `harvard-in-tech-phone-menu-open` and `webinars-route-the-surviving-recordings`, which both captured empty roster frames this session.",
+      "reason": "Seeded full-page screenshots came out empty or wrong but were reported as captured.",
+      "severity": 4,
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-09T00:44:54.748531077+00:00"
+    },
+    {
+      "id": "remove-or-repurpose-the-unused-chapter-volunteer-link-field",
+      "title": "Remove or repurpose the unused chapter Volunteer link field",
+      "mode": "ui",
+      "body": "## Summary\n\nForming (online-group) chapter pages no longer show a volunteer button (`src/components/FormingChapterCta.astro` now leads with Join WhatsApp and See online events). The chapter `volunteerUrl` field is still threaded from `src/pages/chapters/[slug].astro` through `src/components/ChapterPage.astro` into `FormingChapterCta`, which ignores it, and the content admin shows a \"Volunteer link\" field whose hint now says it is not shown.\n\n## Key Decisions\n\n- Either remove the field end-to-end, or repurpose it (for example as the target of a per-chapter \"lead or co-lead this chapter\" link) if the user wants that back.\n\n## Implementation\n\n1. Decide with the user: remove or repurpose.\n2. If removing: drop `volunteerUrl` from `src/content/config.ts`, `src/data/collections.json`, the `ChapterPage` and `FormingChapterCta` props, and `joinCtas` callers in `src/lib/localPresence.ts`; update `localPresence.test.ts`.",
+      "reason": "Online-group pages no longer show a volunteer button, so this admin field does nothing.",
+      "severity": 2,
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-09T00:44:54.748531077+00:00"
     }
   ]
 }
