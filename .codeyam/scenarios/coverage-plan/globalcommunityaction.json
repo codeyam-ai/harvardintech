@@ -1,0 +1,18 @@
+{
+  "surface": "GlobalCommunityAction",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "blurb",
+      "value": "true",
+      "rationale": "source-derived state blurb=true",
+      "status": "planned"
+    },
+    {
+      "dimension": "blurb",
+      "value": "false",
+      "rationale": "source-derived state blurb=false",
+      "status": "planned"
+    }
+  ]
+}

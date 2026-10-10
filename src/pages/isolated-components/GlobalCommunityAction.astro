@@ -9,9 +9,8 @@ import "../../styles/tokens.css";
 // worse choice. This frame is where that is visible: the hover and focus ring
 // belong to the card, not to the text.
 //
-// The fixture uses the newsletter action because it is the one whose blurb runs
-// to two lines, so the card is captured at its taller shape rather than its
-// shortest.
+// The fixture uses the newsletter action because it has the longest blurb, so
+// the card is captured at its tallest shape rather than its shortest.
 ---
 
 <html lang="en">
@@ -24,9 +23,9 @@ import "../../styles/tokens.css";
     <div id="codeyam-capture" style="padding: var(--space-lg);">
       <div style="width: 360px; display: flex;">
         <Component
-          label="Subscribe to the newsletter"
+          label="Get the newsletter"
           href="https://mailchi.mp/0222623e1169/fbrj32e9wb"
-          blurb="One list, not one per city — we ask where you are so we can tell you what is near you."
+          blurb="Events, chapter news and alumni stories in one email — with what's happening near you up top."
         />
       </div>
     </div>

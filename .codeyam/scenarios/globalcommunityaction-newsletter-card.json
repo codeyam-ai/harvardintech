@@ -8,5 +8,5 @@
   "mocks": {},
   "componentName": "GlobalCommunityAction",
   "scenarioType": "component",
-  "description": "One action card from the global-community band. The whole card is the link rather than just its label, which is the right call when three cards carry the entire band and the alternative is a four-word tap target floating inside a large box. The newsletter action is the fixture because its blurb runs to two lines, capturing the card at its taller shape."
+  "description": "One action card from the global-community band, showing the newsletter pitch as it ships: 'Get the newsletter', with a line that leads with what lands in the inbox — events, chapter news and alumni stories, local news first. The whole card is the link rather than just its label, which is the right call when three cards carry the entire band and the alternative is a short tap target floating inside a large box. The newsletter action is the fixture because it has the longest blurb, capturing the card at its tallest shape."
 }
