@@ -216,6 +216,17 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+    },
+    {
+      "id": "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+      "title": "Content edits stay invisible in the preview until the sandbox copy is replaced by hand",
+      "mode": "backend",
+      "body": "## What happened\n\nAdding `src/content/homeSections/mission.md`, and later editing its title, did not reach the live preview: the dev server reads `.codeyam/tmp/content-sandbox/`, restored from the `content-sandbox-active` snapshot, which kept the older copy. The first time took deleting the snapshot and restarting the dev server (each restart also left a stray `astro dev` behind); the second took copying the file into both sandbox folders by hand. Meanwhile the user, looking at the preview pane, reported twice that the change was not there.\n\n## What would have helped\n\nThe sandbox picking up edits to committed `src/content`/`src/data` files for entries the active scenario does not seed, or a `content-sync` command that refreshes the sandbox and snapshot from the working tree without a restart. Also a preview-pane notice when the pane is parked on a scenario whose seed shadows the file just edited.",
+      "reason": "A new content entry and a reworded heading did not show in the preview until the sandbox copies were overwritten by hand.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-10T00:01:04.361514979+00:00"
     }
   ]
 }
