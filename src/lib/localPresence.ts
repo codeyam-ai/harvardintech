@@ -161,7 +161,7 @@ export interface JoinCtas {
   whatsappFormUrl: string;
   /** The volunteer page, or an entry's own override. */
   volunteerUrl: string;
-  /** The LinkedIn newsletter. */
+  /** The Mailchimp newsletter sign-up. */
   newsletterUrl: string;
 }
 

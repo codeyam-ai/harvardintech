@@ -13,6 +13,7 @@
 // SVG in `currentColor` (see `brandIcons.ts`), resolved from the channel label so
 // a CMS-added channel picks up its own glyph with no code change.
 import { withBase } from '../../lib/url';
+import { siteLinks } from '../../lib/site';
 import { formatEventDate } from '../../lib/events';
 import BrandGlyph from '../ui/BrandGlyph.astro';
 import SectionHead from '../ui/SectionHead.astro';
@@ -48,10 +49,12 @@ const {
     { label: 'Blog', blurb: 'Essays and recaps from the community.', url: '/blog/welcome' },
     { label: 'Medium', blurb: 'Longform writing from our members.', url: 'https://medium.com/harvard-in-tech', external: true },
     { label: 'LinkedIn', blurb: 'Follow us for announcements and updates.', url: 'https://www.linkedin.com/company/harvardintech/', external: true },
-    // Named in full because the cards no longer carry a description: "Newsletter"
-    // alone did not say where it lives. `iconKeyFor` matches "newsletter" ahead
-    // of "linkedin", so this keeps the envelope rather than the LinkedIn mark.
-    { label: 'LinkedIn newsletter', blurb: 'Our LinkedIn newsletter, in your feed.', url: 'https://www.linkedin.com/newsletters/harvard-in-tech-7056638759055880192/', external: true },
+    // The one newsletter sign-up the whole site uses (the menu's Newsletter link,
+    // the hero, the chapter sign-up band), read from settings rather than
+    // hard-coded. The LinkedIn newsletter is no longer linked anywhere; the
+    // LinkedIn card above still covers following the company page. `iconKeyFor`
+    // matches "newsletter", so the card keeps its envelope glyph.
+    { label: 'Newsletter', blurb: 'Event news and community updates by email.', url: siteLinks().mailingList, external: true },
   ],
   posts = [],
   heading = 'Content hub',

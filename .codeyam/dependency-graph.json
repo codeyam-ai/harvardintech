@@ -1228,6 +1228,7 @@
     "src/components/landing/ContentHub.astro": {
       "imports": [
         "src/lib/url.ts",
+        "src/lib/site.ts",
         "src/lib/events.ts",
         "src/components/ui/BrandGlyph.astro",
         "src/components/ui/SectionHead.astro",
@@ -3164,6 +3165,7 @@
         "src/components/ChapterSignUp.astro",
         "src/components/Analytics.astro",
         "src/components/MomentumFundPage.astro",
+        "src/components/landing/ContentHub.astro",
         "src/components/landing/OurChapters.astro",
         "src/components/landing/UpcomingEvents.astro",
         "src/components/landing/HomeSections.astro",
@@ -6021,6 +6023,7 @@
       "name": "__file_root__",
       "imports": [
         "src/lib/url.ts::withBase",
+        "src/lib/site.ts::siteLinks",
         "src/lib/events.ts::__file_root__",
         "src/components/ui/BrandGlyph.astro::__file_root__",
         "src/components/ui/SectionHead.astro::__file_root__",
@@ -9655,6 +9658,7 @@
         "src/components/JoinWhatsAppCta.astro::__file_root__",
         "src/components/ChapterEvents.astro::__file_root__",
         "src/components/ChapterSignUp.astro::__file_root__",
+        "src/components/landing/ContentHub.astro::__file_root__",
         "src/components/landing/OurChapters.astro::__file_root__",
         "src/components/landing/UpcomingEvents.astro::__file_root__",
         "src/components/FormingChapterCta.astro::__file_root__",
@@ -11878,5 +11882,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-09T23:43:57Z"
+  "lastUpdated": "2026-10-10T01:00:33Z"
 }

@@ -16,6 +16,6 @@ series — are published on our Medium publication:
 
 - [Read on Medium →](https://medium.com/harvard-in-tech)
 - [Follow us on LinkedIn](https://www.linkedin.com/company/harvardintech/)
-- [Subscribe to our LinkedIn newsletter](https://www.linkedin.com/newsletters/harvard-in-tech-7056638759055880192/)
+- [Subscribe to our newsletter](https://mailchi.mp/0222623e1169/fbrj32e9wb)
 
 Recent pieces are linked from the posts below.
