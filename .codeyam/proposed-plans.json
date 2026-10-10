@@ -227,6 +227,18 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00"
+    },
+    {
+      "id": "give-the-chapter-sign-up-band-a-benefit-led-pitch",
+      "title": "Give the chapter Sign up band a benefit-led pitch",
+      "mode": "ui",
+      "body": "## Summary\n\nEvery chapter page carries two newsletter pitches. The global-community band's card now leads with what lands in the inbox (\"Get the newsletter\" — events, chapter news and alumni stories, local news first). The chapter's own \"Stay in touch / Sign up\" band (`src/components/ChapterSignUp.astro`) still reads \"Join the Harvard Alumni in Tech community.\" with a bare \"Subscribe\" button, which says nothing about what a reader gets and repeats the ask without a reason. Rewrite that band so it pitches the chapter-local benefit — hearing about this city's events first — and so the two pitches on one page complement rather than echo each other.\n\n## Key Decisions\n\n- Keep the band and its Mailchimp link (`siteLinks().mailingList`, overridable via `subscribeUrl`); change wording only.\n- Make it chapter-specific where possible (e.g. pass the city name so the intro can say \"Hear about London events first\"), since the global-community card already covers the general pitch.\n- Do not add a subscriber count; that figure is hard-coded in several places already and drifts.\n- Leave the header \"Subscribe\" button alone — it must stay one short word at 390px.\n\n## Implementation\n\n### 1. Rewrite the band copy\n\n**File**: `src/components/ChapterSignUp.astro` (45 lines)\n\nUpdate the `SectionHead` `kicker` / `title` / `intro` and the button label. If the copy names the city, add an optional `city` prop and pass it from `src/components/ChapterPage.astro`.\n\n### 2. Keep fixtures and scenarios in step\n\nUpdate `src/pages/isolated-components/ChapterSignUp.astro` and recapture the `ChapterSignUp - Default` scenario plus the chapter-page scenarios that show the band.",
+      "reason": "Chapter pages now pitch the newsletter twice: the new benefit-led card, and a generic 'Sign up / Subscribe' band above it.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "feature",
+      "status": "pending",
+      "proposedAt": "2026-10-10T16:55:00.615585364+00:00"
     }
   ]
 }
