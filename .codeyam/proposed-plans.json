@@ -172,8 +172,7 @@
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 6
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -198,7 +197,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 2,
+      "rank": 1,
       "sightings": 1,
       "notes": [
         "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…"
@@ -213,20 +212,22 @@
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 9
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
       "title": "preview-flow has no way to scroll the page",
       "mode": "backend",
-      "body": "## What happened\n\nTo demo a header that changes once the page scrolls, `preview-flow` offered navigate, click, press, fill, waitFor and capture, but no scroll. Pressing PageDown on `body` did not scroll the capture browser, so the `waitFor` timed out and no frames were kept. The workaround was clicking an inert heading lower on the page, relying on Playwright scrolling it into view.\n\n## What would have helped\n\nA `scroll` step (`{\"scroll\": 1200}` or `{\"scroll\": {\"selector\": \"...\"}}`), and the same for scenario `interactions`, where `hover` currently stands in for it.",
+      "body": "",
       "reason": "Demoing a scroll-dependent feature took a failed PageDown attempt and a click-a-heading workaround.",
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 10
+      "sightings": 1,
+      "notes": [
+        "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it."
+      ]
     },
     {
       "id": "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
@@ -238,7 +239,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "rank": 5,
       "sightings": 1,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand."
@@ -269,7 +269,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 8,
       "sightings": 1
     },
     {
@@ -282,7 +281,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 7,
       "sightings": 1
     },
     {
@@ -313,7 +311,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 1,
+      "rank": 2,
       "sightings": 1
     },
     {
@@ -325,6 +323,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
+      "rank": 3,
       "sightings": 1
     },
     {
@@ -336,6 +335,20 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
+      "rank": 4,
+      "sightings": 1
+    },
+    {
+      "id": "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+      "title": "Recapture photographs live content for seeded scenarios while src/content is dirty, and reports success",
+      "mode": "backend",
+      "body": "## What happened\n\nA feature edited `src/content/config.ts` (a new schema field), `src/content/communities/ai.md` and `src/data/collections.json`. While those were uncommitted, every capture of a seeded scenario ran with the content sandbox off: `register` of the AI scenario, the Present-step `recapture-stale`, and `client-errors --scope impacted` all rendered production content. `recapture-stale` reported 6 scenarios as `Recaptured` (e.g. 'events tagged to this chapter' showing 'No events scheduled in London yet.') and 2 as failed with seed-specific errors (missing 'Show all 14' button, wrong body copy), without saying the sandbox was inactive. The workaround was `git stash push -- src/content src/data` around targeted recaptures, which does not work for scenarios that need the new schema field because the schema file is under `src/content` too, so those had to wait for a post-commit recapture. After the commit, a forced recapture still came back 'pixel-identical / unchanged' with the field missing until the dev server was restarted.\n\n## What would have helped\n\n- `recapture-stale` / `register` refusing (or loudly warning per slug) when the sandbox is inactive, instead of writing frames and reporting `Recaptured`.\n- A sandbox that overlays only content entries and keeps the working-tree `config.ts`, so a schema change does not disable seeding.\n- Reloading the content schema in the running dev server when `src/content/config.ts` changes, so a post-commit recapture does not silently drop new fields.",
+      "reason": "Seven seeded frames came back 'Recaptured' showing live site content instead of their scenario's data; two more failed for the same unnamed reason.",
+      "severity": 4,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
+      "kind": "tech-debt",
       "sightings": 1
     }
   ],
@@ -371,6 +384,21 @@
         "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
         "scenario-review-counts-seed-error-candidates-without-naming-them",
         "preview-flow-has-no-way-to-scroll-the-page"
+      ]
+    },
+    {
+      "at": "2026-10-13T21:54:11.561341593+00:00",
+      "feature": "Community-worded empty events, and AI spelled out",
+      "notes": "Small copy change that grew a schema field at the owner's request. The costly part was capture: uncommitted content plus a schema change disabled the content sandbox, so most seeded recaptures were silently wrong and had to be restored and…",
+      "proposedIds": [
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "preview-flow-has-no-way-to-scroll-the-page"
+      ],
+      "rankedIds": [
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself"
       ]
     }
   ]
