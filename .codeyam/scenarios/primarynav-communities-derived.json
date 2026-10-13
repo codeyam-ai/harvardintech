@@ -1,6 +1,6 @@
 {
   "name": "PrimaryNav - Communities Derived",
-  "id": "d9f8aa35-0b50-47fe-9112-8961e24263cf",
+  "id": "614cb966-d301-48c7-98db-ffb90f61801d",
   "url": "/isolated-components/PrimaryNav-CommunitiesOpen",
   "dimensions": [
     "Desktop"
@@ -8,5 +8,5 @@
   "mocks": {},
   "componentName": "PrimaryNav",
   "scenarioType": "component",
-  "description": "The Communities dropdown pinned open for capture. WhatsApp is the hand-authored link an editor keeps in nav.json; AI and Founders below it are generated from the communities collection at render time and sorted alphabetically. This is the asymmetry with Chapters: that group is injected whole by the layout, while this one already belongs to an editor, so the derived items join its children rather than replacing them. Publishing a third community would appear here with no nav edit at all. The panel is pinned by the isolation route rather than a scenario interaction, because a hover or click does not survive the screenshot on this route and would capture the resting, closed menu."
+  "description": "The Communities dropdown pinned open for capture. WhatsApp is the hand-authored link an editor keeps in nav.json; AI, Founders and Investors below it are generated from the communities collection at render time and sorted alphabetically. This is the asymmetry with Chapters: that group is injected whole by the layout, while this one already belongs to an editor, so the derived items join its children rather than replacing them. Investors, the third community, reached the menu with no nav edit at all — adding its content file was enough. The panel is pinned by the isolation route rather than a scenario interaction, because a hover or click does not survive the screenshot on this route and would capture the resting, closed menu."
 }

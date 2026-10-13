@@ -298,6 +298,13 @@
           "pattern": "^https://(forms\\.gle|docs\\.google\\.com/forms)/"
         },
         {
+          "name": "joinBlurb",
+          "label": "How to join",
+          "type": "textarea",
+          "optional": true,
+          "hint": "The line under the join section's heading. Blank uses the standard wording. Fill it in when joining takes more than the form — for example, join the HIT WhatsApp community first, then request this group inside WhatsApp."
+        },
+        {
           "name": "callouts",
           "label": "What happens here",
           "type": "list",

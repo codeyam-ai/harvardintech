@@ -42,6 +42,8 @@ interface Props {
    *  what a community can say about itself before it has any events. */
   callouts?: { title: string; text?: string }[];
   whatsappFormUrl?: string;
+  /** The line under the join band's heading. Absent → the band's default. */
+  joinBlurb?: string;
   events?: EventLike[];
   /** The last few that already happened, most recent first. */
   pastEvents?: EventLike[];
@@ -58,6 +60,7 @@ const {
   showGallery = true,
   callouts = [],
   whatsappFormUrl,
+  joinBlurb,
   events = [],
   pastEvents = [],
   leads = [],
@@ -87,7 +90,7 @@ const hasBody = Astro.slots.has('default');
 }
 <CommunityCallouts callouts={callouts} />
 
-<JoinWhatsAppCta name={name} whatsappFormUrl={whatsappFormUrl} />
+<JoinWhatsAppCta name={name} whatsappFormUrl={whatsappFormUrl} blurb={joinBlurb} />
 
 {
   /* Directly under the join CTA, which is where Nicole looked for the Founders

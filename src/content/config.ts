@@ -274,6 +274,9 @@ const communities = defineCollection({
       .refine((u) => !isWhatsAppGroupLink(u), {
         message: 'Link the Google Form, not the WhatsApp group itself.',
       }),
+    // The line under the join band's heading, for a community whose joining
+    // takes more than the form. Absent → JoinWhatsAppCta's default.
+    joinBlurb: z.string().optional(),
     callouts: z
       .array(z.object({ title: z.string(), text: z.string().optional() }))
       .optional(),

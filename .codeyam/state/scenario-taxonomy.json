@@ -268,6 +268,35 @@
         "status": "covered"
       }
     },
+    "CommunityPage": {
+      "empty": {
+        "status": "covered"
+      },
+      "single": {
+        "status": "covered"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "A community page's callouts and leads are a handful of editor-authored entries; overflow of the events grid belongs to EventCardGrid and ChapterEvents, which carry their own scenarios"
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Static Astro page rendered at build time; there is no client fetch and so no pending state"
+      },
+      "edge": {
+        "status": "covered"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "Content is validated by the collection schema at build time; an invalid entry fails the build rather than rendering an error state"
+      },
+      "key-interaction": {
+        "status": "added"
+      }
+    },
     "CutoverRunbook": {
       "empty": {
         "status": "covered"

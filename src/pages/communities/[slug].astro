@@ -41,8 +41,18 @@ const { Content } = await render(community);
 // schema declares no `photos` field (src/content/config.ts), so there is nothing
 // on `community.data` to forward even if this call site grew the prop.
 // `showGallery: false` still hides the section outright, as it does for a chapter.
-const { name, blurb, heroImage, tagline, showGallery, leads, links, callouts, whatsappFormUrl } =
-  community.data;
+const {
+  name,
+  blurb,
+  heroImage,
+  tagline,
+  showGallery,
+  leads,
+  links,
+  callouts,
+  whatsappFormUrl,
+  joinBlurb,
+} = community.data;
 
 // Events reach a community by the `chapter` tag (ids are unique across both
 // collections) or by naming it in their own `communities` list — which is what
@@ -74,6 +84,7 @@ const recent = recentPastEvents(past);
         showGallery={showGallery}
         callouts={callouts}
         whatsappFormUrl={whatsappFormUrl}
+        joinBlurb={joinBlurb}
         events={upcoming}
         pastEvents={recent}
         leads={leads}

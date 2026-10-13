@@ -1,0 +1,163 @@
+{
+  "timestamp": "2026-10-13T21:15:00Z",
+  "title": "Add the Investors community",
+  "type": "feature",
+  "userRequest": "## Summary\n\nAdd an **Investors** community alongside Founders and AI, for Harvard alumni in venture capital and angel investing. The October 5, 2026 all-hands introduced it as a digital community pilot led by Stefan Pagacik (C'79), and the user approved naming it publicly. Today the site has only two communities, so investors have nowhere to land.\n\n## Key Decisions\n\n- **Content entry only.** Communities are one markdown file each. The page at `/communities/<slug>` and the menu's Communities group are both built from the collection, so adding the file adds the page and the menu link.\n- **Present it honestly as a pilot that is getting started.** The deck says the channel has not hard-launched yet; that will happen through a webinar. Public copy should invite people to join and must not promise a schedule. Safe callouts from the deck:\n  - An investor group of Harvard alumni in venture capital and angel investing\n  - A launch webinar with HIT leadership is coming\n  - An in-person event is planned, possibly with HIT Boston/Cambridge\n- **Name only the lead.** The deck names the four task-force members, but the user approved the community and its lead, not those four. Lead: `Stefan Pagacik`, role `Community lead (pilot)`, matching how the AI page labels James Nicholson.\n- **Same join form as the other communities.** Use the shared WhatsApp verification form. The schema refuses a direct group link, by design.\n\n## Implementation\n\n### 1. Community entry\n\n**New file**: `src/content/communities/investors.md`\n\nFrontmatter mirrors `src/content/communities/ai.md`: `name: Investors`, a `tagline`, a `blurb`, three `callouts` from the list above, `leads` (Stefan Pagacik, Community lead (pilot)), `whatsappFormUrl: https://forms.gle/GqgaCDDWhWAgpJC68`, `showGallery: false`, and an `order` after AI. The body is one or two short paragraphs on who it is for: alumni who invest, and founders who want to meet them.\n\n### 2. Menu and tests\n\nConfirm the nav's derived Communities group picks it up. Update any test or fixture that asserts the community list is exactly Founders and AI (search `src/lib/nav.test.ts` and the communities tests).\n\n## Reused existing code\n\n- The `communities` collection schema in `src/content/config.ts`\n- `CommunityPage` from `src/components/CommunityPage.astro` and `JoinWhatsAppCta` from `src/components/JoinWhatsAppCta.astro`\n- `WHATSAPP_FORM_URL` from `src/lib/contact.ts`\n\n## Scenarios to Demonstrate\n\n- `/communities/investors` with its callouts, the lead, and the join call to action\n- The menu's Communities group listing Founders, AI and Investors (desktop and phone menu)",
+  "description": "Added an Investors community at /communities/investors (content entry only for the page itself), so the Communities menu now lists AI, Founders and Investors with no nav edit. At the user's request the copy was rewritten for lower US securities-law risk: the founders-meet-investors matchmaking framing was removed and a one-line networking-and-education disclaimer added (agent's judgment, not counsel-reviewed). Because Investors members join the HIT WhatsApp community first and then request the group inside WhatsApp, communities gained an optional joinBlurb field (schema, CMS form, route, CommunityPage) that replaces the join band's default line; AI and Founders are unchanged. Scope verdict: no open project deliverables (all 7 already resolved); from the plan, the phone-width menu capture was not done (desktop menu only) — deferred as a follow-up, decided by agent and disclosed to the user at the save gate. The plan's `order` field was intentionally omitted because a missing order sorts last-alphabetically and an explicit one would have put Investors first.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--add-the-investors-community.md\t.codeyam/plans/completed/launch--add-the-investors-community.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/primarynav-communities-derived.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitypage-founders-composed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-communities-derived--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/241be6d9da92965e1df3198b03a629784edc747d864403d402be65275d7d4d01.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/71fb4b8d97278075cddbccdcf73dc719ff32381c44f5f804689b86f089db0479.json",
+      "status": "deleted"
+    },
+    {
+      "path": "src/components/CommunityPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/collections.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/communities/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-investors-join-steps.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/communitypage.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/recapture-skip-clean.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/0fe9148d1702dfecbb5bf9f708439ce5adb3d48a07d35e3477ec2cd9559e55bc.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/60759e56a7c2a751b2dd1baa3b1f91057da5fa804ece48d9e737e7423db1d406.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/74f9db9c231ab73c32bdbbf58908933f4536d91771dcf7725a5b40d6273961a8.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/8929f89cc6fed619fde0ccc9a68d80710ffb8b9d5db856348d58d7c5a0b92c99.json",
+      "status": "added"
+    },
+    {
+      "path": "src/content/communities/investors.md",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--mobile.png"
+    },
+    {
+      "name": "Community Route - Investors Join Steps",
+      "screenshotPath": "community-route-investors-join-steps--desktop.png"
+    },
+    {
+      "name": "CommunityPage - Founders Composed",
+      "screenshotPath": "communitypage-founders-composed--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1642,
+    "passed": 2,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1642,
+        "passed": 2
+      }
+    ]
+  }
+}

@@ -93,7 +93,7 @@
     ]
   },
   {
-    "description": "The page a community renders through, separate from ChapterPage since a chapter leads with a place and a community leads with what it does. Its order differs on purpose — callouts, then the join ask, then events — because a community may have no listable events at all and the ask cannot sit below them.",
+    "description": "The page a community renders through, separate from ChapterPage since a chapter leads with a place and a community leads with what it does. Its order differs on purpose — callouts, then the join ask, then events — because a community may have no listable events at all and the ask cannot sit below them. A community whose joining takes more than the form (Investors: join the HIT WhatsApp community first, then request the group inside WhatsApp) sets `joinBlurb`, which replaces the join band's default line; without it the band keeps its standard wording.",
     "filePath": "src/components/CommunityPage.astro",
     "name": "CommunityPage",
     "scenarios": [

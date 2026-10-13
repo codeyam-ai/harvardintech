@@ -1,0 +1,67 @@
+{
+  "name": "Community Route - Investors Join Steps",
+  "id": "7899b541-2af4-4ea2-941f-c019aed14361",
+  "url": "/communities/investors",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "communities": [
+      {
+        "blurb": "For alumni investing in tech, as VCs or angels.",
+        "body": "A new pilot community for Harvard alumni who invest in technology companies, or want\nto learn how. It launches soon with a webinar. To join, get into the HIT WhatsApp\ncommunity first, then request the Investors group there.\n\n*For networking and education only. Not investment advice; HIT does not arrange,\nendorse or profit from any investment.*",
+        "callouts": [
+          {
+            "text": "Venture investors, angels and first-timers, in one group.",
+            "title": "Alumni who invest in tech"
+          },
+          {
+            "text": "Join now to hear about it first.",
+            "title": "Launch webinar coming"
+          },
+          {
+            "text": "A first gathering is planned, possibly with HIT Boston/Cambridge.",
+            "title": "In person, too"
+          }
+        ],
+        "joinBlurb": "Two steps: apply with the form to join the HIT WhatsApp community, then request the Investors group from inside WhatsApp.",
+        "leads": [
+          {
+            "name": "Stefan Pagacik",
+            "role": "Community lead (pilot)"
+          }
+        ],
+        "name": "Investors",
+        "showGallery": false,
+        "slug": "investors",
+        "tagline": "For Harvard alumni in tech venture capital and angel investing.",
+        "whatsappFormUrl": "https://forms.gle/GqgaCDDWhWAgpJC68"
+      },
+      {
+        "blurb": "For alumni working in and around artificial intelligence.",
+        "body": "A cross-chapter community for Harvard alumni working in AI.",
+        "name": "AI",
+        "showGallery": false,
+        "slug": "ai"
+      },
+      {
+        "blurb": "For alumni building companies — from first idea to scale.",
+        "body": "A working community for Harvard alumni who are building.",
+        "name": "Founders",
+        "showGallery": false,
+        "slug": "founders"
+      }
+    ],
+    "events": []
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/communities/[slug].astro",
+  "description": "A community whose joining takes two steps, framed on its join band. Investors members apply through the shared form to get into the HIT WhatsApp community, then request the Investors group from inside WhatsApp — so the band's default line ('we'll verify your Harvard affiliation before adding you') would promise something the form does not do. The entry's own join text replaces it; AI and Founders set none and keep the default. The named pilot lead and the body's one-line networking-and-education disclaimer render further down, below the events section, and are not in this frame.",
+  "interactions": [
+    {
+      "action": "hover",
+      "text": "Apply to join"
+    }
+  ]
+}

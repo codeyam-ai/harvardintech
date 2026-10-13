@@ -1125,74 +1125,74 @@
   },
   "applySequence › keeps an entry the sequence does not mention": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "applySequence › reorders to follow the session sequence": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "applySequence › returns the incoming order when there is no sequence": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "applySequence › skips a slug that is no longer in the collection": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "applyStepTick › appends a step the file does not yet know about": {
@@ -2096,74 +2096,74 @@
   },
   "buildOrderChange › diffs as only the order line": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "buildOrderChange › leaves the other frontmatter keys and the body intact": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "buildOrderChange › stages as an ordinary edit against the entry file": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "buildOrderChange › writes the new order into the frontmatter": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "byOrder › handles negative order values": {
@@ -3676,10 +3676,11 @@
   },
   "committed CMS registry vs content schema › declares only real schema keys for every built-in extra": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:13:50.496Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:13:50.496Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -3688,16 +3689,16 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "committed CMS registry vs content schema › declares only real schema keys for every custom collection": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:13:50.496Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:13:50.496Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -3706,16 +3707,16 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "committed CMS registry vs content schema › declares the chapters list rows the schema expects": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:13:50.496Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:13:50.496Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -3724,16 +3725,16 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "committed CMS registry vs content schema › declares the hero video as an optional text field with guidance": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:13:50.496Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:13:50.496Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -3742,16 +3743,16 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "committed CMS registry vs content schema › maps the SEO group onto the frontmatter keys this site already uses": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:13:50.496Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:13:50.496Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -3760,16 +3761,16 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "committed CMS registry vs content schema › places the hero video directly after the hero image": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:13:50.496Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:13:50.496Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -3778,16 +3779,16 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "committed CMS registry vs content schema › renders an editor input for every schema key of every collection": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:13:50.496Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:13:50.496Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -3796,8 +3797,7 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "committed chapters › lists the six chapters alphabetically by city": {
@@ -3994,10 +3994,11 @@
   },
   "committed page singletons vs CMS registry › keeps every retired-key excuse pointing at something real and still uneditable": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:14:40.856Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:14:40.856Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -4006,16 +4007,16 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "committed page singletons vs CMS registry › renders an editor input for every key of every committed page singleton": {
     "file": "src/data/collections.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-13T21:14:40.856Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-13T21:14:40.856Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
@@ -4024,8 +4025,7 @@
       "pass|full|2026-10-09T00:36:40.692Z",
       "pass|changed|2026-10-08T21:40:42.044Z",
       "pass|changed|2026-10-08T21:39:29.203Z",
-      "pass|full|2026-10-08T19:31:49.827Z",
-      "pass|changed|2026-10-02T22:32:18.883Z"
+      "pass|full|2026-10-08T19:31:49.827Z"
     ]
   },
   "communityNavItems › builds the url from the slug, not the name": {
@@ -7035,56 +7035,56 @@
   },
   "entryOrder › reads the order out of the frontmatter": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "entryOrder › returns undefined when the entry has no order": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "entryOrder › treats an unparseable order as unnumbered": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "entryPagePath against this site’s real placements › reports siteIntegrations as having nowhere to go": {
@@ -10293,74 +10293,74 @@
   },
   "hasOrderField › ignores an order field that is not a number": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "hasOrderField › is false for a collection with no order field": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "hasOrderField › is true for every collection this site declares an order on": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "hasOrderField › is true for the Momentum Fund sections": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "hasPlaceholderSponsors › reports false for no sponsors at all": {
@@ -15364,74 +15364,74 @@
   },
   "moveEntry › does not mutate the source list": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "moveEntry › moves an entry down by one": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "moveEntry › moves an entry up by one": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "moveEntry › returns the list unchanged at the top and bottom": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "name normalization — the ways one person arrives twice › does not collapse a suffix into the bare name": {
@@ -19054,56 +19054,56 @@
   },
   "renumberEntries › renumbers a blank, duplicated and gapped list to a clean sequence": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "renumberEntries › reports nothing when the list is already numbered in sequence": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "renumberEntries › reports only the rows whose number changed": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "resolveContactEmail › returns the trimmed address": {
@@ -23513,74 +23513,74 @@
   },
   "sortByEntryOrder › breaks ties by label": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "sortByEntryOrder › leaves the source array untouched": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "sortByEntryOrder › puts an unnumbered entry last": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "sortByEntryOrder › sorts ascending by order": {
     "file": "src/lib/cmsOrderControls.test.ts",
-    "lastRunAt": "2026-10-13T20:37:34.442Z",
+    "lastRunAt": "2026-10-13T21:12:59.139Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-13T21:12:59.139Z",
+      "pass|changed|2026-10-13T21:05:24.606Z",
+      "pass|changed|2026-10-13T21:05:14.573Z",
       "pass|changed|2026-10-13T20:37:34.442Z",
       "pass|changed|2026-10-10T16:40:43.498Z",
       "pass|full|2026-10-10T00:59:29.349Z",
       "pass|full|2026-10-09T23:42:52.029Z",
       "pass|changed|2026-10-09T23:16:48.302Z",
       "pass|changed|2026-10-09T23:14:47.413Z",
-      "pass|full|2026-10-09T17:26:16.498Z",
-      "pass|full|2026-10-09T00:36:40.692Z",
-      "pass|changed|2026-10-08T21:41:04.287Z",
-      "pass|changed|2026-10-08T21:40:42.044Z"
+      "pass|full|2026-10-09T17:26:16.498Z"
     ]
   },
   "sortByOrder › preserves input order among entries sharing the same order": {
