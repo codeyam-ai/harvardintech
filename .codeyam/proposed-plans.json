@@ -158,7 +158,8 @@
       "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
+      "rank": 3
     },
     {
       "id": "syncing-capture-scripts-marks-every-screenshot-stale",
@@ -169,7 +170,8 @@
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
+      "rank": 6
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -188,12 +190,17 @@
       "id": "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
       "title": "Dev server stop and start leaves a second astro dev running",
       "mode": "backend",
-      "body": "## What happened\n\nTwo `astro dev` processes ran all session (one on :4322 owned by the editor, a stray on :4323). The only hint was a one-line `app realigned to :4323` note on an early `preview`. A full `recapture-stale` then wrote 49 frames while the two servers raced on `.astro/data-store.json`; some captured the UnknownFilesystemError page and others captured production content instead of the seed, yet most were reported as Recaptured. `dev-server stop` left the stray alive, and a following `dev-server start` re-created the pair (supervisor respawn plus the start). Recovery meant finding the stray by hand through `/proc` socket inodes (no `ss` or `lsof` in the container), killing it by PID, discarding all 49 frames and recapturing.\n\n## What would have helped\n\n`recapture-stale` and `register` refusing to capture while more than one `astro dev` is alive, naming the stray PID and port. `dev-server stop` and `restart` guaranteeing exactly one process afterwards, and `dev-server` status reporting the count. Treating a port realignment as an error, not a note.",
-      "reason": "Two dev servers silently corrupted a full recapture: frames came out as an Astro error page or with the wrong content.",
+      "body": "## What happened\n\nOn 2026-10-13 every `codeyam-editor editor dev-server '{\"action\":\"restart\"}'` (3 of 3) left two `sh -c npm run dev` trees running, started about two seconds apart and both parented to pid 7. The editor tracked the second, which walked up to port 4323 because the first held 4321 (the port-mismatch advisory was the only tell). Each time I had to find the orphan via `ps` and kill it by hand before capturing, or risk the known data-store corruption.\n\n## What would have helped\n\nA restart that waits for the old tree to exit before spawning, and refuses to spawn while another `astro dev` for this project is alive. Or at minimum: have `dev-server` status flag an untracked second dev server and offer to stop it.",
+      "reason": "Every dev-server restart this session launched two astro dev servers.",
       "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
+      "rank": 2,
+      "sightings": 1,
+      "notes": [
+        "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…"
+      ]
     },
     {
       "id": "scenario-review-counts-seed-error-candidates-without-naming-them",
@@ -204,7 +211,8 @@
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
+      "rank": 9
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
@@ -215,18 +223,24 @@
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
+      "rank": 10
     },
     {
       "id": "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
       "title": "Content edits stay invisible in the preview until the sandbox copy is replaced by hand",
       "mode": "backend",
-      "body": "## What happened\n\nAdding `src/content/homeSections/mission.md`, and later editing its title, did not reach the live preview: the dev server reads `.codeyam/tmp/content-sandbox/`, restored from the `content-sandbox-active` snapshot, which kept the older copy. The first time took deleting the snapshot and restarting the dev server (each restart also left a stray `astro dev` behind); the second took copying the file into both sandbox folders by hand. Meanwhile the user, looking at the preview pane, reported twice that the change was not there.\n\n## What would have helped\n\nThe sandbox picking up edits to committed `src/content`/`src/data` files for entries the active scenario does not seed, or a `content-sync` command that refreshes the sandbox and snapshot from the working tree without a restart. Also a preview-pane notice when the pane is parked on a scenario whose seed shadows the file just edited.",
-      "reason": "A new content entry and a reworded heading did not show in the preview until the sandbox copies were overwritten by hand.",
+      "body": "## What happened\n\nAdding `src/content/communities/investors.md` 404'd in the preview because a scenario's content-sandbox snapshot was active. Clearing the snapshot plus a restart fixed it, but every later copy edit again needed either a restart (which double-launched the server) or a manual `cp` of the file into `.codeyam/tmp/content-sandbox/content/communities/`.\n\n## What would have helped\n\nA watcher that mirrors `src/content` edits into the sandbox when no seeded scenario overrides that file, or a `preview` flag that resyncs production content without a restart.",
+      "reason": "Edits to the new community's markdown did not reach the preview without a restart or a manual copy.",
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-10T00:01:04.361514979+00:00"
+      "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
+      "rank": 5,
+      "sightings": 1,
+      "notes": [
+        "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand."
+      ]
     },
     {
       "id": "give-the-chapter-sign-up-band-a-benefit-led-pitch",
@@ -253,6 +267,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
+      "rank": 8,
       "sightings": 1
     },
     {
@@ -265,6 +280,57 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
+      "rank": 7,
+      "sightings": 1
+    },
+    {
+      "id": "word-the-empty-events-message-for-communities-not-places",
+      "title": "Word the empty events message for communities, not places",
+      "mode": "ui",
+      "body": "## Summary\n\nCommunity pages reuse ChapterEvents, whose empty state is built from the page's subject as a place: `No events scheduled in ${name} yet.` For a city that reads well (\"in London\"); for a community it reads oddly (\"in Investors\", \"in AI\"). The heading was already overridden for communities (`Upcoming ${name} Events`), but the empty line was not. Seen on the new Investors page capture (community-route-investors-join-steps).\n\n## Key Decisions\n\n- Keep ChapterEvents shared; add an optional override for the empty-state title, the same way `heading` is overridden.\n- Community wording: \"No Investors events scheduled yet.\"\n- Also reconcile the AI On Day One scenario description, which says the events section renders nothing when empty; the current pages render a heading plus an empty-state box.\n\n## Implementation\n\n1. `src/components/ChapterEvents.astro` (empty state near line 57): accept an optional `emptyTitle` prop, defaulting to the current place wording.\n2. `src/components/CommunityPage.astro` (line 99): pass `emptyTitle={`No ${name} events scheduled yet.`}`.\n3. Recapture the community route scenarios and update the AI On Day One description to match what renders.",
+      "reason": "A community with no events reads 'No events scheduled in Investors yet', phrasing built for a city.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
+      "kind": "tech-debt",
+      "rank": 4,
+      "sightings": 1
+    },
+    {
+      "id": "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+      "title": "refresh-tests --file runs vitest --changed instead of the named file",
+      "mode": "backend",
+      "body": "## What happened\n\n`codeyam-editor editor refresh-tests --file src/data/collections.test.ts` echoed `npx vitest run --changed --reporter=json` and reported \"All 26 tests passed\". The named file was never run: vitest's `--changed` picks tests by import graph, and this file reads `src/data/collections.json` at runtime, so it is not linked to changed sources. I took the green as evidence the CMS-schema drift guard passed. Only the Reconcile audit (REGISTRY_TEST_NOT_WIRED on that file's 9 tests) revealed it had not run. `--test \"<describe name>\"` then ran it correctly.\n\n## What would have helped\n\n`--file` passing the path to the runner (e.g. `vitest run <path>`), or refusing the flag loudly when the runner command can't honor it. A run that never executed the requested file should not report success.",
+      "reason": "A narrowed test run reported '26 passed' without ever running the file it was asked to run.",
+      "severity": 4,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
+      "rank": 1,
+      "sightings": 1
+    },
+    {
+      "id": "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+      "title": "The phone-width menu was not captured as a scenario; only the desktop Communities menu was (the plan asked for both).",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself",
+      "title": "The legal-risk wording and disclaimer are my judgment, not reviewed by counsel; the webinar and in-person-event callouts come from the plan's summary of the deck, not checked against the deck itself.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
       "sightings": 1
     }
   ],
@@ -275,6 +341,31 @@
       "proposedIds": [
         "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
         "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate"
+      ]
+    },
+    {
+      "at": "2026-10-13T21:20:09.271540424+00:00",
+      "feature": "An Investors community for alumni in tech investing",
+      "notes": "Investors community shipped; scope grew at the user's request (legal-risk copy, then a per-community join-instructions field). Ranked the refresh-tests --file false-green first: it reported success without running the requested tests, whic…",
+      "proposedIds": [
+        "word-the-empty-events-message-for-communities-not-places",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself"
+      ],
+      "rankedIds": [
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "screenshot-staleness-misses-data-files-the-page-reads-at-runtime",
+        "word-the-empty-events-message-for-communities-not-places",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "scenario-review-counts-seed-error-candidates-without-naming-them",
+        "preview-flow-has-no-way-to-scroll-the-page"
       ]
     }
   ]
