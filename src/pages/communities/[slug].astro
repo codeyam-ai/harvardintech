@@ -43,6 +43,7 @@ const { Content } = await render(community);
 // `showGallery: false` still hides the section outright, as it does for a chapter.
 const {
   name,
+  fullName,
   blurb,
   heroImage,
   tagline,
@@ -78,6 +79,7 @@ const recent = recentPastEvents(past);
     ) : (
       <CommunityPage
         name={name}
+        fullName={fullName}
         blurb={blurb}
         heroImage={heroImage}
         tagline={tagline}

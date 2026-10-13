@@ -1,0 +1,275 @@
+{
+  "timestamp": "2026-10-13T21:47:10Z",
+  "title": "Word the empty events message for communities, not places",
+  "type": "feature",
+  "userRequest": "## Summary\n\nCommunity pages reuse ChapterEvents, whose empty state is built from the page's subject as a place: `No events scheduled in ${name} yet.` For a city that reads well (\"in London\"); for a community it reads oddly (\"in Investors\", \"in AI\"). The heading was already overridden for communities (`Upcoming ${name} Events`), but the empty line was not. Seen on the new Investors page capture (community-route-investors-join-steps).\n\n## Key Decisions\n\n- Keep ChapterEvents shared; add an optional override for the empty-state title, the same way `heading` is overridden.\n- Community wording: \"No Investors events scheduled yet.\"\n- Also reconcile the AI On Day One scenario description, which says the events section renders nothing when empty; the current pages render a heading plus an empty-state box.\n\n## Implementation\n\n1. `src/components/ChapterEvents.astro` (empty state near line 57): accept an optional `emptyTitle` prop, defaulting to the current place wording.\n2. `src/components/CommunityPage.astro` (line 99): pass `emptyTitle={`No ${name} events scheduled yet.`}`.\n3. Recapture the community route scenarios and update the AI On Day One description to match what renders.",
+  "description": "Community pages with nothing on the calendar now say 'No AI events scheduled yet.' / 'No Investors events scheduled yet.' instead of the chapter phrasing 'No events scheduled in AI yet.', which read as if a community were a place. ChapterEvents takes an optional emptyTitle override, the same way it already took a heading override, and CommunityPage passes the community wording; chapters keep the place wording. At the owner's request the AI page's big headings (hero, join band, events) now spell out 'Artificial Intelligence (AI)' through a new optional community field, fullName ('Full name for headings' in the admin form); the nav, tab title and empty line keep 'AI'. Scope: all project deliverables were already resolved, so none were delivered or deferred by this cycle. The AI On Day One scenario description was corrected (the events section shows a heading and an empty-state box, not nothing), and its screenshot is retaken after the commit because the uncommitted content kept the capture sandbox off.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/word-the-empty-events-message-for-communities-not-places.md\t.codeyam/plans/completed/word-the-empty-events-message-for-communities-not-places.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/remove-or-repurpose-the-unused-chapter-volunteer-link-field.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/retire-the-programs-label-on-the-events-and-webinars-pages.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-ai-on-day-one.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-community-heading--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-nothing-scheduled-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-recent-past-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-rich-list--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-forming-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitypage-founders-composed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterEvents.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/CommunityPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/communities/ai.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/collections.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/communities/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterevents-community-empty.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/chapterevents.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-community-empty--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-community-empty--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Chapter Gallery - A Single Photo",
+      "screenshotPath": "chapter-gallery-a-single-photo--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped",
+      "screenshotPath": "chapter-gallery-curated-and-capped--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged",
+      "screenshotPath": "chapter-gallery-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed",
+      "screenshotPath": "chapter-gallery-show-all-revealed--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns",
+      "screenshotPath": "chapter-gallery-three-photos-three-columns--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter",
+      "screenshotPath": "chapter-route-events-tagged-to-this-chapter--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps",
+      "screenshotPath": "chapter-route-longest-chapter-name-wraps--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--mobile.png"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area",
+      "screenshotPath": "chapter-route-sf-bay-area--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent",
+      "screenshotPath": "chapter-route-upcoming-above-recent--desktop.png"
+    },
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--mobile.png"
+    },
+    {
+      "name": "Community Route - Investors Join Steps",
+      "screenshotPath": "community-route-investors-join-steps--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Community Empty",
+      "screenshotPath": "chapterevents-community-empty--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Community Heading",
+      "screenshotPath": "chapterevents-community-heading--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Nothing Scheduled Yet",
+      "screenshotPath": "chapterevents-nothing-scheduled-yet--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Recent Past Events",
+      "screenshotPath": "chapterevents-recent-past-events--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Rich List",
+      "screenshotPath": "chapterevents-rich-list--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Forming Chapter",
+      "screenshotPath": "chapterpage-forming-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "CommunityPage - Founders Composed",
+      "screenshotPath": "communitypage-founders-composed--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1642,
+    "passed": 2,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1642,
+        "passed": 2
+      }
+    ]
+  }
+}

@@ -34,6 +34,9 @@ interface CommunityLink {
 interface Props {
   /** The community's name — "AI", "Founders". Never a city. */
   name: string;
+  /** Spelled-out name for the big headings — "Artificial Intelligence (AI)".
+   *  Absent → `name`. Running text and the empty-state line keep `name`. */
+  fullName?: string;
   blurb?: string;
   heroImage?: string;
   tagline?: string;
@@ -54,6 +57,7 @@ interface Props {
 }
 const {
   name,
+  fullName,
   blurb,
   heroImage,
   tagline,
@@ -72,10 +76,15 @@ const {
 // Detected HERE for the same reason ChapterPage does it — a forwarded slot
 // always reads as filled from inside PageNarrowBody.
 const hasBody = Astro.slots.has('default');
+
+// The big headings spell the name out; the empty-state line and running text
+// keep the short form, where "No Artificial Intelligence (AI) events" is a
+// mouthful and the heading right above has already expanded it.
+const headingName = fullName ?? name;
 ---
 
 <ChapterHero
-  name={name}
+  name={headingName}
   blurb={blurb}
   heroImage={heroImage}
   tagline={tagline}
@@ -90,19 +99,29 @@ const hasBody = Astro.slots.has('default');
 }
 <CommunityCallouts callouts={callouts} />
 
-<JoinWhatsAppCta name={name} whatsappFormUrl={whatsappFormUrl} blurb={joinBlurb} />
+<JoinWhatsAppCta
+  name={name}
+  heading={`Join the ${headingName} WhatsApp`}
+  whatsappFormUrl={whatsappFormUrl}
+  blurb={joinBlurb}
+/>
 
 {
   /* Directly under the join CTA, which is where Nicole looked for the Founders
      events and did not find them when they sat at the bottom of the page. */
 }
-<ChapterEvents events={events} name={name} heading={`Upcoming ${name} Events`} />
+<ChapterEvents
+  events={events}
+  name={name}
+  heading={`Upcoming ${headingName} Events`}
+  emptyTitle={`No ${name} events scheduled yet.`}
+/>
 
 <ChapterEvents
   events={pastEvents}
   name={name}
   variant="past"
-  heading={`Recent ${name} Events`}
+  heading={`Recent ${headingName} Events`}
 />
 
 <PageNarrowBody

@@ -27,6 +27,9 @@ interface Props {
   /** Overrides the default "Upcoming Events in <name>" phrasing. A community is
    *  not a place, so /communities passes "Upcoming <name> Events" instead. */
   heading?: string;
+  /** Overrides the default "No events scheduled in <name> yet." empty line, for
+   *  the same reason as `heading`: "in Investors" reads as if it were a place. */
+  emptyTitle?: string;
   /**
    * `upcoming` (the default) or `past`.
    *
@@ -36,7 +39,7 @@ interface Props {
    */
   variant?: 'upcoming' | 'past';
 }
-const { events = [], name, heading, variant = 'upcoming' } = Astro.props;
+const { events = [], name, heading, emptyTitle, variant = 'upcoming' } = Astro.props;
 const isPast = variant === 'past';
 const title = heading ?? (isPast ? `Recent events in ${name}` : `Upcoming events in ${name}`);
 const sectionId = isPast ? 'chapter-past-events' : 'chapter-events';
@@ -54,7 +57,7 @@ const show = hasEvents || !isPast;
           <EventCardGrid events={events} variant={variant} />
         ) : (
           <EmptyState
-            title={`No events scheduled in ${name} yet.`}
+            title={emptyTitle ?? `No events scheduled in ${name} yet.`}
             body="We'll announce the next one to the mailing list first."
             actionHref={siteLinks().mailingList}
             actionLabel="Get event announcements"

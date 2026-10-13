@@ -1,0 +1,36 @@
+---
+import Component from "../../../src/components/ChapterEvents.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for ChapterEvents as a COMMUNITY with nothing scheduled —
+// codeyam screenshots the #codeyam-capture wrapper by navigating to
+// /isolated-components/ChapterEvents-CommunityEmpty.
+//
+// Its own page rather than a `?s=` switch: this is a prerendered stack, so
+// query parameters are empty at build time.
+//
+// The empty line is built from the page's subject as a place by default —
+// "No events scheduled in London yet." For a community that read as "in AI",
+// as if AI were somewhere you could go, so CommunityPage passes `emptyTitle`
+// the same way it already passed `heading`. This frame carries both overrides
+// exactly as the AI page sends them: the heading spelled out from the entry's
+// full name, the empty line in the short form.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: ChapterEvents-CommunityEmpty</title>
+  </head>
+  <body style="margin: 0;">
+    <div id="codeyam-capture" style="width: 100%;">
+      <Component
+        events={[]}
+        name="AI"
+        heading="Upcoming Artificial Intelligence (AI) Events"
+        emptyTitle="No AI events scheduled yet."
+      />
+    </div>
+  </body>
+</html>

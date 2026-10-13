@@ -11,7 +11,7 @@ The navigation simplification removed the Programs dropdown; Events is now a top
 
 ## Key Decisions
 
-- Match each eyebrow to where the page now lives in the menu: Events page gets no section eyebrow (or "Calendar"), Webinars gets "Content hub".
+- Match each eyebrow to where the page now lives in the menu. **Decided by the user on 2026-10-13:** the Events page gets NO eyebrow (remove it from EventsIntro and EventsIntroBand), and Webinars gets "Content hub".
 - The Focus Areas "Programs" tile describes a kind of activity rather than a menu section; leave it unless the owner wants the wording aligned.
 
 ## Implementation

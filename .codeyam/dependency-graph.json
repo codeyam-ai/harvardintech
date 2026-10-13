@@ -266,6 +266,7 @@
       "importedBy": [
         "src/components/ChapterPage.astro",
         "src/components/CommunityPage.astro",
+        "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro",
         "src/pages/isolated-components/[name].astro"
       ]
     },
@@ -3597,6 +3598,13 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro": {
+      "imports": [
+        "src/components/ChapterEvents.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/ChapterLeads.astro": {
       "imports": [
         "src/components/ChapterLeads.astro",
@@ -4502,6 +4510,7 @@
       "importedBy": [
         "src/layouts/BaseLayout.astro",
         "src/pages/isolated-components/WebinarCard-NoCover.astro",
+        "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro",
         "src/pages/isolated-components/AccomplishmentCard.astro",
         "src/pages/isolated-components/BoardMemberTile.astro",
         "src/pages/isolated-components/ResponsiveImg.astro",
@@ -4919,6 +4928,7 @@
       ],
       "importedBy": [
         "src/components/CommunityPage.astro::__file_root__",
+        "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ]
     },
@@ -10658,6 +10668,15 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/ChapterEvents.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/ChapterLeads.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/ChapterLeads.astro",
       "name": "__file_root__",
@@ -11814,6 +11833,7 @@
       "importedBy": [
         "src/layouts/BaseLayout.astro::__file_root__",
         "src/pages/isolated-components/WebinarCard-NoCover.astro::__file_root__",
+        "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro::__file_root__",
         "src/pages/isolated-components/AccomplishmentCard.astro::__file_root__",
         "src/pages/isolated-components/BoardMemberTile.astro::__file_root__",
         "src/pages/isolated-components/ResponsiveImg.astro::__file_root__",
@@ -11939,5 +11959,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-13T21:18:00Z"
+  "lastUpdated": "2026-10-13T21:50:57Z"
 }

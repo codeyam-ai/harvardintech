@@ -11,9 +11,8 @@ Forming (online-group) chapter pages no longer show a volunteer button (`src/com
 
 ## Key Decisions
 
-- Either remove the field end-to-end, or repurpose it (for example as the target of a per-chapter "lead or co-lead this chapter" link) if the user wants that back.
+- **Decided by the user on 2026-10-13: remove the field end-to-end.** Do not repurpose it.
 
 ## Implementation
 
-1. Decide with the user: remove or repurpose.
-2. If removing: drop `volunteerUrl` from `src/content/config.ts`, `src/data/collections.json`, the `ChapterPage` and `FormingChapterCta` props, and `joinCtas` callers in `src/lib/localPresence.ts`; update `localPresence.test.ts`.
+1. Drop `volunteerUrl` from `src/content/config.ts`, `src/data/collections.json`, the `ChapterPage` and `FormingChapterCta` props, and `joinCtas` callers in `src/lib/localPresence.ts`; update `localPresence.test.ts`.

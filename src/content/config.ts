@@ -266,6 +266,10 @@ const communities = defineCollection({
   loader: collectionGlob('communities'),
   schema: z.object({
     name: z.string(),
+    // The spelled-out name for the page's big headings — "Artificial
+    // Intelligence (AI)" — where a bare acronym reads as jargon. The nav, the
+    // tab title and running text keep the short `name`. Absent → `name`.
+    fullName: z.string().optional(),
     // Same rule, same reason as the chapters field above: the form, never the
     // group. See `isWhatsAppGroupLink`.
     whatsappFormUrl: z

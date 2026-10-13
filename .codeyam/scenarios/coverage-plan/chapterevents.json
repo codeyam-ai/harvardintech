@@ -1,0 +1,48 @@
+{
+  "surface": "ChapterEvents",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "events",
+      "value": "empty",
+      "rationale": "source-derived state events=empty",
+      "status": "covered"
+    },
+    {
+      "dimension": "events",
+      "value": "one",
+      "rationale": "source-derived state events=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "events",
+      "value": "many",
+      "rationale": "source-derived state events=many",
+      "status": "covered"
+    },
+    {
+      "dimension": "show",
+      "value": "true",
+      "rationale": "source-derived state show=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "show",
+      "value": "false",
+      "rationale": "source-derived state show=false",
+      "status": "covered"
+    },
+    {
+      "dimension": "hasEvents",
+      "value": "true",
+      "rationale": "source-derived state hasEvents=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "hasEvents",
+      "value": "false",
+      "rationale": "source-derived state hasEvents=false",
+      "status": "covered"
+    }
+  ]
+}

@@ -11,6 +11,7 @@
       {
         "blurb": "For alumni working in and around artificial intelligence.",
         "body": "A cross-chapter community for Harvard alumni working in AI — researchers, founders, product leaders, and the people deploying it inside larger companies.\n\nThis community is just getting started. Events, leads, and reading groups will appear here as they are scheduled.",
+        "fullName": "Artificial Intelligence (AI)",
         "heroImage": "/images/gallery/event-22.jpg",
         "name": "AI",
         "slug": "ai",
@@ -21,5 +22,5 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/communities/[slug].astro",
-  "description": "The state every community actually launches in: announced, with no leads named and nothing on the calendar. It now renders through CommunityPage rather than the chapter shell, so the hero kicker reads Community instead of naming the organisation — the old title produced HARVARD ALUMNI IN TECH AI, which read as a product rather than a group of people. The point stands: the page still reads as finished, carried by the hero, the blurb and the join band, with the events section rendering nothing at all rather than an empty heading."
+  "description": "The state every community actually launches in: announced, with no leads named and nothing on the calendar. It now renders through CommunityPage rather than the chapter shell, so the hero kicker reads Community instead of naming the organisation — the old title produced HARVARD ALUMNI IN TECH AI, which read as a product rather than a group of people. The page still reads as finished, carried by the hero, the blurb and the join band. With nothing on the calendar the events section shows a heading and an empty-state box worded for a community, 'No AI events scheduled yet.', rather than the chapter phrasing 'No events scheduled in AI yet.', which read as if AI were a place. The big headings (hero, join band, events) spell the name out as Artificial Intelligence (AI) from the entry's full name; the empty line, the tab title and the nav keep the short form."
 }

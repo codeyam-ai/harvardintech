@@ -1,0 +1,31 @@
+{
+  "claimStartedAt": "2026-10-13T21:24:52Z",
+  "completedAt": "2026-10-13T21:47:10Z",
+  "completedBy": {
+    "agentProvider": "claude",
+    "codeyamEditorVersion": "0.1.7",
+    "currentStep": "ui-step22",
+    "machine": "codeyam-editor-codeyam-editor-1",
+    "originId": "057ec9fa-08a8-4791-b811-59ddf8ab552b",
+    "pid": 7,
+    "priority": 0,
+    "selectedPlan": "word-the-empty-events-message-for-communities-not-places",
+    "sessionId": "5862757c-6e24-475d-b2d8-7e5ab6af41b1",
+    "startedAt": "2026-10-13T21:24:52Z"
+  },
+  "createdAt": "2026-10-13T21:21:22Z",
+  "deliverables": [
+    "src/components/ChapterEvents.astro",
+    "src/components/CommunityPage.astro",
+    "src/content/communities/ai.md",
+    "src/content/config.ts",
+    "src/data/collections.json",
+    "src/pages/communities/[slug].astro",
+    "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro"
+  ],
+  "journalTimestamp": "2026-10-13T21:47:10Z",
+  "mode": "ui",
+  "planFile": "completed/word-the-empty-events-message-for-communities-not-places.md",
+  "slug": "word-the-empty-events-message-for-communities-not-places",
+  "title": "Word the empty events message for communities, not places"
+}

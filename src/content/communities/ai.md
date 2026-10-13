@@ -12,6 +12,7 @@ leads:
   - name: James Nicholson
     role: Community lead (pilot)
 name: AI
+fullName: Artificial Intelligence (AI)
 tagline: A global community for Harvard alumni working in AI.
 whatsappFormUrl: https://forms.gle/GqgaCDDWhWAgpJC68
 ---

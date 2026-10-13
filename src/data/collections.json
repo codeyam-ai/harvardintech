@@ -290,6 +290,13 @@
           "type": "text"
         },
         {
+          "name": "fullName",
+          "label": "Full name for headings",
+          "type": "text",
+          "optional": true,
+          "hint": "The spelled-out name used in the page's big headings, e.g. \"Artificial Intelligence (AI)\". The menu, browser tab and running text keep the short name. Blank uses the short name everywhere."
+        },
+        {
           "name": "whatsappFormUrl",
           "label": "WhatsApp sign-up form",
           "type": "text",
