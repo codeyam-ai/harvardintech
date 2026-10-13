@@ -242,6 +242,40 @@
       "proposedAt": "2026-10-10T16:55:00.615585364+00:00",
       "decidedAt": "2026-10-13T18:41:49Z",
       "sightingsAtDecision": 0
+    },
+    {
+      "id": "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+      "title": "Seed check rejects a capture when the seeded value matches committed content",
+      "mode": "backend",
+      "body": "## What happened\n\n`recapture-stale` failed `events-route-the-calendar-with-no-past-events-yet` with `BLOCKED: the render ... showed \"On March 20, 2018, Harvard in Tech hosted its second Crypto + Blockchain event...\" where this scenario's own seed wrote \"On March 20, 2018, Harvard in Tech hosted its second Crypto + Blockchain event...\"` — the two strings are identical. The guard picks a field whose seeded value equals the committed value, so it cannot distinguish 'seed landed' from 'seed missed' and reports a false failure. A rerun of the same capture later passed.\n\n## What would have helped\n\nOnly use a field as seed evidence when its seeded value differs from the committed value; when no such field exists, skip the check (or say it was inconclusive) instead of blocking.",
+      "reason": "A capture was refused as 'reading committed content' when the seed's text was word-for-word the committed text.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+      "title": "Editing the shared isolation route re-stales every component and drags unrelated views into the taxonomy gate",
+      "mode": "backend",
+      "body": "## What happened\n\nThis Astro project renders most isolation previews from one catch-all page, `src/pages/isolated-components/[name].astro`. Changing one fixture line there (passing `name=\"London\"` to `ChapterSignUp`) made every component scenario stale, so `recapture-stale` re-shot the whole corpus, and the App Scenarios gate then blocked on `EventsPage` — a view this change never touched — because every view imported by that file counted as 'touched'. Clearing it took a new EventsPage scenario the user had to approve as extra scope.\n\n## What would have helped\n\nTreat the catch-all isolation route per-state: attribute a change in it only to the components whose fixture branch changed, for both screenshot staleness and the taxonomy gate's touched-view set.",
+      "reason": "A one-line fixture change in the catch-all isolation page forced a full recapture and blocked advance on an unrelated Events page gap.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
+      "sightings": 1
+    }
+  ],
+  "rounds": [
+    {
+      "at": "2026-10-13T20:46:12.382387035+00:00",
+      "feature": "A local pitch on every chapter's sign-up band",
+      "proposedIds": [
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate"
+      ]
     }
   ]
 }
