@@ -3,32 +3,38 @@
 //
 // It was the live site's teal "Sign Up" block — a pale blue band with a
 // flanking-rule heading, carried over from the Strikingly original. It is now a
-// centred Atlas CTA band: the same words, on the shared surface tokens, with
+// centred Atlas CTA band on the shared surface tokens, with
 // the shared pill button. Teal appeared nowhere else in the redesign, so the
 // band read as a leftover from a different site every time a reader scrolled
 // past it.
+//
+// The page closes with the global-community band, whose newsletter card makes
+// the general pitch. This band makes the local one instead — hear about this
+// city's events first — so the two asks on one page say different things
+// rather than repeating each other.
 //
 // Defaults to the same MailChimp signup the landing hero uses; accepts an
 // optional `subscribeUrl` for future per-chapter overrides.
 import SectionHead from './ui/SectionHead.astro';
 import { siteLinks } from '../lib/site';
+import { chapterSignUpCopy } from '../lib/chapterSignUp';
 
 interface Props {
+  /** The chapter's city. Without one the band falls back to wording that makes
+   *  no place claim. */
+  name?: string;
   subscribeUrl?: string;
 }
-const { subscribeUrl = siteLinks().mailingList } = Astro.props;
+const { name, subscribeUrl = siteLinks().mailingList } = Astro.props;
+
+const { title, intro } = chapterSignUpCopy(name);
 ---
 
 <section class="sec signup" id="sign-up">
   <div class="wrap">
-    <SectionHead
-      kicker="Stay in touch"
-      title="Sign up"
-      intro="Join the Harvard Alumni in Tech community."
-      align="center"
-    />
+    <SectionHead kicker="Stay in touch" title={title} intro={intro} align="center" />
     <p class="signup-cta">
-      <a class="btn btn-solid" href={subscribeUrl} rel="noopener">Subscribe</a>
+      <a class="btn btn-solid" href={subscribeUrl} rel="noopener">Get the newsletter</a>
     </p>
   </div>
 </section>

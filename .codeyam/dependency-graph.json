@@ -88,9 +88,9 @@
     ".codeyam/scenario-issues.js": {
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js",
         ".codeyam/scenario-handlers.js",
-        ".codeyam/scenario-interactivity.js"
+        ".codeyam/scenario-interactivity.js",
+        ".codeyam/capture.js"
       ]
     },
     ".codeyam/scenario-metrics.js": {
@@ -318,7 +318,8 @@
     "src/components/ChapterSignUp.astro": {
       "imports": [
         "src/components/ui/SectionHead.astro",
-        "src/lib/site.ts"
+        "src/lib/site.ts",
+        "src/lib/chapterSignUp.ts"
       ],
       "importedBy": [
         "src/components/ChapterPage.astro",
@@ -1955,6 +1956,19 @@
     "src/lib/chapter.photos.test.ts": {
       "imports": [],
       "importedBy": []
+    },
+    "src/lib/chapterSignUp.test.ts": {
+      "imports": [
+        "src/lib/chapterSignUp.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/chapterSignUp.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/chapterSignUp.test.ts",
+        "src/components/ChapterSignUp.astro"
+      ]
     },
     "src/lib/cmsOrderControls.test.ts": {
       "imports": [
@@ -4642,9 +4656,9 @@
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n}": {
+    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  devicePixelRatioOf,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  logCaptureTiming,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n}",
+      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  devicePixelRatioOf,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  logCaptureTiming,\n}",
       "imports": [
         ".codeyam/scenario-playwright.js::__file_root__"
       ],
@@ -4698,6 +4712,14 @@
         "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__"
       ]
     },
+    ".codeyam/scenario-handlers.js::__file_root__": {
+      "filePath": ".codeyam/scenario-handlers.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}"
+      ]
+    },
     ".codeyam/scenario-handlers.js::{ createIssue }": {
       "filePath": ".codeyam/scenario-handlers.js",
       "name": "{ createIssue }",
@@ -4705,6 +4727,14 @@
         ".codeyam/scenario-issues.js::__file_root__"
       ],
       "importedBy": []
+    },
+    ".codeyam/scenario-interactivity.js::__file_root__": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  buildCounterpartProbe,\n  subpathHydrationEscalation,\n  waitForHydration,\n}"
+      ]
     },
     ".codeyam/scenario-interactivity.js::{ createIssue }": {
       "filePath": ".codeyam/scenario-interactivity.js",
@@ -4714,11 +4744,20 @@
       ],
       "importedBy": []
     },
+    ".codeyam/scenario-issues.js::__file_root__": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}"
+      ]
+    },
     ".codeyam/scenario-metrics.js::__file_root__": {
       "filePath": ".codeyam/scenario-metrics.js",
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
+        ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  isCanvasDominated,\n  frameHasVisualContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
         ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}"
       ]
     },
@@ -4941,7 +4980,8 @@
       "name": "__file_root__",
       "imports": [
         "src/components/ui/SectionHead.astro::__file_root__",
-        "src/lib/site.ts::siteLinks"
+        "src/lib/site.ts::siteLinks",
+        "src/lib/chapterSignUp.ts::chapterSignUpCopy"
       ],
       "importedBy": [
         "src/pages/isolated-components/[name].astro::__file_root__"
@@ -6925,6 +6965,23 @@
         "src/components/StructuredData.astro::__file_root__",
         "src/pages/llms.txt.ts::__file_root__",
         "src/pages/robots.txt.ts::__file_root__"
+      ]
+    },
+    "src/lib/chapterSignUp.test.ts::__file_root__": {
+      "filePath": "src/lib/chapterSignUp.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/chapterSignUp.ts::chapterSignUpCopy"
+      ],
+      "importedBy": []
+    },
+    "src/lib/chapterSignUp.ts::chapterSignUpCopy": {
+      "filePath": "src/lib/chapterSignUp.ts",
+      "name": "chapterSignUpCopy",
+      "imports": [],
+      "importedBy": [
+        "src/lib/chapterSignUp.test.ts::__file_root__",
+        "src/components/ChapterSignUp.astro::__file_root__"
       ]
     },
     "src/lib/cmsOrderControls.test.ts::__file_root__": {
@@ -11882,5 +11939,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-10T16:43:35Z"
+  "lastUpdated": "2026-10-13T20:41:12Z"
 }

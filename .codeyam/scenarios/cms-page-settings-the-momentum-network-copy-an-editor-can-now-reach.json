@@ -2,6 +2,7 @@
   "name": "CMS Page Settings - The Momentum Network Copy An Editor Can Now Reach",
   "id": "0b138ba9-0958-4c1e-8225-daa5cbfaba0a",
   "url": "/admin/pageCopy/donate",
+  "pageFilePath": "node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro",
   "dimensions": [
     "Desktop"
   ],

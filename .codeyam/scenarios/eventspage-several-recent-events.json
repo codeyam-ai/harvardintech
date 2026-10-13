@@ -1,0 +1,15 @@
+{
+  "name": "EventsPage - Several Recent Events",
+  "id": "51b626ff-562e-4dc5-8cf9-c93c5b0b2452",
+  "url": "/isolated-components/EventsPage-Recent",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventsPage",
+  "scenarioType": "component",
+  "description": "The events body once a busy season is behind us: several past events are recent enough to show as cards, so the Past events grid fills out instead of holding a single card, with the link to Luma's full past list beneath it. It is the counterpart to the one-card and archive-only states.",
+  "demonstratesState": {
+    "recent": "many"
+  }
+}

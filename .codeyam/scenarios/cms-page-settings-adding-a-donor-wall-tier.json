@@ -2,6 +2,7 @@
   "name": "CMS Page Settings - Adding A Donor Wall Tier",
   "id": "6823933f-de83-432e-bd23-a09ab7b2c02d",
   "url": "/admin/pageCopy/donate",
+  "pageFilePath": "node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro",
   "dimensions": [
     "Desktop"
   ],

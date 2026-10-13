@@ -784,6 +784,12 @@
     "testFile": "src/lib/nav.test.ts"
   },
   {
+    "description": "Builds the heading and line for the chapter page Stay in touch band: names the city when given (Hear about London events first) and falls back to place-neutral wording for a missing or blank name.",
+    "filePath": "src/lib/chapterSignUp.ts",
+    "name": "chapterSignUpCopy",
+    "testFile": "src/lib/chapterSignUp.test.ts"
+  },
+  {
     "description": "Whether a chapter is `active` or `forming`, defaulting to active when the field is absent or unrecognised. The default is load-bearing: every chapter predating the field was one with events, so absent-means-active is what kept the whole roster rendering unchanged when the field shipped.",
     "filePath": "src/lib/localPresence.ts",
     "name": "chapterStatus",

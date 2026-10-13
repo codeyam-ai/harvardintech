@@ -144,6 +144,9 @@ const eventsPageStates = {
   // out and the archive is the only thing left. This is what a chapter with a
   // long history and a quiet present actually looks like.
   ArchiveOnly: { events: SAMPLE_ARCHIVE_EVENTS, now: '2026-06-13' },
+  // Every sample event has passed, so Past Events carries several cards rather
+  // than one — the shape the grid takes once a busy season is behind us.
+  Recent: { events: SAMPLE_EVENTS, now: '2026-12-01' },
 };
 
 // ChapterPage states: a full NYC-style chapter — full-bleed city hero, Sign Up
@@ -847,6 +850,7 @@ export async function getStaticPaths() {
     { params: { name: 'EventsPage-Empty' } },
     { params: { name: 'EventsPage-Archive' } },
     { params: { name: 'EventsPage-ArchiveOnly' } },
+    { params: { name: 'EventsPage-Recent' } },
     { params: { name: 'ChapterPage' } },
     { params: { name: 'ChapterPage-Sparse' } },
     { params: { name: 'ChapterPage-Forming' } },
@@ -1145,7 +1149,7 @@ if (name && name.startsWith('MomentumNetwork')) {
         ) : chapterEventsProps ? (
           <ChapterEvents {...chapterEventsProps} />
         ) : isChapterSignUp ? (
-          <ChapterSignUp />
+          <ChapterSignUp name="London" />
         ) : chapterConnectProps ? (
           <ChapterConnect {...chapterConnectProps} />
         ) : contactUsProps ? (

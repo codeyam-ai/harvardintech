@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 0a847ac3bbf2b6935e3e284ce75ee23f9b92a629  source-sha256: cf3e9d7fc7b10bb4cc3b9b366fbf97f913aecb3c369f0971093cd8930bd5b913
+// codeyam-editor: 0.1.7  build: c23ce41100a6229ea1b7b518a4114f87721740ec  source-sha256: 2207f606e235df66639fd9a49c9b434e1356397976c0a4115a1d99d624150847
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -68,9 +68,16 @@ const CAPTURE_LAUNCH_ARGS = [
   // renderer doesn't crash allocating it.
   "--disable-dev-shm-usage",
   // No GPU on the headless cloud VM — avoid the GL init path that aborts.
-  // WebGL2 still works: Playwright adds `--enable-unsafe-swiftshader` on
-  // Linux, so canvas apps get software WebGL2 (verified; WebGPU does not).
   "--disable-gpu",
+  // Software WebGL2, asked for EXPLICITLY rather than inherited. Playwright
+  // adds this itself on Linux, which is why `--disable-gpu` left canvas apps
+  // with working WebGL2 there — and why it did not on macOS, where Playwright
+  // does not add it: `getContext("webgl2")` returned null and the WebGL2
+  // capture test failed on every mac dev machine while passing in CI. That is
+  // the host-capability dependency CLAUDE.md forbids, so the flag is now
+  // stated here for every platform. A duplicate on Linux is harmless
+  // (last-wins, same value). WebGPU is still unavailable either way.
+  "--enable-unsafe-swiftshader",
 ];
 // Features the capture browser disables on top of Playwright's own list.
 // DBus: stub out the dbus integration Chromium reaches for at launch; the cloud
@@ -395,6 +402,7 @@ const {
   forceFinalVisualState,
   centerCaptureWrapper,
   isCanvasInteraction,
+  devicePixelRatioOf,
   resolveInteractionTarget,
   performInteraction,
   pixelSnapshot,
@@ -402,6 +410,7 @@ const {
   waitForPixelStable,
   waitForPredicate,
   performInteractionSequence,
+  logCaptureTiming,
 } = require("./scenario-playwright");
 
 // Name of the cookie the editor's control-API accepts the session token in —
@@ -835,19 +844,130 @@ function interactionEffectSignal(beforeFingerprint, afterFingerprint, pixelsChan
   return null;
 }
 
+// Where page-level keystrokes went, from the element that held keyboard focus
+// when a `key` / `type` step was dispatched: `editable` (a text input, textarea, or
+// contenteditable), `canvas`, `body`, or `other`. Pure, over a plain
+// `{ tagName, isContentEditable }` descriptor; `null` when focus was unreadable.
+//
+// This is what tells a canvas UI's typed text apart from its shortcuts. A typed
+// `c` that lands in a text field and one that switches the app to its Circle
+// tool both repaint the canvas, so the effect verdict reads `changed` either
+// way. The focused element does not: an immediate-mode UI that focuses a field
+// moves DOM focus to an input of its own (eframe's text agent), so a focused
+// field reads `editable` on any framework that does this, with no framework
+// knowledge here.
+function classifyKeyTarget(focused) {
+  if (!focused || typeof focused.tagName !== "string") return null;
+  const tag = focused.tagName.toUpperCase();
+  if (tag === "INPUT" || tag === "TEXTAREA" || focused.isContentEditable === true) {
+    return "editable";
+  }
+  if (tag === "CANVAS") return "canvas";
+  if (tag === "BODY" || tag === "HTML") return "body";
+  return "other";
+}
+
+// The focused element inside `frame`, descending through same-origin iframes
+// (focus on an `<iframe>` element means the keys went into its document).
+// Never throws: an unreadable focus is reported as unknown, not as a failure.
+async function readKeyTarget(frame) {
+  try {
+    const focused = await frame.evaluate(() => {
+      let el = document.activeElement;
+      while (el && el.tagName === "IFRAME") {
+        let inner = null;
+        try {
+          inner = el.contentDocument && el.contentDocument.activeElement;
+        } catch (_) {
+          inner = null;
+        }
+        if (!inner) break;
+        el = inner;
+      }
+      return el ? { tagName: el.tagName, isContentEditable: el.isContentEditable === true } : null;
+    });
+    return classifyKeyTarget(focused);
+  } catch (_) {
+    return null;
+  }
+}
+
+// One flow step's effect verdict, as `preview-flow` reports it: the same
+// `classifyInteractionEffect` / `interactionEffectSignal` pair a single
+// `preview-interact` uses, tagged with the step's 1-based index and verb so
+// the CLI can name the step that did nothing. A pointer step also carries the
+// `geometry` `performInteraction` returned (target size, where it landed, any
+// off-target warning) and the page's device pixel ratio, so the report can say
+// where the pointer went; the fields are omitted, not null, for other verbs.
+// `keyTarget` likewise rides along only on the keyboard steps that measured one.
+function buildStepEffect(
+  step,
+  action,
+  {
+    beforeFingerprint,
+    afterFingerprint,
+    hydrated,
+    pixelsChanged,
+    geometry,
+    devicePixelRatio,
+    keyTarget,
+  },
+) {
+  const effect = {
+    step,
+    action,
+    effect: classifyInteractionEffect(
+      beforeFingerprint,
+      afterFingerprint,
+      hydrated,
+      pixelsChanged,
+    ),
+    effectSignal: interactionEffectSignal(beforeFingerprint, afterFingerprint, pixelsChanged),
+  };
+  if (geometry) {
+    Object.assign(effect, geometry);
+    if (typeof devicePixelRatio === "number") effect.devicePixelRatio = devicePixelRatio;
+  }
+  if (keyTarget) effect.keyTarget = keyTarget;
+  return effect;
+}
+
+// Hash serialized markup into a compact `<length>-<hash>` fingerprint, so two
+// snapshots compare by value. Pure; `getDOMFingerprint` decides what markup
+// goes in.
+function fingerprintHtml(html) {
+  const text = String(html || "");
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) {
+    hash = (hash << 5) - hash + text.charCodeAt(i);
+    hash |= 0;
+  }
+  return `${text.length}-${hash}`;
+}
+
 async function getDOMFingerprint(frame) {
   try {
-    return await frame.evaluate(() => {
-      const body = document.body;
-      if (!body) return "";
-      const html = body.innerHTML;
-      let hash = 0;
-      for (let i = 0; i < html.length; i++) {
-        hash = (hash << 5) - hash + html.charCodeAt(i);
-        hash |= 0;
+    // On a clone, so the live page is untouched: drop each inline `cursor`
+    // and re-serialize every inline style in its canonical form.
+    //
+    // The cursor is pointer feedback, not app state — egui/eframe rewrites its
+    // canvas's cursor every time the pointer crosses a widget, so counting it
+    // made a click on empty canvas read as "changed", hiding exactly the dead
+    // step the verdict exists to name. It is removed through the style object,
+    // never a text regex, which would also eat visible text like "cursor: 4,2".
+    // Canonical form matters because the first script write to `el.style`
+    // re-serializes the WHOLE attribute (`display:block` → `display: block;`),
+    // which alone would move the fingerprint.
+    const html = await frame.evaluate(() => {
+      if (!document.body) return null;
+      const clone = document.body.cloneNode(true);
+      for (const el of clone.querySelectorAll("[style]")) {
+        el.style.removeProperty("cursor");
+        el.setAttribute("style", el.style.cssText);
       }
-      return `${html.length}-${hash}`;
+      return clone.innerHTML;
     });
+    return html === null ? "" : fingerprintHtml(html);
   } catch (err) {
     return "";
   }
@@ -1643,6 +1763,146 @@ function seedNotLandedIssue(frame, config, showing, waitedMs) {
   );
 }
 
+// How long a flow waits for one browser download to finish before cancelling
+// it. A download is evidence, never a reason to stall the run: an export that
+// does not finish inside this bound is cancelled and recorded as such, so the
+// frames around it still land.
+const FLOW_DOWNLOAD_BOUND_MS = 5000;
+
+// A download's suggested name, reduced to one safe path segment. The name comes
+// from the page, so it must never be allowed to climb out of the run directory.
+function safeDownloadName(suggested) {
+  const base = path.basename(String(suggested || "download"));
+  const cleaned = base.replace(/[^A-Za-z0-9._-]+/g, "_").replace(/^\.+/, "");
+  return cleaned || "download";
+}
+
+// Save one browser download triggered by flow step `step` into `dir`, bounded
+// by `boundMs`. Resolves to the evidence row the manifest records — never
+// rejects, because a download that fails is a finding about the app, not a
+// reason to veto the frames the flow already captured.
+async function saveFlowDownload(download, step, dir, boundMs = FLOW_DOWNLOAD_BOUND_MS) {
+  const suggestedFilename = download.suggestedFilename();
+  const target = path.join(
+    dir,
+    `step-${String(step).padStart(2, "0")}-${safeDownloadName(suggestedFilename)}`,
+  );
+  const started = Date.now();
+  let timer;
+  const saving = (async () => {
+    fs.mkdirSync(dir, { recursive: true });
+    await download.saveAs(target);
+    return "saved";
+  })();
+  const bounded = new Promise((resolve) => {
+    timer = setTimeout(() => resolve("timeout"), boundMs);
+  });
+  let outcome;
+  let reason = null;
+  try {
+    outcome = await Promise.race([saving, bounded]);
+  } catch (error) {
+    outcome = "failed";
+    reason = error.message || String(error);
+  } finally {
+    clearTimeout(timer);
+  }
+  let row;
+  if (outcome === "saved") {
+    let bytes = null;
+    try {
+      bytes = fs.statSync(target).size;
+    } catch (_) {
+      /* saved but unreadable — record the save without a size */
+    }
+    row = { step, suggestedFilename, bytes, path: target, status: "saved" };
+  } else {
+    // The losing `saveAs` is still pending; swallow its eventual rejection.
+    saving.catch(() => {});
+    await download.cancel().catch(() => {});
+    row = {
+      step,
+      suggestedFilename,
+      bytes: null,
+      path: null,
+      status: outcome === "timeout" ? "cancelled" : "failed",
+      reason: outcome === "timeout" ? `did not finish within ${boundMs}ms` : reason,
+    };
+  }
+  logCaptureTiming("flow-download", { ...row, elapsedMs: Date.now() - started });
+  return row;
+}
+
+// Record every browser download a flow triggers, attributed to the step in
+// progress when it starts. `setStep(n)` is called as each step begins;
+// `drain()` stops listening and resolves to the evidence rows, each save
+// already bounded by `saveFlowDownload`. Registered before the first step so an
+// export fired by step 1 is not missed. A page that cannot emit events (a test
+// mock) records nothing rather than throwing.
+function attachFlowDownloadRecorder(page, dir, save = saveFlowDownload) {
+  let currentStep = 0;
+  const pending = [];
+  const onDownload = (download) => {
+    pending.push(save(download, currentStep, dir));
+  };
+  const listening = typeof page.on === "function";
+  if (listening) page.on("download", onDownload);
+  return {
+    setStep(n) {
+      currentStep = n;
+    },
+    async drain() {
+      if (listening && typeof page.off === "function") page.off("download", onDownload);
+      return Promise.all(pending);
+    },
+  };
+}
+
+// Where a flow's step-triggered downloads are saved: the caller's run
+// directory when the config names one, else a `downloads/` folder beside the
+// final frame, so the evidence never lands somewhere a reviewer would not look.
+function resolveFlowDownloadDir(config) {
+  if (typeof config.downloadDir === "string" && config.downloadDir) {
+    return config.downloadDir;
+  }
+  return path.join(
+    path.dirname(config.outputPath || ".codeyam/preview-capture.png"),
+    "downloads",
+  );
+}
+
+// Close the capture browser, but never wait on it forever: a browser wedged in
+// teardown (a download mid-flight, a crashed renderer) used to hold the whole
+// capture past its budget with every frame already on disk. Past `boundMs` the
+// browser process is killed outright.
+async function closeBrowserBounded(browser, boundMs = 5000) {
+  const started = Date.now();
+  let timer;
+  const bounded = new Promise((resolve) => {
+    timer = setTimeout(() => resolve("timed-out"), boundMs);
+  });
+  const outcome = await Promise.race([
+    Promise.resolve()
+      .then(() => browser.close())
+      .then(
+      () => "closed",
+      () => "close-failed",
+    ),
+    bounded,
+  ]);
+  clearTimeout(timer);
+  if (outcome !== "closed") {
+    try {
+      const proc = typeof browser.process === "function" ? browser.process() : null;
+      if (proc) proc.kill("SIGKILL");
+    } catch (_) {
+      /* already gone */
+    }
+  }
+  logCaptureTiming("browser-close", { outcome, elapsedMs: Date.now() - started });
+  return outcome;
+}
+
 // Drive an ordered list of flow steps against ONE already-loaded browser
 // session so a scripted multi-step demo (`editor preview-flow`) is captured as
 // the real round-trip — click state and client transients persist across
@@ -1672,7 +1932,19 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
     hydrationTimeoutMs = 10000,
     settleMs,
     probeCounterpart,
+    stepEffects,
+    downloads,
+    downloadDir,
   } = ctx;
+  // Save every browser download a step triggers as evidence beside the frames.
+  const downloadRecorder =
+    Array.isArray(downloads) && typeof downloadDir === "string"
+      ? attachFlowDownloadRecorder(page, downloadDir)
+      : null;
+  // The hydration verdict the effect classifier needs. Starts as the initial
+  // load's and is replaced by each `navigate` step's own wait, so a step on a
+  // route that never hydrated reports `unhydrated` rather than `none`.
+  let hydrated = ctx.hydrated === undefined ? null : ctx.hydrated;
   // Honor a caller-supplied `settleMs` for the in-flow stability windows,
   // falling back to today's hardcoded defaults (5s for interaction steps, 10s
   // for a navigate). This stops the field from being silently dropped — the
@@ -1682,10 +1954,18 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
   const interactionSettleMs =
     typeof settleMs === "number" && settleMs > 0 ? settleMs : 5000;
   let frame = initialFrame;
+  // Read once, on the first pointer step that reports geometry: the ratio is a
+  // property of the capture browser, not of any one step.
+  let devicePixelRatio;
 
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i] || {};
     const n = i + 1;
+    if (downloadRecorder) downloadRecorder.setStep(n);
+    // Started/done pairs per step: when the editor's budget kills a stalled
+    // run, the last `started` without a `done` names the step that stalled.
+    const stepStarted = Date.now();
+    logCaptureTiming("flow-step", { step: n, action: step.action, outcome: "started" });
     try {
       switch (step.action) {
         case "navigate": {
@@ -1722,6 +2002,7 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
           // flow that passes today a new way to fail. Computing a verdict and
           // not raising it reads as a bug otherwise — it is the point.
           await escalateSubpathHydration(navHydration);
+          hydrated = navHydration.hydrated;
           break;
         }
         case "click":
@@ -1731,15 +2012,51 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
         case "drag":
         case "wheel":
         case "key":
-        case "type":
-          await performInteraction(frame, step);
+        case "type": {
+          // Judge each step the way `preview-interact` judges its one
+          // interaction: DOM fingerprint on either side, plus a pixel snapshot
+          // clipped to the target when it paints into a canvas. Without this a
+          // flow step aimed at empty space (wrong coordinates, an unfocused
+          // canvas) was invisible until someone read every filmstrip frame.
+          const { clip: pixelClip, targetIsCanvas } = await resolvePixelClip(frame, step);
+          const canvasVerb = isCanvasInteraction(step) || targetIsCanvas;
+          const beforeFingerprint = await getDOMFingerprint(frame);
+          const beforePixels = canvasVerb ? await pixelSnapshot(page, pixelClip) : null;
+          // Read BEFORE dispatch: keys go to whatever holds focus when they are
+          // sent, and a correct Enter that submits a field blurs it, so the
+          // after-state would misreport it as `canvas`.
+          const keyTarget =
+            Array.isArray(stepEffects) && ["key", "type"].includes(step.action)
+              ? await readKeyTarget(frame)
+              : null;
+          const geometry = await performInteraction(frame, step);
+          if (geometry && devicePixelRatio === undefined) {
+            devicePixelRatio = await devicePixelRatioOf(frame);
+          }
           await waitForStablePage(page, frame, interactionSettleMs, loadingMarkers);
           // A canvas verb's effect is painted, and the DOM settle above reads
           // an unchanged `innerHTML` as settled at once — wait on pixels too.
-          if (isCanvasInteraction(step)) {
-            await waitForPixelStable(page, { timeoutMs: interactionSettleMs });
+          if (canvasVerb) {
+            await waitForPixelStable(page, { clip: pixelClip, timeoutMs: interactionSettleMs });
+          }
+          if (Array.isArray(stepEffects)) {
+            const afterFingerprint = await getDOMFingerprint(frame);
+            const pixelsChanged =
+              canvasVerb && !samePixels(beforePixels, await pixelSnapshot(page, pixelClip));
+            stepEffects.push(
+              buildStepEffect(n, step.action, {
+                beforeFingerprint,
+                afterFingerprint,
+                hydrated,
+                pixelsChanged,
+                geometry,
+                devicePixelRatio,
+                keyTarget,
+              }),
+            );
           }
           break;
+        }
         case "waitFor":
           await waitForPredicate(frame, step);
           break;
@@ -1755,10 +2072,26 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
           );
       }
     } catch (error) {
+      logCaptureTiming("flow-step", {
+        step: n,
+        action: step.action,
+        outcome: "failed",
+        elapsedMs: Date.now() - stepStarted,
+      });
       throw new Error(
         `flow step ${n} (${step.action}) failed: ${error.message || String(error)}`,
       );
     }
+    logCaptureTiming("flow-step", {
+      step: n,
+      action: step.action,
+      outcome: "done",
+      elapsedMs: Date.now() - stepStarted,
+    });
+  }
+
+  if (downloadRecorder) {
+    downloads.push(...(await downloadRecorder.drain()));
   }
 
   return frame;
@@ -1792,6 +2125,13 @@ async function runScenarioCheck(
   let interactionRetried = false;
   // `dom` | `pixels` | null — which signal proved `interactionEffect`.
   let interactionSignal = null;
+  // One `{step, action, effect, effectSignal}` per driven step of a flow — the
+  // per-step counterpart of `interactionEffect`, which a flow never sets.
+  const flowStepEffects = [];
+  // One `{step, suggestedFilename, bytes, path, status}` per browser download a
+  // flow step triggered — evidence, not frames.
+  const flowDownloads = [];
+  const flowDownloadDir = resolveFlowDownloadDir(config);
   // Non-fatal warnings raised while resolving interaction/flow targets — e.g. a
   // substring text match that hit more than one element. Surfaced on the result
   // so the agent sees the ambiguity instead of a silently-wrong first-match.
@@ -1820,6 +2160,9 @@ async function runScenarioCheck(
   const browser = await launchChromiumWithSelfHeal();
   const contextOptions = {
     viewport: { width: width || 1440, height: height || 900 },
+    // Explicit, because a flow step that exports a file must produce evidence
+    // rather than a download nobody waits on (see `saveFlowDownload`).
+    acceptDownloads: true,
   };
   if (config.colorScheme) contextOptions.colorScheme = config.colorScheme;
   if (config.deviceScaleFactor)
@@ -2317,6 +2660,10 @@ async function runScenarioCheck(
         hydrationTimeoutMs,
         settleMs: config.settleMs,
         probeCounterpart,
+        hydrated: hydration.hydrated,
+        stepEffects: flowStepEffects,
+        downloads: flowDownloads,
+        downloadDir: flowDownloadDir,
       });
     } else if (config.interaction) {
       const { clip: pixelClip, targetIsCanvas } = await resolvePixelClip(
@@ -2465,6 +2812,12 @@ async function runScenarioCheck(
       result.interactionRetried = interactionRetried;
       result.effectSignal = interactionSignal;
     }
+    if (flowStepEffects.length > 0) {
+      result.stepEffects = flowStepEffects;
+    }
+    if (flowDownloads.length > 0) {
+      result.downloads = flowDownloads;
+    }
 
     // Forward the hydration password census so the in-place auth-gate guard can
     // fire on a route the project never declared. Attached ONLY when the probe
@@ -2530,7 +2883,7 @@ async function runScenarioCheck(
       viewerOrigin: config.viewerOrigin ?? null,
     });
   } finally {
-    await browser.close();
+    await closeBrowserBounded(browser);
   }
 }
 
@@ -2573,9 +2926,18 @@ module.exports = {
   runScenarioCheck,
   classifyInteractionEffect,
   interactionEffectSignal,
+  buildStepEffect,
+  classifyKeyTarget,
+  fingerprintHtml,
   resolvePixelClip,
   mergeVisibleTextLength,
   runFlowSteps,
+  saveFlowDownload,
+  safeDownloadName,
+  attachFlowDownloadRecorder,
+  resolveFlowDownloadDir,
+  closeBrowserBounded,
+  FLOW_DOWNLOAD_BOUND_MS,
   dumpPageState,
   verifySeedLanded,
   verifyProbeSeedLanded,

@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 0a847ac3bbf2b6935e3e284ce75ee23f9b92a629  source-sha256: 95bba9fa1558c6aeeee1d54b187145d6fa074e29e0bdfdde1259256481c534d5
+// codeyam-editor: 0.1.7  build: c23ce41100a6229ea1b7b518a4114f87721740ec  source-sha256: c84d00fee8afdd1b32873b7ba52a30bfac6050e19afb5effd79c6a38899a8d04
 const {
   hasLoadingMarkers,
   shouldStopWaitingForImages,
@@ -226,10 +226,23 @@ async function collectContentState(target) {
     const loadedImageCount = imgs.filter(
       (img) => img.complete && img.naturalWidth > 0,
     ).length;
+    // Media is counted inside open shadow roots too. `querySelectorAll` stops
+    // at a shadow boundary, and an app that paints inside a web component —
+    // Flutter web draws its canvas under <flutter-view>'s shadow root — would
+    // otherwise read as zero media and zero text, failing the blank gate on a
+    // fully rendered frame.
+    const scopes = [document];
+    for (let i = 0; i < scopes.length; i++) {
+      for (const el of scopes[i].querySelectorAll("*")) {
+        if (el.shadowRoot) scopes.push(el.shadowRoot);
+      }
+    }
     const mediaSelectors = ["svg", "canvas", "video"];
     let mediaBboxCount = 0;
     for (const selector of mediaSelectors) {
-      const nodes = document.querySelectorAll(selector);
+      const nodes = scopes.flatMap((scope) =>
+        Array.from(scope.querySelectorAll(selector)),
+      );
       for (const node of nodes) {
         const rect = node.getBoundingClientRect();
         if (rect.width > 0 && rect.height > 0) {
@@ -1274,11 +1287,85 @@ async function targetBox(locator, targetDesc) {
   return box;
 }
 
+// A target-relative point resolved to viewport coordinates, plus whether it
+// lies inside the box. Positions are CSS pixels from the target's top-left, so
+// a point measured off a device-pixel screenshot overshoots the box and would
+// drive whatever sits beside the target; `inside` lets the caller refuse it.
+// No point means the centre, which is always inside.
 function pointIn(box, point) {
   if (point && typeof point.x === "number" && typeof point.y === "number") {
-    return { x: box.x + point.x, y: box.y + point.y };
+    const inside =
+      point.x >= 0 && point.y >= 0 && point.x < box.width && point.y < box.height;
+    return { x: box.x + point.x, y: box.y + point.y, inside };
   }
-  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2, inside: true };
+}
+
+// The page's device pixel ratio — how many screenshot pixels make one CSS
+// pixel. `null` when the frame cannot answer, so a report never guesses.
+async function devicePixelRatioOf(frame) {
+  try {
+    const ratio = await frame.evaluate(() => window.devicePixelRatio);
+    return typeof ratio === "number" && ratio > 0 ? ratio : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+// Why a point is not where its author thought: name the target's real CSS size
+// and, when screenshots are scaled, the divisor that converts a coordinate
+// measured off one into the CSS pixels a position is written in.
+function outsideTargetMessage(label, point, targetDesc, box, devicePixelRatio) {
+  const scale =
+    devicePixelRatio && devicePixelRatio !== 1
+      ? `screenshots are ${devicePixelRatio}× device pixels — divide screenshot coordinates by ${devicePixelRatio}`
+      : "positions are CSS pixels from the target's top-left";
+  const size = `${Math.round(box.width)}×${Math.round(box.height)} CSS px`;
+  return `${label} (${point.x},${point.y}) is outside ${targetDesc} (${size}; ${scale})`;
+}
+
+// A start point outside the target can never act on it, so it is refused —
+// loudly, like a target that matches nothing. Flagged so `performInteraction`
+// rethrows it without the candidate-labels hint, which is about a missing
+// target, not a misplaced point.
+async function outsideTargetError(frame, action, label, point, targetDesc, box) {
+  const error = new Error(
+    `preview-interact: action "${action}" refused: ` +
+      outsideTargetMessage(label, point, targetDesc, box, await devicePixelRatioOf(frame)),
+  );
+  error.outsideTarget = true;
+  return error;
+}
+
+// Where a pointer step landed, in the target's own CSS-pixel frame, beside the
+// target's size — what a report needs to answer "where did the pointer go?"
+// without opening a captured frame. `end` is a drag's release point.
+function pointerGeometry(box, start, end) {
+  const relative = (p) => ({ x: Math.round(p.x - box.x), y: Math.round(p.y - box.y) });
+  const geometry = {
+    targetBox: { width: Math.round(box.width), height: Math.round(box.height) },
+    landedAt: relative(start),
+  };
+  if (end) geometry.landedTo = relative(end);
+  return geometry;
+}
+
+// `click` / `hover` hand `position` to Playwright, which does not check that it
+// lies inside the target — so measure the box first and refuse a point outside
+// it. A position-less step aims at the centre; its box is best-effort (no box
+// means no geometry, and Playwright's own actionability error stands).
+async function locatorPointGeometry(frame, locator, targetDesc, action, position) {
+  if (!position) {
+    if (typeof locator.boundingBox !== "function") return undefined;
+    const box = await locator.boundingBox().catch(() => null);
+    return box ? pointerGeometry(box, pointIn(box)) : undefined;
+  }
+  const box = await targetBox(locator, targetDesc);
+  const at = pointIn(box, position);
+  if (!at.inside) {
+    throw await outsideTargetError(frame, action, "position", position, targetDesc, box);
+  }
+  return pointerGeometry(box, at);
 }
 
 // Page-level keyboard input. Deliberately not `locator.press`: a `<canvas>`
@@ -1382,9 +1469,12 @@ async function performInteraction(
   if (position) pointerOpts.position = { x: position.x, y: position.y };
   if (button) pointerOpts.button = button;
 
+  // Pointer verbs report where they landed; every other verb returns undefined.
+  let geometry;
   try {
     switch (action) {
       case "click":
+        geometry = await locatorPointGeometry(frame, locator, targetDesc, action, position);
         await locator.click(pointerOpts);
         break;
       case "fill":
@@ -1396,6 +1486,7 @@ async function performInteraction(
       case "hover":
         // Reveals hover-only affordances (an action bar, a tooltip) — one of the
         // most common ephemeral states a resting-render screenshot misses.
+        geometry = await locatorPointGeometry(frame, locator, targetDesc, action, position);
         await locator.hover(pointerOpts);
         break;
       case "drag": {
@@ -1404,7 +1495,19 @@ async function performInteraction(
         const box = await targetBox(locator, targetDesc);
         const mouse = pageOf(frame).mouse;
         const start = pointIn(box, from);
+        if (!start.inside) {
+          throw await outsideTargetError(frame, action, "from", from, targetDesc, box);
+        }
         const end = pointIn(box, to);
+        geometry = pointerGeometry(box, start, end);
+        // Ending off the target can be deliberate (dragging something off the
+        // canvas), so it warns rather than refuses.
+        if (!end.inside) {
+          geometry.warning =
+            `drag ends outside the target: ` +
+            outsideTargetMessage("to", to, targetDesc, box, await devicePixelRatioOf(frame));
+          if (Array.isArray(warnings)) warnings.push(`preview-interact: ${geometry.warning}`);
+        }
         const mouseButton = { button: button || "left" };
         await mouse.move(start.x, start.y);
         await mouse.down(mouseButton);
@@ -1420,6 +1523,10 @@ async function performInteraction(
         const box = await targetBox(locator, targetDesc);
         const mouse = pageOf(frame).mouse;
         const at = pointIn(box, position);
+        if (!at.inside) {
+          throw await outsideTargetError(frame, action, "position", position, targetDesc, box);
+        }
+        geometry = pointerGeometry(box, at);
         await mouse.move(at.x, at.y);
         await mouse.wheel(deltaX || 0, deltaY || 0);
         break;
@@ -1430,11 +1537,13 @@ async function performInteraction(
         );
     }
   } catch (error) {
+    if (error && error.outsideTarget) throw error;
     throw new Error(
       `preview-interact: action "${action}" failed against ${targetDesc}: ${error.message || String(error)}. ` +
         `Candidate interactive labels: ${await candidateLabelSummary(frame)}`,
     );
   }
+  return geometry;
 }
 
 // One screenshot of `page`, clipped to `clip` when given, as a Buffer. The
@@ -1578,6 +1687,8 @@ module.exports = {
   noMatchGuidance,
   describeMatchCandidates,
   isCanvasInteraction,
+  pointIn,
+  devicePixelRatioOf,
   resolveInteractionTarget,
   performInteraction,
   pixelSnapshot,

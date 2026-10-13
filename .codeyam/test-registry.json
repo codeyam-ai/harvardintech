@@ -1565,6 +1565,51 @@
       "runner": "tests"
     },
     {
+      "description": "With no name the band makes no place claim at all.",
+      "file": "src/lib/chapterSignUp.test.ts",
+      "format": "vitest",
+      "key": "chapterSignUpCopy › falls back to place-neutral wording without a name",
+      "line": 24,
+      "registeredAt": "2026-10-13T19:01:52Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The longest chapter name is passed through untouched; the heading wraps rather than the copy shortening it.",
+      "file": "src/lib/chapterSignUp.test.ts",
+      "format": "vitest",
+      "key": "chapterSignUpCopy › keeps a long chapter name whole",
+      "line": 17,
+      "registeredAt": "2026-10-13T19:01:52Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A chapter page names its city in both lines, so the band pitches the local benefit rather than repeating the general newsletter ask further down.",
+      "file": "src/lib/chapterSignUp.test.ts",
+      "format": "vitest",
+      "key": "chapterSignUpCopy › names the city in the title and the line",
+      "line": 7,
+      "registeredAt": "2026-10-13T19:01:52Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty or whitespace-only name is treated as missing, so a blank CMS field never produces \"Hear about  events first\".",
+      "file": "src/lib/chapterSignUp.test.ts",
+      "format": "vitest",
+      "key": "chapterSignUpCopy › treats a blank name as missing",
+      "line": 34,
+      "registeredAt": "2026-10-13T19:01:52Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Surrounding whitespace from a hand-edited field is trimmed off.",
+      "file": "src/lib/chapterSignUp.test.ts",
+      "format": "vitest",
+      "key": "chapterSignUpCopy › trims whitespace around the name",
+      "line": 40,
+      "registeredAt": "2026-10-13T19:01:52Z",
+      "runner": "tests"
+    },
+    {
       "description": "Absent means active because every chapter that existed before this field did was one with events. A different default would have silently converted the whole roster to \"forming\" the moment the field shipped.",
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",

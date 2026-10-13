@@ -2,6 +2,7 @@
   "name": "CMS Page Settings - Momentum Fund Page",
   "id": "5a21e04b-99a0-43d9-8f86-683dcaff96f1",
   "url": "/admin/pageCopy/donate",
+  "pageFilePath": "node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro",
   "dimensions": [
     "Desktop"
   ],
