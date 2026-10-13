@@ -292,11 +292,14 @@
       "severity": 2,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "word-the-empty-events-message-for-communities-not-places",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
       "kind": "tech-debt",
       "rank": 4,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-13T21:21:22Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
