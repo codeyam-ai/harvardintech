@@ -157,9 +157,11 @@
       "reason": "Frames showing the old menu were reported fresh because nav.json is not part of the staleness hash.",
       "severity": 4,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 3
+      "rank": 3,
+      "decidedAt": "2026-10-13T21:21:25Z",
+      "sightingsAtDecision": 0
     },
     {
       "id": "syncing-capture-scripts-marks-every-screenshot-stale",
