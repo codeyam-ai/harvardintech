@@ -98,6 +98,7 @@ blob-report/
 .codeyam/_legacy/
 .codeyam/rules/
 .codeyam/bin/
+.codeyam/node_modules/
 .codeyam/ca/
 .codeyam/audit-baseline-cache/
 .codeyam/setup-browser-driver.mjs
@@ -157,6 +158,7 @@ blob-report/
 .codeyam/state/npm-pin-shim/
 .codeyam/state/session-results-snapshot.json
 .codeyam/state/pre-commit-sync-rebase-gate.json
+.codeyam/state/recapture-tuning.json
 .codeyam/state/pre-commit-sync-orphan-bail.json
 .codeyam/state/step-highwater.json
 .codeyam/state/finalize-phase-fingerprints.json
@@ -169,8 +171,6 @@ blob-report/
 .codeyam/state/harness-tasks-dir
 .codeyam/state/tool-loading-injected.json
 .codeyam/state/refusal-fingerprints.json
-.codeyam/state/recapture-tuning.json
-.codeyam/state/installed-by.json
 .codeyam/state/pretool-hook-inflight/
 .codeyam/state/rebase-heal.json
 .codeyam/state/rebuild-self-restart.json
@@ -178,6 +178,7 @@ blob-report/
 .codeyam/state/change-origin.json
 .codeyam/state/audit-split.json
 .codeyam/state/claude-launch-provenance.json
+.codeyam/state/installed-by.json
 .codeyam/state/build-requests/
 .codeyam/state/credential-store-durability.json
 .codeyam/state/inline-agent-sessions.json
