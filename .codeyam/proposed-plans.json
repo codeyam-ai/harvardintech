@@ -550,6 +550,18 @@
         "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
         "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming"
       ]
+    },
+    {
+      "at": "2026-10-14T19:05:47.852082817+00:00",
+      "feature": "Programs label retired on Events and Webinars",
+      "notes": "Small, clean copy cycle; no new friction worth a report.",
+      "rankedIds": [
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming"
+      ]
     }
   ]
 }
