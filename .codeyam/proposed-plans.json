@@ -197,7 +197,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 1,
       "sightings": 3,
       "notes": [
         "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…",
@@ -314,7 +313,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 4,
       "sightings": 1
     },
     {
@@ -343,17 +341,17 @@
       "id": "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
       "title": "Recapture photographs live content for seeded scenarios while src/content is dirty and reports success",
       "mode": "backend",
-      "body": "## What happened\n\nSeen again; see notes.\n\n## What would have helped\n\nA post-capture check that the seed actually rendered, failing the slug instead of reporting Recaptured.",
-      "reason": "Seven seeded frames came back 'Recaptured' showing live site content instead of their scenario's data; two more failed for the same unnamed reason.",
+      "body": "## What happened\n\nSee the earlier report. On 2026-10-14 the bad frames came from a `git stash push -- src/content src/data` pass, not from the dirty tree itself; recapture still reported every wrong frame as 'Recaptured'.\n\n## What would have helped\n\nA post-capture check that the seeded values actually appear in the frame, so a wrong-world capture fails loudly instead of committing.",
+      "reason": "Seen again 2026-10-14, with a twist: the dirty tree was fine, the stash workaround was not.",
       "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
-      "rank": 2,
-      "sightings": 2,
+      "sightings": 3,
       "notes": [
-        "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…"
+        "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
+        "2026-10-14: 2026-10-14: with src/content/config.ts, 11 event files and src/data/collections.json dirty, plain targeted recaptures loaded seeds correctly. The git-stash workaround produced ~15 wrong frames reported as clean 'Recaptured' (AI…"
       ]
     },
     {
@@ -368,7 +366,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
       "kind": "tech-debt",
-      "rank": 5,
+      "rank": 2,
       "sightings": 1
     },
     {
@@ -426,7 +424,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 3,
       "sightings": 1,
       "notes": [
         "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed."
@@ -452,6 +449,93 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
+      "title": "Restore the donor network hero in the 'donor wall moved to the top' Momentum Fund scenario",
+      "mode": "ui",
+      "body": "## Summary\n\nThe `momentum-fund-the-donor-wall-moved-to-the-top` scenario (`.codeyam/scenarios/momentum-fund-the-donor-wall-moved-to-the-top.json`) seeds 19 donors and four `momentumSections` with the recognition band at order 4. Its description says the recognition band is pulled out of the reorderable flow and opens the page as the hero, with the network graphic, the founding-supporter count and the search box. On current code the live preview of that scenario shows the plain 'Let's go further together.' hero with no network, and the committed screenshot was refreshed to match on 2026-10-14. Nothing in that session touched the donate page, so this predates it.\n\n## Key Decisions\n\n- Decide whether the recomposition (recognition band as hero) is still wanted. If yes, fix the page; if it was deliberately retired, rewrite the scenario's description to match.\n\n## Implementation\n\n1. Read `src/pages/donate.astro`, `src/components/MomentumFundPage.astro` and `src/components/donate/MomentumNetwork.astro` for the condition that promotes the recognition band to the hero.\n2. Compare with the scenario's seed (donors, momentumSections) to find which condition no longer holds.\n3. Fix the condition or update the scenario description, then recapture `momentum-fund-the-donor-wall-moved-to-the-top` and compare with `momentum-fund-public-visitor`, which still shows the network.",
+      "reason": "This scenario's description says the donor network opens the page, but the page now renders the plain hero for its data.",
+      "severity": 3,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "kind": "tech-debt",
+      "rank": 1,
+      "sightings": 1
+    },
+    {
+      "id": "give-eventcard-its-own-glossary-entry",
+      "title": "Give EventCard its own glossary entry",
+      "mode": "ui",
+      "body": "## Summary\n\n`src/components/EventCard.astro` renders every event card (home page, chapter pages, /events) and was reshaped on 2026-10-14 into one square-image card shape, but it has no glossary entry, so coverage tools cannot plan states for it (`scenario-coverage-plan generate --component EventCard` errors) and it is only covered indirectly through `EventCardGrid` scenarios.\n\n## Key Decisions\n\n- Cover it with its own component scenarios rather than relying on the grid.\n\n## Implementation\n\n1. Isolate `EventCard` and add states: upcoming with cover and Learn more link, past with cover, no cover (H-mark stand-in), long title clamped to two lines, no location.\n2. Register the scenarios and add the glossary entry citing them.",
+      "reason": "EventCard (src/components/EventCard.astro) renders every event card on the site but has no glossary entry.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "debt",
+      "status": "pending",
+      "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "kind": "tech-debt",
+      "rank": 3,
+      "sightings": 1
+    },
+    {
+      "id": "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
+      "title": "Generated isolation pages fail the type check for components with required props",
+      "mode": "backend",
+      "body": "## What happened\n\n`codeyam-editor editor isolate BannerCta` generated `src/pages/isolated-components/BannerCta/[...state].astro` with `const props = scenarios[name] ?? {};` and `<Component {...props} />`. Because the props module types `scenarios` as `Record<string, Record<string, unknown>>`, and `BannerCta` requires `href` and `label`, `verify-build` failed at the App Scenarios step with `ts(2322): Type '{}' is not assignable to type 'IntrinsicAttributes & Props'`. The fix was re-running `isolate --force --content` with a hand-edited body that casts the props to the component's shape.\n\n## What would have helped\n\nGenerate the page with the props typed from the component (e.g. `ComponentProps<typeof Component>`) or fall back to `scenarios.Default` with a cast, so a component with required props type-checks out of the box.",
+      "reason": "A freshly isolated component with required props broke astro-check until the page was hand-rewritten.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
+      "title": "scenario-coverage-plan generate aborts on a component with no glossary entry",
+      "mode": "backend",
+      "body": "## What happened\n\n`codeyam-editor editor scenario-coverage-plan generate --component EventCard --component EventsPage --component EventCardMedia` stopped with `no glossary entry named 'EventCard'`, so no plan was generated for the other two components either.\n\n## What would have helped\n\nResolve the component from source the way `isolate` does, or skip the missing one with a warning and plan the rest.",
+      "reason": "One unregistered component in the list stopped the whole coverage plan.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+      "title": "Event cover images are loaded from Luma's servers rather than copied onto the site.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+      "title": "Luma's 9 October event is not on the site yet; the nightly import has not brought it in.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "found-in-passing-not-caused-by-this-work-the-momentum-fund-donor-wall-moved-to-the-top-scenario-no-longer-opens-on-the-donor-network-as-its-description-says-its-refreshed-screenshot-shows-the-page-as-it-really-renders-today",
+      "title": "Found in passing, not caused by this work: the Momentum Fund 'donor wall moved to the top' scenario no longer opens on the donor network as its description says; its refreshed screenshot shows the page as it really renders today.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "sightings": 1
     }
   ],
@@ -562,6 +646,44 @@
         "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
         "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming"
       ]
+    },
+    {
+      "at": "2026-10-14T21:06:39.554932721+00:00",
+      "feature": "A reworked Events page with image cards",
+      "notes": "Session grew from a scenario-framing plan into an Events page rework at the owner's request. Ranked the donor-wall scenario mismatch first because a scenario whose description contradicts its frame misleads every later review. The compact-…",
+      "proposedIds": [
+        "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
+        "give-eventcard-its-own-glossary-entry",
+        "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
+        "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+        "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+        "found-in-passing-not-caused-by-this-work-the-momentum-fund-donor-wall-moved-to-the-top-scenario-no-longer-opens-on-the-donor-network-as-its-description-says-its-refreshed-screenshot-shows-the-page-as-it-really-renders-today"
+      ],
+      "rankedIds": [
+        "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+        "give-eventcard-its-own-glossary-entry"
+      ]
+    }
+  ],
+  "syntheses": [
+    {
+      "at": "2026-10-14T21:06:39.554932721+00:00",
+      "consumedIds": [
+        "obs-3c5c9e9e76b3",
+        "obs-9f9f2089f348",
+        "obs-cb92d5574243",
+        "obs-851e6cf3ea83",
+        "obs-1cd31f808018",
+        "obs-b015b064432c",
+        "obs-35f8784bf74c",
+        "obs-99c18c29b2fd",
+        "obs-5df261af213d",
+        "obs-313885064bf3"
+      ],
+      "notes": "Eight observations across five sessions, but no two sessions point at the same user need, so no idea clears the two-session bar."
     }
   ]
 }
