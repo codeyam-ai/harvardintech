@@ -172,7 +172,8 @@
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
+      "rank": 6
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -191,16 +192,17 @@
       "id": "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
       "title": "Dev server stop and start leaves a second astro dev running",
       "mode": "backend",
-      "body": "## What happened\n\nOn 2026-10-13 every `codeyam-editor editor dev-server '{\"action\":\"restart\"}'` (3 of 3) left two `sh -c npm run dev` trees running, started about two seconds apart and both parented to pid 7. The editor tracked the second, which walked up to port 4323 because the first held 4321 (the port-mismatch advisory was the only tell). Each time I had to find the orphan via `ps` and kill it by hand before capturing, or risk the known data-store corruption.\n\n## What would have helped\n\nA restart that waits for the old tree to exit before spawning, and refuses to spawn while another `astro dev` for this project is alive. Or at minimum: have `dev-server` status flag an untracked second dev server and offer to stop it.",
+      "body": "## What happened\n\nSeen again; see notes.\n\n## What would have helped\n\nA single supervised dev server per project, and a restart that reports and refuses a second tree.",
       "reason": "Every dev-server restart this session launched two astro dev servers.",
       "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
       "rank": 1,
-      "sightings": 1,
+      "sightings": 2,
       "notes": [
-        "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…"
+        "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…",
+        "2026-10-14: 2026-10-14: `restart-dev-server` and a later `dev-server stop` each left two `npm run dev` trees started ~1-2s apart (one on :4323). Killing the stray was not enough — the shared `.astro` data store stayed corrupted, so seeds l…"
       ]
     },
     {
@@ -212,21 +214,24 @@
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
+      "rank": 12
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
       "title": "preview-flow has no way to scroll the page",
       "mode": "backend",
-      "body": "",
+      "body": "## What happened\n\nSeen again; see notes.\n\n## What would have helped\n\nA `scrollTo` (selector) step in preview-flow.",
       "reason": "Demoing a scroll-dependent feature took a failed PageDown attempt and a click-a-heading workaround.",
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "sightings": 1,
+      "rank": 10,
+      "sightings": 2,
       "notes": [
-        "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it."
+        "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
+        "2026-10-14: 2026-10-14: a waitFor on #stats did not bring the below-fold stats band into the flow frame, so the demo filmstrip showed only the hero; the fix had to be shown through a separate isolated capture."
       ]
     },
     {
@@ -239,6 +244,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
+      "rank": 7,
       "sightings": 1,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand."
@@ -269,6 +275,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
+      "rank": 8,
       "sightings": 1
     },
     {
@@ -281,6 +288,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
+      "rank": 9,
       "sightings": 1
     },
     {
@@ -311,7 +319,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 2,
+      "rank": 3,
       "sightings": 1
     },
     {
@@ -323,7 +331,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 3,
+      "rank": 5,
       "sightings": 1
     },
     {
@@ -335,20 +343,84 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 4,
       "sightings": 1
     },
     {
       "id": "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
-      "title": "Recapture photographs live content for seeded scenarios while src/content is dirty, and reports success",
+      "title": "Recapture photographs live content for seeded scenarios while src/content is dirty and reports success",
       "mode": "backend",
-      "body": "## What happened\n\nA feature edited `src/content/config.ts` (a new schema field), `src/content/communities/ai.md` and `src/data/collections.json`. While those were uncommitted, every capture of a seeded scenario ran with the content sandbox off: `register` of the AI scenario, the Present-step `recapture-stale`, and `client-errors --scope impacted` all rendered production content. `recapture-stale` reported 6 scenarios as `Recaptured` (e.g. 'events tagged to this chapter' showing 'No events scheduled in London yet.') and 2 as failed with seed-specific errors (missing 'Show all 14' button, wrong body copy), without saying the sandbox was inactive. The workaround was `git stash push -- src/content src/data` around targeted recaptures, which does not work for scenarios that need the new schema field because the schema file is under `src/content` too, so those had to wait for a post-commit recapture. After the commit, a forced recapture still came back 'pixel-identical / unchanged' with the field missing until the dev server was restarted.\n\n## What would have helped\n\n- `recapture-stale` / `register` refusing (or loudly warning per slug) when the sandbox is inactive, instead of writing frames and reporting `Recaptured`.\n- A sandbox that overlays only content entries and keeps the working-tree `config.ts`, so a schema change does not disable seeding.\n- Reloading the content schema in the running dev server when `src/content/config.ts` changes, so a post-commit recapture does not silently drop new fields.",
+      "body": "## What happened\n\nSeen again; see notes.\n\n## What would have helped\n\nA post-capture check that the seed actually rendered, failing the slug instead of reporting Recaptured.",
       "reason": "Seven seeded frames came back 'Recaptured' showing live site content instead of their scenario's data; two more failed for the same unnamed reason.",
       "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
+      "rank": 2,
+      "sightings": 2,
+      "notes": [
+        "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…"
+      ]
+    },
+    {
+      "id": "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+      "title": "Show a compact subscribe card when the Luma calendar has nothing upcoming",
+      "mode": "ui",
+      "body": "## Summary\n\nThe events page embeds Luma's calendar in a fixed-height frame (`src/components/LumaCalendar.astro`, `height: clamp(340px, 46vh, 540px)`). When nothing is upcoming, Luma fills that frame with its own grey \"No Upcoming Events\" panel, so on a phone the page shows a big, mostly empty box — the decision sheet row `m-calendar-box`, still open after the October responsive check (`docs/responsive-check-2026-10.md`, item O1). We cannot restyle inside Luma's frame, and its panel also sits ~36px inside our column on the right.\n\n## Key Decisions\n\n- Decide on the build side, not in the browser: the nightly-imported events collection already knows whether anything is upcoming.\n- When nothing is upcoming, render the existing branded `luma-card` (\"Browse & subscribe on Luma\") instead of the iframe; when something is, keep the embed.\n- Owner call: confirm this is wanted before building — it changes what the events page shows on quiet weeks.\n\n## Implementation\n\n1. `src/pages/events.astro`: compute whether the events collection has any future-dated entry and pass it to `LumaCalendar`.\n2. `src/components/LumaCalendar.astro`: add a prop (e.g. `hasUpcoming`) and render the card branch when it is false even if `embedUrl` is set.\n3. Scenarios: events page with and without upcoming events at Mobile, so both branches are on record.\n4. Re-run `npm run check:responsive -- --only /events`.",
+      "reason": "On /events the Luma embed is a large, mostly empty grey box whenever no event is scheduled (decision sheet m-calendar-box).",
+      "severity": 2,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "kind": "tech-debt",
+      "rank": 4,
+      "sightings": 1
+    },
+    {
+      "id": "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+      "title": "Demo gate treats a scroll-only hover from preview-interact as the demo interaction",
+      "mode": "backend",
+      "body": "## What happened\n\nWhile verifying layout I used `preview-interact` with `hover` on `.dots` purely to scroll the carousel into view. At Prepare Demo, `advance` refused: \"the recorded interaction (hover \\\".dots\\\") produced NO observable DOM change … the control itself is inert\" — even though a verified capture and attestation existed. It took a preview-flow with a real Menu click to clear it, and the flow's text-matching click on \"Menu\" first failed because the button also holds an icon.\n\n## What would have helped\n\nOnly count interactions recorded at the Demo step (or explicitly marked as the demo), and let a hover used for scrolling be declared as such. A `click` text match that tolerates an icon inside the button would have saved one failed run.",
+      "reason": "A hover used only to scroll a band into view for checking later blocked the Demo step as an 'inert control'.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "rank": 11,
+      "sightings": 1
+    },
+    {
+      "id": "new-phone-tablet-frames-for-the-sticky-header-after-scrolling-the-our-mission-band-and-the-newsletter-call-to-action-were-not-added-the-new-frames-cover-the-three-things-that-were-actually-broken-stats-band-cookie-table-red-bar",
+      "title": "New phone/tablet frames for the sticky header after scrolling, the Our mission band and the newsletter call to action were not added; the new frames cover the three things that were actually broken (stats band, cookie table, red bar).",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-visual-second-pass-looked-at-the-homepage-events-privacy-and-the-open-menu-by-eye-not-every-phone-and-tablet-frame-of-all-14-audit-scenarios-the-board-grid-at-tablet-and-the-longest-chapter-name-were-not-re-checked",
+      "title": "The visual second pass looked at the homepage, events, privacy and the open menu by eye, not every phone and tablet frame of all 14 audit scenarios; the board grid at tablet and the longest chapter name were not re-checked.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-real-device-checks-iphone-safari-android-ipad-pinch-zoom-are-listed-in-the-report-but-not-yet-written-up-as-manual-tests",
+      "title": "The real-device checks (iPhone Safari, Android, iPad, pinch-zoom) are listed in the report but not yet written up as manual tests.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
       "sightings": 1
     }
   ],
@@ -399,6 +471,35 @@
         "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
         "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
         "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself"
+      ]
+    },
+    {
+      "at": "2026-10-14T16:43:24.119143379+00:00",
+      "feature": "Pre-launch phone, tablet and desktop check",
+      "notes": "This session's biggest cost was the capture environment, not the app: a dev-server double-launch corrupted the Astro data store and silently broke seeded captures, which forced three recapture passes and led me to tell the user seeding was…",
+      "proposedIds": [
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+        "new-phone-tablet-frames-for-the-sticky-header-after-scrolling-the-our-mission-band-and-the-newsletter-call-to-action-were-not-added-the-new-frames-cover-the-three-things-that-were-actually-broken-stats-band-cookie-table-red-bar",
+        "the-visual-second-pass-looked-at-the-homepage-events-privacy-and-the-open-menu-by-eye-not-every-phone-and-tablet-frame-of-all-14-audit-scenarios-the-board-grid-at-tablet-and-the-longest-chapter-name-were-not-re-checked",
+        "the-real-device-checks-iphone-safari-android-ipad-pinch-zoom-are-listed-in-the-report-but-not-yet-written-up-as-manual-tests"
+      ],
+      "rankedIds": [
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+        "scenario-review-counts-seed-error-candidates-without-naming-them"
       ]
     }
   ]
