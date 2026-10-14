@@ -172,7 +172,8 @@
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
+      "rank": 13
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -197,6 +198,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
+      "rank": 4,
       "sightings": 3,
       "notes": [
         "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…",
@@ -213,37 +215,42 @@
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
+      "rank": 22
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
       "title": "preview-flow has no way to scroll the page",
       "mode": "backend",
-      "body": "## What happened\n\nSeen again; see notes.\n\n## What would have helped\n\nA `scrollTo` (selector) step in preview-flow.",
-      "reason": "Demoing a scroll-dependent feature took a failed PageDown attempt and a click-a-heading workaround.",
+      "body": "",
+      "reason": "Seen again this session.",
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "sightings": 2,
+      "rank": 24,
+      "sightings": 3,
       "notes": [
         "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
-        "2026-10-14: 2026-10-14: a waitFor on #stats did not bring the below-fold stats band into the flow frame, so the demo filmstrip showed only the hero; the fix had to be shown through a separate isolated capture."
+        "2026-10-14: 2026-10-14: a waitFor on #stats did not bring the below-fold stats band into the flow frame, so the demo filmstrip showed only the hero; the fix had to be shown through a separate isolated capture.",
+        "2026-10-14: 2026-10-14: the /events demo frame stopped above the past-events grid, so the result cards could not be shown in the flow; I had to take element screenshots with a hand-written Playwright script."
       ]
     },
     {
       "id": "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
       "title": "Content edits stay invisible in the preview until the sandbox copy is replaced by hand",
       "mode": "backend",
-      "body": "## What happened\n\nAdding `src/content/communities/investors.md` 404'd in the preview because a scenario's content-sandbox snapshot was active. Clearing the snapshot plus a restart fixed it, but every later copy edit again needed either a restart (which double-launched the server) or a manual `cp` of the file into `.codeyam/tmp/content-sandbox/content/communities/`.\n\n## What would have helped\n\nA watcher that mirrors `src/content` edits into the sandbox when no seeded scenario overrides that file, or a `preview` flag that resyncs production content without a restart.",
-      "reason": "Edits to the new community's markdown did not reach the preview without a restart or a manual copy.",
+      "body": "",
+      "reason": "Seen again this session.",
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "sightings": 1,
+      "rank": 7,
+      "sightings": 2,
       "notes": [
-        "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand."
+        "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand.",
+        "2026-10-14: 2026-10-14: ten edited src/content files (stats, events, communities, pageCopy, sponsorLevels) still rendered their old values until I copied them into .codeyam/tmp/content-sandbox/content and removed the content-sandbox-active…"
       ]
     },
     {
@@ -271,6 +278,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
+      "rank": 14,
       "sightings": 1
     },
     {
@@ -283,6 +291,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
+      "rank": 15,
       "sightings": 1
     },
     {
@@ -307,13 +316,17 @@
       "id": "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
       "title": "refresh-tests --file runs vitest --changed instead of the named file",
       "mode": "backend",
-      "body": "## What happened\n\n`codeyam-editor editor refresh-tests --file src/data/collections.test.ts` echoed `npx vitest run --changed --reporter=json` and reported \"All 26 tests passed\". The named file was never run: vitest's `--changed` picks tests by import graph, and this file reads `src/data/collections.json` at runtime, so it is not linked to changed sources. I took the green as evidence the CMS-schema drift guard passed. Only the Reconcile audit (REGISTRY_TEST_NOT_WIRED on that file's 9 tests) revealed it had not run. `--test \"<describe name>\"` then ran it correctly.\n\n## What would have helped\n\n`--file` passing the path to the runner (e.g. `vitest run <path>`), or refusing the flag loudly when the runner command can't honor it. A run that never executed the requested file should not report success.",
-      "reason": "A narrowed test run reported '26 passed' without ever running the file it was asked to run.",
+      "body": "",
+      "reason": "Seen again this session.",
       "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "sightings": 1
+      "rank": 2,
+      "sightings": 2,
+      "notes": [
+        "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …"
+      ]
     },
     {
       "id": "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
@@ -324,6 +337,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
+      "rank": 17,
       "sightings": 1
     },
     {
@@ -335,6 +349,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
+      "rank": 11,
       "sightings": 1
     },
     {
@@ -348,6 +363,7 @@
       "status": "pending",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
+      "rank": 3,
       "sightings": 3,
       "notes": [
         "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
@@ -366,7 +382,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
       "kind": "tech-debt",
-      "rank": 2,
+      "rank": 12,
       "sightings": 1
     },
     {
@@ -379,6 +395,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "rank": 25,
       "sightings": 1
     },
     {
@@ -390,6 +407,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "rank": 20,
       "sightings": 1
     },
     {
@@ -401,6 +419,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "rank": 21,
       "sightings": 1
     },
     {
@@ -412,21 +431,24 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "rank": 10,
       "sightings": 1
     },
     {
       "id": "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
       "title": "Content edits are invisible to screenshot staleness and to the impacted-scenario check",
       "mode": "backend",
-      "body": "## What happened\n\nThis cycle changed only `src/content/projects/*.md` and `src/content/volunteerPage/volunteer.md`. `client-errors '{\"scope\":\"impacted\"}'` checked 0 scenarios, every build step auto-advanced as non-logic-bearing, and `recapture-stale` reported nothing stale — yet the volunteer-page scenarios now render a new heading and 14 new cards. I had to force-recapture them by hand, and an unseeded new scenario captured whatever the sandbox last held (an empty roles list) until I re-copied the content into the sandbox myself.\n\n## What would have helped\n\nTreat a content collection as a dependency of the pages that load it, so impacted/stale checks include them; and seed an unseeded scenario from the working-tree content rather than the last scenario's leftovers.",
-      "reason": "A content-only change reported zero impacted scenarios and zero stale screenshots although it changed what three volunteer scenarios show.",
+      "body": "",
+      "reason": "Seen again this session.",
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "sightings": 1,
+      "rank": 6,
+      "sightings": 2,
       "notes": [
-        "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed."
+        "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed.",
+        "2026-10-14: 2026-10-14: the stats/event/AI copy changes left the affected component scenarios reported fresh; each needed `recapture-stale --target <slug> --force`, and two seedless scenarios needed a re-register to pick up corrected descr…"
       ]
     },
     {
@@ -438,6 +460,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
+      "rank": 19,
       "sightings": 1
     },
     {
@@ -449,6 +472,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
+      "rank": 28,
       "sightings": 1
     },
     {
@@ -463,7 +487,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 1,
+      "rank": 5,
       "sightings": 1
     },
     {
@@ -478,7 +502,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 3,
+      "rank": 27,
       "sightings": 1
     },
     {
@@ -491,6 +515,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "rank": 16,
       "sightings": 1
     },
     {
@@ -503,6 +528,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "rank": 26,
       "sightings": 1
     },
     {
@@ -514,6 +540,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "rank": 18,
       "sightings": 1
     },
     {
@@ -525,6 +552,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "rank": 9,
       "sightings": 1
     },
     {
@@ -536,6 +564,66 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "rank": 8,
+      "sightings": 1
+    },
+    {
+      "id": "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+      "title": "A dead session's plan claim blocks the audit and nothing in the editor can release it",
+      "mode": "backend",
+      "body": "## What happened\n\nAt the Reconcile step the audit failed on `SELECTED_PLAN_NOT_IN_COMPLETED` for a plan this session never touched (`remove-or-repurpose-the-unused-chapter-volunteer-link-field`). Its claim ref had been written by a session that started at 19:06 and died at once: `lastHeartbeatAt` equalled `startedAt`, the pid was gone, and there was no transcript. The finding says the claim is 'owned by this worktree' and its fixCommand archives the plan into `completed/`, which would falsely record unbuilt work as shipped.\n\nThere is no editor command to release a stale claim. Deleting the local ref did not help: the claim-sync task re-fetched it from origin within seconds. Deleting it on origin was refused by the editor's own hook (`git push is only allowed at slug(s): push`), and the harness's permission classifier also refused it as destructive. In the end the user had to run the delete by hand, and two attempts failed first because a long ref name wrapped when pasted.\n\n## What would have helped\n\n- A `plan-claim-release <slug>` (or `--reap-dead`) command that verifies the owning pid is dead or the heartbeat is frozen, then deletes the ref locally and on origin in one step.\n- The audit finding distinguishing 'claim from a dead session' from 'archive lost on a live claim', and suggesting the release instead of the archive in the first case.",
+      "reason": "Saving was blocked for several turns; the user had to delete a git ref on GitHub by hand.",
+      "severity": 4,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
+      "rank": 1,
+      "sightings": 1
+    },
+    {
+      "id": "auto-registered-renamed-tests-lose-their-descriptions",
+      "title": "Auto-registered renamed tests lose their descriptions",
+      "mode": "backend",
+      "body": "## What happened\n\nI rewrote three tests in `src/lib/presenceConsistency.test.ts`, which changed their names, and ran `refresh-tests --force`. Afterwards the registry had replaced the three old entries with the new keys but set each `description` to an empty string, even though every `it()` has a `//` comment above it. Then `rename-test` refused because the new keys were 'already in the registry'. The blanking only showed up in `git diff .codeyam/test-registry.json`; I fixed it with three `register-test` upserts.\n\n## What would have helped\n\n- Carry the old entry's description across when a removed key and an added key share a file and line, which is the case `LIKELY_RENAME_DETECTED` already spots, or derive it from the source comment as `reconcile-registry` does.\n- Print a warning whenever an auto-registration writes an empty description.",
+      "reason": "Three renamed tests landed in the registry with empty descriptions and had to be re-described by hand.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
+      "rank": 23,
+      "sightings": 1
+    },
+    {
+      "id": "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
+      "title": "The reworded sponsor line (\"regular global calls\") is saved, but the /sponsor page does not list partnership levels right now, so nobody sees it yet.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+      "title": "The Momentum Fund page does not show its stats block today, so its updated 150+ and 6+ figures are saved but not visible.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-fall-mixer-s-cover-image-from-luma-still-reads-limited-early-bird-tickets-on-sale-now-the-plan-only-covered-the-text",
+      "title": "The Fall Mixer's cover image from Luma still reads \"Limited early bird tickets on sale now\"; the plan only covered the text.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
       "sightings": 1
     }
   ],
@@ -665,6 +753,52 @@
         "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
         "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
         "give-eventcard-its-own-glossary-entry"
+      ]
+    },
+    {
+      "at": "2026-10-14T23:12:48.519030105+00:00",
+      "feature": "Site facts refreshed from the October all-hands",
+      "notes": "Content-only refresh plus one layout fix: six stats overflowed tablet widths, so the band now wraps to 3x2 between 761 and 1200px. The costliest friction was a dead session's plan claim blocking the audit with no editor-side release, which…",
+      "proposedIds": [
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "auto-registered-renamed-tests-lose-their-descriptions",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "the-fall-mixer-s-cover-image-from-luma-still-reads-limited-early-bird-tickets-on-sale-now-the-plan-only-covered-the-text"
+      ],
+      "rankedIds": [
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "found-in-passing-not-caused-by-this-work-the-momentum-fund-donor-wall-moved-to-the-top-scenario-no-longer-opens-on-the-donor-network-as-its-description-says-its-refreshed-screenshot-shows-the-page-as-it-really-renders-today",
+        "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+        "the-real-device-checks-iphone-safari-android-ipad-pinch-zoom-are-listed-in-the-report-but-not-yet-written-up-as-manual-tests",
+        "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+        "five-sheet-roles-carried-only-the-placeholder-text-propose-another-idea-for-a-volunteer-role-city-lead-social-events-ai-events-for-nyc-and-sf-founders-task-force-co-lead-or-lead-they-were-folded-into-the-city-and-founders-roles",
+        "new-phone-tablet-frames-for-the-sticky-header-after-scrolling-the-our-mission-band-and-the-newsletter-call-to-action-were-not-added-the-new-frames-cover-the-three-things-that-were-actually-broken-stats-band-cookie-table-red-bar",
+        "the-visual-second-pass-looked-at-the-homepage-events-privacy-and-the-open-menu-by-eye-not-every-phone-and-tablet-frame-of-all-14-audit-scenarios-the-board-grid-at-tablet-and-the-longest-chapter-name-were-not-re-checked",
+        "scenario-review-counts-seed-error-candidates-without-naming-them",
+        "auto-registered-renamed-tests-lose-their-descriptions",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+        "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
+        "give-eventcard-its-own-glossary-entry",
+        "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is"
       ]
     }
   ],
