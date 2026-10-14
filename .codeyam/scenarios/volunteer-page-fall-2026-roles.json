@@ -1,0 +1,18 @@
+{
+  "name": "Volunteer Page - Fall 2026 Roles",
+  "id": "5981cb53-f871-4d12-939d-225806808a26",
+  "url": "/volunteer",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/volunteer.astro",
+  "description": "The volunteer page's roles section with the Fall 2026 volunteer sheet published: 'Volunteer roles open this fall', then the city roles first (SF / Bay Area, New York City, NYC × AI Events, Boston / Cambridge, London) and the team roles after them, with the four roles editors added earlier kept at the end. Every role signs up through the volunteer interest form; no contact names or volunteer details are published. The hover only scrolls the section into view.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": ".sec.projects h2"
+    }
+  ]
+}

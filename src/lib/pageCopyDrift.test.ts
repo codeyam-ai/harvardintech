@@ -124,7 +124,7 @@ describe('page copy drift between the JSON fallback and the collection entry', (
   // The specific drift that was live when this guard was written, pinned so a
   // regression is legible rather than just "some key differs".
   it('keeps the volunteer projects heading the collection actually renders', () => {
-    const heading = 'Marketing projects open for volunteers';
+    const heading = 'Volunteer roles open this fall';
     expect(frontmatterScalars('src/content/volunteerPage/volunteer.md').projectsTitle).toBe(
       heading,
     );

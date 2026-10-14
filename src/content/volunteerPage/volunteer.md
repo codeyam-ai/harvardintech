@@ -12,8 +12,8 @@ benefits:
     body: Connect with Harvard alumni and tech professionals for mentorship, collaboration, and career opportunities.
   - title: Make a difference
     body: Be a part of something bigger and contribute your time and talent to initiatives that drive innovation, foster community engagement, and support the responsible growth of technology. Your impact will be felt not only within the Harvard Alumni in Tech ecosystem but also across broader communities where technology can create positive change.
-projectsTitle: Marketing projects open for volunteers
-projectsIntro: Each project below is looking for help right now. Pick the one that fits your skills and the time you have.
+projectsTitle: Volunteer roles open this fall
+projectsIntro: Each role below is looking for help right now — in your city, on a team, or on a project. Pick the one that fits your skills and the time you have, then sign up through the volunteer interest form.
 projectsEmptyMessage: We're lining up the next round of volunteer projects. Tell us what you'd like to work on and we'll match you when the next one opens.
 ctaLabel: Volunteer with us
 ctaUrl: https://hi.switchy.io/wEYK

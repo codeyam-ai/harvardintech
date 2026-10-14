@@ -1,0 +1,1055 @@
+{
+  "timestamp": "2026-10-14T18:21:59Z",
+  "title": "Refresh the volunteer page from the Fall 2026 volunteer sheet",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe user wants the /volunteer page brought in line with the \"Fall 2026 | HIT Volunteer Opportunities\" Google Sheet (Drive file 1YmLbinAVIhGYnJHKpy3B0aSpc7QpNoAZGggR0BcIJWc, tab \"Fall 2026\"). The sheet lists roles such as Alumni Volunteer Coordinator, City Volunteer and City Lead or Co-Lead (SF / Bay Area, Boston / Cambridge, NYC x AI Events), Founders Task Force volunteer and co-lead, and Editorial, each with a description and a point of contact. The site's volunteer projects live in the `projects` collection (`src/content/projects/*.md`) and render on /volunteer.\n\n## Key Decisions\n\n- Publish ROLES ONLY: title, description, and (if the user agrees) the point-of-contact name. Never publish the volunteer names, emails, phone numbers or availability columns the sheet also holds.\n- One project entry per distinct role, not per \"1 of ∞\" row; the sheet repeats each role across rows.\n- Confirm with the user which existing project entries (IG Content Creator, LinkedIn Engagement Specialist, Social Media Marketing Specialist, Writer) stay, merge, or retire.\n- City lead/co-lead roles link naturally from the new \"Lead or co-lead a chapter →\" item in the Chapters menu, which already points at /volunteer.\n\n## Implementation\n\n1. Read the sheet's Fall 2026 tab and draft the role list for the user to confirm.\n2. Add or update `src/content/projects/<role>.md` entries (title, blurb, active, dates, body), following the shape of `src/content/projects/ig-content-creator.md`.\n3. Update the volunteer-page scenarios (`volunteer-page-open-projects`, `volunteer-page-no-open-projects`) and recapture after the content is committed.",
+  "description": "Published the Fall 2026 volunteer roles on /volunteer as 14 consolidated role entries — city roles first (SF / Bay Area, New York City, NYC × AI Events, Boston / Cambridge, London), then the Founders Task Force and team roles — and retitled the section 'Volunteer roles open this fall', keeping the JSON fallback copy (src/data/volunteerPage.json) and its drift test in step. Every role signs up through the volunteer interest form (the page's existing Volunteer with us link); no contact names or volunteer details from the sheet are published, and the four roles editors added earlier are kept. Scope: all 7 project deliverables were already resolved before this cycle, so none were delivered or deferred here; five sheet roles that carried only placeholder text were folded into the city and Founders roles with wording written from their titles.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/refresh-the-volunteer-page-from-the-fall-2026-volunteer-sheet.md\t.codeyam/plans/completed/refresh-the-volunteer-page-from-the-fall-2026-volunteer-sheet.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/recapture-skip-clean.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/volunteerPage/volunteer.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-page-fall-2026-roles.json",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/admissions-committee.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/alumni-volunteer-coordinator.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/city-volunteer-boston-cambridge.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/city-volunteer-london.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/city-volunteer-new-york-city.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/city-volunteer-sf-bay-area.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/editorial.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/founders-task-force.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/fundraising.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/marketing-and-ops.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/nyc-ai-events.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/testing-and-qa.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/whatsapp-community-lead.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/projects/whatsapp-group-moderator.md",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "AccomplishmentCard - One Cell Of The Evidence Strip"
+    },
+    {
+      "name": "Blog Post - A Retained Medium Stub"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft"
+    },
+    {
+      "name": "BlogPostArticle - An Ordinary Post"
+    },
+    {
+      "name": "BlogPostBody - Locked, Prompt Replaces The Article"
+    },
+    {
+      "name": "BlogPostBody - Nothing Encrypted, Article Renders"
+    },
+    {
+      "name": "Board of Directors - Empty"
+    },
+    {
+      "name": "Board of Directors - Every Bio Written"
+    },
+    {
+      "name": "Board of Directors - Two Of Five Bios Written"
+    },
+    {
+      "name": "Board of Directors"
+    },
+    {
+      "name": "BoardMemberTile - Initials Instead Of A Headshot"
+    },
+    {
+      "name": "BoardMemberTile - No Bio Yet"
+    },
+    {
+      "name": "BoardMemberTile - With A Bio"
+    },
+    {
+      "name": "BrandGlyph - Four Ways A Glyph Resolves"
+    },
+    {
+      "name": "BrandMark - Both Grounds At Three Sizes"
+    },
+    {
+      "name": "CalloutCard - Single Callout"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps"
+    },
+    {
+      "name": "Chapter Route - New York City"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent"
+    },
+    {
+      "name": "ChapterConnect - Default"
+    },
+    {
+      "name": "ChapterEvents - Community Empty"
+    },
+    {
+      "name": "ChapterEvents - Community Heading"
+    },
+    {
+      "name": "ChapterEvents - Nothing Scheduled Yet"
+    },
+    {
+      "name": "ChapterEvents - Recent Past Events"
+    },
+    {
+      "name": "ChapterEvents - Rich List"
+    },
+    {
+      "name": "ChapterHero - No Image Fallback"
+    },
+    {
+      "name": "ChapterHero - With Image"
+    },
+    {
+      "name": "ChapterLeads - Two Leads, One Without A Role"
+    },
+    {
+      "name": "ChapterPage - Forming Chapter"
+    },
+    {
+      "name": "ChapterPage - Full Chapter"
+    },
+    {
+      "name": "ChapterPage - Sparse No Leads"
+    },
+    {
+      "name": "ChapterSignUp - Default"
+    },
+    {
+      "name": "CMS Analytics And Embeds"
+    },
+    {
+      "name": "CMS Blog - Duplicate Is Not Momentum-Fund-Only"
+    },
+    {
+      "name": "CMS Blog List - A Preview Link And A Locked One"
+    },
+    {
+      "name": "CMS Blog List - Drafts And Published"
+    },
+    {
+      "name": "CMS Chapter Editor - Marked As Draft"
+    },
+    {
+      "name": "CMS Chapter Editor - New York City"
+    },
+    {
+      "name": "CMS Dashboard - Empty"
+    },
+    {
+      "name": "CMS Dashboard - Populated"
+    },
+    {
+      "name": "CMS Donors Editor - Anonymous Keeps The Data, The Page Withholds It"
+    },
+    {
+      "name": "CMS Donors Editor - The Supporter Identity Fields"
+    },
+    {
+      "name": "CMS Entry Editor - Change Staged For Review"
+    },
+    {
+      "name": "CMS Entry Editor - New Chapter Form"
+    },
+    {
+      "name": "CMS Events - The Collection 0.7 Removed"
+    },
+    {
+      "name": "CMS Media Library - Adopted Images"
+    },
+    {
+      "name": "CMS Momentum Sections - A Move Staged But Not Yet Published"
+    },
+    {
+      "name": "CMS Momentum Sections - A Section Still In Draft"
+    },
+    {
+      "name": "CMS Momentum Sections - In Order With Arrows"
+    },
+    {
+      "name": "CMS Momentum Sections - The Duplicate Built Up In Draft"
+    },
+    {
+      "name": "CMS Momentum Sections - Two Bands Under Their Own Names"
+    },
+    {
+      "name": "CMS New Section - Prefilled By Duplicate"
+    },
+    {
+      "name": "CMS Page Settings - Adding A Donor Wall Tier"
+    },
+    {
+      "name": "CMS Page Settings - Momentum Fund Page"
+    },
+    {
+      "name": "CMS Page Settings - The Momentum Network Copy An Editor Can Now Reach"
+    },
+    {
+      "name": "CMS Publish Review - Nothing To Publish"
+    },
+    {
+      "name": "CMS Publish Review - Plain Language Change Summary"
+    },
+    {
+      "name": "CMS Publish Review - What The Edit Actually Did"
+    },
+    {
+      "name": "CMS Section Editor - Section Type Is A Dropdown"
+    },
+    {
+      "name": "CMS Section Editor - The Donor Fields No Editor Can Change"
+    },
+    {
+      "name": "CMS Section Editor - The Second Band Pointed At Its Own Cards"
+    },
+    {
+      "name": "CMS Section Editor - Where The Pillar Cards Actually Live"
+    },
+    {
+      "name": "CMS Site Settings"
+    },
+    {
+      "name": "CMS Sponsorship Level Editor"
+    },
+    {
+      "name": "CMS Team - Board Members In Their Own Order"
+    },
+    {
+      "name": "CMS Testimonials - The Fields Behind A Quote"
+    },
+    {
+      "name": "CMS Volunteer Page Editor"
+    },
+    {
+      "name": "Coming Soon Band"
+    },
+    {
+      "name": "Community Route - AI On Day One"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events"
+    },
+    {
+      "name": "Community Route - Investors Join Steps"
+    },
+    {
+      "name": "CommunityCallouts - What Happens Here"
+    },
+    {
+      "name": "CommunityPage - Founders Composed"
+    },
+    {
+      "name": "ContactUs - Default"
+    },
+    {
+      "name": "ContactUs - No Email Set"
+    },
+    {
+      "name": "Content Hub - Empty"
+    },
+    {
+      "name": "Content Hub"
+    },
+    {
+      "name": "Cutover Runbook - A Tick That Could Not Be Saved"
+    },
+    {
+      "name": "Cutover Runbook - Complete"
+    },
+    {
+      "name": "Cutover Runbook - Cutover Day"
+    },
+    {
+      "name": "Cutover Runbook - Decisions Answered Nothing Begun"
+    },
+    {
+      "name": "Cutover Runbook - Nothing Started"
+    },
+    {
+      "name": "Cutover Runbook - Partway Through"
+    },
+    {
+      "name": "Cutover Runbook - The Records On A Phone"
+    },
+    {
+      "name": "Cutover Runbook - Waiting On One Answer"
+    },
+    {
+      "name": "Decision Tick - Decided Read Only"
+    },
+    {
+      "name": "Decision Tick - Decided"
+    },
+    {
+      "name": "Decision Tick - Open"
+    },
+    {
+      "name": "Decision Tick - Writing The Answer"
+    },
+    {
+      "name": "DeployChip - Change Is Live"
+    },
+    {
+      "name": "DeployChip - Published, Still Updating"
+    },
+    {
+      "name": "DeployChip - Publishing"
+    },
+    {
+      "name": "DeployStatus - Build Failed"
+    },
+    {
+      "name": "DeployStatus - Live"
+    },
+    {
+      "name": "DeployStatus - Published, Still Updating"
+    },
+    {
+      "name": "DeployStatus - Publishing, Dismissible"
+    },
+    {
+      "name": "DeployStatus - Waiting For The Site"
+    },
+    {
+      "name": "EmbedForm - Configured Form"
+    },
+    {
+      "name": "EmbedForm - Embedded Iframe"
+    },
+    {
+      "name": "EmbedForm - Unconfigured Fallback"
+    },
+    {
+      "name": "EmptyState - Both Ways Out"
+    },
+    {
+      "name": "EmptyState - Nothing To Offer Yet"
+    },
+    {
+      "name": "Event Gallery"
+    },
+    {
+      "name": "EventCardGrid - Past Events"
+    },
+    {
+      "name": "EventCardGrid - Three Uneven Cards"
+    },
+    {
+      "name": "Events Route - Archive Folded By Year"
+    },
+    {
+      "name": "Events Route - The Calendar With No Past Events Yet"
+    },
+    {
+      "name": "Events Route - Upcoming and Past"
+    },
+    {
+      "name": "EventsArchive - Folded By Year"
+    },
+    {
+      "name": "EventsArchiveItem - A Row With Venue And Write-Up"
+    },
+    {
+      "name": "EventsArchiveYear - One Closed Fold"
+    },
+    {
+      "name": "EventsArchiveYear - Opened"
+    },
+    {
+      "name": "EventsIntro - The Page's Own Title"
+    },
+    {
+      "name": "EventsIntroBand - Closing Flush Against The Calendar"
+    },
+    {
+      "name": "EventsPage - Archive And Recent"
+    },
+    {
+      "name": "EventsPage - Archive Only, Nothing Recent"
+    },
+    {
+      "name": "EventsPage - No Events"
+    },
+    {
+      "name": "EventsPage - Several Recent Events"
+    },
+    {
+      "name": "EventsPage - Upcoming and Past"
+    },
+    {
+      "name": "Focus Areas"
+    },
+    {
+      "name": "FormingChapterCta - No Contact Address"
+    },
+    {
+      "name": "FormingChapterCta - With Contact Address"
+    },
+    {
+      "name": "GalleryExpand - Fourteen Photos"
+    },
+    {
+      "name": "GalleryLightbox - No Caption"
+    },
+    {
+      "name": "GalleryLightbox - Photo Open"
+    },
+    {
+      "name": "GalleryTile - Captioned Photo"
+    },
+    {
+      "name": "GalleryTile - Keyboard Focus"
+    },
+    {
+      "name": "Get Involved"
+    },
+    {
+      "name": "GiftPillarCard - With Inline Link"
+    },
+    {
+      "name": "GiftPillars - Numbered Bordered Grid"
+    },
+    {
+      "name": "GiftPillars - The Duplicated Band Shows Its Own Cards"
+    },
+    {
+      "name": "GiftPillars - Three Pillars"
+    },
+    {
+      "name": "GiveButton - Both Variants"
+    },
+    {
+      "name": "GiveButton - Giving Closed"
+    },
+    {
+      "name": "GiveClose - The Final Ask"
+    },
+    {
+      "name": "GiveCollage - Six Photographs In One Frame"
+    },
+    {
+      "name": "GiveFaq - Every Question Closed"
+    },
+    {
+      "name": "GiveHero - The Opening Ask"
+    },
+    {
+      "name": "GivePhoto - The Strip The Card Overlaps"
+    },
+    {
+      "name": "GiveRecognition - The Placeholder Supporter Card"
+    },
+    {
+      "name": "GiveStatement - Both Tones Together"
+    },
+    {
+      "name": "Giving Campaign - A Platform Is Live"
+    },
+    {
+      "name": "Giving Campaign"
+    },
+    {
+      "name": "GivingCard - No Platform Connected"
+    },
+    {
+      "name": "GivingSoonNote - On A Dark Band"
+    },
+    {
+      "name": "GivingSoonNote - On A Pale Band"
+    },
+    {
+      "name": "GlobalCommunityAction - Newsletter Card"
+    },
+    {
+      "name": "GlobalCommunityCta - Three Ways In"
+    },
+    {
+      "name": "GlobeIcon - Sizes On Light And Dark"
+    },
+    {
+      "name": "GoalMeter - A Campaign Name That Runs Long"
+    },
+    {
+      "name": "GoalMeter - Navy Chrome With Campaign Link"
+    },
+    {
+      "name": "GoalMeter - The 2026 Goal Before Launch"
+    },
+    {
+      "name": "GoalMeter - The Band Around Givebutter's Meter"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors"
+    },
+    {
+      "name": "Harvard in Tech - Board On Four Sizes"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written"
+    },
+    {
+      "name": "Harvard in Tech - Chapters On Four Sizes"
+    },
+    {
+      "name": "Harvard in Tech - Contact On Four Sizes"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set"
+    },
+    {
+      "name": "Harvard In Tech - Header Pinned While Scrolling"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page"
+    },
+    {
+      "name": "Harvard In Tech - Mission Band Coming Soon"
+    },
+    {
+      "name": "Harvard In Tech - Mission Band Hidden"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events"
+    },
+    {
+      "name": "Harvard In Tech - Numbers Band On An iPad"
+    },
+    {
+      "name": "Harvard In Tech - Our Mission Band"
+    },
+    {
+      "name": "Harvard in Tech - Phone Menu Open"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones"
+    },
+    {
+      "name": "Hero Carousel"
+    },
+    {
+      "name": "HeroCarousel - The Second Slide, Reached By Its Dot"
+    },
+    {
+      "name": "Home Sections - All Three Visibility States"
+    },
+    {
+      "name": "JoinWhatsAppCta - Community Primary Action"
+    },
+    {
+      "name": "Locked Preview - Password Required"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password"
+    },
+    {
+      "name": "Locked Preview - Wrong Password"
+    },
+    {
+      "name": "LockedPreviewBody - Before The Password"
+    },
+    {
+      "name": "Luma Calendar"
+    },
+    {
+      "name": "LumaSubscribe - Default"
+    },
+    {
+      "name": "MissionStatement - Default Wording"
+    },
+    {
+      "name": "MissionStatement - Edited Without An Accent"
+    },
+    {
+      "name": "Momentum Fund - A Giving Platform Is Chosen"
+    },
+    {
+      "name": "Momentum Fund - A Mistyped Section Type And A Missing Photo"
+    },
+    {
+      "name": "Momentum Fund - Arriving From The Email"
+    },
+    {
+      "name": "Momentum Fund - Every Section Hidden"
+    },
+    {
+      "name": "Momentum Fund - Finding Your Place In The Network"
+    },
+    {
+      "name": "Momentum Fund - Public Visitor"
+    },
+    {
+      "name": "Momentum Fund - Sections Reordered By An Editor"
+    },
+    {
+      "name": "Momentum Fund - The Donor Wall Moved To The Top"
+    },
+    {
+      "name": "Momentum Fund - The First Donor On The Wall"
+    },
+    {
+      "name": "Momentum Fund - The Goal Meter Held As Coming Soon"
+    },
+    {
+      "name": "Momentum Fund - The Impact Band With Real Quotes"
+    },
+    {
+      "name": "Momentum Fund - Two Pillar Bands With Their Own Cards"
+    },
+    {
+      "name": "Momentum Network - A Supporter Selected"
+    },
+    {
+      "name": "Momentum Network - A Supporter Who Wrote No Message"
+    },
+    {
+      "name": "Momentum Network - Anonymity Among Named Supporters"
+    },
+    {
+      "name": "Momentum Network - Day One, The Grid Unlit"
+    },
+    {
+      "name": "Momentum Network - The Campaign At Scale"
+    },
+    {
+      "name": "Momentum Network - The First Gift"
+    },
+    {
+      "name": "MomentumAccomplishments - Campaign Track Record"
+    },
+    {
+      "name": "MomentumClose - Closing Ask"
+    },
+    {
+      "name": "MomentumClose - Photo Split"
+    },
+    {
+      "name": "MomentumMission - Gold Band"
+    },
+    {
+      "name": "MomentumNarrative - Image Layout Without An Image"
+    },
+    {
+      "name": "MomentumNarrative - Image Left"
+    },
+    {
+      "name": "MomentumNarrative - Image Right"
+    },
+    {
+      "name": "MomentumNarrative - Text Only"
+    },
+    {
+      "name": "MomentumNarrative - Two Prose Columns"
+    },
+    {
+      "name": "MomentumStats - Campaign Figures"
+    },
+    {
+      "name": "MomentumTestimonials - Photo-Led Rows"
+    },
+    {
+      "name": "MomentumTestimonials - Three Quotes"
+    },
+    {
+      "name": "NavItemLabel - Plain And Online Rows"
+    },
+    {
+      "name": "NotFound - The Only Frame It Can Have"
+    },
+    {
+      "name": "OnlineGroupEyebrow - Over A Forming City Card"
+    },
+    {
+      "name": "OrderArrows - Bottom Row"
+    },
+    {
+      "name": "OrderArrows - Middle Row"
+    },
+    {
+      "name": "OrderArrows - The Only Row"
+    },
+    {
+      "name": "OrderArrows - Top Row"
+    },
+    {
+      "name": "Our Chapters - Empty"
+    },
+    {
+      "name": "Our Chapters"
+    },
+    {
+      "name": "PageBanner - Paper Tone, Longest Name"
+    },
+    {
+      "name": "PageBanner - Photo Tone Over A City"
+    },
+    {
+      "name": "PageNarrowBody - Leads Body And Links"
+    },
+    {
+      "name": "PastEventsMore - The Link Out To Luma"
+    },
+    {
+      "name": "Previews Index - The Shareable List Link"
+    },
+    {
+      "name": "PrimaryNav - Communities Derived"
+    },
+    {
+      "name": "PrimaryNav - Derived Chapters"
+    },
+    {
+      "name": "PrimaryNav - Get Involved Merged"
+    },
+    {
+      "name": "PrimaryNav - No Chapters Yet"
+    },
+    {
+      "name": "PrimaryNav - Sixth Chapter Published"
+    },
+    {
+      "name": "Privacy Page - Cookie Table On A Phone"
+    },
+    {
+      "name": "Privacy Page - The Written Policy"
+    },
+    {
+      "name": "ResponsiveImg - Serves A Photo With Its Srcset"
+    },
+    {
+      "name": "SectionHead - Centered"
+    },
+    {
+      "name": "SectionHead - Kicker, Title, Intro And Action"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS"
+    },
+    {
+      "name": "Site Page - Long Title And No Description"
+    },
+    {
+      "name": "SitePageBody - Cookie Table On A Phone"
+    },
+    {
+      "name": "SitePageBody - Markdown An Editor Can Write"
+    },
+    {
+      "name": "SitePageHeader - Long Title And No Description"
+    },
+    {
+      "name": "SitePageHeader - Title And Lede"
+    },
+    {
+      "name": "SocialLinks - On Dark, No Badges"
+    },
+    {
+      "name": "SocialLinks - On Light, Brand Colours"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall"
+    },
+    {
+      "name": "SponsorInquiry - Awaiting A Form"
+    },
+    {
+      "name": "SponsorInquiry - Form Configured"
+    },
+    {
+      "name": "SponsorInquiry - No Email And No Form"
+    },
+    {
+      "name": "SponsorLevels - Four Partnership Levels"
+    },
+    {
+      "name": "SponsorPage - Full Page No Partners"
+    },
+    {
+      "name": "SponsorPage - Full Page With Examples"
+    },
+    {
+      "name": "SponsorWall - Example Placements"
+    },
+    {
+      "name": "SponsorWall - No Partners Yet"
+    },
+    {
+      "name": "SponsorWall - Real Partners"
+    },
+    {
+      "name": "StagingBar - Publish Again While Deploying"
+    },
+    {
+      "name": "StagingBar - Reviewing Before Publish"
+    },
+    {
+      "name": "Stats Band - Five Figures At iPad Width"
+    },
+    {
+      "name": "Stats Band"
+    },
+    {
+      "name": "Step Tick - Commit Refused"
+    },
+    {
+      "name": "Step Tick - Done With Attribution"
+    },
+    {
+      "name": "Step Tick - Read Only"
+    },
+    {
+      "name": "Support Us"
+    },
+    {
+      "name": "TestimonialCard - Every Field Filled"
+    },
+    {
+      "name": "TestimonialCard - Quote Without An Event Photo"
+    },
+    {
+      "name": "TestimonialCard - With Role"
+    },
+    {
+      "name": "Upcoming Events - Empty"
+    },
+    {
+      "name": "Upcoming Events"
+    },
+    {
+      "name": "UtilityBar - Derived Cities"
+    },
+    {
+      "name": "UtilityBar - No Chapters"
+    },
+    {
+      "name": "UtilityBar - Short Line At iPad Width"
+    },
+    {
+      "name": "Volunteer Page - Fall 2026 Roles"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects"
+    },
+    {
+      "name": "Volunteer Page - Open Projects"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested"
+    },
+    {
+      "name": "VolunteerBenefit - Long Copy"
+    },
+    {
+      "name": "VolunteerBenefits - Four Blocks"
+    },
+    {
+      "name": "VolunteerHero - Default"
+    },
+    {
+      "name": "VolunteerProjectBody - Rendered Markdown"
+    },
+    {
+      "name": "VolunteerProjectCard - Linked Through To Its Detail Page"
+    },
+    {
+      "name": "VolunteerProjectCardLinks - Both Detail Only And Apply Only"
+    },
+    {
+      "name": "VolunteerProjectCta - Own Link And Fallback"
+    },
+    {
+      "name": "VolunteerProjectHeader - Long Title And Blurb"
+    },
+    {
+      "name": "VolunteerProjectMeta - Every Date Shape"
+    },
+    {
+      "name": "VolunteerProjectPage - Full Project"
+    },
+    {
+      "name": "VolunteerProjectPhoto - Square Upload"
+    },
+    {
+      "name": "VolunteerProjects - Populated Grid"
+    },
+    {
+      "name": "VolunteerProjectsEmpty - Production Default"
+    },
+    {
+      "name": "VolunteerProjectThumb - Linked Bare And Placeholder"
+    },
+    {
+      "name": "VolunteerRelatedProjects - One Other Project"
+    },
+    {
+      "name": "VolunteerRelatedProjects - Three Suggestions"
+    },
+    {
+      "name": "WebinarCard - Cover, Speakers And Year"
+    },
+    {
+      "name": "WebinarCard - Recording Whose Host Lost It"
+    },
+    {
+      "name": "Webinars Route - Nothing Published"
+    },
+    {
+      "name": "Webinars Route - The Surviving Recordings"
+    },
+    {
+      "name": "WebinarsPage - A Single Recording"
+    },
+    {
+      "name": "WebinarsPage - Nothing Published"
+    },
+    {
+      "name": "WebinarsPage - Recordings With And Without A Cover"
+    },
+    {
+      "name": "WebinarsPointer - The Line To The Recordings"
+    },
+    {
+      "name": "Whatsapp Community"
+    }
+  ],
+  "testResults": {
+    "total": 1679,
+    "passed": 1679,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1679,
+        "passed": 1679
+      }
+    ]
+  }
+}
