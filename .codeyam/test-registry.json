@@ -217,6 +217,15 @@
       "runner": "tests"
     },
     {
+      "description": "The sweep's ten widths start at a 320px phone, end at a 1920px monitor, and are in ascending order.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "SWEEP_WIDTHS › runs from the smallest phone to a wide monitor, ascending",
+      "line": 40,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
       "description": "An editor typing the slug into a CMS box does not normalize it first.",
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
@@ -1087,6 +1096,24 @@
       "key": "buildOrderChange › writes the new order into the frontmatter",
       "line": 273,
       "registeredAt": "2026-08-10T21:05:09Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Asset URLs under /harvardintech/_astro/ report the /harvardintech deploy base.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "builtWithDeployBase › names the base a project-site build was made with",
+      "line": 40,
+      "registeredAt": "2026-10-14T14:44:24.301971434+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Root-relative /_astro/ asset URLs mean the build used base / and is fine to sweep.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "builtWithDeployBase › returns null for a build at base /",
+      "line": 45,
+      "registeredAt": "2026-10-14T14:44:24.303253018+00:00",
       "runner": "tests"
     },
     {
@@ -3668,6 +3695,15 @@
       "key": "enum-shaped fields are dropdowns, not text boxes › momentumSections.layout is a select",
       "line": 32,
       "registeredAt": "2026-09-28T16:56:55.934146287+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "From a fixture dist/, only real public pages and /404 are swept; redirect stubs, /admin, previews, the runbook, isolated components and _astro are skipped.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "enumeratePages › lists public pages and 404, skipping stubs, internal routes and asset folders",
+      "line": 173,
+      "registeredAt": "2026-10-14T14:44:24.304467409+00:00",
       "runner": "tests"
     },
     {
@@ -6467,6 +6503,24 @@
       "runner": "tests"
     },
     {
+      "description": "A normal page with a main element is not treated as a redirect.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "isRedirectStub › does not mistake a real page for one",
+      "line": 32,
+      "registeredAt": "2026-10-14T14:44:24.300401189+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A meta-refresh page with no main content is detected as a redirect stub.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "isRedirectStub › recognises an Astro redirect page",
+      "line": 27,
+      "registeredAt": "2026-10-14T14:44:24.299112772+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The single-slug form must agree with the list form.",
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
@@ -6662,6 +6716,145 @@
       "key": "joinCtas › uses an entry-specific form and volunteer url when given",
       "line": 198,
       "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Tap-target sizes are rounded so a 44px area from fractional layout is not flagged.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › does not call a 43.99px tap area from fractional layout \"under 44\"",
+      "line": 113,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Content clipped by an overflow-hidden ancestor never reaches the screen, so it is not reported.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › exempts an element flagged clippedByAncestor from the overflow checks",
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Content inside a deliberate horizontal scroller (a gallery strip, a scrolling table) is not reported as overflow.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › exempts an element flagged insideScroller from the overflow checks",
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A closed off-canvas menu panel parked past the edge is not reported as overflow.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › exempts an element flagged offCanvasClosed from the overflow checks",
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Only the outermost overflowing element is reported, so one bad box does not produce a finding per descendant.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › exempts an element flagged parentOverflows from the overflow checks",
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A skip link or visually-hidden element is not reported as overflow.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › exempts an element flagged visuallyHidden from the overflow checks",
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A page whose scroll width exceeds the window (the 1012px-in-768px stats-band case) is a horizontal-scroll failure.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › fails a page wider than its window",
+      "line": 50,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A visible element past the right edge or with a negative left edge is an offscreen-element failure.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › fails an element past either edge",
+      "line": 66,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A link under 44px is an advisory at 834px and below, and not reported at desktop widths.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › flags a small tap target at touch widths only, as advisory",
+      "line": 103,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Text below 12px is an advisory; 12px exactly and elements without their own text are not.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › flags text under 12px as advisory, and only elements that carry text",
+      "line": 135,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An element that is not rendered produces no finding of any kind.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › ignores invisible elements entirely",
+      "line": 81,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Small inline links inside sentences are labelled as such, since they are legitimately small.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › marks an inline link in running text so it can be told apart",
+      "line": 120,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A cross-origin embed (Luma, Givebutter, video) is always reported as not measured rather than passing silently.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › never passes a third-party frame silently",
+      "line": 142,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Media that runs off the screen is reported under its own kind so image fixes are findable.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › reports an overflowing image as image-overflow, not offscreen-element",
+      "line": 75,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Skip links and closed menu panels are never reported as small tap targets.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › skips tap-target checks for hidden skip links and closed panels",
+      "line": 127,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "One pixel over the window is rounding, not overflow; two pixels over fails.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "judgePage › tolerates one pixel of sub-pixel rounding",
+      "line": 59,
+      "registeredAt": "2026-10-14T14:41:48Z",
       "runner": "tests"
     },
     {
@@ -8735,6 +8928,24 @@
       "runner": "tests"
     },
     {
+      "description": "No flag, or a dangling --only, means sweep every page.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "parseOnly › is null without the flag, or with the flag and no path",
+      "line": 57,
+      "registeredAt": "2026-10-14T14:46:47.129908435+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "--only /events narrows the sweep to /events.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "parseOnly › reads the path after --only",
+      "line": 52,
+      "registeredAt": "2026-10-14T14:46:47.128165626+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The ordinary case: the passphrase the reviewer was given opens the page.",
       "file": "src/lib/reviewGate.test.ts",
       "format": "vitest",
@@ -8867,6 +9078,51 @@
       "key": "placeNodes › places every supporter, including one with no school",
       "line": 202,
       "registeredAt": "2026-08-19T00:32:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "--only /events and --only /events/ both match the built /events/ page, and / matches only the homepage.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "planSweep › narrows to one page with or without its trailing slash",
+      "line": 88,
+      "registeredAt": "2026-10-14T14:46:47.136854546+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A dist/ built under /harvardintech/ is refused, since every asset would 404 when served at /.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "planSweep › refuses a build made with the project-site deploy base",
+      "line": 76,
+      "registeredAt": "2026-10-14T14:46:47.133218152+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "With no dist/index.html the sweep stops and says to run npm run build.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "planSweep › refuses to start without a build",
+      "line": 68,
+      "registeredAt": "2026-10-14T14:46:47.131544963+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A path that matches no built page stops the sweep with a message naming it.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "planSweep › says so when --only matches nothing",
+      "line": 96,
+      "registeredAt": "2026-10-14T14:46:47.139266644+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Without --only, every enumerated page is swept.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "planSweep › sweeps every page by default",
+      "line": 82,
+      "registeredAt": "2026-10-14T14:46:47.134958204+00:00",
       "runner": "tests"
     },
     {
@@ -9587,6 +9843,33 @@
       "key": "renumberEntries › reports only the rows whose number changed",
       "line": 202,
       "registeredAt": "2026-08-10T21:05:09Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Advisory-only results exit cleanly and print unmarked rows.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "report › exits 0 when only advisories remain",
+      "line": 124,
+      "registeredAt": "2026-10-14T14:46:47.143044369+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Any fail finding exits non-zero and its row is marked FAIL.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "report › exits 1 on a failure, marking the row",
+      "line": 131,
+      "registeredAt": "2026-10-14T14:46:47.144806267+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A page that failed to load exits non-zero and is listed as ERR, so it can never pass silently.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "report › exits 1 when a page would not load, listing it",
+      "line": 139,
+      "registeredAt": "2026-10-14T14:46:47.146493413+00:00",
       "runner": "tests"
     },
     {
@@ -12398,6 +12681,42 @@
       "runner": "tests"
     },
     {
+      "description": "The same element and finding at several widths reads as one row listing those widths once, ascending.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "summarise › folds one element at many widths into one row, widths ascending",
+      "line": 163,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A grouped row shows the measurement from its narrowest width.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "summarise › keeps the detail from the narrowest width",
+      "line": 171,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No findings yields no rows and zero counts.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "summarise › returns an empty summary for a clean sweep",
+      "line": 192,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Failures lead the report, rows are ordered by page, and fail, advisory and page counts are totalled.",
+      "file": "src/lib/responsiveSweep.test.ts",
+      "format": "vitest",
+      "key": "summarise › sorts failures first, then by page, and counts each severity",
+      "line": 181,
+      "registeredAt": "2026-10-14T14:41:48Z",
+      "runner": "tests"
+    },
+    {
       "description": "With nothing blocked the sentence changes meaning, not just number — it tells the team the decisions are in and the ball is no longer theirs.",
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
@@ -12494,6 +12813,15 @@
       "key": "supporterRoll › sorts supporters alphabetically by displayed name",
       "line": 531,
       "registeredAt": "2026-08-19T00:32:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Two pages at two widths produce four page-width jobs, grouped by page.",
+      "file": "src/lib/responsiveSweepScript.test.ts",
+      "format": "vitest",
+      "key": "sweepJobs › pairs every page with every width, page by page",
+      "line": 103,
+      "registeredAt": "2026-10-14T14:46:47.141340512+00:00",
       "runner": "tests"
     },
     {

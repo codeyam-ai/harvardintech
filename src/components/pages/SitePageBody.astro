@@ -67,4 +67,28 @@
     max-width: 100%;
     height: auto;
   }
+  /* A markdown table (the privacy page's cookie list) is as wide as its
+     longest cells, which ran 48px off a 320px phone and scrolled the whole page
+     sideways. As a block it scrolls inside its own box instead, and only when it
+     has to. */
+  .prose :global(table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-family: var(--font-sans, inherit);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 24px 0;
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    text-align: left;
+    vertical-align: top;
+    padding: 8px 12px 8px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .prose :global(th) {
+    font-weight: 700;
+  }
 </style>

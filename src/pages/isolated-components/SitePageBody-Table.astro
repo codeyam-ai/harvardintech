@@ -1,0 +1,39 @@
+---
+import Component from "../../../src/components/pages/SitePageBody.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for SitePageBody holding a markdown table — the privacy
+// page's cookie list, its only table. Unstyled, it ran off a 320px phone and
+// scrolled the whole page sideways (October responsive check); it now fits a
+// 390px phone and scrolls inside its own box on anything narrower.
+//
+// Hand-written HTML for the same reason as SitePageBody.astro: `render()`
+// hands the component finished tags.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: SitePageBody (table)</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: 68ch;">
+      <Component>
+        <h2>Cookies</h2>
+        <p>This site sets no cookies of its own. The cookies below come from the tools listed above.</p>
+        <table>
+          <thead>
+            <tr><th>Cookie</th><th>Provider</th><th>Purpose</th><th>Lifetime</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>_ga</code></td><td>Google Analytics</td><td>Distinguishes one visitor from another</td><td>2 years</td></tr>
+            <tr><td><code>_ga_GCBX577FFD</code></td><td>Google Analytics</td><td>Keeps session state for this property</td><td>2 years</td></tr>
+            <tr><td><code>_gid</code></td><td>Google Analytics</td><td>Distinguishes one visitor from another</td><td>24 hours</td></tr>
+          </tbody>
+        </table>
+        <p>Pages that embed a Luma or Givebutter widget may also set that provider’s own cookies while the widget is on screen.</p>
+      </Component>
+    </div>
+  </body>
+</html>

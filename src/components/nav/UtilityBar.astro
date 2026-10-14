@@ -7,7 +7,7 @@
 // the site actually has. With no chapters it degrades to the lede alone rather
 // than leaving a dangling separator.
 //
-// Two forms, both always rendered, swapped by CSS alone at 720px. The full line
+// Two forms, both always rendered, swapped by CSS alone at 1040px. The full line
 // is ~70 characters of letter-spaced monospace, which wrapped to THREE lines on
 // a 390px phone and pushed the logo a third of the way down the first screen.
 // The narrow form is the lede by itself (owner, 2026-09-28) — a phone visitor
@@ -43,7 +43,9 @@ const { cities } = Astro.props as Props;
     display: none;
   }
 
-  @media (max-width: 720px) {
+  /* The header's own breakpoint, not a phone one: the full line also wrapped to
+     two lines at 768 (iPad portrait), found by the October responsive check. */
+  @media (max-width: 1040px) {
     .util-full {
       display: none;
     }

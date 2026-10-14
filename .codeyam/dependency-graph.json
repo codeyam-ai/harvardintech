@@ -186,6 +186,14 @@
         "src/lib/responsiveImagesScript.test.ts"
       ]
     },
+    "scripts/responsive-sweep.mjs": {
+      "imports": [
+        "src/lib/responsiveSweep.ts"
+      ],
+      "importedBy": [
+        "src/lib/responsiveSweepScript.test.ts"
+      ]
+    },
     "scripts/section-shot.mjs": {
       "imports": [],
       "importedBy": []
@@ -1469,6 +1477,7 @@
       "imports": [],
       "importedBy": [
         "src/components/SitePage.astro",
+        "src/pages/isolated-components/SitePageBody-Table.astro",
         "src/pages/isolated-components/SitePageBody.astro"
       ]
     },
@@ -3038,6 +3047,25 @@
         "src/components/ResponsiveImg.astro"
       ]
     },
+    "src/lib/responsiveSweep.test.ts": {
+      "imports": [
+        "src/lib/responsiveSweep.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveSweep.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/responsiveSweep.test.ts",
+        "scripts/responsive-sweep.mjs"
+      ]
+    },
+    "src/lib/responsiveSweepScript.test.ts": {
+      "imports": [
+        "scripts/responsive-sweep.mjs"
+      ],
+      "importedBy": []
+    },
     "src/lib/reviewGate.js": {
       "imports": [],
       "importedBy": [
@@ -4155,6 +4183,13 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/SitePageBody-Table.astro": {
+      "imports": [
+        "src/components/pages/SitePageBody.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/SitePageBody.astro": {
       "imports": [
         "src/components/pages/SitePageBody.astro",
@@ -4584,6 +4619,7 @@
         "src/pages/isolated-components/VolunteerProjects.astro",
         "src/pages/isolated-components/HomeSections.astro",
         "src/pages/isolated-components/GlobalCommunityCta.astro",
+        "src/pages/isolated-components/SitePageBody-Table.astro",
         "src/pages/isolated-components/MissionStatement/[...state].astro",
         "src/pages/isolated-components/EventCardGrid-Past.astro",
         "src/pages/isolated-components/ComingSoon.astro",
@@ -4829,6 +4865,16 @@
       "imports": [
         "src/lib/responsiveImageVariants.mjs::variantPath",
         "src/lib/responsiveImageVariants.mjs::variantWidths"
+      ],
+      "importedBy": []
+    },
+    "scripts/responsive-sweep.mjs::__file_root__": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/responsiveSweep.ts::__file_root__",
+        "src/lib/responsiveSweep.ts::judgePage",
+        "src/lib/responsiveSweep.ts::summarise"
       ],
       "importedBy": []
     },
@@ -6360,6 +6406,7 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
+        "src/pages/isolated-components/SitePageBody-Table.astro::__file_root__",
         "src/pages/isolated-components/SitePageBody.astro::__file_root__"
       ]
     },
@@ -9457,6 +9504,58 @@
         "src/components/ResponsiveImg.astro::__file_root__"
       ]
     },
+    "src/lib/responsiveSweep.test.ts::__file_root__": {
+      "filePath": "src/lib/responsiveSweep.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/responsiveSweep.ts::ElementMeasure",
+        "src/lib/responsiveSweep.ts::Finding",
+        "src/lib/responsiveSweep.ts::PageMeasurements",
+        "src/lib/responsiveSweep.ts::__file_root__",
+        "src/lib/responsiveSweep.ts::judgePage",
+        "src/lib/responsiveSweep.ts::overflowExemption",
+        "src/lib/responsiveSweep.ts::summarise"
+      ],
+      "importedBy": []
+    },
+    "src/lib/responsiveSweep.ts::__file_root__": {
+      "filePath": "src/lib/responsiveSweep.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::__file_root__"
+      ]
+    },
+    "src/lib/responsiveSweep.ts::judgePage": {
+      "filePath": "src/lib/responsiveSweep.ts",
+      "name": "judgePage",
+      "imports": [],
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::__file_root__"
+      ]
+    },
+    "src/lib/responsiveSweep.ts::summarise": {
+      "filePath": "src/lib/responsiveSweep.ts",
+      "name": "summarise",
+      "imports": [],
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::__file_root__"
+      ]
+    },
+    "src/lib/responsiveSweepScript.test.ts::__file_root__": {
+      "filePath": "src/lib/responsiveSweepScript.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "scripts/responsive-sweep.mjs::builtWithDeployBase",
+        "scripts/responsive-sweep.mjs::enumeratePages",
+        "scripts/responsive-sweep.mjs::isRedirectStub",
+        "scripts/responsive-sweep.mjs::parseOnly",
+        "scripts/responsive-sweep.mjs::planSweep",
+        "scripts/responsive-sweep.mjs::report",
+        "scripts/responsive-sweep.mjs::sweepJobs"
+      ],
+      "importedBy": []
+    },
     "src/lib/reviewGate.js::__file_root__": {
       "filePath": "src/lib/reviewGate.js",
       "name": "__file_root__",
@@ -11385,6 +11484,15 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/SitePageBody-Table.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SitePageBody-Table.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/pages/SitePageBody.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/SitePageBody.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/SitePageBody.astro",
       "name": "__file_root__",
@@ -11907,6 +12015,7 @@
         "src/pages/isolated-components/VolunteerProjects.astro::__file_root__",
         "src/pages/isolated-components/HomeSections.astro::__file_root__",
         "src/pages/isolated-components/GlobalCommunityCta.astro::__file_root__",
+        "src/pages/isolated-components/SitePageBody-Table.astro::__file_root__",
         "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__",
         "src/pages/isolated-components/EventCardGrid-Past.astro::__file_root__",
         "src/pages/isolated-components/ComingSoon.astro::__file_root__",
@@ -11959,5 +12068,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-13T21:50:57Z"
+  "lastUpdated": "2026-10-14T16:39:17Z"
 }

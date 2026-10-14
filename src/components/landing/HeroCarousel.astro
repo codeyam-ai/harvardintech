@@ -206,20 +206,28 @@ const {
     left: 48px;
     bottom: 26px;
     display: flex;
-    gap: 10px;
+    gap: 14px;
   }
+  /* The bar is 30×4px, far under a 44px touch target. Padding grows the button
+     to 44×44 and `background-clip` keeps only the bar painted; the negative
+     margin returns the space, and the 14px gap makes adjacent tap areas abut
+     rather than overlap. */
   .dot {
-    width: 30px;
-    height: 4px;
+    width: 44px;
+    height: 44px;
     border: 0;
-    padding: 0;
+    padding: 20px 7px;
+    margin: -20px -7px;
     border-radius: 2px;
     background: rgba(255, 255, 255, 0.4);
+    background-clip: content-box;
     cursor: pointer;
     transition: background 0.2s ease;
   }
+  /* `background-color`, not the shorthand: `background` would reset the
+     `background-clip` above and paint the whole 44px tap area white. */
   .dot[data-active='true'] {
-    background: #fff;
+    background-color: #fff;
   }
 
   @media (max-width: 640px) {

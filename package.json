@@ -9,6 +9,7 @@
     "dev": "astro dev --host 127.0.0.1",
     "build": "node scripts/responsive-images.mjs && astro check && astro build",
     "preview": "astro preview",
+    "check:responsive": "node scripts/responsive-sweep.mjs",
     "check": "astro check",
     "test": "vitest run",
     "test:watch": "vitest"

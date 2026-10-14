@@ -225,6 +225,11 @@ const subscribeUrl = siteLinks().mailingList;
          capture, not guessed; 22px was also tried and still read tall. */
       .brand {
         --brand-mark-height: 20px;
+        /* A 26px-tall link is under the 44px touch target. The padding grows
+           the tap area and the equal negative margin hands the space back, so
+           the header row does not move. */
+        padding-block: 9px;
+        margin-block: -9px;
       }
       .brand-word {
         font-weight: 800;
@@ -272,6 +277,11 @@ const subscribeUrl = siteLinks().mailingList;
       .foot-links a {
         color: var(--white);
         text-decoration: none;
+        /* 18px of mono caps is too small a target for a thumb; the padding
+           makes it 44px tall and the negative margin keeps the footer's
+           layout exactly as it was. */
+        padding-block: 13px;
+        margin-block: -13px;
       }
       .foot-links a:hover {
         color: var(--crimson);

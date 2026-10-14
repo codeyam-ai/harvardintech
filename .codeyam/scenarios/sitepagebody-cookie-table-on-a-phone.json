@@ -1,0 +1,13 @@
+{
+  "name": "SitePageBody - Cookie Table On A Phone",
+  "id": "2dd7fee7-a58c-4612-a4af-0ea788b639fa",
+  "url": "/isolated-components/SitePageBody-Table",
+  "dimensions": [
+    "Mobile"
+  ],
+  "mocks": {},
+  "componentName": "SitePageBody",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/pages/SitePageBody.astro",
+  "description": "The privacy page's cookie table in a CMS page body at phone width. Before the October responsive check it had no styles and ran off a small phone, scrolling the whole page sideways. Now the table keeps to the text column and scrolls inside its own box when it has to — here, in the isolation frame's wider fallback font, the last column reaches the edge; on the live site with its webfont all four columns fit at 390px."
+}

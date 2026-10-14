@@ -1,0 +1,18 @@
+{
+  "name": "Privacy Page - Cookie Table On A Phone",
+  "id": "8539572c-31ef-41fe-9d94-c8f587c976c7",
+  "url": "/privacy",
+  "dimensions": [
+    "Mobile"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/[slug].astro",
+  "description": "The privacy page at 390px, scrolled to its cookie table — the only markdown table on the site. Unstyled, it ran off a small phone and scrolled the whole page sideways (found by the October responsive sweep at 320 and 360px). It now keeps to the text column: all four columns fit at 390px, and on a narrower phone it scrolls inside its own box while the page stays still.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": ".prose table"
+    }
+  ]
+}
