@@ -1,11 +1,17 @@
 ---
-// The "subscribe to this calendar" strip shown beneath the inline Luma embed.
+// The "subscribe to this calendar" line shown beneath the inline Luma embed.
 //
 // Separate from LumaCalendar because it solves a distinct problem: the embed
 // renders the calendar but offers no subscribe affordance of its own, so
 // without this a visitor who wants the calendar in their own app has nowhere to
 // go. It is only used alongside the embed — the link-out card mode already
 // carries its own subscribe call to action.
+//
+// A single centred line, not a boxed strip with its own button (owner,
+// 2026-10-14). The primary Subscribe on Luma button now sits in the page
+// banner, so this is the quiet reminder at the foot of the calendar; a second
+// bordered card with a second outlined button read as a duplicate panel. Its
+// link is the shared `.link-more`, the "quieter" level of the button system.
 import { externalLinkAttrs } from '../lib/externalLink';
 
 interface Props {
@@ -14,36 +20,28 @@ interface Props {
 const { calendarUrl } = Astro.props as Props;
 ---
 
-<div class="sub">
-  <p>
-    Want every new event, across all chapters, in your own calendar? Subscribe
-    on Luma and they'll appear automatically.
-  </p>
-  <a class="btn btn-out" href={calendarUrl} {...externalLinkAttrs(calendarUrl, Astro.url.origin)}>
+<p class="sub">
+  Get every new event, across all chapters, in your own calendar.
+  <a
+    class="link-more"
+    href={calendarUrl}
+    {...externalLinkAttrs(calendarUrl, Astro.url.origin)}
+  >
     Subscribe on Luma →
   </a>
-</div>
+</p>
 
 <style>
   .sub {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
-    margin-top: 16px;
-    padding: 20px 24px;
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--crimson);
-    border-radius: 6px;
-    background: var(--paper-2);
+    max-width: 920px;
+    margin: var(--s-4) auto 0;
+    text-align: center;
+    font-size: var(--t-sm);
+    line-height: 1.6;
+    color: var(--ink-3);
   }
-  p {
-    font-family: var(--font-serif);
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--ink-2);
-    max-width: 58ch;
-    margin: 0;
+  a {
+    margin-left: 0.5em;
+    white-space: nowrap;
   }
 </style>

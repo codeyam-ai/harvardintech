@@ -9,5 +9,5 @@
   "componentName": "EventCardGrid",
   "scenarioType": "component",
   "pageFilePath": "src/components/EventCardGrid.astro",
-  "description": "The past variant, differing in three ways that are all the point: the date turns from crimson to grey, the card dims, and the Learn more link is dropped entirely because a past event's registration page is either gone or misleading. This is the block that makes a chapter with a quiet month look alive rather than abandoned, so it ships on every chapter page."
+  "description": "The past variant, differing in two ways that are both the point: the date turns from crimson to grey, and the Learn more link is dropped entirely because a past event's registration page is either gone or misleading. The card itself no longer dims, so its square cover image reads at full strength. This is the block that makes a chapter with a quiet month look alive rather than abandoned, so it ships on every chapter page."
 }

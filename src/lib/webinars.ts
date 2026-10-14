@@ -52,10 +52,9 @@ export function webinarPosts<T extends WebinarEntryLike>(posts: readonly T[]): T
 /**
  * The year a webinar is filed under, read in UTC.
  *
- * `getUTCFullYear`, not `getFullYear`, for the same reason `groupByYear` in
- * `events.ts` uses it: a date-only frontmatter value parses as UTC midnight, so
- * a local-time read in any US timezone reports the previous year for anything
- * dated 1 January.
+ * `getUTCFullYear`, not `getFullYear`: a date-only frontmatter value parses as
+ * UTC midnight, so a local-time read in any US timezone reports the previous
+ * year for anything dated 1 January.
  */
 export function webinarYear(date: string | Date): number {
   return (date instanceof Date ? date : new Date(date)).getUTCFullYear();

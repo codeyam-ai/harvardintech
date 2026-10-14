@@ -32,7 +32,7 @@
  * @property {string} [location]
  * @property {string} [link]
  * @property {string} [chapter]
- * @property {string} [coverImage]   Carried, but deliberately not written — see `eventMarkdown`.
+ * @property {string} [coverImage]   Luma's cover image URL.
  */
 
 /**
@@ -213,10 +213,8 @@ export function lumaSlugFromLink(link) {
  * yields no location rather than an invented one, because the field is rendered
  * verbatim and "Online" is a claim the feed does not actually make.
  *
- * `coverImage` is returned because Luma provides it, but the importer does NOT
- * write it: the `events` schema in `src/content/config.ts` has no such field
- * (it belongs to blog and webinars) and nothing in the events UI renders one.
- * It is here so the day that changes, the mapping already has it.
+ * `coverImage` is Luma's `cover_url`, written to the entry and rendered as the
+ * square image on every event card (owner, 2026-10-14).
  */
 /**
  * @param {any} item  One `entries[]` element of a `get-items` response.
@@ -284,6 +282,7 @@ export function eventMarkdown(entry, { description = '', communities = [] } = {}
   if (entry.location) lines.push(`location: ${yamlQuote(entry.location)}`);
   if (description) lines.push(`description: ${yamlQuote(description)}`);
   if (entry.link) lines.push(`link: ${yamlQuote(entry.link)}`);
+  if (entry.coverImage) lines.push(`coverImage: ${yamlQuote(entry.coverImage)}`);
   if (entry.chapter) lines.push(`chapter: ${entry.chapter}`);
   if (communities.length > 0) {
     lines.push('communities:');

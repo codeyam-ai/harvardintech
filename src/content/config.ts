@@ -167,6 +167,10 @@ const events = defineCollection({
     location: z.string().optional(),
     description: z.string().optional(),
     link: z.string().optional(),
+    // The event's cover — for an imported event, Luma's own cover URL. Shown
+    // as the square image at the top of every event card; an event without
+    // one gets the branded stand-in so a grid of cards keeps one shape.
+    coverImage: z.string().optional(),
     chapter: z.string().optional(),
     communities: z.array(z.string()).optional(),
     draft: z.boolean().optional(),

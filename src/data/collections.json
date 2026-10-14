@@ -73,6 +73,13 @@
           "optional": true
         },
         {
+          "name": "coverImage",
+          "label": "Cover image",
+          "type": "image",
+          "optional": true,
+          "hint": "The square picture at the top of the event's card. Events pulled in from Luma fill this in with Luma's own cover automatically. Leave it blank and the card shows the Harvard Alumni in Tech mark instead."
+        },
+        {
           "name": "chapter",
           "label": "Chapter",
           "type": "text",

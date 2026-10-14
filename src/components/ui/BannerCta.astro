@@ -1,0 +1,33 @@
+---
+// The primary button under a page banner's title and lede — passed into
+// `PageBanner`'s slot by the pages whose banner carries an action.
+//
+// One component because the /volunteer banner (the sign-up form) and the
+// /events banner (Subscribe on Luma) each carried a byte-identical copy of this
+// paragraph-plus-pill, and two copies of a button drift apart. A solid pill
+// with no arrow, per the site's button system (see `.btn` in tokens.css).
+//
+// `href` may be a site path or an outside URL: `withBase` only prefixes a
+// root-relative path, and `externalLinkAttrs` opens an outside one in a new
+// tab, so the caller does not have to know which it is.
+import { externalLinkAttrs } from '../../lib/externalLink';
+import { withBase } from '../../lib/url';
+
+interface Props {
+  href: string;
+  label: string;
+}
+const { href, label } = Astro.props as Props;
+---
+
+<p class="banner-cta">
+  <a class="btn btn-solid" href={withBase(href)} {...externalLinkAttrs(href, Astro.url.origin)}>
+    {label}
+  </a>
+</p>
+
+<style>
+  .banner-cta {
+    margin: var(--s-4) 0 0;
+  }
+</style>

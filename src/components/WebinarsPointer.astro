@@ -1,22 +1,32 @@
 ---
-// The line at the foot of /events pointing at the 2020 recordings.
+// The line at the foot of /events pointing at the webinar recordings.
 //
 // The webinars are the other half of the organisation's history, and someone
-// who has just scrolled through the 2013-2019 archive is exactly the reader
-// looking for them — but they live under Content Hub in the menu, nowhere near
-// Events. This closes that gap without duplicating the recordings onto a page
-// that already carries the calendar, the recent cards and the whole archive.
+// who has just looked through the past events is exactly the reader looking
+// for them — but they live under Content Hub in the menu, nowhere near Events.
+// This closes that gap without duplicating the recordings onto a page that
+// already carries the calendar and the recent cards.
+//
+// It sits directly under the "View all past events on Luma" button and is
+// centred to match it and the card grid above (owner, 2026-10-14).
 import { withBase } from '../lib/url';
 ---
 
 <p class="webinars-pointer">
-  Looking for the 2020 webinar recordings? They are on the
+  Looking for past webinar recordings? They are on the
   <a href={withBase('/webinars/')}>webinars page</a>.
 </p>
 
 <style>
   .webinars-pointer {
     color: var(--color-muted);
-    margin: var(--space-xl) 0 0;
+    margin: var(--s-4) 0 0;
+    text-align: center;
+  }
+  /* With no past events above it, this line is the section's only content.
+     The section already pads its top, so any margin here only adds empty
+     space under the calendar. */
+  .webinars-pointer:first-child {
+    margin-top: 0;
   }
 </style>

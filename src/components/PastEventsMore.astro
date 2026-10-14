@@ -1,10 +1,14 @@
 ---
-// The line under the recent past-event cards pointing at Luma's own full list.
+// The button under the recent past-event cards pointing at Luma's own full list.
 //
 // The page shows only the most recent few as cards on purpose — a chapter with
 // no events coming up looks abandoned, and showing the last few proves it is
 // running, while showing all of them buries everything else. This is the escape
-// hatch for the reader who wants the rest and does not want the 2013 archive.
+// hatch for the reader who wants the rest.
+//
+// An outlined button, not a text link (owner, 2026-10-14): as underlined body
+// text it did not read as the way to the rest of the events. Outlined rather
+// than solid, so the banner's Subscribe on Luma stays the one primary action.
 import { externalLinkAttrs } from '../lib/externalLink';
 
 interface Props {
@@ -14,13 +18,19 @@ const { calendarUrl } = Astro.props as Props;
 ---
 
 <p class="past-more">
-  <a href={calendarUrl} {...externalLinkAttrs(calendarUrl, Astro.url.origin)}>
+  <a
+    class="btn btn-out"
+    href={calendarUrl}
+    {...externalLinkAttrs(calendarUrl, Astro.url.origin)}
+  >
     View all past events on Luma
   </a>
 </p>
 
 <style>
+  /* Centred under the card grid, which centres itself in the column. */
   .past-more {
-    margin: var(--space-md) 0 0;
+    margin: var(--s-5) 0 0;
+    text-align: center;
   }
 </style>

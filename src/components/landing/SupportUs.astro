@@ -9,6 +9,10 @@
 // URL lives in the volunteer page copy and is passed in; volunteering goes to
 // /volunteer. "Ways to partner" is hidden on /sponsor for launch, so nothing
 // links to `#levels`.
+//
+// Each card's "Volunteer →" line is the shared `.link-more` rather than a local
+// copy of it: the whole card is the link, so this is the quieter "more about
+// this item" level of the button system, not a pill (owner, 2026-10-14).
 import { VOLUNTEER_PATH } from '../../lib/contact';
 import SectionHead from '../ui/SectionHead.astro';
 import { externalLinkAttrs } from '../../lib/externalLink';
@@ -48,7 +52,7 @@ const options = [
         options.map((opt) => (
           <a class="sup" href={opt.href} {...externalLinkAttrs(opt.href, Astro.url.origin)}>
             <span class="sup-l">{opt.label}</span>
-            <span class="sup-go">{opt.cta}</span>
+            <span class="link-more">{opt.cta}</span>
           </a>
         ))
       }
@@ -85,13 +89,6 @@ const options = [
     font-weight: 800;
     letter-spacing: -0.01em;
     line-height: 1.2;
-  }
-  .sup-go {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--crimson);
   }
   @media (max-width: 900px) {
     .support-grid {

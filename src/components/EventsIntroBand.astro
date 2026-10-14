@@ -8,11 +8,18 @@
 //
 // The city list is DERIVED from the published chapters collection, the same way
 // the utility bar and the nav dropdown are, rather than typed into the copy.
+//
+// The Subscribe on Luma button sits here, under the title and standfirst, so a
+// visitor sees it without scrolling (owner, 2026-10-14). It used to live only in
+// the strip under the calendar, which on a quiet month sat below a screenful of
+// "No Upcoming Events". The strip stays as the second reminder.
 import { getCollection } from 'astro:content';
 import PageBanner from './ui/PageBanner.astro';
 import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
 import { eventsLedeFor } from '../lib/eventsIntro';
+import BannerCta from './ui/BannerCta.astro';
+import { siteLinks } from '../lib/site';
 
 const chapters = publishedEntries(await getCollection('chapters'), INCLUDE_DRAFTS).map((c) => ({
   slug: c.id,
@@ -20,8 +27,11 @@ const chapters = publishedEntries(await getCollection('chapters'), INCLUDE_DRAFT
 }));
 // Active chapters only — see `eventsLedeFor`.
 const lede = eventsLedeFor(chapters);
+const calendarUrl = siteLinks().luma;
 ---
 
 {/* No eyebrow: Events is a top-level menu item now, so there is no section to
     name above it (the old "Programs" label named a menu that no longer exists). */}
-<PageBanner title="Events" lede={lede} />
+<PageBanner title="Events" lede={lede}>
+  {calendarUrl ? <BannerCta href={calendarUrl} label="Subscribe on Luma" /> : null}
+</PageBanner>

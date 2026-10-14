@@ -2874,7 +2874,7 @@
       "file": "src/lib/designSystem.test.ts",
       "format": "vitest",
       "key": "design system colour › introduces no new hand-typed colour outside the paused campaign area",
-      "line": 102,
+      "line": 100,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -2883,7 +2883,7 @@
       "file": "src/lib/designSystem.test.ts",
       "format": "vitest",
       "key": "design system colour › lists no file that has already been cleaned up",
-      "line": 111,
+      "line": 109,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -2892,7 +2892,7 @@
       "file": "src/lib/designSystem.test.ts",
       "format": "vitest",
       "key": "design system colour › still finds the palette defined in the token layer",
-      "line": 119,
+      "line": 117,
       "registeredAt": "2026-09-29T17:18:35Z",
       "runner": "tests"
     },
@@ -3770,6 +3770,51 @@
       "runner": "tests"
     },
     {
+      "description": "A lookalike host must not be rewritten — the check is on the exact Luma image origin, not a substring of it.",
+      "file": "src/lib/luma.test.ts",
+      "format": "vitest",
+      "key": "eventCoverSrc › does not rewrite a URL on a different host",
+      "line": 43,
+      "registeredAt": "2026-10-14T20:06:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A URL that already carries resize options is left alone rather than given a second, nested prefix the CDN would not understand.",
+      "file": "src/lib/luma.test.ts",
+      "format": "vitest",
+      "key": "eventCoverSrc › leaves an already-resized Luma URL unchanged",
+      "line": 27,
+      "registeredAt": "2026-10-14T20:06:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A cover an editor uploaded to the site is served as-is: only Luma's CDN understands the resize path.",
+      "file": "src/lib/luma.test.ts",
+      "format": "vitest",
+      "key": "eventCoverSrc › passes a site-hosted image through unchanged",
+      "line": 35,
+      "registeredAt": "2026-10-14T20:06:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Luma serves covers from two folders; both live under the same host and take the same resize prefix.",
+      "file": "src/lib/luma.test.ts",
+      "format": "vitest",
+      "key": "eventCoverSrc › resizes a Luma event-covers path the same way",
+      "line": 17,
+      "registeredAt": "2026-10-14T20:06:42Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A Luma upload is asked for at card size through the CDN's resize path, square, so the card never downloads the full-size original.",
+      "file": "src/lib/luma.test.ts",
+      "format": "vitest",
+      "key": "eventCoverSrc › resizes a Luma upload to a square of the requested width",
+      "line": 7,
+      "registeredAt": "2026-10-14T20:06:42Z",
+      "runner": "tests"
+    },
+    {
       "description": "A Date object (what the content loader coerces frontmatter into) gives the same answer as the string it came from.",
       "file": "src/lib/eventDateParts.test.ts",
       "format": "vitest",
@@ -3846,8 +3891,17 @@
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
       "key": "eventMarkdown › omits an absent optional field instead of writing it empty",
-      "line": 240,
+      "line": 248,
       "registeredAt": "2026-09-18T20:25:49Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An event Luma sends with no cover gets no coverImage line at all, so the card falls back to the brand mark instead of a broken image.",
+      "file": "src/lib/lumaFeed.test.ts",
+      "format": "vitest",
+      "key": "eventMarkdown › omits coverImage when Luma sends no cover",
+      "line": 239,
+      "registeredAt": "2026-10-14T20:06:42Z",
       "runner": "tests"
     },
     {
@@ -3855,16 +3909,16 @@
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
       "key": "eventMarkdown › writes community tags as a list when given them",
-      "line": 254,
+      "line": 262,
       "registeredAt": "2026-09-18T20:25:49Z",
       "runner": "tests"
     },
     {
-      "description": "The collection schema is the contract. `coverImage` in particular is a field the mapping CARRIES but the file must not contain — it belongs to blog and webinars, nothing in the events UI renders it, and the schema would silently strip it while it sat in the file looking meaningful.",
+      "description": "The collection schema is the contract: every field written here is one the events collection declares. That now includes coverImage, Luma's cover, which every event card renders as its square image.",
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
       "key": "eventMarkdown › writes only the fields the events collection declares",
-      "line": 227,
+      "line": 226,
       "registeredAt": "2026-09-18T20:25:49Z",
       "runner": "tests"
     },
@@ -3945,7 +3999,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › carries the optional fields the event cards render",
-      "line": 236,
+      "line": 235,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3954,7 +4008,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › does not match a tag that only looks like the owner id",
-      "line": 257,
+      "line": 256,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3963,7 +4017,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › excludes events with no tag at all",
-      "line": 265,
+      "line": 264,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3972,7 +4026,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › handles an event with no communities key",
-      "line": 205,
+      "line": 204,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -3981,7 +4035,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches a community id through the same chapter tag",
-      "line": 228,
+      "line": 227,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3990,7 +4044,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches an owner named in the communities list",
-      "line": 280,
+      "line": 279,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -3999,7 +4053,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches any id in the communities list, with no chapter tag at all",
-      "line": 303,
+      "line": 302,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4008,7 +4062,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns a doubly-matching event only once",
-      "line": 296,
+      "line": 295,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4017,7 +4071,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns nothing when no event is tagged to the owner",
-      "line": 272,
+      "line": 271,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4026,7 +4080,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns only the events tagged to the given owner",
-      "line": 220,
+      "line": 219,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4035,7 +4089,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › still matches the chapter tag on a dual-tagged event",
-      "line": 288,
+      "line": 287,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4404,7 +4458,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › does not zero-pad single-digit days",
-      "line": 42,
+      "line": 41,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -4413,7 +4467,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › formats a Date instance the same as its ISO string",
-      "line": 36,
+      "line": 35,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -4422,7 +4476,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › formats an ISO date as Month D, YYYY",
-      "line": 31,
+      "line": 30,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -4910,42 +4964,6 @@
       "key": "goalMetersMissingWidgetId › treats an empty or whitespace-only widget id as missing",
       "line": 143,
       "registeredAt": "2026-08-17T17:02:18Z",
-      "runner": "tests"
-    },
-    {
-      "description": "The reason this function exists rather than an inline getFullYear(). A date-only entry parses as UTC midnight, so reading its LOCAL year anywhere behind UTC — every US timezone, i.e. most of this site's readers — files a New Year's Day event under the previous year, on their machine and not on the author's.",
-      "file": "src/lib/events.test.ts",
-      "format": "vitest",
-      "key": "groupByYear › files a January 1st event under its own year in a timezone behind UTC",
-      "line": 451,
-      "registeredAt": "2026-09-18T13:34:02Z",
-      "runner": "tests"
-    },
-    {
-      "description": "Sorting the years must not disturb the events inside one: they arrive newest-first from `splitEvents` and the fold shows them that way.",
-      "file": "src/lib/events.test.ts",
-      "format": "vitest",
-      "key": "groupByYear › keeps the order events arrived in within a year",
-      "line": 440,
-      "registeredAt": "2026-09-18T13:34:02Z",
-      "runner": "tests"
-    },
-    {
-      "description": "A site with no imported history hits this path, and `EventsArchive` keys its entire render off the group count — an empty list is what makes the whole section disappear rather than render a heading over nothing.",
-      "file": "src/lib/events.test.ts",
-      "format": "vitest",
-      "key": "groupByYear › returns an empty list unchanged",
-      "line": 470,
-      "registeredAt": "2026-09-18T13:34:02Z",
-      "runner": "tests"
-    },
-    {
-      "description": "The folds read downward from the most recent year, matching how the rest of the page orders past events — and the grouping key is a Map, whose insertion order follows the input rather than the year.",
-      "file": "src/lib/events.test.ts",
-      "format": "vitest",
-      "key": "groupByYear › returns the newest year first",
-      "line": 432,
-      "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
     {
@@ -7033,7 +7051,7 @@
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
       "key": "lumaEntriesFromFeed › maps every usable entry and silently drops the rest",
-      "line": 282,
+      "line": 290,
       "registeredAt": "2026-09-18T20:25:49Z",
       "runner": "tests"
     },
@@ -7042,7 +7060,7 @@
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
       "key": "lumaEntriesFromFeed › treats a response with no entries as empty rather than throwing",
-      "line": 292,
+      "line": 300,
       "registeredAt": "2026-09-18T20:25:49Z",
       "runner": "tests"
     },
@@ -9634,7 +9652,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › does not mutate its input",
-      "line": 365,
+      "line": 364,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -9643,7 +9661,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › honours an explicit limit",
-      "line": 348,
+      "line": 347,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -9652,7 +9670,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › preserves the order it was given",
-      "line": 331,
+      "line": 330,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -9661,7 +9679,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns at most three events by default",
-      "line": 323,
+      "line": 322,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -9670,7 +9688,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns everything when there are fewer than the limit",
-      "line": 342,
+      "line": 341,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -9679,7 +9697,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns nothing for a limit of zero or less",
-      "line": 356,
+      "line": 355,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -12181,7 +12199,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › accepts a caller-supplied cutoff",
-      "line": 402,
+      "line": 401,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -12190,7 +12208,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › defaults its cutoff to ARCHIVE_BEFORE",
-      "line": 412,
+      "line": 411,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -12199,7 +12217,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › keeps the order of both halves",
-      "line": 388,
+      "line": 387,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -12208,7 +12226,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › puts the day before the cutoff in the archive and the cutoff day in recent",
-      "line": 378,
+      "line": 377,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -12217,7 +12235,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › returns two empty halves for an empty list",
-      "line": 421,
+      "line": 420,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -12226,7 +12244,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › does not mutate the input array order",
-      "line": 102,
+      "line": 101,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -12235,7 +12253,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › handles an empty event list",
-      "line": 68,
+      "line": 67,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -12244,7 +12262,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns no past events when all are upcoming",
-      "line": 81,
+      "line": 80,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -12253,7 +12271,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns no upcoming events when every event has passed",
-      "line": 93,
+      "line": 92,
       "registeredAt": "2026-08-05T20:56:12Z",
       "runner": "tests"
     },
@@ -12262,7 +12280,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns past events sorted most recent first",
-      "line": 62,
+      "line": 61,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -12271,7 +12289,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns upcoming events sorted soonest first",
-      "line": 56,
+      "line": 55,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -12280,7 +12298,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › treats an event exactly at now as upcoming",
-      "line": 73,
+      "line": 72,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -13198,7 +13216,7 @@
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
       "key": "the feed request › asks for the past as a separate request, not a page of the same one",
-      "line": 265,
+      "line": 273,
       "registeredAt": "2026-09-18T20:25:49Z",
       "runner": "tests"
     },
@@ -13207,7 +13225,7 @@
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
       "key": "the feed request › imports from the same calendar the Events page embeds",
-      "line": 274,
+      "line": 282,
       "registeredAt": "2026-09-18T20:25:49Z",
       "runner": "tests"
     },
@@ -13889,7 +13907,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "toEventDate › parses an ISO date string into a Date",
-      "line": 22,
+      "line": 21,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -13898,7 +13916,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "toEventDate › returns a Date instance unchanged",
-      "line": 16,
+      "line": 15,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -14141,7 +14159,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › accepts a communities tag that matches a known id",
-      "line": 186,
+      "line": 185,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -14150,7 +14168,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › catches a tag that differs only by whitespace",
-      "line": 133,
+      "line": 132,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -14159,7 +14177,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › handles an empty event list",
-      "line": 68,
+      "line": 67,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -14168,7 +14186,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › handles an event with no communities key",
-      "line": 205,
+      "line": 204,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -14177,7 +14195,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › names a chapter tag that matches no chapter",
-      "line": 112,
+      "line": 111,
       "registeredAt": "2026-07-28T20:50:40Z",
       "runner": "tests"
     },
@@ -14186,7 +14204,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports a bad chapter tag and a bad community tag together",
-      "line": 196,
+      "line": 195,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -14195,7 +14213,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports a typo in the communities list",
-      "line": 176,
+      "line": 175,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -14204,7 +14222,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports each distinct tag once, in first-seen order",
-      "line": 140,
+      "line": 139,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -14213,7 +14231,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports every tag when there are no chapters at all",
-      "line": 167,
+      "line": 166,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -14222,7 +14240,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports nothing when every tag matches a chapter",
-      "line": 123,
+      "line": 122,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -14231,7 +14249,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › treats a blank tag as untagged",
-      "line": 151,
+      "line": 150,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },

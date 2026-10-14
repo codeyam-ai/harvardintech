@@ -220,10 +220,9 @@ describe('slugifyTitle', () => {
 });
 
 describe('eventMarkdown', () => {
-  // The collection schema is the contract. `coverImage` in particular is a
-  // field the mapping CARRIES but the file must not contain — it belongs to
-  // blog and webinars, nothing in the events UI renders it, and the schema
-  // would silently strip it while it sat in the file looking meaningful.
+  // The collection schema is the contract: every field written here is one
+  // the events collection declares. That now includes `coverImage`, Luma's
+  // cover, which every event card renders as its square image.
   it('writes only the fields the events collection declares', () => {
     const out = eventMarkdown(lumaEventToEntry(MIXER)!);
 
@@ -231,7 +230,16 @@ describe('eventMarkdown', () => {
     expect(out).toContain('date: 2026-09-28T18:00:00-04:00');
     expect(out).toContain('location: "New York, NY"');
     expect(out).toContain('link: "https://luma.com/dwn2dmuj"');
+    expect(out).toContain('coverImage: "https://images.lumacdn.com/uploads/uz/f83ca1d3.png"');
     expect(out).toContain('chapter: nyc');
+  });
+
+  // An event Luma sends with no cover gets no `coverImage` line at all, so the
+  // card falls back to the brand mark instead of a broken image.
+  it('omits coverImage when Luma sends no cover', () => {
+    const bare = { ...MIXER, event: { ...MIXER.event, cover_url: undefined } };
+    const out = eventMarkdown(lumaEventToEntry(bare)!);
+
     expect(out).not.toContain('coverImage');
   });
 

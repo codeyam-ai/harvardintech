@@ -7,8 +7,7 @@
 // scrim and an 82px headline) was a third hero treatment on a site that now has
 // one; the banner supplies the tone, the scrim and the type.
 import PageBanner from '../ui/PageBanner.astro';
-import { externalLinkAttrs } from '../../lib/externalLink';
-import { withBase } from '../../lib/url';
+import BannerCta from '../ui/BannerCta.astro';
 
 interface Props {
   kicker?: string;
@@ -29,23 +28,5 @@ const { kicker, headline, intro, ctaLabel, ctaUrl, image } = Astro.props as Prop
   image={image}
   tone={image ? 'photo' : 'paper'}
 >
-  {
-    ctaLabel && ctaUrl ? (
-      <p class="vh-cta">
-        <a
-          class="btn btn-solid"
-          href={withBase(ctaUrl)}
-          {...externalLinkAttrs(ctaUrl, Astro.url.origin)}
-        >
-          {ctaLabel}
-        </a>
-      </p>
-    ) : null
-  }
+  {ctaLabel && ctaUrl ? <BannerCta href={ctaUrl} label={ctaLabel} /> : null}
 </PageBanner>
-
-<style>
-  .vh-cta {
-    margin: var(--s-4) 0 0;
-  }
-</style>

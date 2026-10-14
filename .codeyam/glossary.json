@@ -1,5 +1,17 @@
 [
   {
+    "description": "The solid pill button under a page banner's title and lede, passed into PageBanner's slot. Shared by the /events banner (Subscribe on Luma) and the /volunteer banner; takes a site path or an outside URL and handles base-prefixing and new-tab behaviour itself.",
+    "filePath": "src/components/ui/BannerCta.astro",
+    "name": "BannerCta",
+    "scenarios": [
+      "bannercta-subscribe-on-luma",
+      "bannercta-site-path"
+    ],
+    "tags": [
+      "ui"
+    ]
+  },
+  {
     "description": "One brand or section glyph as inline SVG, resolved from an icon key, a label, or an already-resolved icon for callers using a different table. Four surfaces had hand-rolled the same eight lines, and being small is exactly why they drifted: one copy carried a focusable attribute and another did not, so the same mark was keyboard-reachable on one band and skipped on the next. Renders nothing when a name resolves to no icon, so a CMS-entered channel label can be passed straight through.",
     "filePath": "src/components/ui/BrandGlyph.astro",
     "name": "BrandGlyph",
@@ -177,37 +189,15 @@
     ]
   },
   {
-    "description": "The folded 2013-2019 history at the foot of the events page. Groups the archive by year, derives its heading range from the events it was given rather than hardcoding one, and renders nothing at all when there is no archive. Thirty-three imported events cost seven fold rows here instead of thirty-three photo cards standing between a visitor and the rest of the page.",
-    "filePath": "src/components/EventsArchive.astro",
-    "name": "EventsArchive",
+    "description": "The square image at the top of every event card: the event's cover (a Luma cover resized to card size via eventCoverSrc), or the H mark on crimson when the event has none, so a grid mixing the two keeps one card shape.",
+    "filePath": "src/components/EventCardMedia.astro",
+    "name": "EventCardMedia",
     "scenarios": [
-      "eventsarchive-folded-by-year"
+      "eventcardmedia-luma-cover",
+      "eventcardmedia-no-cover-brand-mark"
     ],
     "tags": [
-      "events-archive"
-    ]
-  },
-  {
-    "description": "One row inside an opened archive year: the day, the title, the venue where the original site stated one, and the write-up as published. A row rather than a card, because nobody is deciding whether to attend a 2015 event and a card grid would give history the same weight as what is coming up.",
-    "filePath": "src/components/EventsArchiveItem.astro",
-    "name": "EventsArchiveItem",
-    "scenarios": [
-      "eventsarchiveitem-a-row-with-venue-and-write-up"
-    ],
-    "tags": [
-      "events-archive"
-    ]
-  },
-  {
-    "description": "One year of the archive as a closed disclosure row that opens to its events. Native details/summary is the whole mechanism - no JavaScript, keyboard-operable, and expandable by find-in-page, which is how anyone actually reaches a 2015 event.",
-    "filePath": "src/components/EventsArchiveYear.astro",
-    "name": "EventsArchiveYear",
-    "scenarios": [
-      "eventsarchiveyear-one-closed-fold",
-      "eventsarchiveyear-opened"
-    ],
-    "tags": [
-      "events-archive"
+      "events"
     ]
   },
   {
@@ -1060,6 +1050,15 @@
     "testFile": "src/lib/envFlag.test.ts"
   },
   {
+    "description": "Returns an event cover URL sized for a square card: a Luma CDN image is routed through the CDN resize path at the requested width and height, while an already-resized Luma URL or any non-Luma image is returned unchanged.",
+    "filePath": "src/lib/luma.ts",
+    "name": "eventCoverSrc",
+    "tags": [
+      "events"
+    ],
+    "testFile": "src/lib/luma.test.ts"
+  },
+  {
     "description": "Splits an event date into the month, day and year strings the landing-page event rows stack in their date column, formatted in UTC so a date-only value never slips to the previous day.",
     "filePath": "src/lib/eventDateParts.ts",
     "name": "eventDateParts",
@@ -1075,7 +1074,7 @@
     "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
-    "description": "The complete markdown file for one imported event. Writes only fields the `events` collection declares — notably NOT `coverImage`, which the mapping carries but the schema has no slot for — and omits an absent optional rather than writing it empty.",
+    "description": "The complete markdown file for one imported event. Writes only fields the `events` collection declares, including `coverImage` (Luma cover URL) when Luma sends one, and omits an absent optional rather than writing it empty.",
     "filePath": "src/lib/lumaFeed.js",
     "name": "eventMarkdown",
     "testFile": "src/lib/lumaFeed.test.ts"
@@ -1329,15 +1328,6 @@
     "filePath": "src/lib/momentumSections.ts",
     "name": "goalMetersMissingWidgetId",
     "testFile": "src/lib/momentumSections.test.ts"
-  },
-  {
-    "description": "Groups events by calendar year, newest year first, preserving each year's internal order. Reads the year in UTC so a date-only January 1st entry does not file itself under the previous year for readers in timezones behind UTC.",
-    "filePath": "src/lib/events.ts",
-    "name": "groupByYear",
-    "tags": [
-      "events-archive"
-    ],
-    "testFile": "src/lib/events.test.ts"
   },
   {
     "description": "Donors grouped into the recognition wall's bands, in the order the giving levels are declared, so the wall reads top-down from the largest commitment. Within a band the site-wide rule applies: the optional order pin first, then alphabetically by the DISPLAYED name — sorting by a withheld real name would break the alphabetical run at every anonymous card and hint at its first letter. A level with no donors is omitted rather than headed over nothing; a donor whose tier matches no declared level is not dropped but collects in a trailing 'Other supporters' group, so a renamed level or a typo costs an editor a visible mistake rather than a silently missing gift.",

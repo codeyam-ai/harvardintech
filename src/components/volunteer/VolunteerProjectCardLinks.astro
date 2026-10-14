@@ -2,9 +2,12 @@
 // The links at the foot of a project card: through to the full description, and
 // out to the project's own sign-up form.
 //
-// Stacked rather than side by side — two uppercase mono links on one row wrap
-// raggedly at the narrow end of the grid. Renders an empty flex container when
-// a card has neither link, and `gap` means that costs no space.
+// Two levels, per the site's button system (owner, 2026-10-14): "Get involved"
+// is the card's main action, so it is a pill with no arrow; "Read the full
+// description →" is the quieter "more about this item" link, in the shared
+// `.link-more` style. Stacked, with the pill last so it closes the card.
+// Renders an empty flex container when a card has neither link, and `gap`
+// means that costs no space.
 import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
 
@@ -19,15 +22,19 @@ const { href, applyUrl } = Astro.props as Props;
 <div class="foot">
   {
     href ? (
-      <a class="go" href={href}>
+      <a class="link-more" href={href}>
         Read the full description →
       </a>
     ) : null
   }
   {
     applyUrl ? (
-      <a class="go" href={withBase(applyUrl)} {...externalLinkAttrs(applyUrl, Astro.url.origin)}>
-        Get involved →
+      <a
+        class="btn btn-solid"
+        href={withBase(applyUrl)}
+        {...externalLinkAttrs(applyUrl, Astro.url.origin)}
+      >
+        Get involved
       </a>
     ) : null
   }
@@ -37,18 +44,8 @@ const { href, applyUrl } = Astro.props as Props;
   .foot {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: flex-start;
+    gap: var(--s-3);
     margin-top: 4px;
-  }
-  .go {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--crimson);
-    text-decoration: none;
-  }
-  .go:hover {
-    text-decoration: underline;
   }
 </style>

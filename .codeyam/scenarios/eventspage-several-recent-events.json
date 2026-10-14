@@ -8,7 +8,7 @@
   "mocks": {},
   "componentName": "EventsPage",
   "scenarioType": "component",
-  "description": "The events body once a busy season is behind us: several past events are recent enough to show as cards, so the Past events grid fills out instead of holding a single card, with the link to Luma's full past list beneath it. It is the counterpart to the one-card and archive-only states.",
+  "description": "The events body once a busy season is behind us: several past events are recent enough to show as cards, so the Past events grid fills out instead of holding a single card. Under it, the outlined View all past events on Luma button and then the past-webinars line, both centred. The sample events have no covers, so every card shows the H-mark stand-in in its square. It is the counterpart to the one-card and no-events states.",
   "demonstratesState": {
     "recent": "many"
   }

@@ -9,5 +9,5 @@
   "componentName": "VolunteerHero",
   "scenarioType": "component",
   "pageFilePath": "src/components/volunteer/VolunteerHero.astro",
-  "description": "The /volunteer hero: the 'Join the Volunteer Team' headline, the 100%-volunteer-run intro, and the sign-up CTA."
+  "description": "The /volunteer hero: the 'Join the Volunteer Team' headline, the 100%-volunteer-run intro, and the sign-up button: a solid pill with no arrow, now the shared BannerCta that the /events banner also uses."
 }

@@ -10,6 +10,8 @@ export interface EventLike {
   location?: string;
   description?: string;
   link?: string;
+  /** Square cover image URL — Luma's cover for an imported event. */
+  coverImage?: string;
   /** Id of the chapter OR community this event is tagged to — that entry's
    *  filename without `.md`. One "belongs to" field serves both, so an editor
    *  has no second box to choose between. */
@@ -214,31 +216,4 @@ export function splitArchive<T extends EventLike>(
     (toEventDate(event.date).valueOf() < cutoff ? archive : recent).push(event);
   }
   return { recent, archive };
-}
-
-/**
- * Group events by calendar year, newest year first, keeping each year's events
- * in the order they arrived.
- *
- * The year comes from `getUTCFullYear`, NOT `getFullYear`, and that is the
- * whole reason this is a named function with a test of its own. A date-only
- * entry like `2015-01-01` parses as UTC midnight; read in any timezone behind
- * UTC — which is every US timezone, so most of this site's readers — its LOCAL
- * year is 2014. A New Year's Day event would file itself under the previous
- * year on their machine and not on the author's, which is the worst kind of bug
- * to go looking for.
- */
-export function groupByYear<T extends EventLike>(
-  events: readonly T[],
-): { year: number; events: T[] }[] {
-  const byYear = new Map<number, T[]>();
-  for (const event of events) {
-    const year = toEventDate(event.date).getUTCFullYear();
-    const bucket = byYear.get(year);
-    if (bucket) bucket.push(event);
-    else byYear.set(year, [event]);
-  }
-  return [...byYear.entries()]
-    .sort((a, b) => b[0] - a[0])
-    .map(([year, yearEvents]) => ({ year, events: yearEvents }));
 }

@@ -82,10 +82,10 @@ describe('webinarYear', () => {
     expect(webinarYear('2020-05-25')).toBe(2020);
   });
 
-  // Same rule as `groupByYear` in events.ts, and the same reason: a date-only
-  // value is UTC midnight, so a local read in any US timezone reports the
-  // previous year for anything dated 1 January — wrong on the reader's machine
-  // and right on the author's, which is the worst way for a bug to behave.
+  // A date-only value is UTC midnight, so a local read in any US timezone
+  // reports the previous year for anything dated 1 January — wrong on the
+  // reader's machine and right on the author's, which is the worst way for a
+  // bug to behave.
   it('files a January 1st recording under its own year in a timezone behind UTC', () => {
     const original = process.env.TZ;
     process.env.TZ = 'America/New_York';

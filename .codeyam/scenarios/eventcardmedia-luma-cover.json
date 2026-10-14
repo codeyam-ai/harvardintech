@@ -1,0 +1,12 @@
+{
+  "name": "EventCardMedia - Luma Cover",
+  "id": "4ff24289-6615-4cc6-b15b-f020482d145e",
+  "url": "/isolated-components/EventCardMedia",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventCardMedia",
+  "scenarioType": "component",
+  "description": "The square at the top of an event card with a real Luma cover: the Leaders in Engineering panel artwork, square with its own title text, shown whole rather than cropped to a wider ratio and fetched from Luma at card size."
+}

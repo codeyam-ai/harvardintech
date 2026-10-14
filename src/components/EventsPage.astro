@@ -1,10 +1,14 @@
 ---
-// Full Events page body: an intro header, the recent "Past Events" cards, the
-// folded 2013-2019 archive, and a line out to the webinar recordings. Split
-// from a single flat `events` array against `now` (build time on the static
-// site) via the pure splitEvents / splitArchive helpers. Accepts a plain array
-// so it renders from getCollection() on the /events route and from
-// isolated-component scenarios (rich / archive-only / empty states).
+// Full Events page body: an intro header, the recent "Past Events" cards, a
+// button out to Luma's full list, and a line out to the webinar recordings.
+// Split from a single flat `events` array against `now` (build time on the
+// static site) via the pure splitEvents / splitArchive helpers. Accepts a plain
+// array so it renders from getCollection() on the /events route and from
+// isolated-component scenarios (rich / empty states).
+//
+// The folded 2013-2019 archive is no longer rendered here (owner, 2026-10-14):
+// its name and description read wrong on the page. The archive entries stay in
+// the collection; `splitArchive` still keeps them out of the recent cards.
 //
 // There is NO "Upcoming" list here. The Luma calendar embed sits directly above
 // this body on /events and is the live, always-current answer to "what's next";
@@ -14,7 +18,6 @@
 // the only place they exist.
 import EventsIntro from './EventsIntro.astro';
 import EventsSection from './EventsSection.astro';
-import EventsArchive from './EventsArchive.astro';
 import PastEventsMore from './PastEventsMore.astro';
 import WebinarsPointer from './WebinarsPointer.astro';
 import { splitEvents, splitArchive, type EventLike } from '../lib/events';
@@ -38,10 +41,14 @@ interface Props {
 const { events = [], now, showIntro = true } = Astro.props;
 
 const { past } = splitEvents(events, now ?? new Date());
-const { recent, archive } = splitArchive(past);
+const { recent } = splitArchive(past);
+// With no past events and no intro, the only thing left in this section is the
+// one-line webinars pointer, and the full section padding left it floating in a
+// tall empty band under the calendar.
+const onlyPointer = !showIntro && recent.length === 0;
 ---
 
-<section class="sec">
+<section class:list={['sec', { 'sec-tight': onlyPointer }]}>
   <div class="wrap">
     {showIntro ? <EventsIntro /> : null}
 
@@ -53,8 +60,12 @@ const { recent, archive } = splitArchive(past);
 
     {recent.length > 0 ? <PastEventsMore calendarUrl={siteLinks().luma} /> : null}
 
-    <EventsArchive events={archive} />
-
     <WebinarsPointer />
   </div>
 </section>
+
+<style>
+  .sec-tight {
+    padding: var(--s-5) 0;
+  }
+</style>

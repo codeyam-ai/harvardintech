@@ -9,5 +9,5 @@
   "componentName": "PastEventsMore",
   "scenarioType": "component",
   "pageFilePath": "src/components/PastEventsMore.astro",
-  "description": "The one line under the recent past-event cards offering the rest of the history on Luma. It exists because the page deliberately shows only the most recent few as cards, and this is the escape hatch for a reader who wants more but not the 2013 archive."
+  "description": "The outlined pill button under the recent past-event cards, View all past events on Luma, centred and with no arrow per the site's button system. It exists because the page deliberately shows only the most recent few as cards, and this is the way to the rest for a reader who wants more. It used to be an underlined text link that did not read as a button."
 }

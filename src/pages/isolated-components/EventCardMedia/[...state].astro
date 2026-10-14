@@ -1,0 +1,36 @@
+---
+import Component from "../../../../src/components/EventCardMedia.astro";
+import { scenarios, captureWidth } from "../../../../.codeyam/isolation-props/EventCardMedia.ts";
+import "../../../../src/styles/tokens.css";
+
+// GENERATED isolation page for EventCardMedia — do not edit, and do not commit it.
+// The scenario data lives in `.codeyam/isolation-props/EventCardMedia.ts`; edit that file instead. This page
+// is rebuilt from it by `codeyam-editor editor isolate --all`.
+//
+// One page is prerendered per scenario key: `Default` at
+// /isolated-components/EventCardMedia, every other key at
+// /isolated-components/EventCardMedia/<Scenario>.
+export function getStaticPaths() {
+  return Object.keys(scenarios).map((name) => ({
+    params: { state: name === "Default" ? undefined : name },
+    props: { name },
+  }));
+}
+
+const { name } = Astro.props;
+const props = scenarios[name] ?? {};
+const widthStyle = captureWidth === undefined ? "" : `width: 100%; max-width: ${captureWidth}px;`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: EventCardMedia — {name}</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style={`padding: var(--space-lg); ${widthStyle}`}>
+      <Component {...props} />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+---
+// The square image at the top of every event card.
+//
+// The event's cover when it has one — Luma's covers are square and often carry
+// their own title text, so the frame is square too and never crops them to a
+// wider ratio. Without a cover, the H mark on crimson fills the same square, so
+// a grid mixing the two still keeps one card shape (owner, 2026-10-14).
+import BrandMark from './BrandMark.astro';
+import { eventCoverSrc } from '../lib/luma';
+
+interface Props {
+  /** The cover URL — a Luma CDN URL is resized to card size, anything else is
+   *  used as-is. Absent → the brand-mark stand-in. */
+  coverImage?: string;
+}
+const { coverImage } = Astro.props as Props;
+---
+
+<div class="media">
+  {
+    coverImage ? (
+      <img
+        src={eventCoverSrc(coverImage, 560)}
+        alt=""
+        width="280"
+        height="280"
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <div class="fallback" aria-hidden="true">
+        <BrandMark class="mark" />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .media {
+    aspect-ratio: 1 / 1;
+    background: var(--paper-2);
+  }
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fallback {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    background: var(--crimson);
+    color: var(--white);
+  }
+  .fallback :global(.mark) {
+    width: 22%;
+    height: auto;
+  }
+</style>

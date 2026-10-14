@@ -1,8 +1,6 @@
 {
   "checks": {
-    "SCENARIO_DISTINCT_CAPTURE_COLLISION": [
-      "events-route-the-calendar-with-no-past-events-yet == events-route-upcoming-and-past"
-    ]
+    "SCENARIO_DISTINCT_CAPTURE_COLLISION": []
   },
   "version": 1
 }

@@ -31,6 +31,7 @@
         "chapter": "boston-cambridge",
         "date": "@today-63d",
         "link": "https://luma.com/d93hloxh",
+        "coverImage": "https://images.lumacdn.com/uploads/1g/3af260b6-eaab-4987-a008-226de621af05.png",
         "location": "Cambridge, MA",
         "slug": "2026-06-05-harvard-alumni-in-tech-alumni-day-meetup-in-cambridge-ma",
         "title": "Harvard Alumni in Tech Alumni Day Meetup in Cambridge, MA"
@@ -39,6 +40,7 @@
         "chapter": "london",
         "date": "@today-84d",
         "link": "https://luma.com/5cwrbr8c",
+        "coverImage": "https://images.lumacdn.com/uploads/36/44fe5124-4533-4ba4-9cb0-cae50d76a28e.png",
         "location": "London, United Kingdom",
         "slug": "2026-05-15-alumni-founders-co-working-day",
         "title": "Alumni Founders Co-working Day"
@@ -46,6 +48,7 @@
       {
         "date": "@today-99d",
         "link": "https://luma.com/fk6yuo82",
+        "coverImage": "https://images.lumacdn.com/event-covers/51/3ca64ff6-0259-40c1-81e4-e39e2de5b300.png",
         "location": "San Francisco, California",
         "slug": "2026-04-30-harvard-alumni-in-tech-leaders-in-engineering-panel",
         "title": "Harvard Alumni in Tech Leaders in Engineering Panel"
@@ -53,6 +56,7 @@
       {
         "date": "@today-105d",
         "link": "https://luma.com/h0ba0q6w",
+        "coverImage": "https://images.lumacdn.com/event-covers/l4/7e6ee337-00ab-4482-a6f3-0e37aadb999d.png",
         "location": "Denver, Colorado",
         "slug": "2026-04-24-harvard-alumni-in-tech-colorado-co-working-afternoon",
         "title": "Harvard Alumni in Tech Colorado Co-Working Afternoon"
@@ -73,5 +77,11 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/events.astro",
-  "description": "The /events page for a site with NO imported history: the live Luma calendar, the recent past events as cards, and the link out to Luma's full list - and no Archive section at all, because nothing here predates 2020. The counterpart to the archive scenario, and the state every chapter but New York is in. Note there is deliberately no Upcoming list: the Luma calendar above is the live answer to what is next, and a second list underneath showed the same events twice from a source that only refreshes on a rebuild."
+  "interactions": [
+    {
+      "action": "hover",
+      "text": "Past events"
+    }
+  ],
+  "description": "The /events page with past events behind it, framed on the Past events section by hovering its heading (a resting capture shows only the top of the page, identical to the no-past-events scenario). Six recent past events as cards in one shape: a square image, date, two-line title, place. Four carry their real Luma covers and the two oldest have none, so the H mark on crimson fills their square. The counterpart to the no-past-events scenario. Note there is deliberately no Upcoming list: the Luma calendar above is the live answer to what is next, and a second list underneath showed the same events twice from a source that only refreshes on a rebuild."
 }

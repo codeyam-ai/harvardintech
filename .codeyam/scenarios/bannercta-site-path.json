@@ -1,0 +1,12 @@
+{
+  "name": "BannerCta - Site Path",
+  "id": "53b54fee-801d-45e8-8427-5873d4da910d",
+  "url": "/isolated-components/BannerCta/SitePath",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "BannerCta",
+  "scenarioType": "component",
+  "description": "The same banner pill pointing at a page on this site, as the /volunteer banner does: the link is prefixed with the site base and stays in the same tab."
+}

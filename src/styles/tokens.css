@@ -201,7 +201,15 @@ h3 {
   padding: 13px 22px;
   /* Pill everywhere (owner, 2026-09-14), chosen over "square, pill for giving".
      The campaign components under donate/ and give/ keep their OWN pill CSS
-     while that area is paused, so this is not yet the only definition. */
+     while that area is paused, so this is not yet the only definition.
+     THE BUTTON SYSTEM has two levels (owner, 2026-10-14):
+       1. `.btn` pill — an ACTION, the main thing to do at that spot (Subscribe,
+          Get involved, View all past events). No arrow in its label: the pill
+          already reads as a button.
+       2. `.link-more` — "more about this item", inside a card, tile or list
+          (Learn more →, Read more →, Explore →). Always ends in "→".
+     A new link takes one of these two, never a third hand-rolled style. The
+     paused donate/give campaign keeps its own links for now (see above). */
   border-radius: var(--radius-pill);
 }
 .btn:hover {

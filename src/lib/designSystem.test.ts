@@ -59,8 +59,6 @@ const KNOWN_RAW_COLOUR = [
   'src/layouts/BaseLayout.astro',
   // Card borders and fills in four near-identical greys.
   'src/components/WebinarCard.astro',
-  // The archive year rule, sharing one of those greys.
-  'src/components/EventsArchiveYear.astro',
   // `var(--color-accent, #a41034)` — a defensive fallback, not a stray colour.
   'src/components/landing/GalleryTile.astro',
   'src/components/landing/GalleryExpand.astro',

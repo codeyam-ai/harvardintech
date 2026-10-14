@@ -8,5 +8,6 @@
   "mocks": {},
   "componentName": "SupportUs",
   "scenarioType": "component",
-  "pageFilePath": "src/components/landing/SupportUs.astro"
+  "pageFilePath": "src/components/landing/SupportUs.astro",
+  "description": "The Ways to support band: five crimson-edged tiles (sponsor an event, host us, share jobs, speak, volunteer), each a link as a whole. The small line at the foot of each tile, Start a conversation → or Volunteer →, uses the shared small-link style rather than a local copy of it."
 }

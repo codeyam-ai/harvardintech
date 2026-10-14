@@ -24,3 +24,17 @@ export const LUMA_CALENDAR_URL = 'https://lu.ma/harvardintech';
  *  import another, with nothing failing to say so. */
 export const LUMA_EMBED_URL =
   'https://luma.com/embed/calendar/cal-KK3JJjJ39Jwt9kI/events?lt=light';
+
+const LUMA_IMAGE_HOST = 'https://images.lumacdn.com/';
+
+/** An event cover at `width` CSS pixels, for a square card image.
+ *
+ *  Luma's covers are full-size uploads (often 1000px+ PNGs), and its CDN
+ *  resizes on request through the `cdn-cgi/image/<options>/` path prefix, so a
+ *  card asks for a small square instead of the original. Any other URL — a
+ *  cover an editor uploaded to the site — comes back unchanged. */
+export function eventCoverSrc(url: string, width: number): string {
+  if (!url.startsWith(LUMA_IMAGE_HOST) || url.includes('/cdn-cgi/')) return url;
+  const options = `format=auto,fit=cover,quality=80,width=${width},height=${width}`;
+  return `${LUMA_IMAGE_HOST}cdn-cgi/image/${options}/${url.slice(LUMA_IMAGE_HOST.length)}`;
+}

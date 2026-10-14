@@ -61,7 +61,7 @@ const {
             </p>
           </div>
           <a class="btn btn-solid" href={calendarUrl} rel="noopener" target="_blank">
-            View &amp; subscribe on Luma →
+            View &amp; subscribe on Luma
           </a>
         </div>
       ) : (
@@ -110,8 +110,13 @@ const {
        org usually has one or two events in flight, and Luma pads the rest of
        its panel with flat grey — so an over-tall frame reads as a half-empty
        box every quiet week, while a short one only costs a scroll on the rare
-       busy one. Raise the ceiling if the calendar starts running fuller. */
-    height: clamp(340px, 46vh, 540px);
+       busy one. Raise the ceiling if the calendar starts running fuller.
+       Shrunk again (owner, 2026-10-14) so the recent past events below are
+       reached sooner in a month with nothing coming up. The floor is set by
+       Luma's own empty state, which measures 371px tall at this column width
+       (318px on a phone): any shorter and the frame grows a scrollbar around
+       a "No Upcoming Events" message that has nothing to scroll to. */
+    height: clamp(380px, 42vh, 460px);
     border: 0;
     /* Luma's panel has its own rounded corners; this only clips the scroll
        area to match so the two edges agree. */

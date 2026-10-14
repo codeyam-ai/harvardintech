@@ -7,9 +7,14 @@
 // and the two surfaces would have drifted apart while looking like they shared
 // a definition.
 //
-// `auto-fit` (not `auto-fill`) on purpose: a chapter with one event should show
-// one card stretched across the row rather than one card and two empty tracks.
-// The webinars grid deliberately does the opposite — see the note there.
+// Cards keep one width. Each card opens on a square cover (see EventCard), so
+// stretching a lone card across the row — what this grid used to do — would
+// turn its cover into a 900px square. Three 280px tracks fit the 920px column.
+//
+// The block of tracks is centred in the column, and a short last row (two of
+// five cards) lines up under the left-hand cards rather than centring on its
+// own (owner, 2026-10-14). `auto-fit` collapses unused tracks, so a page with
+// only one or two cards in total still sits centred.
 import EventCard from './EventCard.astro';
 import type { EventLike } from '../lib/events';
 
@@ -28,7 +33,8 @@ const { events, variant = 'upcoming' } = Astro.props as Props;
   .event-grid {
     display: grid;
     gap: var(--s-4);
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 280px));
+    justify-content: center;
     max-width: 920px;
     margin: 0 auto;
   }

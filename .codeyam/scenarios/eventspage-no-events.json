@@ -8,5 +8,6 @@
   "mocks": {},
   "componentName": "EventsPage-Empty",
   "scenarioType": "component",
-  "pageFilePath": "src/components/EventsPage.astro"
+  "pageFilePath": "src/components/EventsPage.astro",
+  "description": "The events body with no past events at all: no Past events grid and no Luma button, just the page's title and standfirst and then the single line pointing at the past webinar recordings, centred. The archive section that used to fill this state is gone, so this is what a brand-new chapter's page body looks like."
 }

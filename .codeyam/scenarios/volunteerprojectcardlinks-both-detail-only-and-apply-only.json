@@ -8,6 +8,6 @@
   "mocks": {},
   "componentName": "VolunteerProjectCardLinks",
   "scenarioType": "component",
-  "description": "The three link combinations a real grid produces: both links, detail-page link only for a project with no sign-up form yet, and apply-only for a card rendered without a slug \u2014 which is exactly how every card looked before detail pages existed. Stacked rather than inline because two uppercase mono links on one row wrap raggedly at the narrow end of the grid.",
+  "description": "The three link combinations a real grid produces: both, detail-page link only for a project with no sign-up form yet, and apply-only for a card rendered without a slug. The two levels of the site's button system side by side: Read the full description \u2192 is the small shared link, and Get involved is a solid pill with no arrow because it is the card's main action. Stacked, with the pill last so it closes the card.",
   "pageFilePath": "src/components/volunteer/VolunteerProjectCardLinks.astro"
 }

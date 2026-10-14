@@ -9,5 +9,5 @@
   "componentName": "EventsPage",
   "scenarioType": "component",
   "pageFilePath": "src/components/EventsPage.astro",
-  "description": "The EventsPage component."
+  "description": "The events body with one event already past and the rest still ahead: the page's title and standfirst, a Past events grid holding the single past card, the outlined View all past events on Luma button, and the past-webinars line. Upcoming events are deliberately not listed here; the Luma calendar above this body on /events is the answer to what is next."
 }

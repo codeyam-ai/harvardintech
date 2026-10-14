@@ -1,0 +1,12 @@
+{
+  "name": "BannerCta - Subscribe On Luma",
+  "id": "8d32bee8-f3d4-4fdb-95b9-33ba9102c58a",
+  "url": "/isolated-components/BannerCta",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "BannerCta",
+  "scenarioType": "component",
+  "description": "The solid pill under the /events banner text, reading Subscribe on Luma with no arrow, per the site button system. It points at the outside Luma calendar, so it opens in a new tab."
+}

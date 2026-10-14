@@ -1,0 +1,38 @@
+---
+import Component from "../../../../src/components/ui/BannerCta.astro";
+import { scenarios, captureWidth } from "../../../../.codeyam/isolation-props/BannerCta.ts";
+import "../../../../src/styles/tokens.css";
+
+// GENERATED isolation page for BannerCta — do not edit, and do not commit it.
+// The scenario data lives in `.codeyam/isolation-props/BannerCta.ts`; edit that file instead. This page
+// is rebuilt from it by `codeyam-editor editor isolate --all`.
+//
+// One page is prerendered per scenario key: `Default` at
+// /isolated-components/BannerCta, every other key at
+// /isolated-components/BannerCta/<Scenario>.
+export function getStaticPaths() {
+  return Object.keys(scenarios).map((name) => ({
+    params: { state: name === "Default" ? undefined : name },
+    props: { name },
+  }));
+}
+
+const { name } = Astro.props;
+// BannerCta's props are both required, so the scenario entry is read as that
+// shape; every key in the props module supplies both.
+const props = (scenarios[name] ?? scenarios.Default) as { href: string; label: string };
+const widthStyle = captureWidth === undefined ? "" : `width: 100%; max-width: ${captureWidth}px;`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: BannerCta — {name}</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style={`padding: var(--space-lg); ${widthStyle}`}>
+      <Component {...props} />
+    </div>
+  </body>
+</html>

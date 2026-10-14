@@ -1,0 +1,12 @@
+{
+  "name": "EventCardMedia - No Cover, Brand Mark",
+  "id": "ce3c234f-c608-4e13-b3b8-68c348362e4e",
+  "url": "/isolated-components/EventCardMedia/NoCover",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventCardMedia",
+  "scenarioType": "component",
+  "description": "An event with no cover image: the H mark on crimson fills the same square, so a grid that mixes covered and uncovered events still keeps one card shape."
+}

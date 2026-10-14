@@ -14,6 +14,8 @@ import "../../../src/styles/tokens.css";
 //
 // The middle card has no link, the state an event gets before its registration
 // page exists; its card ends after the blurb rather than showing a dead link.
+// It also has no cover, so the row shows two real Luma covers beside the H-mark
+// stand-in — the mix a real grid gets — all in the same square card shape.
 import type { EventLike } from "../../../src/lib/events";
 
 const events: EventLike[] = [
@@ -25,6 +27,7 @@ const events: EventLike[] = [
     description:
       "An exclusive rooftop gathering in Hudson Yards welcoming new and returning alumni for the fall, with curated tabletop conversations on what people are building.",
     link: "https://example.com/fall-mixer",
+    coverImage: "https://images.lumacdn.com/uploads/uz/f83ca1d3-f391-4782-a00e-c17e533b8ab1.png",
   },
   {
     slug: "spring-social",
@@ -39,6 +42,7 @@ const events: EventLike[] = [
     date: "2026-10-10",
     location: "New York, NY",
     link: "https://example.com/welcome-nyc",
+    coverImage: "https://images.lumacdn.com/event-covers/u2/736d91fd-d795-46f5-ba0a-012613a9c331",
   },
 ];
 ---

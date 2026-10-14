@@ -7,7 +7,6 @@ import {
   eventsTaggedTo,
   recentPastEvents,
   splitArchive,
-  groupByYear,
   ARCHIVE_BEFORE,
 } from './events';
 
@@ -420,54 +419,5 @@ describe('splitArchive', () => {
   // rather than render nothing.
   it('returns two empty halves for an empty list', () => {
     expect(splitArchive([])).toEqual({ recent: [], archive: [] });
-  });
-});
-
-describe('groupByYear', () => {
-  const at = (date: string, title = date) => ({ title, date });
-
-  // The folds read downward from the most recent year, matching how the rest of
-  // the page orders past events — and the grouping key is a Map, whose
-  // insertion order follows the input rather than the year.
-  it('returns the newest year first', () => {
-    const groups = groupByYear([at('2013-08-13'), at('2018-08-18'), at('2016-11-02')]);
-
-    expect(groups.map((g) => g.year)).toEqual([2018, 2016, 2013]);
-  });
-
-  // Sorting the years must not disturb the events inside one: they arrive
-  // newest-first from `splitEvents` and the fold shows them that way.
-  it('keeps the order events arrived in within a year', () => {
-    const groups = groupByYear([at('2018-08-18', 'later'), at('2018-03-20', 'earlier')]);
-
-    expect(groups[0].events.map((e) => e.title)).toEqual(['later', 'earlier']);
-  });
-
-  // The reason this function exists rather than an inline getFullYear(). A
-  // date-only entry parses as UTC midnight, so reading its LOCAL year anywhere
-  // behind UTC — every US timezone, i.e. most of this site's readers — files a
-  // New Year's Day event under the previous year, on their machine and not on
-  // the author's.
-  it('files a January 1st event under its own year in a timezone behind UTC', () => {
-    const original = process.env.TZ;
-    process.env.TZ = 'America/New_York';
-    try {
-      // Guard the guard: if this assertion ever fails, the runtime stopped
-      // honouring a TZ change and the real check below has quietly become
-      // vacuous rather than passing on its merits.
-      expect(new Date('2015-01-01').getFullYear()).toBe(2014);
-
-      expect(groupByYear([at('2015-01-01')]).map((g) => g.year)).toEqual([2015]);
-    } finally {
-      if (original === undefined) delete process.env.TZ;
-      else process.env.TZ = original;
-    }
-  });
-
-  // A site with no imported history hits this path, and `EventsArchive` keys
-  // its entire render off the group count — an empty list is what makes the
-  // whole section disappear rather than render a heading over nothing.
-  it('returns an empty list unchanged', () => {
-    expect(groupByYear([])).toEqual([]);
   });
 });

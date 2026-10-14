@@ -9,5 +9,5 @@
   "componentName": "LumaSubscribe",
   "scenarioType": "component",
   "pageFilePath": "src/components/LumaSubscribe.astro",
-  "description": "The subscribe strip beneath the inline Luma embed on /events — the only subscribe affordance on the page, since the embed offers none."
+  "description": "The one centred line beneath the inline Luma embed on /events: a sentence about getting every new event in your own calendar, then SUBSCRIBE ON LUMA → in the shared small-link style. It used to be a boxed strip with its own outlined button; the primary Subscribe on Luma pill now sits in the page banner, so this is the quieter reminder."
 }
