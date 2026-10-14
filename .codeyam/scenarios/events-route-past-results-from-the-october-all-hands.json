@@ -1,0 +1,18 @@
+{
+  "name": "Events Route - Past Results From The October All-Hands",
+  "id": "3501c597-efc6-4339-82c3-8f3c8c1093b4",
+  "url": "/events",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/events.astro",
+  "description": "The /events past grid now that the NYC Fall Welcome Mixer is written up after the fact: its card leads with \"Sold out within 24 hours, with more than 90% of registrants attending\", the October 2026 volunteer all-hands figure, instead of the old space-is-limited pitch. The card clamps its description, which is why the result comes first. Alumni Day (June 5) sits at the bottom of the frame; its 120-alumni write-up is in the card below the fold. The hover only scrolls the past grid into view.",
+  "interactions": [
+    {
+      "action": "hover",
+      "text": "Sold out within 24 hours"
+    }
+  ]
+}

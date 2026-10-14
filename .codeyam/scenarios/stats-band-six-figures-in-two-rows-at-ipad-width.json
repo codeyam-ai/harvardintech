@@ -1,0 +1,12 @@
+{
+  "name": "Stats Band - Six Figures In Two Rows At iPad Width",
+  "id": "4e311cad-63f2-46c3-b1b2-f528c03a398f",
+  "url": "/isolated-components/Stats",
+  "dimensions": [
+    "Tablet"
+  ],
+  "mocks": {},
+  "componentName": "Stats",
+  "scenarioType": "component",
+  "description": "The homepage numbers band at 768px (iPad portrait) since the October 2026 all-hands added a sixth figure. One row of six would need ~1175px even with 32px gutters, and \"10,000+\" alone is ~180px wide, so from 761px to 1200px the band wraps to two rows of three with a rule between them instead of pushing the page into a sideways scroll."
+}

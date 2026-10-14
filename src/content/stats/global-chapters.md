@@ -1,5 +1,5 @@
 ---
-value: '4'
-label: 'City chapters and growing'
+value: '6+'
+label: 'Active communities'
 order: 3
 ---

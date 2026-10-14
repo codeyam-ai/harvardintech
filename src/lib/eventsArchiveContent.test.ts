@@ -166,7 +166,15 @@ describe('the Sept 28 event', () => {
   // copy.
   it('keeps the write-up and the specific venue the calendar does not carry', () => {
     expect(sept28!.frontmatter).toContain('Private rooftop, Hudson Yards, New York, NY');
-    expect(sept28!.frontmatter).toContain('Curated tabletop conversations');
+    expect(sept28!.frontmatter).toContain('curated tabletop conversations');
+  });
+
+  // The evening is over, so the write-up now leads with how it went (the
+  // October 2026 all-hands figures) instead of the pre-event "space is limited"
+  // pitch. The result comes first because the event card clamps the description.
+  it('leads with the result rather than the pre-event pitch', () => {
+    expect(sept28!.frontmatter).toContain('description: "Sold out within 24 hours');
+    expect(sept28!.frontmatter).not.toContain('Space is limited');
   });
 
   // A bare `2026-09-28` is UTC midnight, which `splitEvents` reads as past from

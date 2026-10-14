@@ -1,0 +1,451 @@
+{
+  "timestamp": "2026-10-14T23:05:13Z",
+  "title": "launch -- Refresh site facts from the October all-hands",
+  "type": "feature",
+  "userRequest": "## Summary\n\nBring the site's public numbers and two recent event pages up to date with the October 5, 2026 volunteer all-hands deck, and soften the AI community's call cadence to match how the calls actually run. The user reviewed the deck for confidentiality and approved exactly these items for public use: the headline stats, the Alumni Day and NYC Fall Mixer results, and the AI cadence wording. Today the homepage says \"100+ events\" and \"4 city chapters\", has no attendee figure, and the two 2026 event pages carry only pre-event copy.\n\n## Key Decisions\n\n- **New stat values (from the deck):** `150+` events hosted (was `100+`), a new `10,000+` event attendees stat, and `6+` active communities (was `4` \"City chapters and growing\"). The deck lists the six as NYC, SF, London, Boston, Founders, AI \"& more\". This also settles decision-sheet row `new-stat-chapters`, where the user asked for one consistent communities count.\n- **Change every place a number appears, not only the homepage.** The same figures are copied into the Momentum Fund page copy, the accomplishments list and the component defaults. If only one copy changes, the site contradicts itself, which row `new-stat-8000` was raised to fix.\n- **Event results go on the past-event entries.** Alumni Day (June 5, 2026): 120 alumni at HIT's first Boston/Cambridge event, with open networking and topic tables on AI, Founders, Boston/Cambridge, Security and general interest. NYC Fall Welcome Mixer (Sept 28, 2026): sold out within 24 hours, with more than 90% of registrants attending. Do NOT publish internal-only details from the deck: volunteer names, the attendee list being shared through the Directory, or goals.\n- **AI cadence wording is the user's own:** calls are \"every other week, as schedules allow\". Keep it short. The deck's \"bimonthly\" was ambiguous, and the user chose this phrasing.\n\n## Implementation\n\n### 1. Homepage stats\n\n**File**: `src/content/stats/events-hosted.md` — value `150+`.\n\n**File**: `src/content/stats/global-chapters.md` — value `6+`, label `Active communities`.\n\n**New file**: `src/content/stats/event-attendees.md` — value `10,000+`, label `Event attendees`, placed next to events (renumber `order` as needed).\n\nThe band goes from 5 to 6 stats. Check that `src/components/landing/Stats.astro` lays out 6 cleanly at phone, tablet and desktop widths, and update its built-in default list (lines ~20-21) to the same values.\n\n### 2. The other copies of the same numbers\n\n**File**: `src/content/pageCopy/donate.md` — the `stats` list: `150+` events and `6+` Active communities.\n\n**File**: `src/data/donatePage.json` — the same values, so the fallback copy agrees.\n\n**File**: `src/content/accomplishments/events-hosted-and-co-hosted.md` — value `150+`.\n\n**File**: `src/pages/isolated-components/HomeSections.astro` and `src/pages/isolated-components/MomentumStats.astro` — update the fixture values so scenarios show today's numbers.\n\n### 3. Past-event results\n\n**File**: `src/content/events/2026-06-05-harvard-alumni-in-tech-alumni-day-meetup-in-cambridge-ma.md` — add a `description` with the Alumni Day result above.\n\n**File**: `src/content/events/2026-09-28-harvard-in-tech-fall-welcome-mixer.md` — the current `description` is pre-event promotion (\"Space is limited…\"). Rewrite it in the past tense and lead with the sell-out and turnout. Decision-sheet row `fix-sept28-event` also touches this entry, so read its note before editing.\n\n### 4. AI cadence\n\n**File**: `src/content/communities/ai.md` — first callout: title `Calls every other week`, text starting \"An open call every other week, as schedules allow — …\". In the body, change \"the bi-weekly call\" to \"the regular call\".\n\n**File**: `src/content/sponsorLevels/global.md` — \"Sponsor the AI community's bi-weekly global calls\" becomes \"Sponsor the AI community's regular global calls\".\n\n**File**: `src/pages/isolated-components/CommunityCallouts.astro` and `src/pages/isolated-components/CalloutCard.astro` — match the fixture text. Code comments that say \"bi-weekly\" can stay.\n\n## Reused existing code\n\n- The `stats` collection rendered by `src/components/landing/Stats.astro`\n- The `pageCopy` merge in `src/lib/pageCopyMerge.ts` for the Momentum Fund stats\n- The `CommunityCallouts` component in `src/components/CommunityCallouts.astro`\n\n## Scenarios to Demonstrate\n\n- Homepage stats band with 6 stats at desktop and phone widths\n- Momentum Fund page stats showing 150+ and 6+\n- Past-event pages for Alumni Day and the Fall Mixer showing their results\n- AI community page with the new cadence callout\n\nCapture notes: the stats band is below the fold and URL fragments do not scroll captures, so frame it with a `hover` interaction and `--target` the recapture. Content edits are invisible to screenshot staleness, so force with `--target --force`.",
+  "description": "Brought the site's public numbers and two 2026 event entries in line with the October 5, 2026 volunteer all-hands deck, using only the items the user approved for public use. The homepage stat strip now shows 150+ events hosted, a new 10,000+ event attendees figure and 6+ active communities, with the same figures in the Momentum Fund page copy, its JSON fallback, the accomplishments list, the stat strip's built-in defaults and the isolation fixtures; because six figures no longer fit one row, the band wraps to two rows of three between 761px and 1200px and uses 32px gutters above that. The Fall Welcome Mixer entry now leads with its result (sold out within 24 hours, more than 90% of registrants attending), Alumni Day gained its 120-alumni write-up, and the AI community's calls read 'every other week, as schedules allow' (also on the global sponsor level). The chapter-count guard tests were rewritten so the active-communities figure may not exceed active chapters plus published communities. Scope: every open deliverable was already resolved before this cycle (7 of 7), so nothing was delivered or deferred against the deliverables list; none deferred. Not yet visible: the sponsor-level wording (the /sponsor page does not list levels today), the Momentum Fund stats block (hidden since the July review), and the Mixer's Luma cover image still says tickets are on sale. Also released a stale plan-claim marker for the unrelated 'remove or repurpose the unused chapter Volunteer link field' plan, left by a session that died at 19:06; that plan stays queued.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/launch--refresh-site-facts-from-the-october-all-hands.md\t.codeyam/plans/completed/launch--refresh-site-facts-from-the-october-all-hands.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenario-handlers.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenario-interactivity.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenario-issues.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenario-metrics.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/communitycallouts-what-happens-here.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-numbers-band-on-an-ipad.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumstats-campaign-figures.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/calloutcard-single-callout--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitycallouts-what-happens-here--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--laptop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-header-pinned-while-scrolling--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-our-mission-band--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-our-mission-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumstats-campaign-figures--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band-five-figures-at-ipad-width--tablet.png",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band-five-figures-at-ipad-width--tablet.png.hash",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/stats-band-five-figures-at-ipad-width.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/3478dad823a455da265efedda3d350e9704252afcd0996602befeb6cc93f1f7d.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/d6c85652928eeb39f3990c738f1d226b8cb7fc2b35002b6a9171fea563cfff83.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/Stats.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/accomplishments/events-hosted-and-co-hosted.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/communities/ai.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2026-06-05-harvard-alumni-in-tech-alumni-day-meetup-in-cambridge-ma.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/2026-09-28-harvard-in-tech-fall-welcome-mixer.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/pageCopy/donate.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/sponsorLevels/global.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/events-hosted.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/global-chapters.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/stats/harvard-alumni-in-tech.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/donatePage.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/eventsArchiveContent.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/presenceConsistency.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/CalloutCard.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/CommunityCallouts.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/HomeSections.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/MomentumStats.astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/events-route-past-results-from-the-october-all-hands.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band-six-figures-in-two-rows-at-ipad-width--tablet.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band-six-figures-in-two-rows-at-ipad-width--tablet.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/stats-band-six-figures-in-two-rows-at-ipad-width.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/17d8c75f8fe18a2403abf8a4f4a0ad1af2a73af1bae4c6a995ad56d86d9d4c4c.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/c39e7d009e9501eb900e914202e4b401bd1cbee13f4f02204d44fb96b0441fdc.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/d1acdbaa50632cf574277b5843f1d566bb088f10fc58f8518fd446499817392b.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/ff38f79f0cbc01d5903cde6f7f77ebcb645cc4d18a87710df09a95ac4c2395f4.json",
+      "status": "added"
+    },
+    {
+      "path": "src/content/stats/event-attendees.md",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Harvard In Tech - Header Pinned While Scrolling",
+      "screenshotPath": "harvard-in-tech-header-pinned-while-scrolling--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Mission Band Coming Soon",
+      "screenshotPath": "harvard-in-tech-mission-band-coming-soon--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Mission Band Hidden",
+      "screenshotPath": "harvard-in-tech-mission-band-hidden--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Numbers Band On An iPad",
+      "screenshotPath": "harvard-in-tech-numbers-band-on-an-ipad--tablet.png"
+    },
+    {
+      "name": "Harvard In Tech - Our Mission Band",
+      "screenshotPath": "harvard-in-tech-our-mission-band--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board On Four Sizes",
+      "screenshotPath": "harvard-in-tech-board-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapters On Four Sizes",
+      "screenshotPath": "harvard-in-tech-chapters-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact On Four Sizes",
+      "screenshotPath": "harvard-in-tech-contact-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Phone Menu Open",
+      "screenshotPath": "harvard-in-tech-phone-menu-open--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Stats Band",
+      "screenshotPath": "stats-band--mobile.png"
+    },
+    {
+      "name": "Stats Band - Six Figures In Two Rows At iPad Width",
+      "screenshotPath": "stats-band-six-figures-in-two-rows-at-ipad-width--tablet.png"
+    }
+  ],
+  "testResults": {
+    "total": 24,
+    "passed": 24,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 24,
+        "passed": 24
+      }
+    ]
+  }
+}

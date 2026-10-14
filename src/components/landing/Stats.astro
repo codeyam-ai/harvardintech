@@ -17,14 +17,19 @@ const {
   stats = [
     { value: '8,500+', label: 'Newsletter subscribers' },
     { value: '750+', label: 'Alumni in our WhatsApp' },
-    { value: '4', label: 'City chapters and growing' },
-    { value: '100+', label: 'Events hosted' },
+    { value: '6+', label: 'Active communities' },
+    { value: '150+', label: 'Events hosted' },
+    { value: '10,000+', label: 'Event attendees' },
     { value: '2013', label: 'Founded' },
   ],
 } = Astro.props as Props;
 ---
 
-<section class="stats" id="stats" style={`--n:${stats.length}`}>
+<section
+  class:list={['stats', { wrap: stats.length > 5 }]}
+  id="stats"
+  style={`--n:${stats.length}`}
+>
   {
     stats.map((s) => (
       <div class="stat">
@@ -69,6 +74,26 @@ const {
   @media (max-width: 1040px) {
     .stat {
       padding: 32px 20px;
+    }
+  }
+  /* Six figures need ~790px of digits ("10,000+" alone is ~180px). With 48px
+     gutters that is ~1370px, so a laptop-width page went sideways; 32px gutters
+     bring one row down to ~1175px. Below that, two rows of three keep every
+     figure whole until the phone layout's two columns take over. */
+  @media (min-width: 1201px) {
+    .wrap .stat {
+      padding-inline: 32px;
+    }
+  }
+  @media (min-width: 761px) and (max-width: 1200px) {
+    .stats.wrap {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .wrap .stat:nth-child(3n + 1) {
+      border-left: none;
+    }
+    .wrap .stat:nth-child(n + 4) {
+      border-top: 1px solid var(--line);
     }
   }
   @media (max-width: 760px) {

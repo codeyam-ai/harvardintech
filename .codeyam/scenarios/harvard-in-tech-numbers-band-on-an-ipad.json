@@ -1,6 +1,6 @@
 {
   "name": "Harvard In Tech - Numbers Band On An iPad",
-  "id": "e9e0f2d5-e9b7-4bbf-a450-020d892fc89a",
+  "id": "5505eecb-14fd-48e8-8bd2-eb3e5a45d691",
   "url": "/",
   "dimensions": [
     "Tablet"
@@ -8,7 +8,7 @@
   "mocks": {},
   "scenarioType": "application",
   "pageFilePath": "src/pages/index.astro",
-  "description": "The homepage at 768px (iPad portrait), scrolled to the numbers band. The October responsive sweep found the five figures pushed this page 1012px wide, so it scrolled sideways on every iPad; with the gutters brought in at the shared 1040px breakpoint all five sit on one row and the page stays inside the screen. The hover only scrolls the band into view, since a URL fragment does not scroll a capture.",
+  "description": "The homepage at 768px (iPad portrait), scrolled to the numbers band. Since the October 2026 all-hands the band carries six figures, and one row of six would push the page sideways (\"10,000+\" alone is ~180px), so between 761px and 1200px it wraps to two rows of three and the page stays inside the screen. The hover only scrolls the band into view, since a URL fragment does not scroll a capture.",
   "interactions": [
     {
       "action": "hover",

@@ -531,7 +531,8 @@
     "filePath": "src/components/landing/Stats.astro",
     "name": "Stats",
     "scenarios": [
-      "stats-band"
+      "stats-band",
+      "stats-band-six-figures-in-two-rows-at-ipad-width"
     ]
   },
   {

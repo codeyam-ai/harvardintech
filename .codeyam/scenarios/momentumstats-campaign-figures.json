@@ -1,6 +1,6 @@
 {
   "name": "MomentumStats - Campaign Figures",
-  "id": "2a411014-1818-4767-9c67-61103211c5f2",
+  "id": "cfd78f6d-7480-4c42-9316-5f5ec58b14e7",
   "url": "/isolated-components/MomentumStats",
   "dimensions": [
     "Desktop"
@@ -9,5 +9,5 @@
   "componentName": "MomentumStats",
   "scenarioType": "component",
   "pageFilePath": "src/components/donate/MomentumStats.astro",
-  "description": "The figures band: 100+ events hosted, 8,500+ newsletter subscribers, and 4 city chapters and growing, which is the same chapter count and wording the homepage stat strip and the sponsor intro use. It is not shown on the campaign page today, because the July review removed it from under the hero. The renderer and its copy stay so an editor can bring it back by adding a section of type stats and giving it Order 1. This frame shows what that band would look like."
+  "description": "The figures band: 150+ events hosted, 8,500+ newsletter subscribers, and 6+ active communities, the October 2026 all-hands figures the homepage stat strip also uses. It is not shown on the campaign page today, because the July review removed it from under the hero. The renderer and its copy stay so an editor can bring it back by adding a section of type stats and giving it Order 1. This frame shows what that band would look like."
 }

@@ -1,5 +1,5 @@
 ---
-value: '100+'
+value: '150+'
 label: 'Events hosted'
 order: 4
 ---

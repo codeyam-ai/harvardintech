@@ -46,6 +46,25 @@ function chapterStatuses(): string[] {
 const ACTIVE_COUNT = chapterStatuses().filter((s) => s === 'active').length;
 const FORMING_COUNT = chapterStatuses().filter((s) => s === 'forming').length;
 
+/** Published cross-chapter communities (AI, Founders, …), skipping drafts. */
+const COMMUNITY_COUNT = readdirSync(join(CONTENT, 'communities'))
+  .filter((f) => f.endsWith('.md'))
+  .filter((f) => frontmatterValue(join(CONTENT, 'communities', f), 'draft') !== 'true').length;
+
+/**
+ * Whether a stated "active communities" figure is true: "6+" claims at least
+ * six, so it may not exceed the chapters and communities that exist; a bare
+ * "7" claims exactly seven. A missing figure is never true — a renamed label
+ * must not let the check pass by matching nothing.
+ */
+function isTrueCommunitiesFigure(value: string | undefined): boolean {
+  const match = value?.match(/^(\d+)(\+?)$/);
+  if (!match) return false;
+  const stated = Number(match[1]);
+  const actual = ACTIVE_COUNT + COMMUNITY_COUNT;
+  return match[2] === '+' ? stated <= actual : stated === actual;
+}
+
 describe('chapter counts agree with the content', () => {
   // The fixture the whole file rests on. Stated as its own assertion so that a
   // roster change fails HERE with an obvious message, rather than failing three
@@ -55,33 +74,35 @@ describe('chapter counts agree with the content', () => {
   });
 
   // The homepage stat strip. This is the number a visitor sees first, and the
-  // one that said "6" while two of those six had never held an event.
-  it('the chapters stat equals the active-chapter count', () => {
+  // one that said "6" while two of those six had never held an event. Since the
+  // October 2026 all-hands it counts active communities — the chapters plus the
+  // cross-chapter communities — so the figure is checked against both.
+  it('the communities stat is not more than active chapters plus communities', () => {
     const value = frontmatterValue(join(CONTENT, 'stats/global-chapters.md'), 'value');
 
-    expect(value).toBe(String(ACTIVE_COUNT));
+    expect(isTrueCommunitiesFigure(value)).toBe(true);
   });
 
   // The donate page repeats the same figure in its own stats block, which is
   // read by people deciding whether to give money — so it is the worst place on
   // the site to overstate the size of the organisation.
-  it('the donate page Chapters stat equals the same count', () => {
+  it('the donate page communities stat is not more than the same count', () => {
     const donate = readFileSync(join(CONTENT, 'pageCopy/donate.md'), 'utf-8');
-    // Matches any label naming chapters ("City chapters and growing"), not only
-    // one that starts with the word, so a reworded label is still checked.
-    const chaptersStat = donate.match(/- value:\s*'?(\d+)'?\s*\n\s*label:[^\n]*\b[Cc]hapters\b/);
+    // Matches any label naming communities ("Active communities"), not only one
+    // that starts with the word, so a reworded label is still checked.
+    const stat = donate.match(/- value:\s*'?(\d+\+?)'?\s*\n\s*label:[^\n]*\b[Cc]ommunities\b/);
 
-    expect(chaptersStat?.[1]).toBe(String(ACTIVE_COUNT));
+    expect(isTrueCommunitiesFigure(stat?.[1])).toBe(true);
   });
 
   // The stat strip's built-in figures are what the homepage shows if the stats
   // collection is ever empty, so a stale count there resurfaces exactly when
   // nobody is looking.
-  it('the stat strip fallback Chapters figure equals the same count', () => {
+  it('the stat strip fallback communities figure is not more than the same count', () => {
     const stats = readFileSync(join(SRC, 'components/landing/Stats.astro'), 'utf-8');
-    const chaptersStat = stats.match(/value:\s*'(\d+)',\s*label:\s*'[^']*\b[Cc]hapters\b/);
+    const stat = stats.match(/value:\s*'(\d+\+?)',\s*label:\s*'[^']*\b[Cc]ommunities\b/);
 
-    expect(chaptersStat?.[1]).toBe(String(ACTIVE_COUNT));
+    expect(isTrueCommunitiesFigure(stat?.[1])).toBe(true);
   });
 
   // The sponsor intro spells the number out, in the CMS entry and in the JSON

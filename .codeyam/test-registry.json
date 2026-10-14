@@ -1445,26 +1445,26 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "chapter counts agree with the content › has four active chapters and two forming",
-      "line": 53,
+      "line": 72,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
-      "description": "The homepage stat strip. This is the number a visitor sees first, and the one that said \"6\" while two of those six had never held an event.",
+      "description": "The homepage stat strip's active-communities figure never claims more than the active chapters plus published communities; a bare number must match exactly, and a plus sign means at least.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
-      "key": "chapter counts agree with the content › the chapters stat equals the active-chapter count",
-      "line": 59,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "key": "chapter counts agree with the content › the communities stat is not more than active chapters plus communities",
+      "line": 80,
+      "registeredAt": "2026-10-14T22:15:47Z",
       "runner": "tests"
     },
     {
-      "description": "The donate page repeats the same figure in its own stats block, which is read by people deciding whether to give money — so it is the worst place on the site to overstate the size of the organisation.",
+      "description": "The donate page repeats the communities figure for people deciding whether to give money, so it must not overstate the active chapters plus communities either.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
-      "key": "chapter counts agree with the content › the donate page Chapters stat equals the same count",
-      "line": 68,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "key": "chapter counts agree with the content › the donate page communities stat is not more than the same count",
+      "line": 89,
+      "registeredAt": "2026-10-14T22:15:47Z",
       "runner": "tests"
     },
     {
@@ -1484,12 +1484,12 @@
       "runner": "tests"
     },
     {
-      "description": "The stat strip's built-in figures render if the stats collection is ever empty, so its chapters number must equal the active-chapter count rather than resurfacing a stale one.",
+      "description": "The stat strip's built-in figures render if the stats collection is ever empty, so its communities number must not overstate the active chapters plus communities.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
-      "key": "chapter counts agree with the content › the stat strip fallback Chapters figure equals the same count",
-      "line": 80,
-      "registeredAt": "2026-10-08T18:23:06Z",
+      "key": "chapter counts agree with the content › the stat strip fallback communities figure is not more than the same count",
+      "line": 101,
+      "registeredAt": "2026-10-14T22:15:47Z",
       "runner": "tests"
     },
     {
@@ -2190,7 +2190,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "copy names no retired or forming city as active › never claims six chapters",
-      "line": 132,
+      "line": 153,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -2199,7 +2199,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "copy names no retired or forming city as active › never mentions Japan or L.A.",
-      "line": 118,
+      "line": 139,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -2208,7 +2208,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "copy names no retired or forming city as active › the chapter sponsor level offers no forming city",
-      "line": 144,
+      "line": 165,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -2217,7 +2217,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "copy names no retired or forming city as active › the hero lede marks the forming cities as online groups",
-      "line": 155,
+      "line": 176,
       "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
@@ -10237,7 +10237,7 @@
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "retired content is gone rather than hidden › the new-chapters-launched accomplishment no longer exists",
-      "line": 181,
+      "line": 202,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13045,7 +13045,7 @@
       "file": "src/lib/eventsArchiveContent.test.ts",
       "format": "vitest",
       "key": "the Sept 28 event › carries a time and an offset, not a bare date",
-      "line": 175,
+      "line": 183,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -13065,6 +13065,15 @@
       "key": "the Sept 28 event › keeps the write-up and the specific venue the calendar does not carry",
       "line": 167,
       "registeredAt": "2026-09-18T20:25:49Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The past Fall Welcome Mixer entry opens with its October 2026 all-hands result (sold out in 24 hours) and no longer carries the pre-event space-is-limited pitch.",
+      "file": "src/lib/eventsArchiveContent.test.ts",
+      "format": "vitest",
+      "key": "the Sept 28 event › leads with the result rather than the pre-event pitch",
+      "line": 175,
+      "registeredAt": "2026-10-14T22:15:47Z",
       "runner": "tests"
     },
     {

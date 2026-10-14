@@ -17,12 +17,12 @@ ctaTagline: One community. Shared momentum. A stronger network.
 ctaLabel: Become a Founding Supporter
 campaignName: The Momentum Fund
 stats:
-  - value: 100+
+  - value: 150+
     label: Events hosted
   - value: 8,500+
     label: Newsletter subscribers
-  - value: '4'
-    label: City chapters and growing
+  - value: 6+
+    label: Active communities
 donorsEmptyMessage: Harvard Alumni in Tech's first fundraising campaign launches soon, with a 2026 goal of $10,000.
 donorTiers:
   - id: leadership
