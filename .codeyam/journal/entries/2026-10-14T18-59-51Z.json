@@ -1,0 +1,271 @@
+{
+  "timestamp": "2026-10-14T18:59:51Z",
+  "title": "Retire the Programs label on the Events and Webinars pages",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe navigation simplification removed the Programs dropdown; Events is now a top-level link and Webinars sits under Content hub. The small eyebrow label above the page titles still reads \"Programs\" on the Events page and the Webinars page, naming a section a visitor can no longer find in the menu. The homepage Focus Areas grid also has a \"Programs\" tile.\n\n## Key Decisions\n\n- Match each eyebrow to where the page now lives in the menu. **Decided by the user on 2026-10-13:** the Events page gets NO eyebrow (remove it from EventsIntro and EventsIntroBand), and Webinars gets \"Content hub\".\n- The Focus Areas \"Programs\" tile describes a kind of activity rather than a menu section; leave it unless the owner wants the wording aligned.\n\n## Implementation\n\n- `src/components/EventsIntro.astro` line 23 and `src/components/EventsIntroBand.astro` line 25: change the `Programs` label.\n- `src/components/WebinarsPage.astro` line 27: change `label=\"Programs\"`.\n- Recapture the EventsIntro, EventsIntroBand, EventsPage and WebinarsPage scenarios plus the events and webinars route scenarios.",
+  "description": "Removed the leftover 'Programs' eyebrow, which named a menu section that no longer exists: the Events page banner (and its isolated-capture fallback) now opens with the title alone, since Events is a top-level menu item, and the Webinars banner reads 'Content hub', where the page now lives in the menu. The homepage Focus Areas 'Programs' tile is unchanged, as decided. Scope: all 7 project deliverables were already resolved before this cycle, so none were delivered or deferred here; nothing from the plan is outstanding.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/retire-the-programs-label-on-the-events-and-webinars-pages.md\t.codeyam/plans/completed/retire-the-programs-label-on-the-events-and-webinars-pages.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-archive-folded-by-year--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-archive-folded-by-year--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintro-the-page-s-own-title--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintro-the-page-s-own-title--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintro-the-page-s-own-title--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-archive-and-recent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-archive-and-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-archive-only-nothing-recent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-archive-only-nothing-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-no-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-no-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-several-recent-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-several-recent-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-a-single-recording--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-a-single-recording--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-nothing-published--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-recordings-with-and-without-a-cover--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-recordings-with-and-without-a-cover--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/recapture-skip-clean.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/EventsIntro.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/EventsIntroBand.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/WebinarsPage.astro",
+      "status": "modified"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Events Route - Archive Folded By Year",
+      "screenshotPath": "events-route-archive-folded-by-year--desktop.png"
+    },
+    {
+      "name": "Events Route - The Calendar With No Past Events Yet",
+      "screenshotPath": "events-route-the-calendar-with-no-past-events-yet--mobile.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--mobile.png"
+    },
+    {
+      "name": "Webinars Route - Nothing Published",
+      "screenshotPath": "webinars-route-nothing-published--desktop.png"
+    },
+    {
+      "name": "Webinars Route - The Surviving Recordings",
+      "screenshotPath": "webinars-route-the-surviving-recordings--mobile.png"
+    },
+    {
+      "name": "EventsIntro - The Page's Own Title",
+      "screenshotPath": "eventsintro-the-page-s-own-title--mobile.png"
+    },
+    {
+      "name": "EventsIntroBand - Closing Flush Against The Calendar",
+      "screenshotPath": "eventsintroband-closing-flush-against-the-calendar--mobile.png"
+    },
+    {
+      "name": "EventsPage - Archive And Recent",
+      "screenshotPath": "eventspage-archive-and-recent--desktop.png"
+    },
+    {
+      "name": "EventsPage - Archive Only, Nothing Recent",
+      "screenshotPath": "eventspage-archive-only-nothing-recent--desktop.png"
+    },
+    {
+      "name": "EventsPage - Several Recent Events",
+      "screenshotPath": "eventspage-several-recent-events--desktop.png"
+    },
+    {
+      "name": "EventsPage - Upcoming and Past",
+      "screenshotPath": "eventspage-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - A Single Recording",
+      "screenshotPath": "webinarspage-a-single-recording--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - Nothing Published",
+      "screenshotPath": "webinarspage-nothing-published--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - Recordings With And Without A Cover",
+      "screenshotPath": "webinarspage-recordings-with-and-without-a-cover--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 10,
+        "passed": 10
+      }
+    ]
+  }
+}

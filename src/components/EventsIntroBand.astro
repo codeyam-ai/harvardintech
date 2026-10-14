@@ -22,4 +22,6 @@ const chapters = publishedEntries(await getCollection('chapters'), INCLUDE_DRAFT
 const lede = eventsLedeFor(chapters);
 ---
 
-<PageBanner label="Programs" title="Events" lede={lede} />
+{/* No eyebrow: Events is a top-level menu item now, so there is no section to
+    name above it (the old "Programs" label named a menu that no longer exists). */}
+<PageBanner title="Events" lede={lede} />
