@@ -172,8 +172,7 @@
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 6
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -192,17 +191,18 @@
       "id": "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
       "title": "Dev server stop and start leaves a second astro dev running",
       "mode": "backend",
-      "body": "## What happened\n\nSeen again; see notes.\n\n## What would have helped\n\nA single supervised dev server per project, and a restart that reports and refuses a second tree.",
+      "body": "## What happened\n\nSeen again; see notes.\n\n## What would have helped\n\nA single supervised dev server per project.",
       "reason": "Every dev-server restart this session launched two astro dev servers.",
       "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
       "rank": 1,
-      "sightings": 2,
+      "sightings": 3,
       "notes": [
         "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…",
-        "2026-10-14: 2026-10-14: `restart-dev-server` and a later `dev-server stop` each left two `npm run dev` trees started ~1-2s apart (one on :4323). Killing the stray was not enough — the shared `.astro` data store stayed corrupted, so seeds l…"
+        "2026-10-14: 2026-10-14: `restart-dev-server` and a later `dev-server stop` each left two `npm run dev` trees started ~1-2s apart (one on :4323). Killing the stray was not enough — the shared `.astro` data store stayed corrupted, so seeds l…",
+        "2026-10-14: 2026-10-14 (volunteer cycle): `dev-server stop` again left two supervisor-respawned trees 2s apart; killed the unmanaged one by PID."
       ]
     },
     {
@@ -214,8 +214,7 @@
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 12
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
@@ -227,7 +226,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 10,
       "sightings": 2,
       "notes": [
         "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
@@ -244,7 +242,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "rank": 7,
       "sightings": 1,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand."
@@ -275,7 +272,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 8,
       "sightings": 1
     },
     {
@@ -288,7 +284,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 9,
       "sightings": 1
     },
     {
@@ -319,7 +314,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 3,
+      "rank": 4,
       "sightings": 1
     },
     {
@@ -331,7 +326,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 5,
       "sightings": 1
     },
     {
@@ -374,7 +368,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
       "kind": "tech-debt",
-      "rank": 4,
+      "rank": 5,
       "sightings": 1
     },
     {
@@ -387,7 +381,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 11,
       "sightings": 1
     },
     {
@@ -421,6 +414,44 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+      "title": "Content edits are invisible to screenshot staleness and to the impacted-scenario check",
+      "mode": "backend",
+      "body": "## What happened\n\nThis cycle changed only `src/content/projects/*.md` and `src/content/volunteerPage/volunteer.md`. `client-errors '{\"scope\":\"impacted\"}'` checked 0 scenarios, every build step auto-advanced as non-logic-bearing, and `recapture-stale` reported nothing stale — yet the volunteer-page scenarios now render a new heading and 14 new cards. I had to force-recapture them by hand, and an unseeded new scenario captured whatever the sandbox last held (an empty roles list) until I re-copied the content into the sandbox myself.\n\n## What would have helped\n\nTreat a content collection as a dependency of the pages that load it, so impacted/stale checks include them; and seed an unseeded scenario from the working-tree content rather than the last scenario's leftovers.",
+      "reason": "A content-only change reported zero impacted scenarios and zero stale screenshots although it changed what three volunteer scenarios show.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
+      "rank": 3,
+      "sightings": 1,
+      "notes": [
+        "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed."
+      ]
+    },
+    {
+      "id": "five-sheet-roles-carried-only-the-placeholder-text-propose-another-idea-for-a-volunteer-role-city-lead-social-events-ai-events-for-nyc-and-sf-founders-task-force-co-lead-or-lead-they-were-folded-into-the-city-and-founders-roles",
+      "title": "Five sheet roles carried only the placeholder text 'Propose another idea for a volunteer role.' (City Lead – Social Events / AI Events for NYC and SF, Founders Task Force Co-Lead or Lead); they were folded into the city and Founders roles …",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is",
+      "title": "The 'Open projects' eyebrow above the new 'Volunteer roles open this fall' heading was left as is.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
       "sightings": 1
     }
   ],
@@ -500,6 +531,24 @@
         "preview-flow-has-no-way-to-scroll-the-page",
         "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
         "scenario-review-counts-seed-error-candidates-without-naming-them"
+      ]
+    },
+    {
+      "at": "2026-10-14T18:39:30.077236670+00:00",
+      "feature": "Fall 2026 volunteer roles on /volunteer",
+      "notes": "Content-only cycle. The main friction was the content sandbox: new role files did not reach the preview or an unseeded capture without copying them in by hand, and impacted/stale checks ignore content. Also a self-inflicted staging slip (a…",
+      "proposedIds": [
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "five-sheet-roles-carried-only-the-placeholder-text-propose-another-idea-for-a-volunteer-role-city-lead-social-events-ai-events-for-nyc-and-sf-founders-task-force-co-lead-or-lead-they-were-folded-into-the-city-and-founders-roles",
+        "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is"
+      ],
+      "rankedIds": [
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming"
       ]
     }
   ]
