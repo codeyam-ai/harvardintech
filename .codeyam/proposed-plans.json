@@ -173,7 +173,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 12
+      "rank": 20
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -192,18 +192,20 @@
       "id": "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
       "title": "Dev server stop and start leaves a second astro dev running",
       "mode": "backend",
-      "body": "",
+      "body": "## What happened\nTwo `astro dev` processes were started two seconds apart.\n\n## What would have helped\nThe editor should refuse or reap a second dev server.",
+      "reason": "Seeded /donate captures were refused until the stray server was killed by hand.",
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 2,
-      "sightings": 5,
+      "rank": 13,
+      "sightings": 6,
       "notes": [
         "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…",
         "2026-10-14: 2026-10-14: `restart-dev-server` and a later `dev-server stop` each left two `npm run dev` trees started ~1-2s apart (one on :4323). Killing the stray was not enough — the shared `.astro` data store stayed corrupted, so seeds l…",
         "2026-10-14: 2026-10-14 (volunteer cycle): `dev-server stop` again left two supervisor-respawned trees 2s apart; killed the unmanaged one by PID.",
         "2026-10-15: 2026-10-15: the restart for the new middleware again launched two astro dev trees about 2 seconds apart; killing the stray by PID was needed before captures could be trusted.",
-        "2026-10-15: 2026-10-15: the restart for the new middleware again launched two astro dev trees about 2 seconds apart; killing the stray by PID was needed before captures could be trusted."
+        "2026-10-15: 2026-10-15: the restart for the new middleware again launched two astro dev trees about 2 seconds apart; killing the stray by PID was needed before captures could be trusted.",
+        "2026-10-15: Seen again 2026-10-15: after `restart-dev-server`, two `astro dev` processes started 2s apart; /donate captures were refused as 'reading committed content' until the stray was killed and .astro cleared."
       ]
     },
     {
@@ -228,7 +230,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 24,
+      "rank": 29,
       "sightings": 3,
       "notes": [
         "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
@@ -244,7 +246,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "rank": 8,
+      "rank": 19,
       "sightings": 4,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand.",
@@ -278,7 +280,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 11,
+      "rank": 18,
       "sightings": 1
     },
     {
@@ -289,7 +291,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 10,
+      "rank": 23,
       "sightings": 3,
       "notes": [
         "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots.",
@@ -322,7 +324,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 6,
+      "rank": 22,
       "sightings": 4,
       "notes": [
         "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …",
@@ -339,7 +341,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 20,
+      "rank": 3,
       "sightings": 1
     },
     {
@@ -351,7 +353,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 18,
       "sightings": 1
     },
     {
@@ -365,7 +366,6 @@
       "status": "pending",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
-      "rank": 4,
       "sightings": 3,
       "notes": [
         "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
@@ -384,7 +384,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
       "kind": "tech-debt",
-      "rank": 16,
+      "rank": 7,
       "sightings": 1
     },
     {
@@ -409,7 +409,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 32,
       "sightings": 1
     },
     {
@@ -421,7 +420,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 33,
       "sightings": 1
     },
     {
@@ -433,24 +431,24 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 19,
+      "rank": 8,
       "sightings": 1
     },
     {
       "id": "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
       "title": "Content edits are invisible to screenshot staleness and to the impacted-scenario check",
       "mode": "backend",
-      "body": "",
-      "reason": "Seen again this session.",
-      "severity": 3,
+      "body": "## What happened\nContent edits do not mark screenshots stale.\n\n## What would have helped\nTrack content files in staleness.",
+      "reason": "A copy-only change needed a hand-built list of about 80 scenarios to force-recapture.",
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 9,
-      "sightings": 2,
+      "rank": 14,
+      "sightings": 3,
       "notes": [
         "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed.",
-        "2026-10-14: 2026-10-14: the stats/event/AI copy changes left the affected component scenarios reported fresh; each needed `recapture-stale --target <slug> --force`, and two seedless scenarios needed a re-register to pick up corrected descr…"
+        "2026-10-14: 2026-10-14: the stats/event/AI copy changes left the affected component scenarios reported fresh; each needed `recapture-stale --target <slug> --force`, and two seedless scenarios needed a re-register to pick up corrected descr…",
+        "2026-10-15: Seen again 2026-10-15: scenario-for-changes left every src/content and src/data file unmapped, so the recapture list for a brand rename had to be assembled by hand from route lists."
       ]
     },
     {
@@ -462,7 +460,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 31,
       "sightings": 1
     },
     {
@@ -474,7 +471,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 34,
+      "rank": 9,
       "sightings": 1
     },
     {
@@ -489,7 +486,6 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 7,
       "sightings": 1
     },
     {
@@ -504,7 +500,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 35,
+      "rank": 10,
       "sightings": 1
     },
     {
@@ -517,7 +513,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 13,
+      "rank": 21,
       "sightings": 1
     },
     {
@@ -542,7 +538,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 21,
+      "rank": 4,
       "sightings": 1
     },
     {
@@ -554,7 +550,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 15,
+      "rank": 2,
       "sightings": 1
     },
     {
@@ -566,7 +562,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 17,
       "sightings": 1
     },
     {
@@ -579,7 +574,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 5,
+      "rank": 12,
       "sightings": 1
     },
     {
@@ -592,7 +587,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 28,
+      "rank": 24,
       "sightings": 1
     },
     {
@@ -604,7 +599,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 30,
+      "rank": 6,
       "sightings": 1
     },
     {
@@ -616,7 +611,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 29,
+      "rank": 5,
       "sightings": 1
     },
     {
@@ -628,7 +623,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 14,
+      "rank": 1,
       "sightings": 1
     },
     {
@@ -641,7 +636,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 1,
+      "rank": 11,
       "sightings": 2
     },
     {
@@ -654,7 +649,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 3,
+      "rank": 17,
       "sightings": 2
     },
     {
@@ -667,7 +662,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 23,
+      "rank": 30,
       "sightings": 2
     },
     {
@@ -680,7 +675,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 22,
+      "rank": 28,
       "sightings": 2
     },
     {
@@ -693,6 +688,73 @@
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "sightings": 2
+    },
+    {
+      "id": "warn-content-editors-when-copy-uses-a-retired-brand-name",
+      "title": "Warn content editors when copy uses a retired brand name",
+      "mode": "ui",
+      "body": "## Who benefits\nThe volunteers who edit the site in the content admin, and the owner, who has had to ask twice in a week for the same copy to be made consistent.\n\n## Evidence\n- obs-901e87f1cf07 (2026-10-15): the owner found the brand written several ways and asked for one form everywhere.\n- obs-db73de50a6e5 (2026-10-14): public figures live in five places, so keeping copy consistent means hunting every copy by hand.\n\n## Smallest useful version\nWhen an editor saves an entry in the content admin, show an inline warning if the text contains \"Harvard in Tech\", \"Harvard in Technology\" or a lowercase \"Harvard alumni in tech\", reusing the same pattern as the new guard test. A warning, not a block.\n\n## Case against\nThe guard test already catches it on the next development session, and the deploy runs no tests, so the warning only helps if editors read it. It covers one rule; a general style checker is much bigger. The editors are a small group who now know the rule.",
+      "reason": "CMS edits publish straight to the live site with no tests, so an editor can reintroduce \"Harvard in Tech\" today without anyone noticing.",
+      "severity": 3,
+      "source": "feature-synthesis",
+      "status": "pending",
+      "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
+      "kind": "feature",
+      "sightings": 1,
+      "evidenceIds": [
+        "obs-901e87f1cf07",
+        "obs-db73de50a6e5"
+      ],
+      "evidenceSessions": 2,
+      "ideaRank": 1
+    },
+    {
+      "id": "guardrail-refuses-a-scripted-text-replacement-across-tracked-files",
+      "title": "Guardrail refuses a scripted text replacement across tracked files",
+      "mode": "backend",
+      "body": "## What happened\nA brand rename needed the same literal replacement in 32 tracked source files. A single `perl -i -pe 's/Harvard in Tech/Harvard Alumni in Tech/g'` over the file list was refused by the pre-tool hook (\"scripted write whose destination could not be resolved statically\", 31st time in this project). The only accepted path was a Read plus an Edit call per file — 32 reads and 33 edits for one mechanical substitution.\n\n## What would have helped\nAn editor command for a reviewed bulk literal replacement (e.g. `replace-text --from <a> --to <b> --path ...` that prints the per-file diff into the transcript), so the change stays reviewable without one tool call per file.",
+      "reason": "A one-phrase rename across 32 files had to be done as 32 separate file edits.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
+      "rank": 16,
+      "sightings": 1
+    },
+    {
+      "id": "client-errors-impacted-scope-reports-404s-for-seeded-pages-that-load-fine-alone",
+      "title": "client-errors impacted scope reports 404s for seeded pages that load fine alone",
+      "mode": "backend",
+      "body": "## What happened\n`client-errors '{\"scope\":\"impacted\",\"limit\":0}'` reported navigation 404s for blog-preview-link-shared-draft, site-page-a-page-written-in-the-cms (all four sizes) and site-page-long-title-and-no-description. Loading each scenario alone with `preview` and running bare `client-errors` passed every time — the batch reseeds the content sandbox between scenarios and checks the page before the seeded collection is served.\n\n## What would have helped\nThe impacted sweep should wait for the scenario's seed to be served (the same seed-landed check recapture uses) before navigating, or retry a 404 once after reseeding before reporting it.",
+      "reason": "Three false 404 failures had to be re-checked one by one before the step could advance.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
+      "rank": 15,
+      "sightings": 1
+    },
+    {
+      "id": "the-old-name-still-appears-inside-the-2020-webinar-video-thumbnail-images-because-it-is-part-of-the-pictures-not-text-that-can-be-edited",
+      "title": "The old name still appears inside the 2020 webinar video thumbnail images, because it is part of the pictures, not text that can be edited.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "internal-scenario-names-for-example-harvard-in-tech-landing-page-and-test-data-that-copies-old-luma-and-strikingly-feeds-still-use-the-old-name-visitors-never-see-these",
+      "title": "Internal scenario names (for example \"Harvard in Tech - Landing Page\") and test data that copies old Luma and Strikingly feeds still use the old name; visitors never see these.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
+      "sightings": 1
     }
   ],
   "rounds": [
@@ -974,6 +1036,51 @@
         "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is",
         "give-eventcard-its-own-glossary-entry"
       ]
+    },
+    {
+      "at": "2026-10-15T15:04:35.049347465+00:00",
+      "feature": "One brand name everywhere: Harvard Alumni in Tech",
+      "notes": "Copy-only brand rename across ~45 places. App-side nothing new broke; the Luma cover-image and missing-event items still cost visitors the most, so they stay on top. Editor friction this round was all capture/seed plumbing: a duplicate dev…",
+      "proposedIds": [
+        "guardrail-refuses-a-scripted-text-replacement-across-tracked-files",
+        "client-errors-impacted-scope-reports-404s-for-seeded-pages-that-load-fine-alone",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "the-old-name-still-appears-inside-the-2020-webinar-video-thumbnail-images-because-it-is-part-of-the-pictures-not-text-that-can-be-edited",
+        "internal-scenario-names-for-example-harvard-in-tech-landing-page-and-test-data-that-copies-old-luma-and-strikingly-feeds-still-use-the-old-name-visitors-never-see-these"
+      ],
+      "rankedIds": [
+        "the-fall-mixer-s-cover-image-from-luma-still-reads-limited-early-bird-tickets-on-sale-now-the-plan-only-covered-the-text",
+        "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+        "the-real-device-checks-iphone-safari-android-ipad-pinch-zoom-are-listed-in-the-report-but-not-yet-written-up-as-manual-tests",
+        "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is",
+        "give-eventcard-its-own-glossary-entry",
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "client-errors-impacted-scope-reports-404s-for-seeded-pages-that-load-fine-alone",
+        "guardrail-refuses-a-scripted-text-replacement-across-tracked-files",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "auto-registered-renamed-tests-lose-their-descriptions",
+        "scenario-review-counts-seed-error-candidates-without-naming-them",
+        "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+        "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
+        "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "preview-captures-cannot-take-a-full-page-screenshot"
+      ]
     }
   ],
   "syntheses": [
@@ -992,6 +1099,22 @@
         "obs-313885064bf3"
       ],
       "notes": "Eight observations across five sessions, but no two sessions point at the same user need, so no idea clears the two-session bar."
+    },
+    {
+      "at": "2026-10-15T15:04:35.049347465+00:00",
+      "consumedIds": [
+        "obs-25ce26ecb80c",
+        "obs-db73de50a6e5",
+        "obs-db93f5bebe1c",
+        "obs-901e87f1cf07",
+        "obs-1f3e013aa6a5",
+        "obs-1405e5a50f00",
+        "obs-327c0bfa18c6"
+      ],
+      "keptIds": [
+        "warn-content-editors-when-copy-uses-a-retired-brand-name"
+      ],
+      "notes": "Six observations, three distinct needs. The em-dash/filler copy complaint is one session only, and the Luma cover art is already tracked as a pending fix, so neither became an idea. The brand and repeated-figures observations span two sessions and share a need — keeping copy consistent — so they back one modest idea."
     }
   ]
 }
