@@ -36,11 +36,11 @@
     {
       "id": "the-content-admin-also-running-in-the-cloud-on",
       "text": "The content admin also running in the cloud on GitHub Pages",
-      "status": "deferred",
-      "resolvedAt": "2026-10-09T22:46:11.428103914+00:00",
-      "resolvedInFeature": null,
+      "status": "delivered",
+      "resolvedAt": "2026-10-15T19:22:47.311461395+00:00",
+      "resolvedInFeature": "The content admin also running in the cloud on GitHub Pages",
       "planSlug": "the-content-admin-also-running-in-the-cloud-on-github-pages",
-      "note": null,
+      "note": "Already shipped: /admin is served on the passphrase-gated codeyam-ai.github.io/harvardintech build and saves commit straight to main (verified live 2026-10-15, HTTP 200). Closed at the Confirm Plan gate with no code changes.",
       "decidedBy": "user"
     },
     {
