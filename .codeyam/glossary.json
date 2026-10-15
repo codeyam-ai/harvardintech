@@ -668,6 +668,15 @@
     "testFile": "src/lib/pageBanner.test.ts"
   },
   {
+    "description": "True when an optional text field is missing or only whitespace; how the gap check decides a link or image box is still empty.",
+    "filePath": "src/lib/contentGaps.ts",
+    "name": "blank",
+    "tags": [
+      "launch-readiness"
+    ],
+    "testFile": "src/lib/contentGaps.test.ts"
+  },
+  {
     "description": "Renders the decision ids in a step's 'Waiting on …' line as English. Replaces an inline join(' and ') that read correctly for the one and two cases the runbook has today and produced 'D1 and D2 and D3' for three — invisible because no step needs three decisions, which is exactly why it earned a function with a test. The page names what it is waiting on so the reader knows what to resolve; garbling the list undercuts the only reason it is printed.",
     "filePath": "src/lib/cutoverProgress.ts",
     "name": "blockedLabel",
@@ -1183,6 +1192,16 @@
     "testFile": "src/lib/team.test.ts"
   },
   {
+    "description": "Judges a snapshot of the content (drafts included) against the owner's 2026-10-02 rule that nothing ships empty or switched off, and returns every launch gap - empty supporter wall, missing donation link, too few or photo-less testimonials, communities without a banner or lead, placeholder or missing partners, switched-off partnership levels, a blank partner inquiry form, drafted priorities - each with what to send and where it goes in /admin.",
+    "filePath": "src/lib/contentGaps.ts",
+    "name": "findContentGaps",
+    "tags": [
+      "launch-readiness",
+      "cutover-runbook"
+    ],
+    "testFile": "src/lib/contentGaps.test.ts"
+  },
+  {
     "description": "Decides which content collections came out empty when they should not have, returning one message each. Flags a collection whose files are in the sandbox but which the dev server loaded none of, and one that is empty on disk while git tracks entries for it. A collection the seed deliberately set to empty is never flagged, and exact counts are not compared because a loader may filter drafts. The seed adapter fails the capture on any message, so a blank roster can no longer be reported as a clean recapture.",
     "filePath": "src/lib/emptiedCollections.ts",
     "name": "findEmptiedCollections",
@@ -1370,6 +1389,16 @@
     "filePath": "src/lib/donors.ts",
     "name": "groupDonorsByTier",
     "testFile": "src/lib/donors.test.ts"
+  },
+  {
+    "description": "Groups content gaps by site area in first-seen (page) order, so the cutover runbook prints one heading per area and never an empty one.",
+    "filePath": "src/lib/contentGaps.ts",
+    "name": "groupGapsByArea",
+    "tags": [
+      "launch-readiness",
+      "cutover-runbook"
+    ],
+    "testFile": "src/lib/contentGaps.test.ts"
   },
   {
     "description": "Sponsors grouped by partnership level for the /sponsor wall, in the order the levels are declared — so the wall reads top-down from the biggest commitment, matching how the levels are presented further up the page. Within a level the site-wide rule applies: the optional order pin first, then alphabetically by name. A level with no sponsors is omitted rather than rendered as a heading over nothing. A sponsor whose tier matches no declared level is NOT dropped: it collects into a trailing Other partners group, because tier is free text so the levels can be renamed in the CMS, which makes a typo possible — an editor must see their entry on the page rather than silently lose it. An untagged sponsor lands there too, the common case before anyone has picked a level.",
@@ -1570,6 +1599,16 @@
     "testFile": "src/lib/giving.test.ts"
   },
   {
+    "description": "Whether a cutover step is held because content is still missing: true only for the go-public steps (S5 passphrase off, S7 point the domain) while the content-gap list is non-empty.",
+    "filePath": "src/lib/cutoverProgress.ts",
+    "name": "isHeldForContent",
+    "tags": [
+      "launch-readiness",
+      "cutover-runbook"
+    ],
+    "testFile": "src/lib/cutoverProgress.test.ts"
+  },
+  {
     "description": "Whether a URL or path points inside one of INTERNAL_PATHS, after removing the subpath base. Keeps internal pages out of the public sitemap; lookalike paths such as /reviews-of-2026/ or /blog/review/ do not match.",
     "filePath": "src/lib/publishTrack.ts",
     "name": "isInternalPath",
@@ -1669,11 +1708,32 @@
     "testFile": "src/lib/emptiedCollections.test.ts"
   },
   {
+    "description": "The entries a public build would show (drafts dropped), so a drafted donor, quote or community never counts as filling its section.",
+    "filePath": "src/lib/contentGaps.ts",
+    "name": "live",
+    "tags": [
+      "launch-readiness"
+    ],
+    "testFile": "src/lib/contentGaps.test.ts"
+  },
+  {
     "description": "Reads the accomplishments collection into the card shape MomentumAccomplishments already took from copy.accomplishments. Migrated out of donatePage.json, a singleton the CMS does not model at all, which is what made these cards developer-only. Maps the schema's description key onto the component's body prop because body is a reserved field id in the CMS registry and a custom field claiming it is dropped from the editor without comment.",
     "filePath": "src/lib/donatePageContent.ts",
     "name": "loadAccomplishments",
     "scenarios": [
       "momentum-fund-public-visitor"
+    ]
+  },
+  {
+    "description": "Reads every collection the gap check judges, drafts included, plus the donate URL and partner inquiry form URL, and returns findContentGaps over them for the cutover runbook.",
+    "filePath": "src/lib/contentGapsContent.ts",
+    "name": "loadContentGaps",
+    "scenarios": [
+      "cutover-runbook-content-still-missing"
+    ],
+    "tags": [
+      "launch-readiness",
+      "cutover-runbook"
     ]
   },
   {

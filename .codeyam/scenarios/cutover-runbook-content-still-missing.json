@@ -1,0 +1,82 @@
+{
+  "name": "Cutover Runbook - Content Still Missing",
+  "id": "c43d3665-b4f4-49e8-848e-842cc3eca855",
+  "url": "/cutover-runbook",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "command": "bash .codeyam/seed-cutover-progress.sh",
+    "data": {
+      "cutoverDecisions": [
+        {
+          "answered": false,
+          "id": "D1"
+        },
+        {
+          "answered": false,
+          "id": "D2"
+        },
+        {
+          "answered": false,
+          "id": "D3"
+        },
+        {
+          "answered": false,
+          "id": "D4"
+        },
+        {
+          "answered": false,
+          "id": "D5"
+        }
+      ],
+      "cutoverSteps": [
+        {
+          "done": false,
+          "id": "S1"
+        },
+        {
+          "done": false,
+          "id": "S2"
+        },
+        {
+          "done": false,
+          "id": "S3"
+        },
+        {
+          "done": false,
+          "id": "S4"
+        },
+        {
+          "done": false,
+          "id": "S5"
+        },
+        {
+          "done": false,
+          "id": "S6"
+        },
+        {
+          "done": false,
+          "id": "S7"
+        },
+        {
+          "done": false,
+          "id": "S8"
+        },
+        {
+          "done": false,
+          "id": "S9"
+        }
+      ]
+    }
+  },
+  "scenarioType": "application",
+  "description": "The go-public gate as it stands today: the Content still missing list worked out from the real content, 15 items grouped by area (supporter wall, testimonials, communities, partners, priorities), each saying what to send and where it goes in /admin. Brought into frame by clicking the see-the-list link on a held go-public step, because a bare anchor does not scroll a capture. S5 and S7 carry the matching Waiting on content note; the list empties itself as content lands, and the owner ruled on 2026-10-02 that nothing ships empty or switched off.",
+  "interactions": [
+    {
+      "action": "click",
+      "text": "see the list"
+    }
+  ]
+}

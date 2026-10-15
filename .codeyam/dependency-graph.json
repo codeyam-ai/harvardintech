@@ -773,6 +773,23 @@
         "src/pages/isolated-components/WebinarsPointer.astro"
       ]
     },
+    "src/components/cutover/ContentGapArea.astro": {
+      "imports": [
+        "src/lib/contentGaps.ts",
+        "src/components/cutover/ContentGapItem.astro"
+      ],
+      "importedBy": [
+        "src/components/cutover/RunbookContentGaps.astro"
+      ]
+    },
+    "src/components/cutover/ContentGapItem.astro": {
+      "imports": [
+        "src/lib/contentGaps.ts"
+      ],
+      "importedBy": [
+        "src/components/cutover/ContentGapArea.astro"
+      ]
+    },
     "src/components/cutover/DecisionCard.astro": {
       "imports": [
         "src/lib/cutoverProgress.ts",
@@ -839,6 +856,15 @@
     "src/components/cutover/RunbookChecks.astro": {
       "imports": [
         "src/components/cutover/NumberedLine.astro"
+      ],
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ]
+    },
+    "src/components/cutover/RunbookContentGaps.astro": {
+      "imports": [
+        "src/lib/contentGaps.ts",
+        "src/components/cutover/ContentGapArea.astro"
       ],
       "importedBy": [
         "src/pages/cutover-runbook/[...path].astro"
@@ -932,12 +958,19 @@
       "imports": [
         "src/lib/cutoverProgress.ts",
         "src/components/cutover/OperatorDetail.astro",
+        "src/components/cutover/StepContentHold.astro",
         "src/components/cutover/StepFacts.astro",
         "src/components/cutover/StepRisk.astro",
         "src/components/cutover/StepTick.tsx"
       ],
       "importedBy": [
         "src/components/cutover/RunbookSteps.astro"
+      ]
+    },
+    "src/components/cutover/StepContentHold.astro": {
+      "imports": [],
+      "importedBy": [
+        "src/components/cutover/StepCard.astro"
       ]
     },
     "src/components/cutover/StepFacts.astro": {
@@ -2074,6 +2107,32 @@
         "src/pages/sponsor.astro"
       ]
     },
+    "src/lib/contentGaps.test.ts": {
+      "imports": [
+        "src/lib/contentGaps.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/contentGaps.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/contentGapsContent.ts",
+        "src/lib/contentGaps.test.ts",
+        "src/components/cutover/ContentGapArea.astro",
+        "src/components/cutover/ContentGapItem.astro",
+        "src/components/cutover/RunbookContentGaps.astro"
+      ]
+    },
+    "src/lib/contentGapsContent.ts": {
+      "imports": [
+        "src/lib/site.ts",
+        "src/lib/donatePageContent.ts",
+        "src/lib/contentGaps.ts"
+      ],
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ]
+    },
     "src/lib/contentImages.test.ts": {
       "imports": [],
       "importedBy": []
@@ -2215,6 +2274,7 @@
         "src/lib/site.ts"
       ],
       "importedBy": [
+        "src/lib/contentGapsContent.ts",
         "src/pages/donate.astro",
         "src/pages/index.astro",
         "src/pages/isolated-components/[name].astro"
@@ -3240,6 +3300,7 @@
         "src/layouts/BaseLayout.astro",
         "src/lib/pageCopyMerge.test.ts",
         "src/lib/sponsorPageContent.ts",
+        "src/lib/contentGapsContent.ts",
         "src/lib/nav.ts",
         "src/lib/pageCopyMerge.ts",
         "src/lib/donatePageContent.ts",
@@ -3575,6 +3636,7 @@
         "src/components/cutover/RunbookTimeline.astro",
         "src/components/cutover/RunbookOnTheDay.astro",
         "src/components/cutover/RunbookSteps.astro",
+        "src/components/cutover/RunbookContentGaps.astro",
         "src/components/cutover/RunbookChecks.astro",
         "src/components/cutover/RunbookRollback.astro",
         "src/components/cutover/RunbookRecords.astro",
@@ -3584,6 +3646,7 @@
         "src/lib/previewGate.ts",
         "src/lib/publishTrack.ts",
         "src/lib/cutoverProgress.ts",
+        "src/lib/contentGapsContent.ts",
         "src/lib/url.ts",
         "src/data/cms.json",
         "src/styles/cutover-runbook.css"
@@ -5616,6 +5679,25 @@
         "src/pages/isolated-components/WebinarsPointer.astro::__file_root__"
       ]
     },
+    "src/components/cutover/ContentGapArea.astro::__file_root__": {
+      "filePath": "src/components/cutover/ContentGapArea.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/contentGaps.ts::GapGroup",
+        "src/components/cutover/ContentGapItem.astro::__file_root__"
+      ],
+      "importedBy": [
+        "src/components/cutover/RunbookContentGaps.astro::__file_root__"
+      ]
+    },
+    "src/components/cutover/ContentGapItem.astro::__file_root__": {
+      "filePath": "src/components/cutover/ContentGapItem.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/contentGaps.ts::ContentGap"
+      ],
+      "importedBy": []
+    },
     "src/components/cutover/DecisionCard.astro::__file_root__": {
       "filePath": "src/components/cutover/DecisionCard.astro",
       "name": "__file_root__",
@@ -5684,6 +5766,18 @@
       "name": "__file_root__",
       "imports": [
         "src/components/cutover/NumberedLine.astro::__file_root__"
+      ],
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ]
+    },
+    "src/components/cutover/RunbookContentGaps.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookContentGaps.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/contentGaps.ts::ContentGap",
+        "src/lib/contentGaps.ts::groupGapsByArea",
+        "src/components/cutover/ContentGapArea.astro::__file_root__"
       ],
       "importedBy": [
         "src/pages/cutover-runbook/[...path].astro::__file_root__"
@@ -5799,13 +5893,23 @@
         "src/lib/cutoverProgress.ts::StepDef",
         "src/lib/cutoverProgress.ts::blockedLabel",
         "src/lib/cutoverProgress.ts::blockingDecisions",
+        "src/lib/cutoverProgress.ts::isHeldForContent",
         "src/lib/cutoverProgress.ts::isStepDone",
         "src/components/cutover/OperatorDetail.astro::__file_root__",
+        "src/components/cutover/StepContentHold.astro::__file_root__",
         "src/components/cutover/StepFacts.astro::__file_root__",
         "src/components/cutover/StepRisk.astro::__file_root__",
         "src/components/cutover/StepTick.tsx::StepTick"
       ],
       "importedBy": []
+    },
+    "src/components/cutover/StepContentHold.astro::__file_root__": {
+      "filePath": "src/components/cutover/StepContentHold.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/components/cutover/StepCard.astro::__file_root__"
+      ]
     },
     "src/components/cutover/StepFacts.astro::__file_root__": {
       "filePath": "src/components/cutover/StepFacts.astro",
@@ -7231,6 +7335,62 @@
         "src/components/sponsor/SponsorInquiry.astro::__file_root__"
       ]
     },
+    "src/lib/contentGaps.test.ts::__file_root__": {
+      "filePath": "src/lib/contentGaps.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/contentGaps.ts::ContentGap",
+        "src/lib/contentGaps.ts::ContentSnapshot",
+        "src/lib/contentGaps.ts::__file_root__",
+        "src/lib/contentGaps.ts::findContentGaps",
+        "src/lib/contentGaps.ts::groupGapsByArea"
+      ],
+      "importedBy": []
+    },
+    "src/lib/contentGaps.ts::ContentGap": {
+      "filePath": "src/lib/contentGaps.ts",
+      "name": "ContentGap",
+      "imports": [],
+      "importedBy": [
+        "src/components/cutover/ContentGapItem.astro::__file_root__",
+        "src/components/cutover/RunbookContentGaps.astro::__file_root__"
+      ]
+    },
+    "src/lib/contentGaps.ts::GapGroup": {
+      "filePath": "src/lib/contentGaps.ts",
+      "name": "GapGroup",
+      "imports": [],
+      "importedBy": [
+        "src/components/cutover/ContentGapArea.astro::__file_root__"
+      ]
+    },
+    "src/lib/contentGaps.ts::groupGapsByArea": {
+      "filePath": "src/lib/contentGaps.ts",
+      "name": "groupGapsByArea",
+      "imports": [],
+      "importedBy": [
+        "src/components/cutover/RunbookContentGaps.astro::__file_root__"
+      ]
+    },
+    "src/lib/contentGapsContent.ts::__file_root__": {
+      "filePath": "src/lib/contentGapsContent.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/site.ts::donatePage",
+        "src/lib/donatePageContent.ts::loadDonateUrl",
+        "src/lib/contentGaps.ts::ContentGap",
+        "src/lib/contentGaps.ts::findContentGaps"
+      ],
+      "importedBy": []
+    },
+    "src/lib/contentGapsContent.ts::loadContentGaps": {
+      "filePath": "src/lib/contentGapsContent.ts",
+      "name": "loadContentGaps",
+      "imports": [],
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ]
+    },
     "src/lib/contentRoot.test.ts::__file_root__": {
       "filePath": "src/lib/contentRoot.test.ts",
       "name": "__file_root__",
@@ -7285,6 +7445,7 @@
         "src/lib/cutoverProgress.ts::blockingDecisions",
         "src/lib/cutoverProgress.ts::byPhase",
         "src/lib/cutoverProgress.ts::isDecisionAnswered",
+        "src/lib/cutoverProgress.ts::isHeldForContent",
         "src/lib/cutoverProgress.ts::isStepDone",
         "src/lib/cutoverProgress.ts::isStepReady",
         "src/lib/cutoverProgress.ts::rollup",
@@ -7408,6 +7569,15 @@
       "importedBy": [
         "src/lib/cutoverProgress.test.ts::__file_root__",
         "src/components/cutover/DecisionCard.astro::__file_root__"
+      ]
+    },
+    "src/lib/cutoverProgress.ts::isHeldForContent": {
+      "filePath": "src/lib/cutoverProgress.ts",
+      "name": "isHeldForContent",
+      "imports": [],
+      "importedBy": [
+        "src/lib/cutoverProgress.test.ts::__file_root__",
+        "src/components/cutover/StepCard.astro::__file_root__"
       ]
     },
     "src/lib/cutoverProgress.ts::isStepDone": {
@@ -10809,6 +10979,7 @@
         "src/components/cutover/RunbookTimeline.astro::__file_root__",
         "src/components/cutover/RunbookOnTheDay.astro::__file_root__",
         "src/components/cutover/RunbookSteps.astro::__file_root__",
+        "src/components/cutover/RunbookContentGaps.astro::__file_root__",
         "src/components/cutover/RunbookChecks.astro::__file_root__",
         "src/components/cutover/RunbookRollback.astro::__file_root__",
         "src/components/cutover/RunbookRecords.astro::__file_root__",
@@ -10819,6 +10990,7 @@
         "src/lib/publishTrack.ts::includeCutoverRunbook",
         "src/lib/cutoverProgress.ts::loadCutoverProgress",
         "src/lib/cutoverProgress.ts::rollup",
+        "src/lib/contentGapsContent.ts::loadContentGaps",
         "src/lib/url.ts::withBase",
         "src/data/cms.json::__file_root__",
         "src/styles/cutover-runbook.css::__file_root__"
@@ -12279,5 +12451,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-15T18:42:57Z"
+  "lastUpdated": "2026-10-15T21:05:27Z"
 }

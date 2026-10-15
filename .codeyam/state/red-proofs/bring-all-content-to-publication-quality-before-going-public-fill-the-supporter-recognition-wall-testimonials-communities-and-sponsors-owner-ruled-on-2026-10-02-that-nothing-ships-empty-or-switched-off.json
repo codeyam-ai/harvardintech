@@ -1,0 +1,62 @@
+{
+  "provenAt": "2026-10-15T20:21:43Z",
+  "slug": "bring-all-content-to-publication-quality-before-going-public-fill-the-supporter-recognition-wall-testimonials-communities-and-sponsors-owner-ruled-on-2026-10-02-that-nothing-ships-empty-or-switched-off",
+  "paths": [],
+  "runScope": [
+    "src/lib/cutoverProgress.ts",
+    "src/lib/contentGaps.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/cutoverProgress.ts",
+      "find": "return step.needsContent === true && contentGapCount > 0;",
+      "replace": "return false;"
+    },
+    {
+      "file": "src/lib/contentGaps.ts",
+      "find": "short === 1 ? 'One more quote' : ",
+      "replace": "false ? '' : "
+    },
+    {
+      "file": "src/lib/contentGaps.ts",
+      "find": ".sort((a, b) => a.name.localeCompare(b.name))",
+      "replace": ""
+    }
+  ],
+  "tests": {
+    "findContentGaps › asks for one more quote when the band is one short": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "findContentGaps › lists community gaps alphabetically whatever order they arrive in": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "isHeldForContent › holds exactly S5 and S7 while anything is missing": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "isStepReady › reports a go-public step as not ready while content is missing": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "findContentGaps › lists community gaps alphabetically whatever order they arrive in"
+    ]
+  }
+}

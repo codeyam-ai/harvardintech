@@ -1,0 +1,16 @@
+---
+// The "Waiting on content" note on a go-public step (S5, S7).
+//
+// Derived, like the decision note beside it: it shows while the "Content still
+// missing" list has anything on it and disappears once that list is empty.
+interface Props {
+  count: number;
+}
+const { count } = Astro.props;
+---
+
+<div class="who blocked">
+  <span class="k">Waiting on content</span>
+  {count} {count === 1 ? 'item' : 'items'} still missing — <a href="#content-gaps">see the list</a>.
+  Nothing goes public empty.
+</div>

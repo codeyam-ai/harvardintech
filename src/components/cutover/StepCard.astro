@@ -8,12 +8,14 @@
 import {
   blockedLabel,
   blockingDecisions,
+  isHeldForContent,
   isStepDone,
   type CutoverProgress,
   type StepDef,
 } from '../../lib/cutoverProgress';
 import type { RepoTarget } from '@codeyam/cms/lib/githubCommit';
 import OperatorDetail from './OperatorDetail.astro';
+import StepContentHold from './StepContentHold.astro';
 import StepFacts from './StepFacts.astro';
 import StepRisk from './StepRisk.astro';
 import StepTick from './StepTick.tsx';
@@ -22,15 +24,20 @@ interface Props {
   step: StepDef;
   progress: CutoverProgress;
   target: RepoTarget;
+  /** How many items the "Content still missing" list holds. */
+  contentGapCount?: number;
 }
-const { step, progress, target } = Astro.props;
+const { step, progress, target, contentGapCount = 0 } = Astro.props;
 
 const state = progress.steps.find((s) => s.id === step.id);
 const done = isStepDone(progress, step.id);
 const blocked = blockingDecisions(progress, step);
+const heldForContent = !done && isHeldForContent(step, contentGapCount);
 ---
 
-<div class:list={['step', done && 'is-done', blocked.length > 0 && 'is-blocked']}>
+<div
+  class:list={['step', done && 'is-done', (blocked.length > 0 || heldForContent) && 'is-blocked']}
+>
   <div class="top">
     <span class="id">{step.id}</span>
     <h3>{step.title}</h3>
@@ -57,6 +64,12 @@ const blocked = blockingDecisions(progress, step);
         {blockedLabel(blocked)} — unanswered, so this step can't start.
       </div>
     ) : null
+  }
+
+  {
+    /* Also derived: a go-public step is held while content is missing, and the
+       note clears itself once the "Content still missing" list is empty. */
+    heldForContent ? <StepContentHold count={contentGapCount} /> : null
   }
 
   {

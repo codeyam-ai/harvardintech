@@ -41,6 +41,12 @@ export interface StepDef {
   /** Decision ids that must be answered before this step can start. */
   needs: string[];
   /**
+   * True for the steps that make the site public. They are held while
+   * `findContentGaps` reports anything, because the owner ruled on 2026-10-02
+   * that nothing ships empty or switched off.
+   */
+  needsContent?: boolean;
+  /**
    * A standing note that shows regardless of state.
    *
    * The steps used to carry two kinds of note in one slot: "Needs D1 answered"
@@ -167,6 +173,7 @@ export const STEPS: StepDef[] = [
     phase: 'before',
     duration: 'Minutes',
     needs: ['D2'],
+    needsContent: true,
   },
   {
     id: 'S6',
@@ -193,6 +200,7 @@ export const STEPS: StepDef[] = [
     phase: 'day',
     duration: '30 minutes, plus waiting for the certificate',
     needs: ['D1', 'D5'],
+    needsContent: true,
     note: {
       label: 'The rule again',
       html:
@@ -242,9 +250,9 @@ export const DECISIONS: DecisionDef[] = [
     id: 'D2',
     question: 'Is the content ready to be public?',
     recommendation:
-      'Yes — go, and use the “coming soon” toggle for anything unfinished.',
+      'Not until the “Content still missing” list on this page is empty.',
     because:
-      'Nothing on the list is broken; the gaps are empty sections, and an empty section can be turned off from /admin without a code change. Waiting for every collection to be full means waiting indefinitely.',
+      'The owner ruled on 2026-10-02 that nothing ships empty or switched off, so hiding an unfinished section is no longer an option. The list is worked out from the content itself and shrinks as each item lands; S5 and S7 stay held until it is empty.',
     blocks: ['S5'],
   },
   {
@@ -305,8 +313,21 @@ export function blockingDecisions(progress: CutoverProgress, step: StepDef): str
  * Whether a step can be started right now: every decision it needs is answered
  * and it is not already done.
  */
-export function isStepReady(progress: CutoverProgress, step: StepDef): boolean {
-  return !isStepDone(progress, step.id) && blockingDecisions(progress, step).length === 0;
+export function isStepReady(
+  progress: CutoverProgress,
+  step: StepDef,
+  contentGapCount = 0,
+): boolean {
+  return (
+    !isStepDone(progress, step.id) &&
+    blockingDecisions(progress, step).length === 0 &&
+    !isHeldForContent(step, contentGapCount)
+  );
+}
+
+/** Whether a go-public step is held because content is still missing. */
+export function isHeldForContent(step: StepDef, contentGapCount: number): boolean {
+  return step.needsContent === true && contentGapCount > 0;
 }
 
 export interface Rollup {
@@ -316,7 +337,7 @@ export interface Rollup {
   decisionsTotal: number;
   /** Steps that could be started today. */
   ready: number;
-  /** Steps waiting on an unanswered decision. */
+  /** Steps waiting on an unanswered decision or on missing content. */
   blocked: number;
   /** True once every step is done. */
   complete: boolean;
@@ -325,12 +346,14 @@ export interface Rollup {
 }
 
 /** The counts the summary band prints. */
-export function rollup(progress: CutoverProgress): Rollup {
+export function rollup(progress: CutoverProgress, contentGapCount = 0): Rollup {
   const stepsDone = STEPS.filter((s) => isStepDone(progress, s.id)).length;
   const decisionsAnswered = DECISIONS.filter((d) => isDecisionAnswered(progress, d.id)).length;
-  const ready = STEPS.filter((s) => isStepReady(progress, s)).length;
+  const ready = STEPS.filter((s) => isStepReady(progress, s, contentGapCount)).length;
   const blocked = STEPS.filter(
-    (s) => !isStepDone(progress, s.id) && blockingDecisions(progress, s).length > 0,
+    (s) =>
+      !isStepDone(progress, s.id) &&
+      (blockingDecisions(progress, s).length > 0 || isHeldForContent(s, contentGapCount)),
   ).length;
 
   return {
@@ -382,7 +405,7 @@ export function blockedLabel(ids: string[]): string {
 export function summaryLine(counts: Pick<Rollup, 'ready' | 'blocked'>): string {
   const { ready, blocked } = counts;
   if (blocked > 0) {
-    return `${blocked} ${blocked === 1 ? 'step is' : 'steps are'} waiting on a decision, and ${ready} could be started today.`;
+    return `${blocked} ${blocked === 1 ? 'step is' : 'steps are'} waiting on a decision or on content, and ${ready} could be started today.`;
   }
   return `${ready} ${ready === 1 ? 'step is' : 'steps are'} ready to start — every decision they need has been answered.`;
 }

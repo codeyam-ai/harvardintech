@@ -1,0 +1,35 @@
+---
+// One missing piece of content: what is missing, what to send, and where it
+// goes in /admin. The three lines are the whole point — a gap the team cannot
+// act on is only a complaint.
+import type { ContentGap } from '../../lib/contentGaps';
+
+interface Props {
+  gap: ContentGap;
+}
+const { gap } = Astro.props;
+---
+
+<li>
+  <div>
+    <b>{gap.problem}</b>
+    <div class="gap-line"><span class="k">Send</span> {gap.ask}</div>
+    <div class="gap-line"><span class="k">Where</span> {gap.where}</div>
+  </div>
+</li>
+
+<style>
+  .gap-line {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .gap-line .k {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-right: 6px;
+  }
+</style>

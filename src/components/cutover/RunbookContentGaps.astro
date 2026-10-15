@@ -1,0 +1,40 @@
+---
+// "Content still missing" — what has to land before the site can go public.
+//
+// The owner ruled on 2026-10-02 that nothing ships empty or switched off. The
+// list is worked out from the content on every build (`findContentGaps`), so it
+// cannot drift from what is actually there: an item disappears the moment its
+// content is saved in /admin, and S5 and S7 stay held until the list is empty.
+import { groupGapsByArea, type ContentGap } from '../../lib/contentGaps';
+import ContentGapArea from './ContentGapArea.astro';
+
+interface Props {
+  gaps: ContentGap[];
+}
+const { gaps } = Astro.props;
+
+const groups = groupGapsByArea(gaps);
+---
+
+<section id="content-gaps">
+  <div class="wrap">
+    <h2>Content still missing</h2>
+    {
+      gaps.length === 0 ? (
+        <div class="lede">Nothing. Every section has real content, so S5 and S7 are not held.</div>
+      ) : (
+        <>
+          <div class="lede">
+            {gaps.length} {gaps.length === 1 ? 'item' : 'items'} to fill before going public.
+          </div>
+          <p class="sub">
+            Nothing ships empty or switched off (owner's ruling, 2026-10-02). Each line says
+            what to send and where it goes in /admin. The list updates itself as content lands,
+            and S5 and S7 stay held until it's empty.
+          </p>
+          {groups.map((group) => <ContentGapArea group={group} />)}
+        </>
+      )
+    }
+  </div>
+</section>

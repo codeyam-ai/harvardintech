@@ -6,6 +6,7 @@ import {
   blockingDecisions,
   byPhase,
   isDecisionAnswered,
+  isHeldForContent,
   isStepDone,
   isStepReady,
   rollup,
@@ -58,6 +59,12 @@ describe('summaryLine', () => {
   // exactly one blocked step while looking at the banner.
   it('says step is for exactly one blocked step', () => {
     expect(summaryLine({ ready: 4, blocked: 1 })).toContain('1 step is waiting');
+  });
+
+  // A step can now be held by missing content as well as by a decision, so the
+  // sentence names both causes rather than blaming the decisions alone.
+  it('names content as well as decisions as a cause of waiting', () => {
+    expect(summaryLine({ ready: 4, blocked: 2 })).toContain('waiting on a decision or on content');
   });
 
   // Plural for more than one.
@@ -151,6 +158,32 @@ describe('isStepReady', () => {
     const step = STEPS.find((s) => s.id === 'S4')!;
     expect(isStepReady(withState(['S4'], []), step)).toBe(false);
   });
+
+  // S5 takes the passphrase off. With its decision answered it would be ready,
+  // but missing content holds it — nothing ships empty.
+  it('reports a go-public step as not ready while content is missing', () => {
+    const step = STEPS.find((s) => s.id === 'S5')!;
+    expect(isStepReady(withState([], ['D2']), step, 3)).toBe(false);
+    expect(isStepReady(withState([], ['D2']), step, 0)).toBe(true);
+  });
+
+  // Missing content holds only the go-public steps; S4 changes nothing public.
+  it('does not hold a step that changes nothing public', () => {
+    const step = STEPS.find((s) => s.id === 'S4')!;
+    expect(isStepReady(untouched(), step, 3)).toBe(true);
+  });
+});
+
+describe('isHeldForContent', () => {
+  // The two steps that make the site public are the only ones held.
+  it('holds exactly S5 and S7 while anything is missing', () => {
+    expect(STEPS.filter((s) => isHeldForContent(s, 1)).map((s) => s.id)).toEqual(['S5', 'S7']);
+  });
+
+  // An empty gap list releases them.
+  it('holds nothing once no content is missing', () => {
+    expect(STEPS.filter((s) => isHeldForContent(s, 0))).toEqual([]);
+  });
 });
 
 describe('rollup', () => {
@@ -182,6 +215,17 @@ describe('rollup', () => {
   it('splits unfinished steps into ready and blocked with none left over', () => {
     const counts = rollup(withState(['S4'], ['D1']));
     expect(counts.ready + counts.blocked).toBe(counts.stepsTotal - counts.stepsDone);
+  });
+
+  // With every decision answered, missing content moves S5 and S7 from ready
+  // to blocked, so the banner's counts agree with the held step cards.
+  it('counts a go-public step held for content as blocked, not ready', () => {
+    const answered = DECISIONS.map((d) => d.id);
+    const clear = rollup(withState([], answered), 0);
+    const held = rollup(withState([], answered), 5);
+    expect(clear.blocked).toBe(0);
+    expect(held.blocked).toBe(2);
+    expect(held.ready).toBe(clear.ready - 2);
   });
 
   // The totals come from the authored runbook, not the state file, so a state

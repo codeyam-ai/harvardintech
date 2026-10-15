@@ -31,6 +31,7 @@ import RunbookDecisions from '../../components/cutover/RunbookDecisions.astro';
 import RunbookTimeline from '../../components/cutover/RunbookTimeline.astro';
 import RunbookOnTheDay from '../../components/cutover/RunbookOnTheDay.astro';
 import RunbookSteps from '../../components/cutover/RunbookSteps.astro';
+import RunbookContentGaps from '../../components/cutover/RunbookContentGaps.astro';
 import RunbookChecks from '../../components/cutover/RunbookChecks.astro';
 import RunbookRollback from '../../components/cutover/RunbookRollback.astro';
 import RunbookRecords from '../../components/cutover/RunbookRecords.astro';
@@ -40,6 +41,7 @@ import { loadIntegrations } from '../../lib/integrationsContent';
 import { PREVIEW_GATE_ENABLED } from '../../lib/previewGate';
 import { includeCutoverRunbook } from '../../lib/publishTrack';
 import { loadCutoverProgress, rollup } from '../../lib/cutoverProgress';
+import { loadContentGaps } from '../../lib/contentGapsContent';
 import { withBase } from '../../lib/url';
 import cmsConfig from '../../data/cms.json';
 import '../../styles/cutover-runbook.css';
@@ -54,7 +56,8 @@ export function getStaticPaths() {
 }
 
 const progress = loadCutoverProgress();
-const counts = rollup(progress);
+const gaps = await loadContentGaps();
+const counts = rollup(progress, gaps.length);
 const target = cmsConfig.repo;
 const { customBodyHtml } = await loadIntegrations(settings);
 ---
@@ -78,11 +81,13 @@ const { customBodyHtml } = await loadIntegrations(settings);
 
     <RunbookDecisions progress={progress} target={target} />
 
+    <RunbookContentGaps gaps={gaps} />
+
     <RunbookTimeline progress={progress} />
 
     <RunbookOnTheDay />
 
-    <RunbookSteps progress={progress} target={target} />
+    <RunbookSteps progress={progress} target={target} contentGapCount={gaps.length} />
 
     <RunbookChecks />
 

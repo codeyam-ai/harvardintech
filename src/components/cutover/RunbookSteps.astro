@@ -12,8 +12,9 @@ import StepCard from './StepCard.astro';
 interface Props {
   progress: CutoverProgress;
   target: RepoTarget;
+  contentGapCount?: number;
 }
-const { progress, target } = Astro.props;
+const { progress, target, contentGapCount = 0 } = Astro.props;
 ---
 
 <section id="sequence">
@@ -27,6 +28,15 @@ const { progress, target } = Astro.props;
       everyone, under the name of whoever ticked it.
     </p>
 
-    {STEPS.map((step) => <StepCard step={step} progress={progress} target={target} />)}
+    {
+      STEPS.map((step) => (
+        <StepCard
+          step={step}
+          progress={progress}
+          target={target}
+          contentGapCount={contentGapCount}
+        />
+      ))
+    }
   </div>
 </section>

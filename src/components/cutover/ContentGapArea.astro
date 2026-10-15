@@ -1,0 +1,27 @@
+---
+// One area's missing content (Supporter wall, Partners, …) under its heading.
+import type { GapGroup } from '../../lib/contentGaps';
+import ContentGapItem from './ContentGapItem.astro';
+
+interface Props {
+  group: GapGroup;
+}
+const { group } = Astro.props;
+---
+
+<div class="gap-area">
+  <h3>{group.area}</h3>
+  <ul class="lines">
+    {group.gaps.map((gap) => <ContentGapItem gap={gap} />)}
+  </ul>
+</div>
+
+<style>
+  .gap-area + .gap-area {
+    margin-top: 24px;
+  }
+  .gap-area h3 {
+    margin: 0 0 10px;
+    font-size: 17px;
+  }
+</style>

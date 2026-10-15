@@ -46,7 +46,15 @@
   ],
   "testPartitions": [],
   "testCacheIgnorePatterns": [
-    "**/*.md"
+    "**/*.md",
+    ".claude/**",
+    "**/.claude/**",
+    ".codex/**",
+    "**/.codex/**",
+    ".gemini/**",
+    "**/.gemini/**",
+    ".opencode/**",
+    "**/.opencode/**"
   ],
   "staticChecks": [
     {

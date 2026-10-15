@@ -842,7 +842,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockedLabel › joins two decisions with and",
-      "line": 39,
+      "line": 40,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -851,7 +851,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockedLabel › names a single decision on its own",
-      "line": 34,
+      "line": 35,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -860,7 +860,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockedLabel › returns an empty string when nothing is blocking",
-      "line": 51,
+      "line": 52,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -869,7 +869,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockedLabel › uses a comma before the final and for three or more",
-      "line": 45,
+      "line": 46,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -878,7 +878,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockingDecisions › drops decisions that have been answered",
-      "line": 123,
+      "line": 130,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -887,7 +887,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockingDecisions › names every outstanding decision, not just the first",
-      "line": 117,
+      "line": 124,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -896,7 +896,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockingDecisions › names the unanswered decisions a step needs",
-      "line": 104,
+      "line": 111,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -905,7 +905,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockingDecisions › returns nothing for a step that needs no decisions",
-      "line": 129,
+      "line": 136,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -914,7 +914,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "blockingDecisions › returns nothing once the decisions are answered",
-      "line": 110,
+      "line": 117,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -1157,7 +1157,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "byPhase › accounts for every step across the three phases",
-      "line": 199,
+      "line": 243,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -1166,7 +1166,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "byPhase › leaves retiring the old site until afterwards",
-      "line": 211,
+      "line": 255,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -1175,7 +1175,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "byPhase › puts the switch itself on the day",
-      "line": 205,
+      "line": 249,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -4474,6 +4474,123 @@
       "runner": "tests"
     },
     {
+      "description": "Too few quotes, and the shortfall reads as a sentence: one more, not \"1 more quote(s)\".",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › asks for one more quote when the band is one short",
+      "line": 91,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no quotes at all the count and the plural both change.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › asks for several quotes when the band is empty",
+      "line": 98,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A drafted donor is not on the public wall, so it does not fill it.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › does not count drafted donors as filling the wall",
+      "line": 85,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A community page needs a banner and a named lead.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › flags a community with no banner image or no lead",
+      "line": 114,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No inquiry form means the partner section can only offer an email address.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › flags a missing partner inquiry form",
+      "line": 156,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A drafted partnership level is switched off, which the owner ruled out.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › flags a switched-off partnership level by name",
+      "line": 147,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty supporter wall and a blank donation link are separate asks to separate people.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › flags an empty supporter wall and a missing donation link separately",
+      "line": 76,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Drafted priority cards on /donate are switched-off content too.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › flags each drafted priority",
+      "line": 162,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The loader returns communities in no fixed order; the list must not reshuffle between builds.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › lists community gaps alphabetically whatever order they arrive in",
+      "line": 123,
+      "registeredAt": "2026-10-15T20:21:49.213781050+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Each missing photo is its own gap, named after the person, pointing at the field.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › names the person whose portrait or event photo is missing",
+      "line": 104,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Today's content, gap for gap — the fifteen the runbook lists.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › reports every gap in todays content",
+      "line": 71,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The bar the site may launch at: real content everywhere means nothing is held.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › reports no gaps when every area is filled",
+      "line": 66,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Example partners neither fill the wall nor go unnoticed: both gaps are reported.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "findContentGaps › treats example partners as no partners and lists them for deletion",
+      "line": 135,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "A collection that ships empty, such as donors, is empty on disk and in git — nothing is missing, so nothing to flag.",
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
@@ -5254,6 +5371,24 @@
       "key": "groupDonorsByTier › sorts within a tier by the order pin, then by name",
       "line": 52,
       "registeredAt": "2026-08-01T01:16:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The runbook prints one heading per area, in the order the page reads.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "groupGapsByArea › groups gaps by area in first-seen order",
+      "line": 175,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No gaps means no headings at all, never an empty one.",
+      "file": "src/lib/contentGaps.test.ts",
+      "format": "vitest",
+      "key": "groupGapsByArea › returns no groups for no gaps",
+      "line": 188,
+      "registeredAt": "2026-10-15T20:09:59Z",
       "runner": "tests"
     },
     {
@@ -6455,7 +6590,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isDecisionAnswered › reports an answered decision",
-      "line": 218,
+      "line": 262,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -6464,7 +6599,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isDecisionAnswered › reports an open decision as unanswered",
-      "line": 223,
+      "line": 267,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -6473,7 +6608,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isDecisionAnswered › treats a decision absent from the file as unanswered",
-      "line": 228,
+      "line": 272,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -6583,6 +6718,24 @@
       "key": "isGivingOpen › trims before deciding",
       "line": 80,
       "registeredAt": "2026-09-19T02:45:59.713188473+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The two steps that make the site public are the only ones held.",
+      "file": "src/lib/cutoverProgress.test.ts",
+      "format": "vitest",
+      "key": "isHeldForContent › holds exactly S5 and S7 while anything is missing",
+      "line": 179,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty gap list releases them.",
+      "file": "src/lib/cutoverProgress.test.ts",
+      "format": "vitest",
+      "key": "isHeldForContent › holds nothing once no content is missing",
+      "line": 184,
+      "registeredAt": "2026-10-15T20:09:59Z",
       "runner": "tests"
     },
     {
@@ -6725,7 +6878,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isStepDone › reports a ticked step as done",
-      "line": 84,
+      "line": 91,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -6734,7 +6887,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isStepDone › reports an untouched step as not done",
-      "line": 89,
+      "line": 96,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -6743,8 +6896,17 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isStepDone › treats a step absent from the file as not done",
-      "line": 96,
+      "line": 103,
       "registeredAt": "2026-08-06T15:24:46Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Missing content holds only the go-public steps; S4 changes nothing public.",
+      "file": "src/lib/cutoverProgress.test.ts",
+      "format": "vitest",
+      "key": "isStepReady › does not hold a step that changes nothing public",
+      "line": 171,
+      "registeredAt": "2026-10-15T20:09:59Z",
       "runner": "tests"
     },
     {
@@ -6752,8 +6914,17 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isStepReady › reports a completed step as not ready",
-      "line": 150,
+      "line": 157,
       "registeredAt": "2026-08-06T15:24:46Z",
+      "runner": "tests"
+    },
+    {
+      "description": "S5 takes the passphrase off. With its decision answered it would be ready, but missing content holds it — nothing ships empty.",
+      "file": "src/lib/cutoverProgress.test.ts",
+      "format": "vitest",
+      "key": "isStepReady › reports a go-public step as not ready while content is missing",
+      "line": 164,
+      "registeredAt": "2026-10-15T20:09:59Z",
       "runner": "tests"
     },
     {
@@ -6761,7 +6932,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isStepReady › reports a step waiting on a decision as not ready",
-      "line": 143,
+      "line": 150,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -6770,7 +6941,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "isStepReady › reports an unblocked, unticked step as ready",
-      "line": 137,
+      "line": 144,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -10667,11 +10838,20 @@
       "runner": "tests"
     },
     {
+      "description": "With every decision answered, missing content moves S5 and S7 from ready to blocked, so the banner's counts agree with the held step cards.",
+      "file": "src/lib/cutoverProgress.test.ts",
+      "format": "vitest",
+      "key": "rollup › counts a go-public step held for content as blocked, not ready",
+      "line": 222,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "Every step done is the end state, and drives a different banner.",
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "rollup › reports complete when every step is done",
-      "line": 174,
+      "line": 207,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -10680,7 +10860,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "rollup › reports the default state as untouched",
-      "line": 159,
+      "line": 192,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -10689,7 +10869,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "rollup › splits unfinished steps into ready and blocked with none left over",
-      "line": 182,
+      "line": 215,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -10698,7 +10878,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "rollup › stops reporting untouched once a decision is answered",
-      "line": 169,
+      "line": 202,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -10707,7 +10887,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "rollup › takes its totals from the runbook rather than the state file",
-      "line": 189,
+      "line": 233,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -10797,7 +10977,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "runbook structure › only blocks steps on decisions that exist",
-      "line": 236,
+      "line": 280,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -10806,7 +10986,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "runbook structure › only claims to block steps that exist",
-      "line": 245,
+      "line": 289,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -10815,7 +10995,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "runbook structure › puts every step that touches nothing live before the last live one",
-      "line": 255,
+      "line": 299,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -12953,11 +13133,20 @@
       "runner": "tests"
     },
     {
+      "description": "A step can now be held by missing content as well as by a decision, so the sentence names both causes rather than blaming the decisions alone.",
+      "file": "src/lib/cutoverProgress.test.ts",
+      "format": "vitest",
+      "key": "summaryLine › names content as well as decisions as a cause of waiting",
+      "line": 66,
+      "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
       "description": "With nothing blocked the sentence changes meaning, not just number — it tells the team the decisions are in and the ball is no longer theirs.",
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "summaryLine › reports readiness rather than blockage when nothing is waiting",
-      "line": 70,
+      "line": 77,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -12966,7 +13155,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "summaryLine › says step is for exactly one blocked step",
-      "line": 59,
+      "line": 60,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -12975,7 +13164,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "summaryLine › says step is for exactly one ready step",
-      "line": 77,
+      "line": 84,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },
@@ -12984,7 +13173,7 @@
       "file": "src/lib/cutoverProgress.test.ts",
       "format": "vitest",
       "key": "summaryLine › says steps are for several blocked steps",
-      "line": 64,
+      "line": 71,
       "registeredAt": "2026-08-06T15:24:46Z",
       "runner": "tests"
     },

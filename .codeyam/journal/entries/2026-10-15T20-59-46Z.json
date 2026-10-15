@@ -1,0 +1,403 @@
+{
+  "timestamp": "2026-10-15T20:59:46Z",
+  "title": "Show every content gap on the cutover runbook and hold going public until it is empty",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe owner ruled on 2026-10-02 that nothing goes public empty or switched off.\nToday four areas would break that rule. The missing material (donor names,\npartner logos, quotes, photos) has to come from the team. Code can't invent it.\nSo this cycle makes every gap **visible, countable and blocking**, gives the\nteam an exact list of what to send, and fills the gaps that need no new\nmaterial.\n\n## Where things stand (inventory, 2026-10-15)\n\n| Area | Today | What's missing |\n|---|---|---|\n| Supporter wall (`/donate`) | 0 donors; the band shows \"first campaign launches soon\" | Donor names (with consent); a donation link (`donateUrl` is blank, so the button opens an email) |\n| Testimonials (`/donate`) | 2 real quotes | Mohammed Ally: no portrait or event photo. Jessica Li: event caption unconfirmed. Only two quotes in total (owner's note: add more) |\n| Communities | AI, Founders and Investors pages are live | AI and Investors: no banner image. Founders: no named lead. Investors still says \"Launch webinar coming\" |\n| Sponsors (`/sponsor`) | Only the 3 \"Example\" partners, all drafts, so the public wall reads \"No partners listed yet\" | Real partners and logos; the Presenting Partner level is switched off; the inquiry form link is blank |\n\nAlso switched off or thin elsewhere: 3 of 7 priority cards are drafts, and 0 of\n20 volunteer projects have an image.\n\n## What this cycle builds\n\n1. **A content-gap check.** One function reads the content collections and\n   returns every launch gap: an empty list, placeholder or drafted entries\n   standing in for real ones, a missing required image or lead, a blank link,\n   a switched-off level or section. It's plain data, unit-tested against\n   fixtures.\n2. **Gaps shown on the cutover runbook.** A \"Content still missing\" section on\n   the passphrase-only `/cutover-runbook` page lists each gap with what to\n   send, who it's for, and where to add it in the content editor. Each item\n   disappears by itself once the content lands.\n3. **The cutover step is blocked while gaps remain.** The runbook's \"switch to\n   public\" step shows as not ready while the check reports any gap, so no one\n   can launch an empty section by mistake.\n4. **Fill what needs no new material:**\n   - Remove \"Launch webinar coming\" from Investors, or replace it with the\n     WhatsApp join call to action the other communities use.\n   - Give the supporter wall's empty band and the partner wall's empty state\n     the soft \"nothing here yet\" panel with a button, as chosen in the decision\n     sheet (row d-q3). Each panel points at the right next step (give / become\n     a partner) instead of reading as broken.\n\n## Not in this cycle\n\n- Writing or inventing any donor, partner, quote or photo.\n- Choosing a donation platform, or building a sponsor inquiry form. Both are\n  their own decisions; the check lists them as gaps.\n- Merging the duplicate sponsor copy in `src/data/sponsorPage.json`. That's\n  decision-sheet row c-dup-copy, its own plan.\n\n## Done when\n\n- The check reports exactly the gaps listed above against today's content, and\n  reports none against a fully filled fixture.\n- `/cutover-runbook` shows the list, and the public-switch step reads \"not\n  ready\".\n- Investors no longer promises a webinar.",
+  "description": "The private cutover runbook now has a 'Content still missing' section, worked out on every build from the real content: an empty supporter wall, the missing donation link, too few or photo-less testimonials, communities without a banner or lead, placeholder or missing partners, the switched-off Presenting Partner level, a blank partner inquiry form, and drafted priorities. Fifteen gaps today, each saying what to send and where it goes in /admin. The two go-public steps (S5 passphrase off, S7 point the domain) are held while any gap remains, and D2's recommendation now follows the owner's 2026-10-02 ruling that nothing ships empty or switched off. Also: the empty partner wall offers 'Become a partner' and 'See partnership levels', and the Investors community no longer promises a launch webinar. Scope verdict: the 'bring all content to publication quality' deliverable stays DEFERRED (decided by the user at the plan gate) - the remaining work is content only the team can supply; no other deliverables are open.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/editor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/bring-all-content-to-publication-quality-before-going-public-fill-the-supporter-recognition-wall-testimonials-communities-and-sponsors-owner-ruled-on-2026-10-02-that-nothing-ships-empty-or-switched-off.md",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/plans/completed/bring-all-content-to-publication-quality-before-going-public-fill-the-supporter-recognition-wall-testimonials-communities-and-sponsors-owner-ruled-on-2026-10-02-that-nothing-ships-empty-or-switched-off.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/project-deliverables.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-investors-join-steps.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-complete--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-cutover-day--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-decisions-answered-nothing-begun--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-decisions-answered-nothing-begun--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-nothing-started--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-partway-through--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-partway-through--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-waiting-on-one-answer--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-waiting-on-one-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-decided--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-decided--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-decided-read-only--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-decided-read-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-open--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-open--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-writing-the-answer--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-writing-the-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-example-placements--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-example-placements--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-no-partners-yet--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-no-partners-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-real-partners--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-real-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-commit-refused--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-commit-refused--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-done-with-attribution--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-done-with-attribution--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-read-only--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-read-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/64e7107847f486d0947f77850db26242ba5917659ef790ce1be1eaf3c1ef7274.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/be58fd9256717f785acf120d083374fef4e1c59113084f5216eac36865ebc5a7.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/cutover/RunbookSteps.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/cutover/StepCard.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/sponsor/SponsorWall.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/communities/investors.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/cutoverProgress.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/cutoverProgress.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/cutover-runbook/[...path].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-content-still-missing.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-content-still-missing--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-content-still-missing--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/bring-all-content-to-publication-quality-before-going-public-fill-the-supporter-recognition-wall-testimonials-communities-and-sponsors-owner-ruled-on-2026-10-02-that-nothing-ships-empty-or-switched-off.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/19a9c9f188b260af197be91368a86ba5e92101e4d8fec3436d76da3371ba11ca.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/3bad12bffabf6f1caff03ee6ab8107ee33162d2c35c12b3b5ba7fe2c0bfcfaaa.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/d7b334edb2edbacf63c28ebd9b54549b7eab45dbfb06b636497b7f7a47d417ad.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/ede0601715f7be0c616c9e2f1a319d9bd5a4ad064089fe497cb314e9582e5a67.json",
+      "status": "added"
+    },
+    {
+      "path": "src/components/cutover/ContentGapArea.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/cutover/ContentGapItem.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/cutover/RunbookContentGaps.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/cutover/StepContentHold.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/contentGaps.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/contentGaps.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/contentGapsContent.ts",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Cutover Runbook - A Tick That Could Not Be Saved",
+      "screenshotPath": "cutover-runbook-a-tick-that-could-not-be-saved--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Complete",
+      "screenshotPath": "cutover-runbook-complete--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Cutover Day",
+      "screenshotPath": "cutover-runbook-cutover-day--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Decisions Answered Nothing Begun",
+      "screenshotPath": "cutover-runbook-decisions-answered-nothing-begun--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Nothing Started",
+      "screenshotPath": "cutover-runbook-nothing-started--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Partway Through",
+      "screenshotPath": "cutover-runbook-partway-through--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - The Records On A Phone",
+      "screenshotPath": "cutover-runbook-the-records-on-a-phone--mobile.png"
+    },
+    {
+      "name": "Cutover Runbook - Waiting On One Answer",
+      "screenshotPath": "cutover-runbook-waiting-on-one-answer--desktop.png"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall",
+      "screenshotPath": "sponsor-route-example-partner-wall--mobile.png"
+    },
+    {
+      "name": "Decision Tick - Decided",
+      "screenshotPath": "decision-tick-decided--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Decided Read Only",
+      "screenshotPath": "decision-tick-decided-read-only--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Open",
+      "screenshotPath": "decision-tick-open--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Writing The Answer",
+      "screenshotPath": "decision-tick-writing-the-answer--desktop.png"
+    },
+    {
+      "name": "Step Tick - Commit Refused",
+      "screenshotPath": "step-tick-commit-refused--desktop.png"
+    },
+    {
+      "name": "Step Tick - Done With Attribution",
+      "screenshotPath": "step-tick-done-with-attribution--desktop.png"
+    },
+    {
+      "name": "Step Tick - Read Only",
+      "screenshotPath": "step-tick-read-only--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1736,
+    "passed": 1,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1736,
+        "passed": 1
+      }
+    ]
+  }
+}

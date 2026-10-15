@@ -1675,164 +1675,164 @@
   },
   "blockedLabel › joins two decisions with and": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "blockedLabel › names a single decision on its own": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "blockedLabel › returns an empty string when nothing is blocking": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "blockedLabel › uses a comma before the final and for three or more": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "blockingDecisions › drops decisions that have been answered": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "blockingDecisions › names every outstanding decision, not just the first": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "blockingDecisions › names the unanswered decisions a step needs": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "blockingDecisions › returns nothing for a step that needs no decisions": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "blockingDecisions › returns nothing once the decisions are answered": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "brand colours › gives facebook its official brand colour": {
@@ -2305,56 +2305,56 @@
   },
   "byPhase › accounts for every step across the three phases": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "byPhase › leaves retiring the old site until afterwards": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "byPhase › puts the switch itself on the day": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "byPresence › does not mutate its input": {
@@ -8902,6 +8902,159 @@
       "pass|full|2026-10-14T19:02:11.407Z"
     ]
   },
+  "findContentGaps › asks for one more quote when the band is one short": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › asks for several quotes when the band is empty": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › does not count drafted donors as filling the wall": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › flags a community with no banner image or no lead": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › flags a missing partner inquiry form": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › flags a switched-off partnership level by name": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › flags an empty supporter wall and a missing donation link separately": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › flags each drafted priority": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › lists community gaps alphabetically whatever order they arrive in": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z"
+    ]
+  },
+  "findContentGaps › names the person whose portrait or event photo is missing": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › reports every gap in todays content": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › reports no gaps when every area is filled": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "findContentGaps › treats example partners as no partners and lists them for deletion": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
   "findEmptiedCollections › accepts a collection that is empty everywhere": {
     "file": "src/lib/emptiedCollections.test.ts",
     "lastRunAt": "2026-10-15T18:41:06.244Z",
@@ -10432,6 +10585,30 @@
       "pass|full|2026-10-14T22:15:19.893Z",
       "pass|full|2026-10-14T20:59:19.428Z",
       "pass|full|2026-10-14T19:02:11.407Z"
+    ]
+  },
+  "groupGapsByArea › groups gaps by area in first-seen order": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "groupGapsByArea › returns no groups for no gaps": {
+    "file": "src/lib/contentGaps.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
     ]
   },
   "groupSponsorsByLevel › collects a sponsor whose tier matches no level instead of dropping it": {
@@ -12830,56 +13007,56 @@
   },
   "isDecisionAnswered › reports an answered decision": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "isDecisionAnswered › reports an open decision as unanswered": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "isDecisionAnswered › treats a decision absent from the file as unanswered": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "isEmbeddedPreview › accepts the flag with or without a leading question mark": {
@@ -13096,6 +13273,30 @@
       "pass|full|2026-10-14T22:15:19.893Z",
       "pass|full|2026-10-14T20:59:19.428Z",
       "pass|full|2026-10-14T19:02:11.407Z"
+    ]
+  },
+  "isHeldForContent › holds exactly S5 and S7 while anything is missing": {
+    "file": "src/lib/cutoverProgress.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "isHeldForContent › holds nothing once no content is missing": {
+    "file": "src/lib/cutoverProgress.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
     ]
   },
   "isInternalPath › does not match lookalike paths": {
@@ -13370,110 +13571,134 @@
   },
   "isStepDone › reports a ticked step as done": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "isStepDone › reports an untouched step as not done": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "isStepDone › treats a step absent from the file as not done": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
+    ]
+  },
+  "isStepReady › does not hold a step that changes nothing public": {
+    "file": "src/lib/cutoverProgress.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
     ]
   },
   "isStepReady › reports a completed step as not ready": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
+    ]
+  },
+  "isStepReady › reports a go-public step as not ready while content is missing": {
+    "file": "src/lib/cutoverProgress.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
     ]
   },
   "isStepReady › reports a step waiting on a decision as not ready": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "isStepReady › reports an unblocked, unticked step as ready": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "isWhatsAppGroupLink › is false for a link that only mentions whatsapp elsewhere in the url": {
@@ -21233,94 +21458,106 @@
       "pass|full|2026-10-14T19:02:11.407Z"
     ]
   },
-  "rollup › reports complete when every step is done": {
+  "rollup › counts a go-public step held for content as blocked, not ready": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "rollup › reports complete when every step is done": {
+    "file": "src/lib/cutoverProgress.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "rollup › reports the default state as untouched": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "rollup › splits unfinished steps into ready and blocked with none left over": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "rollup › stops reporting untouched once a decision is answered": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "rollup › takes its totals from the runbook rather than the state file": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "routableEntries › builds a page for a preview that no listing shows": {
@@ -21487,56 +21724,56 @@
   },
   "runbook structure › only blocks steps on decisions that exist": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "runbook structure › only claims to block steps that exist": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "runbook structure › puts every step that touches nothing live before the last live one": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "sanitizeFirstName › accepts an ordinary first name": {
@@ -25801,76 +26038,88 @@
       "pass|full|2026-10-14T19:02:11.407Z"
     ]
   },
-  "summaryLine › reports readiness rather than blockage when nothing is waiting": {
+  "summaryLine › names content as well as decisions as a cause of waiting": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z"
+    ]
+  },
+  "summaryLine › reports readiness rather than blockage when nothing is waiting": {
+    "file": "src/lib/cutoverProgress.test.ts",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "summaryLine › says step is for exactly one blocked step": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "summaryLine › says step is for exactly one ready step": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "summaryLine › says steps are for several blocked steps": {
     "file": "src/lib/cutoverProgress.test.ts",
-    "lastRunAt": "2026-10-15T18:41:06.244Z",
+    "lastRunAt": "2026-10-15T21:03:44.379Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-15T21:03:44.379Z",
+      "pass|changed|2026-10-15T20:20:02.398Z",
+      "pass|changed|2026-10-15T20:11:18.922Z",
+      "pass|changed|2026-10-15T20:11:14.301Z",
+      "pass|changed|2026-10-15T20:04:31.050Z",
+      "pass|changed|2026-10-15T20:04:22.205Z",
       "pass|changed|2026-10-15T18:41:06.244Z",
       "pass|full|2026-10-15T18:37:40.764Z",
       "pass|changed|2026-10-15T18:31:24.528Z",
-      "pass|full|2026-10-15T17:04:42.727Z",
-      "pass|full|2026-10-15T15:00:03.712Z",
-      "pass|full|2026-10-15T13:28:09.112Z",
-      "pass|changed|2026-10-15T13:23:36.630Z",
-      "pass|full|2026-10-14T22:15:19.893Z",
-      "pass|full|2026-10-14T20:59:19.428Z",
-      "pass|full|2026-10-14T19:02:11.407Z"
+      "pass|full|2026-10-15T17:04:42.727Z"
     ]
   },
   "supporterPageUrl › appends to a url that already carries a query": {
