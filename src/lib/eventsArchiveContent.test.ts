@@ -148,7 +148,7 @@ describe('the imported archive entries', () => {
 // 2026-09-28T22:00:00Z, which is 6 PM in New York, the hour the hand-written
 // entry already gave. Luma's name won because Luma is where people registered.
 describe('the Sept 28 event', () => {
-  const sept28 = entries.find((e) => e.title.startsWith('Harvard in Tech Fall Welcome Mixer'));
+  const sept28 = entries.find((e) => e.title.startsWith('Harvard Alumni in Tech Fall Welcome Mixer'));
 
   // The link is the entire point of the entry while the event is upcoming, and
   // `EventCard` renders it only when the event has not passed — so a missing

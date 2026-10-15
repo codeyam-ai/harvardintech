@@ -8352,6 +8352,33 @@
       "runner": "tests"
     },
     {
+      "description": "The correct name, in title case or as the banner renders it in capitals, is not flagged.",
+      "file": "src/lib/brandNameContent.test.ts",
+      "format": "vitest",
+      "key": "offBrandMentions › accepts the brand as written",
+      "line": 54,
+      "registeredAt": "2026-10-15T14:23:34Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each retired form of the name is caught, so the scan below cannot pass by matching nothing.",
+      "file": "src/lib/brandNameContent.test.ts",
+      "format": "vitest",
+      "key": "offBrandMentions › catches every retired form of the name",
+      "line": 43,
+      "registeredAt": "2026-10-15T14:23:34Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A web address that spells the old name is an address, not copy, so it is left alone.",
+      "file": "src/lib/brandNameContent.test.ts",
+      "format": "vitest",
+      "key": "offBrandMentions › ignores URLs",
+      "line": 60,
+      "registeredAt": "2026-10-15T14:23:34Z",
+      "runner": "tests"
+    },
+    {
       "description": "Selection is non-mutating, so the caller's collection is untouched.",
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
@@ -11769,6 +11796,15 @@
       "key": "singletonKeysWithoutEditor › reports nothing when every singleton key has an editor input",
       "line": 132,
       "registeredAt": "2026-08-19T20:31:11.589811377+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "No file a visitor reads from still names the organisation the old way.",
+      "file": "src/lib/brandNameContent.test.ts",
+      "format": "vitest",
+      "key": "site copy › writes the brand as Harvard Alumni in Tech everywhere",
+      "line": 67,
+      "registeredAt": "2026-10-15T14:23:34Z",
       "runner": "tests"
     },
     {

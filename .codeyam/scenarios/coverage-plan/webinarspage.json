@@ -3,9 +3,21 @@
   "surface_kind": "component",
   "states": [
     {
-      "dimension": "default",
-      "value": "default",
-      "rationale": "source-derived state default=default",
+      "dimension": "posts",
+      "value": "empty",
+      "rationale": "source-derived state posts=empty",
+      "status": "covered"
+    },
+    {
+      "dimension": "posts",
+      "value": "one",
+      "rationale": "source-derived state posts=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "posts",
+      "value": "many",
+      "rationale": "source-derived state posts=many",
       "status": "covered"
     }
   ]

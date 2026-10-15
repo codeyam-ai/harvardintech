@@ -1,7 +1,7 @@
-# Harvard in Tech
+# Harvard Alumni in Tech
 
 A modern, statically-exported [Astro](https://astro.build) rebuild of the
-[Harvard in Tech](https://www.harvardintech.com/) website — a faithful
+[Harvard Alumni in Tech](https://www.harvardintech.com/) website — a faithful
 reproduction of the original (built on a no-code tool) using modern technology,
 hostable for free on GitHub Pages.
 

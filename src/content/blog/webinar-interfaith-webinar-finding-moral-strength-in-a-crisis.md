@@ -7,11 +7,11 @@ embedUrl: "https://player.vimeo.com/video/422004140"
 draft: true
 ---
 
-Harvard in Tech and COVID Foundation Interfaith Webinar
+Harvard Alumni in Tech and COVID Foundation Interfaith Webinar
 
 Where do we get the moral strength to deal with an ambiguous and isolating crisis? How can the world's religious, spiritual, and ethical traditions help us at this time ― not only in terms of mental health, but how can we also bring out the best, bravest, most loving and helpful parts of ourselves in the midst of fear, exhaustion, anger, and grief?
 
-Join the Covid Foundation and Harvard in Tech for a webinar featuring prominent religious and nonreligious leaders in the Harvard community, including a diverse group of Harvard Chaplains, an inspiring mindfulness teacher, and the current President of Harvard College's Interfaith student fellowship.
+Join the Covid Foundation and Harvard Alumni in Tech for a webinar featuring prominent religious and nonreligious leaders in the Harvard community, including a diverse group of Harvard Chaplains, an inspiring mindfulness teacher, and the current President of Harvard College's Interfaith student fellowship.
 
 Greg M. Epstein serves as the Humanist Chaplain at Harvard and MIT, and he is the author of the New York Times bestselling book, “Good Without God: What a Billion Nonreligious People Do Believe.” In addition to his most recent writing as the Ethicist in Residence at leading Silicon Valley publication TechCrunch, Greg’s writing has appeared in CNN.com, The Washington Post and Newsweek, among others. In 2005, he received ordination as a Humanist Rabbi from the International Institute for Secular Humanistic Judaism. He holds a B.A. (Religion and Chinese) and an M.A. (Judaic Studies) from the University of Michigan, Ann Arbor, and a Masters of Theological Studies from the Harvard Divinity School. harvardhumanist.org / @gregmepstein
 

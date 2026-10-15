@@ -1,5 +1,5 @@
 ---
-title: "Harvard in Tech Fall Welcome Mixer"
+title: "Harvard Alumni in Tech Fall Welcome Mixer"
 date: 2026-09-28T18:00:00-04:00
 location: "Private rooftop, Hudson Yards, New York, NY"
 description: "Sold out within 24 hours, with more than 90% of registrants attending. A rooftop gathering in Hudson Yards that welcomed new and returning alumni for the fall, with curated tabletop conversations on emerging technologies and industry shifts and sunset views over the Hudson."

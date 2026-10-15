@@ -9,5 +9,5 @@
   "componentName": "MomentumAccomplishments",
   "scenarioType": "component",
   "pageFilePath": "src/components/donate/MomentumAccomplishments.astro",
-  "description": "'What we've accomplished so far' on the Momentum Fund page, rendered from the real published copy rather than invented figures. Each entry pairs a number with the sentence that gives it meaning, because the figure alone says nothing and the claim alone is unevidenced. It is one of the reorderable sections now, sitting by default between 'Why Support Harvard in Tech?' and the story, so the campaign shows momentum before it asks anyone to fund it."
+  "description": "'What we've accomplished so far' on the Momentum Fund page, rendered from the real published copy rather than invented figures. Each entry pairs a number with the sentence that gives it meaning, because the figure alone says nothing and the claim alone is unevidenced. It is one of the reorderable sections now, sitting by default between 'Why Support Harvard Alumni in Tech?' and the story, so the campaign shows momentum before it asks anyone to fund it."
 }

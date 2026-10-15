@@ -1,13 +1,13 @@
 ---
 title: "Reopening the Economy During COVID-19"
 date: 2020-05-03
-summary: "Mayor Kate Gallego of Phoenix, with Harvard in Tech Seattle"
+summary: "Mayor Kate Gallego of Phoenix, with Harvard Alumni in Tech Seattle"
 series: webinars
 coverImage: "/images/webinars/reopening-the-economy-during-covid-19.jpg"
 embedUrl: "https://www.youtube-nocookie.com/embed/NbIq-FBp_A8"
 ---
 
-Harvard in Tech Seattle presents video discussion with Mayor Kate Gallego of Phoenix on reopening the economy during COVID 19 pandemic. We have explored what are the precautions needed to re-open the economy, what kind of support needed in city, state and fed. level, and also with the changes how do we prepare ahead for technology infrastructure and services needed.
+Harvard Alumni in Tech Seattle presents video discussion with Mayor Kate Gallego of Phoenix on reopening the economy during COVID 19 pandemic. We have explored what are the precautions needed to re-open the economy, what kind of support needed in city, state and fed. level, and also with the changes how do we prepare ahead for technology infrastructure and services needed.
 
 Key Takeaways:
 

@@ -1,7 +1,7 @@
 ---
 title: "EduTech Solutions to COVID-19"
 date: 2020-04-09
-summary: "Prof. Mark Esposito, with Harvard in Tech Seattle"
+summary: "Prof. Mark Esposito, with Harvard Alumni in Tech Seattle"
 series: webinars
 coverImage: "/images/webinars/edutech-solutions-to-covid-19.jpg"
 embedUrl: "https://www.youtube-nocookie.com/embed/S4c48202-D8"

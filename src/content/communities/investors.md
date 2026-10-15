@@ -12,7 +12,7 @@ leads:
   - name: Stefan Pagacik
     role: Community lead (pilot)
 name: Investors
-tagline: For Harvard alumni in tech venture capital and angel investing.
+tagline: For Harvard Alumni in Tech venture capital and angel investing.
 whatsappFormUrl: https://forms.gle/GqgaCDDWhWAgpJC68
 joinBlurb: "Two steps: apply with the form to join the HIT WhatsApp community, then request the Investors group from inside WhatsApp."
 ---

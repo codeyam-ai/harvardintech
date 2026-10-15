@@ -1938,6 +1938,10 @@
         "src/components/ui/BrandGlyph.astro"
       ]
     },
+    "src/lib/brandNameContent.test.ts": {
+      "imports": [],
+      "importedBy": []
+    },
     "src/lib/campaignCopy.test.ts": {
       "imports": [
         "src/lib/campaignCopy.ts"
@@ -12076,5 +12080,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-15T13:29:17Z"
+  "lastUpdated": "2026-10-15T15:01:08Z"
 }
