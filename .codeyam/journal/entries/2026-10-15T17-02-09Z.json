@@ -1,0 +1,89 @@
+{
+  "timestamp": "2026-10-15T17:02:09Z",
+  "title": "Seeded captures fail loudly when a content list comes out empty",
+  "type": "feature",
+  "userRequest": "## Summary\n\nScenario capture on this Astro site cannot produce trustworthy frames of SEEDED app scenarios while any file under `src/content/` or `src/data/` is uncommitted. The content sandbox (`initContentSandbox` in `astro.config.mjs`, `.codeyam/tmp/content-sandbox/`) does not engage, so seeds are refused (\"served committed content\"). The documented workaround of stashing those files for the capture pass also failed this session: it produced frames with the chapters and communities collections EMPTY (no Chapters menu group), and `recapture-stale` reported them as clean \"Recaptured\". Every content-changing feature therefore ends with seeded frames that must be restored by hand and force-recaptured after the commit.\n\n## Key Decisions\n\n- A capture whose seed or collections did not land must fail loudly, never report \"Recaptured\".\n- The sandbox should seed from the WORKING TREE's `src/content` when it is dirty, rather than switching off, so content edits and seeded scenarios can be captured together before the commit.\n\n## Implementation\n\n1. In `astro.config.mjs` (`initContentSandbox`), seed the sandbox from the working-tree `src/content`/`src/data` when dirty, and never leave a collection directory empty across a dev-server restart (the empty-collection-dir watcher bug).\n2. Add a post-capture assertion for seeded app scenarios: when a collection the page renders is empty but the seed or production content has rows, fail the capture.\n3. Re-verify with `harvard-in-tech-phone-menu-open` and `webinars-route-the-surviving-recordings`, which both captured empty roster frames this session.",
+  "description": "A seeded scenario capture whose content collection renders empty now fails with a FATAL line naming the collection, instead of being reported as a clean Recaptured. The dev-only refresh endpoint in astro.config.mjs replies with how many entries each collection actually loaded. The seed adapter compares that with the sandbox's markdown files and with the entries git tracks, and exits non-zero on two contradictions: files on disk but none loaded (a collection that booted empty got no watcher), or an empty collection that git has entries for (the working tree is missing them, as the old git-stash workaround caused). A collection the scenario deliberately seeds as empty still passes, and exact counts are not compared because loaders may filter drafts. The decision logic lives in src/lib/emptiedCollections.ts with 20 unit tests; the two detection tests were proven red by prove-red.\n\nScope narrowed at plan approval (user-approved): implementation step 1 (seed the sandbox from the working tree when dirty, and never leave a collection dir empty across a restart) was not built. The sandbox already copies the working tree with no dirty check, and an Oct 14 recapture against a dirty tree loaded seeds correctly (taken from a session note, not re-checked this cycle). The restart case is now detected by the new check rather than prevented. Re-verified with harvard-in-tech-phone-menu-open and webinars-route-the-surviving-recordings, both capturing full lists; their frames were restored from HEAD because the only diff was webfont letter-spacing.\n\nProject deliverables: this tooling cycle delivered none of them and deferred none; all seven are already resolved by the user (three deferred, four dropped) and none was decided by the agent.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/seeded-scenario-captures-break-while-site-content-is-uncommitted.md\t.codeyam/plans/completed/seeded-scenario-captures-break-while-site-content-is-uncommitted.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/seed-adapter.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/90d0bf44b99b1b7f193bd466d8629497e3f3cfe0a4cc625e2b3de28b635c784d.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/d03c7c72e7e925c82d4fe7301e64838efe93353692c38cd49d42207869cf4c8c.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "astro.config.mjs",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/seeded-scenario-captures-break-while-site-content-is-uncommitted.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/720d3962ccccb57affdb575be8360ff2d26b4c4c4ac2790479a595321b6403c4.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/c0ddc7aa3de0c4b8ca45c0bd733b248e9dfa69221ffae75b9e0b712f348a0f8c.json",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/emptiedCollections.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/emptiedCollections.ts",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 20,
+        "passed": 20
+      }
+    ]
+  }
+}

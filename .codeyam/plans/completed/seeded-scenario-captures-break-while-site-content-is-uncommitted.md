@@ -19,3 +19,7 @@ Scenario capture on this Astro site cannot produce trustworthy frames of SEEDED 
 1. In `astro.config.mjs` (`initContentSandbox`), seed the sandbox from the working-tree `src/content`/`src/data` when dirty, and never leave a collection directory empty across a dev-server restart (the empty-collection-dir watcher bug).
 2. Add a post-capture assertion for seeded app scenarios: when a collection the page renders is empty but the seed or production content has rows, fail the capture.
 3. Re-verify with `harvard-in-tech-phone-menu-open` and `webinars-route-the-surviving-recordings`, which both captured empty roster frames this session.
+
+## Approved Scope (2026-10-15)
+
+Implementation step 1 is already satisfied: `initContentSandbox` copies the working-tree `src/content`/`src/data` (no dirty check), and on 2026-10-14 a recapture against a dirty tree loaded seeds correctly. This cycle delivers only step 2 (a seeded capture whose rendered collection is empty fails loudly instead of reporting "Recaptured") and step 3 (re-verify `harvard-in-tech-phone-menu-open` and `webinars-route-the-surviving-recordings`).

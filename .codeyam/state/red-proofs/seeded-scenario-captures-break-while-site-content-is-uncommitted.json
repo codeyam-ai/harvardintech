@@ -1,0 +1,43 @@
+{
+  "provenAt": "2026-10-15T15:32:21Z",
+  "slug": "seeded-scenario-captures-break-while-site-content-is-uncommitted",
+  "paths": [],
+  "runScope": [
+    "src/lib/emptiedCollections.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/emptiedCollections.ts",
+      "find": "if (files > 0 && loaded && loaded[collection] === 0) {",
+      "replace": "if (false && files > 0 && loaded && loaded[collection] === 0) {"
+    },
+    {
+      "file": "src/lib/emptiedCollections.ts",
+      "find": "} else if (files === 0 && (tracked[collection] ?? 0) > 0) {",
+      "replace": "} else if (false && files === 0 && (tracked[collection] ?? 0) > 0) {"
+    }
+  ],
+  "tests": {
+    "flags a collection missing from the working tree that git tracks": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "flags a collection with files on disk that the dev server loaded none of": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "flags a collection missing from the working tree that git tracks",
+      "flags a collection with files on disk that the dev server loaded none of"
+    ]
+  }
+}

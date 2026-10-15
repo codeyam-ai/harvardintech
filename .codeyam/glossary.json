@@ -834,7 +834,7 @@
     "testFile": "src/lib/momentumNetwork.test.ts"
   },
   {
-    "description": "Dev-only Astro integration exposing a content-layer refresh endpoint the seed adapter calls after writing a scenario's markdown. Astro normally notices a seed via its file watcher, but a collection whose directory had no matching files at boot never got a watcher at all — so seeding donors or testimonials for the first time in a session changed nothing on the page. Refreshing re-runs every loader, which both ingests the new files and registers the skipped watcher. It also invalidates the data-store module and pushes a reload before answering, because Astro only invalidates rendered pages when it sees the store change on disk, and that write lands after the refresh resolves — which would leave the very next request, the capture, serving the pre-seed render.",
+    "description": "Dev-only Astro integration exposing a content-layer refresh endpoint the seed adapter calls after writing a scenario's markdown. Astro normally notices a seed via its file watcher, but a collection whose directory had no matching files at boot never got a watcher at all — so seeding donors or testimonials for the first time in a session changed nothing on the page. Refreshing re-runs every loader, which both ingests the new files and registers the skipped watcher. It also invalidates the data-store module and pushes a reload before answering, because Astro only invalidates rendered pages when it sees the store change on disk. Its JSON reply reports how many entries each collection actually loaded (via loadedCollectionCounts), which the seed adapter uses to fail a capture whose collection came out empty.",
     "filePath": "astro.config.mjs",
     "name": "codeyamContentRefresh",
     "untestabilityReason": {
@@ -877,6 +877,33 @@
     "filePath": "src/lib/contentRoot.ts",
     "name": "contentRoot",
     "testFile": "src/lib/contentRoot.test.ts"
+  },
+  {
+    "description": "Counts markdown files in each collection directory under a content root, reporting an empty directory as 0 and a missing root as no counts.",
+    "filePath": "src/lib/emptiedCollections.ts",
+    "name": "countCollectionFiles",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/emptiedCollections.test.ts"
+  },
+  {
+    "description": "Counts the entries each named collection returns from getCollection. A collection whose lookup throws is left out rather than counted as zero, so an unknown count can never masquerade as an empty load.",
+    "filePath": "src/lib/emptiedCollections.ts",
+    "name": "countLoadedEntries",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/emptiedCollections.test.ts"
+  },
+  {
+    "description": "Counts markdown entries per collection in a NUL-separated git ls-files listing of the content directory. Only files directly inside a collection directory count, so .gitkeep, the content config and nested files are ignored.",
+    "filePath": "src/lib/emptiedCollections.ts",
+    "name": "countTrackedCollectionEntries",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/emptiedCollections.test.ts"
   },
   {
     "description": "The one line printed under a supporter's name in the roll: school, class year and location, joined only where they exist. Returns nothing at all rather than an empty parenthetical, because a bare separator reads as missing data rather than as a supporter who simply left the field blank. Anonymous supporters reach this with every field already withheld by donorPublicIdentity, so they correctly print no credit line at all.",
@@ -1154,6 +1181,15 @@
     "filePath": "src/lib/team.ts",
     "name": "filterActiveBoardMembers",
     "testFile": "src/lib/team.test.ts"
+  },
+  {
+    "description": "Decides which content collections came out empty when they should not have, returning one message each. Flags a collection whose files are in the sandbox but which the dev server loaded none of, and one that is empty on disk while git tracks entries for it. A collection the seed deliberately set to empty is never flagged, and exact counts are not compared because a loader may filter drafts. The seed adapter fails the capture on any message, so a blank roster can no longer be reported as a clean recapture.",
+    "filePath": "src/lib/emptiedCollections.ts",
+    "name": "findEmptiedCollections",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/emptiedCollections.test.ts"
   },
   {
     "description": "Builds one responsive-sweep finding for a page and width, taking its severity (fail or advisory) from the finding kind.",
@@ -1624,6 +1660,15 @@
     "testFile": "src/lib/supporterBadge.test.ts"
   },
   {
+    "description": "Lists the collection directory names directly under a content root, skipping files such as the content config, and returning none for a missing root.",
+    "filePath": "src/lib/emptiedCollections.ts",
+    "name": "listCollectionNames",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/emptiedCollections.test.ts"
+  },
+  {
     "description": "Reads the accomplishments collection into the card shape MomentumAccomplishments already took from copy.accomplishments. Migrated out of donatePage.json, a singleton the CMS does not model at all, which is what made these cards developer-only. Maps the schema's description key onto the component's body prop because body is a reserved field id in the CMS registry and a custom field claiming it is dropped from the editor without comment.",
     "filePath": "src/lib/donatePageContent.ts",
     "name": "loadAccomplishments",
@@ -1754,6 +1799,18 @@
     "name": "loadVolunteerCopy",
     "untestabilityReason": {
       "justification": "astro:content getCollection boundary; the merge rules it delegates to are unit-tested in pageCopyMerge.test.ts",
+      "kind": "platform-glue"
+    }
+  },
+  {
+    "description": "Asks the running Vite dev server how many entries each content collection loaded: loads astro:content and hands its getCollection to countLoadedEntries over listCollectionNames of the active content root. Returns null when there is no content root or astro:content cannot load, so the caller can tell no report apart from every collection being empty.",
+    "filePath": "astro.config.mjs",
+    "name": "loadedCollectionCounts",
+    "tags": [
+      "content-sandbox"
+    ],
+    "untestabilityReason": {
+      "justification": "Needs a live Vite dev server to load astro:content; listing and counting are delegated to listCollectionNames and countLoadedEntries, both unit tested.",
       "kind": "platform-glue"
     }
   },
@@ -2135,6 +2192,15 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/archiveImporters.test.ts"
+  },
+  {
+    "description": "Reads the per-collection loaded counts from the content refresh endpoint's reply, returning null for an older plain-ok reply or JSON without a usable loaded object.",
+    "filePath": "src/lib/emptiedCollections.ts",
+    "name": "parseLoadedCounts",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/emptiedCollections.test.ts"
   },
   {
     "description": "The path given with --only, or null to sweep every page.",

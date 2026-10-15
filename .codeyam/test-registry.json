@@ -2222,6 +2222,78 @@
       "runner": "tests"
     },
     {
+      "description": "Counts only markdown in each collection directory, reporting an empty one as 0.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "countCollectionFiles › counts markdown files per collection directory",
+      "line": 136,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A missing content root yields no counts instead of throwing mid-seed.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "countCollectionFiles › returns no counts for a missing root",
+      "line": 148,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Reports each collection's loaded entry count.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "countLoadedEntries › counts entries per collection",
+      "line": 177,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A lookup that throws is left out, so it can never masquerade as an empty load.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "countLoadedEntries › leaves out a collection whose lookup throws",
+      "line": 186,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A trailing slash on the content dir must not change the result.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "countTrackedCollectionEntries › accepts a content dir with a trailing slash",
+      "line": 118,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Parses a real git ls-files -z listing into per-collection markdown counts.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "countTrackedCollectionEntries › counts markdown entries per collection",
+      "line": 96,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A .gitkeep, the content config and nested files are not collection entries.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "countTrackedCollectionEntries › ignores non-markdown, root-level and nested files",
+      "line": 107,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty listing, as when git is unavailable, yields no counts.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "countTrackedCollectionEntries › returns no counts for an empty listing",
+      "line": 123,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
       "description": "a row whose image is blank is dropped by `toGalleryPhotos`, so it renders nothing rather than a broken tile — but it is still an editor's half-finished row committed to the repo, which is worth failing on",
       "file": "src/lib/chapter.photos.test.ts",
       "format": "vitest",
@@ -4397,6 +4469,69 @@
       "key": "filterActiveBoardMembers › returns an empty array when every member is inactive",
       "line": 96,
       "registeredAt": "2026-06-15T16:33:22Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A collection that ships empty, such as donors, is empty on disk and in git — nothing is missing, so nothing to flag.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › accepts a collection that is empty everywhere",
+      "line": 72,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A loader that filters drafts loads fewer entries than there are files; only some-on-disk-none-loaded is a contradiction.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › accepts a loaded count below the file count",
+      "line": 59,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A collection absent from the report has an unknown count, which must not be read as zero.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › does not treat a collection missing from the report as empty",
+      "line": 87,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The stash-workaround failure: chapters vanished from the working tree, so the sandbox copy was empty while git still tracks six entries — must be flagged.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › flags a collection missing from the working tree that git tracks",
+      "line": 19,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The watcher failure: files are on disk but the running server loaded none of them, so the page would render an empty roster.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › flags a collection with files on disk that the dev server loaded none of",
+      "line": 32,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A scenario may deliberately seed a collection as empty — that is the state under test, not a failure.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › never flags a collection the seed set to empty on purpose",
+      "line": 46,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no dev server report the load check is skipped rather than guessed.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › skips the load check when no counts were reported",
+      "line": 79,
+      "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
     {
@@ -6966,6 +7101,24 @@
       "runner": "tests"
     },
     {
+      "description": "Only directories are collections; the content config file beside them is not.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "listCollectionNames › lists collection directories and skips files",
+      "line": 161,
+      "registeredAt": "2026-10-15T15:35:16.983103215+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A missing content root lists nothing rather than throwing inside the endpoint.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "listCollectionNames › lists nothing for a missing root",
+      "line": 170,
+      "registeredAt": "2026-10-15T15:35:16.984954668+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Leads with the org name as an H1 and the description as a blockquote.",
       "file": "src/lib/seoEndpoints.test.ts",
       "format": "vitest",
@@ -8970,6 +9123,33 @@
       "key": "parseArchiveDate › returns a null date rather than a nonsense one for an impossible day",
       "line": 68,
       "registeredAt": "2026-09-18T13:34:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The current endpoint's JSON reply yields its counts.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "parseLoadedCounts › reads the loaded counts from a JSON reply",
+      "line": 197,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An older endpoint answers plain ok: refreshed, but no counts to check.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "parseLoadedCounts › returns null for a plain text reply",
+      "line": 202,
+      "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "JSON without a usable loaded object is treated as no report.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "parseLoadedCounts › returns null when the reply has no loaded object",
+      "line": 207,
+      "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
     {

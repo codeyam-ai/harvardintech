@@ -44,9 +44,16 @@
  * Export mode is not supported — the source of truth is the markdown on disk.
  */
 
+import { execFileSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import {
+  countCollectionFiles,
+  countTrackedCollectionEntries,
+  findEmptiedCollections,
+  parseLoadedCounts,
+} from '../src/lib/emptiedCollections';
 
 // codeyam-adapter-version: 5
 //
@@ -398,7 +405,9 @@ export function resolveAppPort(projectRoot: string): number {
  * (a cold capture, CI), so an unreachable endpoint is a debug note, not a
  * failure. Awaited so the refresh has completed before the editor captures.
  */
-export async function refreshDevContent(projectRoot: string): Promise<boolean> {
+export async function refreshDevContent(
+  projectRoot: string,
+): Promise<{ refreshed: boolean; loaded: Record<string, number> | null }> {
   const appPort = resolveAppPort(projectRoot);
   const candidates = [appPort, appPort + 1, appPort + 2, appPort + 3];
 
@@ -410,7 +419,7 @@ export async function refreshDevContent(projectRoot: string): Promise<boolean> {
       });
       if (res.ok) {
         console.error(`[codeyam-seed] content refreshed via :${port}`);
-        return true;
+        return { refreshed: true, loaded: parseLoadedCounts(await res.text()) };
       }
     } catch {
       // Nothing listening there, or it is not the dev server — try the next.
@@ -421,7 +430,28 @@ export async function refreshDevContent(projectRoot: string): Promise<boolean> {
     `[codeyam-seed] no dev server answered /__codeyam_refresh_content on ` +
       `${candidates.join(', ')} — seeded files are on disk and will be picked up at next boot`,
   );
-  return false;
+  return { refreshed: false, loaded: null };
+}
+
+/**
+ * `.md`/`.mdx` entries git tracks per collection under `contentDir` (relative to
+ * `projectRoot`). Empty when git is unavailable — the check that uses it then
+ * simply has nothing to compare against.
+ */
+export function trackedCollectionCounts(
+  projectRoot: string,
+  contentDir: string,
+): Record<string, number> {
+  try {
+    const listing = execFileSync('git', ['ls-files', '-z', '--', contentDir], {
+      cwd: projectRoot,
+      encoding: 'utf-8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return countTrackedCollectionEntries(listing, contentDir);
+  } catch {
+    return {};
+  }
 }
 
 export async function main() {
@@ -474,7 +504,20 @@ export async function main() {
 
   // And make the RUNNING server see it, for the collections whose watcher was
   // never registered because they booted empty. Best-effort: see the function.
-  await refreshDevContent(projectRoot);
+  const { loaded } = await refreshDevContent(projectRoot);
+
+  // A capture that renders an empty collection must fail here, loudly — not be
+  // reported as a clean recapture. See `findEmptiedCollections`.
+  const emptied = findEmptiedCollections({
+    onDisk: countCollectionFiles(contentRoot),
+    loaded,
+    tracked: trackedCollectionCounts(projectRoot, resolveContentDir(projectRoot)),
+    seeded: new Set(Object.keys(counts)),
+  });
+  if (emptied.length > 0) {
+    for (const problem of emptied) console.error(`[codeyam-seed] FATAL: ${problem}`);
+    process.exit(1);
+  }
 
   console.log(JSON.stringify({ contentCollection: counts }, null, 2));
 

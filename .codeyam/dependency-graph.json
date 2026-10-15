@@ -127,14 +127,17 @@
       ]
     },
     ".codeyam/seed-adapter.ts": {
-      "imports": [],
+      "imports": [
+        "src/lib/emptiedCollections.ts"
+      ],
       "importedBy": []
     },
     "astro.config.mjs": {
       "imports": [
         "src/lib/publishTrack.ts",
         "src/lib/previewGate.ts",
-        "src/lib/redirects.ts"
+        "src/lib/redirects.ts",
+        "src/lib/emptiedCollections.ts"
       ],
       "importedBy": []
     },
@@ -2338,6 +2341,20 @@
       "imports": [],
       "importedBy": [
         "src/lib/embeddedPreview.test.ts"
+      ]
+    },
+    "src/lib/emptiedCollections.test.ts": {
+      "imports": [
+        "src/lib/emptiedCollections.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/emptiedCollections.ts": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/seed-adapter.ts",
+        "src/lib/emptiedCollections.test.ts",
+        "astro.config.mjs"
       ]
     },
     "src/lib/envFlag.test.ts": {
@@ -4815,6 +4832,17 @@
       ],
       "importedBy": []
     },
+    ".codeyam/seed-adapter.ts::__file_root__": {
+      "filePath": ".codeyam/seed-adapter.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/emptiedCollections.ts::countCollectionFiles",
+        "src/lib/emptiedCollections.ts::countTrackedCollectionEntries",
+        "src/lib/emptiedCollections.ts::findEmptiedCollections",
+        "src/lib/emptiedCollections.ts::parseLoadedCounts"
+      ],
+      "importedBy": []
+    },
     "astro.config.mjs::__file_root__": {
       "filePath": "astro.config.mjs",
       "name": "__file_root__",
@@ -4826,7 +4854,9 @@
         "src/lib/previewGate.ts::__file_root__",
         "src/lib/previewGate.ts::assertPassphraseConfigured",
         "src/lib/previewGate.ts::substitutePassphrase",
-        "src/lib/redirects.ts::redirectsForBase"
+        "src/lib/redirects.ts::redirectsForBase",
+        "src/lib/emptiedCollections.ts::countLoadedEntries",
+        "src/lib/emptiedCollections.ts::listCollectionNames"
       ],
       "importedBy": []
     },
@@ -7745,6 +7775,69 @@
         "src/lib/embeddedPreview.ts::loadScriptUnlessEmbedded"
       ],
       "importedBy": []
+    },
+    "src/lib/emptiedCollections.test.ts::__file_root__": {
+      "filePath": "src/lib/emptiedCollections.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/emptiedCollections.ts::countCollectionFiles",
+        "src/lib/emptiedCollections.ts::countLoadedEntries",
+        "src/lib/emptiedCollections.ts::countTrackedCollectionEntries",
+        "src/lib/emptiedCollections.ts::findEmptiedCollections",
+        "src/lib/emptiedCollections.ts::listCollectionNames",
+        "src/lib/emptiedCollections.ts::parseLoadedCounts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/emptiedCollections.ts::countCollectionFiles": {
+      "filePath": "src/lib/emptiedCollections.ts",
+      "name": "countCollectionFiles",
+      "imports": [],
+      "importedBy": [
+        "src/lib/emptiedCollections.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/emptiedCollections.ts::countLoadedEntries": {
+      "filePath": "src/lib/emptiedCollections.ts",
+      "name": "countLoadedEntries",
+      "imports": [],
+      "importedBy": [
+        "src/lib/emptiedCollections.test.ts::__file_root__",
+        "astro.config.mjs::__file_root__"
+      ]
+    },
+    "src/lib/emptiedCollections.ts::countTrackedCollectionEntries": {
+      "filePath": "src/lib/emptiedCollections.ts",
+      "name": "countTrackedCollectionEntries",
+      "imports": [],
+      "importedBy": [
+        "src/lib/emptiedCollections.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/emptiedCollections.ts::findEmptiedCollections": {
+      "filePath": "src/lib/emptiedCollections.ts",
+      "name": "findEmptiedCollections",
+      "imports": [],
+      "importedBy": [
+        "src/lib/emptiedCollections.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/emptiedCollections.ts::listCollectionNames": {
+      "filePath": "src/lib/emptiedCollections.ts",
+      "name": "listCollectionNames",
+      "imports": [],
+      "importedBy": [
+        "src/lib/emptiedCollections.test.ts::__file_root__",
+        "astro.config.mjs::__file_root__"
+      ]
+    },
+    "src/lib/emptiedCollections.ts::parseLoadedCounts": {
+      "filePath": "src/lib/emptiedCollections.ts",
+      "name": "parseLoadedCounts",
+      "imports": [],
+      "importedBy": [
+        "src/lib/emptiedCollections.test.ts::__file_root__"
+      ]
     },
     "src/lib/envFlag.test.ts::__file_root__": {
       "filePath": "src/lib/envFlag.test.ts",
@@ -12080,5 +12173,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-15T15:01:08Z"
+  "lastUpdated": "2026-10-15T17:05:50Z"
 }

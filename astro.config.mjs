@@ -19,6 +19,7 @@ import {
   substitutePassphrase,
 } from './src/lib/previewGate';
 import { redirectsForBase } from './src/lib/redirects';
+import { countLoadedEntries, listCollectionNames } from './src/lib/emptiedCollections';
 
 // --- codeyam content sandbox ---------------------------------------------
 // The site's "database" is the committed markdown under `src/content/` and the
@@ -82,6 +83,28 @@ function initContentSandbox(projectRoot) {
 }
 
 /**
+ * Entry count per content collection as the running dev server sees it, keyed
+ * by the collection directories under the active content root. A collection
+ * whose lookup throws is left out (its count is unknown, not zero). Returns
+ * null when `astro:content` cannot be loaded at all, so the caller can tell
+ * "no report" apart from "every collection is empty".
+ *
+ * @param {import('vite').ViteDevServer} server
+ * @returns {Promise<Record<string, number> | null>}
+ */
+async function loadedCollectionCounts(server) {
+  const contentRoot = process.env.CODEYAM_CONTENT_ROOT;
+  if (!contentRoot || !fs.existsSync(contentRoot)) return null;
+  let content;
+  try {
+    content = await server.ssrLoadModule('astro:content');
+  } catch {
+    return null;
+  }
+  return countLoadedEntries(listCollectionNames(contentRoot), content.getCollection);
+}
+
+/**
  * Dev-only integration exposing a content-layer refresh endpoint.
  *
  * The seed adapter rewrites markdown inside the sandbox while the dev server is
@@ -121,12 +144,17 @@ function codeyamContentRefresh() {
       'astro:server:setup': ({ server, refreshContent }) => {
         server.middlewares.use('/__codeyam_refresh_content', (_req, res) => {
           Promise.resolve(refreshContent?.({ context: { reason: 'codeyam-seed' } }))
-            .then(() => {
+            .then(async () => {
               const mod = server.moduleGraph.getModuleById(DATA_STORE_MODULE_ID);
               if (mod) server.moduleGraph.invalidateModule(mod);
               server.ws.send({ type: 'full-reload', path: '*' });
+              // Report what each collection ACTUALLY loaded, so the seed adapter
+              // can fail a capture whose collection came out empty instead of
+              // letting it be reported as a clean recapture.
+              const loaded = await loadedCollectionCounts(server);
               res.statusCode = 200;
-              res.end('ok');
+              res.setHeader('content-type', 'application/json');
+              res.end(JSON.stringify({ ok: true, loaded }));
             })
             .catch((err) => {
               // Never take the dev server down over a refresh — the caller
