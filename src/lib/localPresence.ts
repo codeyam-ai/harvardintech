@@ -39,7 +39,6 @@ export type ChapterStatus = 'active' | 'forming';
 export interface PresenceLike {
   status?: string;
   whatsappFormUrl?: string;
-  volunteerUrl?: string;
 }
 
 /**
@@ -48,7 +47,7 @@ export interface PresenceLike {
  * The functions below take `unknown` rather than `PresenceLike` on purpose.
  * `PresenceLike` is all-optional, which makes it a TypeScript "weak type": an
  * argument sharing none of its keys is REJECTED. A chapter carrying no
- * `status`, no `whatsappFormUrl` and no `volunteerUrl` shares none of them —
+ * `status` and no `whatsappFormUrl` shares none of them —
  * and that is the default case, most of the roster, and precisely what these
  * rules exist to handle. Constraining to the interface would therefore refuse
  * the commonest input while accepting the rare one.
@@ -159,7 +158,7 @@ export function byPresence<T>(chapters: readonly T[]): T[] {
 export interface JoinCtas {
   /** The Google Form. Never a group invite. */
   whatsappFormUrl: string;
-  /** The volunteer page, or an entry's own override. */
+  /** The site-wide volunteer page. No entry overrides it. */
   volunteerUrl: string;
   /** The Mailchimp newsletter sign-up. */
   newsletterUrl: string;
@@ -183,7 +182,17 @@ export function joinCtas(entry?: unknown): JoinCtas {
   return {
     whatsappFormUrl:
       candidate && !isWhatsAppGroupLink(candidate) ? candidate : WHATSAPP_FORM_URL,
-    volunteerUrl: field(entry, 'volunteerUrl')?.trim() || VOLUNTEER_PATH,
+    volunteerUrl: VOLUNTEER_PATH,
     newsletterUrl: NEWSLETTER_URL,
   };
+}
+
+/**
+ * Where a forming city's Volunteer button points: the volunteer interest form
+ * configured on the Volunteer page in /admin, or the /volunteer page when the
+ * box is blank. Blank-or-whitespace counts as absent — the CMS leaves an empty
+ * string behind, and `href=""` would reload the current page.
+ */
+export function volunteerFormHref(ctaUrl?: string): string {
+  return ctaUrl?.trim() || VOLUNTEER_PATH;
 }

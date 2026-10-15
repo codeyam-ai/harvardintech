@@ -63,20 +63,15 @@ interface Props {
   /**
    * `active` or `forming`; absent means active.
    *
-   * A forming city swaps the leads block for the "meets online for now" band. It
-   * keeps its hero, its body copy, its gallery and its URL — the difference is
-   * what the page ASKS you for, not how much of a page it is.
+   * A forming (WhatsApp-only) city renders just its hero and the "meets online
+   * for now" band with its three asks. Everything else on this page belongs to
+   * active chapters. Its URL and menu entry stay the same either way.
    */
   status?: string;
   /** "What happens here" cards, for a chapter whose calendar is thin. */
   callouts?: { title: string; text?: string }[];
   /** The entry's own WhatsApp form override. Always a form, never a group. */
   whatsappFormUrl?: string;
-  /** Where a forming chapter's volunteer button points. */
-  volunteerUrl?: string;
-  /** From `emailFor('formingChapter', …)`. Absent → the forming band shows no
-   *  Contact us button. Only a forming chapter ever uses this. */
-  formingContactEmail?: string;
   leads?: Lead[];
   links?: ChapterLink[];
   /** Where the "back" link at the top of the content block points, and what it
@@ -99,8 +94,6 @@ const {
   status,
   callouts = [],
   whatsappFormUrl,
-  volunteerUrl,
-  formingContactEmail,
   leads = [],
   links = [],
   backHref = '/#events',
@@ -129,57 +122,42 @@ const hasBody = Astro.slots.has('default');
 />
 
 {
-  /* The ask comes FIRST on a forming chapter. Someone who lands on a page for a
-     city with no events needs to know what to do with it before they scroll
-     past the fold and conclude there is nothing here. */
+  /* A forming (WhatsApp-only) city is the hero plus this one band and nothing
+     else: the owner wants three asks and no filler. Everything below is the
+     active-chapter page. */
   forming ? (
-    <FormingChapterCta
-      name={name}
-      whatsappFormUrl={whatsappFormUrl}
-      volunteerUrl={volunteerUrl}
-      contactEmail={formingContactEmail}
-    />
-  ) : null
+    <FormingChapterCta name={name} whatsappFormUrl={whatsappFormUrl} />
+  ) : (
+    <Fragment>
+      <ChapterEvents events={events} name={name} heading={eventsHeading} />
+      <CommunityCallouts callouts={callouts} />
+      <ChapterEvents events={pastEvents} name={name} variant="past" />
+      <ChapterSignUp name={name} />
+      <PageNarrowBody
+        backHref={backHref}
+        backLabel={backLabel}
+        leads={leads}
+        links={links}
+        hasBody={hasBody}
+      >
+        <slot />
+      </PageNarrowBody>
+      {
+        /* An empty `photos` list is treated as absent, not as "an empty gallery":
+           the CMS leaves an empty array behind when an editor removes the last
+           row. `cap` is passed ONLY here; the landing page stays uncapped. */
+        showGallery ? (
+          photos?.length ? (
+            <EventGallery photos={photos} cap={12} heading={`Photos from ${name}`} />
+          ) : (
+            <EventGallery />
+          )
+        ) : null
+      }
+      {/* Every active chapter page ends by offering the way in that needs no
+          chapter at all, for a visitor who is not near this city. */}
+      <GlobalCommunityCta />
+      <ChapterConnect />
+    </Fragment>
+  )
 }
-
-<ChapterEvents events={events} name={name} heading={eventsHeading} />
-
-<CommunityCallouts callouts={callouts} />
-
-<ChapterEvents events={pastEvents} name={name} variant="past" />
-
-<ChapterSignUp name={name} />
-
-<PageNarrowBody
-  backHref={backHref}
-  backLabel={backLabel}
-  leads={leads}
-  showLeads={!forming}
-  links={links}
-  hasBody={hasBody}
->
-  <slot />
-</PageNarrowBody>
-
-{
-  /* An empty `photos` list is treated as absent, not as "an empty gallery":
-     the CMS leaves an empty array behind when an editor removes the last row,
-     and rendering nothing there would look like a bug rather than a fallback.
-     `cap` is passed ONLY here — the landing page stays uncapped. */
-  showGallery ? (
-    photos?.length ? (
-      <EventGallery photos={photos} cap={12} heading={`Photos from ${name}`} />
-    ) : (
-      <EventGallery />
-    )
-  ) : null
-}
-
-{
-  /* Every chapter page ends by offering the way in that needs no chapter at
-     all. A visitor who has read to the bottom of a city page they are not near
-     should not have to go back to the menu to find one. */
-}
-<GlobalCommunityCta />
-
-<ChapterConnect />

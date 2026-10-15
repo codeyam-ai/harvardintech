@@ -48,7 +48,6 @@ export const WHATSAPP_CRITERIA_URL =
 export const EMAIL_SURFACES = [
   'footer',
   'contactUs',
-  'formingChapter',
   'sponsorInquiry',
   'llms',
   'structuredData',

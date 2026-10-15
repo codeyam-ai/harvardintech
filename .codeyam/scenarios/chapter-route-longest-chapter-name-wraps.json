@@ -1,12 +1,11 @@
 {
   "name": "Chapter Route - Longest Chapter Name Wraps",
-  "id": "76ddaf1b-2a50-4701-8f93-d3e60243e354",
+  "id": "e4aba77f-4e59-40f4-b0f7-48c60ec465af",
   "url": "/chapters/seattle",
   "dimensions": [
     "Desktop"
   ],
   "mocks": {},
   "scenarioType": "application",
-  "pageFilePath": "src/pages/chapters/[slug].astro",
-  "description": "Seattle / Pacific Northwest is the longest name on the roster, and the hero title is now the city ALONE — the organisation's name moved out of it into the small kicker above, so a title that once ran to 49 uppercase characters and overflowed a 1440px viewport no longer carries that weight. The title still wraps rather than clipping, which is what this entry keeps pinned. It is also a forming chapter, so the kicker reads Chapter - Forming and the page asks for a lead instead of naming one: the same route rendering both halves of the status model, against the longest string it has to survive."
+  "description": "Seattle / Pacific Northwest is the longest name on the roster, so this pins that both the hero title and the band heading (Seattle / Pacific Northwest meets online for now.) wrap cleanly instead of clipping. It is also the real forming (WhatsApp-only) chapter page: the hero with the Online group kicker, then the three buttons Request to join WhatsApp, Subscribe to newsletter and Volunteer or co-lead, then straight to the footer. No events, write-up, sign-up band, global-community band or Connect with us."
 }

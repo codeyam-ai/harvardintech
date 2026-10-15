@@ -28,14 +28,6 @@ interface Props {
   leads?: Lead[];
   /** "Chapter leads" for a city, "Community lead(s)" for a group. */
   leadsHeading?: string;
-  /**
-   * Whether to show the leads at all.
-   *
-   * A FORMING chapter passes `false` even when it has leads: the page is
-   * asking for a lead, so naming one in the body would contradict the band
-   * above it. The decision belongs to the caller, which knows the status.
-   */
-  showLeads?: boolean;
   links?: PageLink[];
   /**
    * Whether the markdown body has content.
@@ -53,12 +45,11 @@ const {
   backLabel,
   leads = [],
   leadsHeading,
-  showLeads = true,
   links = [],
   hasBody = false,
 } = Astro.props;
 
-const leadsVisible = showLeads && leads.length > 0;
+const leadsVisible = leads.length > 0;
 const hasContent = leadsVisible || links.length > 0 || hasBody;
 ---
 

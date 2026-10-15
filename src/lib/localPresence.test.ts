@@ -6,6 +6,7 @@ import {
   isWhatsAppGroupLink,
   joinCtas,
   presenceSummary,
+  volunteerFormHref,
   NEWSLETTER_URL,
   VOLUNTEER_PATH,
   WHATSAPP_FORM_URL,
@@ -193,15 +194,19 @@ describe('joinCtas', () => {
     expect(joinCtas(null)).toEqual(joinCtas());
   });
 
-  // The override is the reason the fields exist — a chapter that runs its own
-  // form or volunteer page must not be silently redirected to the shared one.
-  it('uses an entry-specific form and volunteer url when given', () => {
-    const ctas = joinCtas({
-      whatsappFormUrl: 'https://forms.gle/nyc-only',
-      volunteerUrl: '/volunteer/nyc',
-    });
-    expect(ctas.whatsappFormUrl).toBe('https://forms.gle/nyc-only');
-    expect(ctas.volunteerUrl).toBe('/volunteer/nyc');
+  // The override is the reason the field exists — a chapter that runs its own
+  // form must not be silently redirected to the shared one.
+  it('uses an entry-specific form when given', () => {
+    expect(joinCtas({ whatsappFormUrl: 'https://forms.gle/nyc-only' }).whatsappFormUrl).toBe(
+      'https://forms.gle/nyc-only',
+    );
+  });
+
+  // The per-chapter volunteer link was removed on 2026-10-13: a stale value left
+  // in a hand-edited or migrated file must not quietly redirect the volunteer
+  // button away from the site-wide page.
+  it('ignores a leftover per-entry volunteer url', () => {
+    expect(joinCtas({ volunteerUrl: '/volunteer/nyc' }).volunteerUrl).toBe(VOLUNTEER_PATH);
   });
 
   // THE load-bearing case. Content can reach this function without passing
@@ -219,12 +224,39 @@ describe('joinCtas', () => {
   // as a real value would render `href=""`, which reloads the current page.
   it('treats a blank or whitespace-only override as absent', () => {
     expect(joinCtas({ whatsappFormUrl: '   ' }).whatsappFormUrl).toBe(WHATSAPP_FORM_URL);
-    expect(joinCtas({ volunteerUrl: '' }).volunteerUrl).toBe(VOLUNTEER_PATH);
   });
 
   // A pasted URL routinely carries trailing whitespace, and a space inside an
   // href is not trimmed by the browser — the link 404s.
   it('trims a padded override rather than emitting a broken url', () => {
-    expect(joinCtas({ volunteerUrl: '  /volunteer/nyc  ' }).volunteerUrl).toBe('/volunteer/nyc');
+    expect(joinCtas({ whatsappFormUrl: '  https://forms.gle/nyc-only  ' }).whatsappFormUrl).toBe(
+      'https://forms.gle/nyc-only',
+    );
+  });
+});
+
+describe('volunteerFormHref', () => {
+  // The forming-city Volunteer button goes straight to the interest form the
+  // Volunteer page in /admin configures, so the two buttons never disagree.
+  it('returns the configured interest form', () => {
+    expect(volunteerFormHref('https://hi.switchy.io/wEYK')).toBe('https://hi.switchy.io/wEYK');
+  });
+
+  // With no form configured the button still has somewhere useful to go.
+  it('falls back to the volunteer page when no form is set', () => {
+    expect(volunteerFormHref()).toBe(VOLUNTEER_PATH);
+    expect(volunteerFormHref(undefined)).toBe(VOLUNTEER_PATH);
+  });
+
+  // The CMS leaves an empty string when an editor clears the box; `href=""`
+  // would reload the current page instead of leaving it.
+  it('treats a blank or whitespace-only form url as absent', () => {
+    expect(volunteerFormHref('')).toBe(VOLUNTEER_PATH);
+    expect(volunteerFormHref('   ')).toBe(VOLUNTEER_PATH);
+  });
+
+  // Pasted links often carry padding, and a space inside an href breaks it.
+  it('trims a padded form url', () => {
+    expect(volunteerFormHref('  https://hi.switchy.io/wEYK \n')).toBe('https://hi.switchy.io/wEYK');
   });
 });

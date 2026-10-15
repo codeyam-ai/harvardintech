@@ -72,7 +72,7 @@
     ]
   },
   {
-    "description": "A single regional chapter page recomposed to match the live harvardintech.com chapter pages: a full-bleed ChapterHero, a ChapterSignUp band, the narrow content block (back link + ChapterLeads + markdown body slot + ChapterLinks), an optional EventGallery (showGallery), and a ChapterConnect social footer. Reused by the /chapters/[slug] route and isolated scenarios.",
+    "description": "A single regional chapter page. An active chapter renders ChapterHero, upcoming events, callouts, recent events, the ChapterSignUp band, the narrow content block (back link, leads, markdown body, links), an optional EventGallery, the global-community band and ChapterConnect. A forming (WhatsApp-only) chapter renders only ChapterHero and the FormingChapterCta band. Reused by the /chapters/[slug] route and isolated scenarios.",
     "filePath": "src/components/ChapterPage.astro",
     "name": "ChapterPage",
     "scenarios": [
@@ -250,12 +250,11 @@
     ]
   },
   {
-    "description": "What a forming city's page shows where an active chapter shows its leads. These cities are online groups for now, not chapters recruiting a lead, so the band reads <city> meets online for now and leads with joining the local WhatsApp group, with See online events as the second action and an optional Contact us line for anyone who wants to bring in-person events to the city. The lead ask lives in the Chapters menu instead. It exists because rendering a city with no events identically to New York made it look like a dead chapter, while deleting it would have hidden alumni who are actually there.",
+    "description": "The whole body of a forming (WhatsApp-only) chapter page under its hero: the band reading <city> meets online for now, with three buttons: Request to join WhatsApp (the sign-up form, never the group), Subscribe to newsletter, and Volunteer or co-lead (the volunteer interest form). The owner asked for these pages to carry those three asks and nothing else.",
     "filePath": "src/components/FormingChapterCta.astro",
     "name": "FormingChapterCta",
     "scenarios": [
-      "formingchaptercta-with-contact-address",
-      "formingchaptercta-no-contact-address"
+      "formingchaptercta-with-contact-address"
     ]
   },
   {
@@ -1601,7 +1600,7 @@
     "testFile": "src/lib/localPresence.test.ts"
   },
   {
-    "description": "Resolves the WhatsApp form, volunteer and newsletter destinations for one chapter or community, falling back to the site-wide defaults. It also refuses a WhatsApp group link outright, which is the render-time backstop for content that reaches the page without passing through the admin's validation — a seed, a migration, or a hand-edited markdown file.",
+    "description": "Resolves the WhatsApp form, volunteer and newsletter destinations for one chapter or community. Only the WhatsApp form can be overridden per entry; volunteer and newsletter are always the site-wide defaults, and a leftover per-chapter volunteer link is ignored. It also refuses a WhatsApp group link outright, which is the render-time backstop for content that reaches the page without passing through the admin validation — a seed, a migration, or a hand-edited markdown file.",
     "filePath": "src/lib/localPresence.ts",
     "name": "joinCtas",
     "testFile": "src/lib/localPresence.test.ts"
@@ -2013,6 +2012,18 @@
     "filePath": "src/lib/lumaFeed.js",
     "name": "offsetMinutes",
     "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
+    "description": "Astro middleware that injects the site webfont links into isolated-component preview pages only, which write their own head and never render BaseLayout; every other route passes through untouched.",
+    "filePath": "src/middleware.ts",
+    "name": "onRequest",
+    "tags": [
+      "site-fonts"
+    ],
+    "untestabilityReason": {
+      "justification": "Astro middleware wiring around withSiteFonts, which carries the logic and its unit tests",
+      "kind": "platform-glue"
+    }
   },
   {
     "description": "Selects the volunteer projects to render — those not explicitly closed (`active !== false`), ordered by `order`. Absent `active` means open, matching the board-member convention, so a project whose toggle was never touched still shows.",
@@ -2986,6 +2997,15 @@
     "testFile": "src/lib/gallery.test.ts"
   },
   {
+    "description": "Where a forming city Volunteer button points: the volunteer interest form configured on the Volunteer page in the admin, trimmed, or the /volunteer page when that box is blank or whitespace.",
+    "filePath": "src/lib/localPresence.ts",
+    "name": "volunteerFormHref",
+    "tags": [
+      "local-presence"
+    ],
+    "testFile": "src/lib/localPresence.test.ts"
+  },
+  {
     "description": "Recursively lists every raster image under a directory for the responsive-image build step, skipping any directory named _r so the build never feeds its own generated variants back in as sources.",
     "filePath": "scripts/responsive-images.mjs",
     "name": "walk",
@@ -3053,6 +3073,15 @@
     "filePath": "src/lib/nav.ts",
     "name": "withCommunityItems",
     "testFile": "src/lib/nav.test.ts"
+  },
+  {
+    "description": "Adds the site webfont links (preconnects plus the one Google Fonts stylesheet) to an HTML document head, once. Used by the middleware so isolated-component previews render in the site fonts instead of Times and Arial; a document already linking the stylesheet, or with no head, comes back unchanged.",
+    "filePath": "src/lib/siteFonts.ts",
+    "name": "withSiteFonts",
+    "tags": [
+      "site-fonts"
+    ],
+    "testFile": "src/lib/siteFonts.test.ts"
   },
   {
     "description": "Puts an internal page path into the site's one canonical form by appending a trailing slash, so the site never links to both /events and /events/ and splits its own traffic between two URLs a search engine reads as different pages. Applied inside withBase, which every internal link already passes through — rather than via Astro's trailingSlash: 'always', which would also make the dev server and the codeyam preview 404 on every slash-less URL. Four shapes are returned untouched because a slash would make them wrong rather than merely different: a path already ending in one, a path carrying a fragment or query (the slash belongs before the # or ?, which is a URL parse this does not do), a path whose LAST segment has a file extension (an asset is a file, and /images/shield.png/ is a 404 — a dot in an earlier segment does not count), and a protocol-relative //host URL, which is not an internal path at all. Module-private: it is one exported function's implementation detail, and url.test.ts drives it through withBase, which already has the BASE_URL mocking harness.",

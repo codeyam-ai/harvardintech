@@ -203,7 +203,6 @@ const chapters = defineCollection({
       .refine((u) => !isWhatsAppGroupLink(u), {
         message: 'Link the Google Form, not the WhatsApp group itself.',
       }),
-    volunteerUrl: z.string().optional(),
     callouts: z
       .array(z.object({ title: z.string(), text: z.string().optional() }))
       .optional(),

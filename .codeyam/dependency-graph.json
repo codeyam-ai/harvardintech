@@ -485,13 +485,12 @@
         "src/components/ui/SectionHead.astro",
         "src/lib/site.ts",
         "src/lib/localPresence.ts",
+        "src/lib/volunteerPageContent.ts",
         "src/lib/externalLink.ts",
-        "src/lib/mailto.ts",
         "src/lib/url.ts"
       ],
       "importedBy": [
         "src/components/ChapterPage.astro",
-        "src/pages/isolated-components/FormingChapterCta-NoEmail.astro",
         "src/pages/isolated-components/FormingChapterCta.astro"
       ]
     },
@@ -1843,6 +1842,7 @@
     "src/layouts/BaseLayout.astro": {
       "imports": [
         "src/styles/tokens.css",
+        "src/lib/siteFonts.ts",
         "src/components/SEO.astro",
         "src/components/HeadExtras.astro",
         "src/components/BrandMark.astro",
@@ -2034,7 +2034,6 @@
         "src/components/landing/ContactUs.astro",
         "src/components/StructuredData.astro",
         "src/pages/llms.txt.ts",
-        "src/pages/chapters/[slug].astro",
         "src/pages/index.astro",
         "src/pages/sponsor.astro"
       ]
@@ -2656,8 +2655,7 @@
       "importedBy": [
         "src/lib/giving.ts",
         "src/lib/mailto.test.ts",
-        "src/lib/contact.ts",
-        "src/components/FormingChapterCta.astro"
+        "src/lib/contact.ts"
       ]
     },
     "src/lib/media.test.ts": {
@@ -3235,13 +3233,26 @@
         "src/pages/llms.txt.ts",
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/events.astro",
-        "src/pages/chapters/[slug].astro",
         "src/pages/cutover-runbook/[...path].astro",
         "src/pages/donate.astro",
         "src/pages/volunteer.astro",
         "src/pages/index.astro",
         "src/pages/sponsor.astro",
         "src/pages/isolated-components/[name].astro"
+      ]
+    },
+    "src/lib/siteFonts.test.ts": {
+      "imports": [
+        "src/lib/siteFonts.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/siteFonts.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/layouts/BaseLayout.astro",
+        "src/middleware.ts",
+        "src/lib/siteFonts.test.ts"
       ]
     },
     "src/lib/siteIcons.test.ts": {
@@ -3427,6 +3438,7 @@
         "src/lib/site.ts"
       ],
       "importedBy": [
+        "src/components/FormingChapterCta.astro",
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/volunteer.astro",
         "src/pages/index.astro"
@@ -3445,6 +3457,12 @@
         "src/components/WebinarsPage.astro",
         "src/pages/webinars.astro"
       ]
+    },
+    "src/middleware.ts": {
+      "imports": [
+        "src/lib/siteFonts.ts"
+      ],
+      "importedBy": []
     },
     "src/pages/404.astro": {
       "imports": [
@@ -3479,8 +3497,6 @@
         "src/layouts/BaseLayout.astro",
         "src/components/ChapterPage.astro",
         "src/lib/events.ts",
-        "src/lib/contact.ts",
-        "src/lib/site.ts",
         "src/components/LockedPreviewBody.astro",
         "src/lib/drafts.ts",
         "src/lib/draftVisibility.ts"
@@ -3801,13 +3817,6 @@
     "src/pages/isolated-components/EventsIntroBand.astro": {
       "imports": [
         "src/components/EventsIntroBand.astro",
-        "src/styles/tokens.css"
-      ],
-      "importedBy": []
-    },
-    "src/pages/isolated-components/FormingChapterCta-NoEmail.astro": {
-      "imports": [
-        "src/components/FormingChapterCta.astro",
         "src/styles/tokens.css"
       ],
       "importedBy": []
@@ -4591,7 +4600,6 @@
         "src/pages/isolated-components/BannerCta/[...state].astro",
         "src/pages/isolated-components/OrderArrows-TopRow.astro",
         "src/pages/isolated-components/PageNarrowBody.astro",
-        "src/pages/isolated-components/FormingChapterCta-NoEmail.astro",
         "src/pages/isolated-components/BlogPostBody.astro",
         "src/pages/isolated-components/GiveButton-GivingClosed.astro",
         "src/pages/isolated-components/MomentumTestimonials.astro",
@@ -5189,13 +5197,14 @@
       "imports": [
         "src/components/ui/SectionHead.astro::__file_root__",
         "src/lib/site.ts::siteLinks",
+        "src/lib/site.ts::volunteerPage",
         "src/lib/localPresence.ts::joinCtas",
+        "src/lib/localPresence.ts::volunteerFormHref",
+        "src/lib/volunteerPageContent.ts::loadVolunteerCopy",
         "src/lib/externalLink.ts::externalLinkAttrs",
-        "src/lib/mailto.ts::buildMailto",
         "src/lib/url.ts::withBase"
       ],
       "importedBy": [
-        "src/pages/isolated-components/FormingChapterCta-NoEmail.astro::__file_root__",
         "src/pages/isolated-components/FormingChapterCta.astro::__file_root__"
       ]
     },
@@ -6806,6 +6815,7 @@
       "name": "__file_root__",
       "imports": [
         "src/styles/tokens.css::__file_root__",
+        "src/lib/siteFonts.ts::__file_root__",
         "src/components/SEO.astro::__file_root__",
         "src/components/HeadExtras.astro::__file_root__",
         "src/components/BrandMark.astro::__file_root__",
@@ -7091,7 +7101,6 @@
       "importedBy": [
         "src/components/StructuredData.astro::__file_root__",
         "src/pages/llms.txt.ts::__file_root__",
-        "src/pages/chapters/[slug].astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/sponsor.astro::__file_root__"
       ]
@@ -8311,7 +8320,8 @@
         "src/lib/localPresence.ts::isForming",
         "src/lib/localPresence.ts::isWhatsAppGroupLink",
         "src/lib/localPresence.ts::joinCtas",
-        "src/lib/localPresence.ts::presenceSummary"
+        "src/lib/localPresence.ts::presenceSummary",
+        "src/lib/localPresence.ts::volunteerFormHref"
       ],
       "importedBy": []
     },
@@ -8382,6 +8392,15 @@
       "importedBy": [
         "src/lib/localPresence.test.ts::__file_root__",
         "src/components/landing/OurChapters.astro::__file_root__"
+      ]
+    },
+    "src/lib/localPresence.ts::volunteerFormHref": {
+      "filePath": "src/lib/localPresence.ts",
+      "name": "volunteerFormHref",
+      "imports": [],
+      "importedBy": [
+        "src/lib/localPresence.test.ts::__file_root__",
+        "src/components/FormingChapterCta.astro::__file_root__"
       ]
     },
     "src/lib/luma.test.ts::__file_root__": {
@@ -8480,8 +8499,7 @@
       "importedBy": [
         "src/lib/giving.ts::__file_root__",
         "src/lib/mailto.test.ts::__file_root__",
-        "src/lib/contact.ts::__file_root__",
-        "src/components/FormingChapterCta.astro::__file_root__"
+        "src/lib/contact.ts::__file_root__"
       ]
     },
     "src/lib/media.test.ts::__file_root__": {
@@ -9783,7 +9801,6 @@
         "src/components/SEO.astro::__file_root__",
         "src/components/StructuredData.astro::__file_root__",
         "src/pages/llms.txt.ts::__file_root__",
-        "src/pages/chapters/[slug].astro::__file_root__",
         "src/pages/cutover-runbook/[...path].astro::__file_root__",
         "src/pages/donate.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
@@ -9822,10 +9839,36 @@
       "name": "volunteerPage",
       "imports": [],
       "importedBy": [
+        "src/components/FormingChapterCta.astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/volunteer.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
+      ]
+    },
+    "src/lib/siteFonts.test.ts::__file_root__": {
+      "filePath": "src/lib/siteFonts.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/siteFonts.ts::__file_root__",
+        "src/lib/siteFonts.ts::withSiteFonts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/siteFonts.ts::__file_root__": {
+      "filePath": "src/lib/siteFonts.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/siteFonts.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/siteFonts.ts::withSiteFonts": {
+      "filePath": "src/lib/siteFonts.ts",
+      "name": "withSiteFonts",
+      "imports": [],
+      "importedBy": [
+        "src/lib/siteFonts.test.ts::__file_root__"
       ]
     },
     "src/lib/sitePages.test.ts::__file_root__": {
@@ -10437,6 +10480,7 @@
       "name": "loadVolunteerCopy",
       "imports": [],
       "importedBy": [
+        "src/components/FormingChapterCta.astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/volunteer.astro::__file_root__",
         "src/pages/index.astro::__file_root__"
@@ -10488,6 +10532,14 @@
         "src/components/WebinarsPage.astro::__file_root__"
       ]
     },
+    "src/middleware.ts::__file_root__": {
+      "filePath": "src/middleware.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/siteFonts.ts::withSiteFonts"
+      ],
+      "importedBy": []
+    },
     "src/pages/404.astro::__file_root__": {
       "filePath": "src/pages/404.astro",
       "name": "__file_root__",
@@ -10536,8 +10588,6 @@
         "src/lib/events.ts::recentPastEvents",
         "src/lib/events.ts::splitEvents",
         "src/lib/events.ts::unmatchedChapterTags",
-        "src/lib/contact.ts::emailFor",
-        "src/lib/site.ts::settings",
         "src/components/LockedPreviewBody.astro::__file_root__",
         "src/lib/drafts.ts::isLocked",
         "src/lib/drafts.ts::isPreview",
@@ -10954,15 +11004,6 @@
       "name": "__file_root__",
       "imports": [
         "src/components/EventsIntroBand.astro::__file_root__",
-        "src/styles/tokens.css::__file_root__"
-      ],
-      "importedBy": []
-    },
-    "src/pages/isolated-components/FormingChapterCta-NoEmail.astro::__file_root__": {
-      "filePath": "src/pages/isolated-components/FormingChapterCta-NoEmail.astro",
-      "name": "__file_root__",
-      "imports": [
-        "src/components/FormingChapterCta.astro::__file_root__",
         "src/styles/tokens.css::__file_root__"
       ],
       "importedBy": []
@@ -11949,7 +11990,6 @@
         "src/pages/isolated-components/BannerCta/[...state].astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-TopRow.astro::__file_root__",
         "src/pages/isolated-components/PageNarrowBody.astro::__file_root__",
-        "src/pages/isolated-components/FormingChapterCta-NoEmail.astro::__file_root__",
         "src/pages/isolated-components/BlogPostBody.astro::__file_root__",
         "src/pages/isolated-components/GiveButton-GivingClosed.astro::__file_root__",
         "src/pages/isolated-components/MomentumTestimonials.astro::__file_root__",
@@ -12036,5 +12076,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-14T23:08:07Z"
+  "lastUpdated": "2026-10-15T13:29:17Z"
 }

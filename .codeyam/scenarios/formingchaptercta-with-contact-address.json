@@ -1,6 +1,6 @@
 {
   "name": "FormingChapterCta - With Contact Address",
-  "id": "37f7b946-c266-4374-98eb-188be2667955",
+  "id": "feb73e74-7bb4-4e9c-b31b-a697e47c7e1d",
   "url": "/isolated-components/FormingChapterCta",
   "dimensions": [
     "Desktop"
@@ -8,5 +8,5 @@
   "mocks": {},
   "componentName": "FormingChapterCta",
   "scenarioType": "component",
-  "description": "The band a forming chapter shows where an active one shows its leads. DC has alumni and a running WhatsApp group but nobody organising events, and the old page rendered that as an empty leads heading over an empty calendar — indistinguishable from a dead chapter. These cities are online groups for now, not chapters recruiting a lead, so the band reads DC and DMV Area meets online for now and leads with Join WhatsApp to meet local alumni, with See online events as the second action — the earlier volunteer-to-lead ask was removed at review, and the lead ask now lives once in the Chapters menu. A Want to bring in-person events here? line with a Contact us link sits underneath; that button appears only because an address is configured, which is what this scenario differs from FormingChapterCta - No Contact Address on."
+  "description": "The whole body of a forming (WhatsApp-only) chapter page under its hero. The band reads DC and DMV Area meets online for now, with a one-line intro and three buttons: Request to join WhatsApp (the Google sign-up form, never the group itself), Subscribe to newsletter, and Volunteer or co-lead (the volunteer interest form set on the Volunteer page in the admin). The owner asked for exactly these three asks and nothing else, so there is no Contact us line under it any more."
 }

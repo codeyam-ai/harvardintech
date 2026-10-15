@@ -1184,7 +1184,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "byPresence › does not mutate its input",
-      "line": 136,
+      "line": 137,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1193,7 +1193,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "byPresence › honours the order pin within a tier",
-      "line": 125,
+      "line": 126,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1202,7 +1202,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "byPresence › puts active chapters before forming ones",
-      "line": 113,
+      "line": 114,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1641,7 +1641,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "chapterStatus › defaults to active when no status is set",
-      "line": 26,
+      "line": 27,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1650,7 +1650,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "chapterStatus › falls back to active on an unrecognised value",
-      "line": 41,
+      "line": 42,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1659,7 +1659,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "chapterStatus › isForming is the forming half of the same rule",
-      "line": 49,
+      "line": 50,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1668,7 +1668,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "chapterStatus › reads an explicit status",
-      "line": 34,
+      "line": 35,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -3359,8 +3359,8 @@
       "description": "The owner's \"sparingly\" rule is exactly these six places.",
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
-      "key": "emailFor › lists exactly the six surfaces in the email rule",
-      "line": 98,
+      "key": "emailFor › lists exactly the five surfaces in the email rule",
+      "line": 99,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -3425,15 +3425,6 @@
       "key": "emailFor › returns the address for footer",
       "line": 110,
       "registeredAt": "2026-09-28T16:56:55.925335474+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "Each listed surface gets the resolved address.",
-      "file": "src/lib/contact.test.ts",
-      "format": "vitest",
-      "key": "emailFor › returns the address for formingChapter",
-      "line": 110,
-      "registeredAt": "2026-09-28T16:56:55.926618495+00:00",
       "runner": "tests"
     },
     {
@@ -3667,7 +3658,7 @@
       "format": "vitest",
       "key": "enum-shaped fields are dropdowns, not text boxes › donors.school is a select",
       "line": 32,
-      "registeredAt": "2026-09-28T16:56:55.931381003+00:00",
+      "registeredAt": "2026-10-15T13:24:38.272017907+00:00",
       "runner": "tests"
     },
     {
@@ -3676,7 +3667,7 @@
       "format": "vitest",
       "key": "enum-shaped fields are dropdowns, not text boxes › homeSections.kind is a select",
       "line": 32,
-      "registeredAt": "2026-09-28T16:56:55.932290318+00:00",
+      "registeredAt": "2026-10-15T13:24:38.273337332+00:00",
       "runner": "tests"
     },
     {
@@ -3685,7 +3676,7 @@
       "format": "vitest",
       "key": "enum-shaped fields are dropdowns, not text boxes › momentumSections.kind is a select",
       "line": 32,
-      "registeredAt": "2026-09-28T16:56:55.933223723+00:00",
+      "registeredAt": "2026-10-15T13:24:38.274655338+00:00",
       "runner": "tests"
     },
     {
@@ -3694,7 +3685,7 @@
       "format": "vitest",
       "key": "enum-shaped fields are dropdowns, not text boxes › momentumSections.layout is a select",
       "line": 32,
-      "registeredAt": "2026-09-28T16:56:55.934146287+00:00",
+      "registeredAt": "2026-10-15T13:24:38.275903811+00:00",
       "runner": "tests"
     },
     {
@@ -4170,8 +4161,8 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed donors.school value is offered",
-      "line": 111,
-      "registeredAt": "2026-09-28T16:56:55.935083653+00:00",
+      "line": 116,
+      "registeredAt": "2026-10-15T13:24:38.277127780+00:00",
       "runner": "tests"
     },
     {
@@ -4179,8 +4170,8 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed homeSections.kind value is offered",
-      "line": 111,
-      "registeredAt": "2026-09-28T16:56:55.935998840+00:00",
+      "line": 116,
+      "registeredAt": "2026-10-15T13:24:38.278417056+00:00",
       "runner": "tests"
     },
     {
@@ -4188,8 +4179,8 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed momentumSections.kind value is offered",
-      "line": 111,
-      "registeredAt": "2026-09-28T16:56:55.936902204+00:00",
+      "line": 116,
+      "registeredAt": "2026-10-15T13:24:38.279665825+00:00",
       "runner": "tests"
     },
     {
@@ -4197,8 +4188,8 @@
       "file": "src/lib/selectOptions.test.ts",
       "format": "vitest",
       "key": "existing content still validates against the new dropdowns › every committed momentumSections.layout value is offered",
-      "line": 111,
-      "registeredAt": "2026-09-28T16:56:55.937879239+00:00",
+      "line": 116,
+      "registeredAt": "2026-10-15T13:24:38.280895223+00:00",
       "runner": "tests"
     },
     {
@@ -6651,7 +6642,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "isWhatsAppGroupLink › is false for a link that only mentions whatsapp elsewhere in the url",
-      "line": 166,
+      "line": 167,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -6660,7 +6651,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "isWhatsAppGroupLink › is false for blank, relative and unparseable values",
-      "line": 174,
+      "line": 175,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -6669,7 +6660,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "isWhatsAppGroupLink › is false for the Google Form",
-      "line": 159,
+      "line": 160,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -6678,7 +6669,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "isWhatsAppGroupLink › is true for a WhatsApp group invite",
-      "line": 146,
+      "line": 147,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -6687,7 +6678,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "isWhatsAppGroupLink › is true regardless of a www. prefix or capitalisation",
-      "line": 154,
+      "line": 155,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -6696,7 +6687,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "joinCtas › NEVER returns a group invite, even when content supplies one",
-      "line": 211,
+      "line": 216,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -6705,8 +6696,17 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "joinCtas › falls back to the shared form, the volunteer page and the newsletter",
-      "line": 186,
+      "line": 187,
       "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The per-chapter volunteer link was removed on 2026-10-13: a stale value left in a hand-edited or migrated file must not quietly redirect the volunteer button away from the site-wide page.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "joinCtas › ignores a leftover per-entry volunteer url",
+      "line": 208,
+      "registeredAt": "2026-10-14T23:43:20Z",
       "runner": "tests"
     },
     {
@@ -6714,7 +6714,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "joinCtas › treats a blank or whitespace-only override as absent",
-      "line": 220,
+      "line": 225,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -6723,17 +6723,17 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "joinCtas › trims a padded override rather than emitting a broken url",
-      "line": 227,
+      "line": 231,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
     {
-      "description": "The override is the reason the fields exist — a chapter that runs its own form or volunteer page must not be silently redirected to the shared one.",
+      "description": "The override is the reason the field exists — a chapter that runs its own form must not be silently redirected to the shared one.",
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
-      "key": "joinCtas › uses an entry-specific form and volunteer url when given",
-      "line": 198,
-      "registeredAt": "2026-09-16T14:05:10Z",
+      "key": "joinCtas › uses an entry-specific form when given",
+      "line": 199,
+      "registeredAt": "2026-10-14T23:43:20Z",
       "runner": "tests"
     },
     {
@@ -9202,7 +9202,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "presenceSummary › counts 4 active and 2 forming for the real roster",
-      "line": 70,
+      "line": 71,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -9211,7 +9211,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "presenceSummary › counts a status-less chapter as active",
-      "line": 88,
+      "line": 89,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -9220,7 +9220,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "presenceSummary › handles an empty roster",
-      "line": 99,
+      "line": 100,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -9229,7 +9229,7 @@
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
       "key": "presenceSummary › returns the entries themselves, not just counts",
-      "line": 80,
+      "line": 81,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -14539,6 +14539,42 @@
       "runner": "tests"
     },
     {
+      "description": "With no form configured the button still has somewhere useful to go.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "volunteerFormHref › falls back to the volunteer page when no form is set",
+      "line": 246,
+      "registeredAt": "2026-10-14T23:43:20Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The forming-city Volunteer button goes straight to the interest form the Volunteer page in /admin configures, so the two buttons never disagree.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "volunteerFormHref › returns the configured interest form",
+      "line": 241,
+      "registeredAt": "2026-10-14T23:43:20Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The CMS leaves an empty string when an editor clears the box; `href=\"\"` would reload the current page instead of leaving it.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "volunteerFormHref › treats a blank or whitespace-only form url as absent",
+      "line": 253,
+      "registeredAt": "2026-10-14T23:43:20Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Pasted links often carry padding, and a space inside an href breaks it.",
+      "file": "src/lib/localPresence.test.ts",
+      "format": "vitest",
+      "key": "volunteerFormHref › trims a padded form url",
+      "line": 259,
+      "registeredAt": "2026-10-14T23:43:20Z",
+      "runner": "tests"
+    },
+    {
       "description": "The core of the discovery pass: it must find rasters at every depth, or images simply never get variants and the srcset silently falls back.",
       "file": "src/lib/responsiveImagesScript.test.ts",
       "format": "vitest",
@@ -15031,6 +15067,51 @@
       "key": "withCommunityItems › returns the menu unchanged when there are no communities",
       "line": 369,
       "registeredAt": "2026-07-30T13:54:13Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The isolated previews write their own <head> without the fonts; the links must land inside it, before it closes, so they load like on the real site.",
+      "file": "src/lib/siteFonts.test.ts",
+      "format": "vitest",
+      "key": "withSiteFonts › inserts the font links just before the closing head tag",
+      "line": 7,
+      "registeredAt": "2026-10-14T23:56:39.563808074+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Only the first head is touched, so the links are never duplicated.",
+      "file": "src/lib/siteFonts.test.ts",
+      "format": "vitest",
+      "key": "withSiteFonts › inserts the links exactly once",
+      "line": 35,
+      "registeredAt": "2026-10-14T23:56:39.568709985+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A page that already loads the stylesheet must not request it twice.",
+      "file": "src/lib/siteFonts.test.ts",
+      "format": "vitest",
+      "key": "withSiteFonts › leaves a document that already links the fonts unchanged",
+      "line": 15,
+      "registeredAt": "2026-10-14T23:56:39.565111860+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Astro escapes & in attribute values, so the already-linked check has to recognise the escaped spelling too.",
+      "file": "src/lib/siteFonts.test.ts",
+      "format": "vitest",
+      "key": "withSiteFonts › recognises an html-escaped link as already present",
+      "line": 22,
+      "registeredAt": "2026-10-14T23:56:39.566216482+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A fragment with no head has nowhere sensible to put links.",
+      "file": "src/lib/siteFonts.test.ts",
+      "format": "vitest",
+      "key": "withSiteFonts › returns a document without a head unchanged",
+      "line": 29,
+      "registeredAt": "2026-10-14T23:56:39.567236297+00:00",
       "runner": "tests"
     },
     {

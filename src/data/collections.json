@@ -153,13 +153,6 @@
           "pattern": "^https://(forms\\.gle|docs\\.google\\.com/forms)/"
         },
         {
-          "name": "volunteerUrl",
-          "label": "Volunteer link",
-          "type": "text",
-          "optional": true,
-          "hint": "Not shown at the moment: a Forming city is presented as an online group and its page no longer has a volunteer button. Kept so a link entered here is not lost if that ask returns. Blank uses the site's volunteer page."
-        },
-        {
           "name": "callouts",
           "label": "What happens here",
           "type": "list",

@@ -108,7 +108,7 @@ codeyam-editor start
 ```
 <!-- codeyam:run-and-edit:end -->
 
-<!-- codeyam:scenario-gallery:start d=c973a3cd3bcb -->
+<!-- codeyam:scenario-gallery:start d=62ff8d25b844 -->
 ## Scenario gallery
 
 States captured as runnable scenarios with codeyam-editor:
@@ -129,7 +129,7 @@ The page a reviewer actually lands on. An unpublished post, cloned to an unguess
 
 <img src=".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png" alt="Harvard In Tech - Numbers Band On An iPad" width="280">
 
-The homepage at 768px (iPad portrait), scrolled to the numbers band. The October responsive sweep found the five figures pushed this page 1012px wide, so it scrolled sideways on every iPad; with the gutters brought in at the shared 1040px breakpoint all five sit on one row and the page stays inside the screen. The hover only scrolls the band into view, since a URL fragment does not scroll a capture.
+The homepage at 768px (iPad portrait), scrolled to the numbers band. Since the October 2026 all-hands the band carries six figures, and one row of six would push the page sideways ("10,000+" alone is ~180px), so between 761px and 1200px it wraps to two rows of three and the page stays inside the screen. The hover only scrolls the band into view, since a URL fragment does not scroll a capture.
 
 ### Chapter Route - New York City
 

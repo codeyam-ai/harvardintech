@@ -11,8 +11,6 @@ import {
   eventsTaggedTo,
   recentPastEvents,
 } from '../../lib/events';
-import { emailFor } from '../../lib/contact';
-import { settings } from '../../lib/site';
 import LockedPreviewBody from '../../components/LockedPreviewBody.astro';
 import { isLocked, isPreview, publishedEntries, routableEntries } from '../../lib/drafts';
 import { INCLUDE_DRAFTS } from '../../lib/draftVisibility';
@@ -78,7 +76,6 @@ const {
   status,
   callouts,
   whatsappFormUrl,
-  volunteerUrl,
 } = chapter.data;
 
 // Events tagged to this chapter (via `chapter`, or via an event's `communities`
@@ -89,10 +86,6 @@ const {
 const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS);
 const { upcoming, past } = splitEvents(eventsTaggedTo(events, chapter.id));
 const recent = recentPastEvents(past);
-
-// The shared inbox, but only because `formingChapter` is on the approved list
-// in `contact.ts`. A chapter that is not forming never renders it.
-const formingContactEmail = emailFor('formingChapter', settings.contactEmail);
 ---
 
 <BaseLayout
@@ -117,8 +110,6 @@ const formingContactEmail = emailFor('formingChapter', settings.contactEmail);
         status={status}
         callouts={callouts}
         whatsappFormUrl={whatsappFormUrl}
-        volunteerUrl={volunteerUrl}
-        formingContactEmail={formingContactEmail}
         leads={leads}
         links={links}
       >

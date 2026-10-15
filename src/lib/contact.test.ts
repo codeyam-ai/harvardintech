@@ -94,12 +94,12 @@ describe('displayConnectLinks', () => {
 });
 
 describe('emailFor', () => {
-  // The owner's "sparingly" rule is exactly these six places.
-  it('lists exactly the six surfaces in the email rule', () => {
+  // The owner's "sparingly" rule is exactly these five places. The forming-
+  // chapter Contact us line was removed on 2026-10-15.
+  it('lists exactly the five surfaces in the email rule', () => {
     expect([...EMAIL_SURFACES]).toEqual([
       'footer',
       'contactUs',
-      'formingChapter',
       'sponsorInquiry',
       'llms',
       'structuredData',

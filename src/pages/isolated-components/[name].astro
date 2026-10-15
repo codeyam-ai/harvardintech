@@ -141,25 +141,20 @@ const chapterPageStates = {
     name: 'DC and DMV Area',
     region: 'Washington, DC',
   },
-  // The forming city: same page, different ask. The leads block is replaced
-  // by the "meets online for now" band, the hero kicker reads "Online group", and
-  // the callouts carry what the chapter can honestly claim. Leads ARE passed
-  // and must NOT render — that is the assertion this state exists to make, and
-  // a fixture with no leads could not make it.
+  // The forming (WhatsApp-only) city: the hero, kicker "Online group", and the
+  // three-button band, nothing else. Leads, callouts and gallery ARE passed and
+  // must NOT render; that is the assertion this state exists to make, and a
+  // fixture without them could not make it.
   Forming: {
     name: 'DC and DMV Area',
     region: 'Washington, DC',
     status: 'forming',
     blurb: 'Alumni across DC, Maryland and Virginia, meeting online in our WhatsApp group and at our virtual events.',
     heroImage: '/images/gallery/event-18.jpg',
-    tagline: 'A Harvard Alumni in Tech chapter forming across the Washington metro area.',
-    showGallery: false,
-    formingContactEmail: 'info@harvardintech.com',
+    tagline: 'The Harvard Alumni in Tech online group for the Washington metro area.',
+    showGallery: true,
     leads: [{ name: 'Should Not Render', role: 'A forming chapter names no lead' }],
-    callouts: [
-      { title: 'An active WhatsApp group', text: 'Policy and tech alumni already talking to each other across the metro area.' },
-      { title: 'Waiting on an organizer', text: 'Happy hours are the obvious first event — someone just has to pick a date.' },
-    ],
+    callouts: [{ title: 'Should not render', text: 'A forming chapter shows no callouts.' }],
   },
 };
 
@@ -1097,10 +1092,9 @@ if (name && name.startsWith('MomentumNetwork')) {
           <EventsPage {...eventsPageProps} />
         ) : chapterPageProps ? (
           <ChapterPage {...chapterPageProps}>
-            <p>
-              A representative "about this chapter" paragraph rendered in the
-              markdown body slot, so the isolated capture matches the real route.
-            </p>
+            {/* Real chapter copy, not filler. A forming chapter does not render
+                its body at all, so this only shows on the active states. */}
+            <p>Regular founder dinners, panels, and community gatherings across the city.</p>
           </ChapterPage>
         ) : chapterHeroProps ? (
           <ChapterHero {...chapterHeroProps} />

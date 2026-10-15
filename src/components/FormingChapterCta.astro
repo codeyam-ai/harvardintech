@@ -1,89 +1,60 @@
 ---
-// What a FORMING chapter shows where an active one shows its leads.
+// The whole body of a FORMING (WhatsApp-only) chapter page, under its hero.
 //
-// The honest problem this solves: DC and Seattle have a real concentration of
-// alumni and an active WhatsApp group, but nobody running events. The old page
-// rendered them identically to New York — a leads heading with nothing under it
-// and an empty calendar — which read as a dead chapter rather than a new one.
-// Deleting them was worse: it hid a group of alumni who are actually there.
-//
-// For now these cities are online groups, not chapters recruiting a lead — the
-// lead ask belongs to the cities that hold events (the Chapters menu's closing
-// "Lead or co-lead a chapter" link).
-// So the page leads with joining the local WhatsApp group, with the online
-// events as the second way in. A Contact us line sits underneath for anyone who
-// wants to bring in-person events to the city — and
-// that button renders ONLY when `emailFor('formingChapter')` returns an address,
-// which is how the shared inbox stays on its short list of approved surfaces.
+// DC and Seattle have alumni and an active WhatsApp group but no one running
+// events yet. The owner asked for these pages to be minimal: three asks and
+// nothing else. Join the WhatsApp group, get the newsletter, or volunteer to
+// help or co-lead the chapter. Events, write-ups and callouts belong to the
+// active chapters.
 import SectionHead from './ui/SectionHead.astro';
-import { siteLinks } from '../lib/site';
-import { joinCtas } from '../lib/localPresence';
+import { siteLinks, volunteerPage } from '../lib/site';
+import { joinCtas, volunteerFormHref } from '../lib/localPresence';
+import { loadVolunteerCopy } from '../lib/volunteerPageContent';
 import { externalLinkAttrs } from '../lib/externalLink';
-import { buildMailto } from '../lib/mailto';
 import { withBase } from '../lib/url';
 
 interface Props {
   /** The city this chapter is forming in. */
   name: string;
   whatsappFormUrl?: string;
-  volunteerUrl?: string;
-  /** The address from `emailFor('formingChapter', …)`. Absent → no Contact us
-   *  button, and the block still reads complete without it. */
-  contactEmail?: string;
 }
-const { name, whatsappFormUrl, volunteerUrl, contactEmail } = Astro.props;
+const { name, whatsappFormUrl } = Astro.props;
 
 // The chapter's own override wins; otherwise the site-wide setting. Both go
 // through `joinCtas`, so a group invite is refused whichever one supplied it.
 const { whatsappFormUrl: formHref } = joinCtas({
   whatsappFormUrl: whatsappFormUrl ?? siteLinks().whatsappJoinForm,
-  volunteerUrl,
 });
-const EVENTS_HREF = '/events';
-// `withBase` alone is the whole href rule: it prefixes an internal absolute
-// path with the base path and returns anything else — an https URL, a mailto,
-// an anchor — untouched. The branch this used to carry was redundant.
-// `externalLinkAttrs` is a separate question (new tab or not), and that one
-// genuinely needs the origin.
+const newsletterHref = siteLinks().mailingList;
+// The volunteer interest form, edited on the Volunteer page in /admin. Read the
+// same way /volunteer reads it, so the two buttons never disagree.
+const volunteerHref = volunteerFormHref((await loadVolunteerCopy(volunteerPage)).ctaUrl);
+// `withBase` prefixes an internal path with the base path and leaves an https
+// URL untouched; `externalLinkAttrs` decides new-tab-or-not from the origin.
 const origin = Astro.url.origin;
-
-const mailto = contactEmail
-  ? buildMailto({
-      to: contactEmail,
-      subject: `In-person events in ${name}`,
-    })
-  : undefined;
 ---
 
 <section class="sec forming" id="help-lead">
   <div class="wrap">
     {/* `balance` (below, on `.forming h2`) because the heading is city-name-long
-        and varies: "Seattle / Pacific Northwest meets online for now." wraps at a
-        different word than DC's does, and an unbalanced wrap strands the last
-        word alone on a second line. */}
+        and varies, and an unbalanced wrap strands the last word on its own line. */}
     <SectionHead
       title={`${name} meets online for now.`}
-      intro={`There are Harvard alumni in tech here and an active WhatsApp group where they find each other. Join it to meet the alumni near you, and catch our online events and webinars from anywhere.`}
+      intro={`Join our WhatsApp group to meet alumni in ${name}, plus topic-based channels and virtual meetups.`}
       align="center"
     />
 
     <div class="forming-actions">
       <a class="btn btn-solid" href={withBase(formHref)} {...externalLinkAttrs(formHref, origin)}>
-        Join WhatsApp to meet local alumni
+        Request to join WhatsApp
       </a>
-      <a class="btn btn-out" href={withBase(EVENTS_HREF)}>
-        See online events
+      <a class="btn btn-out" href={withBase(newsletterHref)} {...externalLinkAttrs(newsletterHref, origin)}>
+        Subscribe to newsletter
+      </a>
+      <a class="btn btn-out" href={withBase(volunteerHref)} {...externalLinkAttrs(volunteerHref, origin)}>
+        Volunteer or co-lead
       </a>
     </div>
-
-    {
-      mailto ? (
-        <p class="forming-contact">
-          Want to bring in-person events to {name}?
-          <a href={mailto}>Contact us</a>
-        </p>
-      ) : null
-    }
   </div>
 </section>
 
@@ -94,23 +65,12 @@ const mailto = contactEmail
   .forming :global(h2) {
     text-wrap: balance;
   }
-  /* Wraps to one button per row on a phone rather than letting two long labels
-     shrink into unreadable pills. The secondary action is `.btn-out` — the
-     shared outline button — so "join WhatsApp" reads as the main way in
-     without making the online events look like an afterthought. */
+  /* Wraps to one button per row on a phone rather than shrinking the labels.
+     WhatsApp is the solid button because it is the main way in. */
   .forming-actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--s-3);
     justify-content: center;
-  }
-  .forming-contact {
-    margin: var(--s-5) 0 0;
-    font-size: var(--t-sm);
-    color: var(--ink-2);
-    text-align: center;
-  }
-  .forming-contact a {
-    margin-left: 0.35rem;
   }
 </style>

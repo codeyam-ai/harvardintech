@@ -349,19 +349,13 @@
         "name": "status",
         "type": "string",
         "required": false,
-        "description": "`active` or `forming`. Absent means active, so every chapter that existed before this field keeps its behaviour. A forming chapter has no lead yet: its page swaps the leads block for volunteer-to-lead and join-WhatsApp CTAs, and its roster card carries a Forming badge. Promoting a chapter is flipping this one select in /admin — the URL, the nav entry and the event tags all stay put."
+        "description": "`active` or `forming`. Absent means active, so every chapter that existed before this field keeps its behaviour. A forming chapter has no lead yet: its page swaps the leads block for join-WhatsApp and online-events CTAs, and its roster card carries a Forming badge. Promoting a chapter is flipping this one select in /admin — the URL, the nav entry and the event tags all stay put."
       },
       {
         "name": "whatsappFormUrl",
         "type": "string",
         "required": false,
         "description": "The Google Form that gates entry to this chapter's WhatsApp group. Never the group invite itself: the site links the form only, so joining always goes through alumni verification. Absent falls back to the site-wide form in `src/lib/contact.ts`."
-      },
-      {
-        "name": "volunteerUrl",
-        "type": "string",
-        "required": false,
-        "description": "Where a forming chapter's `Volunteer to lead or support` button points. Absent falls back to the site-wide volunteer path."
       },
       {
         "name": "callouts",
