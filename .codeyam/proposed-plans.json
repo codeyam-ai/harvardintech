@@ -173,7 +173,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 13
+      "rank": 12
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -192,18 +192,17 @@
       "id": "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
       "title": "Dev server stop and start leaves a second astro dev running",
       "mode": "backend",
-      "body": "## What happened\n\nSeen again; see notes.\n\n## What would have helped\n\nA single supervised dev server per project.",
-      "reason": "Every dev-server restart this session launched two astro dev servers.",
-      "severity": 4,
+      "body": "",
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 4,
-      "sightings": 3,
+      "rank": 2,
+      "sightings": 4,
       "notes": [
         "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…",
         "2026-10-14: 2026-10-14: `restart-dev-server` and a later `dev-server stop` each left two `npm run dev` trees started ~1-2s apart (one on :4323). Killing the stray was not enough — the shared `.astro` data store stayed corrupted, so seeds l…",
-        "2026-10-14: 2026-10-14 (volunteer cycle): `dev-server stop` again left two supervisor-respawned trees 2s apart; killed the unmanaged one by PID."
+        "2026-10-14: 2026-10-14 (volunteer cycle): `dev-server stop` again left two supervisor-respawned trees 2s apart; killed the unmanaged one by PID.",
+        "2026-10-15: 2026-10-15: the restart for the new middleware again launched two astro dev trees about 2 seconds apart; killing the stray by PID was needed before captures could be trusted."
       ]
     },
     {
@@ -216,7 +215,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 22
+      "rank": 25
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
@@ -241,16 +240,15 @@
       "title": "Content edits stay invisible in the preview until the sandbox copy is replaced by hand",
       "mode": "backend",
       "body": "",
-      "reason": "Seen again this session.",
-      "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "rank": 7,
-      "sightings": 2,
+      "rank": 8,
+      "sightings": 3,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand.",
-        "2026-10-14: 2026-10-14: ten edited src/content files (stats, events, communities, pageCopy, sponsorLevels) still rendered their old values until I copied them into .codeyam/tmp/content-sandbox/content and removed the content-sandbox-active…"
+        "2026-10-14: 2026-10-14: ten edited src/content files (stats, events, communities, pageCopy, sponsorLevels) still rendered their old values until I copied them into .codeyam/tmp/content-sandbox/content and removed the content-sandbox-active…",
+        "2026-10-15: 2026-10-15: removing a line from dc-dmv.md and seattle.md did not show until the files were copied into the content sandbox by hand."
       ]
     },
     {
@@ -278,21 +276,22 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 14,
+      "rank": 11,
       "sightings": 1
     },
     {
       "id": "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
       "title": "Editing the shared isolation route re-stales every component and drags unrelated views into the taxonomy gate",
       "mode": "backend",
-      "body": "## What happened\n\nThis Astro project renders most isolation previews from one catch-all page, `src/pages/isolated-components/[name].astro`. Changing one fixture line there (passing `name=\"London\"` to `ChapterSignUp`) made every component scenario stale, so `recapture-stale` re-shot the whole corpus, and the App Scenarios gate then blocked on `EventsPage` — a view this change never touched — because every view imported by that file counted as 'touched'. Clearing it took a new EventsPage scenario the user had to approve as extra scope.\n\n## What would have helped\n\nTreat the catch-all isolation route per-state: attribute a change in it only to the components whose fixture branch changed, for both screenshot staleness and the taxonomy gate's touched-view set.",
-      "reason": "A one-line fixture change in the catch-all isolation page forced a full recapture and blocked advance on an unrelated Events page gap.",
-      "severity": 3,
+      "body": "",
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 15,
-      "sightings": 1
+      "rank": 10,
+      "sightings": 2,
+      "notes": [
+        "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots."
+      ]
     },
     {
       "id": "word-the-empty-events-message-for-communities-not-places",
@@ -317,15 +316,14 @@
       "title": "refresh-tests --file runs vitest --changed instead of the named file",
       "mode": "backend",
       "body": "",
-      "reason": "Seen again this session.",
-      "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 2,
-      "sightings": 2,
+      "rank": 6,
+      "sightings": 3,
       "notes": [
-        "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …"
+        "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …",
+        "2026-10-15: 2026-10-15: nine separate refresh-tests --file runs on different test files each reported the identical 118 tests."
       ]
     },
     {
@@ -337,7 +335,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 17,
+      "rank": 20,
       "sightings": 1
     },
     {
@@ -349,7 +347,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 11,
+      "rank": 18,
       "sightings": 1
     },
     {
@@ -363,7 +361,7 @@
       "status": "pending",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
-      "rank": 3,
+      "rank": 4,
       "sightings": 3,
       "notes": [
         "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
@@ -382,7 +380,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
       "kind": "tech-debt",
-      "rank": 12,
+      "rank": 16,
       "sightings": 1
     },
     {
@@ -395,7 +393,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 25,
+      "rank": 26,
       "sightings": 1
     },
     {
@@ -407,7 +405,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 20,
+      "rank": 32,
       "sightings": 1
     },
     {
@@ -419,7 +417,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 21,
+      "rank": 33,
       "sightings": 1
     },
     {
@@ -431,7 +429,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 10,
+      "rank": 19,
       "sightings": 1
     },
     {
@@ -444,7 +442,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 6,
+      "rank": 9,
       "sightings": 2,
       "notes": [
         "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed.",
@@ -460,7 +458,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 19,
+      "rank": 31,
       "sightings": 1
     },
     {
@@ -472,7 +470,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 28,
+      "rank": 34,
       "sightings": 1
     },
     {
@@ -487,7 +485,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 5,
+      "rank": 7,
       "sightings": 1
     },
     {
@@ -502,7 +500,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 27,
+      "rank": 35,
       "sightings": 1
     },
     {
@@ -515,7 +513,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 16,
+      "rank": 13,
       "sightings": 1
     },
     {
@@ -528,7 +526,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 26,
+      "rank": 27,
       "sightings": 1
     },
     {
@@ -540,7 +538,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 18,
+      "rank": 21,
       "sightings": 1
     },
     {
@@ -552,7 +550,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 9,
+      "rank": 15,
       "sightings": 1
     },
     {
@@ -564,7 +562,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 8,
+      "rank": 17,
       "sightings": 1
     },
     {
@@ -577,7 +575,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 1,
+      "rank": 5,
       "sightings": 1
     },
     {
@@ -590,7 +588,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 23,
+      "rank": 28,
       "sightings": 1
     },
     {
@@ -602,6 +600,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
+      "rank": 30,
       "sightings": 1
     },
     {
@@ -613,6 +612,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
+      "rank": 29,
       "sightings": 1
     },
     {
@@ -624,6 +624,70 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
+      "rank": 14,
+      "sightings": 1
+    },
+    {
+      "id": "registry-reconcile-deletes-table-generated-test-entries",
+      "title": "Registry reconcile deletes table-generated test entries",
+      "mode": "backend",
+      "body": "## What happened\n\n`reconcile-registry --auto-apply` removed all eight `it.each` rows from `src/lib/selectOptions.test.ts` (`enum-shaped fields are dropdowns, not text boxes › <coll>.<field> is a select` and `existing content still validates against the new dropdowns › every committed <coll>.<field> value is offered`), although the tests still exist and pass. After restoring them with `register-test-batch` (which refuses `it.each` cases until given an explicit `line`), they disappeared AGAIN before the Reconcile step, and the audit then failed with `RUNNER_HAS_UNREGISTERED_TEST` for the same eight keys. A dry-run `reconcile-registry` reported nothing to add, so the audit and the reconcile disagreed about the same rows.\n\n## What would have helped\n\nReconcile treating loop-generated test names (resolved from the runner's own output) as present rather than orphaned, and never removing a row whose key the runner still emits. Failing that, `register-test-batch` resolving `it.each` cases to the generator line by itself.",
+      "reason": "The 8 it.each dropdown tests in selectOptions.test.ts vanished from the registry twice and failed the audit until re-registered by hand.",
+      "severity": 4,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
+      "rank": 1,
+      "sightings": 1
+    },
+    {
+      "id": "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+      "title": "Editor preview proxy stopped answering after a dev-server double launch",
+      "mode": "backend",
+      "body": "## What happened\n\nAfter `dev-server '{\"action\":\"restart\"}'` launched two `astro dev` trees, I killed the non-managed tree by PID. Later the reverse proxy on :4321 stopped answering (`restart-dev-server` reported a proxy-only wedge with the app healthy on :4322), every capture failed its pre-flight, and the only fix offered was `restart-server`, which needs user approval because it can end the session. The in-place re-exec then left the app dev server stopped, so a separate `dev-server start` was needed.\n\n## What would have helped\n\nA command that restarts just the reverse proxy, and `restart-server` bringing the app dev server back up after its re-exec.",
+      "reason": "Captures and the Live Preview were dead until the editor itself was restarted, which needed the user's approval.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
+      "rank": 3,
+      "sightings": 1
+    },
+    {
+      "id": "preview-captures-cannot-take-a-full-page-screenshot",
+      "title": "Preview captures cannot take a full-page screenshot",
+      "mode": "backend",
+      "body": "## What happened\n\nThe user asked about sections far down the DC page. `preview` and `preview-verify` only return the viewport, and a `fullPage` field was silently ignored, so I wrote a throwaway Playwright script to screenshot the whole page.\n\n## What would have helped\n\nA supported `fullPage: true` option on `preview` / `preview-verify` (or a `capture-page` command) that saves the whole scrolled page.",
+      "reason": "To check sections below the fold I had to hand-roll a Playwright script.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
+      "rank": 23,
+      "sightings": 1
+    },
+    {
+      "id": "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
+      "title": "isolate scaffolds duplicate routes for hand-written isolation pages",
+      "mode": "backend",
+      "body": "## What happened\n\nAt Isolation Routes, `isolate FormingChapterCta ChapterPage` generated `src/pages/isolated-components/FormingChapterCta/[...state].astro` and `ChapterPage/[...state].astro` plus `.codeyam/isolation-props/*.ts`, even though this project already serves those components from tracked hand-written pages (`FormingChapterCta.astro`, `[name].astro` with `ChapterPage-Forming`). The new folder would have shadowed the existing route, so I deleted the scaffolds by hand.\n\n## What would have helped\n\n`isolate` detecting an existing route that already serves the component's registered scenarios and doing nothing, or asking for `--adopt-existing`.",
+      "reason": "It created FormingChapterCta/ and ChapterPage/ route folders that collided with the project's existing hand-written pages.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
+      "rank": 22,
+      "sightings": 1
+    },
+    {
+      "id": "dc-and-seattle-still-have-their-write-up-text-in-the-content-admin-but-whatsapp-only-city-pages-no-longer-show-it-so-editing-it-there-changes-nothing-until-the-city-becomes-an-active-chapter",
+      "title": "DC and Seattle still have their write-up text in the content admin, but WhatsApp-only city pages no longer show it, so editing it there changes nothing until the city becomes an active chapter.",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "sightings": 1
     }
   ],
@@ -799,6 +863,59 @@
         "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
         "give-eventcard-its-own-glossary-entry",
         "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is"
+      ]
+    },
+    {
+      "at": "2026-10-15T13:37:47.684829309+00:00",
+      "feature": "Simpler WhatsApp-only city pages",
+      "notes": "This cycle grew from a field removal into a redesign of the WhatsApp-only city pages after the owner reviewed them live; every change was owner-requested at a gate. The costliest editor friction was the registry losing the it.each rows twi…",
+      "proposedIds": [
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "preview-captures-cannot-take-a-full-page-screenshot",
+        "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "dc-and-seattle-still-have-their-write-up-text-in-the-content-admin-but-whatsapp-only-city-pages-no-longer-show-it-so-editing-it-there-changes-nothing-until-the-city-becomes-an-active-chapter"
+      ],
+      "rankedIds": [
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
+        "the-fall-mixer-s-cover-image-from-luma-still-reads-limited-early-bird-tickets-on-sale-now-the-plan-only-covered-the-text",
+        "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+        "found-in-passing-not-caused-by-this-work-the-momentum-fund-donor-wall-moved-to-the-top-scenario-no-longer-opens-on-the-donor-network-as-its-description-says-its-refreshed-screenshot-shows-the-page-as-it-really-renders-today",
+        "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself",
+        "the-real-device-checks-iphone-safari-android-ipad-pinch-zoom-are-listed-in-the-report-but-not-yet-written-up-as-manual-tests",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+        "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
+        "preview-captures-cannot-take-a-full-page-screenshot",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "scenario-review-counts-seed-error-candidates-without-naming-them",
+        "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+        "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
+        "auto-registered-renamed-tests-lose-their-descriptions",
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
+        "five-sheet-roles-carried-only-the-placeholder-text-propose-another-idea-for-a-volunteer-role-city-lead-social-events-ai-events-for-nyc-and-sf-founders-task-force-co-lead-or-lead-they-were-folded-into-the-city-and-founders-roles",
+        "new-phone-tablet-frames-for-the-sticky-header-after-scrolling-the-our-mission-band-and-the-newsletter-call-to-action-were-not-added-the-new-frames-cover-the-three-things-that-were-actually-broken-stats-band-cookie-table-red-bar",
+        "the-visual-second-pass-looked-at-the-homepage-events-privacy-and-the-open-menu-by-eye-not-every-phone-and-tablet-frame-of-all-14-audit-scenarios-the-board-grid-at-tablet-and-the-longest-chapter-name-were-not-re-checked",
+        "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is",
+        "give-eventcard-its-own-glossary-entry"
       ]
     }
   ],
