@@ -1,0 +1,75 @@
+---
+// The "How to join" card in the WhatsApp band: one plain sentence, the
+// admissions criteria, and "Apply to join the community" as the band's one call
+// to action.
+//
+// The site's card (owner, 2026-10-15): paper on the tinted ground, a hairline
+// and a crimson left rule, the same card as `UpcomingEvents` rows and
+// `SupportUs` tiles. The criteria are reading, so they stay with the sentence;
+// the button closes the card on its own line, a step larger than the standard
+// pill, with nothing beside it.
+//
+// Both links leave the site (the verification form and the criteria doc), so
+// both open in a new tab. The WhatsApp group itself is never linked.
+import { externalLinkAttrs } from '../../lib/externalLink';
+
+interface Props {
+  /** The alumni-verification form, which is also how you apply. */
+  verifyUrl: string;
+  /** The admissions criteria doc. */
+  criteriaUrl: string;
+}
+const { verifyUrl, criteriaUrl } = Astro.props;
+const verifyAttrs = externalLinkAttrs(verifyUrl, Astro.url.origin);
+const criteriaAttrs = externalLinkAttrs(criteriaUrl, Astro.url.origin);
+---
+
+<div class="wa-join">
+  <span class="kick">How to join</span>
+  <p>
+    Fill out <a href={verifyUrl} {...verifyAttrs}>a short form</a> to confirm
+    you're a Harvard alum. It takes under two minutes.
+  </p>
+  <a class="link-more wa-criteria" href={criteriaUrl} {...criteriaAttrs}>See the admissions criteria →</a>
+  <div class="wa-join-act">
+    <a class="btn btn-solid wa-apply" href={verifyUrl} {...verifyAttrs}>Apply to join the community</a>
+  </div>
+</div>
+
+<style>
+  .wa-join {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--crimson);
+    padding: 26px 28px;
+  }
+  .wa-join p {
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 10px 0 0;
+    max-width: 52ch;
+  }
+  .wa-criteria {
+    display: inline-block;
+    margin-top: 12px;
+  }
+  .wa-join-act {
+    margin-top: 20px;
+  }
+  .wa-apply {
+    font-size: 15px;
+    padding: 16px 32px;
+  }
+  @media (max-width: 820px) {
+    .wa-join {
+      padding: 24px 22px;
+    }
+    /* Full width on a phone, so the label keeps to one line. */
+    .wa-apply {
+      display: block;
+      text-align: center;
+      padding: 16px 12px;
+    }
+  }
+</style>

@@ -3,9 +3,15 @@
   "surface_kind": "file",
   "states": [
     {
-      "dimension": "default",
-      "value": "default",
-      "rationale": "source-derived state default=default",
+      "dimension": "directoryTeaser",
+      "value": "true",
+      "rationale": "source-derived state directoryTeaser=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "directoryTeaser",
+      "value": "false",
+      "rationale": "source-derived state directoryTeaser=false",
       "status": "covered"
     }
   ]

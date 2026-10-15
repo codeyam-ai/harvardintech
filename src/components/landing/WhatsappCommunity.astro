@@ -1,80 +1,71 @@
 ---
 // "Communities → WhatsApp" (Atlas): the alumni WhatsApp community, presented in
-// the editorial section idiom — kicker + headline, a serif lede, the apply step,
-// and a crimson "Apply to join" CTA. Replaces the old robin's-egg banner-graphic
-// band.
+// the editorial section idiom — kicker + headline, a serif lede, the join card,
+// and the HIT Directory teaser. Replaces the old robin's-egg banner-graphic band.
 //
 // The group itself is never linked (owner, 2026-09-14): "Apply to join" goes to
-// the verification form, and the admissions criteria go to their own doc. Both
-// leave the site, so both open in a new tab.
+// the verification form, and the admissions criteria go to their own doc.
 //
-// Two columns from the TOP of the section, because it holds two different kinds
-// of thing: an invitation (the heading and who this is for) and a procedure
-// (the steps that admit you, and the button that starts them). The heading is
-// set in two lines so it fits its column, which lets the "How to join" card rise
-// level with it instead of sitting below a full-width heading. The actions live
-// INSIDE that card, at its foot — the button is the last step of the procedure,
-// so it belongs with the steps rather than under the invitation.
+// One column, read top to bottom (owner, 2026-10-15): the heading on one line,
+// the lede under it, then `WhatsappJoinCard`, then `HitDirectoryTeaser`. "Apply
+// to join the community" is the one thing the band asks you to do, so the join
+// card is the only white surface and the teaser stays unfilled and in ink.
 import { WHATSAPP_CRITERIA_URL, WHATSAPP_FORM_URL } from '../../lib/contact';
-import { externalLinkAttrs } from '../../lib/externalLink';
+import WhatsappJoinCard from './WhatsappJoinCard.astro';
+import HitDirectoryTeaser from './HitDirectoryTeaser.astro';
+
+interface DirectoryTeaser {
+  title: string;
+  text: string;
+}
 
 interface Props {
   criteriaUrl?: string;
   verifyUrl?: string;
+  /** The HIT Directory teaser; `null` hides it (the band as it was). */
+  directoryTeaser?: DirectoryTeaser | null;
 }
 const {
   // The admissions criteria doc, and the alumni-verification Google Form that
   // is also how you apply — matching the original site's WhatsApp copy.
   criteriaUrl = WHATSAPP_CRITERIA_URL,
   verifyUrl = WHATSAPP_FORM_URL,
+  directoryTeaser = {
+    title: 'The HIT Directory',
+    text: 'Find fellow alumni and ask for an introduction without leaving WhatsApp. Open to every member of the community.',
+  },
 } = Astro.props as Props;
-const verifyAttrs = externalLinkAttrs(verifyUrl, Astro.url.origin);
-const criteriaAttrs = externalLinkAttrs(criteriaUrl, Astro.url.origin);
 ---
 
 <section class="sec" id="community" style="background: var(--paper-2);">
   <div class="wrap">
-    <div class="wa">
-      <div class="wa-invite">
-        <div class="sec-head">
-          <div>
-            <span class="kick">Communities</span>
-            <h2>Join our WhatsApp<br />community</h2>
-          </div>
-        </div>
-        <p class="wa-lede">
-          A space for Harvard Alumni in Tech: founders, operators, and investors
-          across industries, connecting in real time, anywhere in the world.
-        </p>
-      </div>
-
-      <div class="wa-how">
-        <span class="kick">How to join</span>
-        <ol class="wa-steps">
-          <li>
-            <span class="wa-n">1</span>
-            <span>Fill out <a href={verifyUrl} {...verifyAttrs}>this short form</a> (under 2 minutes) to verify your alumni status.</span>
-          </li>
-        </ol>
-        <div class="wa-cta">
-          <a class="btn btn-solid" href={verifyUrl} {...verifyAttrs}>Apply to join</a>
-          <a class="link-more" href={criteriaUrl} {...criteriaAttrs}>See the admissions criteria →</a>
-        </div>
+    <div class="sec-head">
+      <div>
+        <span class="kick">Communities</span>
+        <h2>Join our WhatsApp community</h2>
       </div>
     </div>
+    <p class="wa-lede">
+      A space for Harvard Alumni in Tech: founders, operators, and investors
+      across industries, connecting in real time, anywhere in the world.
+    </p>
+
+    <div class="wa-join-slot">
+      <WhatsappJoinCard verifyUrl={verifyUrl} criteriaUrl={criteriaUrl} />
+    </div>
+
+    {directoryTeaser && (
+      <div class="wa-dir-slot">
+        <HitDirectoryTeaser title={directoryTeaser.title} text={directoryTeaser.text} />
+      </div>
+    )}
   </div>
 </section>
 
 <style>
-  .wa {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
-    align-items: start;
-  }
-  /* The head sits inside a column here, so its standing bottom gap (sized for a
-     full-width head above content) is replaced by the lede's own top margin. */
-  .wa-invite :global(.sec-head) {
+  /* The lede follows the heading directly, so the head's standing bottom gap
+     (sized for a head above content) gives way to the lede's own top margin. */
+  .sec-head {
     margin-bottom: 0;
   }
   .wa-lede {
@@ -82,61 +73,14 @@ const criteriaAttrs = externalLinkAttrs(criteriaUrl, Astro.url.origin);
     font-size: 19px;
     line-height: 1.5;
     color: var(--ink-2);
-    margin: 18px 0 0;
-    max-width: 46ch;
-  }
-  /* Paper on the section's tinted ground, which is what separates the procedure
-     from the invitation without a second rule. */
-  .wa-how {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--crimson);
-    padding: 26px 28px;
-  }
-  .wa-steps {
-    list-style: none;
     margin: 14px 0 0;
-    padding: 0;
-    display: grid;
-    gap: 16px;
+    max-width: 60ch;
   }
-  .wa-steps li {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    font-size: 16px;
-    line-height: 1.45;
-    color: var(--ink);
+  /* The band owns the spacing between its parts; the parts own none. */
+  .wa-join-slot {
+    margin-top: 36px;
   }
-  .wa-n {
-    flex: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--crimson);
-    color: var(--white);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  /* The card's foot: a hairline marks where reading the steps ends and acting
-     on them begins. */
-  .wa-cta {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-    flex-wrap: wrap;
-    margin-top: 24px;
-    padding-top: 22px;
-    border-top: 1px solid var(--line);
-  }
-  @media (max-width: 820px) {
-    .wa {
-      grid-template-columns: 1fr;
-      gap: 28px;
-    }
+  .wa-dir-slot {
+    margin-top: 28px;
   }
 </style>

@@ -533,6 +533,38 @@
         "reason": "The only action is following a card through to its post, where the recording plays. That destination is a blog post with its own scenarios; nothing on this view has interaction-only state."
       }
     },
+    "WhatsappCommunity": {
+      "empty": {
+        "status": "n-a",
+        "reason": "The band renders fixed copy, not a list of items; there is no zero-items state. The closest thing, the teaser switched off, is covered by Whatsapp Community - No Directory."
+      },
+      "single": {
+        "status": "n-a",
+        "reason": "No list of items is rendered, so there is no one-item boundary."
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "No list of items is rendered, so nothing can overflow or truncate."
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "The band is prerendered at build time with no client-side fetch, so it has no pending state."
+      },
+      "edge": {
+        "status": "covered"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "Nothing is fetched or submitted on the page; both links leave the site, so no failure state renders here."
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "The one action, Apply to join the community, is a plain link that opens the external verification form in a new tab; there is no on-page state change to capture."
+      }
+    },
     "public/cutover-runbook.html": {
       "empty": {
         "status": "n-a",

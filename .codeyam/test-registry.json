@@ -474,7 +474,7 @@
       "format": "vitest",
       "key": "apple-touch-icon.png › exists",
       "line": 41,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -483,7 +483,7 @@
       "format": "vitest",
       "key": "apple-touch-icon.png › is exactly 180x180",
       "line": 117,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -1446,50 +1446,52 @@
       "format": "vitest",
       "key": "chapter counts agree with the content › has four active chapters and two forming",
       "line": 72,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
-      "description": "The homepage stat strip's active-communities figure never claims more than the active chapters plus published communities; a bare number must match exactly, and a plus sign means at least.",
+      "description": "The homepage stat strip. This is the number a visitor sees first, and the one that said \"6\" while two of those six had never held an event. Since the October 2026 all-hands it counts active communities — the chapters plus the cross-chapter communities — so the figure is checked against both.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "chapter counts agree with the content › the communities stat is not more than active chapters plus communities",
       "line": 80,
-      "registeredAt": "2026-10-14T22:15:47Z",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
-      "description": "The donate page repeats the communities figure for people deciding whether to give money, so it must not overstate the active chapters plus communities either.",
+      "description": "The donate page repeats the same figure in its own stats block, which is read by people deciding whether to give money — so it is the worst place on the site to overstate the size of the organisation.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "chapter counts agree with the content › the donate page communities stat is not more than the same count",
       "line": 89,
-      "registeredAt": "2026-10-14T22:15:47Z",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
-      "description": "The sponsor intro in the CMS entry spells out the chapter count, and it must name the same number as the active-chapter count in the chapters collection.",
+      "description": "The sponsor intro in the CMS entry spells out the same chapter count as the homepage.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "chapter counts agree with the content › the sponsor intro in content/sponsorPage/sponsor.md states the same count",
-      "registeredAt": "2026-10-08T18:23:06Z",
+      "line": 111,
+      "registeredAt": "2026-10-15T18:38:43.344455699+00:00",
       "runner": "tests"
     },
     {
-      "description": "The JSON fallback for the sponsor intro supplies the copy when the CMS field is blank, so its spelled-out chapter count must match the active-chapter count too.",
+      "description": "The sponsor intro in the JSON fallback spells out the same chapter count as the homepage.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "chapter counts agree with the content › the sponsor intro in data/sponsorPage.json states the same count",
-      "registeredAt": "2026-10-08T18:23:06Z",
+      "line": 111,
+      "registeredAt": "2026-10-15T18:38:47.863228618+00:00",
       "runner": "tests"
     },
     {
-      "description": "The stat strip's built-in figures render if the stats collection is ever empty, so its communities number must not overstate the active chapters plus communities.",
+      "description": "The stat strip's built-in figures are what the homepage shows if the stats collection is ever empty, so a stale count there resurfaces exactly when nobody is looking.",
       "file": "src/lib/presenceConsistency.test.ts",
       "format": "vitest",
       "key": "chapter counts agree with the content › the stat strip fallback communities figure is not more than the same count",
       "line": 101,
-      "registeredAt": "2026-10-14T22:15:47Z",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
@@ -2191,7 +2193,7 @@
       "format": "vitest",
       "key": "copy names no retired or forming city as active › never claims six chapters",
       "line": 153,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
@@ -2200,7 +2202,7 @@
       "format": "vitest",
       "key": "copy names no retired or forming city as active › never mentions Japan or L.A.",
       "line": 139,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
@@ -2209,7 +2211,7 @@
       "format": "vitest",
       "key": "copy names no retired or forming city as active › the chapter sponsor level offers no forming city",
       "line": 165,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
@@ -2218,7 +2220,7 @@
       "format": "vitest",
       "key": "copy names no retired or forming city as active › the hero lede marks the forming cities as online groups",
       "line": 176,
-      "registeredAt": "2026-10-08T21:38:27Z",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
@@ -4387,7 +4389,7 @@
       "format": "vitest",
       "key": "favicon.svg › exists",
       "line": 41,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -4396,7 +4398,7 @@
       "format": "vitest",
       "key": "favicon.svg › is not the scaffold placeholder any more",
       "line": 48,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -4405,7 +4407,7 @@
       "format": "vitest",
       "key": "favicon.svg › is parseable as an image",
       "line": 62,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -4414,7 +4416,7 @@
       "format": "vitest",
       "key": "favicon.svg › uses the brand crimson from the design tokens",
       "line": 55,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -9621,39 +9623,39 @@
       "runner": "tests"
     },
     {
-      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
+      "description": "This giving file still names a personal inbox, so its exemption is still needed; a clean file comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/MomentumFundPage.astro still needs its giving-plan exemption",
-      "line": 59,
-      "registeredAt": "2026-09-28T16:56:55.949067562+00:00",
+      "line": 64,
+      "registeredAt": "2026-10-15T18:38:52.364329728+00:00",
       "runner": "tests"
     },
     {
-      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
+      "description": "This giving file still names a personal inbox, so its exemption is still needed; a clean file comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/donate/GiftPillars.astro still needs its giving-plan exemption",
-      "line": 59,
-      "registeredAt": "2026-09-28T16:56:55.950847573+00:00",
+      "line": 64,
+      "registeredAt": "2026-10-15T18:38:56.851095284+00:00",
       "runner": "tests"
     },
     {
-      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
+      "description": "This giving file still names a personal inbox, so its exemption is still needed; a clean file comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/donate/MomentumNetwork.astro still needs its giving-plan exemption",
-      "line": 59,
-      "registeredAt": "2026-09-28T16:56:55.951752974+00:00",
+      "line": 64,
+      "registeredAt": "2026-10-15T18:39:01.350734563+00:00",
       "runner": "tests"
     },
     {
-      "description": "Each pending file must still need its exemption; a clean one comes off the list.",
+      "description": "This giving file still names a personal inbox, so its exemption is still needed; a clean file comes off the list.",
       "file": "src/lib/noPersonalEmail.test.ts",
       "format": "vitest",
       "key": "public source contact rules › src/components/landing/GivingCampaign.astro still needs its giving-plan exemption",
-      "line": 59,
-      "registeredAt": "2026-09-28T16:56:55.952622702+00:00",
+      "line": 64,
+      "registeredAt": "2026-10-15T18:39:05.867041491+00:00",
       "runner": "tests"
     },
     {
@@ -10445,7 +10447,7 @@
       "format": "vitest",
       "key": "retired content is gone rather than hidden › the new-chapters-launched accomplishment no longer exists",
       "line": 202,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:37:44.142423612+00:00",
       "runner": "tests"
     },
     {
@@ -13397,7 +13399,7 @@
       "format": "vitest",
       "key": "the default share card › exists",
       "line": 41,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -13424,7 +13426,7 @@
       "format": "vitest",
       "key": "the default share card › is exactly the 1200x630 that SEO.astro declares for it",
       "line": 133,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -13487,7 +13489,7 @@
       "format": "vitest",
       "key": "the icon kit › declares a raster fallback alongside the SVG",
       "line": 75,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -13496,7 +13498,7 @@
       "format": "vitest",
       "key": "the icon kit › draws the same mark in the favicon as in the header component",
       "line": 101,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -13505,7 +13507,7 @@
       "format": "vitest",
       "key": "the icon kit › ships a root favicon.ico as well",
       "line": 92,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {
@@ -13514,7 +13516,7 @@
       "format": "vitest",
       "key": "the icon kit › ships the raster fallback at exactly the 32x32 it declares",
       "line": 85,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "registeredAt": "2026-10-15T18:31:47.459561028+00:00",
       "runner": "tests"
     },
     {

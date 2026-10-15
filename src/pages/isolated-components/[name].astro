@@ -818,6 +818,7 @@ export async function getStaticPaths() {
     { params: { name: 'ContactUs' } },
     { params: { name: 'ContactUs-NoEmail' } },
     { params: { name: 'WhatsappCommunity' } },
+    { params: { name: 'WhatsappCommunity-NoDirectory' } },
     { params: { name: 'GetInvolved' } },
     { params: { name: 'SupportUs' } },
     { params: { name: 'EventGallery' } },
@@ -1160,10 +1161,16 @@ if (name && name.startsWith('MomentumNetwork')) {
         ) : name === 'LumaCalendar' ? (
           <LumaCalendar />
         ) : name === 'WhatsappCommunity' ? (
-          // Staged at the real content width: the band is two columns, and a
-          // narrow stage collapses it to one and hides what it actually is.
+          // Staged at the real content width, so the join card and the
+          // directory strip lay out as they do on the homepage.
           <div style="width: 1180px; max-width: 100%;">
             <WhatsappCommunity />
+          </div>
+        ) : name === 'WhatsappCommunity-NoDirectory' ? (
+          // The off switch: a null teaser renders the band without the HIT
+          // Directory strip, as it was before the directory was announced.
+          <div style="width: 1180px; max-width: 100%;">
+            <WhatsappCommunity directoryTeaser={null} />
           </div>
         ) : name === 'GetInvolved' ? (
           <GetInvolved />

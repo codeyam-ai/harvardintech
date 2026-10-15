@@ -75,10 +75,22 @@
         "src/pages/isolated-components/EventCardMedia/[...state].astro"
       ]
     },
+    ".codeyam/isolation-props/HitDirectoryTeaser.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro"
+      ]
+    },
     ".codeyam/isolation-props/MissionStatement.ts": {
       "imports": [],
       "importedBy": [
         "src/pages/isolated-components/MissionStatement/[...state].astro"
+      ]
+    },
+    ".codeyam/isolation-props/WhatsappJoinCard.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/WhatsappJoinCard/[...state].astro"
       ]
     },
     ".codeyam/scenario-handlers.js": {
@@ -1332,6 +1344,13 @@
         "src/pages/isolated-components/[name].astro"
       ]
     },
+    "src/components/landing/HitDirectoryTeaser.astro": {
+      "imports": [],
+      "importedBy": [
+        "src/components/landing/WhatsappCommunity.astro",
+        "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro"
+      ]
+    },
     "src/components/landing/HomeSections.astro": {
       "imports": [
         "src/components/ComingSoon.astro",
@@ -1427,11 +1446,21 @@
     "src/components/landing/WhatsappCommunity.astro": {
       "imports": [
         "src/lib/contact.ts",
-        "src/lib/externalLink.ts"
+        "src/components/landing/WhatsappJoinCard.astro",
+        "src/components/landing/HitDirectoryTeaser.astro"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro",
         "src/pages/isolated-components/[name].astro"
+      ]
+    },
+    "src/components/landing/WhatsappJoinCard.astro": {
+      "imports": [
+        "src/lib/externalLink.ts"
+      ],
+      "importedBy": [
+        "src/components/landing/WhatsappCommunity.astro",
+        "src/pages/isolated-components/WhatsappJoinCard/[...state].astro"
       ]
     },
     "src/components/landing/landing-images.test.ts": {
@@ -2457,7 +2486,7 @@
         "src/components/PastEventsMore.astro",
         "src/components/sponsor/SponsorInquiry.astro",
         "src/components/EventCard.astro",
-        "src/components/landing/WhatsappCommunity.astro",
+        "src/components/landing/WhatsappJoinCard.astro",
         "src/components/landing/SupportUs.astro",
         "src/components/landing/ContentHub.astro",
         "src/components/landing/ContactUs.astro",
@@ -4040,6 +4069,14 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro": {
+      "imports": [
+        "src/components/landing/HitDirectoryTeaser.astro",
+        ".codeyam/isolation-props/HitDirectoryTeaser.ts",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/HomeSections.astro": {
       "imports": [
         "src/components/landing/HomeSections.astro",
@@ -4458,6 +4495,14 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/WhatsappJoinCard/[...state].astro": {
+      "imports": [
+        "src/components/landing/WhatsappJoinCard.astro",
+        ".codeyam/isolation-props/WhatsappJoinCard.ts",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/[name].astro": {
       "imports": [
         "src/components/EmbedForm.astro",
@@ -4581,6 +4626,7 @@
       "imports": [],
       "importedBy": [
         "src/layouts/BaseLayout.astro",
+        "src/pages/isolated-components/WhatsappJoinCard/[...state].astro",
         "src/pages/isolated-components/WebinarCard-NoCover.astro",
         "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro",
         "src/pages/isolated-components/AccomplishmentCard.astro",
@@ -4601,6 +4647,7 @@
         "src/pages/isolated-components/MomentumClose-Split.astro",
         "src/pages/isolated-components/VolunteerHero.astro",
         "src/pages/isolated-components/LumaSubscribe.astro",
+        "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro",
         "src/pages/isolated-components/WebinarsPage.astro",
         "src/pages/isolated-components/OrderArrows-BottomRow.astro",
         "src/pages/isolated-components/GivePhoto.astro",
@@ -4800,12 +4847,28 @@
         "src/pages/isolated-components/EventCardMedia/[...state].astro::__file_root__"
       ]
     },
+    ".codeyam/isolation-props/HitDirectoryTeaser.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/HitDirectoryTeaser.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro::__file_root__"
+      ]
+    },
     ".codeyam/isolation-props/MissionStatement.ts::__file_root__": {
       "filePath": ".codeyam/isolation-props/MissionStatement.ts",
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
         "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__"
+      ]
+    },
+    ".codeyam/isolation-props/WhatsappJoinCard.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/WhatsappJoinCard.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/WhatsappJoinCard/[...state].astro::__file_root__"
       ]
     },
     ".codeyam/scenario-handlers.js::{ createIssue }": {
@@ -6242,6 +6305,15 @@
         "src/pages/isolated-components/[name].astro::__file_root__"
       ]
     },
+    "src/components/landing/HitDirectoryTeaser.astro::__file_root__": {
+      "filePath": "src/components/landing/HitDirectoryTeaser.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/components/landing/WhatsappCommunity.astro::__file_root__",
+        "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro::__file_root__"
+      ]
+    },
     "src/components/landing/HomeSections.astro::__file_root__": {
       "filePath": "src/components/landing/HomeSections.astro",
       "name": "__file_root__",
@@ -6360,11 +6432,23 @@
       "name": "__file_root__",
       "imports": [
         "src/lib/contact.ts::__file_root__",
-        "src/lib/externalLink.ts::externalLinkAttrs"
+        "src/components/landing/WhatsappJoinCard.astro::__file_root__",
+        "src/components/landing/HitDirectoryTeaser.astro::__file_root__"
       ],
       "importedBy": [
         "src/components/landing/HomeSections.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
+      ]
+    },
+    "src/components/landing/WhatsappJoinCard.astro::__file_root__": {
+      "filePath": "src/components/landing/WhatsappJoinCard.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs"
+      ],
+      "importedBy": [
+        "src/components/landing/WhatsappCommunity.astro::__file_root__",
+        "src/pages/isolated-components/WhatsappJoinCard/[...state].astro::__file_root__"
       ]
     },
     "src/components/landing/landing-images.test.ts::__file_root__": {
@@ -8034,7 +8118,7 @@
         "src/components/PastEventsMore.astro::__file_root__",
         "src/components/sponsor/SponsorInquiry.astro::__file_root__",
         "src/components/EventCard.astro::__file_root__",
-        "src/components/landing/WhatsappCommunity.astro::__file_root__",
+        "src/components/landing/WhatsappJoinCard.astro::__file_root__",
         "src/components/landing/SupportUs.astro::__file_root__",
         "src/components/landing/ContentHub.astro::__file_root__",
         "src/components/landing/ContactUs.astro::__file_root__",
@@ -11359,6 +11443,16 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/landing/HitDirectoryTeaser.astro::__file_root__",
+        ".codeyam/isolation-props/HitDirectoryTeaser.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/HomeSections.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/HomeSections.astro",
       "name": "__file_root__",
@@ -11897,6 +11991,16 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/WhatsappJoinCard/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WhatsappJoinCard/[...state].astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/landing/WhatsappJoinCard.astro::__file_root__",
+        ".codeyam/isolation-props/WhatsappJoinCard.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/[name].astro::__file_root__": {
       "filePath": "src/pages/isolated-components/[name].astro",
       "name": "__file_root__",
@@ -12047,6 +12151,7 @@
       "imports": [],
       "importedBy": [
         "src/layouts/BaseLayout.astro::__file_root__",
+        "src/pages/isolated-components/WhatsappJoinCard/[...state].astro::__file_root__",
         "src/pages/isolated-components/WebinarCard-NoCover.astro::__file_root__",
         "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro::__file_root__",
         "src/pages/isolated-components/AccomplishmentCard.astro::__file_root__",
@@ -12067,6 +12172,7 @@
         "src/pages/isolated-components/MomentumClose-Split.astro::__file_root__",
         "src/pages/isolated-components/VolunteerHero.astro::__file_root__",
         "src/pages/isolated-components/LumaSubscribe.astro::__file_root__",
+        "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro::__file_root__",
         "src/pages/isolated-components/WebinarsPage.astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-BottomRow.astro::__file_root__",
         "src/pages/isolated-components/GivePhoto.astro::__file_root__",
@@ -12173,5 +12279,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-15T17:05:50Z"
+  "lastUpdated": "2026-10-15T18:42:57Z"
 }

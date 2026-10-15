@@ -1,0 +1,12 @@
+{
+  "name": "HitDirectoryTeaser - Long Copy",
+  "id": "db05545c-b46a-4431-b16c-5b5303789c38",
+  "url": "/isolated-components/HitDirectoryTeaser/LongCopy",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "HitDirectoryTeaser",
+  "scenarioType": "component",
+  "description": "Edge data for the teaser: a longer title that wraps within its column and a longer body that stays at reading width beside it."
+}

@@ -1,0 +1,347 @@
+{
+  "timestamp": "2026-10-15T18:33:08Z",
+  "title": "Introduce the HIT Directory in the WhatsApp band",
+  "type": "feature",
+  "userRequest": "## Summary\n\nAdd a short teaser for the **HIT Directory (beta)**. The teaser says the directory is a feature of the alumni WhatsApp community and encourages people to join. The site does not mention the directory today.\n\nThis is a teaser only (user, 2026-10-15): \"We don't want to reveal all the information just yet — we just want to say it's a feature in the WhatsApp and encourage folks to join.\" So the site does **not** publish the access number, the \"hit\" keyword, or step-by-step usage.\n\n## Key Decisions\n\n- **It goes in the homepage WhatsApp band (`#community`), not on a new page.** The directory lives inside the WhatsApp community, so the teaser is one more reason to join, right next to \"Apply to join.\"\n- **Placement:** a quiet note in the `wa-invite` column, under the lede. It belongs with the invitation (why join), not in the How-to-join procedure. It stays visually secondary to the Apply button: no second button, no new link.\n- **Copy (draft):** \"**New: the HIT Directory (beta).** Members can now find fellow alumni and request introductions right inside our WhatsApp community. Apply to join to get access.\"\n  - It names the feature and one line of what it does, then points to joining.\n  - It gives no phone number, no keyword, and no WhatsApp link. That keeps the existing no-WhatsApp-links rule (`isWhatsAppGroupLink`, `noPersonalEmail.test.ts`) intact with nothing to weigh.\n- **The copy is a component prop with a default**, so scenarios can override or blank it. A blank value renders no note, which is the off switch until the full launch.\n- **No credit to the lead on the site.**\n\n## Out of scope (future)\n\n- Moving every WhatsApp join form to the new app's process. The user expects this later, but the new process isn't ready. `WHATSAPP_FORM_URL` and the \"Apply to join\" flow stay exactly as they are.\n- Publishing the access number and keyword. That waits for the full launch.\n\n## Implementation\n\n### 1. Teaser note in the WhatsApp band\n\n**File**: `src/components/landing/WhatsappCommunity.astro`\n\nAdd an optional `directoryTeaser?: string` prop that defaults to the copy above. When the prop is non-empty, render it as a small note (for example `<p class=\"wa-note\">`) under `.wa-lede` in the `wa-invite` column. Bold the lead-in phrase and use muted, smaller type than the lede. On phones it still reads before the How-to-join card. Update the header comment to explain why there is no number or link.\n\n## Reused existing code\n\n- `WhatsappCommunity` from `src/components/landing/WhatsappCommunity.astro`, the band being extended\n- `isWhatsAppGroupLink` from `src/lib/localPresence.ts`, the rule the teaser respects by carrying no link\n\n## Scenarios to Demonstrate\n\n- The homepage WhatsApp band showing the teaser, at desktop and phone widths\n- An isolated `WhatsappCommunity` with default props (teaser shown)\n- An isolated `WhatsappCommunity` with the teaser blanked (the band as it is today)\n\nCapture notes: the band is below the fold. Frame it with a `hover` interaction and `--target` the recapture.",
+  "description": "The homepage WhatsApp band now teases the HIT Directory (beta) as a feature inside the community, without publishing its access number, keyword or a link, because the owner wants to announce it only as a reason to join for now. The band was reworked with the owner in the live preview into one column: the heading on one line, the lede, then a WhatsappJoinCard in the site's standard card style (crimson left rule) whose single larger 'Apply to join the community' button is the band's main action, then a quiet ink-coloured HitDirectoryTeaser that a null prop switches off. Scope verdict: all 7 project deliverables were already resolved, so this cycle delivered the plan's revised scope in full and deferred nothing; moving every WhatsApp join form to the new app's process stays out of scope until that process is ready. Also cleared inherited registry drift: 27 existing tests that ran but were unregistered are now registered.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/completed/launch--introduce-the-hit-directory-in-the-whatsapp-band.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/plans/launch--introduce-the-hit-directory-in-the-whatsapp-band.md",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-landing-whatsappcommunity-astro.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--laptop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-header-pinned-while-scrolling--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-our-mission-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/403ecffb4c5628c639b24e653811cec5edd77552a050cbb4b7acebaf6469f0b6.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/be58fd9256717f785acf120d083374fef4e1c59113084f5216eac36865ebc5a7.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/WhatsappCommunity.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/isolation-props/HitDirectoryTeaser.ts",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/isolation-props/WhatsappJoinCard.ts",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-landing-hitdirectoryteaser-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-landing-whatsappjoincard-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-whatsapp-band-with-the-hit-directory.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/hitdirectoryteaser-default.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/hitdirectoryteaser-long-copy.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-whatsapp-band-with-the-hit-directory--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-whatsapp-band-with-the-hit-directory--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-whatsapp-band-with-the-hit-directory--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hitdirectoryteaser-default--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hitdirectoryteaser-default--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hitdirectoryteaser-long-copy--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hitdirectoryteaser-long-copy--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community-no-directory--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community-no-directory--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsappjoincard-default--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsappjoincard-default--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/whatsapp-community-no-directory.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/whatsappjoincard-default.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/171adeb86e57253b9c97be7545eeae308eb1059f498d7e7f9fecaa261ce9c360.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/eceaea4a28458dee93164fc6e976dab3938d9e8fbf920969e859a5b030f2b997.json",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/HitDirectoryTeaser.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/WhatsappJoinCard.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/WhatsappJoinCard/[...state].astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Harvard In Tech - Header Pinned While Scrolling",
+      "screenshotPath": "harvard-in-tech-header-pinned-while-scrolling--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Mission Band Coming Soon",
+      "screenshotPath": "harvard-in-tech-mission-band-coming-soon--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Mission Band Hidden",
+      "screenshotPath": "harvard-in-tech-mission-band-hidden--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Numbers Band On An iPad",
+      "screenshotPath": "harvard-in-tech-numbers-band-on-an-ipad--tablet.png"
+    },
+    {
+      "name": "Harvard In Tech - Our Mission Band",
+      "screenshotPath": "harvard-in-tech-our-mission-band--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board On Four Sizes",
+      "screenshotPath": "harvard-in-tech-board-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapters On Four Sizes",
+      "screenshotPath": "harvard-in-tech-chapters-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact On Four Sizes",
+      "screenshotPath": "harvard-in-tech-contact-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Phone Menu Open",
+      "screenshotPath": "harvard-in-tech-phone-menu-open--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - WhatsApp Band With The HIT Directory",
+      "screenshotPath": "harvard-in-tech-whatsapp-band-with-the-hit-directory--desktop.png"
+    }
+  ]
+}

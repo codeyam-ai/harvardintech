@@ -1,0 +1,12 @@
+{
+  "name": "Whatsapp Community - No Directory",
+  "id": "2e126679-bf59-4a65-8d21-9122a9376136",
+  "url": "/isolated-components/WhatsappCommunity-NoDirectory",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "WhatsappCommunity",
+  "scenarioType": "component",
+  "description": "The WhatsApp band with the directory teaser switched off, so only the heading, lede and join card show. This is the off switch if the directory announcement has to be pulled."
+}

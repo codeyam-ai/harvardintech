@@ -1,0 +1,90 @@
+{
+  "name": "Harvard in Tech - WhatsApp Band With The HIT Directory",
+  "id": "34df4cf9-e17a-4aa9-86c6-a1506b4daef0",
+  "url": "/",
+  "dimensions": [
+    "Desktop",
+    "Mobile"
+  ],
+  "mocks": {},
+  "seed": {
+    "events": [
+      {
+        "body": "Join hundreds of alumni technologists for keynotes and breakout sessions on AI, climate, fintech, and the future of the startup ecosystem.",
+        "date": "@today+48d",
+        "description": "Our flagship annual gathering of Harvard founders, operators, and investors for a day of talks, panels, and networking across the technology landscape.",
+        "link": "https://www.harvardintech.com/events/summit-2026",
+        "location": "New York, NY",
+        "slug": "harvard-in-tech-summit-2026",
+        "title": "Harvard Alumni in Tech Summit 2026"
+      },
+      {
+        "date": "@today-23d",
+        "description": "An evening connecting Harvard alumni founders with active investors across the Bay Area.",
+        "link": "https://www.harvardintech.com/events/sf-mixer",
+        "location": "San Francisco, CA",
+        "slug": "founders-investors-mixer-sf",
+        "title": "Founders & Investors Mixer — San Francisco"
+      },
+      {
+        "date": "@today-1d",
+        "description": "A conversation with Harvard alumnae leading engineering, product, and venture teams.",
+        "link": "https://www.harvardintech.com/events/women-in-tech-panel",
+        "location": "Cambridge, MA",
+        "slug": "women-in-tech-panel",
+        "title": "Women in Tech Leadership Panel"
+      }
+    ],
+    "team": [
+      {
+        "active": true,
+        "name": "Ben Wei",
+        "order": 1,
+        "photo": "/images/team/ben-wei.png",
+        "role": "Founder · Harvard C'08",
+        "slug": "ben-wei"
+      },
+      {
+        "active": true,
+        "name": "Peter Boyce",
+        "order": 2,
+        "photo": "/images/team/peter-boyce.png",
+        "role": "Founder · Harvard C'13",
+        "slug": "peter-boyce"
+      },
+      {
+        "active": true,
+        "name": "Krysia Lenzo",
+        "order": 3,
+        "photo": "/images/team/krysia-lenzo.png",
+        "role": "Executive Director · Harvard C'12",
+        "slug": "krysia-lenzo"
+      },
+      {
+        "active": true,
+        "name": "Jessica Li",
+        "order": 4,
+        "photo": "/images/team/jessica-li.png",
+        "role": "Director of Operations · Harvard C'19",
+        "slug": "jessica-li"
+      },
+      {
+        "active": true,
+        "name": "Nadia Eldeib",
+        "order": 5,
+        "photo": "/images/team/nadia-eldeib.png",
+        "role": "Director of Growth · Harvard C'13",
+        "slug": "nadia-eldeib"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/index.astro",
+  "description": "The homepage scrolled to the WhatsApp community band, where the HIT Directory is announced. The join card leads with its one Apply to join the community button, and the directory teaser sits quietly beneath it: a Beta tag, the name and one sentence, with no number or link. On a phone the button runs the full width of the card.",
+  "interactions": [
+    {
+      "action": "hover",
+      "text": "The HIT Directory"
+    }
+  ]
+}
