@@ -173,7 +173,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 20
+      "rank": 29
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -192,20 +192,22 @@
       "id": "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
       "title": "Dev server stop and start leaves a second astro dev running",
       "mode": "backend",
-      "body": "## What happened\nTwo `astro dev` processes were started two seconds apart.\n\n## What would have helped\nThe editor should refuse or reap a second dev server.",
-      "reason": "Seeded /donate captures were refused until the stray server was killed by hand.",
+      "body": "## What happened\n\nOn 2026-10-15, `dev-server '{\"action\":\"restart\"}'` launched two `npm run dev` trees, both parented to the editor server (pid 7), about two seconds apart, in 3 of 5 restarts, including right after a clean stop with zero servers left and `.astro` removed. The two servers raced on `.astro/data-store.json` (`ENOENT … data-store.json.tmp`), Vite's error overlay covered the page, and a phone-menu capture failed on a click blocked by the overlay. Each time I had to trace process parents by hand and kill the untracked tree by PID.\n\n## What would have helped\n\nThe supervisor refusing to spawn while another `astro dev` it launched is still alive, or `dev-server` status flagging an untracked second server and offering to stop it.",
+      "reason": "Seen again: a dev-server restart launched two servers two seconds apart, four times in one session.",
+      "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 13,
-      "sightings": 6,
+      "rank": 22,
+      "sightings": 7,
       "notes": [
         "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…",
         "2026-10-14: 2026-10-14: `restart-dev-server` and a later `dev-server stop` each left two `npm run dev` trees started ~1-2s apart (one on :4323). Killing the stray was not enough — the shared `.astro` data store stayed corrupted, so seeds l…",
         "2026-10-14: 2026-10-14 (volunteer cycle): `dev-server stop` again left two supervisor-respawned trees 2s apart; killed the unmanaged one by PID.",
         "2026-10-15: 2026-10-15: the restart for the new middleware again launched two astro dev trees about 2 seconds apart; killing the stray by PID was needed before captures could be trusted.",
         "2026-10-15: 2026-10-15: the restart for the new middleware again launched two astro dev trees about 2 seconds apart; killing the stray by PID was needed before captures could be trusted.",
-        "2026-10-15: Seen again 2026-10-15: after `restart-dev-server`, two `astro dev` processes started 2s apart; /donate captures were refused as 'reading committed content' until the stray was killed and .astro cleared."
+        "2026-10-15: Seen again 2026-10-15: after `restart-dev-server`, two `astro dev` processes started 2s apart; /donate captures were refused as 'reading committed content' until the stray was killed and .astro cleared.",
+        "2026-10-15: 2026-10-15: restart double-launched 3 of 5 times, including after a clean stop plus .astro wipe"
       ]
     },
     {
@@ -218,7 +220,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 25
+      "rank": 40
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
@@ -230,7 +232,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 29,
+      "rank": 37,
       "sightings": 3,
       "notes": [
         "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
@@ -246,7 +248,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "rank": 19,
+      "rank": 27,
       "sightings": 4,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand.",
@@ -280,7 +282,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 18,
+      "rank": 30,
       "sightings": 1
     },
     {
@@ -291,7 +293,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 23,
+      "rank": 35,
       "sightings": 3,
       "notes": [
         "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots.",
@@ -320,16 +322,18 @@
       "id": "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
       "title": "refresh-tests --file runs vitest --changed instead of the named file",
       "mode": "backend",
-      "body": "",
+      "body": "## What happened\n\n`refresh-tests --file src/lib/emptiedCollections.test.ts` echoed `npx vitest run --changed --reporter=json` as the runner command. It happened to pick up the new file because it was untracked, but the command did not name the file it was asked for.\n\n## What would have helped\n\nPassing the named file to the runner, so a `--file` run covers exactly that file regardless of git state.",
+      "reason": "Seen again this session.",
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 22,
-      "sightings": 4,
+      "rank": 34,
+      "sightings": 5,
       "notes": [
         "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …",
         "2026-10-15: 2026-10-15: nine separate refresh-tests --file runs on different test files each reported the identical 118 tests.",
-        "2026-10-15: 2026-10-15: nine separate refresh-tests --file runs on different test files each reported the identical 118 tests."
+        "2026-10-15: 2026-10-15: nine separate refresh-tests --file runs on different test files each reported the identical 118 tests.",
+        "2026-10-15: 2026-10-15: --file on a new test file still ran vitest --changed"
       ]
     },
     {
@@ -341,7 +345,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 3,
+      "rank": 8,
       "sightings": 1
     },
     {
@@ -353,23 +357,26 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
+      "rank": 12,
       "sightings": 1
     },
     {
       "id": "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
       "title": "Recapture photographs live content for seeded scenarios while src/content is dirty and reports success",
       "mode": "backend",
-      "body": "## What happened\n\nSee the earlier report. On 2026-10-14 the bad frames came from a `git stash push -- src/content src/data` pass, not from the dirty tree itself; recapture still reported every wrong frame as 'Recaptured'.\n\n## What would have helped\n\nA post-capture check that the seeded values actually appear in the frame, so a wrong-world capture fails loudly instead of committing.",
-      "reason": "Seen again 2026-10-14, with a twist: the dirty tree was fine, the stash workaround was not.",
+      "body": "## What happened\n\nThis session added a project-side guard (`src/lib/emptiedCollections.ts`, used by `.codeyam/seed-adapter.ts`) so that a seed whose collection loads empty exits non-zero and the capture fails. That covers the blank-roster case only. Recapture still reports \"Recaptured\" for a frame showing the wrong but non-empty content.\n\n## What would have helped\n\nRecapture checking, after seeding, that the rendered page reflects the seed (for example a marker the seed adapter writes) before saving the frame.",
+      "reason": "The project now fails a seed loudly when a list comes out empty; recapture itself still reports other wrong-content frames as success.",
       "severity": 4,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
-      "sightings": 3,
+      "rank": 23,
+      "sightings": 4,
       "notes": [
         "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
-        "2026-10-14: 2026-10-14: with src/content/config.ts, 11 event files and src/data/collections.json dirty, plain targeted recaptures loaded seeds correctly. The git-stash workaround produced ~15 wrong frames reported as clean 'Recaptured' (AI…"
+        "2026-10-14: 2026-10-14: with src/content/config.ts, 11 event files and src/data/collections.json dirty, plain targeted recaptures loaded seeds correctly. The git-stash workaround produced ~15 wrong frames reported as clean 'Recaptured' (AI…",
+        "2026-10-15: 2026-10-15: project-side guard added for the empty-collection case; the general wrong-content case is still the editor's"
       ]
     },
     {
@@ -397,7 +404,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 26,
+      "rank": 41,
       "sightings": 1
     },
     {
@@ -409,6 +416,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "rank": 17,
       "sightings": 1
     },
     {
@@ -420,6 +428,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
+      "rank": 18,
       "sightings": 1
     },
     {
@@ -431,7 +440,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 8,
+      "rank": 9,
       "sightings": 1
     },
     {
@@ -443,7 +452,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 14,
+      "rank": 28,
       "sightings": 3,
       "notes": [
         "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed.",
@@ -460,6 +469,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
+      "rank": 16,
       "sightings": 1
     },
     {
@@ -471,7 +481,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 9,
+      "rank": 15,
       "sightings": 1
     },
     {
@@ -486,6 +496,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
+      "rank": 2,
       "sightings": 1
     },
     {
@@ -500,7 +511,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 10,
+      "rank": 14,
       "sightings": 1
     },
     {
@@ -513,7 +524,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 21,
+      "rank": 31,
       "sightings": 1
     },
     {
@@ -526,7 +537,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 27,
+      "rank": 42,
       "sightings": 1
     },
     {
@@ -538,7 +549,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 4,
+      "rank": 10,
       "sightings": 1
     },
     {
@@ -550,7 +561,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 2,
+      "rank": 4,
       "sightings": 1
     },
     {
@@ -562,6 +573,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
+      "rank": 19,
       "sightings": 1
     },
     {
@@ -574,21 +586,24 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 12,
+      "rank": 25,
       "sightings": 1
     },
     {
       "id": "auto-registered-renamed-tests-lose-their-descriptions",
       "title": "Auto-registered renamed tests lose their descriptions",
       "mode": "backend",
-      "body": "## What happened\n\nI rewrote three tests in `src/lib/presenceConsistency.test.ts`, which changed their names, and ran `refresh-tests --force`. Afterwards the registry had replaced the three old entries with the new keys but set each `description` to an empty string, even though every `it()` has a `//` comment above it. Then `rename-test` refused because the new keys were 'already in the registry'. The blanking only showed up in `git diff .codeyam/test-registry.json`; I fixed it with three `register-test` upserts.\n\n## What would have helped\n\n- Carry the old entry's description across when a removed key and an added key share a file and line, which is the case `LIKELY_RENAME_DETECTED` already spots, or derive it from the source comment as `reconcile-registry` does.\n- Print a warning whenever an auto-registration writes an empty description.",
-      "reason": "Three renamed tests landed in the registry with empty descriptions and had to be re-described by hand.",
+      "body": "## What happened\n\nAfter the first `refresh-tests --file` run, all 18 new tests in `src/lib/emptiedCollections.test.ts` were already in the test registry, but every description was empty, even though each test had a `//` comment directly above it. I re-registered them with `register-test-batch` to fill the descriptions in.\n\n## What would have helped\n\nAuto-registration reading the comment above each test, the same way `reconcile-registry` does.",
+      "reason": "Seen again: 18 brand-new tests were auto-registered with blank descriptions.",
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 24,
-      "sightings": 1
+      "rank": 36,
+      "sightings": 2,
+      "notes": [
+        "2026-10-15: 2026-10-15: brand-new tests, not renamed ones, landed with empty descriptions after a refresh-tests run"
+      ]
     },
     {
       "id": "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
@@ -623,7 +638,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 1,
+      "rank": 3,
       "sightings": 1
     },
     {
@@ -636,7 +651,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 11,
+      "rank": 24,
       "sightings": 2
     },
     {
@@ -649,7 +664,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 17,
+      "rank": 26,
       "sightings": 2
     },
     {
@@ -662,7 +677,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 30,
+      "rank": 39,
       "sightings": 2
     },
     {
@@ -675,7 +690,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 28,
+      "rank": 38,
       "sightings": 2
     },
     {
@@ -687,6 +702,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
+      "rank": 11,
       "sightings": 2
     },
     {
@@ -700,6 +716,7 @@
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
       "kind": "feature",
+      "rank": 1,
       "sightings": 1,
       "evidenceIds": [
         "obs-901e87f1cf07",
@@ -718,7 +735,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 16,
+      "rank": 33,
       "sightings": 1
     },
     {
@@ -731,7 +748,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 15,
+      "rank": 32,
       "sightings": 1
     },
     {
@@ -743,6 +760,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
+      "rank": 20,
       "sightings": 1
     },
     {
@@ -754,6 +772,33 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
+      "rank": 21,
+      "sightings": 1
+    },
+    {
+      "id": "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+      "title": "Move the dev content-sandbox wiring out of astro.config.mjs",
+      "mode": "backend",
+      "body": "## Summary\n\n`astro.config.mjs` has grown to 418 lines and now holds three unrelated concerns: the dev-only content sandbox (`initContentSandbox`, the `SANDBOX_REL`/`SNAPSHOT_REL` conventions), the dev-only refresh endpoint (`codeyamContentRefresh`, `loadedCollectionCounts`), and the production build step that strips internal paths and fills in the passphrase (`internalPathsAndPassphrase`). The sandbox conventions are also duplicated by hand in `.codeyam/seed-adapter.ts`.\n\n## Key Decisions\n\n- Keep `astro.config.mjs` as composition only: it imports the integrations and wires env vars.\n- One module owns the sandbox path conventions, imported by both the config and the seed adapter, so the two sides cannot drift.\n- No behaviour change; the refresh endpoint's JSON reply and the seed adapter's empty-collection check stay as they are.\n\n## Implementation\n\n1. Move `initContentSandbox`, `SANDBOX_REL` and `SNAPSHOT_REL` into `src/lib/contentSandbox.ts` and import them from both `astro.config.mjs` and `.codeyam/seed-adapter.ts` (which today redefines the same constants).\n2. Move `codeyamContentRefresh` and `loadedCollectionCounts` into `src/lib/integrations/contentRefresh.mjs`.\n3. Move `internalPathsAndPassphrase` and `SELF_GATED_FILES` into `src/lib/integrations/internalPaths.mjs`.\n4. Re-run `verify-build`, restart the dev server once, and confirm `/__codeyam_refresh_content` still returns per-collection counts.",
+      "reason": "astro.config.mjs is 418 lines and mixes the dev content sandbox, the refresh endpoint and the production passphrase build step.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "debt",
+      "status": "pending",
+      "proposedAt": "2026-10-15T17:10:02.886201980+00:00",
+      "kind": "tech-debt",
+      "rank": 13,
+      "sightings": 1
+    },
+    {
+      "id": "the-plan-s-first-step-copy-unsaved-edits-into-test-setups-and-keep-a-list-folder-from-being-left-empty-across-a-restart-was-not-built-the-copying-already-worked-per-a-note-from-the-oct-14-run-that-i-did-not-re-check-and-the-restart-c",
+      "title": "The plan's first step (copy unsaved edits into test setups, and keep a list folder from being left empty across a restart) was not built: the copying already worked, per a note from the Oct 14 run that I did not re-check, and the restart c…",
+      "mode": "backend",
+      "body": "",
+      "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-15T17:10:02.886201980+00:00",
       "sightings": 1
     }
   ],
@@ -1080,6 +1125,63 @@
         "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
         "preview-flow-has-no-way-to-scroll-the-page",
         "preview-captures-cannot-take-a-full-page-screenshot"
+      ]
+    },
+    {
+      "at": "2026-10-15T17:10:02.886201980+00:00",
+      "feature": "Blank lists now fail a screenshot instead of passing",
+      "notes": "Tooling-only cycle: the seed adapter now fails loudly when a collection renders empty. Half of the original plan (capturing seeds against a dirty tree) was already working, so the scope was narrowed with the user's approval. The dev-server…",
+      "proposedIds": [
+        "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "auto-registered-renamed-tests-lose-their-descriptions",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "the-plan-s-first-step-copy-unsaved-edits-into-test-setups-and-keep-a-list-folder-from-being-left-empty-across-a-restart-was-not-built-the-copying-already-worked-per-a-note-from-the-oct-14-run-that-i-did-not-re-check-and-the-restart-c"
+      ],
+      "rankedIds": [
+        "warn-content-editors-when-copy-uses-a-retired-brand-name",
+        "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
+        "the-fall-mixer-s-cover-image-from-luma-still-reads-limited-early-bird-tickets-on-sale-now-the-plan-only-covered-the-text",
+        "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "the-real-device-checks-iphone-safari-android-ipad-pinch-zoom-are-listed-in-the-report-but-not-yet-written-up-as-manual-tests",
+        "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+        "dc-and-seattle-still-have-their-write-up-text-in-the-content-admin-but-whatsapp-only-city-pages-no-longer-show-it-so-editing-it-there-changes-nothing-until-the-city-becomes-an-active-chapter",
+        "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself",
+        "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+        "give-eventcard-its-own-glossary-entry",
+        "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is",
+        "five-sheet-roles-carried-only-the-placeholder-text-propose-another-idea-for-a-volunteer-role-city-lead-social-events-ai-events-for-nyc-and-sf-founders-task-force-co-lead-or-lead-they-were-folded-into-the-city-and-founders-roles",
+        "new-phone-tablet-frames-for-the-sticky-header-after-scrolling-the-our-mission-band-and-the-newsletter-call-to-action-were-not-added-the-new-frames-cover-the-three-things-that-were-actually-broken-stats-band-cookie-table-red-bar",
+        "the-visual-second-pass-looked-at-the-homepage-events-privacy-and-the-open-menu-by-eye-not-every-phone-and-tablet-frame-of-all-14-audit-scenarios-the-board-grid-at-tablet-and-the-longest-chapter-name-were-not-re-checked",
+        "found-in-passing-not-caused-by-this-work-the-momentum-fund-donor-wall-moved-to-the-top-scenario-no-longer-opens-on-the-donor-network-as-its-description-says-its-refreshed-screenshot-shows-the-page-as-it-really-renders-today",
+        "the-old-name-still-appears-inside-the-2020-webinar-video-thumbnail-images-because-it-is-part-of-the-pictures-not-text-that-can-be-edited",
+        "internal-scenario-names-for-example-harvard-in-tech-landing-page-and-test-data-that-copies-old-luma-and-strikingly-feeds-still-use-the-old-name-visitors-never-see-these",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
+        "client-errors-impacted-scope-reports-404s-for-seeded-pages-that-load-fine-alone",
+        "guardrail-refuses-a-scripted-text-replacement-across-tracked-files",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "auto-registered-renamed-tests-lose-their-descriptions",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
+        "preview-captures-cannot-take-a-full-page-screenshot",
+        "scenario-review-counts-seed-error-candidates-without-naming-them",
+        "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+        "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry"
       ]
     }
   ],
