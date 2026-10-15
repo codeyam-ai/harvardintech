@@ -197,11 +197,12 @@
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
       "rank": 2,
-      "sightings": 4,
+      "sightings": 5,
       "notes": [
         "2026-10-13: 2026-10-13: three out of three `dev-server {\"action\":\"restart\"}` calls launched two `npm run dev` trees ~2s apart, both parented to pid 7; the second bound :4323 and the editor followed it. Had to kill the orphan by hand each t…",
         "2026-10-14: 2026-10-14: `restart-dev-server` and a later `dev-server stop` each left two `npm run dev` trees started ~1-2s apart (one on :4323). Killing the stray was not enough — the shared `.astro` data store stayed corrupted, so seeds l…",
         "2026-10-14: 2026-10-14 (volunteer cycle): `dev-server stop` again left two supervisor-respawned trees 2s apart; killed the unmanaged one by PID.",
+        "2026-10-15: 2026-10-15: the restart for the new middleware again launched two astro dev trees about 2 seconds apart; killing the stray by PID was needed before captures could be trusted.",
         "2026-10-15: 2026-10-15: the restart for the new middleware again launched two astro dev trees about 2 seconds apart; killing the stray by PID was needed before captures could be trusted."
       ]
     },
@@ -244,10 +245,11 @@
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
       "rank": 8,
-      "sightings": 3,
+      "sightings": 4,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand.",
         "2026-10-14: 2026-10-14: ten edited src/content files (stats, events, communities, pageCopy, sponsorLevels) still rendered their old values until I copied them into .codeyam/tmp/content-sandbox/content and removed the content-sandbox-active…",
+        "2026-10-15: 2026-10-15: removing a line from dc-dmv.md and seattle.md did not show until the files were copied into the content sandbox by hand.",
         "2026-10-15: 2026-10-15: removing a line from dc-dmv.md and seattle.md did not show until the files were copied into the content sandbox by hand."
       ]
     },
@@ -288,8 +290,9 @@
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
       "rank": 10,
-      "sightings": 2,
+      "sightings": 3,
       "notes": [
+        "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots.",
         "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots."
       ]
     },
@@ -320,9 +323,10 @@
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
       "rank": 6,
-      "sightings": 3,
+      "sightings": 4,
       "notes": [
         "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …",
+        "2026-10-15: 2026-10-15: nine separate refresh-tests --file runs on different test files each reported the identical 118 tests.",
         "2026-10-15: 2026-10-15: nine separate refresh-tests --file runs on different test files each reported the identical 118 tests."
       ]
     },
@@ -638,7 +642,7 @@
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "rank": 1,
-      "sightings": 1
+      "sightings": 2
     },
     {
       "id": "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
@@ -651,7 +655,7 @@
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "rank": 3,
-      "sightings": 1
+      "sightings": 2
     },
     {
       "id": "preview-captures-cannot-take-a-full-page-screenshot",
@@ -664,7 +668,7 @@
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "rank": 23,
-      "sightings": 1
+      "sightings": 2
     },
     {
       "id": "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
@@ -677,7 +681,7 @@
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "rank": 22,
-      "sightings": 1
+      "sightings": 2
     },
     {
       "id": "dc-and-seattle-still-have-their-write-up-text-in-the-content-admin-but-whatsapp-only-city-pages-no-longer-show-it-so-editing-it-there-changes-nothing-until-the-city-becomes-an-active-chapter",
@@ -688,7 +692,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "sightings": 1
+      "sightings": 2
     }
   ],
   "rounds": [
@@ -867,6 +871,59 @@
     },
     {
       "at": "2026-10-15T13:37:47.684829309+00:00",
+      "feature": "Simpler WhatsApp-only city pages",
+      "notes": "This cycle grew from a field removal into a redesign of the WhatsApp-only city pages after the owner reviewed them live; every change was owner-requested at a gate. The costliest editor friction was the registry losing the it.each rows twi…",
+      "proposedIds": [
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "preview-captures-cannot-take-a-full-page-screenshot",
+        "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "dc-and-seattle-still-have-their-write-up-text-in-the-content-admin-but-whatsapp-only-city-pages-no-longer-show-it-so-editing-it-there-changes-nothing-until-the-city-becomes-an-active-chapter"
+      ],
+      "rankedIds": [
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "dev-server-stop-and-start-leaves-a-second-astro-dev-running",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
+        "the-fall-mixer-s-cover-image-from-luma-still-reads-limited-early-bird-tickets-on-sale-now-the-plan-only-covered-the-text",
+        "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+        "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
+        "found-in-passing-not-caused-by-this-work-the-momentum-fund-donor-wall-moved-to-the-top-scenario-no-longer-opens-on-the-donor-network-as-its-description-says-its-refreshed-screenshot-shows-the-page-as-it-really-renders-today",
+        "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself",
+        "the-real-device-checks-iphone-safari-android-ipad-pinch-zoom-are-listed-in-the-report-but-not-yet-written-up-as-manual-tests",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+        "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
+        "preview-captures-cannot-take-a-full-page-screenshot",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "scenario-review-counts-seed-error-candidates-without-naming-them",
+        "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+        "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
+        "auto-registered-renamed-tests-lose-their-descriptions",
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
+        "five-sheet-roles-carried-only-the-placeholder-text-propose-another-idea-for-a-volunteer-role-city-lead-social-events-ai-events-for-nyc-and-sf-founders-task-force-co-lead-or-lead-they-were-folded-into-the-city-and-founders-roles",
+        "new-phone-tablet-frames-for-the-sticky-header-after-scrolling-the-our-mission-band-and-the-newsletter-call-to-action-were-not-added-the-new-frames-cover-the-three-things-that-were-actually-broken-stats-band-cookie-table-red-bar",
+        "the-visual-second-pass-looked-at-the-homepage-events-privacy-and-the-open-menu-by-eye-not-every-phone-and-tablet-frame-of-all-14-audit-scenarios-the-board-grid-at-tablet-and-the-longest-chapter-name-were-not-re-checked",
+        "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is",
+        "give-eventcard-its-own-glossary-entry"
+      ]
+    },
+    {
+      "at": "2026-10-15T13:38:00.367195423+00:00",
       "feature": "Simpler WhatsApp-only city pages",
       "notes": "This cycle grew from a field removal into a redesign of the WhatsApp-only city pages after the owner reviewed them live; every change was owner-requested at a gate. The costliest editor friction was the registry losing the it.each rows twi…",
       "proposedIds": [
