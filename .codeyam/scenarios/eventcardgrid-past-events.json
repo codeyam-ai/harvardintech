@@ -3,11 +3,12 @@
   "id": "e8ea7196-1922-46aa-bca4-f2d5696f2454",
   "url": "/isolated-components/EventCardGrid-Past",
   "dimensions": [
+    "Mobile",
     "Desktop"
   ],
   "mocks": {},
   "componentName": "EventCardGrid",
   "scenarioType": "component",
   "pageFilePath": "src/components/EventCardGrid.astro",
-  "description": "The past variant, differing in two ways that are both the point: the date turns from crimson to grey, and the Learn more link is dropped entirely because a past event's registration page is either gone or misleading. The card itself no longer dims, so its square cover image reads at full strength. This is the block that makes a chapter with a quiet month look alive rather than abandoned, so it ships on every chapter page."
+  "description": "The past variant, differing in two ways that are both the point: the date turns from crimson to grey, and the Learn more link is dropped entirely because a past event's registration page is either gone or misleading. The card itself no longer dims, so its square cover image reads at full strength. This is the block that makes a chapter with a quiet month look alive rather than abandoned, so it ships on every chapter page. At Mobile each card fills the column width instead of sitting in a centred 280px column."
 }

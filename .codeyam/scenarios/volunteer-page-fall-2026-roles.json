@@ -3,12 +3,13 @@
   "id": "5981cb53-f871-4d12-939d-225806808a26",
   "url": "/volunteer",
   "dimensions": [
+    "Mobile",
     "Desktop"
   ],
   "mocks": {},
   "scenarioType": "application",
   "pageFilePath": "src/pages/volunteer.astro",
-  "description": "The volunteer page's roles section with the Fall 2026 volunteer sheet published: 'Volunteer roles open this fall', then the city roles first (SF / Bay Area, New York City, NYC × AI Events, Boston / Cambridge, London) and the team roles after them, with the four roles editors added earlier kept at the end. Every role signs up through the volunteer interest form; no contact names or volunteer details are published. The hover only scrolls the section into view.",
+  "description": "The volunteer page's roles section with the Fall 2026 volunteer sheet published: 'Volunteer roles open this fall', then the city roles first (SF / Bay Area, New York City, NYC × AI Events, Boston / Cambridge, London) and the team roles after them, with the four roles editors added earlier kept at the end. Every role signs up through the volunteer interest form; no contact names or volunteer details are published. At Mobile the grid is one column and roles without a photo show no empty placeholder band, so each card starts with its title. The hover only scrolls the section into view.",
   "interactions": [
     {
       "action": "hover",

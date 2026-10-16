@@ -8,12 +8,15 @@
 interface Props {
   /** The full photo count, including the hidden ones — the number in the label. */
   total: number;
+  /** Only the small-screen cap hides anything, so the button exists only at
+   *  phone and tablet widths. */
+  phoneOnly?: boolean;
 }
 
-const { total } = Astro.props;
+const { total, phoneOnly = false } = Astro.props;
 ---
 
-<div class="gallery-more">
+<div class:list={['gallery-more', { 'gallery-more--phone': phoneOnly }]}>
   <button type="button" class="gallery-expand" data-gallery-expand>
     Show all {total} photos
   </button>
@@ -32,6 +35,15 @@ const { total } = Astro.props;
     border-radius: 4px;
     background: var(--white);
     cursor: pointer;
+  }
+  /* Matches the ≤900px breakpoint in EventGallery that hides the capped tiles. */
+  @media (min-width: 901px) {
+    .gallery-more--phone {
+      display: none;
+    }
+  }
+  .gallery-expand {
+    min-height: 44px;
   }
   .gallery-expand:hover {
     border-color: var(--color-accent, #a41034);

@@ -822,6 +822,7 @@ export async function getStaticPaths() {
     { params: { name: 'GetInvolved' } },
     { params: { name: 'SupportUs' } },
     { params: { name: 'EventGallery' } },
+    { params: { name: 'EventGallery-SmallScreenCap' } },
     { params: { name: 'UpcomingEvents' } },
     { params: { name: 'UpcomingEvents-Empty' } },
     { params: { name: 'BoardOfDirectors' } },
@@ -845,6 +846,7 @@ export async function getStaticPaths() {
     { params: { name: 'GivingCampaign' } },
     { params: { name: 'GivingCampaign-PlatformLive' } },
     { params: { name: 'LumaCalendar' } },
+    { params: { name: 'LumaCalendar-NothingUpcoming' } },
     { params: { name: 'SponsorPage' } },
     { params: { name: 'SponsorPage-Empty' } },
     { params: { name: 'SponsorPage-Partners' } },
@@ -1160,6 +1162,12 @@ if (name && name.startsWith('MomentumNetwork')) {
           <GivingCampaign donateUrl="https://givebutter.com/harvard-in-tech-momentum-fund" />
         ) : name === 'LumaCalendar' ? (
           <LumaCalendar />
+        ) : name === 'LumaCalendar-NothingUpcoming' ? (
+          /* What /events renders when the imported events hold nothing
+             upcoming: calendarEmbedUrl withholds the embed, so the block drops
+             to the compact "Browse & subscribe on Luma" card instead of Luma's
+             tall empty frame. */
+          <LumaCalendar calendarUrl="https://lu.ma/harvardintech" />
         ) : name === 'WhatsappCommunity' ? (
           // Staged at the real content width, so the join card and the
           // directory strip lay out as they do on the homepage.
@@ -1178,6 +1186,11 @@ if (name && name.startsWith('MomentumNetwork')) {
           <SupportUs />
         ) : name === 'EventGallery' ? (
           <EventGallery />
+        ) : name === 'EventGallery-SmallScreenCap' ? (
+          /* The homepage wall as it ships: full on desktop, 12 photos plus
+             "Show all 38 photos" at 900px and below. Capture at Mobile/Tablet
+             to see the cap; Desktop is the same wall as `EventGallery`. */
+          <EventGallery phoneCap={12} />
         ) : upcomingEventsProps ? (
           // Staged at the real content width: the empty state is a two-column
           // band and its buttons sit side by side there, so a narrow stage

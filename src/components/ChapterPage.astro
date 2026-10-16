@@ -150,7 +150,7 @@ const hasBody = Astro.slots.has('default');
           photos?.length ? (
             <EventGallery photos={photos} cap={12} heading={`Photos from ${name}`} />
           ) : (
-            <EventGallery />
+            <EventGallery phoneCap={12} />
           )
         ) : null
       }

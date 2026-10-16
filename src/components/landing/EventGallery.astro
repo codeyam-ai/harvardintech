@@ -21,6 +21,7 @@ import GalleryExpand from './GalleryExpand.astro';
 import {
   galleryColumns,
   galleryStaggerDelay,
+  smallScreenCapLimit,
   toGalleryPhotos,
   visibleGalleryPhotos,
 } from '../../lib/gallery';
@@ -37,6 +38,13 @@ interface Props {
   images?: string[];
   /** Collapse past this many photos behind "Show all N". Absent → uncapped. */
   cap?: number;
+  /**
+   * The same collapse, on phone and tablet widths only (≤900px, where the grid
+   * drops to 4 then 3 columns). The homepage keeps its full wall on desktop, but
+   * the 38 photos ran to about 2,500px of scrolling on a 390px phone and ~2,000px
+   * on a 768px iPad (responsive pass, 2026-10-16). Absent → uncapped.
+   */
+  phoneCap?: number;
   heading?: string;
   kicker?: string;
   /** One sentence under the heading, editable per-entry in the CMS. */
@@ -56,6 +64,7 @@ const {
   photos,
   images,
   cap,
+  phoneCap,
   heading = 'From our events',
   kicker = 'Community',
   intro,
@@ -65,6 +74,7 @@ const all = toGalleryPhotos(photos ?? images ?? defaults);
 const columns = galleryColumns(all.length);
 const shown = visibleGalleryPhotos(all, { cap });
 const hidden = all.length - shown.length;
+const phoneLimit = smallScreenCapLimit(phoneCap, shown.length);
 
 // Read the library once for the whole grid rather than per photo.
 const media = readMediaManifest();
@@ -90,13 +100,20 @@ const media = readMediaManifest();
             caption={photo.caption}
             alt={altFor(photo.src, `Harvard Alumni in Tech event photo ${i + 1}`, media)}
             overflow={i >= shown.length}
+            phoneOverflow={phoneLimit !== undefined && i >= phoneLimit && i < shown.length}
             delayMs={galleryStaggerDelay(i, columns)}
           />
         ))
       }
     </div>
 
-    {hidden > 0 ? <GalleryExpand total={all.length} /> : null}
+    {
+      hidden > 0 ? (
+        <GalleryExpand total={all.length} />
+      ) : phoneLimit !== undefined ? (
+        <GalleryExpand total={all.length} phoneOnly />
+      ) : null
+    }
   </div>
 
   <GalleryLightbox />
@@ -129,6 +146,13 @@ const media = readMediaManifest();
       grid-template-columns: repeat(min(var(--gallery-cols, 5), 3), 1fr);
     }
   }
+  /* The small-screen cap. `data-expanded` is set by "Show all"; until then the
+     tiles past `phoneCap` take no grid cell, exactly like the full cap's. */
+  @media (max-width: 900px) {
+    .gallery-grid:not([data-expanded]) :global([data-phone-overflow]) {
+      display: none;
+    }
+  }
 </style>
 
 <script>
@@ -147,6 +171,7 @@ const media = readMediaManifest();
     document
       .querySelectorAll<HTMLElement>('[data-gallery-overflow]')
       .forEach((tile) => (tile.hidden = false));
+    document.querySelector<HTMLElement>('.gallery-grid')?.setAttribute('data-expanded', '');
     (event.currentTarget as HTMLElement).closest('.gallery-more')?.remove();
     initGalleryReveal();
     initLightbox();

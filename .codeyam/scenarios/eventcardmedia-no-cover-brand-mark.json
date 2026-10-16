@@ -3,10 +3,11 @@
   "id": "ce3c234f-c608-4e13-b3b8-68c348362e4e",
   "url": "/isolated-components/EventCardMedia/NoCover",
   "dimensions": [
+    "Mobile",
     "Desktop"
   ],
   "mocks": {},
   "componentName": "EventCardMedia",
   "scenarioType": "component",
-  "description": "An event with no cover image: the H mark on crimson fills the same square, so a grid that mixes covered and uncovered events still keeps one card shape."
+  "description": "An event with no cover image: the H mark on crimson fills the same square on desktop, so a grid that mixes covered and uncovered events still keeps one card shape. At phone width, where cards stack one per row and there is no grid to keep level, the stand-in drops to a 16:9 band rather than a full-width crimson square."
 }

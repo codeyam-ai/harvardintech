@@ -1,0 +1,15 @@
+{
+  "name": "EventGallery - Small Screen Cap",
+  "id": "2f46fc4a-9e7b-4a63-bef5-2f587df40d1c",
+  "url": "/isolated-components/EventGallery-SmallScreenCap",
+  "dimensions": [
+    "Mobile",
+    "Tablet",
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventGallery",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/landing/EventGallery.astro",
+  "description": "The homepage photo wall with its small-screen cap of 12. On a phone it shows four rows of three and a 'Show all 38 photos' button; on a tablet three rows of four and the same button; on desktop the full 38-photo wall with no button, exactly as before. The cap exists because the uncapped wall ran to about 2,500px of scrolling on a 390px phone (responsive pass, 2026-10-16)."
+}

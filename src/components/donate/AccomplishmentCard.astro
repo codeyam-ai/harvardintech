@@ -36,6 +36,14 @@ const { value, label, body } = Astro.props as Props;
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
+  /* The 260px floor keeps a desktop row of four cells level; stacked one per
+     row on a phone there is nothing to line up with, and it only left a
+     ~60px empty band under every short card. */
+  @media (max-width: 600px) {
+    .acc {
+      min-height: 0;
+    }
+  }
   .acc-v {
     font-family: var(--font-title);
     font-size: clamp(2.6rem, 3.4vw, 3.2rem);
@@ -45,7 +53,7 @@ const { value, label, body } = Astro.props as Props;
   }
   .acc-l {
     margin-top: 10px;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-2);

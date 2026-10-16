@@ -1710,7 +1710,8 @@
         "src/lib/contact.ts",
         "src/lib/externalLink.ts",
         "src/lib/socialLabel.ts",
-        "src/lib/site.ts"
+        "src/lib/site.ts",
+        "src/lib/tapTarget.ts"
       ],
       "importedBy": [
         "src/layouts/BaseLayout.astro",
@@ -2498,6 +2499,7 @@
         "src/components/EventsPage.astro",
         "src/components/EventsSection.astro",
         "src/components/CommunityPage.astro",
+        "src/pages/events.astro",
         "src/pages/chapters/[slug].astro",
         "src/pages/index.astro",
         "src/pages/isolated-components/EventCardGrid.astro",
@@ -3460,6 +3462,19 @@
         "src/components/donate/MomentumNetwork.astro"
       ]
     },
+    "src/lib/tapTarget.test.ts": {
+      "imports": [
+        "src/lib/tapTarget.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/tapTarget.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/tapTarget.test.ts",
+        "src/components/ui/SocialLinks.astro"
+      ]
+    },
     "src/lib/team.photos.test.ts": {
       "imports": [],
       "importedBy": []
@@ -3478,6 +3493,18 @@
         "src/components/landing/BoardMemberTile.astro",
         "src/components/landing/BoardOfDirectors.astro",
         "src/pages/index.astro"
+      ]
+    },
+    "src/lib/typeFloor.test.ts": {
+      "imports": [
+        "src/lib/typeFloor.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/typeFloor.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/typeFloor.test.ts"
       ]
     },
     "src/lib/url.test.ts": {
@@ -3677,7 +3704,8 @@
         "src/lib/luma.ts",
         "src/lib/site.ts",
         "src/lib/drafts.ts",
-        "src/lib/draftVisibility.ts"
+        "src/lib/draftVisibility.ts",
+        "src/lib/events.ts"
       ],
       "importedBy": []
     },
@@ -6319,6 +6347,7 @@
         "src/components/landing/GalleryExpand.astro::__file_root__",
         "src/lib/gallery.ts::galleryColumns",
         "src/lib/gallery.ts::galleryStaggerDelay",
+        "src/lib/gallery.ts::smallScreenCapLimit",
         "src/lib/gallery.ts::toGalleryPhotos",
         "src/lib/gallery.ts::visibleGalleryPhotos",
         "src/lib/media.ts::altFor",
@@ -6799,7 +6828,8 @@
         "src/lib/contact.ts::connectLinks",
         "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/socialLabel.ts::socialDisplayLabel",
-        "src/lib/site.ts::settings"
+        "src/lib/site.ts::settings",
+        "src/lib/tapTarget.ts::socialBadgeSize"
       ],
       "importedBy": [
         "src/components/ChapterConnect.astro::__file_root__",
@@ -8136,6 +8166,7 @@
       "name": "__file_root__",
       "imports": [
         "src/lib/events.ts::__file_root__",
+        "src/lib/events.ts::calendarEmbedUrl",
         "src/lib/events.ts::eventsTaggedTo",
         "src/lib/events.ts::recentPastEvents",
         "src/lib/events.ts::splitArchive",
@@ -8171,6 +8202,14 @@
       "importedBy": [
         "src/components/EventCard.astro::__file_root__",
         "src/components/landing/ContentHub.astro::__file_root__"
+      ]
+    },
+    "src/lib/events.ts::calendarEmbedUrl": {
+      "filePath": "src/lib/events.ts",
+      "name": "calendarEmbedUrl",
+      "imports": [],
+      "importedBy": [
+        "src/pages/events.astro::__file_root__"
       ]
     },
     "src/lib/events.ts::eventsTaggedTo": {
@@ -8304,6 +8343,7 @@
         "src/lib/gallery.ts::galleryColumns",
         "src/lib/gallery.ts::galleryRevealImmediately",
         "src/lib/gallery.ts::galleryStaggerDelay",
+        "src/lib/gallery.ts::smallScreenCapLimit",
         "src/lib/gallery.ts::toGalleryPhotos",
         "src/lib/gallery.ts::visibleGalleryPhotos",
         "src/lib/gallery.ts::__file_root__",
@@ -8351,6 +8391,15 @@
     "src/lib/gallery.ts::galleryStaggerDelay": {
       "filePath": "src/lib/gallery.ts",
       "name": "galleryStaggerDelay",
+      "imports": [],
+      "importedBy": [
+        "src/lib/gallery.test.ts::__file_root__",
+        "src/components/landing/EventGallery.astro::__file_root__"
+      ]
+    },
+    "src/lib/gallery.ts::smallScreenCapLimit": {
+      "filePath": "src/lib/gallery.ts",
+      "name": "smallScreenCapLimit",
       "imports": [],
       "importedBy": [
         "src/lib/gallery.test.ts::__file_root__",
@@ -10671,6 +10720,32 @@
         "src/components/donate/MomentumNetwork.astro::__file_root__"
       ]
     },
+    "src/lib/tapTarget.test.ts::__file_root__": {
+      "filePath": "src/lib/tapTarget.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/tapTarget.ts::__file_root__",
+        "src/lib/tapTarget.ts::socialBadgeSize"
+      ],
+      "importedBy": []
+    },
+    "src/lib/tapTarget.ts::__file_root__": {
+      "filePath": "src/lib/tapTarget.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/tapTarget.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/tapTarget.ts::socialBadgeSize": {
+      "filePath": "src/lib/tapTarget.ts",
+      "name": "socialBadgeSize",
+      "imports": [],
+      "importedBy": [
+        "src/lib/tapTarget.test.ts::__file_root__",
+        "src/components/ui/SocialLinks.astro::__file_root__"
+      ]
+    },
     "src/lib/team.test.ts::__file_root__": {
       "filePath": "src/lib/team.test.ts",
       "name": "__file_root__",
@@ -10726,6 +10801,31 @@
       "imports": [],
       "importedBy": [
         "src/lib/team.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/typeFloor.test.ts::__file_root__": {
+      "filePath": "src/lib/typeFloor.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/typeFloor.ts::__file_root__",
+        "src/lib/typeFloor.ts::fontSizesBelowFloor"
+      ],
+      "importedBy": []
+    },
+    "src/lib/typeFloor.ts::__file_root__": {
+      "filePath": "src/lib/typeFloor.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/typeFloor.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/typeFloor.ts::fontSizesBelowFloor": {
+      "filePath": "src/lib/typeFloor.ts",
+      "name": "fontSizesBelowFloor",
+      "imports": [],
+      "importedBy": [
+        "src/lib/typeFloor.test.ts::__file_root__"
       ]
     },
     "src/lib/url.test.ts::__file_root__": {
@@ -11030,7 +11130,8 @@
         "src/lib/luma.ts::__file_root__",
         "src/lib/site.ts::siteLinks",
         "src/lib/drafts.ts::publishedEntries",
-        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS"
+        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
+        "src/lib/events.ts::calendarEmbedUrl"
       ],
       "importedBy": []
     },
@@ -12451,5 +12552,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-15T21:05:27Z"
+  "lastUpdated": "2026-10-16T15:07:10Z"
 }

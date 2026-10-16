@@ -174,7 +174,7 @@ h3 {
 /* mono uppercase crimson eyebrow */
 .kick {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--crimson);
@@ -272,6 +272,16 @@ h3 {
      contributes none of its own. */
   margin-bottom: 0;
 }
+/* A sub-head (SectionHead `as="h3"`, e.g. "Past events" under the Events page
+   banner) — one step down from the h2, rather than the browser's small bold
+   default it had been falling back to. */
+.sec-head h3 {
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: 0;
+}
 /* Centred variant. `.sec-head` is a space-between flex row built for a title on
    the left and an action on the right; centring it means stacking, so this also
    drops the row behaviour rather than only changing `text-align`. */
@@ -284,19 +294,19 @@ h3 {
 /* The "Learn more →" affordance. Six components had hand-rolled their own copy
    — same words, five different sizes — which is why it is a token-level class
    rather than a prop on each of them.
-   These exact values (mono, 10px, 0.08em) are the ones three of the six already
-   used, so adopting the class leaves those bands pixel-identical and only pulls
-   the outliers into line. The arrow is authored in the markup, not generated
+   Mono caps at 0.08em tracking, as three of the six already used; the size
+   was 10px until the site took a 12px floor for all text (owner, 2026-10-16),
+   so small labels stay readable on a phone. The arrow is authored in the markup, not generated
    here, so a screen reader announces it as part of the link text the author
    actually wrote. */
 .link-more {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--crimson);
   text-decoration: none;
-  /* 10px mono caps make a ~16px-tall link — too small a target on a phone.
+  /* 12px mono caps make a ~19px-tall link — too small a target on a phone.
      The padding grows the tap area to 44px; the negative margin keeps every
      band that uses the class laid out exactly as before. */
   display: inline-block;
@@ -352,6 +362,12 @@ h3 {
   .sec-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+  /* Restated here: the rule above comes later in the cascade at the same
+     specificity, so without it every centred head went flush-left below 900px
+     — a short title like "Past events" visibly jumped to the left edge. */
+  .sec-head--center {
+    align-items: center;
   }
 }
 

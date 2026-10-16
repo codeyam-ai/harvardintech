@@ -8,7 +8,45 @@ import {
   recentPastEvents,
   splitArchive,
   ARCHIVE_BEFORE,
+  calendarEmbedUrl,
 } from './events';
+
+describe('calendarEmbedUrl', () => {
+  const EMBED = 'https://lu.ma/embed/calendar/cal-x/events';
+  const NOW = '2026-10-16';
+
+  // Something upcoming → the live Luma embed is worth its height.
+  it('returns the embed url when an event is upcoming', () => {
+    expect(calendarEmbedUrl([{ date: '2026-11-02' }], EMBED, NOW)).toBe(EMBED);
+  });
+
+  // Only past events → Luma's embed would be a tall empty box, so no embed and
+  // the page falls back to the compact Browse & subscribe card.
+  it('returns undefined when every event is in the past', () => {
+    expect(calendarEmbedUrl([{ date: '2026-09-28' }], EMBED, NOW)).toBeUndefined();
+  });
+
+  // No events imported at all → same compact card.
+  it('returns undefined for an empty list', () => {
+    expect(calendarEmbedUrl([], EMBED, NOW)).toBeUndefined();
+  });
+
+  // An event today still counts as upcoming, matching splitEvents.
+  it('treats an event today as upcoming', () => {
+    expect(calendarEmbedUrl([{ date: NOW }], EMBED, NOW)).toBe(EMBED);
+  });
+
+  // No embed configured → nothing to return, whatever is upcoming.
+  it('returns undefined when no embed url is configured', () => {
+    expect(calendarEmbedUrl([{ date: '2026-11-02' }], undefined, NOW)).toBeUndefined();
+  });
+
+  // A mixed list only needs one upcoming event.
+  it('returns the embed url when past and upcoming events are mixed', () => {
+    const events = [{ date: '2025-05-22' }, { date: '2026-12-01' }];
+    expect(calendarEmbedUrl(events, EMBED, NOW)).toBe(EMBED);
+  });
+});
 
 describe('toEventDate', () => {
   // A Date instance passes through unchanged.

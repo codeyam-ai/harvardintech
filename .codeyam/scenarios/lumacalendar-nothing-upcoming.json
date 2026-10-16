@@ -1,0 +1,14 @@
+{
+  "name": "LumaCalendar - Nothing Upcoming",
+  "id": "1ee41506-5a29-45c1-9348-f9d89b9caaf3",
+  "url": "/isolated-components/LumaCalendar-NothingUpcoming",
+  "dimensions": [
+    "Mobile",
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "LumaCalendar",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/LumaCalendar.astro",
+  "description": "What /events shows when the imported events hold nothing upcoming: the compact 'Browse & subscribe on Luma' card with its button, in place of Luma's embed, which in that state is a tall, mostly empty grey box (decision sheet m-calendar-box). The page flips back to the live embed once the nightly import brings in an upcoming event."
+}

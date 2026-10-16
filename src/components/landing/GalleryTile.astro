@@ -21,17 +21,22 @@ interface Props {
    *  Hidden tiles are display:none, so they occupy no grid cell and the visible
    *  photos flow as one continuous run. */
   overflow?: boolean;
+  /** Past the gallery's small-screen cap: shown on desktop, hidden by
+   *  EventGallery's CSS at ≤900px until "Show all". */
+  phoneOverflow?: boolean;
   /** Per-tile stagger for the scroll-in fade, in ms. */
   delayMs?: number;
 }
 
-const { src, caption, alt, overflow = false, delayMs = 0 } = Astro.props;
+const { src, caption, alt, overflow = false, phoneOverflow = false, delayMs = 0 } =
+  Astro.props;
 ---
 
 <figure
   class="gallery-item"
   hidden={overflow}
   data-gallery-overflow={overflow ? '' : undefined}
+  data-phone-overflow={phoneOverflow ? '' : undefined}
   style={`transition-delay: ${delayMs}ms;`}
 >
   {/* A button, not a link: there is no URL to navigate to, and a button is

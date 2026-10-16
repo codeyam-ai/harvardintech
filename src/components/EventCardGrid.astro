@@ -38,4 +38,11 @@ const { events, variant = 'upcoming' } = Astro.props as Props;
     max-width: 920px;
     margin: 0 auto;
   }
+  /* On a phone the 280px column ceiling left ~40px of white either side of a
+     single card; let the one column take the full width instead. */
+  @media (max-width: 600px) {
+    .event-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

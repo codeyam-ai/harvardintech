@@ -3,9 +3,44 @@ import {
   galleryColumns,
   galleryRevealImmediately,
   galleryStaggerDelay,
+  smallScreenCapLimit,
   toGalleryPhotos,
   visibleGalleryPhotos,
 } from './gallery';
+
+describe('smallScreenCapLimit', () => {
+  // The homepage wall: 38 photos shown, a 12-photo small-screen cap → 12.
+  it('returns the cap when it hides some of the shown photos', () => {
+    expect(smallScreenCapLimit(12, 38)).toBe(12);
+  });
+
+  // No phoneCap passed (every caller but the full-wall ones) → no cap at all.
+  it('returns undefined when no cap is given', () => {
+    expect(smallScreenCapLimit(undefined, 38)).toBeUndefined();
+  });
+
+  // A curated chapter set already capped at 12 shows 12; a small-screen cap of
+  // 12 on top would hide nothing, so no phone-only "Show all" button appears.
+  it('returns undefined when the cap equals the shown count', () => {
+    expect(smallScreenCapLimit(12, 12)).toBeUndefined();
+  });
+
+  // A three-photo chapter gallery is already short — nothing to cap.
+  it('returns undefined when the cap exceeds the shown count', () => {
+    expect(smallScreenCapLimit(12, 3)).toBeUndefined();
+  });
+
+  // An empty gallery never gets a cap or a button.
+  it('returns undefined for an empty gallery', () => {
+    expect(smallScreenCapLimit(12, 0)).toBeUndefined();
+  });
+
+  // A negative cap is nonsense input; treat it as uncapped rather than hiding
+  // every photo.
+  it('returns undefined for a negative cap', () => {
+    expect(smallScreenCapLimit(-1, 38)).toBeUndefined();
+  });
+});
 
 describe('galleryRevealImmediately', () => {
   // Capable browser, no reduced-motion preference: animate the tiles in.

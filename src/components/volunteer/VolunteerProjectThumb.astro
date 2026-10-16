@@ -47,6 +47,14 @@ const { image, href } = Astro.props as Props;
     background: linear-gradient(135deg, var(--ink) 0%, var(--crimson-deep) 100%);
     opacity: 0.15;
   }
+  /* The placeholder exists to keep a multi-column grid level. Both project
+     grids drop to one column at 720px, where there is nothing to line up with
+     and ~18 empty 168px bands made the phone page mostly blank boxes. */
+  @media (max-width: 720px) {
+    .img--none {
+      display: none;
+    }
+  }
   .thumb {
     display: block;
   }

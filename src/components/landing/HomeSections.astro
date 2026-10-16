@@ -114,7 +114,7 @@ const {
     ) : section.kind === 'support' ? (
       <SupportUs volunteerFormUrl={volunteerFormUrl} {...sectionCopy(section)} />
     ) : section.kind === 'gallery' ? (
-      <EventGallery {...sectionCopy(section)} />
+      <EventGallery phoneCap={12} {...sectionCopy(section)} />
     ) : (
       <ContactUs socials={socials} email={email} {...sectionCopy(section)} />
     ),

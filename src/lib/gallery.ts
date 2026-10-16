@@ -63,6 +63,21 @@ export function visibleGalleryPhotos(
   return photos.slice(0, cap);
 }
 
+/**
+ * How many photos to keep on a phone or tablet (≤900px), or `undefined` when
+ * the small-screen cap would hide nothing. Desktop always shows `shownCount`;
+ * on a 390px phone the homepage's 38-photo wall ran to ~2,500px of scrolling
+ * (responsive pass, 2026-10-16). Undefined also means no phone-only
+ * "Show all" button, so a short gallery never offers one that reveals nothing.
+ */
+export function smallScreenCapLimit(
+  phoneCap: number | undefined,
+  shownCount: number,
+): number | undefined {
+  if (phoneCap === undefined || phoneCap < 0 || phoneCap >= shownCount) return undefined;
+  return phoneCap;
+}
+
 // Whether to reveal every tile immediately instead of animating them in. We
 // skip the IntersectionObserver animation when the user prefers reduced motion,
 // or when the browser has no IntersectionObserver (old browsers / SSR) so the

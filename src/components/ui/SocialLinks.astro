@@ -15,6 +15,7 @@ import { connectLinks } from '../../lib/contact';
 import { externalLinkAttrs } from '../../lib/externalLink';
 import { socialDisplayLabel } from '../../lib/socialLabel';
 import { settings } from '../../lib/site';
+import { socialBadgeSize } from '../../lib/tapTarget';
 
 interface Props {
   /** `on-light` shows each mark in its official brand colour on a white badge.
@@ -31,7 +32,7 @@ interface Props {
 const { variant = 'on-light', email, size = 24 } = Astro.props as Props;
 
 const links = connectLinks(settings.socials, email);
-const badge = size + 24;
+const badge = socialBadgeSize(size);
 ---
 
 <div class:list={['socials', `socials--${variant}`]}>

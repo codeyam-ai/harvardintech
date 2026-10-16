@@ -22,9 +22,9 @@
     font-family: var(--font-serif);
     font-size: 17px;
     line-height: 1.8;
-    margin-top: 32px;
-    padding-top: 32px;
-    border-top: 1px solid var(--rule, rgba(0, 0, 0, 0.1));
+    /* No rule or gap of its own: it used to divide the prose from a title above
+       it, but the title now sits in SitePage's full-bleed banner, and the rule
+       floated in ~130px of white on its own — most visible on a phone. */
   }
   .prose :global(h2),
   .prose :global(h3) {

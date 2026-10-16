@@ -71,6 +71,11 @@ const {
     text-decoration: underline;
     text-underline-offset: 3px;
     opacity: 0.8;
+    /* 26px tall on a phone. The padding grows the tap area to 44px; the equal
+       negative margin leaves the note laid out exactly as before. */
+    display: inline-block;
+    padding-block: 9px;
+    margin-block: -9px;
   }
   .giving-soon--on-dark .giving-soon-link {
     opacity: 0.85;

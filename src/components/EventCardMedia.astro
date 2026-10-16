@@ -20,7 +20,7 @@ const { coverImage } = Astro.props as Props;
   {
     coverImage ? (
       <img
-        src={eventCoverSrc(coverImage, 560)}
+        src={eventCoverSrc(coverImage, 720)}
         alt=""
         width="280"
         height="280"
@@ -57,5 +57,16 @@ const { coverImage } = Astro.props as Props;
   .fallback :global(.mark) {
     width: 22%;
     height: auto;
+  }
+  /* A phone shows one full-width card per row (EventCardGrid), which made the
+     stand-in a ~358px crimson square with nothing to show. Square suits a Luma
+     poster; the stand-in only needs a band. */
+  @media (max-width: 600px) {
+    .media:has(.fallback) {
+      aspect-ratio: 16 / 9;
+    }
+    .fallback :global(.mark) {
+      width: 14%;
+    }
   }
 </style>

@@ -16,11 +16,11 @@
     {
       "id": "publish-the-site-live-on-github-pages-non-build",
       "text": "Publish the site live on GitHub Pages (non-build: handled in a working session, not the build flow)",
-      "status": "deferred",
-      "resolvedAt": "2026-10-09T22:46:11.427267088+00:00",
-      "resolvedInFeature": null,
+      "status": "delivered",
+      "resolvedAt": "2026-10-15T21:30:00.000000000+00:00",
+      "resolvedInFeature": "Publish the site live on GitHub Pages (non-build: handled in a working session, not the build flow)",
       "planSlug": "publish-the-site-live-on-github-pages-non-build-handled-in-a-working-session-not-the-build-flow",
-      "note": null,
+      "note": "Already shipped: Pages serves codeyam-ai.github.io/harvardintech (build_type=workflow, status built, HTTP 200 verified 2026-10-15) and deploy.yml redeploys on every push to main. Closed at the Plan step with no code changes.",
       "decidedBy": "user"
     },
     {

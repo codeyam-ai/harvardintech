@@ -8,6 +8,6 @@
   "mocks": {},
   "componentName": "VolunteerProjectThumb",
   "scenarioType": "component",
-  "description": "All three thumbnail branches at real card width: a photo linked to its detail page, a photo with no link, and the gradient placeholder for a project with no photo yet. Shown side by side because the property that matters is that all three are the SAME HEIGHT \u2014 that is what keeps a grid mixing photo and no-photo projects aligned, and it is invisible in any single-branch shot.",
-  "pageFilePath": "src/components/volunteer/VolunteerProjectThumb.astro"
+  "pageFilePath": "src/components/volunteer/VolunteerProjectThumb.astro",
+  "description": "All three thumbnail branches at real card width: a photo linked to its detail page, a photo with no link, and the gradient placeholder for a project with no photo yet. Shown side by side because the property that matters is that all three are the SAME HEIGHT — that is what keeps a grid mixing photo and no-photo projects aligned, and it is invisible in any single-branch shot. At 720px and below, where the project grids are one column, the placeholder is not drawn; the Volunteer Page - Fall 2026 Roles scenario shows that at Mobile."
 }

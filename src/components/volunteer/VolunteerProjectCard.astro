@@ -77,6 +77,11 @@ const href = slug ? withBase(projectPath(slug)) : undefined;
   .title-link {
     color: inherit;
     text-decoration: none;
+    /* A 20px-tall link on a phone. The padding grows the tap area to 44px; the
+       equal negative margin keeps the card laid out exactly as before. */
+    display: inline-block;
+    padding-block: 12px;
+    margin-block: -12px;
   }
   .title-link:hover {
     color: var(--crimson);

@@ -65,6 +65,13 @@ decision, not a bug.
 
 ### For the owner to decide
 
+> **Update 2026-10-16:** the owner approved O1–O5 and the follow-up pass made
+> them: compact Luma card when nothing is upcoming (O1), 44px Subscribe button
+> and social badges (O2, O3), 44px tap areas on the giving and volunteer links
+> (O4), and a 12px text floor guarded by `src/lib/typeFloor.test.ts` (O5; the
+> nav caret glyph is the one exemption). O6 stays as recommended. The sweep is
+> still 0 fail rows; advisories went from 458 to 72, almost all inline links.
+
 | # | Page | Widths | What the check found | Recommendation |
 |---|---|---|---|---|
 | O1 | `/events` | all, worst on phones | **The Luma calendar is a big, mostly-empty grey box** when nothing is upcoming (decision sheet `m-calendar-box`). It is Luma's own empty panel inside their frame; we cannot restyle it, and its right edge sits ~36px inside our column for the same reason. | When the nightly-imported events have nothing upcoming, show a compact "Subscribe on Luma" card in place of the frame. A behaviour change, so yours to call. |

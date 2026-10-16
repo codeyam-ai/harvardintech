@@ -125,6 +125,23 @@ export function splitEvents<T extends EventLike>(
 }
 
 /**
+ * The Luma embed URL for /events, or `undefined` when there is nothing to
+ * embed. With no upcoming event, Luma's embed is a tall, mostly empty grey box —
+ * worst on a phone (decision sheet `m-calendar-box`) — so the page falls back to
+ * LumaCalendar's compact "Browse & subscribe on Luma" card. "Upcoming" matches
+ * {@link splitEvents}: an event at `now` counts.
+ */
+export function calendarEmbedUrl(
+  events: readonly Pick<EventLike, 'date'>[],
+  embedUrl: string | undefined,
+  now: string | Date = new Date(),
+): string | undefined {
+  if (!embedUrl) return undefined;
+  const reference = toEventDate(now).valueOf();
+  return events.some((e) => toEventDate(e.date).valueOf() >= reference) ? embedUrl : undefined;
+}
+
+/**
  * The most recent `limit` events from an already-past list.
  *
  * `splitEvents` returns `past` most-recent-first, so this is a slice — but a

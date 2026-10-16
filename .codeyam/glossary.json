@@ -744,6 +744,16 @@
     "testFile": "src/lib/localPresence.test.ts"
   },
   {
+    "description": "Returns the Luma embed URL for /events only when at least one event is upcoming (an event at now counts), otherwise undefined so LumaCalendar falls back to its compact Browse and subscribe on Luma card instead of Luma's tall empty box.",
+    "filePath": "src/lib/events.ts",
+    "name": "calendarEmbedUrl",
+    "tags": [
+      "events",
+      "responsive"
+    ],
+    "testFile": "src/lib/events.test.ts"
+  },
+  {
     "description": "The goal-meter band's optional link out to the campaign, or undefined when it should not be drawn. BOTH halves are required, which is the whole rule: a label with no destination would render a link that goes nowhere — worse than no link, since a reader who clicks it learns the page is broken — and a url with no label has nothing to click. Either box alone therefore draws nothing, which is the shipped state and exactly what the goal-meter entry documents to the editor. Whitespace-only counts as blank, and the trimmed values are returned so a pasted trailing newline never reaches the href.",
     "filePath": "src/lib/momentumSections.ts",
     "name": "campaignLink",
@@ -1062,6 +1072,16 @@
     "testFile": "src/lib/sectionGroups.test.ts"
   },
   {
+    "description": "Private helper of fontSizesBelowFloor: returns the selector text of the innermost CSS block containing a given offset, so a font-size inside an allow-listed block such as the nav caret glyph can be skipped.",
+    "filePath": "src/lib/typeFloor.ts",
+    "name": "enclosingSelector",
+    "tags": [
+      "responsive",
+      "typography"
+    ],
+    "testFile": "src/lib/typeFloor.test.ts"
+  },
+  {
     "description": "Creates a directory and its parents before a file is written into it.",
     "filePath": "scripts/snapshot-strikingly.mjs",
     "name": "ensureDir",
@@ -1224,6 +1244,16 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "Lists every literal px or rem font-size in a stylesheet that resolves under the site's 12px text floor, skipping blocks whose selector is allow-listed such as the nav caret glyph; backs the site-wide source guard test.",
+    "filePath": "src/lib/typeFloor.ts",
+    "name": "fontSizesBelowFloor",
+    "tags": [
+      "responsive",
+      "typography"
+    ],
+    "testFile": "src/lib/typeFloor.test.ts"
   },
   {
     "description": "Joins city names into a readable list with an Oxford comma. The final comma is not stylistic here: one real chapter is named DC and DMV Area, so without it the last two entries run together as a single place. Blank entries are dropped rather than printed as stray commas, because chapter labels come from content an editor types.",
@@ -2764,6 +2794,26 @@
     "filePath": "src/lib/lumaFeed.js",
     "name": "slugifyTitle",
     "testFile": "src/lib/lumaFeed.test.ts"
+  },
+  {
+    "description": "How many photos an EventGallery keeps at phone and tablet widths, at or under 900px; undefined when the small-screen cap would hide nothing, which also suppresses the phone-only Show all button.",
+    "filePath": "src/lib/gallery.ts",
+    "name": "smallScreenCapLimit",
+    "tags": [
+      "gallery",
+      "responsive"
+    ],
+    "testFile": "src/lib/gallery.test.ts"
+  },
+  {
+    "description": "Diameter of a SocialLinks badge for a given glyph size: glyph plus a 12px ring each side, floored at the 44px minimum tap target.",
+    "filePath": "src/lib/tapTarget.ts",
+    "name": "socialBadgeSize",
+    "tags": [
+      "responsive",
+      "tap-target"
+    ],
+    "testFile": "src/lib/tapTarget.test.ts"
   },
   {
     "description": "Returns the name a social link is shown under on the Contact band: a bare \"Twitter\" or \"X\" reads as \"X (Twitter)\", every other label passes through unchanged.",

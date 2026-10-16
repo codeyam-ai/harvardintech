@@ -1,0 +1,30 @@
+{
+  "surface": "LumaCalendar",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "embedUrl",
+      "value": "true",
+      "rationale": "source-derived state embedUrl=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "embedUrl",
+      "value": "false",
+      "rationale": "source-derived state embedUrl=false",
+      "status": "covered"
+    },
+    {
+      "dimension": "calendarUrl",
+      "value": "true",
+      "rationale": "source-derived state calendarUrl=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "calendarUrl",
+      "value": "false",
+      "rationale": "source-derived state calendarUrl=false",
+      "status": "covered"
+    }
+  ]
+}
