@@ -1,0 +1,22 @@
+---
+import Component from "@codeyam/cms/components/admin/CopyWarningsSummary.tsx";
+import "../../styles/tokens.css";
+
+// Isolation page for CopyWarningsSummary with two flagged fields — the roll-up
+// that sits above Save, where the editor's eyes are when they decide to save.
+// It names every field carrying an amber note further up the form and says
+// outright that saving still works.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: CopyWarningsSummary</title>
+  </head>
+  <body style="margin: 0; background: var(--color-bg, #fff);">
+    <div id="codeyam-capture" style="min-height: 100vh; padding: 1.5rem; max-width: 40rem;">
+      <Component client:load labels={['Tagline', 'Body']} />
+    </div>
+  </body>
+</html>

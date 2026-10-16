@@ -297,6 +297,68 @@
         "status": "added"
       }
     },
+    "CopyWarningNote": {
+      "empty": {
+        "status": "n-a",
+        "reason": "With no warnings the component renders nothing at all, so there is no frame to capture; the unit tests cover the empty path."
+      },
+      "single": {
+        "status": "covered"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "Each wording is reported once and the site rule has only three retired forms, so overflow cannot occur; the two-wordings scenario shows the multi-line case."
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Warnings are computed synchronously from the text already in the form; there is no pending state."
+      },
+      "edge": {
+        "status": "covered"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "A rule that will not compile is skipped and nothing renders; that path is covered by a unit test, not a visual state."
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "The note has no controls; the interaction is typing in the field, demonstrated by the entry-editor app scenario."
+      }
+    },
+    "CopyWarningsSummary": {
+      "empty": {
+        "status": "n-a",
+        "reason": "With no flagged fields the summary renders nothing, so there is no frame to capture."
+      },
+      "single": {
+        "status": "covered"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "Flagged fields are joined into one sentence that wraps like any paragraph; there is no truncation or overflow treatment to show."
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Computed synchronously from the form state; there is no pending state."
+      },
+      "edge": {
+        "status": "covered"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "The summary has no failure mode; it only lists labels it is given."
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "The summary is a status line with no controls."
+      }
+    },
     "CutoverRunbook": {
       "empty": {
         "status": "covered"

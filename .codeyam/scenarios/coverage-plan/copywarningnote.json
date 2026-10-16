@@ -1,0 +1,24 @@
+{
+  "surface": "CopyWarningNote",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "warnings",
+      "value": "empty",
+      "rationale": "source-derived state warnings=empty",
+      "status": "planned"
+    },
+    {
+      "dimension": "warnings",
+      "value": "one",
+      "rationale": "source-derived state warnings=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "warnings",
+      "value": "many",
+      "rationale": "source-derived state warnings=many",
+      "status": "planned"
+    }
+  ]
+}

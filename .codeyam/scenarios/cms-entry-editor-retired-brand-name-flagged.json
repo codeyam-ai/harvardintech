@@ -1,0 +1,93 @@
+{
+  "name": "CMS Entry Editor - Retired Brand Name Flagged",
+  "id": "cf37f265-ee36-45d5-a28f-da29f7db6e97",
+  "url": "/admin/chapters/nyc",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "blog": [
+      {
+        "body": "We are a global community of Harvard alumni working in technology.",
+        "date": "2026-01-15",
+        "slug": "welcome",
+        "summary": "Why we built this community and where we are headed.",
+        "title": "Welcome to Harvard Alumni in Tech"
+      }
+    ],
+    "chapters": [
+      {
+        "blurb": "Our founding chapter and largest community.",
+        "body": "Monthly mixers, founder dinners, and the annual Summit for Harvard alumni in tech across the city. Past recaps live at https://www.harvardintech.com/nyc.",
+        "city": "New York City",
+        "order": 1,
+        "region": "New York, NY",
+        "slug": "nyc",
+        "tagline": "We are the New York Chapter of Harvard in Tech."
+      },
+      {
+        "blurb": "The Bay Area chapter for founders and operators.",
+        "body": "Quarterly mixers across SF and the Peninsula.",
+        "city": "San Francisco",
+        "order": 2,
+        "region": "San Francisco, CA",
+        "slug": "san-francisco"
+      },
+      {
+        "blurb": "Connecting Harvard technologists across Southern California.",
+        "body": "Meetups spanning media, gaming, and consumer tech.",
+        "city": "Los Angeles",
+        "order": 3,
+        "region": "Los Angeles, CA",
+        "slug": "la"
+      },
+      {
+        "blurb": "Our first international chapter.",
+        "body": "Bridging Harvard alumni between the US and Japan.",
+        "city": "Japan",
+        "order": 4,
+        "region": "Tokyo",
+        "slug": "japan"
+      }
+    ],
+    "events": [
+      {
+        "body": "Keynotes and breakout sessions on AI, climate, and fintech.",
+        "date": "2026-09-24",
+        "description": "Our flagship annual gathering of Harvard founders, operators, and investors.",
+        "link": "https://www.harvardintech.com/events/summit-2026",
+        "location": "New York, NY",
+        "slug": "harvard-in-tech-summit-2026",
+        "title": "Harvard Alumni in Tech Summit 2026"
+      }
+    ],
+    "pages": [
+      {
+        "body": "Harvard Alumni in Tech connects alumni building and investing in technology.",
+        "description": "About Harvard Alumni in Tech.",
+        "order": 1,
+        "slug": "about",
+        "title": "About"
+      }
+    ],
+    "team": [
+      {
+        "body": "",
+        "name": "Ben Wei",
+        "order": 1,
+        "role": "Founder · Harvard C'08",
+        "slug": "ben-wei"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro",
+  "description": "An entry that arrived with the organisation's retired names in it — the way they keep coming back, through archive imports and pasted copy. The tagline says \"Harvard in Tech\" and the body says \"Harvard alumni in tech\", so each field carries an amber note naming the wording and the right form, and a summary above Save lists both fields. Save stays available: this warns, it never blocks. The body also links to harvardintech.com, which is NOT flagged — a web address that spells the old name is an address, not copy. The rule itself is site data (collections.json `copyWarnings`), the same rule the site's brand guard test reads. The capture scrolls to the Tagline so its note is in frame.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": "#f-tagline"
+    }
+  ]
+}

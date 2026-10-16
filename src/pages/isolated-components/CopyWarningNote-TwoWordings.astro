@@ -1,0 +1,35 @@
+---
+import Component from "@codeyam/cms/components/admin/CopyWarningNote.tsx";
+import "../../styles/tokens.css";
+
+// Isolation page for CopyWarningNote when one field holds two different retired
+// forms — typically a pasted 2020 webinar blurb. Each wording gets its own line,
+// so the editor can find and fix both rather than stopping at the first.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: CopyWarningNote - Two Wordings</title>
+  </head>
+  <body style="margin: 0; background: var(--color-bg, #fff);">
+    <div id="codeyam-capture" style="min-height: 100vh; padding: 1.5rem; max-width: 40rem;">
+      <Component
+        client:load
+        warnings={[
+          {
+            found: 'Harvard in Technology',
+            message:
+              'the organization is “Harvard Alumni in Tech”, always in title case. Web addresses are fine as they are.',
+          },
+          {
+            found: 'Harvard alumni in tech',
+            message:
+              'the organization is “Harvard Alumni in Tech”, always in title case. Web addresses are fine as they are.',
+          },
+        ]}
+      />
+    </div>
+  </body>
+</html>

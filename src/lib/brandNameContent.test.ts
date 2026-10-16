@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import collections from '../data/collections.json';
 
 // Guards the brand name in everything a visitor can read.
 //
@@ -15,6 +16,11 @@ import * as path from 'node:path';
 // change. An all-caps "HARVARD ALUMNI IN TECH" is fine — that is how the banner
 // and footer render the correct name.
 //
+// The pattern itself is NOT defined here: it is the `copyWarnings` rule in
+// `src/data/collections.json`, the same rule the content admin uses to warn an
+// editor as they type. One rule, so the warning and this guard cannot drift.
+// That rule's own text spells the retired names, so it is left out of the scan.
+//
 // NOTE: tests that read `src/content` at run time are invisible to change-based
 // test attribution — nothing in the dependency graph links a markdown file to
 // this spec — so this one only runs as part of the whole suite.
@@ -22,7 +28,19 @@ const SCANNED_DIRS = ['src/content', 'src/data', 'src/components'].map((dir) =>
   path.join(process.cwd(), dir),
 );
 const SCANNED_EXTENSIONS = new Set(['.md', '.mdx', '.json', '.yaml', '.yml', '.astro', '.ts', '.tsx']);
-const OFF_BRAND = /Harvard in Tech(?:nology)?\b|Harvard alumni in tech\b/g;
+const COLLECTIONS_FILE = path.join(process.cwd(), 'src/data/collections.json');
+const OFF_BRAND = new RegExp(
+  (collections as { copyWarnings: { pattern: string }[] }).copyWarnings[0].pattern,
+  'g',
+);
+
+/** A file's scannable text — for collections.json, everything but the rule itself. */
+function scannableText(file: string): string {
+  const raw = fs.readFileSync(file, 'utf8');
+  if (file !== COLLECTIONS_FILE) return raw;
+  const { copyWarnings: _rule, ...rest } = JSON.parse(raw);
+  return JSON.stringify(rest);
+}
 
 function offBrandMentions(text: string): string[] {
   return text.replace(/https?:\/\/\S+/g, '').match(OFF_BRAND) ?? [];
@@ -66,7 +84,7 @@ describe('site copy', () => {
   // No file a visitor reads from still names the organisation the old way.
   it('writes the brand as Harvard Alumni in Tech everywhere', () => {
     const offenders = SCANNED_DIRS.flatMap(listFiles).flatMap((file) =>
-      offBrandMentions(fs.readFileSync(file, 'utf8')).map(
+      offBrandMentions(scannableText(file)).map(
         (found) => `${path.relative(process.cwd(), file)}: ${found}`,
       ),
     );

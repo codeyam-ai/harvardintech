@@ -2287,6 +2287,24 @@
       "runner": "tests"
     },
     {
+      "description": "A name with no matching field falls back to the name itself rather than vanishing.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "copyWarnedFieldLabels › falls back to the name for an unknown field",
+      "line": 102,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Field names become the labels the editor sees, and the body reads as Body.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "copyWarnedFieldLabels › maps names to labels with the body last as given",
+      "line": 97,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
       "description": "Counts only markdown in each collection directory, reporting an empty one as 0.",
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
@@ -3709,6 +3727,42 @@
       "runner": "tests"
     },
     {
+      "description": "Text inside any row of a list field counts against that list field.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "entryCopyWarnings › checks every row of a list field",
+      "line": 79,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Non-text values such as numbers are ignored rather than stringified.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "entryCopyWarnings › ignores non-text values",
+      "line": 85,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A flagged text field and a flagged body are each keyed under their own name.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "entryCopyWarnings › keys warnings by field and body",
+      "line": 73,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no rules declared there is nothing to report.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "entryCopyWarnings › returns nothing without rules",
+      "line": 66,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
       "description": "The ordinary case: the number an editor typed into the Order box.",
       "file": "src/lib/cmsOrderControls.test.ts",
       "format": "vitest",
@@ -4651,6 +4705,60 @@
       "key": "findContentGaps › treats example partners as no partners and lists them for deletion",
       "line": 135,
       "registeredAt": "2026-10-15T20:09:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The brand written correctly — title case or the banner's capitals — raises nothing.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "findCopyWarnings › accepts the brand as written",
+      "line": 42,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A web address that spells the old name is an address, so it is not flagged.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "findCopyWarnings › ignores web addresses",
+      "line": 47,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every retired form of the brand the site declares is reported, with the wording exactly as written.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "findCopyWarnings › reports each retired brand form from the site rule",
+      "line": 33,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The same wording twice in one text is one warning, so the note does not repeat itself.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "findCopyWarnings › reports repeated wording once",
+      "line": 52,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no rules declared there is nothing to report.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "findCopyWarnings › returns nothing without rules",
+      "line": 66,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A rule whose pattern will not compile is skipped rather than breaking the editor.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "findCopyWarnings › skips a rule that does not compile",
+      "line": 59,
+      "registeredAt": "2026-10-16T16:45:04Z",
       "runner": "tests"
     },
     {
@@ -8817,7 +8925,7 @@
       "file": "src/lib/brandNameContent.test.ts",
       "format": "vitest",
       "key": "offBrandMentions › accepts the brand as written",
-      "line": 54,
+      "line": 72,
       "registeredAt": "2026-10-15T14:23:34Z",
       "runner": "tests"
     },
@@ -8826,7 +8934,7 @@
       "file": "src/lib/brandNameContent.test.ts",
       "format": "vitest",
       "key": "offBrandMentions › catches every retired form of the name",
-      "line": 43,
+      "line": 61,
       "registeredAt": "2026-10-15T14:23:34Z",
       "runner": "tests"
     },
@@ -8835,7 +8943,7 @@
       "file": "src/lib/brandNameContent.test.ts",
       "format": "vitest",
       "key": "offBrandMentions › ignores URLs",
-      "line": 60,
+      "line": 78,
       "registeredAt": "2026-10-15T14:23:34Z",
       "runner": "tests"
     },
@@ -11855,6 +11963,24 @@
       "runner": "tests"
     },
     {
+      "description": "A registry with no rules gains no empty key, so existing files serialize as before.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "serializeRegistry copyWarnings › omits the key when there are no rules",
+      "line": 115,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The collection builder rewrites collections.json; the site's rules must survive that rewrite unchanged.",
+      "file": "src/lib/copyWarnings.test.ts",
+      "format": "vitest",
+      "key": "serializeRegistry copyWarnings › re-emits the copy warning rules",
+      "line": 109,
+      "registeredAt": "2026-10-16T16:45:04Z",
+      "runner": "tests"
+    },
+    {
       "description": "Lets the shadow rule be exercised without depending on this site's routes.",
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
@@ -12300,7 +12426,7 @@
       "file": "src/lib/brandNameContent.test.ts",
       "format": "vitest",
       "key": "site copy › writes the brand as Harvard Alumni in Tech everywhere",
-      "line": 67,
+      "line": 85,
       "registeredAt": "2026-10-15T14:23:34Z",
       "runner": "tests"
     },

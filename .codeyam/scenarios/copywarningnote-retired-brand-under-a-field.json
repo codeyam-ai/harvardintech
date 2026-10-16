@@ -1,0 +1,13 @@
+{
+  "name": "CopyWarningNote - Retired Brand Under A Field",
+  "id": "ad71b38d-a342-4405-9327-38819e2933fa",
+  "url": "/isolated-components/CopyWarningNote",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "CopyWarningNote",
+  "scenarioType": "component",
+  "pageFilePath": "node_modules/@codeyam/cms/src/components/admin/CopyWarningNote.tsx",
+  "description": "The amber line an editor sees under a field whose text writes the organisation the old way: the wording exactly as typed, then the right form. It is a caution colour, not FieldError's danger red, because it never blocks a save and must not be mistaken for the required-field error that does."
+}

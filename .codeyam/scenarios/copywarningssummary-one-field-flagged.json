@@ -1,0 +1,13 @@
+{
+  "name": "CopyWarningsSummary - One Field Flagged",
+  "id": "5ebe0e76-c6fc-4af1-9ea5-62a43b4aea51",
+  "url": "/isolated-components/CopyWarningsSummary-OneField",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "CopyWarningsSummary",
+  "scenarioType": "component",
+  "pageFilePath": "node_modules/@codeyam/cms/src/components/admin/CopyWarningsSummary.tsx",
+  "description": "The singular branch of the summary: one flagged field reads One field uses rather than 1 fields."
+}

@@ -1,0 +1,13 @@
+{
+  "name": "CopyWarningsSummary - Two Fields Flagged",
+  "id": "5b438267-bc78-4eee-b738-cabdd4bd026c",
+  "url": "/isolated-components/CopyWarningsSummary",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "CopyWarningsSummary",
+  "scenarioType": "component",
+  "pageFilePath": "node_modules/@codeyam/cms/src/components/admin/CopyWarningsSummary.tsx",
+  "description": "The roll-up above Save when two fields carry retired wording. It names both fields, so an editor who scrolled past the amber notes still learns where they are, and it says plainly that saving still works — the warning is advice, not a gate."
+}

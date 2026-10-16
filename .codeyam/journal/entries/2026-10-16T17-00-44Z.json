@@ -1,0 +1,293 @@
+{
+  "timestamp": "2026-10-16T17:00:44Z",
+  "title": "Warn content editors when copy uses a retired brand name",
+  "type": "feature",
+  "userRequest": "## Who benefits\nThe volunteers who edit the site in the content admin, and the owner, who has had to ask twice in a week for the same copy to be made consistent.\n\n## Evidence\n- obs-901e87f1cf07 (2026-10-15): the owner found the brand written several ways and asked for one form everywhere.\n- obs-db73de50a6e5 (2026-10-14): public figures live in five places, so keeping copy consistent means hunting every copy by hand.\n\n## Smallest useful version\nWhen an editor saves an entry in the content admin, show an inline warning if the text contains \"Harvard in Tech\", \"Harvard in Technology\" or a lowercase \"Harvard alumni in tech\", reusing the same pattern as the new guard test. A warning, not a block.\n\n## Case against\nThe guard test already catches it on the next development session, and the deploy runs no tests, so the warning only helps if editors read it. It covers one rule; a general style checker is much bigger. The editors are a small group who now know the rule.",
+  "description": "The content admin's entry editor now flags the organization's retired names — \"Harvard in Tech\", \"Harvard in Technology\", or a lowercase \"Harvard alumni in tech\" — with an amber note under each affected field (or the body), plus a summary above Save naming those fields. It warns as the editor types and never blocks a save; web addresses are not flagged. The rule is plain site data (`copyWarnings` in src/data/collections.json), added to @codeyam/cms through the existing patch-package patch, and the site's brand guard test now reads that same rule so the warning and the test cannot drift. Scope verdict: no project deliverables were open this cycle (all 7 already resolved), so none were delivered or deferred here. Narrowed from the plan, as disclosed at approval: it covers the edit form for existing entries only — the new-entry form and the site Settings and Navigation screens do not warn yet — and it warns while typing rather than only on Save.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/design/offer-declined",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/warn-content-editors-when-copy-uses-a-retired-brand-name.md\t.codeyam/plans/completed/warn-content-editors-when-copy-uses-a-retired-brand-name.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-analytics-and-embeds--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-marked-as-draft--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-marked-as-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-change-staged-for-review--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-change-staged-for-review--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-adding-a-donor-wall-tier--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-adding-a-donor-wall-tier--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-momentum-fund-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-momentum-fund-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-the-momentum-network-copy-an-editor-can-now-reach--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-the-momentum-network-copy-an-editor-can-now-reach--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-section-type-is-a-dropdown--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-section-type-is-a-dropdown--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-donor-fields-no-editor-can-change--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-donor-fields-no-editor-can-change--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-second-band-pointed-at-its-own-cards--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-second-band-pointed-at-its-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-where-the-pillar-cards-actually-live--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-where-the-pillar-cards-actually-live--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-sponsorship-level-editor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-sponsorship-level-editor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-testimonials-the-fields-behind-a-quote--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-testimonials-the-fields-behind-a-quote--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-volunteer-page-editor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-volunteer-page-editor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/recapture-skip-clean.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/01ea7f6f330b5716a1f8c0fcf002be298bab04444ad208f42f4e664c1b810e0e.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/2379dd1768978624f2792073129b9e9e3d4f083cb1addffe981194b15922400b.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "patches/@codeyam+cms+0.14.0.patch",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/collections.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/brandNameContent.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-entry-editor-retired-brand-name-flagged.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/copywarningnote-retired-brand-under-a-field.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/copywarningnote-two-retired-forms-in-one-field.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/copywarningssummary-one-field-flagged.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/copywarningssummary-two-fields-flagged.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/copywarningnote.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/copywarningssummary.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-retired-brand-name-flagged--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-retired-brand-name-flagged--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningnote-retired-brand-under-a-field--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningnote-retired-brand-under-a-field--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningnote-two-retired-forms-in-one-field--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningnote-two-retired-forms-in-one-field--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningssummary-one-field-flagged--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningssummary-one-field-flagged--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningssummary-two-fields-flagged--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningssummary-two-fields-flagged--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/475bc80ba68b334138aeb306941fe58bc54c4ec8c175ac4e1f1c9c61620bedb2.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/ccac8c11f0a95bc247fba76cc96deeb39097c02bf91aa66ab3af70da8d58e6db.json",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/copyWarnings.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/CopyWarningNote.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/CopyWarningsSummary-OneField.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/CopyWarningsSummary.astro",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 1776,
+    "passed": 1776,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1776,
+        "passed": 1776
+      }
+    ]
+  }
+}

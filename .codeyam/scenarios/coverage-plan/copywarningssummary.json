@@ -1,0 +1,24 @@
+{
+  "surface": "CopyWarningsSummary",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "labels",
+      "value": "empty",
+      "rationale": "source-derived state labels=empty",
+      "status": "planned"
+    },
+    {
+      "dimension": "labels",
+      "value": "one",
+      "rationale": "source-derived state labels=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "labels",
+      "value": "many",
+      "rationale": "source-derived state labels=many",
+      "status": "planned"
+    }
+  ]
+}

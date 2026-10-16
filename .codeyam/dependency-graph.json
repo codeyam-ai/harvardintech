@@ -1896,6 +1896,8 @@
     "src/data/collections.json": {
       "imports": [],
       "importedBy": [
+        "src/lib/brandNameContent.test.ts",
+        "src/lib/copyWarnings.test.ts",
         "src/lib/cmsOrderControls.test.ts"
       ]
     },
@@ -2005,7 +2007,9 @@
       ]
     },
     "src/lib/brandNameContent.test.ts": {
-      "imports": [],
+      "imports": [
+        "src/data/collections.json"
+      ],
       "importedBy": []
     },
     "src/lib/campaignCopy.test.ts": {
@@ -2154,6 +2158,12 @@
         "src/lib/media.ts",
         "src/content/config.ts"
       ]
+    },
+    "src/lib/copyWarnings.test.ts": {
+      "imports": [
+        "src/data/collections.json"
+      ],
+      "importedBy": []
     },
     "src/lib/cutoverFormat.test.ts": {
       "imports": [
@@ -3838,6 +3848,30 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro": {
+      "imports": [
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/CopyWarningNote.astro": {
+      "imports": [
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/CopyWarningsSummary-OneField.astro": {
+      "imports": [
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/CopyWarningsSummary.astro": {
+      "imports": [
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/DecisionTick-Decided.astro": {
       "imports": [
         "src/components/cutover/DecisionTick.tsx",
@@ -4723,6 +4757,7 @@
         "src/pages/isolated-components/AccomplishmentCard.astro",
         "src/pages/isolated-components/BoardMemberTile.astro",
         "src/pages/isolated-components/ResponsiveImg.astro",
+        "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro",
         "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro",
         "src/pages/isolated-components/VolunteerRelatedProjects.astro",
         "src/pages/isolated-components/PageBanner-Photo.astro",
@@ -4777,6 +4812,7 @@
         "src/pages/isolated-components/DeployChip-StillUpdating.astro",
         "src/pages/isolated-components/CalloutCard.astro",
         "src/pages/isolated-components/GiveHero.astro",
+        "src/pages/isolated-components/CopyWarningsSummary-OneField.astro",
         "src/pages/isolated-components/OnlineGroupEyebrow.astro",
         "src/pages/isolated-components/DeployChip-Publishing.astro",
         "src/pages/isolated-components/MomentumMission.astro",
@@ -4820,11 +4856,13 @@
         "src/pages/isolated-components/CommunityCallouts.astro",
         "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro",
         "src/pages/isolated-components/GoalMeter-WithLink.astro",
+        "src/pages/isolated-components/CopyWarningsSummary.astro",
         "src/pages/isolated-components/GiveStatement.astro",
         "src/pages/isolated-components/SectionHead.astro",
         "src/pages/isolated-components/WebinarsPointer.astro",
         "src/pages/isolated-components/GiftPillarCard.astro",
         "src/pages/isolated-components/BoardMemberTile-NoBio.astro",
+        "src/pages/isolated-components/CopyWarningNote.astro",
         "src/pages/isolated-components/DeployStatus-Live.astro",
         "src/pages/isolated-components/NotFound.astro",
         "src/pages/isolated-components/[name].astro",
@@ -7046,6 +7084,8 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
+        "src/lib/brandNameContent.test.ts::__file_root__",
+        "src/lib/copyWarnings.test.ts::__file_root__",
         "src/lib/cmsOrderControls.test.ts::__file_root__"
       ]
     },
@@ -7202,6 +7242,14 @@
         "src/components/ui/SocialLinks.astro::__file_root__",
         "src/components/ui/BrandGlyph.astro::__file_root__"
       ]
+    },
+    "src/lib/brandNameContent.test.ts::__file_root__": {
+      "filePath": "src/lib/brandNameContent.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/data/collections.json::__file_root__"
+      ],
+      "importedBy": []
     },
     "src/lib/campaignCopy.test.ts::__file_root__": {
       "filePath": "src/lib/campaignCopy.test.ts",
@@ -7446,6 +7494,14 @@
       "importedBy": [
         "src/lib/media.ts::__file_root__"
       ]
+    },
+    "src/lib/copyWarnings.test.ts::__file_root__": {
+      "filePath": "src/lib/copyWarnings.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/data/collections.json::__file_root__"
+      ],
+      "importedBy": []
     },
     "src/lib/cutoverFormat.test.ts::__file_root__": {
       "filePath": "src/lib/cutoverFormat.test.ts",
@@ -11302,6 +11358,38 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/CopyWarningNote.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CopyWarningNote.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/CopyWarningsSummary-OneField.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CopyWarningsSummary-OneField.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/CopyWarningsSummary.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CopyWarningsSummary.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/DecisionTick-Decided.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/DecisionTick-Decided.astro",
       "name": "__file_root__",
@@ -12430,6 +12518,7 @@
         "src/pages/isolated-components/AccomplishmentCard.astro::__file_root__",
         "src/pages/isolated-components/BoardMemberTile.astro::__file_root__",
         "src/pages/isolated-components/ResponsiveImg.astro::__file_root__",
+        "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro::__file_root__",
         "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro::__file_root__",
         "src/pages/isolated-components/VolunteerRelatedProjects.astro::__file_root__",
         "src/pages/isolated-components/PageBanner-Photo.astro::__file_root__",
@@ -12484,6 +12573,7 @@
         "src/pages/isolated-components/DeployChip-StillUpdating.astro::__file_root__",
         "src/pages/isolated-components/CalloutCard.astro::__file_root__",
         "src/pages/isolated-components/GiveHero.astro::__file_root__",
+        "src/pages/isolated-components/CopyWarningsSummary-OneField.astro::__file_root__",
         "src/pages/isolated-components/OnlineGroupEyebrow.astro::__file_root__",
         "src/pages/isolated-components/DeployChip-Publishing.astro::__file_root__",
         "src/pages/isolated-components/MomentumMission.astro::__file_root__",
@@ -12527,11 +12617,13 @@
         "src/pages/isolated-components/CommunityCallouts.astro::__file_root__",
         "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro::__file_root__",
         "src/pages/isolated-components/GoalMeter-WithLink.astro::__file_root__",
+        "src/pages/isolated-components/CopyWarningsSummary.astro::__file_root__",
         "src/pages/isolated-components/GiveStatement.astro::__file_root__",
         "src/pages/isolated-components/SectionHead.astro::__file_root__",
         "src/pages/isolated-components/WebinarsPointer.astro::__file_root__",
         "src/pages/isolated-components/GiftPillarCard.astro::__file_root__",
         "src/pages/isolated-components/BoardMemberTile-NoBio.astro::__file_root__",
+        "src/pages/isolated-components/CopyWarningNote.astro::__file_root__",
         "src/pages/isolated-components/DeployStatus-Live.astro::__file_root__",
         "src/pages/isolated-components/NotFound.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__",
@@ -12552,5 +12644,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-16T15:07:10Z"
+  "lastUpdated": "2026-10-16T17:03:43Z"
 }

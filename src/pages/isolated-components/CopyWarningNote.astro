@@ -1,0 +1,33 @@
+---
+import Component from "@codeyam/cms/components/admin/CopyWarningNote.tsx";
+import "../../styles/tokens.css";
+
+// Isolation page for CopyWarningNote — the amber line under an entry field whose
+// text uses wording the site has retired. Fed the site's real rule message so
+// the frame reads exactly as an editor sees it under the Tagline field.
+//
+// Caution colour, not the danger red FieldError uses: this note never blocks a
+// save, and it must not look like the required-field error that does.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: CopyWarningNote</title>
+  </head>
+  <body style="margin: 0; background: var(--color-bg, #fff);">
+    <div id="codeyam-capture" style="min-height: 100vh; padding: 1.5rem; max-width: 40rem;">
+      <Component
+        client:load
+        warnings={[
+          {
+            found: 'Harvard in Tech',
+            message:
+              'the organization is “Harvard Alumni in Tech”, always in title case. Web addresses are fine as they are.',
+          },
+        ]}
+      />
+    </div>
+  </body>
+</html>

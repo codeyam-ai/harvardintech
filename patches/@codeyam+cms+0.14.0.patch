@@ -1,3 +1,158 @@
+diff --git a/node_modules/@codeyam/cms/src/components/admin/CopyWarningNote.tsx b/node_modules/@codeyam/cms/src/components/admin/CopyWarningNote.tsx
+new file mode 100644
+index 0000000..9c11d18
+--- /dev/null
++++ b/node_modules/@codeyam/cms/src/components/admin/CopyWarningNote.tsx
+@@ -0,0 +1,29 @@
++// The inline "this wording is off" note beneath a field. FieldError's sibling,
++// in a caution colour rather than danger, because a copy warning never blocks
++// a save. Renders nothing when there is nothing to say.
++import type { CSSProperties } from 'react';
++import type { CopyWarning } from '../../lib/copyWarnings';
++
++export const copyWarningStyle: CSSProperties = {
++  margin: '0.35rem 0 0',
++  fontSize: '0.78rem',
++  fontWeight: 600,
++  color: 'var(--color-warning, #9a6700)',
++};
++
++interface Props {
++  warnings?: CopyWarning[];
++}
++
++export default function CopyWarningNote({ warnings }: Props) {
++  if (!warnings || warnings.length === 0) return null;
++  return (
++    <>
++      {warnings.map((w) => (
++        <p key={w.found} style={copyWarningStyle} data-copy-warning>
++          ⚠ “{w.found}” — {w.message}
++        </p>
++      ))}
++    </>
++  );
++}
+diff --git a/node_modules/@codeyam/cms/src/components/admin/CopyWarningsSummary.tsx b/node_modules/@codeyam/cms/src/components/admin/CopyWarningsSummary.tsx
+new file mode 100644
+index 0000000..715e2ac
+--- /dev/null
++++ b/node_modules/@codeyam/cms/src/components/admin/CopyWarningsSummary.tsx
+@@ -0,0 +1,31 @@
++// The one-line roll-up of copy warnings above the entry editor's Save button —
++// where the editor's eyes are when they decide to save — naming every field
++// that carries a CopyWarningNote further up the form. Says outright that Save
++// still works, because the amber notes are advice and must not read as a gate.
++// Renders nothing when no field is flagged.
++interface Props {
++  /** The flagged fields' display labels, in form order. */
++  labels: string[];
++}
++
++export default function CopyWarningsSummary({ labels }: Props) {
++  if (labels.length === 0) return null;
++  return (
++    <p
++      role="status"
++      data-copy-warning-summary
++      style={{
++        margin: 0,
++        padding: '0.6rem 0.8rem',
++        borderRadius: 'var(--radius-sm, 6px)',
++        border: '1px solid var(--color-warning, #9a6700)',
++        background: 'var(--color-warning-bg, #fff8c5)',
++        fontSize: '0.85rem',
++      }}
++    >
++      <strong>Check the wording before you publish.</strong>{' '}
++      {labels.length === 1 ? 'One field uses' : `${labels.length} fields use`} wording this site has
++      retired: {labels.join(', ')}. You can still save.
++    </p>
++  );
++}
+diff --git a/node_modules/@codeyam/cms/src/components/admin/EntryEditor.tsx b/node_modules/@codeyam/cms/src/components/admin/EntryEditor.tsx
+index 4d3db2a..8dea840 100644
+--- a/node_modules/@codeyam/cms/src/components/admin/EntryEditor.tsx
++++ b/node_modules/@codeyam/cms/src/components/admin/EntryEditor.tsx
+@@ -66,6 +66,13 @@ import EntryEditActions from './EntryEditActions';
+ import UnsavedChangesDialog from './UnsavedChangesDialog';
+ import { guardedNavTarget, shouldGuardNavigation } from '../../lib/unsavedGuard';
+ import { splitCss } from './entryPreviewStyles';
++import CopyWarningNote from './CopyWarningNote';
++import CopyWarningsSummary from './CopyWarningsSummary';
++import {
++  copyWarnedFieldLabels,
++  entryCopyWarnings,
++  type CopyWarningRule,
++} from '../../lib/copyWarnings';
+ 
+ interface Props {
+   collection: CollectionName;
+@@ -137,6 +144,9 @@ interface Props {
+   initialTab?: 'edit' | 'history';
+   /** Seed the History tab's revision list for isolated-component scenarios. */
+   historyInitialRevisions?: EntryRevision[];
++  /** The site's `collections.json` `copyWarnings`: wording flagged beneath the
++   * field that holds it. Advisory only — never feeds `canStage`. */
++  copyWarnings?: CopyWarningRule[];
+ }
+ 
+ const EMPTY_REPO: RepoTarget = { owner: '', repo: '', branch: 'main' };
+@@ -189,6 +199,7 @@ export default function EntryEditor({
+   sealChange,
+   initialTab = 'edit',
+   historyInitialRevisions,
++  copyWarnings = [],
+ }: Props) {
+   const fields = propFields ?? (COLLECTION_FIELDS as Record<string, FieldDef[]>)[collection] ?? [];
+   // The content fields render inline; the SEO group renders in its own panel with
+@@ -266,6 +277,13 @@ export default function EntryEditor({
+   // `unsaved` alone is the right gate here.
+   const canStage = unsaved && !required.blocked;
+ 
++  // Site copy warnings, recomputed as the editor types. Deliberately absent from
++  // `canStage`: the editor is told, never stopped.
++  const warnings = useMemo(
++    () => entryCopyWarnings(copyWarnings, fields, values, body),
++    [copyWarnings, fields, values, body],
++  );
++
+   // Unsaved-changes guard. Only UNSAVED edits are at risk — saved edits live in
+   // the pending-changes store and survive navigation, while editing again after
+   // a save puts work back at risk even though the entry is still staged. While
+@@ -428,6 +446,15 @@ export default function EntryEditor({
+   /** Render one field by type: the media picker for images, the plain input
+    * otherwise. Shared by the content fields and the SEO panel. */
+   const renderField = (field: FieldDef) =>
++    warnings[field.name] ? (
++      <div key={field.name}>
++        {renderInput(field)}
++        <CopyWarningNote warnings={warnings[field.name]} />
++      </div>
++    ) : (
++      renderInput(field)
++    );
++  const renderInput = (field: FieldDef) =>
+     field.type === 'list' ? (
+       <ListField
+         key={field.name}
+@@ -504,6 +531,7 @@ export default function EntryEditor({
+             onChange={(e) => setBody(e.target.value)}
+             style={{ ...fieldInputStyle, resize: 'vertical', fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}
+           />
++          <CopyWarningNote warnings={warnings.body} />
+         </div>
+ 
+         {seoFields.length > 0 && (
+@@ -538,6 +566,8 @@ export default function EntryEditor({
+         )}
+       </div>
+ 
++      <CopyWarningsSummary labels={copyWarnedFieldLabels(Object.keys(warnings), fields)} />
++
+       <EntryEditActions
+         collection={collection}
+         slug={slug}
 diff --git a/node_modules/@codeyam/cms/src/components/admin/EntryListSearch.tsx b/node_modules/@codeyam/cms/src/components/admin/EntryListSearch.tsx
 index fa7fad9..5f61a3f 100644
 --- a/node_modules/@codeyam/cms/src/components/admin/EntryListSearch.tsx
@@ -335,6 +490,133 @@ index 0000000..8898b0b
 +    </div>
 +  );
 +}
+diff --git a/node_modules/@codeyam/cms/src/lib/collectionRegistry.ts b/node_modules/@codeyam/cms/src/lib/collectionRegistry.ts
+index ae68aac..d69cb10 100644
+--- a/node_modules/@codeyam/cms/src/lib/collectionRegistry.ts
++++ b/node_modules/@codeyam/cms/src/lib/collectionRegistry.ts
+@@ -23,6 +23,7 @@ import { ADMIN_COLLECTIONS, type BuiltinCollectionName, type CollectionName } fr
+ import { slugify } from './slug';
+ import { SETTINGS_KNOWN_KEYS, duplicateInArray, moveInArray, reorderInArray } from './siteConfig';
+ import type { PendingChange } from './pendingChanges';
++import type { CopyWarningRule } from './copyWarnings';
+ 
+ /** Repo-relative path of the registry singleton — the staged change's identity. */
+ export const COLLECTIONS_PATH = 'src/data/collections.json';
+@@ -161,6 +162,13 @@ export interface CollectionsRegistry {
+    * builder re-emits it but never writes it.
+    */
+   order?: Record<string, { field: string; within?: string }>;
++  /**
++   * Wording the site has retired, flagged beneath any entry field (or body) that
++   * contains it. Advisory: the entry editor warns and never blocks Save. Plain
++   * data so the site's own tests can import the identical rule. See
++   * `copyWarnings.ts`. Site-authored like `paths`: re-emitted, never written.
++   */
++  copyWarnings?: CopyWarningRule[];
+ }
+ 
+ /** Production / never-seeded default: no custom collections. */
+@@ -443,6 +451,11 @@ export function serializeRegistry(reg: CollectionsRegistry): string {
+         }),
+     );
+   }
++  // `copyWarnings` is site-authored, re-emitted for the same reason as `order`:
++  // a dropped rule would just stop warning, which nobody would notice.
++  if (reg.copyWarnings && reg.copyWarnings.length > 0) {
++    out.copyWarnings = reg.copyWarnings.map((r) => ({ pattern: r.pattern, message: r.message }));
++  }
+   return toJson(out);
+ }
+ 
+diff --git a/node_modules/@codeyam/cms/src/lib/copyWarnings.ts b/node_modules/@codeyam/cms/src/lib/copyWarnings.ts
+new file mode 100644
+index 0000000..ca82585
+--- /dev/null
++++ b/node_modules/@codeyam/cms/src/lib/copyWarnings.ts
+@@ -0,0 +1,83 @@
++// Site-declared copy warnings: wording the site does not want in its copy, said
++// to the editor as they type rather than discovered after publishing.
++//
++// A rule is plain data in `collections.json` (`copyWarnings`), the same way a
++// field's `pattern` is, so the site's own tests can import the identical rule
++// instead of keeping a second copy of the regex. Unlike `pattern` it never
++// blocks a save: wording is a judgement the editor makes, and a quoted old name
++// in a history post can be exactly right.
++//
++// Web addresses are stripped before matching — a URL or slug that spells the
++// old wording is an address, not copy, and cannot be "fixed" without breaking
++// the link. `fs`-free and DOM-free so it runs in the editor island and in tests.
++import type { FieldDef, RawFieldValue } from './entryEditor';
++
++export interface CopyWarningRule {
++  /** Regex source, compiled as written with the `g` flag added. */
++  pattern: string;
++  /** What the editor reads beside the matched wording: the right form, and why. */
++  message: string;
++}
++
++export interface CopyWarning {
++  /** The wording exactly as it appears in the text. */
++  found: string;
++  message: string;
++}
++
++const URL_RE = /https?:\/\/\S+/g;
++
++function compile(rule: CopyWarningRule): RegExp | null {
++  try {
++    return new RegExp(rule.pattern, 'g');
++  } catch {
++    // A rule that will not compile costs that one rule, not the editor.
++    return null;
++  }
++}
++
++/** Every match of every rule in `text`, URLs ignored, each wording once. */
++export function findCopyWarnings(rules: CopyWarningRule[], text: string): CopyWarning[] {
++  const stripped = text.replace(URL_RE, '');
++  const out: CopyWarning[] = [];
++  for (const rule of rules) {
++    const re = compile(rule);
++    if (!re) continue;
++    for (const found of stripped.match(re) ?? []) {
++      if (!out.some((w) => w.found === found)) out.push({ found, message: rule.message });
++    }
++  }
++  return out;
++}
++
++/** Warnings per field name (plus `body`) for one entry's form state. A list
++ * field is checked across all of its rows' text. */
++export function entryCopyWarnings(
++  rules: CopyWarningRule[],
++  fields: FieldDef[],
++  values: Record<string, RawFieldValue>,
++  body: string,
++): Record<string, CopyWarning[]> {
++  if (rules.length === 0) return {};
++  const out: Record<string, CopyWarning[]> = {};
++  for (const field of fields) {
++    const value = values[field.name];
++    const text = Array.isArray(value)
++      ? value.flatMap((row) => Object.values(row ?? {})).filter((v) => typeof v === 'string').join('\n')
++      : typeof value === 'string'
++        ? value
++        : '';
++    const found = findCopyWarnings(rules, text);
++    if (found.length > 0) out[field.name] = found;
++  }
++  const inBody = findCopyWarnings(rules, body);
++  if (inBody.length > 0) out.body = inBody;
++  return out;
++}
++
++/** The labels an editor sees for the names `entryCopyWarnings` keyed, in the
++ * same order: a field's label, `Body` for the body, and the bare name for a key
++ * no field claims (so a warning is never silently dropped from the summary). */
++export function copyWarnedFieldLabels(names: string[], fields: FieldDef[]): string[] {
++  return names.map((n) => (n === 'body' ? 'Body' : (fields.find((f) => f.name === n)?.label ?? n)));
++}
 diff --git a/node_modules/@codeyam/cms/src/lib/entryActions.ts b/node_modules/@codeyam/cms/src/lib/entryActions.ts
 index 6a1ea44..34f4df8 100644
 --- a/node_modules/@codeyam/cms/src/lib/entryActions.ts
@@ -520,6 +802,26 @@ index e330ee9..95dc882 100644
 +  });
 +  return changed;
 +}
+diff --git a/node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro b/node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro
+index 2f64be3..ee07923 100644
+--- a/node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro
++++ b/node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro
+@@ -55,6 +55,7 @@ const {
+   authEndpoint,
+   previewLock,
+   lockedPreview,
++  copyWarnings,
+ } = loadEntryEditor(collection, slug)!;
+ ---
+ 
+@@ -113,6 +114,7 @@ const {
+         siteDescription={siteDescription}
+         repo={repo}
+         authEndpoint={authEndpoint}
++        copyWarnings={copyWarnings}
+       />
+     )
+   }
 diff --git a/node_modules/@codeyam/cms/src/pages/admin/[collection]/index.astro b/node_modules/@codeyam/cms/src/pages/admin/[collection]/index.astro
 index e33b163..8f562d8 100644
 --- a/node_modules/@codeyam/cms/src/pages/admin/[collection]/index.astro
@@ -558,3 +860,32 @@ index e33b163..8f562d8 100644
 +    ordered={hasOrderField(collectionDef?.fields ?? [])}
    />
  </AdminLayout>
+diff --git a/node_modules/@codeyam/cms/src/server/entryPages.ts b/node_modules/@codeyam/cms/src/server/entryPages.ts
+index da5a585..dd0858d 100644
+--- a/node_modules/@codeyam/cms/src/server/entryPages.ts
++++ b/node_modules/@codeyam/cms/src/server/entryPages.ts
+@@ -40,6 +40,7 @@ import { isLocked } from '../lib/previewLock';
+ import { pickPagePathFields } from '../lib/publicUrl';
+ import type { BlockScalarSource, FrontmatterValue } from '../lib/frontmatter';
+ import type { MediaManifest } from '../lib/mediaLibrary';
++import type { CopyWarningRule } from '../lib/copyWarnings';
+ 
+ /** One row in a collection's entry list: everything `EntryListSearch` needs to
+  * render it and to stage an archive / delete without re-reading the file. */
+@@ -112,6 +113,8 @@ export interface EntryEditorData {
+   previewLock?: string;
+   /** True when the body is ciphertext and the ordinary editor must not be rendered. */
+   lockedPreview: boolean;
++  /** The site's `copyWarnings` rules (empty when it declares none). */
++  copyWarnings: CopyWarningRule[];
+ }
+ 
+ /** `/admin/new/<collection>` — the empty create form. */
+@@ -302,6 +305,7 @@ export function loadEntryEditor(
+     authEndpoint: cms.authEndpoint,
+     previewLock,
+     lockedPreview: isLocked(previewLock),
++    copyWarnings: registry.copyWarnings ?? [],
+   };
+ }
+ 

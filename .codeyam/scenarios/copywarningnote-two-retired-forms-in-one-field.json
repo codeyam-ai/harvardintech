@@ -1,0 +1,13 @@
+{
+  "name": "CopyWarningNote - Two Retired Forms In One Field",
+  "id": "9b0de270-26f0-48d3-b7a4-b25904d04cd6",
+  "url": "/isolated-components/CopyWarningNote-TwoWordings",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "CopyWarningNote",
+  "scenarioType": "component",
+  "pageFilePath": "node_modules/@codeyam/cms/src/components/admin/CopyWarningNote.tsx",
+  "description": "One field holding two different retired forms, the way a pasted 2020 webinar blurb does. Each wording gets its own line so the editor can fix both rather than stopping at the first."
+}

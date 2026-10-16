@@ -1643,5 +1643,11 @@
     "sponsors": "/sponsor",
     "sponsorLevels": "/sponsor",
     "siteIntegrations": null
-  }
+  },
+  "copyWarnings": [
+    {
+      "pattern": "Harvard in Tech(?:nology)?\\b|Harvard alumni in tech\\b",
+      "message": "the organization is “Harvard Alumni in Tech”, always in title case. Web addresses are fine as they are."
+    }
+  ]
 }
