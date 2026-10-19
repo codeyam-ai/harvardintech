@@ -1,6 +1,7 @@
 ---
 blurb: Our European hub across the London tech scene.
 city: London
+heroImage: /images/chapters/london.jpg
 showGallery: false
 region: London, UK
 status: active
