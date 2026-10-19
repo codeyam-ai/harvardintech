@@ -500,11 +500,14 @@
       "severity": 3,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "restore-the-donor-network-hero-in-the-donor-wall-moved-to-the-top-momentum-fund-scenario",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
       "rank": 1,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-19T17:42:47Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "give-eventcard-its-own-glossary-entry",
