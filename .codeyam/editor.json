@@ -31,8 +31,21 @@
         "**/*.test.jsx"
       ],
       "sourceFilePatterns": [
-        "**/*.{ts,tsx,js,jsx}",
-        "src/data/**/*.json"
+        "**/*.{ts,tsx,js,jsx,mjs}",
+        "src/**/*.{astro,css}",
+        "src/data/**/*.json",
+        "src/content/**",
+        "public/**",
+        "archive/**",
+        "scripts/**",
+        ".github/**",
+        "docs/archive/**",
+        "docs/scoping/**",
+        "docs/nicole-review.md",
+        "package.json",
+        "package-lock.json",
+        "tsconfig.json",
+        "patches/**"
       ],
       "excludePatterns": [
         "**/node_modules/**",
@@ -47,6 +60,8 @@
   "testPartitions": [],
   "testCacheIgnorePatterns": [
     "**/*.md",
+    ".gitattributes",
+    ".gitignore",
     ".claude/**",
     "**/.claude/**",
     ".codex/**",
