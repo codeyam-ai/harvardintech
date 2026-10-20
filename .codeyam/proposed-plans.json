@@ -891,11 +891,14 @@
       "severity": 3,
       "source": "session-review",
       "category": "debt",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "sort-the-488-tracked-files-no-test-group-owns-into-a-group-or-the-skip-list",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
       "kind": "tech-debt",
       "rank": 3,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-20T18:43:29Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "the-supporter-wall-s-empty-band-was-left-as-it-was-it-already-has-a-give-button-so-i-did-not-swap-it-for-the-plain-panel-the-plan-named",
