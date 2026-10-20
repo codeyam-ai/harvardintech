@@ -394,11 +394,14 @@
       "severity": 2,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
       "kind": "tech-debt",
       "rank": 2,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-20T13:53:05Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
