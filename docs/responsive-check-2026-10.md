@@ -89,7 +89,7 @@ decision, not a bug.
 | `m-phone-menu` — fix the phone menu | **Done.** Closed at rest on phone and tablet; opens to a clean list (checked at 390 and 768). |
 | `m-city-bar` — red bar wraps to three lines | **Done** (phones, 2026-09-28) and **extended to tablet** in this run (R3). |
 | `m-no-events-twice` — "No upcoming events" twice | **Done.** It now appears once, inside the Luma calendar. |
-| `m-calendar-box` — big, mostly empty grey box | **Still open — owner decides** (O1). |
+| `m-calendar-box` — big, mostly empty grey box | **Done** (2026-10-16, O1). When nothing is upcoming, a compact "Browse & subscribe on Luma" card replaces the frame. |
 
 ## 4. Real-device checklist
 
