@@ -6,6 +6,7 @@ region: London, UK
 blurb: Our European hub across the London tech scene.
 heroImage: /images/chapters/london.jpg
 tagline: We are the London Chapter of Harvard Alumni in Tech.
+showGallery: true
 photos: []
 leads:
   - name: Nemo Shi
