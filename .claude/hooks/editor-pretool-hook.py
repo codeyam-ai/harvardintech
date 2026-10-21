@@ -1847,6 +1847,155 @@ def self_matching_pgrep_notice(pattern):
     )
 
 
+# `pkill` in command position. It shares `pgrep`'s flag set, so its operand is
+# read by `_pgrep_full_pattern` too.
+_PKILL_CALL = re.compile(r"(?:\A|[\n;|&(`]|\$\()\s*(?:sudo\s+)?pkill\b([^;|&\n()`]*)")
+
+# A `kill` in command position, whatever its arguments.
+_KILL_VERB = re.compile(r"(?:\A|[\n;|&(`]|\$\(|\bdo\b|\bthen\b)\s*(?:sudo\s+)?kill\b")
+
+# The two pid-list producers that scan full argv when piped through a filter:
+# `ps` (whose `grep PAT` / `awk '/PAT/'` stage is the matcher) and `pgrep -f`.
+_PS_CALL = re.compile(r"(?:\A|[\n;|&(`]|\$\()\s*ps\b")
+_GREP_PATTERN_STAGE = re.compile(r"^\s*(?:grep|egrep)\b(?P<args>.*)$", re.DOTALL)
+_AWK_REGEX = re.compile(r"/((?:[^/\\]|\\.)+)/")
+
+
+def _substitutions(command):
+    """`(start, inner)` for every `$(…)` and backtick substitution in
+    `command`, outermost first. Paren-depth counted, so a nested `$(…)` stays
+    inside its parent's text."""
+    found = []
+    index = 0
+    while index < len(command):
+        if command.startswith("$(", index):
+            depth = 0
+            for end in range(index + 1, len(command)):
+                depth += (command[end] == "(") - (command[end] == ")")
+                if depth == 0:
+                    found.append((index, command[index + 2:end]))
+                    break
+            index += 2
+            continue
+        if command[index] == "`":
+            end = command.find("`", index + 1)
+            if end == -1:
+                break
+            found.append((index, command[index + 1:end]))
+            index = end + 1
+            continue
+        index += 1
+    return found
+
+
+def _source_patterns(source):
+    """The full-argv patterns a pid-list producer `source` matches against:
+    every `pgrep -f` operand, and — when it runs `ps` — every `grep PAT` /
+    `awk '/PAT/'` filter. `grep -v` stages exclude rather than match."""
+    patterns = [_pgrep_full_pattern(m.group(1)) for m in _PGREP_CALL.finditer(source)]
+    patterns = [p for p in patterns if p]
+    if _PS_CALL.search(source):
+        for stage in source.split("|"):
+            grep = _grep_stage_pattern(stage)
+            if grep:
+                patterns.append(grep)
+            elif re.match(r"^\s*awk\b", stage):
+                patterns.extend(_AWK_REGEX.findall(stage))
+    return patterns
+
+
+def _grep_stage_pattern(stage):
+    """The pattern a `grep PAT` pipeline stage selects lines by, or None — for
+    a stage that is not a grep, an inverted one (`grep -v`, which EXCLUDES),
+    one with no operand, or one that does not tokenize."""
+    grep = _GREP_PATTERN_STAGE.match(stage)
+    if not grep:
+        return None
+    try:
+        tokens = shlex.split(grep.group("args"), posix=True)
+    except ValueError:
+        return None
+    flags = [t for t in tokens if t.startswith("-")]
+    if "--invert-match" in flags or any("v" in f for f in flags if not f.startswith("--")):
+        return None
+    operands = [t for t in tokens if not t.startswith("-")]
+    return operands[0] if operands else None
+
+
+def _kill_fed_sources(command):
+    """The pid-producing text whose output `command` hands to a kill.
+
+    Three shapes: a substitution that is an argument of `kill` (`kill
+    $(pgrep -f X)`) or the list of a `for` loop whose body kills; and a
+    pipeline that ends in `xargs … kill`, whose earlier stages are the
+    source."""
+    sources = []
+    for start, inner in _substitutions(command):
+        prefix = command[:start]
+        stage = re.split(r"[\n;|&]", prefix)[-1]
+        if _KILL_VERB.search(stage):
+            sources.append(inner)
+            continue
+        if re.search(r"\bfor\s+\w+\s+in\s*$", prefix):
+            body = re.search(r"\bdo\b(.*?)\bdone\b", command[start:], re.DOTALL)
+            if body and _KILL_VERB.search(body.group(0)):
+                sources.append(inner)
+    for pipeline in _pipelines(command):
+        if len(pipeline) > 1 and re.match(r"^\s*(?:sudo\s+)?xargs\b.*\bkill\b", pipeline[-1]):
+            sources.append("|".join(pipeline[:-1]))
+    return sources
+
+
+def self_matching_kill(command):
+    """Return the pattern of a process kill that will match its own shell.
+
+    `pkill -f PAT` and every `pgrep -f`/`ps | grep` pid list fed to `kill`
+    match each process's FULL argv — and the `bash -c` running this command
+    carries PAT in its argv, because PAT is written in it. So the kill takes
+    the agent's own shell, mid-command, along with the rest of the call.
+    Observed four times on one VM (exit 144): `pkill -f 'debug/cadyam' ; …`.
+
+    The exemptions are `self_matching_pgrep_loop`'s, for the same reasons:
+    `-x` (a name, never a long command line), a pattern that does not match
+    its own text (the bracket trick `[d]ebug/cadyam`), and a command that
+    already excludes its own pid (`$$`)."""
+    if not command or "kill" not in command or "$$" in command:
+        return None
+    shell = elide_heredoc_bodies(command, keep_programs=False)
+    candidates = [_pgrep_full_pattern(m.group(1)) for m in _PKILL_CALL.finditer(shell)]
+    candidates = [p for p in candidates if p]
+    for source in _kill_fed_sources(shell):
+        candidates.extend(_source_patterns(source))
+    for pattern in candidates:
+        try:
+            if re.search(pattern, command):
+                return pattern
+        except re.error:
+            if pattern in command:
+                return pattern
+    return None
+
+
+def self_matching_kill_refusal(pattern):
+    """`(reason, next_action)` for a self-matching kill — a refusal, not the
+    loop guard's notice. A notice travels beside an ALLOWED call, and this
+    call's first act is to kill the shell that would have read it: the
+    evidence is the notice arriving and the shell dying anyway."""
+    reason = (
+        f"guardrail, not a breakage — this command kills processes whose FULL "
+        f"command line matches {pattern!r}, and the shell running this command "
+        f"has that text in its own command line, so it would kill itself "
+        f"mid-command (exit 144) and take the rest of the call with it."
+    )
+    next_action = (
+        f"match the program NAME instead (`pkill -x <name>` / `pgrep -x "
+        f"<name>`), or use the bracket form so the pattern cannot match its own "
+        f"text (`pkill -f '[d]ebug/cadyam'` for `debug/cadyam`), or kill a PID "
+        f"you already have (`kill <pid>`)."
+    )
+    return reason, next_action
+
+
 # ── write-target resolution ────────────────────────────────────────────
 #
 # The scripted-rewrite guard falls back to "every tracked path the command
@@ -2595,12 +2744,135 @@ def _resolved_expression(command, expr):
     if literal:
         return [literal]
     expr = expr.strip()
+    skeleton = _template_skeleton(expr)
+    if skeleton:
+        return [skeleton]
     if _BARE_IDENTIFIER.match(expr):
         return resolve_identifier(command, expr)
     argv = _ARGV_REFERENCE.fullmatch(expr)
     if argv:
         return interpreter_argument(command, argv.group("module"), int(argv.group("index")))
     return None
+
+
+# A Python f-string (`f'…'`, `rf"…"`) or a JS template literal (`` `…` ``),
+# captured as its inner text. Only the text before the first interpolation is
+# static, so that prefix is all `_template_skeleton` may reason about.
+_TEMPLATE_LITERAL = re.compile(r"""(?:[rR]?[fF]|[fF][rR])(['"])(?P<f>.*)\1|`(?P<js>.*)`""", re.DOTALL)
+
+
+def _template_skeleton(expr):
+    """The inner text of a template-literal write target whose STATIC directory
+    prefix provably lands outside authored source, or None.
+
+    "Outside" means a prefix directory under `_INTERNAL_DIRS`, or an absolute /
+    `~` prefix that escapes the project. One session's heredoc wrote
+    `f'.codeyam/tmp/register-assembled-retry-{i}.json'`; with the target opaque,
+    the guard fell back to every tracked path the command MENTIONED and cited
+    a source file that appeared only as a JSON value in the payload. A prefix
+    inside source (`f'src/{name}.rs'`) proves nothing about the file, so it
+    stays opaque and that fallback still guards it."""
+    match = _TEMPLATE_LITERAL.fullmatch(expr)
+    if not match:
+        return None
+    body = match.group("f") if match.group("f") is not None else match.group("js")
+    cut = body.find("${") if match.group("js") is not None else body.find("{")
+    prefix = body if cut == -1 else body[:cut]
+    if "/" not in prefix:
+        return None
+    directory = os.path.normpath(prefix[: prefix.rindex("/") + 1] or "/")
+    if set(directory.split(os.sep)) & _INTERNAL_DIRS:
+        return body
+    if directory.startswith("~"):
+        return body
+    if os.path.isabs(directory):
+        root = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
+        if _repo_relative(directory + os.sep + "x", root) is None:
+            return body
+    return None
+
+
+# A `cd` in command position, with the rest of its simple command.
+_CD_CALL = re.compile(r"(?:\A|[\n;&|(]|\bthen\b|\bdo\b)\s*cd(?=[\s;&|)]|\Z)(?P<rest>[^\n;&|)]*)")
+
+
+def _cd_operand(command, rest):
+    """The directory a `cd` whose arguments are `rest` moves to, or None when
+    it cannot be resolved statically. A bare `cd` goes home (`~`)."""
+    try:
+        tokens = [t for t in shlex.split(rest, posix=True) if t not in ("-P", "-L", "--")]
+    except ValueError:
+        return None
+    if not tokens:
+        return "~"
+    if len(tokens) != 1 or tokens[0] == "-" or re.search(r"[*?`]", tokens[0]):
+        return None
+    values = _expand_shell_operand(command, tokens[0])
+    if not values or len(set(values)) != 1:
+        return None
+    return values[0]
+
+
+def _cd_scope_closed(shell, end):
+    """True when the subshell or `$(…)` enclosing offset `end` of `shell`
+    closes before the text runs out — a `cd` there no longer applies after it.
+    Paren depth is counted crudely, ignoring quotes, so a quoted paren can
+    miscount it — an accepted blind spot for a shape no incident has shown."""
+    depth = shell[:end].count("(") - shell[:end].count(")")
+    running = depth
+    for ch in shell[end:]:
+        running += (ch == "(") - (ch == ")")
+        if running < depth:
+            return True
+    return False
+
+
+def _join_onto(directory, paths):
+    """`paths` with each relative entry joined onto `directory`; absolute and
+    `~` paths, and every path when `directory` is falsy, pass through."""
+    if not directory:
+        return list(paths)
+    return [
+        p if os.path.isabs(p) or p.startswith("~") else os.path.join(directory, p)
+        for p in paths
+    ]
+
+
+def _cd_directory(command, position):
+    """The directory the shell is in at `position`, as set by the `cd`s that
+    precede it — `""` when none did, None when one could not be resolved.
+
+    A `cd` inside a subshell or `$(…)` that has closed before `position` no
+    longer applies and is skipped. An unresolvable `cd` makes the answer
+    unknown until a later absolute `cd` re-anchors it, which keeps the
+    caller's repo-relative reading — the fail-closed direction."""
+    shell = elide_heredoc_bodies(command[:position], keep_programs=False)
+    directory = ""
+    for match in _CD_CALL.finditer(shell):
+        if _cd_scope_closed(shell, match.end()):
+            continue
+        operand = _cd_operand(command, match.group("rest"))
+        if operand is None:
+            directory = None
+        elif operand.startswith("~") or os.path.isabs(operand):
+            directory = operand
+        elif directory is not None:
+            directory = os.path.join(directory, operand)
+    return directory
+
+
+def _rebased_on_cd(command, position, paths):
+    """`paths` with each relative entry joined onto the directory a preceding
+    `cd` moved the shell to (see `_cd_directory`).
+
+    One session ran `cd <scratchpad> && cat > Cargo.toml <<'EOF'` and was
+    refused for rewriting the project's own `Cargo.toml`: the relative name was
+    read against the repo root, as if the `cd` had not happened."""
+    return _join_onto(_cd_directory(command, position), paths)
+
+
+# Where an in-place `sed`/`perl` sits, so its operands can be rebased too.
+_INPLACE_PROGRAM = re.compile(r"\b(?:sed|perl)\b")
 
 
 def write_targets(command):
@@ -2630,12 +2902,12 @@ def write_targets(command):
     constructs = ("open", "write_", "writeFile", ">")
     data = write_construct_data_spans(command) if any(c in command for c in constructs) else []
 
-    def add(resolved):
+    def add(resolved, position):
         nonlocal opaque
         if resolved is None:
             opaque = True
         else:
-            explicit.extend(resolved)
+            explicit.extend(_rebased_on_cd(command, position, resolved))
 
     for match in _OPEN_CALL.finditer(command):
         if _in_spans(match.start(), data):
@@ -2650,7 +2922,7 @@ def write_targets(command):
             appending = True
         else:
             truncating = True
-        add(_resolved_expression(command, args[0]))
+        add(_resolved_expression(command, args[0]), match.start())
 
     for pattern in (_WRITE_TEXT, _NODE_WRITE):
         for match in pattern.finditer(command):
@@ -2658,13 +2930,16 @@ def write_targets(command):
                 continue
             truncating = True
             if match.group("path"):
-                explicit.append(match.group("path"))
+                add([match.group("path")], match.start())
             elif pattern is _NODE_WRITE:
                 args = _call_args(command, command.index("(", match.start()))
-                add(_resolved_expression(command, args[0]) if args else None)
+                add(_resolved_expression(command, args[0]) if args else None, match.start())
             else:
                 receiver = re.search(r"(?<![\w.)\]])([A-Za-z_]\w*)\s*$", command[:match.start()])
-                add(resolve_identifier(command, receiver.group(1)) if receiver else None)
+                add(
+                    resolve_identifier(command, receiver.group(1)) if receiver else None,
+                    match.start(),
+                )
 
     for match in _SHELL_REDIRECT.finditer(command):
         if _in_spans(match.start(), data):
@@ -2673,12 +2948,22 @@ def write_targets(command):
             appending = True
         else:
             truncating = True
-        explicit.append(match.group("path"))
+        add([match.group("path")], match.start())
 
     found, paths = inplace_edit_targets(command)
     if found:
         truncating = True
-        add(paths)
+        # The operands carry no position, so they are rebased only when every
+        # in-place editor in the command runs in the SAME directory; otherwise
+        # they keep the repo-relative reading.
+        directories = {
+            _cd_directory(command, m.start()) for m in _INPLACE_PROGRAM.finditer(command)
+        }
+        directory = directories.pop() if len(directories) == 1 else None
+        if paths is None:
+            add(None, 0)
+        else:
+            explicit.extend(_join_onto(directory, paths))
 
     return explicit, opaque, appending and not truncating
 
@@ -2712,6 +2997,10 @@ def eligible_pathspecs(paths, project_dir):
     for path in paths:
         rel = _repo_relative(path, project_dir)
         if not rel or not rel.lower().endswith(SOURCE_SUFFIXES):
+            continue
+        # Agrees with `on_disk_source_paths`: an internal cache directory never
+        # holds authored source, so a `.codeyam/tmp` payload is no candidate.
+        if set(rel.split("/")[:-1]) & _INTERNAL_DIRS:
             continue
         if not _PATHSPEC_SAFE.match(rel) or rel in candidates:
             continue
@@ -3048,7 +3337,8 @@ def line_budget_refusal(rel_path, limit, current, projected):
         f"`{cli_command()} editor new-step-fragment <name> --slug <slug>`: it writes "
         f"crates/codeyam-editor/src/commands/editor/steps/library/fragments/<name>_block.txt, "
         f"adds the `include_str!` substitution for `{{<name>_block}}` in "
-        f"crates/codeyam-editor/src/commands/editor/step.rs, inserts the placeholder into "
+        f"crates/codeyam-editor/src/commands/editor/step_render_substitutions.rs, inserts the "
+        f"placeholder into "
         f"each named slug's .txt, and prints the placeholder-leak test to add. Then put "
         f"this guidance in that fragment. To check any file's remaining headroom first: "
         f"`{cli_command()} editor classify-constrained-files {rel_path}`.",
@@ -3524,6 +3814,8 @@ _INSPECTOR_BY_STORE = [
     (".codeyam/glossary.json", "glossary-find / glossary-list"),
     (".codeyam/editor.json", "config-query (testRunners / staticChecks) / config-show"),
     (".codeyam/stack.json", "project-info"),
+    (".codeyam/starter", "starter-context"),
+    (".codeyam/design/starter-seeded.json", "starter-context"),
     (".codeyam/scenarios", "scenarios / scenario-explain"),
     (".codeyam/test-cache", "test-cache-query"),
     (".codeyam/journal", "journal-find"),
@@ -3694,7 +3986,8 @@ _HANDOFF_STORE = ".codeyam/state/last-advance.txt"
 #   1. `.codeyam/state/last-advance.txt`      — the canonical store.
 #   2. `.codeyam/state/last-step-show.txt`    — the read-only `--show` render.
 #   3. `.codeyam/state/command-output/runs/advance-<runId>.txt`
-#                                             — the run-keyed transcript.
+#                                             — the run-keyed transcript,
+#                                               CONTENT-GATED (see below).
 #   4. the harness's persisted tool result    — an OPAQUE filename, so it is
 #                                               matched by CONTENT, below.
 #   5. the harness's task output for a
@@ -3723,6 +4016,14 @@ _HANDOFF_PATH_MIRRORS = (
 )
 
 # The run-keyed transcript. A regex because the run id varies per invocation.
+#
+# Its path names a CANDIDATE, not a hand-off: an `advance` that hung or died
+# leaves a transcript holding only a heartbeat and a warning or two. Windowing
+# that is ordinary diagnosis, and refusing it sent agents on two VMs to a
+# `step-handoff --section` that had nothing to give. So a READABLE transcript
+# that provably carries no hand-off marker is exempt (`_transcript_holds_handoff`),
+# while an unreadable one stays refused — unlike the opaque harness files below,
+# this path is codeyam's own, so its mere presence is real evidence.
 _HANDOFF_RUN_TRANSCRIPT = re.compile(
     r"\.codeyam/state/command-output/runs/advance-[0-9a-fA-F-]+\.txt"
 )
@@ -3768,7 +4069,11 @@ def _handoff_paths_in(text):
     Returns the literal substrings found, so callers can test stage membership
     the same way the single-path version did."""
     found = [store for store in _HANDOFF_PATH_MIRRORS if store in text]
-    found.extend(match.group(0) for match in _HANDOFF_RUN_TRANSCRIPT.finditer(text))
+    found.extend(
+        match.group(0)
+        for match in _HANDOFF_RUN_TRANSCRIPT.finditer(text)
+        if _transcript_holds_handoff(_run_transcript_path(text, match))
+    )
     # Content-gated, and for the task output the reason is sharper than for the
     # tool result: a task output is only a hand-off SOMETIMES. Most backgrounded
     # commands are test runs, commits, rebuilds — outputs an agent has every
@@ -3798,6 +4103,48 @@ def _file_holds_handoff(path):
     except OSError:
         return False
     return any(marker in head for marker in _HANDOFF_CONTENT_MARKERS)
+
+
+def _run_transcript_path(text, match):
+    """The filesystem path a `_HANDOFF_RUN_TRANSCRIPT` match names, resolved
+    against the project when it is relative.
+
+    The regex matches from `.codeyam/` on, so an absolute spelling
+    (`/workspace/.codeyam/…`) is recovered by extending the match backwards to
+    the start of its token."""
+    start = match.start()
+    while start > 0 and text[start - 1] not in " \t\n'\"=<>;|&()`":
+        start -= 1
+    path = text[start:match.end()]
+    if os.path.isabs(path):
+        return path
+    return os.path.join(os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd()), path)
+
+
+def _transcript_holds_handoff(path):
+    """True unless `path` is a readable run transcript carrying no hand-off.
+
+    Fails CLOSED, the inverse of `_file_holds_handoff`: an unreadable or
+    missing transcript is treated as a hand-off. The WHOLE file is scanned, not
+    a prefix — a finished `advance` prints its gate preamble before the first
+    banner — in bounded chunks with a marker-sized overlap, so a large
+    transcript cannot stall the hook and a marker split across two chunks is
+    still seen."""
+    overlap = max(len(marker.encode("utf-8")) for marker in _HANDOFF_CONTENT_MARKERS)
+    markers = [marker.encode("utf-8") for marker in _HANDOFF_CONTENT_MARKERS]
+    try:
+        with open(path, "rb") as handle:
+            tail = b""
+            while True:
+                chunk = handle.read(_HANDOFF_SNIFF_BYTES)
+                if not chunk:
+                    return False
+                window = tail + chunk
+                if any(marker in window for marker in markers):
+                    return True
+                tail = window[-overlap:]
+    except OSError:
+        return True
 
 # The command-position anchor is `_READ_VERB`'s, for the same reason: position
 # is what separates a read from an incidental mention, so the path quoted in a
@@ -5135,7 +5482,28 @@ def main():
     # whichever verdict fires first is the only one emitted, and an advisory
     # about a command that merely will not finish must never displace a refusal
     # about a command that destroys something.
+    #
+    # Which is why the self-matching KILL is a refusal and runs first: it is
+    # the destroying form of the same mistake, and the loop notice used to fire
+    # on it instead — misdescribing a kill as a poll, beside a call that then
+    # killed its own shell.
     if tool_name == "Bash":
+        kill_pattern = self_matching_kill(tool_input.get("command", ""))
+        if kill_pattern:
+            reason, next_action = self_matching_kill_refusal(kill_pattern)
+            block(
+                project_dir,
+                "self-matching-kill",
+                reason,
+                next_action,
+                detail=kill_pattern,
+                evidence=(
+                    f"the command kills by the full-argv pattern {kill_pattern!r}, "
+                    f"and that pattern matches the command's own text; `-x`, the "
+                    f"bracket form, and a `$$` exclusion are not matched"
+                ),
+                call=call,
+            )
         pgrep_pattern = self_matching_pgrep_loop(tool_input.get("command", ""))
         if pgrep_pattern:
             notice("self-matching-pgrep", self_matching_pgrep_notice(pgrep_pattern))
@@ -5261,6 +5629,18 @@ def main():
                     ),
                     call=call,
                 )
+
+        # The session is about to park on its user. Record when, so this
+        # machine's commit-queue liveness beat can tell waiters the truth and,
+        # if it holds the head, give it up after a while (the editor reads this
+        # file; the step hook removes it once the answer arrives).
+        try:
+            run_dir = os.path.join(project_dir, ".codeyam", "run")
+            os.makedirs(run_dir, exist_ok=True)
+            with open(os.path.join(run_dir, "awaiting-user.json"), "w") as f:
+                json.dump({"askedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, f)
+        except OSError:
+            pass
 
         allow("AskUserQuestion with the preview requirement satisfied")
 

@@ -1083,6 +1083,35 @@ codeyam-editor editor verify-merge-consistency # if that integrated a merge — 
 codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.log
 ```
 
+> GOTCHA — **after `fast-commit-stop`, the first source commit needs an
+> ORDER, not a rebuild.** Stopping fast intent re-arms the full `verify-build`
+> in the pre-commit hook, and its `hosted-e2e` check refuses a binary that
+> `rebuild-self --check` calls stale:
+>
+> ```
+> CODEYAM_STATIC_CHECK_SKIP: rebuild-self --check says the codeyam-editor on
+> PATH (…) may predate this checkout's source, so it could test old code. …
+> BLOCKED: static check 'hosted-e2e' failed.
+> ```
+>
+> Re-running `rebuild-self` and retrying the commit **loops**: with the edits
+> still uncommitted the probe keeps reading `stale`, and the commit itself then
+> moves HEAD past the binary's embedded sha. The way through:
+>
+> ```bash
+> codeyam-editor editor rebuild-self                               # 1. the binary now carries this tree
+> CODEYAM_EDITOR_BIN="$(command -v codeyam-editor)" git commit -F <msg>   # 2. hosted-e2e RUNS (~70s) instead of refusing
+> codeyam-editor editor rebuild-self                               # 3. re-stamp at the new HEAD so the finalize can certify
+> ```
+>
+> `CODEYAM_EDITOR_BIN` is `scripts/check-hosted-e2e.sh`'s documented override —
+> a binary named there is trusted as given — and step 1 is what makes trusting
+> it honest. Step 3 is a no-op after a **state-only** commit (no tracked source
+> moved, so `--check` already reads `current`); that is why later commits in the
+> same pass need no override at all. Never use `git commit --no-verify` here:
+> it skips *every* hook, and `staticChecks` is the only thing between the pass
+> and a red CI.
+
 > **A Phase 0.6 block is the CHEAP failure, and on a branch carrying audit
 > debt it is the one to expect.** The finalize runs the strict audit *twice*:
 > once as a pre-audit before Phase 1's full suite (~45-50 min here), and again
@@ -1307,9 +1336,15 @@ CI check is red, root-cause it at the source *before* any
 
 1. **Pull the actual failing-job log.** Do not reason from the check name.
    ```bash
-   gh pr checks <pr>                       # list checks + buckets
-   gh run view --job <job-id> --log-failed # the specific failure
+   gh pr checks <pr>                          # list checks + buckets
+   codeyam-editor editor ci-job-log <job-id>  # the specific failure
    ```
+   The job id is the number after `/job/` in the check's link. Use
+   `ci-job-log`, not `gh run view --job <job-id> --log-failed`: the latter
+   refuses ("still in progress") until EVERY job in the run has finished, while
+   a red job usually lands long before its siblings. `ci-job-log` serves the
+   log as soon as that one job completes, and reports an unfinished job as
+   not-yet-available rather than failing.
 2. **Extract the specific assertion or build error** — the failing test name,
    the exact `assertion failed: ...` / compile error / panic, the line. Write
    it down.
@@ -1558,10 +1593,28 @@ push, not after CI tells you:**
   compile-affecting platform surface, and FAILS on a real cross-target
   compile/clippy error (missing toolchains SKIP with an install hint, never
   block). So the gate and this guidance reinforce each other — do not treat
-  `cross-check` as optional when the branch touches platform surface.
+  `cross-check` as optional when the branch touches platform surface. A
+  cross-target `[PASS]` is a COMPILE verdict, and the line now says so
+  (`compiled for this target only; no test ran on it`). Do not read it as
+  "the platforms are verified" — on `editor-improvements-99` both CI escapes
+  were Linux runtime failures sitting behind a green `macos-clippy` /
+  `windows-clippy`.
 - `codeyam-editor editor session-finalize --linux` — run the actual suite on
   Linux before merge, so a Linux-only test failure gates locally instead of in
-  CI.
+  CI. This is **enforced** too: on a non-Linux host, a branch carrying platform
+  surface with a `crossPlatformTestCommand` configured is refused before Phase 1
+  (exit `2`) unless you pass `--linux`, or `--without-linux-suite "<why>"` when
+  this machine genuinely cannot run it. The waiver is logged as unverified; it
+  is the user's call, so ask before using it.
+- `codeyam-editor editor windows-check` — the Windows verdict. `cross-check`
+  only COMPILES for Windows; it never runs a Windows test or touches a Windows
+  filesystem, so a green `windows-clippy` says nothing about a `MAX_PATH`
+  checkout or a Windows-only test failure. This runs a configured
+  `crossPlatformTestCommand.windows` runner, or dispatches CI's `windows_only`
+  input on the pushed tip (`--run <id>` reads the verdict back). Run it BEFORE
+  a `--start-from-phase 2` re-stamp, not after — a Windows fix verified this
+  way costs one ~25-minute narrowed run instead of a re-stamp plus a full CI
+  round.
 
 When a cross-target build fails, expect the skipped-platform-test-job trap:
 finalize names it explicitly, and you must treat that platform's tests as
