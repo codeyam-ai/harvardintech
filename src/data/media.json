@@ -426,22 +426,20 @@
       "sizeBytes": 13152
     },
     {
-      "filename": "chapters/london.jpg",
-      "url": "/images/chapters/london.jpg",
-      "alt": "Tower Bridge over the River Thames at sunset",
-      "sizeBytes": 353732
+      "filename": "unnamed.webp",
+      "url": "/images/unnamed.webp",
+      "sizeBytes": 589382,
+      "originalSizeBytes": 1836746,
+      "width": 1536,
+      "height": 2048
     },
     {
-      "filename": "chapters/seattle.jpg",
-      "url": "/images/chapters/seattle.jpg",
-      "alt": "Seattle skyline with the Space Needle",
-      "sizeBytes": 353459
-    },
-    {
-      "filename": "chapters/dc-dmv.jpg",
-      "url": "/images/chapters/dc-dmv.jpg",
-      "alt": "The US Capitol reflected in water",
-      "sizeBytes": 149265
+      "filename": "unnamed-2.webp",
+      "url": "/images/unnamed-2.webp",
+      "sizeBytes": 589382,
+      "originalSizeBytes": 1836746,
+      "width": 1536,
+      "height": 2048
     }
   ]
 }
