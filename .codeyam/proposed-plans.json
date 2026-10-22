@@ -368,7 +368,7 @@
       "reason": "The project now fails a seed loudly when a list comes out empty; recapture itself still reports other wrong-content frames as success.",
       "severity": 4,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
       "rank": 14,
@@ -377,7 +377,9 @@
         "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
         "2026-10-14: 2026-10-14: with src/content/config.ts, 11 event files and src/data/collections.json dirty, plain targeted recaptures loaded seeds correctly. The git-stash workaround produced ~15 wrong frames reported as clean 'Recaptured' (AI…",
         "2026-10-15: 2026-10-15: project-side guard added for the empty-collection case; the general wrong-content case is still the editor's"
-      ]
+      ],
+      "decidedAt": "2026-10-22T13:53:30Z",
+      "sightingsAtDecision": 4
     },
     {
       "id": "show-a-compact-subscribe-card-when-the-luma-calendar-has-nothing-upcoming",
