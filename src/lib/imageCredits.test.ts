@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { isUploadInboxFile } from './media';
 
 // The licence ledger, `src/data/imageCredits.json`: one row per committed image
 // recording where it came from and whether we may use it.
@@ -59,9 +60,11 @@ function walkFiles(dir: string): string[] {
 describe('the image licence ledger', () => {
   // A ledger that has drifted out of sync with the library is worse than none,
   // because it reads as authoritative. Every committed asset must appear.
+  // Inbox uploads are exempt until someone places them in a folder — the
+  // unknown-source guard below still covers any page that references one.
   it('has a row for every image in the media library', () => {
     const rows = new Set(ledger.credits.map((c) => c.file));
-    for (const asset of media.assets) {
+    for (const asset of media.assets.filter((a) => !isUploadInboxFile(a.filename))) {
       expect(rows.has(asset.filename), `${asset.filename} has no licence row`).toBe(true);
     }
   });

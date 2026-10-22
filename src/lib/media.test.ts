@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { altFor, type MediaManifest } from './media';
+import { altFor, isUploadInboxFile, type MediaManifest } from './media';
 
 // Two guards in one file.
 //
@@ -49,6 +49,39 @@ function walk(dir: string, rel: string[] = []): string[] {
 }
 
 const filesOnDisk = walk(IMAGES_DIR);
+
+describe('isUploadInboxFile', () => {
+  // A file /admin just wrote lands at the root of public/images, before anyone
+  // has placed or described it — that is the inbox.
+  it('treats a root-level upload as an inbox file', () => {
+    expect(isUploadInboxFile('1791653315070.webp')).toBe(true);
+  });
+
+  // Root-level names are inbox files whatever their extension or shape.
+  it('treats any root-level filename as an inbox file', () => {
+    expect(isUploadInboxFile('unnamed-2.png')).toBe(true);
+    expect(isUploadInboxFile('harvard-shield.png')).toBe(true);
+  });
+
+  // Anything inside a folder has been placed deliberately, so it stays held to
+  // the manifest and the licence ledger.
+  it('does not treat a folder image as an inbox file', () => {
+    expect(isUploadInboxFile('gallery/event-07.jpg')).toBe(false);
+    expect(isUploadInboxFile('team/2026/jane.webp')).toBe(false);
+  });
+
+  // An empty name is not a file anywhere, so it cannot be an inbox upload.
+  it('does not treat an empty name as an inbox file', () => {
+    expect(isUploadInboxFile('')).toBe(false);
+  });
+
+  // Callers sometimes hold the public url rather than the manifest filename;
+  // the leading /images/ prefix must not turn a root upload into a folder one.
+  it('accepts a public images url as well as a bare filename', () => {
+    expect(isUploadInboxFile('/images/unnamed.webp')).toBe(true);
+    expect(isUploadInboxFile('/images/gallery/event-07.jpg')).toBe(false);
+  });
+});
 
 describe('altFor', () => {
   const fixture: MediaManifest = {
@@ -130,8 +163,10 @@ describe('the committed media manifest', () => {
   // The nobody-wrote-alt direction, and the check that keeps the manifest
   // current as images are added: committing an image without describing it
   // fails CI rather than silently shipping an undescribed photo.
+  // Inbox uploads (root-level files /admin just wrote) are exempt: an editor's
+  // upload must never block a deploy before anyone has placed it.
   it('has a record for every image on disk', () => {
-    for (const filename of filesOnDisk) {
+    for (const filename of filesOnDisk.filter((f) => !isUploadInboxFile(f))) {
       expect(
         manifest.assets.some((a) => a.filename === filename),
         `public/images/${filename} has no record in media.json — nobody has written alt for it`,
@@ -154,7 +189,7 @@ describe('the committed media manifest', () => {
   // other, which is what makes the empty strings above meaningful rather than
   // indistinguishable from an oversight.
   it('records an alt value for every asset, empty or otherwise', () => {
-    for (const asset of manifest.assets) {
+    for (const asset of manifest.assets.filter((a) => !isUploadInboxFile(a.filename))) {
       expect(typeof asset.alt, `${asset.filename} has no alt recorded`).toBe('string');
     }
   });

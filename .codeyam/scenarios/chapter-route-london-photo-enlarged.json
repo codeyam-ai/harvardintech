@@ -1,0 +1,18 @@
+{
+  "name": "Chapter Route - London Photo Enlarged",
+  "id": "430f16cc-39b2-481e-9a3b-d541386b3132",
+  "url": "/chapters/london",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/chapters/[slug].astro",
+  "description": "The first of London's uploaded photos opened in the lightbox from the live page. It shows the alt text written for the upload is carried through, and that a photo with no caption opens cleanly — Nicole gave none for these three.",
+  "interactions": [
+    {
+      "action": "click",
+      "selector": "[data-lightbox-open]"
+    }
+  ]
+}

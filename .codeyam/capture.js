@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c23ce41100a6229ea1b7b518a4114f87721740ec  source-sha256: 2207f606e235df66639fd9a49c9b434e1356397976c0a4115a1d99d624150847
+// codeyam-editor: 0.1.7  build: efe36b525a40410996e4cc5d412457aeba93156f  source-sha256: 5d4c78cfa2a70821d7e66760cd57f65d1a6823197bb447740d6095f7fd4b29ba
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -13,29 +13,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
-const { chromium } = require("playwright");
-
-// Substring Playwright has emitted across every 1.x release when the
-// browser cache is empty. Match the substring (not the full string)
-// because Playwright includes the offending path inline.
-const PLAYWRIGHT_MISSING_BROWSER_PATTERN = "Executable doesn't exist";
-const PLAYWRIGHT_INSTALL_COMMAND = "npx playwright install chromium";
-
-// Substrings Playwright/Chromium emit when the browser process dies on a
-// transient launch crash. On the cloud VM the base image has no dbus session,
-// so Chromium intermittently aborts at launch with `Received signal 11`
-// (SIGSEGV) — an environmental fault, not a scenario fault. Match either form
-// because the wording varies across Playwright releases and the OS signal
-// reporter.
-const PLAYWRIGHT_LAUNCH_CRASH_PATTERNS = ["SIGSEGV", "Received signal 11"];
-// A transient SIGSEGV launch crash is environmental, so a bounded retry clears
-// it. Keep it small — a genuinely broken environment must still surface loudly
-// rather than spin.
-const CAPTURE_LAUNCH_SIGSEGV_RETRIES = 2;
-// Short backoff between SIGSEGV retries so the transient fault has a moment to
-// clear; small enough not to eat the per-slug recapture budget.
-const CAPTURE_LAUNCH_SIGSEGV_BACKOFF_MS = 250;
+const { launchChromiumWithSelfHeal } = require("./scenario-launch");
 
 // The sentinel the reverse proxy stamps on its dev-server-down placeholder —
 // the other half of this contract is
@@ -46,306 +24,6 @@ const CAPTURE_LAUNCH_SIGSEGV_BACKOFF_MS = 250;
 // the moment `render_placeholder` is reworded.
 const DEV_SERVER_DOWN_HEADER = "x-codeyam-dev-server-down";
 
-// Pin the headless capture browser's `localhost` resolution to the IPv4
-// loopback the editor's listeners bind. The browser-facing preview origin is
-// now `localhost` (secure-context apps refuse a bare IP — see
-// `BROWSER_FACING_HOST`), but on a dual-stack host `localhost` can resolve to
-// `::1` first, which nothing answers on — stalling the capture or paying a
-// happy-eyeballs fallback delay. Forcing the map removes that intermittency
-// deterministically for capture. The operator's OWN preview browser is covered
-// separately by the editor binding `::1` alongside `127.0.0.1` (see start.rs).
-const CAPTURE_HOST_RESOLVER_RULES = "MAP localhost 127.0.0.1";
-const CAPTURE_LAUNCH_ARGS = [
-  `--host-resolver-rules=${CAPTURE_HOST_RESOLVER_RULES}`,
-  // Cloud-VM-no-dbus / containerized-launch hardening. Each flag below is
-  // inert on a healthy desktop, so the laptop capture path is unchanged; on
-  // the dbus-less cloud base image they stop Chromium from SIGSEGV-ing at
-  // launch (signal 11). See plan chromium-capture-dbus-crash-hardening.
-  // No setuid sandbox in the container (the cloud VM runs capture without the
-  // kernel namespaces the sandbox needs).
-  "--no-sandbox",
-  // /dev/shm is tiny in many containers; route shared memory to /tmp so the
-  // renderer doesn't crash allocating it.
-  "--disable-dev-shm-usage",
-  // No GPU on the headless cloud VM — avoid the GL init path that aborts.
-  "--disable-gpu",
-  // Software WebGL2, asked for EXPLICITLY rather than inherited. Playwright
-  // adds this itself on Linux, which is why `--disable-gpu` left canvas apps
-  // with working WebGL2 there — and why it did not on macOS, where Playwright
-  // does not add it: `getContext("webgl2")` returned null and the WebGL2
-  // capture test failed on every mac dev machine while passing in CI. That is
-  // the host-capability dependency CLAUDE.md forbids, so the flag is now
-  // stated here for every platform. A duplicate on Linux is harmless
-  // (last-wins, same value). WebGPU is still unavailable either way.
-  "--enable-unsafe-swiftshader",
-];
-// Features the capture browser disables on top of Playwright's own list.
-// DBus: stub out the dbus integration Chromium reaches for at launch; the cloud
-// base image has no dbus session bus, which is the proximate cause of the
-// signal-11 abort.
-//
-// These are NOT a second `--disable-features=` switch. Chromium keeps only the
-// LAST value of a repeated switch (verified empirically: `--disable-features=
-// WebHID` hides `navigator.hid`, and a later `--disable-features=DBus` brings it
-// back), so appending our own switch silently re-enabled every feature
-// Playwright disables. `captureLaunchOptions` merges them into one value.
-const CAPTURE_DISABLED_FEATURES = ["DBus"];
-const DISABLE_FEATURES_PREFIX = "--disable-features=";
-
-// Playwright's own default `--disable-features=<list>` switch, exactly as it
-// will pass it, or null when it cannot be read. Read from playwright-core's
-// switch table (not part of its public exports, so it is required by file path
-// and any failure degrades to null rather than throwing).
-function playwrightDefaultDisableFeaturesArg() {
-  try {
-    const playwrightDir = path.dirname(require.resolve("playwright/package.json"));
-    const coreDir = path.dirname(
-      require.resolve("playwright-core/package.json", { paths: [playwrightDir] }),
-    );
-    const { chromiumSwitches } = require(
-      path.join(coreDir, "lib", "server", "chromium", "chromiumSwitches.js"),
-    );
-    const found = chromiumSwitches(false).find(
-      (arg) => typeof arg === "string" && arg.startsWith(DISABLE_FEATURES_PREFIX),
-    );
-    return found || null;
-  } catch (_) {
-    return null;
-  }
-}
-
-// One `--disable-features=` value carrying the default list plus `extra`,
-// de-duplicated and order-preserving.
-function mergeDisableFeaturesArg(defaultArg, extra) {
-  const base =
-    typeof defaultArg === "string" && defaultArg.startsWith(DISABLE_FEATURES_PREFIX)
-      ? defaultArg.slice(DISABLE_FEATURES_PREFIX.length).split(",")
-      : [];
-  const merged = [];
-  for (const feature of base.concat(extra)) {
-    if (feature && !merged.includes(feature)) merged.push(feature);
-  }
-  return DISABLE_FEATURES_PREFIX + merged.join(",");
-}
-
-// The `chromium.launch` args for capture. Playwright's default
-// `--disable-features` switch is suppressed via `ignoreDefaultArgs` and
-// re-supplied merged with ours. Should the suppression ever miss (its match is
-// exact-string), our merged switch is still the later one and a superset, so
-// the last-wins rule still lands every feature.
-function captureLaunchOptions({
-  defaultDisableFeaturesArg = playwrightDefaultDisableFeaturesArg(),
-} = {}) {
-  const args = [
-    ...CAPTURE_LAUNCH_ARGS,
-    mergeDisableFeaturesArg(defaultDisableFeaturesArg, CAPTURE_DISABLED_FEATURES),
-  ];
-  return defaultDisableFeaturesArg
-    ? { args, ignoreDefaultArgs: [defaultDisableFeaturesArg] }
-    : { args };
-}
-// Point Chromium's dbus client at a dead address so it never blocks on (or
-// crashes against) a missing session bus. Spread over the real env in the
-// default launcher so the laptop path keeps its normal environment.
-const CAPTURE_LAUNCH_DBUS_ENV = { DBUS_SESSION_BUS_ADDRESS: "/dev/null" };
-
-// Does this launch error look like a transient SIGSEGV browser crash?
-// (environmental — e.g. the cloud VM's missing dbus session bus — not a
-// scenario fault, so it is safe to retry).
-function isTransientLaunchCrash(error) {
-  return (
-    error &&
-    typeof error.message === "string" &&
-    PLAYWRIGHT_LAUNCH_CRASH_PATTERNS.some((pattern) =>
-      error.message.includes(pattern),
-    )
-  );
-}
-
-// Stable first token of the error a missing-system-library launch failure is
-// rethrown as. The Rust side keys on it (`scenario_check.rs`
-// `CAPTURE_BROWSER_DEPS_MISSING_MARKER`) to turn the failure into a blocked
-// precondition, so the two spellings must stay greppable from each other.
-const CAPTURE_BROWSER_DEPS_MISSING_MARKER = "CODEYAM_CAPTURE_BROWSER_DEPS_MISSING";
-// The two shapes a missing shared library takes in a launch error: the dynamic
-// loader's own line (Chromium starts and dies), and Playwright's host
-// validation box listing every missing library before it even spawns.
-const MISSING_SHARED_LIBRARY_PATTERNS = [
-  "error while loading shared libraries",
-  "Host system is missing dependencies",
-];
-const SHARED_LIBRARY_NAME_PATTERN = /\blib[\w+-]+(?:\.[\w+-]+)*?\.so(?:\.\d+)*/g;
-const PLAYWRIGHT_INSTALL_DEPS_COMMAND = "npx playwright install-deps chromium";
-// Nix package for the libraries Chromium most often lacks on Replit, keyed by
-// the stem before `.so`. A library outside this map still gets a remedy — it is
-// just named without a package suggestion.
-const REPLIT_NIX_PACKAGE_FOR_LIBRARY = {
-  "libglib-2.0": "pkgs.glib",
-  "libgobject-2.0": "pkgs.glib",
-  "libgio-2.0": "pkgs.glib",
-  libnss3: "pkgs.nss",
-  libnssutil3: "pkgs.nss",
-  libsmime3: "pkgs.nss",
-  libnspr4: "pkgs.nspr",
-  "libatk-1.0": "pkgs.atk",
-  "libatk-bridge-2.0": "pkgs.at-spi2-atk",
-  "libatspi": "pkgs.at-spi2-core",
-  libcups: "pkgs.cups",
-  "libdbus-1": "pkgs.dbus",
-  libdrm: "pkgs.libdrm",
-  libgbm: "pkgs.mesa",
-  libxkbcommon: "pkgs.libxkbcommon",
-  libasound: "pkgs.alsa-lib",
-  "libpango-1.0": "pkgs.pango",
-  libcairo: "pkgs.cairo",
-  libexpat: "pkgs.expat",
-  libX11: "pkgs.xorg.libX11",
-  libXcomposite: "pkgs.xorg.libXcomposite",
-  libXdamage: "pkgs.xorg.libXdamage",
-  libXext: "pkgs.xorg.libXext",
-  libXfixes: "pkgs.xorg.libXfixes",
-  libXrandr: "pkgs.xorg.libXrandr",
-  libxcb: "pkgs.xorg.libxcb",
-};
-
-// Does this launch error say the host is missing a shared library Chromium
-// needs? Not retryable and not fixed by downloading the browser again.
-function isMissingSystemLibrary(error) {
-  return (
-    !!error &&
-    typeof error.message === "string" &&
-    MISSING_SHARED_LIBRARY_PATTERNS.some((pattern) =>
-      error.message.includes(pattern),
-    )
-  );
-}
-
-// Every distinct `lib*.so*` name a missing-library launch error mentions, in
-// first-seen order. Covers both the loader line and Playwright's list.
-function missingLibraryNames(error) {
-  const message = (error && error.message) || "";
-  return [...new Set(message.match(SHARED_LIBRARY_NAME_PATTERN) || [])];
-}
-
-// The fix for the platform the capture is running on. Replit is detected by the
-// same env signals `preview_host_provider/replit.rs` uses; there system
-// packages come from replit.nix. Any other Linux host gets Playwright's own
-// dependency installer; anything else gets the library names and a hint.
-function missingLibraryRemedy(libraries, { env = process.env, platform = process.platform } = {}) {
-  const named = libraries.length > 0 ? libraries.join(", ") : "the missing libraries";
-  if (env.REPL_ID || env.REPLIT_DEV_DOMAIN) {
-    const packages = [
-      ...new Set(
-        libraries
-          .map((lib) => REPLIT_NIX_PACKAGE_FOR_LIBRARY[lib.split(".so")[0]])
-          .filter(Boolean),
-      ),
-    ];
-    const suggestion =
-      packages.length > 0 ? ` (${packages.join(", ")})` : "";
-    return `add the Nix package(s) providing ${named}${suggestion} to the \`deps\` list in replit.nix, then restart the Repl and re-run the capture`;
-  }
-  if (platform === "linux") {
-    return `install Chromium's system libraries with \`${PLAYWRIGHT_INSTALL_DEPS_COMMAND}\` (may need sudo), then re-run the capture`;
-  }
-  return `install the system package(s) that provide ${named} for this OS, then re-run the capture`;
-}
-
-// The rethrown error for a missing-library launch failure: marker line naming
-// the libraries, a `remedy:` line, then the original Playwright message as
-// diagnostic. Line-oriented so the Rust side can lift each part out.
-function missingSystemLibraryError(error, { env, platform } = {}) {
-  const libraries = missingLibraryNames(error);
-  const remedy = missingLibraryRemedy(libraries, { env, platform });
-  const wrapped = new Error(
-    `${CAPTURE_BROWSER_DEPS_MISSING_MARKER} ${libraries.join(",")}\n` +
-      `remedy: ${remedy}\n` +
-      error.message,
-  );
-  wrapped.cause = error;
-  return wrapped;
-}
-
-// Self-heal around `chromium.launch()`. Two recoverable classes:
-//
-//   1. "missing browser" — run `npx playwright install chromium` synchronously
-//      (with `stdio: "inherit"` so the user sees progress) and retry once.
-//   2. transient SIGSEGV launch crash — retry the launch up to
-//      `CAPTURE_LAUNCH_SIGSEGV_RETRIES` times with a short backoff, since the
-//      crash is environmental (dbus-less cloud VM) and clears on a retry.
-//
-// A third class is diagnosed but deliberately NOT healed: a host missing a
-// system library Chromium links against. Installing system packages changes
-// the user's environment (replit.nix, apt, often root), so it is rethrown —
-// with no retry and no browser install — as `missingSystemLibraryError`,
-// naming the library and the platform's remedy.
-//
-// For any unrecognized error, or after exhausting retries, rethrow the
-// ORIGINAL Playwright error so the existing `Scenario check failed: <stderr>`
-// path keeps showing the actionable message — looping would hide a real ops
-// failure under a slow timeout.
-async function launchChromiumWithSelfHeal({
-  launch = () =>
-    chromium.launch({
-      ...captureLaunchOptions(),
-      env: { ...process.env, ...CAPTURE_LAUNCH_DBUS_ENV },
-    }),
-  install = () => execSync(PLAYWRIGHT_INSTALL_COMMAND, { stdio: "inherit" }),
-  stderr = process.stderr,
-  sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
-  env = process.env,
-  platform = process.platform,
-} = {}) {
-  try {
-    return await launch();
-  } catch (error) {
-    if (isMissingSystemLibrary(error)) {
-      throw missingSystemLibraryError(error, { env, platform });
-    }
-    const isMissingBrowser =
-      error &&
-      typeof error.message === "string" &&
-      error.message.includes(PLAYWRIGHT_MISSING_BROWSER_PATTERN);
-    const isTransientCrash = isTransientLaunchCrash(error);
-    if (!isMissingBrowser && !isTransientCrash) throw error;
-
-    if (isTransientCrash) {
-      for (let attempt = 1; attempt <= CAPTURE_LAUNCH_SIGSEGV_RETRIES; attempt++) {
-        stderr.write(
-          `Chromium crashed at launch (transient, likely a dbus-less environment) — retry ${attempt}/${CAPTURE_LAUNCH_SIGSEGV_RETRIES}.\n`,
-        );
-        await sleep(CAPTURE_LAUNCH_SIGSEGV_BACKOFF_MS);
-        try {
-          return await launch();
-        } catch (retryError) {
-          if (!isTransientLaunchCrash(retryError)) throw retryError;
-        }
-      }
-      throw error;
-    }
-
-    stderr.write(
-      "Playwright's Chromium browser is missing — installing it now (one-time ~150 MB download). Subsequent runs will be instant.\n",
-    );
-    try {
-      install();
-    } catch (_installError) {
-      throw error;
-    }
-    try {
-      return await launch();
-    } catch (retryError) {
-      // A fresh download onto a host without Chromium's system libraries
-      // (the common first-capture shape on Replit) fails HERE, and the
-      // original "missing browser" error would now be a lie.
-      if (isMissingSystemLibrary(retryError)) {
-        throw missingSystemLibraryError(retryError, { env, platform });
-      }
-      throw error;
-    }
-  }
-}
-
 const {
   findScenarioError,
   SCENARIO_ERROR_MARKER,
@@ -354,6 +32,8 @@ const {
   frameHasVisualContent,
   buildSettleAdvisory,
   describeBlankReason,
+  stripStateSelector,
+  collectCssRuleMatches,
 } = require("./scenario-metrics");
 
 // Decode a PNG screenshot buffer to `{ width, height, data }` (RGBA) with the
@@ -378,6 +58,8 @@ const {
   createIssue,
   pushIssue,
   buildResult,
+  RELOADED_AFTER_READY,
+  retryOnLiveReload,
 } = require("./scenario-issues");
 
 const {
@@ -394,6 +76,7 @@ const {
   resolveHarnessOrigin,
   waitForStablePage,
   waitForReadySignal,
+  watchNavigationAfterReady,
   createNetworkTracker,
   waitForNetworkQuiet,
   collectContentState,
@@ -402,7 +85,6 @@ const {
   forceFinalVisualState,
   centerCaptureWrapper,
   isCanvasInteraction,
-  devicePixelRatioOf,
   resolveInteractionTarget,
   performInteraction,
   pixelSnapshot,
@@ -412,6 +94,7 @@ const {
   performInteractionSequence,
   logCaptureTiming,
 } = require("./scenario-playwright");
+const { devicePixelRatioOf } = require("./scenario-targeting");
 
 // Name of the cookie the editor's control-API accepts the session token in —
 // must match `SESSION_COOKIE` in crates/control-api/src/origin_guard.rs. On a
@@ -712,6 +395,97 @@ function readStackReadySignal() {
   }
 }
 
+// Read the app's declared rendered-sources signal from `.codeyam/stack.json`
+// (`capture.renderedSourcesSignal`): a JS expression returning the source paths
+// of the widgets the app actually drew. A canvas app routes every scenario
+// through one entry, so static analysis cannot tell which widgets a seed
+// reaches; only the running app can. Never throws; an unreadable stack.json or
+// a missing/empty value declares no signal (null).
+function readStackRenderedSourcesSignal() {
+  try {
+    const raw = fs.readFileSync(path.join(".codeyam", "stack.json"), "utf8");
+    const stack = JSON.parse(raw);
+    return normalizeRenderedSourcesSignal(stack && stack.capture);
+  } catch (_) {
+    return null;
+  }
+}
+
+function normalizeRenderedSourcesSignal(source) {
+  return source &&
+    typeof source.renderedSourcesSignal === "string" &&
+    source.renderedSourcesSignal.trim()
+    ? source.renderedSourcesSignal.trim()
+    : null;
+}
+
+// The rendered-sources signal this capture evaluates: one injected through
+// config (unit tests) wins; otherwise stack.json's.
+function resolveRenderedSourcesSignal(config, readStack = readStackRenderedSourcesSignal) {
+  return config && typeof config.renderedSourcesSignal === "string"
+    ? normalizeRenderedSourcesSignal(config)
+    : readStack();
+}
+
+// The record beside a screenshot: `<screenshot>.rendered.json`. The editor's
+// staleness check (`rendered_sources.rs`) reads the same spelling.
+function renderedSourcesRecordPath(outputPath) {
+  return `${outputPath}.rendered.json`;
+}
+
+// Evaluate the rendered-sources signal in the captured frame and record the
+// answer beside the screenshot as `{"sources": [...]}`. Any earlier record is
+// removed first, so a recapture that yields no usable answer never leaves the
+// previous capture's report standing. An empty array means "no information"
+// (no record, no warning); a throw or a non-array / non-string value is a
+// warning — non-blocking, because the editor then simply keeps the full static
+// render set. Returns the warning string, or null.
+async function recordRenderedSources(frame, signal, outputPath, { fsImpl = fs } = {}) {
+  const recordPath = renderedSourcesRecordPath(outputPath);
+  try {
+    fsImpl.rmSync(recordPath, { force: true });
+  } catch (_) {}
+  if (!signal) return null;
+  let outcome;
+  try {
+    outcome = await frame.evaluate((expr) => {
+      try {
+        return { value: (0, eval)(expr) };
+      } catch (e) {
+        return { error: String((e && e.message) || e) };
+      }
+    }, signal);
+  } catch (e) {
+    outcome = { error: String((e && e.message) || e) };
+  }
+  const { sources, warning } = renderedSourcesFromOutcome(outcome, signal);
+  if (sources) {
+    fsImpl.writeFileSync(recordPath, `${JSON.stringify({ sources }, null, 2)}\n`);
+  }
+  return warning;
+}
+
+// Judge what the signal evaluated to: `{ sources }` (sorted, deduped, blanks
+// dropped) for a usable answer, `{ warning }` for a throw or a value that is not
+// an array of strings, and neither for an empty answer — "no information",
+// which the editor already treats as "keep the static render set".
+function renderedSourcesFromOutcome(outcome, signal) {
+  if (outcome && outcome.error != null) {
+    return {
+      warning: `rendered-sources: \`${signal}\` threw (${outcome.error}); staleness keeps this scenario's full static render set. Fix capture.renderedSourcesSignal in .codeyam/stack.json or the app code that publishes it.`,
+    };
+  }
+  const value = outcome ? outcome.value : undefined;
+  if (!Array.isArray(value) || value.some((s) => typeof s !== "string")) {
+    const shape = Array.isArray(value) ? "an array with non-string entries" : typeof value;
+    return {
+      warning: `rendered-sources: \`${signal}\` returned ${shape}, not an array of source paths; staleness keeps this scenario's full static render set.`,
+    };
+  }
+  const sources = [...new Set(value.map((s) => s.trim()).filter((s) => s.length > 0))].sort();
+  return sources.length > 0 ? { sources, warning: null } : { warning: null };
+}
+
 // The readiness this capture waits on: a `readySignal` injected through config
 // (unit tests, and any caller that knows better) wins; otherwise stack.json's.
 function resolveCaptureReadiness(config, readStack = readStackReadySignal) {
@@ -833,6 +607,36 @@ async function resolvePixelClip(frame, interaction, resolve = resolveInteraction
     return { clip, targetIsCanvas: targetIsCanvas === true };
   } catch (_) {
     return { clip: null, targetIsCanvas: false };
+  }
+}
+
+// The canvas form of a flow `waitFor` (`{"canvas": true}`): hold until two
+// consecutive screenshots match. The shot is clipped to the page's canvas when
+// one resolves, as the other canvas settles are, so an unrelated spinner
+// elsewhere cannot keep it unsettled; with no canvas it uses the viewport.
+// THROWS naming the settle and the bound when the frame never stops changing —
+// the same fail-loud contract the DOM wait keeps, never a silent pass.
+async function waitForCanvasSettle(
+  page,
+  frame,
+  step,
+  {
+    defaultTimeoutMs = 8000,
+    resolveClip = resolvePixelClip,
+    pixelSettle = waitForPixelStable,
+  } = {},
+) {
+  const { timeoutMs } = step || {};
+  const bound =
+    typeof timeoutMs === "number" && timeoutMs > 0 ? timeoutMs : defaultTimeoutMs;
+  const { clip } = await resolveClip(frame, { action: "click", selector: "canvas" });
+  if (!(await pixelSettle(page, { clip, timeoutMs: bound }))) {
+    throw new Error(
+      `waitFor: the canvas frame did not settle (two consecutive equal ` +
+        `screenshots) within ${bound}ms — something on it is still moving ` +
+        `(a spinner or a running animation). Raise timeoutMs, or drop the ` +
+        `wait and capture.`,
+    );
   }
 }
 
@@ -987,6 +791,16 @@ const BLANK_RETRY_DELAY_MS = 3000;
 // through `page.waitForTimeout` so it is a real wait in Playwright but instant
 // against the stubbed pages in unit tests.
 const REVEAL_SETTLE_MS = 600;
+
+// Whether a capture must pause `REVEAL_SETTLE_MS` for scroll-gated reveals.
+// Always, unless the app signalled ready (`readyFastPath`) AND the document has
+// nothing below the fold to reveal: `scrollHeight` (what the scroll-through
+// measured, null when it could not) fits within `viewportHeight`.
+function revealSettleNeeded({ readyFastPath, scrollHeight, viewportHeight }) {
+  if (!readyFastPath) return true;
+  if (typeof scrollHeight !== "number") return true;
+  return scrollHeight > viewportHeight;
+}
 
 // Measure the frame's visible (painted, non-opacity:0) text and fold it into
 // the content state in place, so the blank gate can distinguish "text rendered
@@ -1871,6 +1685,28 @@ function resolveFlowDownloadDir(config) {
   );
 }
 
+// The transient record of which stylesheet rules matched the frame at
+// `outputPath`. The editor folds it into the `.png.hash` sidecar so an edit to
+// a rule that styled nothing in this frame leaves the screenshot fresh.
+function cssRuleMatchesPath(outputPath) {
+  return `${outputPath}.css-matches.json`;
+}
+
+// Walk the settled DOM and write the record for the frame just captured.
+// Stack assumption: per-rule CSS tracking needs a DOM at capture; a failed walk
+// writes nothing, and no record means whole-file stylesheet digests — so every
+// failure here is swallowed rather than failing the capture.
+async function recordCssRuleMatches(frame, outputPath) {
+  try {
+    const matches = await frame.evaluate(
+      `(${collectCssRuleMatches.toString()})(${stripStateSelector.toString()})`,
+    );
+    fs.writeFileSync(cssRuleMatchesPath(outputPath), JSON.stringify(matches));
+  } catch (_) {
+    // No record is the safe outcome.
+  }
+}
+
 // Close the capture browser, but never wait on it forever: a browser wedged in
 // teardown (a download mid-flight, a crashed renderer) used to hold the whole
 // capture past its budget with every frame already on disk. Past `boundMs` the
@@ -1903,6 +1739,48 @@ async function closeBrowserBounded(browser, boundMs = 5000) {
   return outcome;
 }
 
+// A flow's `navigate` step: load `stepPath` (resolved relative to the flow's
+// initial url) with the same loader strategy as the initial load, re-settle,
+// and re-wait for hydration. Returns the new content frame and its hydration
+// verdict, which later steps target and classify against.
+async function navigateFlowStep(page, stepPath, ctx) {
+  const { url, navigation, preflight, iframeBackground, harnessOrigin } = ctx;
+  const target = new URL(stepPath, url).href;
+  const loadResult =
+    navigation === "topLevel"
+      ? await loadScenarioTopLevel(page, target, { preflight })
+      : await loadScenarioInIframe(page, target, {
+          background: iframeBackground,
+          preflight,
+          harnessOrigin,
+        });
+  const frame = loadResult.frame;
+  await waitForStablePage(page, frame, ctx.settleMs, ctx.loadingMarkers);
+  // A navigate loads a fresh route that must re-hydrate before the next
+  // fill/click, or the interaction lands on inert SSR markup (the same
+  // bug the top-level wait fixes, one route deeper). Bounded and
+  // stack-gated exactly like the top-level wait.
+  const navHydration = await waitForHydration(frame, {
+    // `target` is only where we aimed; the frame's own URL is where we
+    // landed, so a redirect during the step is followed. Falls back to
+    // `target` when a detached frame cannot answer.
+    url: safeFrameUrl(frame) || target,
+    timeoutMs: ctx.hydrationTimeoutMs,
+    probeCounterpart: ctx.probeCounterpart,
+  });
+  // The mount that breaks a top-level load breaks it here too, and
+  // before this a route that died one navigation deep got no
+  // attribution at all. Report it so the editor can escalate the
+  // preview off the subpath for the rest of the session.
+  //
+  // The returned issue is deliberately NOT pushed: this wait exists to
+  // gate the next interaction, and adding an issue here would give a
+  // flow that passes today a new way to fail. Computing a verdict and
+  // not raising it reads as a bug otherwise — it is the point.
+  await escalateSubpathHydration(navHydration);
+  return { frame, hydrated: navHydration.hydrated };
+}
+
 // Drive an ordered list of flow steps against ONE already-loaded browser
 // session so a scripted multi-step demo (`editor preview-flow`) is captured as
 // the real round-trip — click state and client transients persist across
@@ -1923,15 +1801,9 @@ async function closeBrowserBounded(browser, boundMs = 5000) {
 // result URL reflect the last navigated route.
 async function runFlowSteps(page, initialFrame, steps, ctx) {
   const {
-    url,
     loadingMarkers,
-    navigation,
-    iframeBackground,
-    preflight,
-    harnessOrigin,
     hydrationTimeoutMs = 10000,
     settleMs,
-    probeCounterpart,
     stepEffects,
     downloads,
     downloadDir,
@@ -1968,43 +1840,13 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
     logCaptureTiming("flow-step", { step: n, action: step.action, outcome: "started" });
     try {
       switch (step.action) {
-        case "navigate": {
-          const target = new URL(step.path, url).href;
-          const loadResult =
-            navigation === "topLevel"
-              ? await loadScenarioTopLevel(page, target, { preflight })
-              : await loadScenarioInIframe(page, target, {
-                  background: iframeBackground,
-                  preflight,
-                  harnessOrigin,
-                });
-          frame = loadResult.frame;
-          await waitForStablePage(page, frame, navigateSettleMs, loadingMarkers);
-          // A navigate loads a fresh route that must re-hydrate before the next
-          // fill/click, or the interaction lands on inert SSR markup (the same
-          // bug the top-level wait fixes, one route deeper). Bounded and
-          // stack-gated exactly like the top-level wait.
-          const navHydration = await waitForHydration(frame, {
-            // `target` is only where we aimed; the frame's own URL is where we
-            // landed, so a redirect during the step is followed. Falls back to
-            // `target` when a detached frame cannot answer.
-            url: safeFrameUrl(frame) || target,
-            timeoutMs: hydrationTimeoutMs,
-            probeCounterpart,
-          });
-          // The mount that breaks a top-level load breaks it here too, and
-          // before this a route that died one navigation deep got no
-          // attribution at all. Report it so the editor can escalate the
-          // preview off the subpath for the rest of the session.
-          //
-          // The returned issue is deliberately NOT pushed: this wait exists to
-          // gate the next interaction, and adding an issue here would give a
-          // flow that passes today a new way to fail. Computing a verdict and
-          // not raising it reads as a bug otherwise — it is the point.
-          await escalateSubpathHydration(navHydration);
-          hydrated = navHydration.hydrated;
+        case "navigate":
+          ({ frame, hydrated } = await navigateFlowStep(page, step.path, {
+            ...ctx,
+            settleMs: navigateSettleMs,
+            hydrationTimeoutMs,
+          }));
           break;
-        }
         case "click":
         case "fill":
         case "press":
@@ -2058,7 +1900,11 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
           break;
         }
         case "waitFor":
-          await waitForPredicate(frame, step);
+          if (step.canvas === true) {
+            await waitForCanvasSettle(page, frame, step);
+          } else {
+            await waitForPredicate(frame, step);
+          }
           break;
         case "capture":
           if (step.outputPath) {
@@ -2097,6 +1943,14 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
   return frame;
 }
 
+// One capture, retried once if a dev server's live reload interrupted it (see
+// `retryOnLiveReload`).
+async function runScenarioCheck(config, options = {}) {
+  return retryOnLiveReload(() => runScenarioCheckOnce(config, options), {
+    onRetry: (firstError) => logCaptureTiming("live-reload-retry", { firstError }),
+  });
+}
+
 // `preflight` is injectable (defaulting to the real app-port reachability
 // check) so unit tests that mock the browser can stay network-free.
 // `harnessOrigin` is likewise injectable: it defaults to resolving the editor's
@@ -2104,11 +1958,18 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
 // explicit value (e.g. `null` to force the legacy `setContent` harness) so the
 // iframe-load path never silently depends on a server-state file in cwd.
 // Resolved ONCE here and threaded into every iframe load below.
-async function runScenarioCheck(
+//
+// `browser`, when given, is a browser the caller keeps alive across captures
+// (worker mode, see `runCaptureWorker`). This capture then opens its own
+// context in it and closes only that context, so cookies, storage and
+// permissions stay per-scenario while the browser process, its HTTP cache and
+// its compiled-wasm cache are reused.
+async function runScenarioCheckOnce(
   config,
-  { preflight = assertAppPortReachable, harnessOrigin } = {},
+  { preflight = assertAppPortReachable, harnessOrigin, browser: sharedBrowser } = {},
 ) {
   const { url, outputPath, width, height, httpMocks = {} } = config;
+  const captureStartedAt = Date.now();
   // The harness host mirrors the capture target's host so the framed load stays
   // SAME-SITE — see `resolveHarnessOrigin`. A cross-site frame withholds the
   // SameSite=Lax `cy_session` cookie and every token-gated route 401s.
@@ -2157,7 +2018,10 @@ async function runScenarioCheck(
   } catch (_) {
     /* malformed capture URL — the guard no-ops and failures stay fatal */
   }
-  const browser = await launchChromiumWithSelfHeal();
+  const browser = sharedBrowser || (await launchChromiumWithSelfHeal());
+  // Per-phase wall-clock, reported on the result so a run can say where its
+  // capture time went instead of leaving it to be estimated.
+  const timings = { browserStartMs: Date.now() - captureStartedAt };
   const contextOptions = {
     viewport: { width: width || 1440, height: height || 900 },
     // Explicit, because a flow step that exports a file must produce evidence
@@ -2436,17 +2300,19 @@ async function runScenarioCheck(
         ? config.captureAtMs
         : null;
     const settleStartedAt = Date.now();
-    const stableOutcome = await waitForStablePage(
-      page,
-      frame,
-      stableTimeoutMs,
-      loadingMarkers,
-    );
+    timings.navigateMs = settleStartedAt - captureStartedAt - timings.browserStartMs;
     // App-declared readiness. DOM stability cannot see a canvas paint, so an
     // app that renders into one says when its first frame is down. Declared in
     // stack.json (`capture.readySignal`), or injected via config by tests. A
     // signal that never arrives FAILS the capture — falling through to a
     // screenshot would record exactly the unpainted frame this exists to stop.
+    //
+    // Awaited BEFORE the stability heuristics: once the app has said its first
+    // frame is drawn, they stop being the gate. Stability drops to a single
+    // confirming sample (`confirmOnly`), and the network-quiet wait and the
+    // reveal settle below are skipped. Those waits cost about 2.5 s on every
+    // capture, and on a canvas app they measure nothing the signal did not
+    // already answer. An app without a signal keeps every wait.
     const readiness = resolveCaptureReadiness(config);
     const readyOutcome = await waitForReadySignal(
       frame,
@@ -2456,6 +2322,17 @@ async function runScenarioCheck(
     if (!readyOutcome.ready) {
       pushIssue(issues, readySignalTimeoutIssue(readiness, page.url() || url));
     }
+    const readyFastPath = readyOutcome.awaited && readyOutcome.ready;
+    const stableOutcome = await waitForStablePage(
+      page,
+      frame,
+      stableTimeoutMs,
+      loadingMarkers,
+      { confirmOnly: readyFastPath },
+    );
+    // Checked before the screenshot below; a declared interaction may navigate
+    // on purpose, so it is only acted on for a static capture.
+    const reloadWatch = watchNavigationAfterReady(page, frame);
     // Held here — after stability, before the content/hydration assertions and
     // the screenshot — so every downstream check sees the same frame the
     // scenario asked for rather than an earlier one.
@@ -2471,7 +2348,9 @@ async function runScenarioCheck(
     // landed). Wait for the network to go quiet — bounded, so a streaming /
     // long-poll endpoint that never idles caps out and captures anyway rather
     // than hanging.
-    const networkOutcome = await waitForNetworkQuiet(networkTracker);
+    const networkOutcome = readyFastPath
+      ? { quiet: true, elapsedMs: 0, skipped: true }
+      : await waitForNetworkQuiet(networkTracker);
 
     // If the page never settled (a loading marker outlasted the wait) or the
     // network never went quiet, the screenshot likely caught a client-fetched
@@ -2503,8 +2382,11 @@ async function runScenarioCheck(
     if (typeof page.emulateMedia === "function") {
       await page.emulateMedia({ reducedMotion: "reduce" }).catch(() => {});
     }
-    await scrollThroughDocument(frame).catch(() => {});
-    if (typeof page.waitForTimeout === "function") {
+    const scrollHeight = await scrollThroughDocument(frame).catch(() => null);
+    if (
+      typeof page.waitForTimeout === "function" &&
+      revealSettleNeeded({ readyFastPath, scrollHeight, viewportHeight: height || 900 })
+    ) {
       await page.waitForTimeout(REVEAL_SETTLE_MS);
     }
 
@@ -2751,6 +2633,9 @@ async function runScenarioCheck(
       !!config.interaction ||
       (Array.isArray(config.interactions) && config.interactions.length > 0) ||
       (Array.isArray(config.steps) && config.steps.length > 0);
+    if (reloadWatch.navigated() && !hasDeclaredInteractiveState) {
+      throw new Error(RELOADED_AFTER_READY);
+    }
     if (outputPath && loaded && !hasDeclaredInteractiveState) {
       await forceFinalVisualState(frame).catch(() => {});
     }
@@ -2774,7 +2659,25 @@ async function runScenarioCheck(
     // recoverable rather than destructive.
     if (outputPath && loaded && !devServerPlaceholder) {
       fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+      // A record left by an earlier capture describes an earlier frame, so it
+      // goes before this shot; the one written after always describes THIS one.
+      fs.rmSync(cssRuleMatchesPath(outputPath), { force: true });
+      const screenshotStartedAt = Date.now();
+      timings.settleMs = screenshotStartedAt - settleStartedAt;
       const shot = await page.screenshot({ path: outputPath, fullPage: false });
+      timings.screenshotMs = Date.now() - screenshotStartedAt;
+      await recordCssRuleMatches(frame, outputPath);
+      // Ask the app which widget sources it drew in THIS frame, and record the
+      // answer beside the screenshot it describes. Only when the app signalled
+      // ready — a frame that never finished painting reports nothing useful.
+      if (readyOutcome.ready) {
+        const renderedWarning = await recordRenderedSources(
+          frame,
+          resolveRenderedSourcesSignal(config),
+          outputPath,
+        );
+        if (renderedWarning) interactionWarnings.push(renderedWarning);
+      }
       // A canvas-dominated page passed the DOM blank gate on its canvas's
       // bounding box alone, so check the pixels it actually painted. A frame
       // that is one flat color is an unpainted (or cleared-to-black) canvas.
@@ -2806,6 +2709,10 @@ async function runScenarioCheck(
       // reported verdict `false` rather than a guess.
       viewerOrigin: config.viewerOrigin ?? null,
     });
+    if (timings.settleMs === undefined) {
+      timings.settleMs = Date.now() - settleStartedAt;
+    }
+    result.timings = timings;
 
     if (config.interaction) {
       result.interactionEffect = interactionEffect;
@@ -2883,8 +2790,77 @@ async function runScenarioCheck(
       viewerOrigin: config.viewerOrigin ?? null,
     });
   } finally {
-    await closeBrowserBounded(browser);
+    if (sharedBrowser) {
+      // The caller owns the browser. A context that will not close leaves
+      // it behind in `browser.contexts()`, which is how the worker learns to
+      // replace the browser.
+      await closeBrowserBounded(context);
+    } else {
+      await closeBrowserBounded(browser);
+    }
   }
+}
+
+// Captures one worker serves before it exits so the editor starts a fresh one.
+// A slow leak in the browser or the page code then cannot outlive this many
+// scenarios.
+const WORKER_MAX_CAPTURES = 50;
+
+// Prefix of the one stdout line that carries each worker reply, so a stray
+// `console.log` from page or helper code cannot be taken for a result.
+const WORKER_REPLY_PREFIX = "CODEYAM_CAPTURE_REPLY ";
+
+// Worker mode (`node capture.js --worker`): read one JSON capture config per
+// stdin line and answer each with one `WORKER_REPLY_PREFIX` line, either
+// `{"result": …}` (exactly what one-shot mode prints) or `{"error": "…"}` (what
+// one-shot mode would have exited non-zero with). Requests run one at a time.
+//
+// One browser serves every request. It is relaunched when it disconnects or
+// a context failed to close. After `maxCaptures` the worker exits by itself and
+// the editor starts a fresh one.
+async function runCaptureWorker({
+  input = process.stdin,
+  output = process.stdout,
+  launch = () => launchChromiumWithSelfHeal(),
+  capture = runScenarioCheck,
+  maxCaptures = WORKER_MAX_CAPTURES,
+} = {}) {
+  const readline = require("readline");
+  const lines = readline.createInterface({ input, crlfDelay: Infinity });
+  let browser = null;
+  let served = 0;
+  const reply = (body) => output.write(`${WORKER_REPLY_PREFIX}${JSON.stringify(body)}\n`);
+  for await (const line of lines) {
+    if (!line.trim()) continue;
+    try {
+      const config = JSON.parse(line);
+      if (!config.url) throw new Error("capture config has no url");
+      if (
+        browser &&
+        (!browser.isConnected() || browser.contexts().length > 0)
+      ) {
+        await closeBrowserBounded(browser);
+        browser = null;
+      }
+      let launchMs = 0;
+      if (!browser) {
+        const launchStartedAt = Date.now();
+        browser = await launch();
+        launchMs = Date.now() - launchStartedAt;
+      }
+      const result = await capture(config, { browser });
+      // The launch ran outside the capture, so charge it to the capture that
+      // needed it; every later capture on this browser reports zero.
+      if (result && result.timings) result.timings.browserStartMs += launchMs;
+      reply({ result });
+    } catch (error) {
+      reply({ error: (error && error.message) || String(error) });
+    }
+    served += 1;
+    if (served >= maxCaptures) break;
+  }
+  lines.close();
+  if (browser) await closeBrowserBounded(browser);
 }
 
 /**
@@ -2893,6 +2869,10 @@ async function runScenarioCheck(
  * URL, and writes the resulting screenshot.
  */
 async function main() {
+  if (process.argv[2] === "--worker") {
+    await runCaptureWorker();
+    return;
+  }
   const config = JSON.parse(process.argv[2] || "{}");
 
   // Preview-preflight launch probe (`preview_preflight.rs`
@@ -2924,12 +2904,17 @@ async function main() {
 
 module.exports = {
   runScenarioCheck,
+  runCaptureWorker,
+  WORKER_REPLY_PREFIX,
+  revealSettleNeeded,
+  recordCssRuleMatches,
   classifyInteractionEffect,
   interactionEffectSignal,
   buildStepEffect,
   classifyKeyTarget,
   fingerprintHtml,
   resolvePixelClip,
+  waitForCanvasSettle,
   mergeVisibleTextLength,
   runFlowSteps,
   saveFlowDownload,
@@ -2962,29 +2947,18 @@ module.exports = {
   DEV_SERVER_DOWN_HEADER,
   stripMarkerHeaders,
   main,
-  launchChromiumWithSelfHeal,
-  isTransientLaunchCrash,
-  isMissingSystemLibrary,
-  missingLibraryNames,
-  missingLibraryRemedy,
-  CAPTURE_BROWSER_DEPS_MISSING_MARKER,
-  CAPTURE_LAUNCH_ARGS,
-  CAPTURE_DISABLED_FEATURES,
-  captureLaunchOptions,
-  mergeDisableFeaturesArg,
-  playwrightDefaultDisableFeaturesArg,
   DEFAULT_READY_TIMEOUT_MS,
   resolveReadySignal,
   readStackReadySignal,
   resolveCaptureReadiness,
+  readStackRenderedSourcesSignal,
+  resolveRenderedSourcesSignal,
+  renderedSourcesRecordPath,
+  recordRenderedSources,
+  renderedSourcesFromOutcome,
   readySignalTimeoutIssue,
   canvasBlankIssue,
   decodeScreenshotPng,
-  CAPTURE_HOST_RESOLVER_RULES,
-  CAPTURE_LAUNCH_SIGSEGV_RETRIES,
-  PLAYWRIGHT_INSTALL_COMMAND,
-  PLAYWRIGHT_MISSING_BROWSER_PATTERN,
-  PLAYWRIGHT_LAUNCH_CRASH_PATTERNS,
 };
 
 if (require.main === module) {

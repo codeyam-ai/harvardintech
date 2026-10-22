@@ -10,7 +10,8 @@ callouts:
 showGallery: false
 leads:
   - name: Stefan Pagacik
-    role: Community lead (pilot)
+    role: Investor Community Digital Lead
+    photo: /images/team/stefan-pagacik.webp
 name: Investors
 tagline: For Harvard Alumni in Tech venture capital and angel investing.
 whatsappFormUrl: https://forms.gle/GqgaCDDWhWAgpJC68

@@ -1,0 +1,18 @@
+{
+  "name": "Chapter Route - London Event Photos",
+  "id": "b4184c28-85d2-4d18-add4-8b98f65acf22",
+  "url": "/chapters/london",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/chapters/[slug].astro",
+  "description": "London's own gallery, built from the three photos Nicole uploaded through /admin on 21 Oct: the evening reception under the crystal ceiling and two shots of the London co-working day. They are the real content entries, not a seed, so this is exactly what a visitor sees. The duplicate copies and her layout mockup that came in with the same uploads are gone, so the gallery shows three tiles and nothing else.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": "[data-lightbox-open]"
+    }
+  ]
+}

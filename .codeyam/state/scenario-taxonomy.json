@@ -148,6 +148,36 @@
         "reason": "The dashboard itself is a launchpad: its actions navigate into a collection or entry route. The in-page interactive state now lives on the entry editor and is captured there by cms-entry-editor-change-staged-for-review."
       }
     },
+    "ChapterLeads": {
+      "empty": {
+        "status": "covered"
+      },
+      "single": {
+        "status": "covered"
+      },
+      "typical": {
+        "status": "added"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "Chapters have one or two leads; the list wraps with flex-wrap, so there is no overflow or truncation state to show"
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Static Astro render from content at build time; no async loading state exists"
+      },
+      "edge": {
+        "status": "added"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "No fetch or input; a missing photo falls back to the name-only line, which the headshots scenario shows"
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "Presentational list with no controls"
+      }
+    },
     "ChapterPage": {
       "empty": {
         "status": "covered"

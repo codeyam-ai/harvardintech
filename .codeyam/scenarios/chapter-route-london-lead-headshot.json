@@ -1,0 +1,18 @@
+{
+  "name": "Chapter Route - London Lead Headshot",
+  "id": "6c57638f-fcfd-4647-9cae-c38283e28215",
+  "url": "/chapters/london",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/chapters/[slug].astro",
+  "description": "Nemo Shi's headshot beside his name in London's chapter-leads block, from the live content entry. The photo is the one he supplied on 22 Oct; its alt text comes from the media library.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": ".lead-photo"
+    }
+  ]
+}

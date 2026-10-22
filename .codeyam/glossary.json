@@ -68,7 +68,8 @@
     "filePath": "src/components/ChapterLeads.astro",
     "name": "ChapterLeads",
     "scenarios": [
-      "chapterleads-two-leads-one-without-a-role"
+      "chapterleads-two-leads-one-without-a-role",
+      "chapterleads-headshots-beside-names"
     ]
   },
   {
@@ -1753,6 +1754,15 @@
     "filePath": "src/lib/cutoverProgress.ts",
     "name": "isStepReady",
     "testFile": "src/lib/cutoverProgress.test.ts"
+  },
+  {
+    "description": "Whether an image sits in the /admin upload inbox at the root of public/images; the media-manifest and licence-ledger guards exempt inbox files so an editor upload can never block a deploy.",
+    "filePath": "src/lib/media.ts",
+    "name": "isUploadInboxFile",
+    "tags": [
+      "media"
+    ],
+    "testFile": "src/lib/media.test.ts"
   },
   {
     "description": "True when a URL points at a WhatsApp group itself rather than the join form, matched on host. This is the definition the content schema refuses at edit time and joinCtas refuses at render, because a raw group invite in public HTML skips alumni verification and cannot be revoked once scraped.",

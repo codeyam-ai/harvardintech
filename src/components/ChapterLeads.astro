@@ -1,10 +1,15 @@
 ---
 // The "Chapter leads" block: a heading and a wrapped list of named leads with
-// optional roles. Renders nothing when there are no leads, so a chapter with no
-// leads listed simply omits the section.
+// optional roles and headshots. Renders nothing when there are no leads, so a
+// chapter with no leads listed simply omits the section. A lead without a photo
+// keeps the plain name-and-role line rather than an empty circle.
+import { withBase } from '../lib/url';
+import { altFor } from '../lib/media';
+
 interface Lead {
   name: string;
   role?: string;
+  photo?: string;
 }
 interface Props {
   leads?: Lead[];
@@ -34,6 +39,19 @@ const { leads = [], heading = 'Chapter leads' } = Astro.props;
     flex-wrap: wrap;
     gap: var(--s-5);
   }
+  .leads-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .lead-photo {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--paper-2);
+  }
   .lead-role {
     display: block;
     font-size: var(--t-sm);
@@ -48,8 +66,20 @@ const { leads = [], heading = 'Chapter leads' } = Astro.props;
       <ul class="leads-list">
         {leads.map((lead) => (
           <li>
-            <strong>{lead.name}</strong>
-            {lead.role ? <span class="lead-role">{lead.role}</span> : null}
+            {lead.photo ? (
+              <img
+                class="lead-photo"
+                src={withBase(lead.photo)}
+                alt={altFor(lead.photo, lead.name)}
+                width="64"
+                height="64"
+                loading="lazy"
+              />
+            ) : null}
+            <span>
+              <strong>{lead.name}</strong>
+              {lead.role ? <span class="lead-role">{lead.role}</span> : null}
+            </span>
           </li>
         ))}
       </ul>

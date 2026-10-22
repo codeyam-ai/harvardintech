@@ -53,6 +53,20 @@ export function readMediaManifest(): MediaManifest {
 }
 
 /**
+ * Whether an image sits in the upload inbox: the root of `public/images`,
+ * where /admin writes a file before anyone has placed or described it.
+ *
+ * The manifest and licence-ledger guards exempt inbox files, so an editor's
+ * upload can never block a deploy. Anything in a folder has been placed
+ * deliberately and stays held to both. Accepts a manifest filename or a public
+ * `/images/...` url.
+ */
+export function isUploadInboxFile(filename: string): boolean {
+  const relative = filename.replace(/^\/images\//, '');
+  return relative !== '' && !relative.includes('/');
+}
+
+/**
  * The alt text to render for a site-relative image URL.
  *
  * `fallback` is the render site's CURRENT value, so adopting this helper can

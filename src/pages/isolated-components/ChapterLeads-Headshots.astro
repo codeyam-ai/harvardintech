@@ -1,0 +1,30 @@
+---
+import Component from "../../../src/components/ChapterLeads.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for ChapterLeads with headshots — codeyam screenshots the
+// #codeyam-capture wrapper by navigating to /isolated-components/ChapterLeads-Headshots.
+//
+// Two leads with a photo and one without, because the photo is per lead: a lead
+// with no headshot keeps the plain name-and-role line rather than an empty
+// circle, and only a mixed row shows both branches in one frame. Nemo and
+// Stefan are the two leads whose headshots are on the site.
+const leads = [
+  { name: 'Nemo Shi', role: 'London Lead', photo: '/images/team/nemo-shi.webp' },
+  { name: 'Stefan Pagacik', role: 'Investor Community Digital Lead', photo: '/images/team/stefan-pagacik.webp' },
+  { name: 'Peter Boyce', role: 'Co-lead' },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: ChapterLeads with headshots</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg);">
+      <Component leads={leads} />
+    </div>
+  </body>
+</html>

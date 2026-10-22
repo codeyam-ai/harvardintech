@@ -1,0 +1,24 @@
+{
+  "surface": "ChapterLeads",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "leads",
+      "value": "empty",
+      "rationale": "source-derived state leads=empty",
+      "status": "covered"
+    },
+    {
+      "dimension": "leads",
+      "value": "one",
+      "rationale": "source-derived state leads=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "leads",
+      "value": "many",
+      "rationale": "source-derived state leads=many",
+      "status": "planned"
+    }
+  ]
+}

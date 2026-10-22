@@ -504,16 +504,28 @@ export async function main() {
 
   // And make the RUNNING server see it, for the collections whose watcher was
   // never registered because they booted empty. Best-effort: see the function.
-  const { loaded } = await refreshDevContent(projectRoot);
-
-  // A capture that renders an empty collection must fail here, loudly — not be
-  // reported as a clean recapture. See `findEmptiedCollections`.
-  const emptied = findEmptiedCollections({
-    onDisk: countCollectionFiles(contentRoot),
-    loaded,
-    tracked: trackedCollectionCounts(projectRoot, resolveContentDir(projectRoot)),
-    seeded: new Set(Object.keys(counts)),
-  });
+  //
+  // The sandbox reset above deletes and re-copies every collection directory,
+  // and the watcher reacts to that with reloads of its own. One of those can
+  // land after our refresh and read a directory mid-copy, leaving a collection
+  // empty. So an emptied collection gets a few settle-and-refresh retries
+  // before it is treated as real.
+  const tracked = trackedCollectionCounts(projectRoot, resolveContentDir(projectRoot));
+  const seeded = new Set(Object.keys(counts));
+  let emptied: string[] = [];
+  for (let attempt = 0; attempt < 4; attempt++) {
+    if (attempt > 0) await new Promise((r) => setTimeout(r, 1_000));
+    const { loaded } = await refreshDevContent(projectRoot);
+    // A capture that renders an empty collection must fail here, loudly — not
+    // be reported as a clean recapture. See `findEmptiedCollections`.
+    emptied = findEmptiedCollections({
+      onDisk: countCollectionFiles(contentRoot),
+      loaded,
+      tracked,
+      seeded,
+    });
+    if (emptied.length === 0) break;
+  }
   if (emptied.length > 0) {
     for (const problem of emptied) console.error(`[codeyam-seed] FATAL: ${problem}`);
     process.exit(1);

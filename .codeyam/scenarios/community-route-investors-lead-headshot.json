@@ -1,0 +1,17 @@
+{
+  "name": "Community Route - Investors Lead Headshot",
+  "id": "bbf4f2e3-e665-4e9d-bf09-7d2294270563",
+  "url": "/communities/investors",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "description": "Stefan Pagacik's headshot beside his name and pilot role on the Investors community page, from the live content entry.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": ".lead-photo"
+    }
+  ]
+}

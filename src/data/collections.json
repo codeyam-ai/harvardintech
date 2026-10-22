@@ -256,6 +256,12 @@
               "label": "Role",
               "type": "text",
               "optional": true
+            },
+            {
+              "name": "photo",
+              "label": "Headshot",
+              "type": "image",
+              "optional": true
             }
           ]
         },
@@ -388,6 +394,12 @@
               "name": "role",
               "label": "Role",
               "type": "text",
+              "optional": true
+            },
+            {
+              "name": "photo",
+              "label": "Headshot",
+              "type": "image",
               "optional": true
             }
           ]

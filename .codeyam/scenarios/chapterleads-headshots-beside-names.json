@@ -1,0 +1,12 @@
+{
+  "name": "ChapterLeads - Headshots Beside Names",
+  "id": "4f932a1e-7f1b-4b1c-8b04-ebbe0f99224f",
+  "url": "/isolated-components/ChapterLeads-Headshots",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterLeads",
+  "scenarioType": "component",
+  "description": "Leads with a headshot show it as a round photo beside the name and role; a lead with no photo keeps the plain name-and-role line rather than an empty circle. Nemo Shi and Stefan Pagacik are the two real headshots, Peter Boyce the no-photo branch."
+}

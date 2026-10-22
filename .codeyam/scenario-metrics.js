@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c23ce41100a6229ea1b7b518a4114f87721740ec  source-sha256: 5255c6a90706000d2840c12e4931e1501f4f74e00c63a17a414da12fe8f03a48
+// codeyam-editor: 0.1.7  build: efe36b525a40410996e4cc5d412457aeba93156f  source-sha256: a04fa0caa95537feb2818cbea46ff576451e7fddd708bacf0361261e954351c2
 const LOADING_MARKERS = [
   "Loading scenario...",
   "Loading tests...",
@@ -269,7 +269,108 @@ function frameHasVisualContent(image) {
   return Math.round(max) - Math.round(min) >= MIN_CONTENT_LUMA_SPREAD;
 }
 
+// Reduce a selector to the part a settled DOM can answer. Pseudo-elements
+// (`::before`, `::placeholder`, legacy `:after`) and interaction-state
+// pseudo-classes (`:hover`, `:focus-visible`, …) are dropped, so
+// `.btn:hover::after` asks whether a `.btn` exists. Deliberately
+// over-inclusive: the staleness check ignores edits only to rules that
+// matched NOTHING, so counting a rule as matched can cost a recapture but
+// never hides one. An emptied compound (`:hover` alone) becomes `*`.
+function stripStateSelector(selector) {
+  const stripped = String(selector)
+    .replace(/::[\w-]+(\([^)]*\))?/g, "")
+    .replace(/:(before|after|first-line|first-letter)(?![\w-])/gi, "")
+    .replace(
+      /:(hover|focus-visible|focus-within|focus|active|visited|target|link|any-link)(?![\w-])/gi,
+      "",
+    );
+  return stripped
+    .split(",")
+    .map((part) => {
+      const trimmed = part.trim();
+      if (trimmed === "") return "*";
+      return /[>+~]$/.test(trimmed) ? `${trimmed} *` : trimmed;
+    })
+    .join(", ");
+}
+
+// Runs IN THE PAGE (via `frame.evaluate`), so it is self-contained and takes
+// the selector stripper as an argument rather than closing over it. Records,
+// per stylesheet, which style rules matched an element in the captured DOM.
+// Rules inside `@media` / `@supports` / `@container` / `@layer` are tested
+// whatever their condition, so a viewport difference never under-counts.
+//
+// A sheet is named by Vite's `data-vite-dev-id` (an absolute source path) or
+// its href's pathname; an unnamed inline `<style>` is skipped, since no
+// project file can be resolved from it. Cross-origin sheets whose `cssRules`
+// throw are skipped too — they are not project source. Shadow roots with their
+// own styles and `adoptedStyleSheets` are invisible to this walk, so either
+// marks the whole record `unsupported` and the editor falls back to digesting
+// whole files. A nested style rule marks its sheet `unsupported` the same way.
+function collectCssRuleMatches(strip) {
+  const out = { unsupported: false, sheets: [] };
+  if (document.adoptedStyleSheets && document.adoptedStyleSheets.length > 0) {
+    out.unsupported = true;
+  }
+  for (const el of Array.from(document.querySelectorAll("*"))) {
+    const root = el.shadowRoot;
+    if (
+      root &&
+      ((root.adoptedStyleSheets && root.adoptedStyleSheets.length > 0) ||
+        root.querySelector("style, link[rel~='stylesheet']"))
+    ) {
+      out.unsupported = true;
+      break;
+    }
+  }
+  const matches = (selectorText) => {
+    try {
+      return document.querySelector(strip(selectorText)) !== null;
+    } catch (_) {
+      return true;
+    }
+  };
+  for (const sheet of Array.from(document.styleSheets)) {
+    let rules;
+    try {
+      rules = sheet.cssRules;
+    } catch (_) {
+      continue;
+    }
+    const owner = sheet.ownerNode;
+    const viteId =
+      owner && owner.getAttribute ? owner.getAttribute("data-vite-dev-id") : null;
+    let id = viteId;
+    if (!id && sheet.href) {
+      try {
+        id = new URL(sheet.href).pathname;
+      } catch (_) {
+        id = null;
+      }
+    }
+    if (!id) continue;
+    const entry = { id, matched: [], unmatched: [], unsupported: false };
+    const walk = (list) => {
+      for (const rule of Array.from(list)) {
+        if (typeof CSSStyleRule !== "undefined" && rule instanceof CSSStyleRule) {
+          (matches(rule.selectorText) ? entry.matched : entry.unmatched).push(
+            rule.selectorText,
+          );
+          if (rule.cssRules && rule.cssRules.length > 0) entry.unsupported = true;
+        } else if (rule.cssRules) {
+          walk(rule.cssRules);
+        }
+      }
+    };
+    walk(rules);
+    out.sheets.push(entry);
+  }
+  return out;
+}
+
 module.exports = {
+  stripStateSelector,
+  collectCssRuleMatches,
   hasLoadingMarkers,
   hasRenderableContent,
   isCanvasDominated,

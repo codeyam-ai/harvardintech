@@ -7,9 +7,14 @@ blurb: Our European hub across the London tech scene.
 heroImage: /images/chapters/london.jpg
 tagline: We are the London Chapter of Harvard Alumni in Tech.
 showGallery: true
-photos: []
+photos:
+  - image: /images/unnamed.webp
+  - image: /images/1782977679252.webp
+  - image: /images/1782977679529.webp
 leads:
   - name: Nemo Shi
+    role: London Lead
+    photo: /images/team/nemo-shi.webp
 links:
   - label: LinkedIn
     url: https://www.linkedin.com/in/nemoshi/

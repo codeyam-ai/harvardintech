@@ -128,7 +128,7 @@ describe('committed CMS registry vs content schema', () => {
     const chapters = REGISTRY.collections.find((c) => c.id === 'chapters')!;
     const byName = (n: string) => chapters.fields.find((f) => f.name === n);
 
-    expect(declaredFieldNames(byName('leads')!.fields ?? [])).toEqual(['name', 'role']);
+    expect(declaredFieldNames(byName('leads')!.fields ?? [])).toEqual(['name', 'role', 'photo']);
     expect(declaredFieldNames(byName('links')!.fields ?? [])).toEqual(['label', 'url']);
   });
 

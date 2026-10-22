@@ -233,7 +233,7 @@ const chapters = defineCollection({
     // settings contact email.
     contactEmail: z.string().optional(),
     leads: z
-      .array(z.object({ name: z.string(), role: z.string().optional() }))
+      .array(z.object({ name: z.string(), role: z.string().optional(), photo: z.string().optional() }))
       .optional(),
     links: z
       .array(z.object({ label: z.string(), url: z.string() }))
@@ -293,7 +293,7 @@ const communities = defineCollection({
     showGallery: z.boolean().optional(),
     contactEmail: z.string().optional(),
     leads: z
-      .array(z.object({ name: z.string(), role: z.string().optional() }))
+      .array(z.object({ name: z.string(), role: z.string().optional(), photo: z.string().optional() }))
       .optional(),
     links: z
       .array(z.object({ label: z.string(), url: z.string() }))
