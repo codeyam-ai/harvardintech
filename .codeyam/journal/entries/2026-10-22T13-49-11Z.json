@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-10-22T13:49:11Z",
+  "title": "Upgrade to @codeyam/cms 0.15.0 and drop the copy-warning half of the local patch",
+  "type": "feature",
+  "userRequest": "## Summary\n\n**BLOCKED — not done until Jared publishes `@codeyam/cms` 0.15.0 to npm.** Check with `npm view @codeyam/cms versions`; if 0.15.0 is not listed, do not start this plan.\n\nOn 2026-10-20 the copy-warning feature (site-declared `copyWarnings` rules, the amber per-field note, the summary above Save) was ported from this site's local patch into the CMS repo: https://github.com/codeyam-ai/codeyam-cms/pull/7 (branch `feat/copy-warnings`; 2518/2518 tests, 14 new; tsc and build clean). Jared was emailed the same day to review, merge, bump to 0.15.0, tag `v0.15.0`, and `npm publish` — only he can publish. Until then the site keeps the full 891-line `patches/@codeyam+cms+0.14.0.patch`.\n\n## Key Decisions\n\n- Only the copy-warning half moved upstream (7 of the patch's 14 files: `CopyWarningNote.tsx`, `CopyWarningsSummary.tsx`, `EntryEditor.tsx`, `collectionRegistry.ts`, `copyWarnings.ts`, `server/entryPages.ts`, `pages/admin/[collection]/[entry].astro`). The entry-ordering half (`OrderArrows`, `EntryRow`, `EntryListSearch`, `EntryListSection`, `entryList.ts`, `entryActions.ts`, `pages/admin/[collection]/index.astro`) stays in the site's patch.\n- The rule shape in `src/data/collections.json` (`copyWarnings: [{pattern, message}]`) is unchanged, so `src/lib/copyWarnings.test.ts` keeps reading the same rule.\n\n## Implementation\n\n1. Confirm 0.15.0 is on npm and that its `src/lib/copyWarnings.ts` matches what PR #7 merged.\n2. Bump `@codeyam/cms` to `0.15.0` in `package.json`.\n3. Regenerate the patch as `patches/@codeyam+cms+0.15.0.patch` carrying only the entry-ordering hunks; delete the 0.14.0 patch. Check that `npm install` applies it cleanly.\n4. Keep `src/lib/copyWarnings.test.ts` green; re-capture the CMS entry-editor scenarios to confirm the warning note and summary still render.\n5. Resolve the proposal `move-the-copy-warning-support-out-of-the-local-cms-patch-and-into-codeyam-cms`.",
+  "description": "Bumped @codeyam/cms from 0.14.0 to 0.15.0 (published to npm 2026-10-20, latest dist-tag). 0.15.0 ships the copy-warning support upstream, so the local patch shrank from 891 lines to 560: patches/@codeyam+cms+0.15.0.patch now carries only the seven entry-ordering files, and the old 0.14.0 patch is deleted. The copy-warning files in the previously patched node_modules were verified byte-identical to the 0.15.0 release, and a clean reinstall applied the new patch cleanly. No site source changed. Full suite green on 0.15.0 (1781 passed, 0 failed), including src/lib/copyWarnings.test.ts and src/lib/cmsOrderControls.test.ts. Scope verdict: this is maintenance that advances no project deliverable; none delivered, none deferred. Open caveat: the 0.15.0 build (gitHead 08c3a38) could not be tied to the upstream PR #7 merge because gh is not authenticated here.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release.md\t.codeyam/plans/completed/upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/2280b14f7ef7101d4988b8ee21258e7ee71d15c406369292fe291a6b37632181.json",
+      "status": "deleted"
+    },
+    {
+      "path": "package-lock.json",
+      "status": "modified"
+    },
+    {
+      "path": "package.json",
+      "status": "modified"
+    },
+    {
+      "path": "patches/@codeyam+cms+0.14.0.patch",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/e6f20a8967d9847d49fb29bbd4189953702a799c77526823170f19a198fe0385.json",
+      "status": "added"
+    },
+    {
+      "path": "patches/@codeyam+cms+0.15.0.patch",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 1781,
+    "passed": 1781,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1781,
+        "passed": 1781
+      }
+    ]
+  }
+}
