@@ -1053,11 +1053,13 @@
       "severity": 2,
       "source": "session-review",
       "category": "debt",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
       "kind": "tech-debt",
       "rank": 4,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-22T13:52:18Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "patched-dependency-code-is-invisible-to-isolate-impacted-checks-and-verify-build",
