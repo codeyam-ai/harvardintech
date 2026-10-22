@@ -172,8 +172,7 @@
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 46
+      "proposedAt": "2026-10-09T17:47:04.948016884+00:00"
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -222,8 +221,7 @@
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 51
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
@@ -235,7 +233,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 36,
       "sightings": 3,
       "notes": [
         "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
@@ -251,7 +248,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "rank": 32,
       "sightings": 4,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand.",
@@ -284,7 +280,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 47,
       "sightings": 2,
       "notes": [
         "2026-10-22: Seen again on momentum-fund-the-impact-band-with-real-quotes: the BLOCKED message quoted identical seed and committed mission text, while the actual cause was an unrelated `projects` collection loaded with 0 entries. The messag…"
@@ -298,7 +293,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 37,
       "sightings": 3,
       "notes": [
         "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots.",
@@ -332,7 +326,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 5,
       "sightings": 8,
       "notes": [
         "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …",
@@ -353,7 +346,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 21,
       "sightings": 1
     },
     {
@@ -365,7 +357,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 18,
+      "rank": 7,
       "sightings": 1
     },
     {
@@ -379,7 +371,7 @@
       "status": "pending",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
-      "rank": 3,
+      "rank": 14,
       "sightings": 4,
       "notes": [
         "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
@@ -415,7 +407,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 52,
       "sightings": 1
     },
     {
@@ -427,7 +418,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 29,
       "sightings": 1
     },
     {
@@ -439,7 +429,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 30,
       "sightings": 1
     },
     {
@@ -451,7 +440,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 10,
       "sightings": 1
     },
     {
@@ -463,7 +451,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 33,
       "sightings": 4,
       "notes": [
         "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed.",
@@ -481,7 +468,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 23,
       "sightings": 1
     },
     {
@@ -493,7 +479,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 22,
       "sightings": 1
     },
     {
@@ -526,7 +511,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 8,
+      "rank": 13,
       "sightings": 1
     },
     {
@@ -539,7 +524,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 35,
       "sightings": 2,
       "notes": [
         "2026-10-15: Seen again: isolate WhatsappJoinCard HitDirectoryTeaser generated pages that spread `scenarios[name] ?? {}` into components with required props, failing astro-check with ts(2322)."
@@ -555,7 +539,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 57,
       "sightings": 1
     },
     {
@@ -567,7 +550,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 16,
+      "rank": 12,
       "sightings": 1
     },
     {
@@ -579,7 +562,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 15,
+      "rank": 5,
       "sightings": 1
     },
     {
@@ -591,7 +574,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 13,
       "sightings": 1
     },
     {
@@ -604,7 +586,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 40,
+      "rank": 15,
       "sightings": 1
     },
     {
@@ -617,7 +599,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 41,
       "sightings": 2,
       "notes": [
         "2026-10-15: 2026-10-15: brand-new tests, not renamed ones, landed with empty descriptions after a refresh-tests run"
@@ -632,7 +613,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 12,
+      "rank": 4,
       "sightings": 1
     },
     {
@@ -644,7 +625,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 11,
+      "rank": 2,
       "sightings": 1
     },
     {
@@ -656,7 +637,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 14,
       "sightings": 1
     },
     {
@@ -669,7 +649,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 31,
+      "rank": 16,
       "sightings": 3,
       "notes": [
         "2026-10-15: Seen again: register-test --line N for it.each rows in noPersonalEmail.test.ts and presenceConsistency.test.ts was undone by session-finalize's own phase-1 reconcile; only --warm-evidence plus --start-from-phase 2 got past it."
@@ -684,7 +664,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 38,
       "sightings": 3,
       "notes": [
         "2026-10-16: 2026-10-16: restart-dev-server and dev-server start each launched two astro dev trees ~2s apart (2 of 3 attempts); the editor tracked the second on :4323, then preview hard-failed 'app bound :4323 but the editor expects :4322' …"
@@ -698,7 +677,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 39,
       "sightings": 3,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: a page-by-page phone and tablet review needed full-length frames, so I wrote a throwaway Playwright script that sliced full pages into side-by-side strips against a scratch build."
@@ -714,7 +692,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 42,
       "sightings": 2
     },
     {
@@ -726,7 +703,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 17,
       "sightings": 2
     },
     {
@@ -759,7 +735,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 43,
       "sightings": 2,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: raising 40 sub-12px font sizes across 26 files had to be done as 26 Reads plus 33 Edit calls after a sed loop was refused."
@@ -773,7 +748,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 44,
       "sightings": 2,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: 13 of 206 checks failed as 404s on draft-blog, CMS-page and volunteer-project scenarios; each loaded fine once its own seed was applied."
@@ -788,7 +762,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 25,
       "sightings": 1
     },
     {
@@ -800,7 +773,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 26,
       "sightings": 1
     },
     {
@@ -815,7 +787,7 @@
       "status": "pending",
       "proposedAt": "2026-10-15T17:10:02.886201980+00:00",
       "kind": "tech-debt",
-      "rank": 7,
+      "rank": 11,
       "sightings": 1
     },
     {
@@ -827,7 +799,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T17:10:02.886201980+00:00",
-      "rank": 28,
       "sightings": 1
     },
     {
@@ -840,7 +811,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 48,
       "sightings": 1
     },
     {
@@ -852,7 +822,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 34,
       "sightings": 4,
       "notes": [
         "2026-10-15: 2026-10-15: also fires mid-batch with ONE dev server — back-to-back reseeds in a recapture-stale batch land before the store recovers; recapturing one slug at a time after curling a content page succeeded every time.",
@@ -869,7 +838,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 19,
       "sightings": 1
     },
     {
@@ -911,7 +879,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 24,
       "sightings": 1
     },
     {
@@ -923,7 +890,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 20,
       "sightings": 1
     },
     {
@@ -935,7 +901,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 27,
       "sightings": 1
     },
     {
@@ -950,7 +915,7 @@
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
       "kind": "tech-debt",
-      "rank": 6,
+      "rank": 9,
       "sightings": 1
     },
     {
@@ -965,7 +930,7 @@
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
       "kind": "tech-debt",
-      "rank": 9,
+      "rank": 8,
       "sightings": 1
     },
     {
@@ -978,7 +943,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 49,
       "sightings": 1
     },
     {
@@ -989,7 +953,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 45,
       "sightings": 3,
       "notes": [
         "2026-10-16: 2026-10-16: all 33 'debug logging' hits were scripts/*.mjs CLI output again.",
@@ -1005,7 +968,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 53,
       "sightings": 1
     },
     {
@@ -1017,7 +979,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 54,
       "sightings": 1
     },
     {
@@ -1029,7 +990,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 55,
       "sightings": 1
     },
     {
@@ -1041,7 +1001,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 56,
       "sightings": 1
     },
     {
@@ -1071,7 +1030,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
-      "rank": 50,
+      "rank": 18,
       "sightings": 1
     },
     {
@@ -1083,7 +1042,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
-      "rank": 58,
       "sightings": 1
     },
     {
@@ -1095,7 +1053,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
-      "rank": 59,
+      "rank": 3,
       "sightings": 1
     },
     {
@@ -1110,7 +1068,7 @@
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
       "kind": "tech-debt",
-      "rank": 2,
+      "rank": 10,
       "sightings": 1
     },
     {
@@ -1122,6 +1080,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
+      "rank": 19,
       "sightings": 1
     },
     {
@@ -1155,6 +1114,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
+      "rank": 6,
       "sightings": 1
     },
     {
@@ -1166,6 +1126,53 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "a-reset-prompt-s-step-number-can-knock-the-workflow-pointer-backward",
+      "title": "A reset prompt's step number can knock the workflow pointer backward",
+      "mode": "backend",
+      "body": "## What happened\nAfter a /clear at a workflow phase boundary, the re-invoked skill arguments said: \"Resume the in-flight workflow: run `codeyam-editor editor step 8` (backend-deconstruct)\". The UserPromptSubmit hook in the same turn said the session was at Step 15/21 (Reconcile), and the carried context said the step-14 save gate was already approved. Running `editor step 8` as instructed printed `Workflow pointer moved BACKWARD: step 15 -> 8`. Recovery took an extra `editor step --repair 15` round-trip.\n\n## What would have helped\n- The resume prompt should name the recorded current step (the high-water mark), not a stale one, or say `editor step-handoff` / `editor step --repair` instead of a numbered `step N`.\n- Alternatively, `editor step N` could refuse a backward move when it is invoked from a resume prompt and the high-water mark is ahead, naming `--show N` and `--repair` instead of silently moving.",
+      "reason": "After /clear, the resume prompt said to run `editor step 8` while the workflow was really at step 15; running it moved the pointer back.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
+      "kind": "tech-debt",
+      "rank": 17,
+      "sightings": 1
+    },
+    {
+      "id": "not-confirmed-that-the-0-15-0-release-was-built-from-the-merged-pr-7-its-copy-warning-files-match-the-old-patch-byte-for-byte-but-github-access-here-could-not-tie-the-release-commit-to-the-merge",
+      "title": "Not confirmed that the 0.15.0 release was built from the merged PR #7: its copy-warning files match the old patch byte for byte, but GitHub access here could not tie the release commit to the merge.",
+      "mode": "backend",
+      "body": "## Summary\n\nNot confirmed that the 0.15.0 release was built from the merged PR #7: its copy-warning files match the old patch byte for byte, but GitHub access here could not tie the release commit to the merge.\n\nAt the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release` (now at `.codeyam/plans/completed/upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release.md`).\n\nThe site now runs the official @codeyam/cms 0.15.0 release. Copy warnings come from the package itself instead of a local patch.\n\n## What you can now do\n- Get copy-warning fixes from future CMS releases without re-patching\n- Upgrade the CMS more easily: the local patch only covers entry ordering now (560 lines, down from 891)\n- Rely on the same copy warnings and ordering controls as before; all 1781 tests pass on 0.15.0\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-copy-warning-and-ordering-tests-have-not-run-on-0-15-0-yet-they-run-in-the-full-check-after-you-save",
+      "title": "The copy-warning and ordering tests have not run on 0.15.0 yet; they run in the full check after you save.",
+      "mode": "backend",
+      "body": "## Summary\n\nThe copy-warning and ordering tests have not run on 0.15.0 yet; they run in the full check after you save.\n\nAt the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release` (now at `.codeyam/plans/completed/upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release.md`).\n\nThe site now runs the official @codeyam/cms 0.15.0 release. Copy warnings come from the package itself instead of a local patch.\n\n## What you can now do\n- Get copy-warning fixes from future CMS releases without re-patching\n- Upgrade the CMS more easily: the local patch only covers entry ordering now (560 lines, down from 891)\n- Rely on the same copy warnings and ordering controls as before; all 1781 tests pass on 0.15.0\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-copy-warning-editor-screenshots-have-not-been-re-captured-the-pages-load-and-show-the-warning-and-the-full-check-re-captures-them",
+      "title": "The copy-warning editor screenshots have not been re-captured; the pages load and show the warning, and the full check re-captures them.",
+      "mode": "backend",
+      "body": "## Summary\n\nThe copy-warning editor screenshots have not been re-captured; the pages load and show the warning, and the full check re-captures them.\n\nAt the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release` (now at `.codeyam/plans/completed/upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release.md`).\n\nThe site now runs the official @codeyam/cms 0.15.0 release. Copy warnings come from the package itself instead of a local patch.\n\n## What you can now do\n- Get copy-warning fixes from future CMS releases without re-patching\n- Upgrade the CMS more easily: the local patch only covers entry ordering now (560 lines, down from 891)\n- Rely on the same copy warnings and ordering controls as before; all 1781 tests pass on 0.15.0\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
       "sightings": 1
     }
   ],
@@ -1878,6 +1885,38 @@
         "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
         "the-warning-appears-as-the-editor-types-not-only-when-they-press-save",
         "it-covers-the-edit-form-for-existing-entries-only-the-add-a-new-entry-form-and-the-site-wide-settings-and-navigation-screens-do-not-warn-yet"
+      ]
+    },
+    {
+      "at": "2026-10-22T13:52:52.336548455+00:00",
+      "feature": "CMS upgraded to 0.15.0 with a slimmer local patch",
+      "notes": "Maintenance cycle: dependency bump plus patch trim, no site source touched, no app fix/debt found in the touched files (package.json, lockfile, patch). Retired the copy-warning proposal, now delivered by 0.15.0. Ranking keeps the never-see…",
+      "proposedIds": [
+        "a-reset-prompt-s-step-number-can-knock-the-workflow-pointer-backward",
+        "not-confirmed-that-the-0-15-0-release-was-built-from-the-merged-pr-7-its-copy-warning-files-match-the-old-patch-byte-for-byte-but-github-access-here-could-not-tie-the-release-commit-to-the-merge",
+        "the-copy-warning-and-ordering-tests-have-not-run-on-0-15-0-yet-they-run-in-the-full-check-after-you-save",
+        "the-copy-warning-editor-screenshots-have-not-been-re-captured-the-pages-load-and-show-the-warning-and-the-full-check-re-captures-them"
+      ],
+      "rankedIds": [
+        "pre-existing-not-caused-by-this-change-the-contact-with-no-email-set-homepage-scenario-never-applies-its-seed-so-its-screenshot-still-shows-the-e-mail-disc-it-is-meant-to-hide",
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "it-covers-the-edit-form-for-existing-entries-only-the-add-a-new-entry-form-and-the-site-wide-settings-and-navigation-screens-do-not-warn-yet",
+        "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
+        "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+        "nicole-has-not-confirmed-london-is-the-right-home-for-the-three-uploaded-photos",
+        "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself",
+        "break-up-the-1-130-line-momentumnetwork-component",
+        "split-the-1-250-line-catch-all-isolation-page-into-one-page-per-component",
+        "split-src-content-config-ts-along-its-collection-seams",
+        "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+        "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+        "give-eventcard-its-own-glossary-entry",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "a-reset-prompt-s-step-number-can-knock-the-workflow-pointer-backward",
+        "patched-dependency-code-is-invisible-to-isolate-impacted-checks-and-verify-build",
+        "seed-sandbox-reset-races-the-content-watcher-and-empties-collections"
       ]
     }
   ],
