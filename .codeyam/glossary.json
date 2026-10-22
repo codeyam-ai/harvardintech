@@ -12,6 +12,16 @@
     ]
   },
   {
+    "description": "One blog post's article: banner title, published date, the rendered markdown body and the optional embed after it. Carries the data-cms-entry/field/body markers the /admin live preview patches by, so an edited date or title shows in the preview instead of only the shape-matched title; the body marker wraps the slot alone so a body patch never wipes the embed.",
+    "filePath": "src/components/BlogPostArticle.astro",
+    "name": "BlogPostArticle",
+    "scenarios": [
+      "blogpostarticle-an-ordinary-post",
+      "blogpostarticle-post-with-an-embed"
+    ],
+    "testFile": "src/lib/blogPreviewMarkers.test.ts"
+  },
+  {
     "description": "One brand or section glyph as inline SVG, resolved from an icon key, a label, or an already-resolved icon for callers using a different table. Four surfaces had hand-rolled the same eight lines, and being small is exactly why they drifted: one copy carried a focusable attribute and another did not, so the same mark was keyboard-reachable on one band and skipped on the next. Renders nothing when a name resolves to no icon, so a CMS-entered channel label can be passed straight through.",
     "filePath": "src/components/ui/BrandGlyph.astro",
     "name": "BrandGlyph",

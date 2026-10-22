@@ -29,8 +29,12 @@ interface Props {
   /** `photo` needs an `image`; without one it falls back to `paper` rather than
    *  rendering an empty dark band. */
   tone?: 'paper' | 'photo';
+  /** The CMS field the title renders, for a page whose content the /admin live
+   *  preview patches exactly (see `BlogPostArticle`). Unset on every page that
+   *  is not marked, so the heading carries no marker there. */
+  titleField?: string;
 }
-const { label, title, lede, image, tone = 'paper' } = Astro.props as Props;
+const { label, title, lede, image, tone = 'paper', titleField } = Astro.props as Props;
 
 // A photo tone with no photo is the single most likely way to misuse this, and
 // silently degrading is better than a black rectangle: `launch--images.md`
@@ -49,7 +53,7 @@ const resolved = tone === 'photo' && image ? 'photo' : 'paper';
   }
   <div class="wrap banner-in">
     {label ? <span class="kick">{label}</span> : null}
-    <h1>{title}</h1>
+    <h1 data-cms-field={titleField}>{title}</h1>
     {lede ? <p class="banner-lede">{lede}</p> : null}
     <slot />
   </div>

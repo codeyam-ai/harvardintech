@@ -13,11 +13,21 @@
 // preview decides WHICH body renders, and that decision belongs to
 // `BlogPostBody` above it — this component's job is that one entry renders the
 // same way whatever route reached it.
+//
+// The `data-cms-*` attributes are the /admin live preview's contract. Without
+// them the preview patched this page "by shape": the title happened to match,
+// but the date never updated, because the page shows "October 21, 2026" and
+// never the raw `2026-10-21` being edited. Marked, the preview writes each field
+// into the element that renders it. The body marker wraps the slot ALONE — a
+// body patch replaces everything inside it, and the embed must survive that.
 import Embed from './Embed.astro';
 import PageBanner from './ui/PageBanner.astro';
 import { formatLongDate } from '../lib/dates';
 
 interface Props {
+  /** The entry's id (its file stem). Names the entry for the live preview, so a
+   *  page without one renders unmarked. */
+  slug?: string;
   title: string;
   /** Published date. Formatted here so every post agrees on the format. */
   date: Date;
@@ -26,18 +36,20 @@ interface Props {
   embedHtml?: string;
 }
 
-const { title, date, embedUrl, embedHtml } = Astro.props as Props;
+const { slug, title, date, embedUrl, embedHtml } = Astro.props as Props;
 ---
 
-<article>
-  <PageBanner label="Blog" title={title}>
-    <time class="post-date" datetime={date.toISOString()}>
+<article data-cms-entry={slug ? `blog/${slug}` : undefined}>
+  <PageBanner label="Blog" title={title} titleField="title">
+    <time class="post-date" datetime={date.toISOString()} data-cms-field="date">
       {formatLongDate(date)}
     </time>
   </PageBanner>
 
   <div class="wrap wrap--narrow post-body">
-    <slot />
+    <div data-cms-body>
+      <slot />
+    </div>
     <Embed embedUrl={embedUrl} embedHtml={embedHtml} title={title} />
   </div>
 </article>

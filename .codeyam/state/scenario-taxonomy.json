@@ -148,6 +148,37 @@
         "reason": "The dashboard itself is a launchpad: its actions navigate into a collection or entry route. The in-page interactive state now lives on the entry editor and is captured there by cms-entry-editor-change-staged-for-review."
       }
     },
+    "BlogPostArticle": {
+      "empty": {
+        "status": "n-a",
+        "reason": "A post always has a title and date - the collection schema requires both, so there is no empty article."
+      },
+      "single": {
+        "status": "n-a",
+        "reason": "The article renders exactly one post; there is no item count to vary."
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "The article renders exactly one post; there is no list to overflow."
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Server-rendered Astro component with no async client state; it never renders a pending state."
+      },
+      "edge": {
+        "status": "added"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "No failure branch - a missing post 404s at the route before this component renders."
+      },
+      "key-interaction": {
+        "status": "added"
+      }
+    },
     "ChapterLeads": {
       "empty": {
         "status": "covered"

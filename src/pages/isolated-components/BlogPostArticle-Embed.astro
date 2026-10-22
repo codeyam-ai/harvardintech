@@ -1,0 +1,41 @@
+---
+import Component from "../../../src/components/BlogPostArticle.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for BlogPostArticle — a post that carries an embed.
+//
+// The /admin live preview replaces everything inside the article's body marker
+// when the body is edited. The embed sits below the body but OUTSIDE that
+// marker, so it survives the patch; this frame shows the two together so a
+// layout that folds the embed into the body is visible as a change.
+//
+// `embedHtml` rather than `embedUrl`: an iframe would load a third-party page
+// at capture time, and the frame would depend on the network.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: BlogPostArticle (embed)</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); width: 100%; max-width: var(--content-width);">
+      <Component
+        slug="spotlight-charlie-cheever"
+        title="Alumni Spotlight: Charlie Cheever"
+        date={new Date('2026-10-21')}
+        embedHtml={`<div style="border: 1px solid var(--color-border, #ddd); border-radius: 8px; padding: 24px; text-align: center;"><strong>Watch the full conversation</strong><p style="margin: 8px 0 0;">A 45-minute fireside chat recorded at the Bay Area chapter.</p></div>`}
+      >
+        <p>
+          Charlie Cheever co-founded Quora and later Expo, and has spent two decades building
+          tools for people who build things.
+        </p>
+        <p>
+          We sat down with him to talk about what he looks for in a first hire, and why he still
+          writes code every week.
+        </p>
+      </Component>
+    </div>
+  </body>
+</html>

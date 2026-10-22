@@ -1,0 +1,18 @@
+{
+  "surface": "src/components/BlogPostArticle.astro",
+  "surface_kind": "file",
+  "states": [
+    {
+      "dimension": "slug",
+      "value": "true",
+      "rationale": "source-derived state slug=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "slug",
+      "value": "false",
+      "rationale": "source-derived state slug=false",
+      "status": "covered"
+    }
+  ]
+}

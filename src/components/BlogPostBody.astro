@@ -21,6 +21,8 @@ interface Props {
   /** The post, as `getCollection('blog')` yields it: frontmatter in `data`, raw
    * markdown (or ciphertext) in `body`. */
   post: {
+    /** The entry's file stem. Marks the article for the /admin live preview. */
+    id?: string;
     body?: string;
     data: {
       title: string;
@@ -46,6 +48,7 @@ const locked = isLocked(post);
     </div>
   ) : (
     <BlogPostArticle
+      slug={post.id}
       title={post.data.title}
       date={post.data.date}
       embedUrl={post.data.embedUrl}

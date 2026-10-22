@@ -1,0 +1,35 @@
+{
+  "name": "CMS Blog Editor - Edited Date Shows In The Preview",
+  "id": "7c61bc21-d0c2-43ae-8fb9-b8001abed60c",
+  "url": "/admin/blog/2026-summit-recap",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "blog": [
+      {
+        "body": "The third annual summit brought together founders, operators, and investors across nine chapters.\n\nThe strongest signal from the day was that alumni want fewer, better-matched introductions rather than a larger directory.",
+        "date": "2026-05-02",
+        "draft": false,
+        "slug": "2026-summit-recap",
+        "summary": "Four hundred alumni, nine cities, and one recurring question: how do we keep the network useful as it grows?",
+        "title": "What We Heard at the 2026 Alumni Summit"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "node_modules/@codeyam/cms/src/pages/admin/[collection]/[entry].astro",
+  "description": "An editor changing a published post's date in the CMS. The live preview beside the form follows the edit: the date under the title updates as soon as the field changes, where before this change it kept showing the original date until the post was saved and rebuilt. The preview shows the CMS short date format; the published page keeps the long one.",
+  "interactions": [
+    {
+      "action": "fill",
+      "selector": "#f-date",
+      "value": "2026-10-21"
+    },
+    {
+      "action": "hover",
+      "selector": "#f-series"
+    }
+  ]
+}

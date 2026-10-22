@@ -1,0 +1,13 @@
+{
+  "name": "BlogPostArticle - Post With An Embed",
+  "id": "bd016df6-1943-44ff-82f3-c1b4b510d2cf",
+  "url": "/isolated-components/BlogPostArticle-Embed",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "BlogPostArticle",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/BlogPostArticle.astro",
+  "description": "A post that carries an embed beneath its body. The /admin live preview replaces everything inside the body marker when the text is edited, and the embed deliberately sits outside that marker so it survives the patch. The frame shows body and embed together, so a change that folds the embed into the body shows up here."
+}

@@ -1,0 +1,631 @@
+{
+  "timestamp": "2026-10-22T16:53:00Z",
+  "title": "cms -- Blog preview shows the edited date live",
+  "type": "feature",
+  "userRequest": "## Summary\n\nNicole: \"I added a new blog entry; the title populates live on the right side, but the date does not update in real time.\" The /admin live preview patches the embedded page in one of two ways. It patches exactly when the page marks its elements with the CMS's public marker attributes (`data-cms-entry`, `data-cms-field`, `data-cms-body`), and approximately, \"by shape\", when it doesn't. This site marks nothing (`grep data-cms- src` finds no matches), so the blog post previews by shape. That catches the title, which appears verbatim, but not the date: the page shows `formatLongDate(date)` (\"October 21, 2026\"), never the raw `2026-10-21` being edited. The fix is in this repo: mark the blog article so the patcher writes the date into the `<time>` element. Its `setFieldText` already formats `<time>`/`date` fields and keeps `datetime` valid.\n\n## Status check (2026-10-22, before building)\n\nNothing in this plan is built yet: `grep data-cms- src` still finds no matches, and `BlogPostArticle.astro`, `PageBanner.astro` and `src/pages/blog/[slug].astro` are unchanged since the plan was written. Three findings from re-reading the CMS (0.15.0 + local patch) change the details below:\n\n- **The formats do differ.** `formatPreviewDate` (`node_modules/@codeyam/cms/src/lib/entryPreview.ts`) is `toLocaleDateString()` with no locale or options, so a patched date reads \"10/21/2026\" (in a US browser) while the published page reads \"October 21, 2026\". The CMS gives a page no way to choose the format.\n- **New entries work too.** Nicole's case is a *new* post, which has no page of its own. The preview borrows another blog post's page as a shell, and `stagedPreview.ts` patches any `[data-cms-entry]` of the same collection on a shell page. Marking the template therefore covers new posts as well as edits.\n- **The title lives in `PageBanner`'s `<h1>`.** That component is shared by 38 pages, so the title marker goes in through a new optional prop that only the blog article passes.\n\n## Key Decisions\n\n- **Mark the template; don't change the CMS.** The markers are the CMS's documented contract for exact preview. Marking also removes the \"approximate preview\" banner on blog posts.\n- **Blog post page only.** That's what Nicole reported. Chapters, communities and projects could get the same markers later, and listing them as follow-ups keeps this change small.\n- **Accept the format difference in the preview for now.** While someone is editing, the live date shows in the browser's short form (\"10/21/2026\"). The published page keeps \"October 21, 2026\". Matching them means changing the CMS's `formatPreviewDate`, which also drives the editor pane, so it's a follow-up for upstream `@codeyam/cms`, not part of this fix. The date now *updates*, which is what Nicole reported missing.\n- **Leave the locked-preview branch unmarked.** `BlogPostBody` renders `LockedPreviewBody` for a password-locked preview. Only the `BlogPostArticle` branch gets markers.\n\n## Implementation\n\n### 1. Mark the blog article\n\n**File**: `src/components/BlogPostArticle.astro`\n\nAdd `data-cms-entry={`blog/${slug}`}` to `<article>` (this needs a new `slug` prop), `data-cms-field=\"date\"` on the `<time>`, and `data-cms-body` on a new wrapper around `<slot />` alone inside `.post-body`. The wrapper must not contain the `Embed`, or a body patch would wipe the embed.\n\n**File**: `src/components/ui/PageBanner.astro`\n\nAdd an optional `titleField?: string` prop. When it's set, the `<h1>` carries `data-cms-field={titleField}`. When it isn't, the other 38 callers render exactly as before.\n\n**File**: `src/components/BlogPostBody.astro`\n\nPass `slug={post.id}` to `BlogPostArticle`. The route already hands `post` through, so `src/pages/blog/[slug].astro` needs no change.\n\n**File**: `src/pages/isolated-components/BlogPostArticle.astro`\n\nPass a `slug` so the isolation page renders the markers too.\n\n## Reused existing code\n\n- `formatLongDate` from `src/lib/dates.ts`\n- The marker contract and `setFieldText` in `node_modules/@codeyam/cms/src/lib/stagedPreview.ts` / `node_modules/@codeyam/cms/src/client/stagedPreviewPatch.ts` (no edits)\n\n## Reproduction Test\n\nChanging the date of a blog entry in the editor doesn't change the date on the previewed page.\n\n**Target**: `src/lib/blogPreviewMarkers.test.ts`. Vitest here doesn't compile `.astro` files (see `vitest.config.ts`), so the test reads the component source, following the existing `siteIcons.test.ts` / `presenceConsistency.test.ts` pattern. It uses the CMS's exported attribute names (`CMS_ENTRY_ATTR`, `CMS_FIELD_ATTR`, `CMS_BODY_ATTR`), so a rename upstream makes it fail. Run with `codeyam-editor editor refresh-tests --test <name>`.\n\n```ts\nit('marks the blog date for the live preview', () => {\n  const src = readFileSync('src/components/BlogPostArticle.astro', 'utf-8');\n  expect(src).toMatch(/<time[^>]*data-cms-field=\"date\"/);\n  expect(src).toMatch(/data-cms-entry=\\{`blog\\/\\$\\{slug\\}`\\}/);\n});\nit('keeps the embed outside the patched body', () => { /* data-cms-body wraps <slot /> only */ });\nit('marks the banner title only when asked', () => { /* PageBanner h1 gets data-cms-field={titleField} */ });\n```\n\nThe rendered markup is also checked in the isolation scenarios below, which is where `.astro` output is verified in this repo.\n\nStatus: PROPOSED. Confirm red at execution. Expected failure: no `data-cms-field` attribute in `BlogPostArticle.astro`.\n\n## Scenarios to Demonstrate\n\n- Blog post page as published (unchanged look)\n- Blog post with an embed (embed survives a body patch)\n\n## Follow-ups (not in this change)\n\n- Make `@codeyam/cms`'s `formatPreviewDate` match the site's long date (\"October 21, 2026\"), or let a page choose the format, so the live preview date matches the published one.\n- Add the same markers to chapter, community and project pages.",
+  "description": "The /admin blog editor's live preview now updates the post date as you type it. BlogPostArticle (and PageBanner through a new titleField prop) carry data-cms-entry / data-cms-field / data-cms-body markers, so the preview patches each field into the element that renders it instead of matching by shape; the body marker wraps only the markdown slot, so an embed after the body survives a body patch. Covered by src/lib/blogPreviewMarkers.test.ts (6 tests, proven red first), a new 'post with an embed' component scenario, and a CMS application scenario that edits the date and shows it in the preview.\n\nScope verdict: no project deliverable was delivered or deferred by this cycle. It is a CMS polish fix outside the deliverables list. One accepted deviation, decided by the user: the preview shows the CMS short date (10/21/2026), while the published page keeps the long form (October 21, 2026). Making the two formats match is left to the upstream @codeyam/cms package.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms--blog-preview-shows-the-edited-date-live.md",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/plans/completed/cms--blog-preview-shows-the-edited-date-live.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostarticle-an-ordinary-post--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostbody-locked-prompt-replaces-the-article--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostbody-nothing-encrypted-article-renders--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-event-photos--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-lead-headshot--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-with-image--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-forming-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-lead-headshot--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitypage-founders-composed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-content-still-missing--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pagebanner-paper-tone-longest-name--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pagebanner-photo-tone-over-a-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-cookie-table-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sitepageheader-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sitepageheader-title-and-lede--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerhero-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-long-title-and-blurb--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-a-single-recording--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-recordings-with-and-without-a-cover--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/3a5cb61fbf9736e917417ae019b475a7b28456dff2e2a763c5741d4c3ffa85f4.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/5cd4f8a5f530dcb9c5865c38e98557331b471287cf140c831320acbc82957d3d.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/73c916782c96476089b28bb1e0fa6fbadcf1b9805601e92beabf5e185127b35d.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/dd51add1764ca02e7f6d97b5399921f1223969374b8a20de0f19a07287747ec5.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/BlogPostArticle.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/BlogPostBody.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ui/PageBanner.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/BlogPostArticle.astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blogpostarticle-post-with-an-embed.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-blog-editor-edited-date-shows-in-the-preview.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/src-components-blogpostarticle-astro.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostarticle-post-with-an-embed--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostarticle-post-with-an-embed--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-blog-editor-edited-date-shows-in-the-preview--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-blog-editor-edited-date-shows-in-the-preview--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/cms--blog-preview-shows-the-edited-date-live.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/c55ad778cee96adeb072ad58fc1334bb9de40dbc4af425348b64cbaedde0da08.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/c82674451f95c653c26d0dd85da7d872680ef1c802d873809ee3ef351b1f7ee2.json",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/blogPreviewMarkers.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/BlogPostArticle-Embed.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Blog Post - A Retained Medium Stub",
+      "screenshotPath": "blog-post-a-retained-medium-stub--mobile.png"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft",
+      "screenshotPath": "blog-preview-link-shared-draft--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo",
+      "screenshotPath": "chapter-gallery-a-single-photo--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped",
+      "screenshotPath": "chapter-gallery-curated-and-capped--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged",
+      "screenshotPath": "chapter-gallery-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed",
+      "screenshotPath": "chapter-gallery-show-all-revealed--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns",
+      "screenshotPath": "chapter-gallery-three-photos-three-columns--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter",
+      "screenshotPath": "chapter-route-events-tagged-to-this-chapter--desktop.png"
+    },
+    {
+      "name": "Chapter Route - London Event Photos",
+      "screenshotPath": "chapter-route-london-event-photos--desktop.png"
+    },
+    {
+      "name": "Chapter Route - London Lead Headshot",
+      "screenshotPath": "chapter-route-london-lead-headshot--desktop.png"
+    },
+    {
+      "name": "Chapter Route - London Photo Enlarged",
+      "screenshotPath": "chapter-route-london-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--mobile.png"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area",
+      "screenshotPath": "chapter-route-sf-bay-area--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent",
+      "screenshotPath": "chapter-route-upcoming-above-recent--desktop.png"
+    },
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--mobile.png"
+    },
+    {
+      "name": "Community Route - Investors Join Steps",
+      "screenshotPath": "community-route-investors-join-steps--desktop.png"
+    },
+    {
+      "name": "Events Route - Past Results From The October All-Hands",
+      "screenshotPath": "events-route-past-results-from-the-october-all-hands--desktop.png"
+    },
+    {
+      "name": "Events Route - The Calendar With No Past Events Yet",
+      "screenshotPath": "events-route-the-calendar-with-no-past-events-yet--mobile.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--mobile.png"
+    },
+    {
+      "name": "Locked Preview - Password Required",
+      "screenshotPath": "locked-preview-password-required--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password",
+      "screenshotPath": "locked-preview-unlocked-with-the-password--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Wrong Password",
+      "screenshotPath": "locked-preview-wrong-password--desktop.png"
+    },
+    {
+      "name": "Privacy Page - Cookie Table On A Phone",
+      "screenshotPath": "privacy-page-cookie-table-on-a-phone--mobile.png"
+    },
+    {
+      "name": "Privacy Page - The Written Policy",
+      "screenshotPath": "privacy-page-the-written-policy--desktop.png"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS",
+      "screenshotPath": "site-page-a-page-written-in-the-cms--mobile.png"
+    },
+    {
+      "name": "Site Page - Long Title And No Description",
+      "screenshotPath": "site-page-long-title-and-no-description--desktop.png"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall",
+      "screenshotPath": "sponsor-route-example-partner-wall--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - Fall 2026 Roles",
+      "screenshotPath": "volunteer-page-fall-2026-roles--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects",
+      "screenshotPath": "volunteer-page-no-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Open Projects",
+      "screenshotPath": "volunteer-page-open-projects--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS",
+      "screenshotPath": "volunteer-page-rewritten-from-the-cms--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo",
+      "screenshotPath": "volunteer-project-detail-full-description-no-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link",
+      "screenshotPath": "volunteer-project-detail-photo-and-own-sign-up-link--mobile.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested",
+      "screenshotPath": "volunteer-project-detail-retired-projects-never-suggested--desktop.png"
+    },
+    {
+      "name": "Webinars Route - Nothing Published",
+      "screenshotPath": "webinars-route-nothing-published--desktop.png"
+    },
+    {
+      "name": "Webinars Route - The Surviving Recordings",
+      "screenshotPath": "webinars-route-the-surviving-recordings--mobile.png"
+    },
+    {
+      "name": "BlogPostArticle - An Ordinary Post",
+      "screenshotPath": "blogpostarticle-an-ordinary-post--desktop.png"
+    },
+    {
+      "name": "BlogPostArticle - Post With An Embed",
+      "screenshotPath": "blogpostarticle-post-with-an-embed--desktop.png"
+    },
+    {
+      "name": "ChapterHero - With Image",
+      "screenshotPath": "chapterhero-with-image--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Forming Chapter",
+      "screenshotPath": "chapterpage-forming-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "CommunityPage - Founders Composed",
+      "screenshotPath": "communitypage-founders-composed--desktop.png"
+    },
+    {
+      "name": "EventsIntroBand - Closing Flush Against The Calendar",
+      "screenshotPath": "eventsintroband-closing-flush-against-the-calendar--mobile.png"
+    },
+    {
+      "name": "PageBanner - Paper Tone, Longest Name",
+      "screenshotPath": "pagebanner-paper-tone-longest-name--desktop.png"
+    },
+    {
+      "name": "PageBanner - Photo Tone Over A City",
+      "screenshotPath": "pagebanner-photo-tone-over-a-city--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - A Single Recording",
+      "screenshotPath": "webinarspage-a-single-recording--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - Nothing Published",
+      "screenshotPath": "webinarspage-nothing-published--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - Recordings With And Without A Cover",
+      "screenshotPath": "webinarspage-recordings-with-and-without-a-cover--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1809,
+    "passed": 1809,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1809,
+        "passed": 1809
+      }
+    ]
+  }
+}

@@ -309,6 +309,7 @@
       ],
       "importedBy": [
         "src/components/BlogPostBody.astro",
+        "src/pages/isolated-components/BlogPostArticle-Embed.astro",
         "src/pages/isolated-components/BlogPostArticle.astro"
       ]
     },
@@ -2039,6 +2040,10 @@
       ]
     },
     "src/lib/basePath.test.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/blogPreviewMarkers.test.ts": {
       "imports": [],
       "importedBy": []
     },
@@ -3826,6 +3831,13 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/BlogPostArticle-Embed.astro": {
+      "imports": [
+        "src/components/BlogPostArticle.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/BlogPostArticle.astro": {
       "imports": [
         "src/components/BlogPostArticle.astro",
@@ -4897,6 +4909,7 @@
         "src/pages/isolated-components/ImageField-StagedUpload.astro",
         "src/pages/isolated-components/BrandGlyph.astro",
         "src/pages/isolated-components/MomentumTestimonials.astro",
+        "src/pages/isolated-components/BlogPostArticle-Embed.astro",
         "src/pages/isolated-components/SitePageBody-Table.astro",
         "src/pages/isolated-components/VolunteerBenefit.astro",
         "src/pages/isolated-components/OrderArrows-MiddleRow.astro",
@@ -5399,6 +5412,7 @@
         "src/lib/dates.ts::formatLongDate"
       ],
       "importedBy": [
+        "src/pages/isolated-components/BlogPostArticle-Embed.astro::__file_root__",
         "src/pages/isolated-components/BlogPostArticle.astro::__file_root__"
       ]
     },
@@ -10654,6 +10668,15 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/BlogPostArticle-Embed.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BlogPostArticle-Embed.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/BlogPostArticle.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/BlogPostArticle.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/BlogPostArticle.astro",
       "name": "__file_root__",
@@ -12010,6 +12033,7 @@
         "src/pages/isolated-components/ImageField-StagedUpload.astro::__file_root__",
         "src/pages/isolated-components/BrandGlyph.astro::__file_root__",
         "src/pages/isolated-components/MomentumTestimonials.astro::__file_root__",
+        "src/pages/isolated-components/BlogPostArticle-Embed.astro::__file_root__",
         "src/pages/isolated-components/SitePageBody-Table.astro::__file_root__",
         "src/pages/isolated-components/VolunteerBenefit.astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-MiddleRow.astro::__file_root__",
@@ -12094,5 +12118,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-22T14:36:24Z"
+  "lastUpdated": "2026-10-22T16:55:16Z"
 }

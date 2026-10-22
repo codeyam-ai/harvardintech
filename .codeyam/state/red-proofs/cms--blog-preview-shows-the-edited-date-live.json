@@ -1,0 +1,53 @@
+{
+  "provenAt": "2026-10-22T16:09:04Z",
+  "slug": "cms--blog-preview-shows-the-edited-date-live",
+  "paths": [
+    "src/components/BlogPostArticle.astro",
+    "src/components/BlogPostBody.astro",
+    "src/components/ui/PageBanner.astro"
+  ],
+  "runScope": [
+    "src/components/BlogPostArticle.astro",
+    "src/components/BlogPostBody.astro",
+    "src/components/ui/PageBanner.astro"
+  ],
+  "tests": {
+    "marks the heading only through the titleField prop": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "marks the published date as the date field": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "passes the post id through as the slug": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "wraps the body slot and leaves the embed outside it": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "marks the published date as the date field",
+      "wraps the body slot and leaves the embed outside it",
+      "passes the post id through as the slug",
+      "marks the heading only through the titleField prop"
+    ]
+  }
+}

@@ -37,6 +37,51 @@
       "runner": "tests"
     },
     {
+      "description": "The title renders inside PageBanner, so it is marked through its prop.",
+      "file": "src/lib/blogPreviewMarkers.test.ts",
+      "format": "vitest",
+      "key": "BlogPostArticle preview markers › marks the banner title as the title field",
+      "line": 40,
+      "registeredAt": "2026-10-22T16:09:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "THE BUG. The date is the field that never updated: it must be marked so the preview writes the edited value into the element that shows it.",
+      "file": "src/lib/blogPreviewMarkers.test.ts",
+      "format": "vitest",
+      "key": "BlogPostArticle preview markers › marks the published date as the date field",
+      "line": 27,
+      "registeredAt": "2026-10-22T16:09:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The entry key is how the preview tells this post from any other on the page; it is the collection and the file stem, and absent with no slug.",
+      "file": "src/lib/blogPreviewMarkers.test.ts",
+      "format": "vitest",
+      "key": "BlogPostArticle preview markers › names the article entry as blog plus its slug",
+      "line": 33,
+      "registeredAt": "2026-10-22T16:09:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A body patch replaces everything inside the marker. It wraps the slot alone, so the embed beneath the body survives an edit to the text.",
+      "file": "src/lib/blogPreviewMarkers.test.ts",
+      "format": "vitest",
+      "key": "BlogPostArticle preview markers › wraps the body slot and leaves the embed outside it",
+      "line": 46,
+      "registeredAt": "2026-10-22T16:09:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The entry key needs the post id; without it the article renders unmarked.",
+      "file": "src/lib/blogPreviewMarkers.test.ts",
+      "format": "vitest",
+      "key": "BlogPostBody preview markers › passes the post id through as the slug",
+      "line": 56,
+      "registeredAt": "2026-10-22T16:09:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "A duplicated option is indistinguishable from its twin in the dropdown, and a blank one is indistinguishable from the control's own unset entry. Either would ship an editor a choice they cannot reason about.",
       "file": "src/lib/donors.test.ts",
       "format": "vitest",
@@ -142,6 +187,15 @@
       "key": "PREVIEW_GATE_PASSPHRASE › is empty without the secret, and never the retired default",
       "line": 71,
       "registeredAt": "2026-09-14T18:19:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Every other page uses this banner too. The heading is marked only through `titleField`, which is undefined unless a caller sets it — so pages that are not patched exactly carry no marker.",
+      "file": "src/lib/blogPreviewMarkers.test.ts",
+      "format": "vitest",
+      "key": "PageBanner preview markers › marks the heading only through the titleField prop",
+      "line": 65,
+      "registeredAt": "2026-10-22T16:09:33Z",
       "runner": "tests"
     },
     {
