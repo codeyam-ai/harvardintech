@@ -1,0 +1,13 @@
+{
+  "name": "MediaCard - Staged Upload",
+  "id": "d4891393-9cb9-46a9-8822-4bd610f4fe7d",
+  "url": "/isolated-components/MediaCard-StagedUpload",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "MediaCard",
+  "scenarioType": "component",
+  "pageFilePath": "node_modules/@codeyam/cms/src/components/admin/MediaCard.tsx",
+  "description": "A card for an image uploaded this session but not yet published. The thumbnail shows the uploaded picture itself, read from the staged bytes, where it used to show a broken image because the file does not exist on the site until publish. That broken thumbnail is what made editors think an upload had failed and upload it again."
+}

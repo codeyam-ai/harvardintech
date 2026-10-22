@@ -1,0 +1,66 @@
+---
+import Component from "@codeyam/cms/components/admin/MediaCard.tsx";
+import "../../styles/tokens.css";
+
+// Isolation page for a card whose image was uploaded this session but not yet
+// published — the moment an editor looks at right after uploading.
+//
+// The thumbnail is the assertion. A staged upload has no file on the site until
+// it publishes, so its `/images/...` url 404s; the card used to render that as a
+// broken image, which editors read as "the upload did nothing" and uploaded
+// again — the byte-identical `-2` copies in `813e3b9` and `75d884d`. The card
+// now shows the staged bytes inline.
+//
+// The staged bytes live in the CMS staging store in localStorage, and that is
+// the only seam `imageSrc` reads. So the inline script below seeds one staged
+// image before the island hydrates, and puts back whatever the store held when
+// the page is left, so a visit here never leaves a phantom upload in the real
+// admin on the same origin. The island is `client:only` because a server render
+// cannot see browser storage — it would emit the `/images/...` src and React
+// keeps a mismatched attribute on hydration. The real admin is the same: staged
+// cards only exist once the gallery has read the store in the browser.
+const ASSET = {
+  filename: 'nyc-skyline.svg',
+  url: '/images/nyc-skyline.svg',
+  alt: 'New York skyline at dusk',
+  sizeBytes: 612,
+};
+const STAGED_BYTES =
+  'PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgMjAwIj48cmVjdCB3aWR0aD0iMzIwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzFlM2E1ZiIvPjxjaXJjbGUgY3g9IjI1MCIgY3k9IjUwIiByPSIyMiIgZmlsbD0iI2Y0Yzk1ZCIvPjxnIGZpbGw9IiMwZDFiMmEiPjxyZWN0IHg9IjIwIiB5PSIxMTAiIHdpZHRoPSIzMCIgaGVpZ2h0PSI5MCIvPjxyZWN0IHg9IjU1IiB5PSI4MCIgd2lkdGg9IjI2IiBoZWlnaHQ9IjEyMCIvPjxyZWN0IHg9Ijg2IiB5PSI0MCIgd2lkdGg9IjIyIiBoZWlnaHQ9IjE2MCIvPjxyZWN0IHg9IjExMyIgeT0iOTUiIHdpZHRoPSIzNCIgaGVpZ2h0PSIxMDUiLz48cmVjdCB4PSIxNTIiIHk9IjYwIiB3aWR0aD0iMjgiIGhlaWdodD0iMTQwIi8+PHJlY3QgeD0iMTg1IiB5PSIxMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI4MCIvPjxyZWN0IHg9IjIzMCIgeT0iODUiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxMTUiLz48cmVjdCB4PSIyNTkiIHk9IjEzMCIgd2lkdGg9IjQxIiBoZWlnaHQ9IjcwIi8+PC9nPjwvc3ZnPg==';
+const STAGED = [
+  {
+    collection: 'media',
+    slug: ASSET.filename,
+    path: `public/images/${ASSET.filename}`,
+    title: ASSET.filename,
+    original: '',
+    updated: STAGED_BYTES,
+    kind: 'edit',
+    encoding: 'base64',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: MediaCard - Staged Upload</title>
+    <script is:inline define:vars={{ staged: STAGED }}>
+      const KEY = 'codeyam-cms:pending-changes';
+      try {
+        const prior = localStorage.getItem(KEY);
+        localStorage.setItem(KEY, JSON.stringify(staged));
+        addEventListener('pagehide', () => {
+          if (prior === null) localStorage.removeItem(KEY);
+          else localStorage.setItem(KEY, prior);
+        });
+      } catch {}
+    </script>
+  </head>
+  <body style="margin: 0; background: var(--color-bg, #fff);">
+    <div id="codeyam-capture" style="padding: 2rem; max-width: 260px;">
+      <Component client:only="react" asset={ASSET} staged={true} />
+    </div>
+  </body>
+</html>

@@ -31,10 +31,10 @@ mean anything.
 
 ### The patch on top of the package
 
-`patches/@codeyam+cms+0.13.0.patch` is applied by `patch-package` from
+`patches/@codeyam+cms+0.15.0.patch` is applied by `patch-package` from
 `postinstall`, so it lands on every install including CI. It is still true that
 no admin code is hand-written here — the patch edits the dependency, it does not
-add admin pages to this repo. It carries **one** thing:
+add admin pages to this repo. It carries **two** things:
 
 - **Reorder arrows on ordered collection lists.** Any collection declaring a
   numeric `order` field — 13 of them today, including Momentum Fund sections and
@@ -42,6 +42,17 @@ add admin pages to this repo. It carries **one** thing:
   instead of a Drafts-then-Published split, and a move stages ordinary pending
   changes that ride the normal publish review. The draft state moves onto the row
   as a chip, since those lists no longer have a "Drafts" heading to carry it.
+- **Image uploads that work the first time and never clobber the library.**
+  Uploading one image from a field's picker now selects it straight away, and
+  its thumbnail shows the staged bytes instead of a `/images/...` link that 404s
+  until publish — together those made an upload look like it did nothing, and
+  the re-uploads that followed are the byte-identical `-2` copies in `813e3b9`
+  and `75d884d`. A repeat of bytes already staged now reuses the first record.
+  At publish, the staged `media.json` change is re-based onto the branch's
+  current manifest and only this session's adds/removes/reorder are replayed,
+  so a stale admin page can no longer drop records published since it was
+  built (`75d884d` lost the 19 Oct city photos that way). Meant to go upstream;
+  `mediaManifestMerge.test.ts` and `mediaStagedUpload.test.tsx` hold it.
 
 **Duplicate on every entry row was the second half, and 0.13.0 released it.**
 That is the lifecycle below completing for the THIRD time. Our

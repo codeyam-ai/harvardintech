@@ -12,7 +12,7 @@ Image uploads in the /admin content editor are broken in three ways, and togethe
 
 ## Key Decisions
 
-- **Fix it in `@codeyam/cms`, shipped through this repo's `patches/@codeyam+cms+0.14.0.patch` first.** Nicole is blocked now. The patch is the established route (see `CMS_SETUP.md`), and the queued 0.15.0 upgrade plan is still waiting on an npm release. Upstream the same change so a later upgrade can drop it, the way the deploy-watch and duplicate-entry halves did.
+- **Fix it in `@codeyam/cms`, shipped through this repo's `patches/@codeyam+cms+0.15.0.patch` first.** Nicole is blocked now. The patch is the established route (see `CMS_SETUP.md`), and 0.15.0 is now installed (bd01271) and still has all three bugs. Upstream the same change so a later upgrade can drop it, the way the deploy-watch and duplicate-entry halves did.
 - **Merge the manifest at commit time instead of staging the whole file.** Before writing, re-read `src/data/media.json` from the target branch's HEAD and apply only this session's add/remove operations to it. A stale page can then never delete records it didn't touch. Stage operations, not a whole-file snapshot.
 - **Uploading in a picker selects the upload.** One file uploaded from a picker opened for a target gets passed to that picker's `onSelect`, so it lands in the gallery row, hero field or body. `stageUpload` already returns the asset "so the caller can select it immediately". The picker just never does.
 - **Always write `alt`** (the editor's text, or `""` only when the editor explicitly marks the image decorative). Never omit the key.
@@ -40,7 +40,7 @@ Find why one pick calls `stageUpload` twice: input `onChange` plus a drop handle
 
 ### 4. Regenerate the patch
 
-**File**: `patches/@codeyam+cms+0.14.0.patch`
+**File**: `patches/@codeyam+cms+0.15.0.patch`
 
 Regenerate with `npx patch-package @codeyam/cms`. Add a paragraph to `CMS_SETUP.md` under "The patch on top of the package" saying what this half carries and that it is meant to go upstream.
 

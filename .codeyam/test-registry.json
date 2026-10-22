@@ -100,6 +100,24 @@
       "runner": "tests"
     },
     {
+      "description": "Several files can't all be the one choice, so the picker says what to do next.",
+      "file": "src/lib/mediaStagedUpload.test.tsx",
+      "format": "vitest",
+      "key": "MediaPickerModal upload › asks the editor to pick after a multi-file upload",
+      "line": 100,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A single upload IS the picker's choice — it selects without a second click.",
+      "file": "src/lib/mediaStagedUpload.test.tsx",
+      "format": "vitest",
+      "key": "MediaPickerModal upload › selects a single uploaded image straight away",
+      "line": 87,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
       "description": "His card carried a generic stage photo from the shared New York gallery under a caption naming a Colorado co-working afternoon it was not from. The card renders the quote full-width without a photo, which is a supported state and the honest one until a real Colorado photo exists. This pins the absence so the placeholder cannot quietly return.",
       "file": "src/lib/contentImages.test.ts",
       "format": "vitest",
@@ -538,6 +556,51 @@
       "key": "applyDecisionAnswer › records the answer text alongside the flag",
       "line": 76,
       "registeredAt": "2026-08-06T15:24:46Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A reorder ranks the records it names and leaves records it never saw after them.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "applyManifestOps › applies a reorder and keeps unseen records after it",
+      "line": 92,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The reproduction: the admin page was built before the city photos landed, so its baseline lacks them. Replaying this session's one upload onto the branch's manifest must keep every record the session never touched.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "applyManifestOps › keeps the branch records a stale baseline never saw",
+      "line": 59,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A record this session deleted is removed from the branch's file too.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "applyManifestOps › removes a record the session deleted",
+      "line": 75,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A changed record (new alt text) replaces the branch's copy in place rather than appending a duplicate.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "applyManifestOps › replaces a changed record in place",
+      "line": 83,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No edits means the branch's file comes through untouched.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "applyManifestOps › returns the head records unchanged with no ops",
+      "line": 100,
+      "registeredAt": "2026-10-22T14:24:03Z",
       "runner": "tests"
     },
     {
@@ -1942,6 +2005,15 @@
       "key": "collections.json paths map › points every shared-page template at a page that exists",
       "line": 69,
       "registeredAt": "2026-08-04T18:59:29Z",
+      "runner": "tests"
+    },
+    {
+      "description": "End to end through the publish path: the blob written for media.json must be the merge, not the stale snapshot the session staged.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "commitAll manifest merge › writes the merged manifest, keeping records published since staging",
+      "line": 181,
+      "registeredAt": "2026-10-22T14:24:03Z",
       "runner": "tests"
     },
     {
@@ -6022,6 +6094,33 @@
       "runner": "tests"
     },
     {
+      "description": "External urls are left as written.",
+      "file": "src/lib/mediaStagedUpload.test.tsx",
+      "format": "vitest",
+      "key": "imageSrc › leaves an external url alone",
+      "line": 77,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A published image loads from the site exactly as before.",
+      "file": "src/lib/mediaStagedUpload.test.tsx",
+      "format": "vitest",
+      "key": "imageSrc › loads an unstaged image from the site",
+      "line": 72,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A staged upload has no file on the site yet, so its thumbnail shows the staged bytes inline instead of a broken `/images/...` link.",
+      "file": "src/lib/mediaStagedUpload.test.tsx",
+      "format": "vitest",
+      "key": "imageSrc › serves a staged upload as a data URI",
+      "line": 56,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
       "description": "The broken-reference guard. None of these slots falls back to anything, so a path that does not resolve reaches the browser as a dead image — and it is invisible in a build, which succeeds regardless.",
       "file": "src/lib/contentImages.test.ts",
       "format": "vitest",
@@ -7793,6 +7892,51 @@
       "key": "lumaSlugFromLink › returns null for a link that is not a Luma event",
       "line": 191,
       "registeredAt": "2026-09-18T20:25:49Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An upload is exactly one add — not a whole-library rewrite.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "manifestOps › reduces an upload to one add",
+      "line": 107,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A discarded record becomes a remove.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "manifestOps › reports a deleted record as a remove",
+      "line": 114,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A genuine drag-reorder of shared records is recorded with the new order.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "manifestOps › reports a reorder of shared records",
+      "line": 128,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An edited record is an add that replaces by filename.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "manifestOps › reports an edited record as an add",
+      "line": 121,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Identical manifests produce no edits at all.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "manifestOps › returns nothing for identical manifests",
+      "line": 135,
+      "registeredAt": "2026-10-22T14:24:03Z",
       "runner": "tests"
     },
     {
@@ -10313,6 +10457,42 @@
       "key": "readSingleton › throws when the singleton is not valid JSON",
       "line": 109,
       "registeredAt": "2026-08-06T15:32:50.953557895+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Nothing staged against the manifest means nothing to rebase.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "rebaseManifestChange › is the identity when no manifest change is staged",
+      "line": 171,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Other staged changes pass through untouched.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "rebaseManifestChange › leaves non-manifest changes alone",
+      "line": 163,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The rebased change diffs against the branch, so the drift check no longer flags the manifest merely because someone else uploaded first.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "rebaseManifestChange › rebases the manifest change onto the branch file",
+      "line": 147,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A branch with no manifest yet starts from an empty library.",
+      "file": "src/lib/mediaManifestMerge.test.ts",
+      "format": "vitest",
+      "key": "rebaseManifestChange › starts from an empty library when the branch has no manifest",
+      "line": 155,
+      "registeredAt": "2026-10-22T14:24:03Z",
       "runner": "tests"
     },
     {
@@ -13373,6 +13553,24 @@
       "key": "srcsetFor › works at the bare domain, without doubling the leading slash",
       "line": 88,
       "registeredAt": "2026-09-18T18:27:52Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The duplicate-copy reproduction: the same bytes uploaded twice must hand back the first upload's record rather than filing `logo-2.svg` beside it.",
+      "file": "src/lib/mediaStagedUpload.test.tsx",
+      "format": "vitest",
+      "key": "stageUpload › reuses the staged record for a byte-identical repeat upload",
+      "line": 34,
+      "registeredAt": "2026-10-22T14:24:03Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Different bytes under the same name are a genuinely new image and still get their own de-duplicated filename.",
+      "file": "src/lib/mediaStagedUpload.test.tsx",
+      "format": "vitest",
+      "key": "stageUpload › still files a different image under a fresh name",
+      "line": 44,
+      "registeredAt": "2026-10-22T14:24:03Z",
       "runner": "tests"
     },
     {

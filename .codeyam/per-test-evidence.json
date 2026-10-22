@@ -197,6 +197,24 @@
       "pass|full|2026-10-19T21:22:11.459Z"
     ]
   },
+  "MediaPickerModal upload › asks the editor to pick after a multi-file upload": {
+    "file": "src/lib/mediaStagedUpload.test.tsx",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "MediaPickerModal upload › selects a single uploaded image straight away": {
+    "file": "src/lib/mediaStagedUpload.test.tsx",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
   "Mohammed Ally's testimonial › has no event photo until a real Colorado one exists": {
     "file": "src/lib/contentImages.test.ts",
     "lastRunAt": "2026-10-22T13:48:15.244Z",
@@ -1077,6 +1095,51 @@
       "pass|full|2026-10-19T22:45:45.164Z",
       "pass|changed|2026-10-19T21:35:31.843Z",
       "pass|full|2026-10-19T21:22:11.459Z"
+    ]
+  },
+  "applyManifestOps › applies a reorder and keeps unseen records after it": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "applyManifestOps › keeps the branch records a stale baseline never saw": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "applyManifestOps › removes a record the session deleted": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "applyManifestOps › replaces a changed record in place": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "applyManifestOps › returns the head records unchanged with no ops": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
     ]
   },
   "applyNetworkGreeting › greets a subscriber arriving from the campaign email": {
@@ -3887,12 +3950,22 @@
       "pass|full|2026-10-19T21:22:11.459Z"
     ]
   },
-  "commitAll media guard › refuses to publish a record with no bytes, before writing anything": {
-    "file": "src/lib/mediaCommitGuard.test.ts",
-    "lastRunAt": "2026-10-22T13:48:15.244Z",
+  "commitAll manifest merge › writes the merged manifest, keeping records published since staging": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "commitAll media guard › refuses to publish a record with no bytes, before writing anything": {
+    "file": "src/lib/mediaCommitGuard.test.ts",
+    "lastRunAt": "2026-10-22T14:33:11.035Z",
+    "lastRunKind": "targeted",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|targeted|2026-10-22T14:33:11.035Z",
       "pass|changed|2026-10-22T13:48:15.244Z",
       "pass|full|2026-10-22T13:06:10.254Z",
       "pass|changed|2026-10-22T01:02:55.950Z",
@@ -3901,8 +3974,7 @@
       "pass|changed|2026-10-22T00:06:57.393Z",
       "pass|changed|2026-10-20T18:50:00.442Z",
       "pass|full|2026-10-19T22:45:45.164Z",
-      "pass|changed|2026-10-19T21:35:31.843Z",
-      "pass|full|2026-10-19T21:22:11.459Z"
+      "pass|changed|2026-10-19T21:35:31.843Z"
     ]
   },
   "committed CMS registry vs content schema › declares only real schema keys for every built-in extra": {
@@ -12041,6 +12113,33 @@
       "pass|full|2026-10-19T21:22:11.459Z"
     ]
   },
+  "imageSrc › leaves an external url alone": {
+    "file": "src/lib/mediaStagedUpload.test.tsx",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "imageSrc › loads an unstaged image from the site": {
+    "file": "src/lib/mediaStagedUpload.test.tsx",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "imageSrc › serves a staged upload as a data URI": {
+    "file": "src/lib/mediaStagedUpload.test.tsx",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
   "images referenced from content › all resolve to a file that exists under public/": {
     "file": "src/lib/contentImages.test.ts",
     "lastRunAt": "2026-10-22T13:48:15.244Z",
@@ -15588,6 +15687,51 @@
       "pass|full|2026-10-19T22:45:45.164Z",
       "pass|changed|2026-10-19T21:35:31.843Z",
       "pass|full|2026-10-19T21:22:11.459Z"
+    ]
+  },
+  "manifestOps › reduces an upload to one add": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "manifestOps › reports a deleted record as a remove": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "manifestOps › reports a reorder of shared records": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "manifestOps › reports an edited record as an add": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "manifestOps › returns nothing for identical manifests": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
     ]
   },
   "mapping the spreadsheet columns › drops a column the site has no field for": {
@@ -20628,6 +20772,42 @@
       "pass|full|2026-10-19T22:45:45.164Z",
       "pass|changed|2026-10-19T21:35:31.843Z",
       "pass|full|2026-10-19T21:22:11.459Z"
+    ]
+  },
+  "rebaseManifestChange › is the identity when no manifest change is staged": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "rebaseManifestChange › leaves non-manifest changes alone": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "rebaseManifestChange › rebases the manifest change onto the branch file": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "rebaseManifestChange › starts from an empty library when the branch has no manifest": {
+    "file": "src/lib/mediaManifestMerge.test.ts",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
     ]
   },
   "recentPastEvents › does not mutate its input": {
@@ -26750,6 +26930,24 @@
       "pass|full|2026-10-19T21:22:11.459Z"
     ]
   },
+  "stageUpload › reuses the staged record for a byte-identical repeat upload": {
+    "file": "src/lib/mediaStagedUpload.test.tsx",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
+  "stageUpload › still files a different image under a fresh name": {
+    "file": "src/lib/mediaStagedUpload.test.tsx",
+    "lastRunAt": "2026-10-22T14:24:27.033Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-10-22T14:24:27.033Z"
+    ]
+  },
   "storeFromHtml › finds a page by its path": {
     "file": "src/lib/strikinglyArchive.test.ts",
     "lastRunAt": "2026-10-22T13:48:15.244Z",
@@ -29686,10 +29884,11 @@
   },
   "unbackedManifestRecords › ignores a manifest edit that adds no records": {
     "file": "src/lib/mediaCommitGuard.test.ts",
-    "lastRunAt": "2026-10-22T13:48:15.244Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-22T14:32:11.590Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-22T14:32:11.590Z",
       "pass|changed|2026-10-22T13:48:15.244Z",
       "pass|full|2026-10-22T13:06:10.254Z",
       "pass|changed|2026-10-22T01:02:55.950Z",
@@ -29698,16 +29897,16 @@
       "pass|changed|2026-10-22T00:06:57.393Z",
       "pass|changed|2026-10-20T18:50:00.442Z",
       "pass|full|2026-10-19T22:45:45.164Z",
-      "pass|changed|2026-10-19T21:35:31.843Z",
-      "pass|full|2026-10-19T21:22:11.459Z"
+      "pass|changed|2026-10-19T21:35:31.843Z"
     ]
   },
   "unbackedManifestRecords › ignores a staging set that does not touch the manifest": {
     "file": "src/lib/mediaCommitGuard.test.ts",
-    "lastRunAt": "2026-10-22T13:48:15.244Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-22T14:32:11.590Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-22T14:32:11.590Z",
       "pass|changed|2026-10-22T13:48:15.244Z",
       "pass|full|2026-10-22T13:06:10.254Z",
       "pass|changed|2026-10-22T01:02:55.950Z",
@@ -29716,16 +29915,16 @@
       "pass|changed|2026-10-22T00:06:57.393Z",
       "pass|changed|2026-10-20T18:50:00.442Z",
       "pass|full|2026-10-19T22:45:45.164Z",
-      "pass|changed|2026-10-19T21:35:31.843Z",
-      "pass|full|2026-10-19T21:22:11.459Z"
+      "pass|changed|2026-10-19T21:35:31.843Z"
     ]
   },
   "unbackedManifestRecords › passes an upload whose bytes are staged alongside its record": {
     "file": "src/lib/mediaCommitGuard.test.ts",
-    "lastRunAt": "2026-10-22T13:48:15.244Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-22T14:32:11.590Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-22T14:32:11.590Z",
       "pass|changed|2026-10-22T13:48:15.244Z",
       "pass|full|2026-10-22T13:06:10.254Z",
       "pass|changed|2026-10-22T01:02:55.950Z",
@@ -29734,16 +29933,16 @@
       "pass|changed|2026-10-22T00:06:57.393Z",
       "pass|changed|2026-10-20T18:50:00.442Z",
       "pass|full|2026-10-19T22:45:45.164Z",
-      "pass|changed|2026-10-19T21:35:31.843Z",
-      "pass|full|2026-10-19T21:22:11.459Z"
+      "pass|changed|2026-10-19T21:35:31.843Z"
     ]
   },
   "unbackedManifestRecords › reports records the commit adds without their image bytes": {
     "file": "src/lib/mediaCommitGuard.test.ts",
-    "lastRunAt": "2026-10-22T13:48:15.244Z",
-    "lastRunKind": "changed",
+    "lastRunAt": "2026-10-22T14:32:11.590Z",
+    "lastRunKind": "targeted",
     "lastStatus": "pass",
     "statusRing": [
+      "pass|targeted|2026-10-22T14:32:11.590Z",
       "pass|changed|2026-10-22T13:48:15.244Z",
       "pass|full|2026-10-22T13:06:10.254Z",
       "pass|changed|2026-10-22T01:02:55.950Z",
@@ -29752,8 +29951,7 @@
       "pass|changed|2026-10-22T00:06:57.393Z",
       "pass|changed|2026-10-20T18:50:00.442Z",
       "pass|full|2026-10-19T22:45:45.164Z",
-      "pass|changed|2026-10-19T21:35:31.843Z",
-      "pass|full|2026-10-19T21:22:11.459Z"
+      "pass|changed|2026-10-19T21:35:31.843Z"
     ]
   },
   "uncoveredRoutes › is empty when every route is fully covered": {

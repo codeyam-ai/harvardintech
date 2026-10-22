@@ -15,6 +15,12 @@ export default defineConfig({
   resolve: {
     conditions: ['codeyam-source'],
   },
+  // The automatic JSX runtime, as `tsconfig.json` declares. Spelled out because
+  // esbuild does not apply the tsconfig setting to the CMS source it compiles
+  // out of node_modules, so a rendered CMS component fails "React is not defined".
+  esbuild: {
+    jsx: 'automatic',
+  },
   test: {
     environment: 'jsdom',
     globals: true,

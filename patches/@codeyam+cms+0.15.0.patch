@@ -257,6 +257,95 @@ index eb14185..bce1f60 100644
            {orderIssue && <OrderIssueBadge />}
          </div>
  
+diff --git a/node_modules/@codeyam/cms/src/components/admin/ImageField.tsx b/node_modules/@codeyam/cms/src/components/admin/ImageField.tsx
+index e56ffe0..8adf979 100644
+--- a/node_modules/@codeyam/cms/src/components/admin/ImageField.tsx
++++ b/node_modules/@codeyam/cms/src/components/admin/ImageField.tsx
+@@ -7,7 +7,7 @@ import type { CSSProperties } from 'react';
+ import type { FieldDef } from '../../lib/entryEditor';
+ import { fieldLabelStyle } from './EntryField';
+ import FieldError from './FieldError';
+-import { withBase } from '../../lib/adminUrl';
++import { imageSrc } from '../../lib/mediaStaging';
+ 
+ interface Props {
+   field: FieldDef;
+@@ -55,7 +55,7 @@ export default function ImageField({ field, value, onPick, onClear, error }: Pro
+           }}
+         >
+           {hasValue ? (
+-            <img src={withBase(value)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
++            <img src={imageSrc(value)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+           ) : (
+             <span aria-hidden>🖼️</span>
+           )}
+diff --git a/node_modules/@codeyam/cms/src/components/admin/MediaCard.tsx b/node_modules/@codeyam/cms/src/components/admin/MediaCard.tsx
+index 2083036..fc614c6 100644
+--- a/node_modules/@codeyam/cms/src/components/admin/MediaCard.tsx
++++ b/node_modules/@codeyam/cms/src/components/admin/MediaCard.tsx
+@@ -8,7 +8,7 @@ import type { MediaAsset } from '../../lib/mediaLibrary';
+ import { dragRowStyle } from './configEditorStyles';
+ import DragHandle from './DragHandle';
+ import MediaCardLabel from './MediaCardLabel';
+-import { withBase } from '../../lib/adminUrl';
++import { imageSrc } from '../../lib/mediaStaging';
+ 
+ interface Props {
+   asset: MediaAsset;
+@@ -87,7 +87,7 @@ export default function MediaCard({
+     >
+       <div style={thumbWrapStyle}>
+         <img
+-          src={withBase(asset.url)}
++          src={imageSrc(asset.url)}
+           alt={asset.alt ?? asset.filename}
+           loading="lazy"
+           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+diff --git a/node_modules/@codeyam/cms/src/components/admin/MediaPickerModal.tsx b/node_modules/@codeyam/cms/src/components/admin/MediaPickerModal.tsx
+index e0d336b..8eea010 100644
+--- a/node_modules/@codeyam/cms/src/components/admin/MediaPickerModal.tsx
++++ b/node_modules/@codeyam/cms/src/components/admin/MediaPickerModal.tsx
+@@ -59,16 +59,26 @@ export default function MediaPickerModal({
+     initialManifest ?? currentLibrary(library, committed),
+   );
+   const [error, setError] = useState('');
++  const [hint, setHint] = useState('');
+ 
+   // Same derivation as the standalone gallery: the folders the grid is showing.
+   const folders = useMemo(() => libraryFolders(manifest), [manifest]);
+ 
++  // The picker was opened FOR something — a cover field, a gallery row, the
++  // body — so a single upload is that choice: it goes straight to `onSelect`
++  // rather than waiting for a second click on its new thumbnail, which nothing
++  // told the editor to make. Several files at once can't all be the one
++  // choice, so those stay in the grid with a hint saying what to do next.
+   const onFiles = async (files: File[], destination: string) => {
+     setError('');
++    setHint('');
+     try {
+-      for (const file of files) await stageUpload(file, library, committed, {}, destination);
++      const staged: MediaAsset[] = [];
++      for (const file of files) staged.push(await stageUpload(file, library, committed, {}, destination));
+       saveUploadDestination(destination);
+       setManifest(currentLibrary(library, committed));
++      if (staged.length === 1) onSelect(staged[0]);
++      else setHint(`${staged.length} images uploaded — click a photo to use it.`);
+     } catch (e) {
+       setError(e instanceof Error ? e.message : String(e));
+     }
+@@ -85,6 +95,12 @@ export default function MediaPickerModal({
+ 
+         <MediaErrorNotice message={error} />
+ 
++        {hint && (
++          <p role="status" style={{ margin: 0, fontWeight: 600, color: 'var(--color-accent)' }}>
++            {hint}
++          </p>
++        )}
++
+         {manifest.assets.length === 0 ? (
+           <MediaPickerEmpty />
+         ) : (
 diff --git a/node_modules/@codeyam/cms/src/components/admin/OrderArrows.tsx b/node_modules/@codeyam/cms/src/components/admin/OrderArrows.tsx
 new file mode 100644
 index 0000000..8898b0b
@@ -520,6 +609,225 @@ index e330ee9..95dc882 100644
 +  });
 +  return changed;
 +}
+diff --git a/node_modules/@codeyam/cms/src/lib/githubCommit.ts b/node_modules/@codeyam/cms/src/lib/githubCommit.ts
+index dc203ce..b1f055f 100644
+--- a/node_modules/@codeyam/cms/src/lib/githubCommit.ts
++++ b/node_modules/@codeyam/cms/src/lib/githubCommit.ts
+@@ -16,8 +16,10 @@
+ import { isBinary, isDeletion, sandboxChanges, type ChangeEncoding, type PendingChange } from './pendingChanges';
+ import { contentsEndpoint, decodeContentPayload } from './githubHistory';
+ import {
++  MEDIA_MANIFEST_PATH,
+   assetRepoPath,
+   describeUnbackedRecovery,
++  rebaseManifestChange,
+   summarizeUnbackedMedia,
+   unbackedManifestRecords,
+ } from './mediaLibrary';
+@@ -355,6 +357,19 @@ export async function commitAll(
+ ): Promise<CommitResult> {
+   if (writes.length === 0 && deletes.length === 0) throw new Error('Nothing to commit');
+ 
++  // 00. Merge the media manifest instead of overwriting it. The staged change's
++  //     baseline is the manifest the admin page was BUILT with, so writing its
++  //     `updated` whole drops every record published since. Re-base it onto the
++  //     branch's current file and write that, so only this session's own adds
++  //     and removes land. Runs before the checks below so they judge the merge.
++  if (options.changes?.some((c) => c.path === MEDIA_MANIFEST_PATH)) {
++    const head = await fetchPathContent(target, token, MEDIA_MANIFEST_PATH, false, fetchFn);
++    const changes = rebaseManifestChange(options.changes, head);
++    const merged = changes.find((c) => c.path === MEDIA_MANIFEST_PATH)!.updated;
++    writes = writes.map((w) => (w.path === MEDIA_MANIFEST_PATH ? { ...w, content: merged } : w));
++    options = { ...options, changes };
++  }
++
+   // 0. Refuse to overwrite work that landed on the branch after these changes
+   //    were staged. Runs before any blob is created, so a refusal mutates
+   //    nothing. A failed freshness fetch propagates here rather than falling
+diff --git a/node_modules/@codeyam/cms/src/lib/mediaLibrary.ts b/node_modules/@codeyam/cms/src/lib/mediaLibrary.ts
+index 8ff1e7e..c6a3dd9 100644
+--- a/node_modules/@codeyam/cms/src/lib/mediaLibrary.ts
++++ b/node_modules/@codeyam/cms/src/lib/mediaLibrary.ts
+@@ -592,6 +592,105 @@ export function pruneUnbackedRecords(changes: readonly PendingChange[]): Pending
+   return changes.map((c) => (c.path === MEDIA_MANIFEST_PATH ? { ...c, updated } : c));
+ }
+ 
++/**
++ * One edit a session made to the media manifest, expressed against the records
++ * it touched rather than as a whole-file snapshot.
++ *
++ * - `add` — a new record, or a changed one (replaces by filename)
++ * - `remove` — a record this session deleted
++ * - `order` — this session reordered the library; the filenames in their new order
++ */
++export type ManifestOp =
++  | { op: 'add'; asset: MediaAsset }
++  | { op: 'remove'; filename: string }
++  | { op: 'order'; filenames: string[] };
++
++/**
++ * The edits that turn `original` into `updated`, record by record.
++ *
++ * A staged manifest change stores two whole files, and `original` is whatever
++ * `media.json` held when the admin page was BUILT. Publishing `updated` as-is
++ * therefore drops every record that landed on the branch since — which is how
++ * `75d884d` lost the 19 Oct city photos. Reducing the change to the records it
++ * actually touched lets the publish replay them onto the branch's current file.
++ */
++export function manifestOps(original: MediaManifest, updated: MediaManifest): ManifestOp[] {
++  const before = new Map(original.assets.map((a) => [a.filename, a]));
++  const after = new Set(updated.assets.map((a) => a.filename));
++  const ops: ManifestOp[] = [];
++
++  for (const asset of original.assets) {
++    if (!after.has(asset.filename)) ops.push({ op: 'remove', filename: asset.filename });
++  }
++  for (const asset of updated.assets) {
++    const prior = before.get(asset.filename);
++    if (!prior || JSON.stringify(prior) !== JSON.stringify(asset)) ops.push({ op: 'add', asset });
++  }
++
++  // Only a genuine reorder of records both sides share counts — an upload
++  // appending to the end is not one.
++  const kept = original.assets.map((a) => a.filename).filter((f) => after.has(f));
++  const keptInNewOrder = updated.assets.map((a) => a.filename).filter((f) => before.has(f));
++  if (kept.some((f, i) => f !== keptInNewOrder[i])) {
++    ops.push({ op: 'order', filenames: updated.assets.map((a) => a.filename) });
++  }
++  return ops;
++}
++
++/**
++ * Replay a session's manifest edits onto `head` — the manifest as the branch
++ * holds it NOW. Records the session never touched come through exactly as
++ * `head` has them, so a stale admin page can no longer delete someone else's.
++ */
++export function applyManifestOps(head: MediaManifest, ops: readonly ManifestOp[]): MediaManifest {
++  let assets = [...head.assets];
++  for (const change of ops) {
++    if (change.op === 'remove') {
++      assets = assets.filter((a) => a.filename !== change.filename);
++    } else if (change.op === 'add') {
++      const at = assets.findIndex((a) => a.filename === change.asset.filename);
++      if (at === -1) assets.push(change.asset);
++      else assets[at] = change.asset;
++    } else {
++      const rank = new Map(change.filenames.map((f, i) => [f, i]));
++      const ranked = assets.filter((a) => rank.has(a.filename));
++      ranked.sort((a, b) => rank.get(a.filename)! - rank.get(b.filename)!);
++      assets = [...ranked, ...assets.filter((a) => !rank.has(a.filename))];
++    }
++  }
++  return { assets };
++}
++
++/**
++ * Re-base the staged manifest change onto what the branch holds now (`head`,
++ * the raw `media.json` text, or `null` when the branch has none). The change's
++ * `original` becomes `head` and its `updated` becomes `head` with this
++ * session's edits replayed, so the publish writes a merge rather than a
++ * snapshot — and the freshness check no longer flags the manifest as drifted
++ * merely because someone else uploaded first.
++ *
++ * Identity when no manifest change is staged.
++ */
++export function rebaseManifestChange(
++  changes: readonly PendingChange[],
++  head: string | null,
++): PendingChange[] {
++  const manifestChange = changes.find((c) => c.path === MEDIA_MANIFEST_PATH);
++  if (!manifestChange) return changes as PendingChange[];
++
++  const ops = manifestOps(
++    { assets: parseManifestAssets(manifestChange.original) },
++    { assets: parseManifestAssets(manifestChange.updated) },
++  );
++  const headManifest = { assets: head === null ? [] : parseManifestAssets(head) };
++  const rebased = {
++    ...manifestChange,
++    original: head ?? '',
++    updated: serializeManifest(applyManifestOps(headManifest, ops)),
++  };
++  return changes.map((c) => (c.path === MEDIA_MANIFEST_PATH ? rebased : c));
++}
++
+ /**
+  * The stranded-media headline: how many uploads lost their bytes.
+  *
+diff --git a/node_modules/@codeyam/cms/src/lib/mediaStaging.ts b/node_modules/@codeyam/cms/src/lib/mediaStaging.ts
+index c5ba8c3..fa8919f 100644
+--- a/node_modules/@codeyam/cms/src/lib/mediaStaging.ts
++++ b/node_modules/@codeyam/cms/src/lib/mediaStaging.ts
+@@ -10,6 +10,7 @@
+ // the gallery shows uploads that haven't been committed yet.
+ import {
+   MEDIA_MANIFEST_PATH,
++  MEDIA_URL_PREFIX,
+   addAsset,
+   removeAsset,
+   sameAssets,
+@@ -27,6 +28,7 @@ import {
+ import { reorderInArray } from './siteConfig';
+ import { loadChanges, stageChange, discardChange } from './pendingChangesStore';
+ import { compressImageFile } from './imageCompression';
++import { withBase } from './adminUrl';
+ import { StagingStorageFullError, describeStagingBudget, wouldExceedBudget } from './stagingBudget';
+ 
+ /**
+@@ -122,6 +124,11 @@ export async function stageUpload(
+   // that commit to public/images (and live in git history) are lean. SVG/GIF and
+   // images that don't shrink pass through untouched (see compressImageFile).
+   const result = await compressImageFile(file);
++  // The same bytes already staged this session ARE that upload: hand back its
++  // record instead of filing a byte-identical `-2` copy beside it. A repeat
++  // upload is what an editor does when the first one seemed to do nothing.
++  const twin = stagedTwin(result.base64, stagedManifest(committed));
++  if (twin) return twin;
+   const asset = buildUploadedAsset(result.filename, manifestFilenames(current), {
+     sizeBytes: result.bytes,
+     // Record the pre-compression size only when compression actually shrank the
+@@ -164,6 +171,41 @@ export async function stageUpload(
+   return asset;
+ }
+ 
++const MIME_BY_EXT: Record<string, string> = {
++  webp: 'image/webp',
++  png: 'image/png',
++  jpg: 'image/jpeg',
++  jpeg: 'image/jpeg',
++  gif: 'image/gif',
++  svg: 'image/svg+xml',
++};
++
++/**
++ * Where a thumbnail should load an image from. A staged upload has no file on
++ * the site until it publishes, so its `/images/...` url 404s and the editor
++ * sees a broken image right after uploading — read as "the upload did
++ * nothing". For those, show the staged bytes inline; everything else loads
++ * from the site as before.
++ */
++export function imageSrc(url: string): string {
++  const prefix = `${MEDIA_URL_PREFIX}/`;
++  if (url.startsWith(prefix)) {
++    const path = assetRepoPath(url.slice(prefix.length));
++    const staged = loadChanges().find((c) => c.encoding === 'base64' && c.path === path);
++    if (staged) {
++      const mime = MIME_BY_EXT[path.split('.').pop()!.toLowerCase()] ?? 'image/*';
++      return `data:${mime};base64,${staged.updated}`;
++    }
++  }
++  return withBase(url);
++}
++
++/** The staged record whose staged image bytes equal `base64`, if any. */
++function stagedTwin(base64: string, staged: MediaManifest): MediaAsset | undefined {
++  const path = loadChanges().find((c) => c.encoding === 'base64' && c.updated === base64)?.path;
++  return path ? staged.assets.find((a) => assetRepoPath(a.filename) === path) : undefined;
++}
++
+ /**
+  * Discard a staged (uncommitted) upload: unstage its image blob and remove its
+  * record from the staged manifest. If that returns the manifest to the committed
 diff --git a/node_modules/@codeyam/cms/src/pages/admin/[collection]/index.astro b/node_modules/@codeyam/cms/src/pages/admin/[collection]/index.astro
 index e33b163..8f562d8 100644
 --- a/node_modules/@codeyam/cms/src/pages/admin/[collection]/index.astro

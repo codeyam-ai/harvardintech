@@ -1,0 +1,13 @@
+{
+  "name": "ImageField - Staged Upload",
+  "id": "16759da0-f1ed-4135-ab59-2f1408ddd579",
+  "url": "/isolated-components/ImageField-StagedUpload",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ImageField",
+  "scenarioType": "component",
+  "pageFilePath": "node_modules/@codeyam/cms/src/components/admin/ImageField.tsx",
+  "description": "A chapter's cover-image field right after the editor uploaded a new photo from its picker. The single upload fills the field straight away and the thumbnail shows the uploaded picture before it is published. Before the fix this field stayed empty, or showed a broken image, until a second click, so editors uploaded the same photo again."
+}

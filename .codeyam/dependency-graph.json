@@ -2876,6 +2876,14 @@
       "imports": [],
       "importedBy": []
     },
+    "src/lib/mediaManifestMerge.test.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/mediaStagedUpload.test.tsx": {
+      "imports": [],
+      "importedBy": []
+    },
     "src/lib/momentumNetwork.test.ts": {
       "imports": [
         "src/lib/momentumNetwork.ts",
@@ -4284,6 +4292,12 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ImageField-StagedUpload.astro": {
+      "imports": [
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/JoinWhatsAppCta.astro": {
       "imports": [
         "src/components/JoinWhatsAppCta.astro",
@@ -4301,6 +4315,12 @@
     "src/pages/isolated-components/LumaSubscribe.astro": {
       "imports": [
         "src/components/LumaSubscribe.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/MediaCard-StagedUpload.astro": {
+      "imports": [
         "src/styles/tokens.css"
       ],
       "importedBy": []
@@ -4874,6 +4894,7 @@
         "src/pages/isolated-components/MomentumClose.astro",
         "src/pages/isolated-components/DeployChip-StillUpdating.astro",
         "src/pages/isolated-components/MomentumNarrative-Columns.astro",
+        "src/pages/isolated-components/ImageField-StagedUpload.astro",
         "src/pages/isolated-components/BrandGlyph.astro",
         "src/pages/isolated-components/MomentumTestimonials.astro",
         "src/pages/isolated-components/SitePageBody-Table.astro",
@@ -4943,6 +4964,7 @@
         "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro",
         "src/pages/isolated-components/BrandMark.astro",
         "src/pages/isolated-components/VolunteerProjectHeader.astro",
+        "src/pages/isolated-components/MediaCard-StagedUpload.astro",
         "src/pages/isolated-components/NavItemLabel.astro",
         "src/pages/isolated-components/StagingBar-Reviewing.astro",
         "src/pages/isolated-components/OrderArrows-OnlyRow.astro",
@@ -11232,6 +11254,14 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ImageField-StagedUpload.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ImageField-StagedUpload.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/JoinWhatsAppCta.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/JoinWhatsAppCta.astro",
       "name": "__file_root__",
@@ -11255,6 +11285,14 @@
       "name": "__file_root__",
       "imports": [
         "src/components/LumaSubscribe.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/MediaCard-StagedUpload.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MediaCard-StagedUpload.astro",
+      "name": "__file_root__",
+      "imports": [
         "src/styles/tokens.css::__file_root__"
       ],
       "importedBy": []
@@ -11969,6 +12007,7 @@
         "src/pages/isolated-components/MomentumClose.astro::__file_root__",
         "src/pages/isolated-components/DeployChip-StillUpdating.astro::__file_root__",
         "src/pages/isolated-components/MomentumNarrative-Columns.astro::__file_root__",
+        "src/pages/isolated-components/ImageField-StagedUpload.astro::__file_root__",
         "src/pages/isolated-components/BrandGlyph.astro::__file_root__",
         "src/pages/isolated-components/MomentumTestimonials.astro::__file_root__",
         "src/pages/isolated-components/SitePageBody-Table.astro::__file_root__",
@@ -12038,6 +12077,7 @@
         "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro::__file_root__",
         "src/pages/isolated-components/BrandMark.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectHeader.astro::__file_root__",
+        "src/pages/isolated-components/MediaCard-StagedUpload.astro::__file_root__",
         "src/pages/isolated-components/NavItemLabel.astro::__file_root__",
         "src/pages/isolated-components/StagingBar-Reviewing.astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-OnlyRow.astro::__file_root__",
@@ -12054,5 +12094,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-22T13:50:23Z"
+  "lastUpdated": "2026-10-22T14:36:24Z"
 }

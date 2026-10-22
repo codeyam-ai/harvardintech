@@ -1,0 +1,133 @@
+{
+  "timestamp": "2026-10-22T14:33:45Z",
+  "title": "Fix image uploads in the content editor",
+  "type": "feature",
+  "userRequest": "## Summary\n\nImage uploads in the /admin content editor are broken in three ways, and together they explain Nicole's 21 Oct reports (\"the new picture does not appear… nothing happens; no error messages\", the Seattle hero change failing, the blog's insert-image doing nothing). (1) **An upload doesn't attach to the field it was started from.** Uploading inside the picker opened by a gallery row, a hero field or the body's 🖼️ button only stages the file in the library. She has to then click the new thumbnail, and nothing tells her so. The result is six orphaned uploads today and London still at `photos: []`. (2) **Each publish overwrites `src/data/media.json` with a stale copy.** The upload diffs against the `committed` manifest baked into the static admin page at build time. `githubCommit` then writes that whole file onto the current HEAD tree, so any record added since the admin was last built is dropped. Commit `75d884d` dropped the 19 Oct city-photo records this way. Because a failed deploy also means no admin rebuild, the baseline gets staler with every publish. (3) **One upload makes two files.** Today's commits contain byte-identical `x.webp` + `x-2.webp` pairs.\n\n## Key Decisions\n\n- **Fix it in `@codeyam/cms`, shipped through this repo's `patches/@codeyam+cms+0.14.0.patch` first.** Nicole is blocked now. The patch is the established route (see `CMS_SETUP.md`), and the queued 0.15.0 upgrade plan is still waiting on an npm release. Upstream the same change so a later upgrade can drop it, the way the deploy-watch and duplicate-entry halves did.\n- **Merge the manifest at commit time instead of staging the whole file.** Before writing, re-read `src/data/media.json` from the target branch's HEAD and apply only this session's add/remove operations to it. A stale page can then never delete records it didn't touch. Stage operations, not a whole-file snapshot.\n- **Uploading in a picker selects the upload.** One file uploaded from a picker opened for a target gets passed to that picker's `onSelect`, so it lands in the gallery row, hero field or body. `stageUpload` already returns the asset \"so the caller can select it immediately\". The picker just never does.\n- **Always write `alt`** (the editor's text, or `\"\"` only when the editor explicitly marks the image decorative). Never omit the key.\n\n## Implementation\n\n### 1. Upload in the picker attaches to its target\n\n**File**: `node_modules/@codeyam/cms/src/components/admin/MediaPickerModal.tsx`\n\nAfter a successful `stageUpload` of a single file, call `onSelect(asset)`. For several files dropped at once, keep today's behaviour but show a \"Click a photo to use it\" hint. `EntryEditor.onPickImage` (`node_modules/@codeyam/cms/src/components/admin/EntryEditor.tsx`) already routes the result to the field, list row or body.\n\n### 2. Merge the manifest at publish time\n\n**File**: `node_modules/@codeyam/cms/src/lib/mediaStaging.ts`\n**File**: `node_modules/@codeyam/cms/src/lib/githubCommit.ts`\n\nRecord the staged manifest change as add/remove operations against the baseline. At commit time, fetch the branch-HEAD `media.json`, apply the operations with `addAsset` / `removeAsset`, and write the result. Do the same for the in-dev write path, if it bypasses `githubCommit`.\n\n### 3. One upload, one file\n\n**File**: `node_modules/@codeyam/cms/src/components/admin/UploadDropZone.tsx`\n\nFind why one pick calls `stageUpload` twice: input `onChange` plus a drop handler, a StrictMode double effect, or a re-entrant click. Guard it so a file is staged once. `buildUploadedAsset` currently de-dupes the second call to `-2` instead of rejecting it.\n\n### 4. Regenerate the patch\n\n**File**: `patches/@codeyam+cms+0.14.0.patch`\n\nRegenerate with `npx patch-package @codeyam/cms`. Add a paragraph to `CMS_SETUP.md` under \"The patch on top of the package\" saying what this half carries and that it is meant to go upstream.\n\n## Reused existing code\n\n- `stageUpload`, `discardUpload`, `stagedManifest` from `node_modules/@codeyam/cms/src/lib/mediaStaging.ts`\n- `addAsset`, `removeAsset`, `MEDIA_MANIFEST_PATH` from `node_modules/@codeyam/cms/src/lib/mediaLibrary.ts`\n- `onPickImage` in `node_modules/@codeyam/cms/src/components/admin/EntryEditor.tsx`\n\n## Reproduction Test\n\nA publish built from a stale manifest baseline drops a record that HEAD has and this session never touched.\n\n**Target**: a new test next to the manifest-merge helper (where existing CMS-contract tests live in this repo, e.g. `duplicateEntry.test.ts`). Run with `codeyam-editor editor refresh-tests --test <name>`.\n\n```ts\n// A stale admin page must not drop media records it never touched.\nit(\"keeps HEAD's records when the staged baseline is older\", () => {\n  const baseline = { assets: [a] };\n  const head = { assets: [a, cityPhoto] };\n  const ops = [{ op: 'add', asset: upload }];\n  expect(applyManifestOps(head, ops).assets.map((x) => x.filename))\n    .toEqual([a.filename, cityPhoto.filename, upload.filename]);\n});\n```\n\nStatus: PROPOSED. Confirm red at execution. Expected failure: no op-based merge exists yet. The publish writes `addAsset(baseline, upload)`, which leaves out `cityPhoto`.\n\n## Scenarios to Demonstrate\n\n- Chapter editor: add a gallery row, upload a photo in the picker, and the row shows the photo with no second click\n- Chapter editor: upload a PNG for the hero, and the hero field fills in (PNG becomes WebP)\n- Blog editor: 🖼️ then upload, and the image markdown is inserted at the cursor\n- Publish from a page built before another editor's upload, and both uploads' records survive",
+  "description": "Image uploads in the /admin editor now work the first time and can no longer wipe the media library. Uploading one image from a field picker selects it straight away and its thumbnail previews the staged bytes (no more 404 that made uploads look like they did nothing); re-uploading identical bytes reuses the first record instead of minting a -2 copy; and at publish the staged media.json change is re-based onto the branch-HEAD manifest, replaying only this session’s adds/removes/reorder so a stale admin page cannot drop records published since it was built (the 75d884d loss of the 19 Oct city photos). Shipped through patches/@codeyam+cms+0.15.0.patch (documented in CMS_SETUP.md) and held by mediaManifestMerge.test.ts and mediaStagedUpload.test.tsx; red was proven by neutering each fix by hand and is agent-attested, since prove-red cannot route node_modules paths. Known gaps: the plan’s \"always write alt\" was not implemented (body images still fall back to the filename stem), and the multi-file \"N images uploaded\" hint is unit-tested only. SCOPE VERDICT: no project deliverable was delivered or deferred by this cycle — it is a bug fix supporting the already-delivered cloud content admin. The one open deferral, publication-quality content, stays deferred by the user (needs team-supplied material); none are agent-decided.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms--fix-image-uploads-in-the-content-editor.md\t.codeyam/plans/completed/cms--fix-image-uploads-in-the-content-editor.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/recapture-skip-clean.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/e6f20a8967d9847d49fb29bbd4189953702a799c77526823170f19a198fe0385.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/f9bd0e59b3d3a442948ddb442f43a1ccdeee25fd26ef2014fa9aecd17b86706f.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "CMS_SETUP.md",
+      "status": "modified"
+    },
+    {
+      "path": "patches/@codeyam+cms+0.15.0.patch",
+      "status": "modified"
+    },
+    {
+      "path": "vitest.config.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/imagefield-staged-upload.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/mediacard-staged-upload.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/imagefield-staged-upload--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/imagefield-staged-upload--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/mediacard-staged-upload--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/mediacard-staged-upload--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/cms--fix-image-uploads-in-the-content-editor.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/3a5cb61fbf9736e917417ae019b475a7b28456dff2e2a763c5741d4c3ffa85f4.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/5cd4f8a5f530dcb9c5865c38e98557331b471287cf140c831320acbc82957d3d.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/73c916782c96476089b28bb1e0fa6fbadcf1b9805601e92beabf5e185127b35d.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/dd51add1764ca02e7f6d97b5399921f1223969374b8a20de0f19a07287747ec5.json",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/mediaManifestMerge.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/mediaStagedUpload.test.tsx",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/ImageField-StagedUpload.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/MediaCard-StagedUpload.astro",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 1803,
+    "passed": 1,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1803,
+        "passed": 1
+      }
+    ]
+  }
+}

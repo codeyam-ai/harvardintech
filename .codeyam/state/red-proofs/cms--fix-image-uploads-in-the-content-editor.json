@@ -1,0 +1,78 @@
+{
+  "provenAt": "2026-10-22T14:21:51Z",
+  "slug": "cms--fix-image-uploads-in-the-content-editor",
+  "paths": [],
+  "runScope": [
+    "node_modules/@codeyam/cms/src/lib/githubCommit.ts",
+    "node_modules/@codeyam/cms/src/lib/mediaStaging.ts",
+    "node_modules/@codeyam/cms/src/components/admin/MediaPickerModal.tsx"
+  ],
+  "neuters": [
+    {
+      "file": "node_modules/@codeyam/cms/src/lib/githubCommit.ts",
+      "find": "if (options.changes?.some((c) => c.path === MEDIA_MANIFEST_PATH)) {",
+      "replace": "if (options.changes?.some((c) => c.path === MEDIA_MANIFEST_PATH) && false) {"
+    },
+    {
+      "file": "node_modules/@codeyam/cms/src/lib/mediaStaging.ts",
+      "find": "if (twin) return twin;",
+      "replace": "if (twin && false) return twin;"
+    },
+    {
+      "file": "node_modules/@codeyam/cms/src/lib/mediaStaging.ts",
+      "find": "    if (staged) {",
+      "replace": "    if (staged && false) {"
+    },
+    {
+      "file": "node_modules/@codeyam/cms/src/components/admin/MediaPickerModal.tsx",
+      "find": "if (staged.length === 1) onSelect(staged[0]);",
+      "replace": "if (staged.length === 1 && false) onSelect(staged[0]);"
+    }
+  ],
+  "tests": {
+    "reuses the staged record for a byte-identical repeat upload": {
+      "withoutFix": "missing",
+      "withFix": "missing",
+      "established": {
+        "kind": "attestedByHand",
+        "method": "Fix lives in untracked node_modules/@codeyam/cms/src (captured by patch-package), so prove-red could not route it to a runner. Manually neutered each fix with '&& false' (commitAll step 00 manifest rebase; stageUpload twin return; imageSrc staged branch; MediaPickerModal single-upload onSelect), ran refresh-tests --file on both new test files, then restored from backup and re-ran.",
+        "evidence": "Neutered: 4 failed / 18 passed, the 4 failures exactly these tests. Restored: 22/22 passed (incl. mediaCommitGuard.test.ts)."
+      }
+    },
+    "selects a single uploaded image straight away": {
+      "withoutFix": "missing",
+      "withFix": "missing",
+      "established": {
+        "kind": "attestedByHand",
+        "method": "Fix lives in untracked node_modules/@codeyam/cms/src (captured by patch-package), so prove-red could not route it to a runner. Manually neutered each fix with '&& false' (commitAll step 00 manifest rebase; stageUpload twin return; imageSrc staged branch; MediaPickerModal single-upload onSelect), ran refresh-tests --file on both new test files, then restored from backup and re-ran.",
+        "evidence": "Neutered: 4 failed / 18 passed, the 4 failures exactly these tests. Restored: 22/22 passed (incl. mediaCommitGuard.test.ts)."
+      }
+    },
+    "serves a staged upload as a data URI": {
+      "withoutFix": "missing",
+      "withFix": "missing",
+      "established": {
+        "kind": "attestedByHand",
+        "method": "Fix lives in untracked node_modules/@codeyam/cms/src (captured by patch-package), so prove-red could not route it to a runner. Manually neutered each fix with '&& false' (commitAll step 00 manifest rebase; stageUpload twin return; imageSrc staged branch; MediaPickerModal single-upload onSelect), ran refresh-tests --file on both new test files, then restored from backup and re-ran.",
+        "evidence": "Neutered: 4 failed / 18 passed, the 4 failures exactly these tests. Restored: 22/22 passed (incl. mediaCommitGuard.test.ts)."
+      }
+    },
+    "writes the merged manifest, keeping records published since staging": {
+      "withoutFix": "missing",
+      "withFix": "missing",
+      "established": {
+        "kind": "attestedByHand",
+        "method": "Fix lives in untracked node_modules/@codeyam/cms/src (captured by patch-package), so prove-red could not route it to a runner. Manually neutered each fix with '&& false' (commitAll step 00 manifest rebase; stageUpload twin return; imageSrc staged branch; MediaPickerModal single-upload onSelect), ran refresh-tests --file on both new test files, then restored from backup and re-ran.",
+        "evidence": "Neutered: 4 failed / 18 passed, the 4 failures exactly these tests. Restored: 22/22 passed (incl. mediaCommitGuard.test.ts)."
+      }
+    }
+  },
+  "proof": {
+    "verdict": "provenByHand",
+    "attested": [
+      "selects a single uploaded image straight away"
+    ],
+    "method": "Fix lives in untracked node_modules/@codeyam/cms/src (captured by patch-package), so prove-red could not route it to a runner. Manually neutered each fix with '&& false' (commitAll step 00 manifest rebase; stageUpload twin return; imageSrc staged branch; MediaPickerModal single-upload onSelect), ran refresh-tests --file on both new test files, then restored from backup and re-ran.",
+    "evidence": "Neutered: 4 failed / 18 passed, the 4 failures exactly these tests. Restored: 22/22 passed (incl. mediaCommitGuard.test.ts)."
+  }
+}
