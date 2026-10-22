@@ -173,7 +173,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 47
+      "rank": 46
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -235,7 +235,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 37,
+      "rank": 36,
       "sightings": 3,
       "notes": [
         "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
@@ -251,7 +251,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "rank": 34,
+      "rank": 32,
       "sightings": 4,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand.",
@@ -279,14 +279,16 @@
       "id": "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
       "title": "Seed check rejects a capture when the seeded value matches committed content",
       "mode": "backend",
-      "body": "## What happened\n\n`recapture-stale` failed `events-route-the-calendar-with-no-past-events-yet` with `BLOCKED: the render ... showed \"On March 20, 2018, Harvard in Tech hosted its second Crypto + Blockchain event...\" where this scenario's own seed wrote \"On March 20, 2018, Harvard in Tech hosted its second Crypto + Blockchain event...\"` — the two strings are identical. The guard picks a field whose seeded value equals the committed value, so it cannot distinguish 'seed landed' from 'seed missed' and reports a false failure. A rerun of the same capture later passed.\n\n## What would have helped\n\nOnly use a field as seed evidence when its seeded value differs from the committed value; when no such field exists, skip the check (or say it was inconclusive) instead of blocking.",
-      "reason": "A capture was refused as 'reading committed content' when the seed's text was word-for-word the committed text.",
+      "body": "## What happened\nSeen again.",
       "severity": 3,
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 48,
-      "sightings": 1
+      "rank": 47,
+      "sightings": 2,
+      "notes": [
+        "2026-10-22: Seen again on momentum-fund-the-impact-band-with-real-quotes: the BLOCKED message quoted identical seed and committed mission text, while the actual cause was an unrelated `projects` collection loaded with 0 entries. The messag…"
+      ]
     },
     {
       "id": "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
@@ -296,7 +298,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 38,
+      "rank": 37,
       "sightings": 3,
       "notes": [
         "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots.",
@@ -330,7 +332,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 32,
+      "rank": 5,
       "sightings": 8,
       "notes": [
         "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …",
@@ -351,7 +353,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 22,
+      "rank": 21,
       "sightings": 1
     },
     {
@@ -363,7 +365,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 19,
+      "rank": 18,
       "sightings": 1
     },
     {
@@ -377,7 +379,7 @@
       "status": "pending",
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
-      "rank": 5,
+      "rank": 3,
       "sightings": 4,
       "notes": [
         "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
@@ -425,7 +427,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 30,
+      "rank": 29,
       "sightings": 1
     },
     {
@@ -437,7 +439,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 31,
+      "rank": 30,
       "sightings": 1
     },
     {
@@ -461,7 +463,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 39,
+      "rank": 33,
       "sightings": 4,
       "notes": [
         "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed.",
@@ -479,7 +481,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 24,
+      "rank": 23,
       "sightings": 1
     },
     {
@@ -491,7 +493,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 23,
+      "rank": 22,
       "sightings": 1
     },
     {
@@ -553,7 +555,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 53,
+      "rank": 57,
       "sightings": 1
     },
     {
@@ -565,7 +567,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 17,
+      "rank": 16,
       "sightings": 1
     },
     {
@@ -577,7 +579,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 16,
+      "rank": 15,
       "sightings": 1
     },
     {
@@ -589,7 +591,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 14,
+      "rank": 13,
       "sightings": 1
     },
     {
@@ -602,7 +604,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 42,
+      "rank": 40,
       "sightings": 1
     },
     {
@@ -615,7 +617,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 43,
+      "rank": 41,
       "sightings": 2,
       "notes": [
         "2026-10-15: 2026-10-15: brand-new tests, not renamed ones, landed with empty descriptions after a refresh-tests run"
@@ -654,7 +656,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 15,
+      "rank": 14,
       "sightings": 1
     },
     {
@@ -667,7 +669,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 33,
+      "rank": 31,
       "sightings": 3,
       "notes": [
         "2026-10-15: Seen again: register-test --line N for it.each rows in noPersonalEmail.test.ts and presenceConsistency.test.ts was undone by session-finalize's own phase-1 reconcile; only --warm-evidence plus --start-from-phase 2 got past it."
@@ -682,7 +684,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 36,
+      "rank": 38,
       "sightings": 3,
       "notes": [
         "2026-10-16: 2026-10-16: restart-dev-server and dev-server start each launched two astro dev trees ~2s apart (2 of 3 attempts); the editor tracked the second on :4323, then preview hard-failed 'app bound :4323 but the editor expects :4322' …"
@@ -696,7 +698,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 40,
+      "rank": 39,
       "sightings": 3,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: a page-by-page phone and tablet review needed full-length frames, so I wrote a throwaway Playwright script that sliced full pages into side-by-side strips against a scratch build."
@@ -712,7 +714,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 44,
+      "rank": 42,
       "sightings": 2
     },
     {
@@ -724,7 +726,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 18,
+      "rank": 17,
       "sightings": 2
     },
     {
@@ -757,7 +759,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 45,
+      "rank": 43,
       "sightings": 2,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: raising 40 sub-12px font sizes across 26 files had to be done as 26 Reads plus 33 Edit calls after a sed loop was refused."
@@ -771,7 +773,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 46,
+      "rank": 44,
       "sightings": 2,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: 13 of 206 checks failed as 404s on draft-blog, CMS-page and volunteer-project scenarios; each loaded fine once its own seed was applied."
@@ -786,7 +788,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 26,
+      "rank": 25,
       "sightings": 1
     },
     {
@@ -798,7 +800,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 27,
+      "rank": 26,
       "sightings": 1
     },
     {
@@ -825,7 +827,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T17:10:02.886201980+00:00",
-      "rank": 29,
+      "rank": 28,
       "sightings": 1
     },
     {
@@ -838,7 +840,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 49,
+      "rank": 48,
       "sightings": 1
     },
     {
@@ -850,7 +852,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 41,
+      "rank": 34,
       "sightings": 4,
       "notes": [
         "2026-10-15: 2026-10-15: also fires mid-batch with ONE dev server — back-to-back reseeds in a recapture-stale batch land before the store recovers; recapturing one slug at a time after curling a content page succeeded every time.",
@@ -867,7 +869,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 20,
+      "rank": 19,
       "sightings": 1
     },
     {
@@ -879,7 +881,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 13,
+      "rank": 1,
       "sightings": 1
     },
     {
@@ -909,7 +911,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 25,
+      "rank": 24,
       "sightings": 1
     },
     {
@@ -921,7 +923,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 21,
+      "rank": 20,
       "sightings": 1
     },
     {
@@ -933,7 +935,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 28,
+      "rank": 27,
       "sightings": 1
     },
     {
@@ -976,22 +978,22 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 50,
+      "rank": 49,
       "sightings": 1
     },
     {
       "id": "presentability-scan-flags-command-line-script-output-as-debug-logging",
       "title": "Presentability scan flags command-line script output as debug logging",
       "mode": "backend",
-      "body": "## What happened\nSee the original report.\n\n## What would have helped\nSee the original report.",
-      "reason": "Seen again.",
+      "body": "## What happened\nSeen again.",
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 54,
-      "sightings": 2,
+      "rank": 45,
+      "sightings": 3,
       "notes": [
-        "2026-10-16: 2026-10-16: all 33 'debug logging' hits were scripts/*.mjs CLI output again."
+        "2026-10-16: 2026-10-16: all 33 'debug logging' hits were scripts/*.mjs CLI output again.",
+        "2026-10-22: Seen again: 33 console.log lines in scripts/*.mjs flagged, all intentional CLI progress and summary output."
       ]
     },
     {
@@ -1003,7 +1005,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 55,
+      "rank": 53,
       "sightings": 1
     },
     {
@@ -1015,7 +1017,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 56,
+      "rank": 54,
       "sightings": 1
     },
     {
@@ -1027,7 +1029,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 57,
+      "rank": 55,
       "sightings": 1
     },
     {
@@ -1039,7 +1041,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 58,
+      "rank": 56,
       "sightings": 1
     },
     {
@@ -1067,6 +1069,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
+      "rank": 50,
       "sightings": 1
     },
     {
@@ -1078,6 +1081,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
+      "rank": 58,
       "sightings": 1
     },
     {
@@ -1089,6 +1093,77 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
+      "rank": 59,
+      "sightings": 1
+    },
+    {
+      "id": "split-src-content-config-ts-along-its-collection-seams",
+      "title": "Split src/content/config.ts along its collection seams",
+      "mode": "backend",
+      "body": "## Summary\nsrc/content/config.ts holds every content collection's schema in one 900-line file, over the 500-line source budget the audit flags (SOURCE_EXCEEDS_SIZE_BUDGET_ADVISORY). This cycle added a `photo` field to the chapter and community lead schemas there, and every content change goes through the same file.\n\n## Key Decisions\n- Split by collection family (chapters/communities, events/blog, momentum/donate, site singletons) into src/content/schemas/*.ts and keep config.ts as the `collections` export only.\n- Move code verbatim; no schema changes in this plan.\n\n## Implementation\n1. Create src/content/schemas/ with one module per family, moving the zod schemas and the `collectionGlob` helper.\n2. Re-export them from src/content/config.ts.\n3. Run relocate-entities so glossary, test registry and size ledger follow the moved code.\n4. Confirm src/data/collections.test.ts and the CMS collection mapping in src/data/collections.json still pass unchanged.",
+      "reason": "src/content/config.ts is 900 lines (budget 500) and every new field touches it.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "debt",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
+      "kind": "tech-debt",
+      "rank": 2,
+      "sightings": 1
+    },
+    {
+      "id": "seed-sandbox-reset-races-the-content-watcher-and-empties-collections",
+      "title": "Seed sandbox reset races the content watcher and empties collections",
+      "mode": "backend",
+      "body": "## What happened\nDuring `recapture-stale`, seeded scenarios repeatedly failed with `[codeyam-seed] FATAL: <collection>: N file(s) in the sandbox, but the dev server loaded 0 entries` (projects, chapters, siteIntegrations, donors), different collections on different attempts. The dev-server log showed `[glob-loader] No files found matching \"**/*.md\" in directory \".codeyam/tmp/content-sandbox/content/projects\"` and ENOENT reads mid-copy. The seed adapter's `resetSandboxFromProduction` deletes and re-copies every collection directory non-atomically, and the file watcher's own reloads land after the explicit `/__codeyam_refresh_content` call. It took four rounds of per-slug recaptures with dev-server restarts plus `rm .astro/data-store.json` before I patched `.codeyam/seed-adapter.ts` to retry settle-and-refresh up to 4 times before failing.\n\n## What would have helped\nAn atomic sandbox swap (build in a sibling directory, then rename) or a built-in settle-and-retry in the generated seed adapter, so the fix doesn't live as a local patch to a generated file.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "editor-ignores-previeworigin-and-its-setup-message-names-a-command-that-does-not-exist",
+      "title": "Editor ignores previewOrigin and its setup message names a command that does not exist",
+      "mode": "backend",
+      "body": "## What happened\nThe Live Preview public host (hit.preview.fleet.codeyam.com) returned a Google load balancer 'unconditional drop overload' error. Trying to point the preview elsewhere, the running editor ignored `previewOrigin` in `.codeyam/editor.local.json`, and preview-host-setup's BLOCKED message told me to run a `change-origin` command that does not exist.\n\n## What would have helped\nHonour `previewOrigin` from editor.local.json (or say why it is ignored), name a real recovery command in the BLOCKED message, and surface the hosting-side overload as an infrastructure status instead of a project problem.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "lead-headshots-and-titles-for-nemo-and-stefan-were-added-beyond-this-plan-they-use-the-same-photo-field-the-queued-lead-profiles-plan-will-build-on",
+      "title": "Lead headshots and titles for Nemo and Stefan were added beyond this plan; they use the same photo field the queued lead-profiles plan will build on.",
+      "mode": "backend",
+      "body": "## Summary\n\nLead headshots and titles for Nemo and Stefan were added beyond this plan; they use the same photo field the queued lead-profiles plan will build on.\n\nAt the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `cms--unblock-deploys-and-place-nicole-s-21-oct-uploads` (now at `.codeyam/plans/completed/cms--unblock-deploys-and-place-nicole-s-21-oct-uploads.md`).\n\nImages uploaded through the content admin no longer block the site from publishing, and Nicole's 21 Oct uploads are sorted.\n\n## What you can now do\n- Upload an image in the content admin and publish without a developer adding credit or alt-text records first\n- See Nicole's three event photos in the London chapter gallery, enlargeable like the others\n- Give any chapter or community lead a headshot: Nemo Shi and Stefan Pagacik now show theirs beside their names\n- Duplicate uploads and the layout mockup are gone from the public image folder\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "nicole-has-not-confirmed-london-is-the-right-home-for-the-three-uploaded-photos",
+      "title": "Nicole has not confirmed London is the right home for the three uploaded photos.",
+      "mode": "backend",
+      "body": "## Summary\n\nNicole has not confirmed London is the right home for the three uploaded photos.\n\nAt the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `cms--unblock-deploys-and-place-nicole-s-21-oct-uploads` (now at `.codeyam/plans/completed/cms--unblock-deploys-and-place-nicole-s-21-oct-uploads.md`).\n\nImages uploaded through the content admin no longer block the site from publishing, and Nicole's 21 Oct uploads are sorted.\n\n## What you can now do\n- Upload an image in the content admin and publish without a developer adding credit or alt-text records first\n- See Nicole's three event photos in the London chapter gallery, enlargeable like the others\n- Give any chapter or community lead a headshot: Nemo Shi and Stefan Pagacik now show theirs beside their names\n- Duplicate uploads and the layout mockup are gone from the public image folder\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "some-sample-data-screenshots-for-admin-donor-and-volunteer-pages-could-not-be-refreshed-because-the-dev-server-s-content-loader-kept-failing-their-committed-screenshots-were-left-as-they-were",
+      "title": "Some sample-data screenshots for admin, donor and volunteer pages could not be refreshed because the dev server's content loader kept failing; their committed screenshots were left as they were.",
+      "mode": "backend",
+      "body": "## Summary\n\nSome sample-data screenshots for admin, donor and volunteer pages could not be refreshed because the dev server's content loader kept failing; their committed screenshots were left as they were.\n\nAt the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `cms--unblock-deploys-and-place-nicole-s-21-oct-uploads` (now at `.codeyam/plans/completed/cms--unblock-deploys-and-place-nicole-s-21-oct-uploads.md`).\n\nImages uploaded through the content admin no longer block the site from publishing, and Nicole's 21 Oct uploads are sorted.\n\n## What you can now do\n- Upload an image in the content admin and publish without a developer adding credit or alt-text records first\n- See Nicole's three event photos in the London chapter gallery, enlargeable like the others\n- Give any chapter or community lead a headshot: Nemo Shi and Stefan Pagacik now show theirs beside their names\n- Duplicate uploads and the layout mockup are gone from the public image folder\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
       "sightings": 1
     }
   ],
@@ -1725,6 +1800,82 @@
         "the-menu-s-small-arrow-glyph-stays-at-9px-it-is-an-icon-not-text-so-it-is-the-one-exception-to-the-12px-minimum",
         "links-inside-sentences-are-still-shorter-than-44px-which-is-normal-for-body-text-only-standalone-links-and-buttons-were-enlarged",
         "the-real-device-checks-iphone-safari-android-chrome-ipad-rotation-pinch-zoom-still-need-someone-with-the-devices-nothing-here-can-run-them"
+      ]
+    },
+    {
+      "at": "2026-10-22T13:11:35.264885978+00:00",
+      "feature": "CMS uploads publish freely; Nicole's photos and lead headshots placed",
+      "notes": "This cycle: CMS uploads unblocked, London photos placed, lead headshots added at the user's request. Most of the time went into seeded-capture flakiness from a sandbox-reset race, now patched locally in .codeyam/seed-adapter.ts. That may a…",
+      "proposedIds": [
+        "split-src-content-config-ts-along-its-collection-seams",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "presentability-scan-flags-command-line-script-output-as-debug-logging",
+        "seed-sandbox-reset-races-the-content-watcher-and-empties-collections",
+        "editor-ignores-previeworigin-and-its-setup-message-names-a-command-that-does-not-exist",
+        "lead-headshots-and-titles-for-nemo-and-stefan-were-added-beyond-this-plan-they-use-the-same-photo-field-the-queued-lead-profiles-plan-will-build-on",
+        "nicole-has-not-confirmed-london-is-the-right-home-for-the-three-uploaded-photos",
+        "some-sample-data-screenshots-for-admin-donor-and-volunteer-pages-could-not-be-refreshed-because-the-dev-server-s-content-loader-kept-failing-their-committed-screenshots-were-left-as-they-were"
+      ],
+      "rankedIds": [
+        "pre-existing-not-caused-by-this-change-the-contact-with-no-email-set-homepage-scenario-never-applies-its-seed-so-its-screenshot-still-shows-the-e-mail-disc-it-is-meant-to-hide",
+        "split-src-content-config-ts-along-its-collection-seams",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "move-the-copy-warning-support-out-of-the-local-cms-patch-and-into-codeyam-cms",
+        "refresh-tests-file-runs-vitest-changed-instead-of-the-named-file",
+        "split-the-1-250-line-catch-all-isolation-page-into-one-page-per-component",
+        "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+        "give-eventcard-its-own-glossary-entry",
+        "break-up-the-1-130-line-momentumnetwork-component",
+        "the-real-device-checks-iphone-safari-android-ipad-pinch-zoom-are-listed-in-the-report-but-not-yet-written-up-as-manual-tests",
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
+        "found-in-passing-not-caused-by-this-work-the-momentum-fund-donor-wall-moved-to-the-top-scenario-no-longer-opens-on-the-donor-network-as-its-description-says-its-refreshed-screenshot-shows-the-page-as-it-really-renders-today",
+        "the-fall-mixer-s-cover-image-from-luma-still-reads-limited-early-bird-tickets-on-sale-now-the-plan-only-covered-the-text",
+        "luma-s-9-october-event-is-not-on-the-site-yet-the-nightly-import-has-not-brought-it-in",
+        "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
+        "dc-and-seattle-still-have-their-write-up-text-in-the-content-admin-but-whatsapp-only-city-pages-no-longer-show-it-so-editing-it-there-changes-nothing-until-the-city-becomes-an-active-chapter",
+        "the-legal-risk-wording-and-disclaimer-are-my-judgment-not-reviewed-by-counsel-the-webinar-and-in-person-event-callouts-come-from-the-plan-s-summary-of-the-deck-not-checked-against-the-deck-itself",
+        "the-teaser-sentence-says-the-directory-is-open-to-every-member-of-the-community-that-wording-is-mine-not-checked-against-how-the-directory-actually-grants-access",
+        "jessica-li-s-unconfirmed-event-caption-is-not-on-the-list-the-check-cannot-tell-a-confirmed-caption-from-an-unconfirmed-one",
+        "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
+        "the-open-projects-eyebrow-above-the-new-volunteer-roles-open-this-fall-heading-was-left-as-is",
+        "five-sheet-roles-carried-only-the-placeholder-text-propose-another-idea-for-a-volunteer-role-city-lead-social-events-ai-events-for-nyc-and-sf-founders-task-force-co-lead-or-lead-they-were-folded-into-the-city-and-founders-roles",
+        "the-supporter-wall-s-empty-band-was-left-as-it-was-it-already-has-a-give-button-so-i-did-not-swap-it-for-the-plain-panel-the-plan-named",
+        "the-old-name-still-appears-inside-the-2020-webinar-video-thumbnail-images-because-it-is-part-of-the-pictures-not-text-that-can-be-edited",
+        "internal-scenario-names-for-example-harvard-in-tech-landing-page-and-test-data-that-copies-old-luma-and-strikingly-feeds-still-use-the-old-name-visitors-never-see-these",
+        "i-also-rewrote-the-runbook-s-d2-recommendation-which-used-to-say-go-public-and-hide-unfinished-sections-to-match-the-2026-10-02-ruling",
+        "the-plan-s-first-step-copy-unsaved-edits-into-test-setups-and-keep-a-list-folder-from-being-left-empty-across-a-restart-was-not-built-the-copying-already-worked-per-a-note-from-the-oct-14-run-that-i-did-not-re-check-and-the-restart-c",
+        "new-phone-tablet-frames-for-the-sticky-header-after-scrolling-the-our-mission-band-and-the-newsletter-call-to-action-were-not-added-the-new-frames-cover-the-three-things-that-were-actually-broken-stats-band-cookie-table-red-bar",
+        "the-visual-second-pass-looked-at-the-homepage-events-privacy-and-the-open-menu-by-eye-not-every-phone-and-tablet-frame-of-all-14-audit-scenarios-the-board-grid-at-tablet-and-the-longest-chapter-name-were-not-re-checked",
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
+        "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
+        "a-dev-server-start-before-the-content-sandbox-is-seeded-loads-zero-entries-for-every-collection",
+        "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
+        "preview-flow-has-no-way-to-scroll-the-page",
+        "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "preview-captures-cannot-take-a-full-page-screenshot",
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "auto-registered-renamed-tests-lose-their-descriptions",
+        "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
+        "guardrail-refuses-a-scripted-text-replacement-across-tracked-files",
+        "client-errors-impacted-scope-reports-404s-for-seeded-pages-that-load-fine-alone",
+        "presentability-scan-flags-command-line-script-output-as-debug-logging",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "seed-check-rejects-a-capture-when-the-seeded-value-matches-committed-content",
+        "narrowed-evidence-warm-ups-overwrite-the-shared-test-cache",
+        "preview-verify-keeps-reporting-an-unreloaded-editor-tab-after-the-user-reloads-it",
+        "patched-dependency-code-is-invisible-to-isolate-impacted-checks-and-verify-build",
+        "scenario-review-counts-seed-error-candidates-without-naming-them",
+        "demo-gate-treats-a-scroll-only-hover-from-preview-interact-as-the-demo-interaction",
+        "i-looked-page-by-page-at-390px-phones-and-768px-tablets-320px-and-1024px-were-checked-only-by-the-automated-sweep-no-failures-there-not-by-eye",
+        "the-menu-s-small-arrow-glyph-stays-at-9px-it-is-an-icon-not-text-so-it-is-the-one-exception-to-the-12px-minimum",
+        "links-inside-sentences-are-still-shorter-than-44px-which-is-normal-for-body-text-only-standalone-links-and-buttons-were-enlarged",
+        "the-real-device-checks-iphone-safari-android-chrome-ipad-rotation-pinch-zoom-still-need-someone-with-the-devices-nothing-here-can-run-them",
+        "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
+        "the-warning-appears-as-the-editor-types-not-only-when-they-press-save",
+        "it-covers-the-edit-form-for-existing-entries-only-the-add-a-new-entry-form-and-the-site-wide-settings-and-navigation-screens-do-not-warn-yet"
       ]
     }
   ],
