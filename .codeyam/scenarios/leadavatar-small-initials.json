@@ -1,0 +1,12 @@
+{
+  "name": "LeadAvatar - Small Initials",
+  "id": "f247ca6e-5fec-4de9-aaa8-f929c1ea29bd",
+  "url": "/isolated-components/LeadAvatar/SmallInitials",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "LeadAvatar",
+  "scenarioType": "component",
+  "description": "The 56px committee-tile size with no photo. The initials scale down with the disc so they stay inside it."
+}

@@ -1,0 +1,38 @@
+---
+import Component from "../../../src/components/ChapterLeads.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for ChapterLeads with a lead who has no headshot — codeyam
+// screenshots the #codeyam-capture wrapper by navigating to
+// /isolated-components/ChapterLeads-NoPhoto.
+//
+// The disc falls back to initials, as the board tiles do, and the lead has no
+// email, so only the LinkedIn link shows — email appears only when a lead opts
+// in by filling it. A fixture person, not a real lead.
+const leads = [
+  {
+    name: 'Daniel Reyes',
+    role: 'Co-Lead',
+    title: 'Staff Engineer',
+    company: 'Northwind Robotics',
+    school: 'Harvard College',
+    degree: 'AB',
+    gradYear: 2012,
+    linkedin: 'https://www.linkedin.com/',
+    bio: 'Daniel works on perception systems for warehouse robots and organises the chapter’s quarterly tech talks.',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: ChapterLeads no photo</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); max-width: 900px;">
+      <Component leads={leads} />
+    </div>
+  </body>
+</html>

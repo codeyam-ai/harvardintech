@@ -1,0 +1,62 @@
+---
+// A lead's round headshot on a crimson disc, or their initials when there is no
+// photo — the same fallback the board tiles use. One component for both sizes
+// the leads block draws: the 160px full profile and the 56px committee tile.
+import { withBase } from '../../lib/url';
+import { altFor } from '../../lib/media';
+import { initials } from '../../lib/team';
+
+interface Props {
+  name: string;
+  photo?: string;
+  /** Diameter in px. */
+  size?: number;
+}
+const { name, photo, size = 160 } = Astro.props;
+---
+
+<div class="disc" style={`--disc: ${size}px`}>
+  {
+    photo ? (
+      <img src={withBase(photo)} alt={altFor(photo, name)} width={size} height={size} loading="lazy" />
+    ) : (
+      <span class="initials" aria-hidden="true">
+        {initials(name)}
+      </span>
+    )
+  }
+</div>
+
+<style>
+  .disc {
+    width: var(--disc);
+    height: var(--disc);
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--crimson);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .initials {
+    font-family: var(--font-title);
+    font-size: calc(var(--disc) * 0.3);
+    font-weight: 700;
+    color: var(--white);
+  }
+  @media (max-width: 640px) {
+    .disc {
+      width: min(var(--disc), 120px);
+      height: min(var(--disc), 120px);
+    }
+    .initials {
+      font-size: calc(min(var(--disc), 120px) * 0.3);
+    }
+  }
+</style>

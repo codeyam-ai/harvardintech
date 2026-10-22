@@ -79,7 +79,10 @@
     "name": "ChapterLeads",
     "scenarios": [
       "chapterleads-two-leads-one-without-a-role",
-      "chapterleads-headshots-beside-names"
+      "chapterleads-headshots-beside-names",
+      "chapterleads-full-profile",
+      "chapterleads-no-photo",
+      "chapterleads-committee"
     ]
   },
   {
@@ -405,6 +408,54 @@
     "scenarios": [
       "harvard-in-tech-landing-page",
       "harvard-in-tech-no-upcoming-events"
+    ]
+  },
+  {
+    "description": "A lead's round headshot on a crimson disc at a given size, falling back to their initials when there is no photo.",
+    "filePath": "src/components/leads/LeadAvatar.astro",
+    "name": "LeadAvatar",
+    "scenarios": [
+      "leadavatar-default",
+      "leadavatar-initials",
+      "leadavatar-small-initials"
+    ],
+    "tags": [
+      "chapter-leads"
+    ]
+  },
+  {
+    "description": "Committee members under the chapter leads as a compact grid of small headshot discs, names linked to LinkedIn when present, and small title and school lines.",
+    "filePath": "src/components/leads/LeadCommitteeGrid.astro",
+    "name": "LeadCommitteeGrid",
+    "scenarios": [
+      "leadcommitteegrid-default"
+    ],
+    "tags": [
+      "chapter-leads"
+    ]
+  },
+  {
+    "description": "A lead's LinkedIn and email as round icon buttons using the shared BrandGlyph marks; renders nothing when the lead has neither.",
+    "filePath": "src/components/leads/LeadContactLinks.astro",
+    "name": "LeadContactLinks",
+    "scenarios": [
+      "leadcontactlinks-default",
+      "leadcontactlinks-linkedin-only"
+    ],
+    "tags": [
+      "chapter-leads"
+    ]
+  },
+  {
+    "description": "One chapter or co-lead as a full profile: headshot disc, rule, role, serif name, title and company, school line, bio and contact links, each optional line dropping out when empty.",
+    "filePath": "src/components/leads/LeadProfile.astro",
+    "name": "LeadProfile",
+    "scenarios": [
+      "leadprofile-default",
+      "leadprofile-name-and-role-only"
+    ],
+    "tags": [
+      "chapter-leads"
     ]
   },
   {
@@ -828,6 +879,15 @@
     "filePath": "src/lib/sectionGroups.ts",
     "name": "cardsInGroup",
     "testFile": "src/lib/sectionGroups.test.ts"
+  },
+  {
+    "description": "The heading over a chapter's leads: singular for one lead, plural otherwise.",
+    "filePath": "src/lib/leads.ts",
+    "name": "chapterLeadsHeading",
+    "tags": [
+      "chapter-leads"
+    ],
+    "testFile": "src/lib/leads.test.ts"
   },
   {
     "description": "Maps published chapters to header menu items — label from the chapter's own city, url built from its slug as /chapters/<slug>/ — ordered exactly the way the Our Chapters section orders its cards: active cities before forming ones, then by the order field with city breaking ties. A forming city is presented as an online group for now, so its item carries a quiet note, Online · WhatsApp group, with the globe icon; an active chapter stays exactly a plain label and url with no note key at all. Callers pass chapters already draft-filtered through publishedEntries. Paths are returned base-agnostic with the canonical trailing slash; the layout wraps them in withBase at render. Returns an empty list for no chapters, and does not mutate the input.",
@@ -1660,6 +1720,15 @@
     "filePath": "src/lib/blogVisibility.ts",
     "name": "isBlogChannel",
     "testFile": "src/lib/blogVisibility.test.ts"
+  },
+  {
+    "description": "True when a lead's free-text role mentions committee, case-insensitively; those leads get the compact committee grid instead of a full profile.",
+    "filePath": "src/lib/leads.ts",
+    "name": "isCommittee",
+    "tags": [
+      "chapter-leads"
+    ],
+    "testFile": "src/lib/leads.test.ts"
   },
   {
     "description": "Whether a runbook decision is recorded answered in the progress singleton. Same tolerance for an absent entry as isStepDone, and the same reason: the state file is hand-editable.",
@@ -2695,6 +2764,15 @@
     "testFile": "src/lib/collectionRegistryDrift.test.ts"
   },
   {
+    "description": "Formats a lead's school, degree and two-digit class year as the mono line under their name, every part optional.",
+    "filePath": "src/lib/leads.ts",
+    "name": "schoolLine",
+    "tags": [
+      "chapter-leads"
+    ],
+    "testFile": "src/lib/leads.test.ts"
+  },
+  {
     "description": "The Harvard schools these supporters actually came through, densest first so the biggest clusters are placed before the rest. Reads through resolveSchool, so a hand-edited or seeded value in the wrong case joins its real cluster instead of founding a cluster of one. Ties break on the canonical school order rather than on input order, so the same people in a different row order cannot produce a different picture.",
     "filePath": "src/lib/momentumNetwork.ts",
     "name": "schoolsPresent",
@@ -2937,6 +3015,15 @@
     "testFile": "src/lib/events.test.ts"
   },
   {
+    "description": "Splits a chapter or community lead list into full profiles and committee members, each kept in input order.",
+    "filePath": "src/lib/leads.ts",
+    "name": "splitLeads",
+    "tags": [
+      "chapter-leads"
+    ],
+    "testFile": "src/lib/leads.test.ts"
+  },
+  {
     "description": "Splits a body of editor-written copy into paragraphs on blank lines, trimming each and dropping the empties. This is what lets the closing ask's two sentences be ONE ctaBody field rather than ctaBody and ctaBody2: an editor writing a third paragraph needs no schema change, and there is no second box that can be left half-filled. The trailing newline a textarea leaves behind, and a doubled blank line, both fail to produce an empty paragraph — which would otherwise render as an unexplained gap. A single newline is a soft wrap, not a break, so wrapped prose is not shattered into fragments.",
     "filePath": "src/lib/campaignCopy.ts",
     "name": "splitParagraphs",
@@ -3109,6 +3196,15 @@
     "filePath": "src/lib/momentumSections.ts",
     "name": "tintedFlags",
     "testFile": "src/lib/momentumSections.test.ts"
+  },
+  {
+    "description": "Formats a lead's title and company as one comma-joined line, or an empty string when both are missing.",
+    "filePath": "src/lib/leads.ts",
+    "name": "titleLine",
+    "tags": [
+      "chapter-leads"
+    ],
+    "testFile": "src/lib/leads.test.ts"
   },
   {
     "description": "Coerces a string-or-Date into a Date so both callers in this module accept either. Events arrive as frontmatter strings while a blog post date is parsed into a Date by the content schema, and both branches are exercised through the public formatters.",

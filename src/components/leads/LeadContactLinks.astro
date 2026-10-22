@@ -1,0 +1,56 @@
+---
+// A lead's LinkedIn and email as round icon buttons. Renders nothing when the
+// lead has neither, so an older `{ name, role }` entry leaves no empty row.
+//
+// The glyphs come from `BrandGlyph` — the same LinkedIn mark and envelope the
+// social row and Contact band draw — rather than a third hand-drawn copy.
+import BrandGlyph from '../ui/BrandGlyph.astro';
+
+interface Props {
+  name: string;
+  linkedin?: string;
+  email?: string;
+}
+const { name, linkedin, email } = Astro.props;
+---
+
+{
+  linkedin || email ? (
+    <div class="contact">
+      {linkedin ? (
+        <a href={linkedin} target="_blank" rel="noopener" aria-label={`${name} on LinkedIn`}>
+          <BrandGlyph name="linkedin" size={16} />
+        </a>
+      ) : null}
+      {email ? (
+        <a href={`mailto:${email}`} aria-label={`Email ${name}`}>
+          <BrandGlyph name="email" size={16} />
+        </a>
+      ) : null}
+    </div>
+  ) : null
+}
+
+<style>
+  .contact {
+    display: flex;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    color: var(--ink);
+  }
+  a:hover,
+  a:focus-visible {
+    background: var(--crimson);
+    border-color: var(--crimson);
+    color: var(--white);
+  }
+</style>

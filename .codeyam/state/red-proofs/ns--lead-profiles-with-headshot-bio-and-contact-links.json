@@ -1,0 +1,30 @@
+{
+  "provenAt": "2026-10-22T20:04:25Z",
+  "slug": "ns--lead-profiles-with-headshot-bio-and-contact-links",
+  "paths": [],
+  "runScope": [
+    "src/lib/events.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/events.ts",
+      "find": "      coverImage: event.data.coverImage,\n",
+      "replace": ""
+    }
+  ],
+  "tests": {
+    "carries the cover image through to the event card": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "carries the cover image through to the event card"
+    ]
+  }
+}

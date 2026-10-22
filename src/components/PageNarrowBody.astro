@@ -1,6 +1,6 @@
 ---
 // The narrow content block a chapter page and a community page both end with:
-// a back link, the leads, the markdown body, and the entry's own links.
+// a back link, the markdown body, the leads, and the entry's own links.
 //
 // It was written twice — once in `ChapterPage`, once in `CommunityPage` — when
 // communities got their own page type. The two copies differed only in the
@@ -13,11 +13,8 @@
 import ChapterLeads from './ChapterLeads.astro';
 import ChapterLinks from './ChapterLinks.astro';
 import { withBase } from '../lib/url';
+import type { Lead } from '../lib/leadSchema';
 
-interface Lead {
-  name: string;
-  role?: string;
-}
 interface PageLink {
   label: string;
   url: string;
@@ -28,6 +25,8 @@ interface Props {
   leads?: Lead[];
   /** "Chapter leads" for a city, "Community lead(s)" for a group. */
   leadsHeading?: string;
+  /** A line under the leads, e.g. "We're looking for a co-lead". */
+  leadsNote?: string;
   links?: PageLink[];
   /**
    * Whether the markdown body has content.
@@ -45,6 +44,7 @@ const {
   backLabel,
   leads = [],
   leadsHeading,
+  leadsNote,
   links = [],
   hasBody = false,
 } = Astro.props;
@@ -61,11 +61,14 @@ const hasContent = leadsVisible || links.length > 0 || hasBody;
           {backLabel}
         </a>
 
-        {leadsVisible ? <ChapterLeads leads={leads} heading={leadsHeading} /> : null}
-
+        {/* The body is the entry's own "about" line, so it introduces the page
+            and the leads follow it; below a full lead profile it read as an
+            orphaned caption. */}
         <div class="narrow-body">
           <slot />
         </div>
+
+        {leadsVisible ? <ChapterLeads leads={leads} heading={leadsHeading} note={leadsNote} /> : null}
 
         <ChapterLinks links={links} />
       </div>
@@ -80,5 +83,8 @@ const hasContent = leadsVisible || links.length > 0 || hasBody;
   }
   .narrow-body {
     line-height: 1.8;
+  }
+  .narrow-body:not(:empty) {
+    margin-bottom: var(--s-5);
   }
 </style>

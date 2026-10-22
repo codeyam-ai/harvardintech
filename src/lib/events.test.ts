@@ -289,6 +289,15 @@ describe('eventsTaggedTo', () => {
     });
   });
 
+  // The cover image is carried through too. It once was not, so every chapter
+  // and community event card fell back to the placeholder instead of the Luma
+  // cover the event had.
+  it('carries the cover image through to the event card', () => {
+    const events = [entry('summit', 'nyc', { coverImage: '/images/events/summit.webp' })];
+
+    expect(eventsTaggedTo(events, 'nyc')[0].coverImage).toBe('/images/events/summit.webp');
+  });
+
   // The match is exact: a city name typed where a slug belongs reaches no page.
   // This is the same near-miss `unmatchedChapterTags` exists to report.
   it('does not match a tag that only looks like the owner id', () => {

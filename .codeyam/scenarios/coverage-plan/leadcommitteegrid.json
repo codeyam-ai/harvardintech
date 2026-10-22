@@ -1,0 +1,24 @@
+{
+  "surface": "LeadCommitteeGrid",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "members",
+      "value": "empty",
+      "rationale": "source-derived state members=empty",
+      "status": "planned"
+    },
+    {
+      "dimension": "members",
+      "value": "one",
+      "rationale": "source-derived state members=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "members",
+      "value": "many",
+      "rationale": "source-derived state members=many",
+      "status": "covered"
+    }
+  ]
+}

@@ -127,6 +127,30 @@
         "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro"
       ]
     },
+    ".codeyam/isolation-props/LeadAvatar.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/LeadAvatar/[...state].astro"
+      ]
+    },
+    ".codeyam/isolation-props/LeadCommitteeGrid.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro"
+      ]
+    },
+    ".codeyam/isolation-props/LeadContactLinks.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/LeadContactLinks/[...state].astro"
+      ]
+    },
+    ".codeyam/isolation-props/LeadProfile.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/LeadProfile/[...state].astro"
+      ]
+    },
     ".codeyam/isolation-props/MissionStatement.ts": {
       "imports": [],
       "importedBy": [
@@ -378,12 +402,17 @@
     },
     "src/components/ChapterLeads.astro": {
       "imports": [
-        "src/lib/url.ts",
-        "src/lib/media.ts"
+        "src/components/leads/LeadProfile.astro",
+        "src/components/leads/LeadCommitteeGrid.astro",
+        "src/lib/leads.ts",
+        "src/lib/leadSchema.ts"
       ],
       "importedBy": [
         "src/components/PageNarrowBody.astro",
+        "src/pages/isolated-components/ChapterLeads-NoPhoto.astro",
         "src/pages/isolated-components/ChapterLeads-Headshots.astro",
+        "src/pages/isolated-components/ChapterLeads-Committee.astro",
+        "src/pages/isolated-components/ChapterLeads-FullProfile.astro",
         "src/pages/isolated-components/ChapterLeads.astro"
       ]
     },
@@ -409,7 +438,9 @@
         "src/components/landing/EventGallery.astro",
         "src/lib/events.ts",
         "src/lib/localPresence.ts",
-        "src/lib/pageBanner.ts"
+        "src/lib/pageBanner.ts",
+        "src/lib/leadSchema.ts",
+        "src/lib/leads.ts"
       ],
       "importedBy": [
         "src/pages/chapters/[slug].astro",
@@ -456,7 +487,8 @@
         "src/components/PageNarrowBody.astro",
         "src/components/landing/EventGallery.astro",
         "src/lib/events.ts",
-        "src/lib/pageBanner.ts"
+        "src/lib/pageBanner.ts",
+        "src/lib/leadSchema.ts"
       ],
       "importedBy": [
         "src/pages/isolated-components/CommunityPage.astro",
@@ -700,7 +732,8 @@
       "imports": [
         "src/components/ChapterLeads.astro",
         "src/components/ChapterLinks.astro",
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/lib/leadSchema.ts"
       ],
       "importedBy": [
         "src/components/CommunityPage.astro",
@@ -1566,6 +1599,50 @@
       ],
       "importedBy": []
     },
+    "src/components/leads/LeadAvatar.astro": {
+      "imports": [
+        "src/lib/url.ts",
+        "src/lib/media.ts",
+        "src/lib/team.ts"
+      ],
+      "importedBy": [
+        "src/components/leads/LeadCommitteeGrid.astro",
+        "src/components/leads/LeadProfile.astro",
+        "src/pages/isolated-components/LeadAvatar/[...state].astro"
+      ]
+    },
+    "src/components/leads/LeadCommitteeGrid.astro": {
+      "imports": [
+        "src/components/leads/LeadAvatar.astro",
+        "src/lib/leads.ts",
+        "src/lib/leadSchema.ts"
+      ],
+      "importedBy": [
+        "src/components/ChapterLeads.astro",
+        "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro"
+      ]
+    },
+    "src/components/leads/LeadContactLinks.astro": {
+      "imports": [
+        "src/components/ui/BrandGlyph.astro"
+      ],
+      "importedBy": [
+        "src/components/leads/LeadProfile.astro",
+        "src/pages/isolated-components/LeadContactLinks/[...state].astro"
+      ]
+    },
+    "src/components/leads/LeadProfile.astro": {
+      "imports": [
+        "src/components/leads/LeadAvatar.astro",
+        "src/components/leads/LeadContactLinks.astro",
+        "src/lib/leads.ts",
+        "src/lib/leadSchema.ts"
+      ],
+      "importedBy": [
+        "src/components/ChapterLeads.astro",
+        "src/pages/isolated-components/LeadProfile/[...state].astro"
+      ]
+    },
     "src/components/nav/NavItemLabel.astro": {
       "imports": [
         "src/components/ui/GlobeIcon.astro",
@@ -1694,6 +1771,7 @@
         "src/lib/brandIcons.ts"
       ],
       "importedBy": [
+        "src/components/leads/LeadContactLinks.astro",
         "src/components/landing/FocusAreas.astro",
         "src/components/landing/ContentHub.astro",
         "src/components/landing/ContactUs.astro",
@@ -1947,7 +2025,8 @@
       "imports": [
         "src/lib/previewFieldsSchema.ts",
         "src/lib/contentRoot.ts",
-        "src/lib/localPresence.ts"
+        "src/lib/localPresence.ts",
+        "src/lib/leadSchema.ts"
       ],
       "importedBy": []
     },
@@ -1967,7 +2046,8 @@
     },
     "src/data/collections.test.ts": {
       "imports": [
-        "src/lib/collectionRegistryDrift.ts"
+        "src/lib/collectionRegistryDrift.ts",
+        "src/lib/leadSchema.ts"
       ],
       "importedBy": []
     },
@@ -2749,6 +2829,38 @@
         "src/layouts/BaseLayout.astro"
       ]
     },
+    "src/lib/leadSchema.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/components/leads/LeadCommitteeGrid.astro",
+        "src/components/leads/LeadProfile.astro",
+        "src/components/CommunityPage.astro",
+        "src/components/ChapterPage.astro",
+        "src/components/PageNarrowBody.astro",
+        "src/components/ChapterLeads.astro",
+        "src/data/collections.test.ts",
+        "src/lib/leads.ts",
+        "src/content/config.ts"
+      ]
+    },
+    "src/lib/leads.test.ts": {
+      "imports": [
+        "src/lib/leads.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/leads.ts": {
+      "imports": [
+        "src/lib/leadSchema.ts"
+      ],
+      "importedBy": [
+        "src/components/leads/LeadCommitteeGrid.astro",
+        "src/components/leads/LeadProfile.astro",
+        "src/components/ChapterPage.astro",
+        "src/components/ChapterLeads.astro",
+        "src/lib/leads.test.ts"
+      ]
+    },
     "src/lib/lightbox.test.ts": {
       "imports": [
         "src/lib/lightbox.ts",
@@ -2861,6 +2973,7 @@
         "src/lib/contentRoot.ts"
       ],
       "importedBy": [
+        "src/components/leads/LeadAvatar.astro",
         "src/components/donate/TestimonialCard.astro",
         "src/components/donate/MomentumClose.astro",
         "src/components/donate/MomentumNarrative.astro",
@@ -2872,7 +2985,6 @@
         "src/components/volunteer/VolunteerProjectPhoto.astro",
         "src/components/give/GivePhoto.astro",
         "src/components/give/GiveCollage.astro",
-        "src/components/ChapterLeads.astro",
         "src/lib/media.test.ts",
         "src/lib/imageCredits.test.ts"
       ]
@@ -3578,6 +3690,7 @@
     "src/lib/team.ts": {
       "imports": [],
       "importedBy": [
+        "src/components/leads/LeadAvatar.astro",
         "src/components/landing/BoardOfDirectors.astro",
         "src/components/landing/BoardMemberTile.astro",
         "src/lib/team.test.ts",
@@ -3606,6 +3719,7 @@
     "src/lib/url.ts": {
       "imports": [],
       "importedBy": [
+        "src/components/leads/LeadAvatar.astro",
         "src/components/ChapterLinks.astro",
         "src/components/donate/TestimonialCard.astro",
         "src/components/donate/MomentumClose.astro",
@@ -3641,7 +3755,6 @@
         "src/components/sponsor/SponsorWallItem.astro",
         "src/components/WebinarCard.astro",
         "src/components/WebinarsPointer.astro",
-        "src/components/ChapterLeads.astro",
         "src/components/ui/BannerCta.astro",
         "src/lib/url.test.ts",
         "src/pages/cutover-runbook/[...path].astro",
@@ -3908,7 +4021,28 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ChapterLeads-Committee.astro": {
+      "imports": [
+        "src/components/ChapterLeads.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/ChapterLeads-FullProfile.astro": {
+      "imports": [
+        "src/components/ChapterLeads.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/ChapterLeads-Headshots.astro": {
+      "imports": [
+        "src/components/ChapterLeads.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/ChapterLeads-NoPhoto.astro": {
       "imports": [
         "src/components/ChapterLeads.astro",
         "src/styles/tokens.css"
@@ -4313,6 +4447,38 @@
     "src/pages/isolated-components/JoinWhatsAppCta.astro": {
       "imports": [
         "src/components/JoinWhatsAppCta.astro",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/LeadAvatar/[...state].astro": {
+      "imports": [
+        "src/components/leads/LeadAvatar.astro",
+        ".codeyam/isolation-props/LeadAvatar.ts",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro": {
+      "imports": [
+        "src/components/leads/LeadCommitteeGrid.astro",
+        ".codeyam/isolation-props/LeadCommitteeGrid.ts",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/LeadContactLinks/[...state].astro": {
+      "imports": [
+        "src/components/leads/LeadContactLinks.astro",
+        ".codeyam/isolation-props/LeadContactLinks.ts",
+        "src/styles/tokens.css"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/LeadProfile/[...state].astro": {
+      "imports": [
+        "src/components/leads/LeadProfile.astro",
+        ".codeyam/isolation-props/LeadProfile.ts",
         "src/styles/tokens.css"
       ],
       "importedBy": []
@@ -4865,6 +5031,7 @@
         "src/pages/isolated-components/BannerCta/[...state].astro",
         "src/pages/isolated-components/SectionHead.astro",
         "src/pages/isolated-components/VolunteerProjectBody.astro",
+        "src/pages/isolated-components/LeadContactLinks/[...state].astro",
         "src/pages/isolated-components/TestimonialCard.astro",
         "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro",
         "src/pages/isolated-components/StagingBar-PublishAgainWhileDeploying.astro",
@@ -4899,6 +5066,7 @@
         "src/pages/isolated-components/GlobeIcon.astro",
         "src/pages/isolated-components/EventsIntro.astro",
         "src/pages/isolated-components/GiveButton-GivingClosed.astro",
+        "src/pages/isolated-components/ChapterLeads-NoPhoto.astro",
         "src/pages/isolated-components/OrderArrows-TopRow.astro",
         "src/pages/isolated-components/ChapterLeads-Headshots.astro",
         "src/pages/isolated-components/VolunteerProjectsEmpty.astro",
@@ -4923,6 +5091,7 @@
         "src/pages/isolated-components/GiveButton.astro",
         "src/pages/isolated-components/DeployStatus-Live.astro",
         "src/pages/isolated-components/GoalMeter-LongTitle.astro",
+        "src/pages/isolated-components/ChapterLeads-Committee.astro",
         "src/pages/isolated-components/VolunteerProjects.astro",
         "src/pages/isolated-components/EventCardGrid.astro",
         "src/pages/isolated-components/MissionStatement/[...state].astro",
@@ -4938,11 +5107,13 @@
         "src/pages/isolated-components/FormingChapterCta.astro",
         "src/pages/isolated-components/OrderArrows-BottomRow.astro",
         "src/pages/isolated-components/GiveCollage.astro",
+        "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro",
         "src/pages/isolated-components/MomentumStats.astro",
         "src/pages/isolated-components/SocialLinks.astro",
         "src/pages/isolated-components/BlogPostBody-Locked.astro",
         "src/pages/isolated-components/GivingSoonNote.astro",
         "src/pages/isolated-components/HomeSections.astro",
+        "src/pages/isolated-components/LeadAvatar/[...state].astro",
         "src/pages/isolated-components/DecisionTick-ReadOnly.astro",
         "src/pages/isolated-components/MomentumClose-Split.astro",
         "src/pages/isolated-components/CommunityCallouts.astro",
@@ -4958,6 +5129,7 @@
         "src/pages/isolated-components/VolunteerProjectCta.astro",
         "src/pages/isolated-components/GiftPillarCard.astro",
         "src/pages/isolated-components/VolunteerProjectCardLinks.astro",
+        "src/pages/isolated-components/ChapterLeads-FullProfile.astro",
         "src/pages/isolated-components/EventCardGrid-Past.astro",
         "src/pages/isolated-components/MomentumMission.astro",
         "src/pages/isolated-components/GalleryLightbox.astro",
@@ -4985,6 +5157,7 @@
         "src/pages/isolated-components/OnlineGroupEyebrow.astro",
         "src/pages/isolated-components/WebinarCard.astro",
         "src/pages/isolated-components/WebinarsPointer.astro",
+        "src/pages/isolated-components/LeadProfile/[...state].astro",
         "src/pages/isolated-components/CalloutCard.astro",
         "src/pages/isolated-components/DeployStatus-StillUpdating.astro",
         "src/pages/isolated-components/ChapterLeads.astro",
@@ -5190,6 +5363,38 @@
       "imports": [],
       "importedBy": [
         "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro::__file_root__"
+      ]
+    },
+    ".codeyam/isolation-props/LeadAvatar.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/LeadAvatar.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/LeadAvatar/[...state].astro::__file_root__"
+      ]
+    },
+    ".codeyam/isolation-props/LeadCommitteeGrid.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/LeadCommitteeGrid.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro::__file_root__"
+      ]
+    },
+    ".codeyam/isolation-props/LeadContactLinks.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/LeadContactLinks.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/LeadContactLinks/[...state].astro::__file_root__"
+      ]
+    },
+    ".codeyam/isolation-props/LeadProfile.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/LeadProfile.ts",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/pages/isolated-components/LeadProfile/[...state].astro::__file_root__"
       ]
     },
     ".codeyam/isolation-props/MissionStatement.ts::__file_root__": {
@@ -5487,11 +5692,16 @@
       "filePath": "src/components/ChapterLeads.astro",
       "name": "__file_root__",
       "imports": [
-        "src/lib/url.ts::withBase",
-        "src/lib/media.ts::altFor"
+        "src/components/leads/LeadProfile.astro::__file_root__",
+        "src/components/leads/LeadCommitteeGrid.astro::__file_root__",
+        "src/lib/leads.ts::splitLeads",
+        "src/lib/leadSchema.ts::Lead"
       ],
       "importedBy": [
+        "src/pages/isolated-components/ChapterLeads-NoPhoto.astro::__file_root__",
         "src/pages/isolated-components/ChapterLeads-Headshots.astro::__file_root__",
+        "src/pages/isolated-components/ChapterLeads-Committee.astro::__file_root__",
+        "src/pages/isolated-components/ChapterLeads-FullProfile.astro::__file_root__",
         "src/pages/isolated-components/ChapterLeads.astro::__file_root__"
       ]
     },
@@ -5521,7 +5731,9 @@
         "src/components/landing/EventGallery.astro::__file_root__",
         "src/lib/events.ts::EventLike",
         "src/lib/localPresence.ts::isForming",
-        "src/lib/pageBanner.ts::bannerFor"
+        "src/lib/pageBanner.ts::bannerFor",
+        "src/lib/leadSchema.ts::Lead",
+        "src/lib/leads.ts::chapterLeadsHeading"
       ],
       "importedBy": [
         "src/pages/chapters/[slug].astro::__file_root__",
@@ -5572,7 +5784,8 @@
         "src/components/PageNarrowBody.astro::__file_root__",
         "src/components/landing/EventGallery.astro::__file_root__",
         "src/lib/events.ts::EventLike",
-        "src/lib/pageBanner.ts::bannerFor"
+        "src/lib/pageBanner.ts::bannerFor",
+        "src/lib/leadSchema.ts::Lead"
       ],
       "importedBy": [
         "src/pages/isolated-components/CommunityPage.astro::__file_root__",
@@ -5860,7 +6073,8 @@
       "imports": [
         "src/components/ChapterLeads.astro::__file_root__",
         "src/components/ChapterLinks.astro::__file_root__",
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/lib/leadSchema.ts::Lead"
       ],
       "importedBy": [
         "src/pages/isolated-components/PageNarrowBody.astro::__file_root__"
@@ -6891,6 +7105,60 @@
       ],
       "importedBy": []
     },
+    "src/components/leads/LeadAvatar.astro::__file_root__": {
+      "filePath": "src/components/leads/LeadAvatar.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/url.ts::withBase",
+        "src/lib/media.ts::altFor",
+        "src/lib/team.ts::initials"
+      ],
+      "importedBy": [
+        "src/components/leads/LeadCommitteeGrid.astro::__file_root__",
+        "src/components/leads/LeadProfile.astro::__file_root__",
+        "src/pages/isolated-components/LeadAvatar/[...state].astro::__file_root__"
+      ]
+    },
+    "src/components/leads/LeadCommitteeGrid.astro::__file_root__": {
+      "filePath": "src/components/leads/LeadCommitteeGrid.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/leads/LeadAvatar.astro::__file_root__",
+        "src/lib/leads.ts::schoolLine",
+        "src/lib/leads.ts::titleLine",
+        "src/lib/leadSchema.ts::Lead"
+      ],
+      "importedBy": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro::__file_root__"
+      ]
+    },
+    "src/components/leads/LeadContactLinks.astro::__file_root__": {
+      "filePath": "src/components/leads/LeadContactLinks.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/ui/BrandGlyph.astro::__file_root__"
+      ],
+      "importedBy": [
+        "src/components/leads/LeadProfile.astro::__file_root__",
+        "src/pages/isolated-components/LeadContactLinks/[...state].astro::__file_root__"
+      ]
+    },
+    "src/components/leads/LeadProfile.astro::__file_root__": {
+      "filePath": "src/components/leads/LeadProfile.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/leads/LeadAvatar.astro::__file_root__",
+        "src/components/leads/LeadContactLinks.astro::__file_root__",
+        "src/lib/leads.ts::schoolLine",
+        "src/lib/leads.ts::titleLine",
+        "src/lib/leadSchema.ts::Lead"
+      ],
+      "importedBy": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/pages/isolated-components/LeadProfile/[...state].astro::__file_root__"
+      ]
+    },
     "src/components/nav/NavItemLabel.astro::__file_root__": {
       "filePath": "src/components/nav/NavItemLabel.astro",
       "name": "__file_root__",
@@ -7292,7 +7560,8 @@
       "imports": [
         "src/lib/previewFieldsSchema.ts::__file_root__",
         "src/lib/contentRoot.ts::contentRoot",
-        "src/lib/localPresence.ts::isWhatsAppGroupLink"
+        "src/lib/localPresence.ts::isWhatsAppGroupLink",
+        "src/lib/leadSchema.ts::leadSchema"
       ],
       "importedBy": []
     },
@@ -7323,7 +7592,8 @@
         "src/lib/collectionRegistryDrift.ts::missingFields",
         "src/lib/collectionRegistryDrift.ts::schemaKeysFor",
         "src/lib/collectionRegistryDrift.ts::singletonKeysWithoutEditor",
-        "src/lib/collectionRegistryDrift.ts::unknownFields"
+        "src/lib/collectionRegistryDrift.ts::unknownFields",
+        "src/lib/leadSchema.ts::leadSchema"
       ],
       "importedBy": []
     },
@@ -8593,6 +8863,74 @@
       "importedBy": [
         "src/pages/cutover-runbook/[...path].astro::__file_root__",
         "src/layouts/BaseLayout.astro::__file_root__"
+      ]
+    },
+    "src/lib/leadSchema.ts::leadSchema": {
+      "filePath": "src/lib/leadSchema.ts",
+      "name": "leadSchema",
+      "imports": [],
+      "importedBy": [
+        "src/content/config.ts::__file_root__"
+      ]
+    },
+    "src/lib/leads.test.ts::__file_root__": {
+      "filePath": "src/lib/leads.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/leads.ts::chapterLeadsHeading",
+        "src/lib/leads.ts::isCommittee",
+        "src/lib/leads.ts::schoolLine",
+        "src/lib/leads.ts::splitLeads",
+        "src/lib/leads.ts::titleLine"
+      ],
+      "importedBy": []
+    },
+    "src/lib/leads.ts::__file_root__": {
+      "filePath": "src/lib/leads.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/leadSchema.ts::Lead"
+      ],
+      "importedBy": []
+    },
+    "src/lib/leads.ts::chapterLeadsHeading": {
+      "filePath": "src/lib/leads.ts",
+      "name": "chapterLeadsHeading",
+      "imports": [],
+      "importedBy": [
+        "src/lib/leads.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/leads.ts::isCommittee": {
+      "filePath": "src/lib/leads.ts",
+      "name": "isCommittee",
+      "imports": [],
+      "importedBy": [
+        "src/lib/leads.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/leads.ts::schoolLine": {
+      "filePath": "src/lib/leads.ts",
+      "name": "schoolLine",
+      "imports": [],
+      "importedBy": [
+        "src/lib/leads.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/leads.ts::splitLeads": {
+      "filePath": "src/lib/leads.ts",
+      "name": "splitLeads",
+      "imports": [],
+      "importedBy": [
+        "src/lib/leads.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/leads.ts::titleLine": {
+      "filePath": "src/lib/leads.ts",
+      "name": "titleLine",
+      "imports": [],
+      "importedBy": [
+        "src/lib/leads.test.ts::__file_root__"
       ]
     },
     "src/lib/lightbox.test.ts::__file_root__": {
@@ -10767,8 +11105,35 @@
       ],
       "importedBy": []
     },
+    "src/pages/isolated-components/ChapterLeads-Committee.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads-Committee.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/ChapterLeads-FullProfile.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads-FullProfile.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/pages/isolated-components/ChapterLeads-Headshots.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/ChapterLeads-Headshots.astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/ChapterLeads-NoPhoto.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads-NoPhoto.astro",
       "name": "__file_root__",
       "imports": [
         "src/components/ChapterLeads.astro::__file_root__",
@@ -11290,6 +11655,46 @@
       "name": "__file_root__",
       "imports": [
         "src/components/JoinWhatsAppCta.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/LeadAvatar/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/LeadAvatar/[...state].astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/leads/LeadAvatar.astro::__file_root__",
+        ".codeyam/isolation-props/LeadAvatar.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/leads/LeadCommitteeGrid.astro::__file_root__",
+        ".codeyam/isolation-props/LeadCommitteeGrid.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/LeadContactLinks/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/LeadContactLinks/[...state].astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/leads/LeadContactLinks.astro::__file_root__",
+        ".codeyam/isolation-props/LeadContactLinks.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/pages/isolated-components/LeadProfile/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/LeadProfile/[...state].astro",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/leads/LeadProfile.astro::__file_root__",
+        ".codeyam/isolation-props/LeadProfile.ts::__file_root__",
         "src/styles/tokens.css::__file_root__"
       ],
       "importedBy": []
@@ -11989,6 +12394,7 @@
         "src/pages/isolated-components/BannerCta/[...state].astro::__file_root__",
         "src/pages/isolated-components/SectionHead.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectBody.astro::__file_root__",
+        "src/pages/isolated-components/LeadContactLinks/[...state].astro::__file_root__",
         "src/pages/isolated-components/TestimonialCard.astro::__file_root__",
         "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro::__file_root__",
         "src/pages/isolated-components/StagingBar-PublishAgainWhileDeploying.astro::__file_root__",
@@ -12023,6 +12429,7 @@
         "src/pages/isolated-components/GlobeIcon.astro::__file_root__",
         "src/pages/isolated-components/EventsIntro.astro::__file_root__",
         "src/pages/isolated-components/GiveButton-GivingClosed.astro::__file_root__",
+        "src/pages/isolated-components/ChapterLeads-NoPhoto.astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-TopRow.astro::__file_root__",
         "src/pages/isolated-components/ChapterLeads-Headshots.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectsEmpty.astro::__file_root__",
@@ -12047,6 +12454,7 @@
         "src/pages/isolated-components/GiveButton.astro::__file_root__",
         "src/pages/isolated-components/DeployStatus-Live.astro::__file_root__",
         "src/pages/isolated-components/GoalMeter-LongTitle.astro::__file_root__",
+        "src/pages/isolated-components/ChapterLeads-Committee.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjects.astro::__file_root__",
         "src/pages/isolated-components/EventCardGrid.astro::__file_root__",
         "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__",
@@ -12062,11 +12470,13 @@
         "src/pages/isolated-components/FormingChapterCta.astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-BottomRow.astro::__file_root__",
         "src/pages/isolated-components/GiveCollage.astro::__file_root__",
+        "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro::__file_root__",
         "src/pages/isolated-components/MomentumStats.astro::__file_root__",
         "src/pages/isolated-components/SocialLinks.astro::__file_root__",
         "src/pages/isolated-components/BlogPostBody-Locked.astro::__file_root__",
         "src/pages/isolated-components/GivingSoonNote.astro::__file_root__",
         "src/pages/isolated-components/HomeSections.astro::__file_root__",
+        "src/pages/isolated-components/LeadAvatar/[...state].astro::__file_root__",
         "src/pages/isolated-components/DecisionTick-ReadOnly.astro::__file_root__",
         "src/pages/isolated-components/MomentumClose-Split.astro::__file_root__",
         "src/pages/isolated-components/CommunityCallouts.astro::__file_root__",
@@ -12082,6 +12492,7 @@
         "src/pages/isolated-components/VolunteerProjectCta.astro::__file_root__",
         "src/pages/isolated-components/GiftPillarCard.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectCardLinks.astro::__file_root__",
+        "src/pages/isolated-components/ChapterLeads-FullProfile.astro::__file_root__",
         "src/pages/isolated-components/EventCardGrid-Past.astro::__file_root__",
         "src/pages/isolated-components/MomentumMission.astro::__file_root__",
         "src/pages/isolated-components/GalleryLightbox.astro::__file_root__",
@@ -12109,6 +12520,7 @@
         "src/pages/isolated-components/OnlineGroupEyebrow.astro::__file_root__",
         "src/pages/isolated-components/WebinarCard.astro::__file_root__",
         "src/pages/isolated-components/WebinarsPointer.astro::__file_root__",
+        "src/pages/isolated-components/LeadProfile/[...state].astro::__file_root__",
         "src/pages/isolated-components/CalloutCard.astro::__file_root__",
         "src/pages/isolated-components/DeployStatus-StillUpdating.astro::__file_root__",
         "src/pages/isolated-components/ChapterLeads.astro::__file_root__",
@@ -12118,5 +12530,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-22T16:55:16Z"
+  "lastUpdated": "2026-10-22T22:10:01Z"
 }

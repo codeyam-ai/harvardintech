@@ -1,0 +1,12 @@
+{
+  "name": "LeadContactLinks - LinkedIn Only",
+  "id": "8b32d33e-95fa-49d4-9320-aa16a64a4124",
+  "url": "/isolated-components/LeadContactLinks/LinkedInOnly",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "LeadContactLinks",
+  "scenarioType": "component",
+  "description": "A lead with a LinkedIn URL and no email, the most common real entry: only the LinkedIn button renders, with no gap left for the missing email."
+}

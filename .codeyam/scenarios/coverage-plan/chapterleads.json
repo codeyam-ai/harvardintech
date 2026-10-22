@@ -3,6 +3,24 @@
   "surface_kind": "component",
   "states": [
     {
+      "dimension": "profiles",
+      "value": "empty",
+      "rationale": "source-derived state profiles=empty",
+      "status": "covered"
+    },
+    {
+      "dimension": "profiles",
+      "value": "one",
+      "rationale": "source-derived state profiles=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "profiles",
+      "value": "many",
+      "rationale": "source-derived state profiles=many",
+      "status": "planned"
+    },
+    {
       "dimension": "leads",
       "value": "empty",
       "rationale": "source-derived state leads=empty",

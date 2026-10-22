@@ -1,0 +1,12 @@
+{
+  "name": "LeadAvatar - Initials",
+  "id": "6e44fc62-fedb-48e1-b6df-bef72cfc3fe8",
+  "url": "/isolated-components/LeadAvatar/Initials",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "LeadAvatar",
+  "scenarioType": "component",
+  "description": "A lead with no photo: their initials in white title serif on the crimson disc, matching the board tiles' fallback, instead of an empty circle."
+}

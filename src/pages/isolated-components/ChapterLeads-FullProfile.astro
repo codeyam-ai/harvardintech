@@ -1,0 +1,48 @@
+---
+import Component from "../../../src/components/ChapterLeads.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for ChapterLeads with every profile field filled in — codeyam
+// screenshots the #codeyam-capture wrapper by navigating to
+// /isolated-components/ChapterLeads-FullProfile.
+//
+// One lead carrying every optional field, so each line of Nicole's layout is in
+// the frame at once: headshot, role, name, "Title, Company", the mono
+// "School · Degree 'YY" line, bio, and both the LinkedIn and email links. The
+// person is a fixture, not a real lead, so no real lead's details are invented —
+// and the headshot is a neutral silhouette rather than a real member's photo
+// under an invented name.
+const silhouette =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><rect width="160" height="160" fill="#d9d2cd"/><circle cx="80" cy="62" r="30" fill="#9c9295"/><path d="M24 160c4-36 28-56 56-56s52 20 56 56z" fill="#9c9295"/></svg>',
+  );
+const leads = [
+  {
+    name: 'Amara Okafor',
+    role: 'Chapter Lead',
+    photo: silhouette,
+    title: 'Co-founder and CEO',
+    company: 'Lumen Health',
+    school: 'Harvard Kennedy School',
+    degree: 'MPA',
+    gradYear: 2019,
+    linkedin: 'https://www.linkedin.com/',
+    email: 'amara@example.com',
+    bio: 'Amara builds clinical software for community hospitals and has run the chapter’s founder roundtables since 2024. Before Lumen she led product at two health-tech startups.',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: ChapterLeads full profile</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); max-width: 900px;">
+      <Component leads={leads} />
+    </div>
+  </body>
+</html>

@@ -13,12 +13,17 @@ photos:
   - image: /images/1782977679529.webp
 leads:
   - name: Nemo Shi
-    role: London Lead
+    role: Chapter Lead
     photo: /images/team/nemo-shi.webp
-links:
-  - label: LinkedIn
-    url: https://www.linkedin.com/in/nemoshi/
+    linkedin: https://www.linkedin.com/in/nemoshi/
+    bio: >-
+      Nemo Shi is a founder and advisor to tech companies and nonprofits, with a
+      focus in extended reality (XR), multimodal sensing, and wearables
+      technologies. He studied learning sciences at Harvard and mathematics at
+      UC Irvine. He has been building innovation communities, leading
+      conferences, hackathons, and founder networks across the Harvard–MIT
+      ecosystem in Boston and London.
+leadsNote: We're looking for a London co-lead. If you'd like to help run the chapter, get in touch.
 ---
 
-
-Nemo Shi is a founder and advisor to tech companies and nonprofits, with a focus in extended reality (XR), multimodal sensing, and wearables technologies. He studied learning sciences at Harvard and mathematics at UC Irvine. He has been building innovation communities, leading conferences, hackathons, and founder networks across the Harvard–MIT ecosystem in Boston and London.  
+Evening socials and founder roundtables connecting Harvard alumni across the UK and Europe.

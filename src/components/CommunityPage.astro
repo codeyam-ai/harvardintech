@@ -22,11 +22,8 @@ import PageNarrowBody from './PageNarrowBody.astro';
 import EventGallery from './landing/EventGallery.astro';
 import type { EventLike } from '../lib/events';
 import { bannerFor } from '../lib/pageBanner';
+import type { Lead } from '../lib/leadSchema';
 
-interface Lead {
-  name: string;
-  role?: string;
-}
 interface CommunityLink {
   label: string;
   url: string;

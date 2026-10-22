@@ -191,7 +191,7 @@
       },
       "many": {
         "status": "n-a",
-        "reason": "Chapters have one or two leads; the list wraps with flex-wrap, so there is no overflow or truncation state to show"
+        "reason": "Chapters have one to a few leads and committee members; profiles stack vertically and the committee grid wraps, so there is no overflow or truncation state"
       },
       "loading": {
         "status": "n-a",
@@ -202,7 +202,7 @@
       },
       "error": {
         "status": "n-a",
-        "reason": "No fetch or input; a missing photo falls back to the name-only line, which the headshots scenario shows"
+        "reason": "No fetch or input; a missing photo falls back to the initials disc, which the No Photo and Headshots scenarios show"
       },
       "key-interaction": {
         "status": "n-a",

@@ -1,0 +1,85 @@
+---
+// One chapter or co-lead as a full profile (Nicole's 21 Oct mockup): the
+// headshot disc, a crimson rule, the mono role, the name in the title serif,
+// "Title, Company", a mono "School · Degree ’YY" line, the bio, and the contact
+// links. Every line beyond the name drops out when empty.
+import LeadAvatar from './LeadAvatar.astro';
+import LeadContactLinks from './LeadContactLinks.astro';
+import { titleLine, schoolLine } from '../../lib/leads';
+import type { Lead } from '../../lib/leadSchema';
+
+interface Props {
+  lead: Lead;
+}
+const { lead } = Astro.props;
+const title = titleLine(lead);
+const school = schoolLine(lead);
+---
+
+<li class="profile">
+  <LeadAvatar name={lead.name} photo={lead.photo} size={160} />
+  <div>
+    <span class="rule" aria-hidden="true"></span>
+    {lead.role ? <span class="role">{lead.role}</span> : null}
+    <h3 class="name">{lead.name}</h3>
+    {title ? <p class="title-line">{title}</p> : null}
+    {school ? <p class="school-line">{school}</p> : null}
+    {lead.bio?.trim() ? <p class="bio">{lead.bio}</p> : null}
+    <LeadContactLinks name={lead.name} linkedin={lead.linkedin} email={lead.email} />
+  </div>
+</li>
+
+<style>
+  .profile {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--s-5);
+    align-items: start;
+  }
+  .rule {
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: var(--crimson);
+    margin-bottom: var(--s-3);
+  }
+  .role {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin-bottom: var(--s-2);
+  }
+  .name {
+    font-family: var(--font-title);
+    font-size: 34px;
+    line-height: 1.1;
+    margin: 0;
+  }
+  .title-line {
+    font-size: 18px;
+    color: var(--ink-2);
+    margin: var(--s-2) 0 0;
+  }
+  .school-line {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--crimson);
+    margin: var(--s-2) 0 0;
+  }
+  .bio {
+    margin: var(--s-3) 0 0;
+    color: var(--ink-2);
+    max-width: 62ch;
+  }
+  @media (max-width: 640px) {
+    .profile {
+      grid-template-columns: 1fr;
+    }
+    .name {
+      font-size: 28px;
+    }
+  }
+</style>

@@ -1,0 +1,30 @@
+{
+  "surface": "LeadContactLinks",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "email",
+      "value": "true",
+      "rationale": "source-derived state email=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "email",
+      "value": "false",
+      "rationale": "source-derived state email=false",
+      "status": "covered"
+    },
+    {
+      "dimension": "linkedin",
+      "value": "true",
+      "rationale": "source-derived state linkedin=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "linkedin",
+      "value": "false",
+      "rationale": "source-derived state linkedin=false",
+      "status": "covered"
+    }
+  ]
+}

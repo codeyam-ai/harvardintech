@@ -1,0 +1,12 @@
+{
+  "name": "LeadAvatar - Default",
+  "id": "2e955135-3cfb-48ad-9923-dcf50e52d26c",
+  "url": "/isolated-components/LeadAvatar",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "LeadAvatar",
+  "scenarioType": "component",
+  "description": "A lead's headshot at the full-profile size: a 160px circle with the photo cropped to fill it. The photo is a neutral silhouette fixture, not a real member."
+}

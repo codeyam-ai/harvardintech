@@ -34,6 +34,7 @@ export interface EventEntryLike {
     location?: string;
     description?: string;
     link?: string;
+    coverImage?: string;
     chapter?: string;
     /**
      * The community ids this event ALSO belongs to, beside its `chapter` tag.
@@ -85,6 +86,7 @@ export function eventsTaggedTo(
       location: event.data.location,
       description: event.data.description,
       link: event.data.link,
+      coverImage: event.data.coverImage,
     }));
 }
 

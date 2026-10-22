@@ -5,6 +5,7 @@ import { glob } from 'astro/loaders';
 import type { Loader } from 'astro/loaders';
 import { contentRoot } from '../lib/contentRoot';
 import { isWhatsAppGroupLink } from '../lib/localPresence';
+import { leadSchema } from '../lib/leadSchema';
 
 // A typed content collection is the data layer for a static Astro site:
 // markdown files under `<contentRoot>/<collection>/` validated against this
@@ -180,7 +181,7 @@ const events = defineCollection({
 // Regional chapters (SF & Bay Area, New York City, London, Boston & Cambridge,
 // and the forming DC and Seattle). One markdown file per city under
 // `<contentRoot>/chapters/`, rendered at `/chapters/<slug>` and linked from the
-// nav Chapters dropdown. `leads` (named organizers) and `links` (city-specific
+// nav Chapters dropdown. `leads` (lead profiles, see `leadSchema`) and `links` (city-specific
 // signup / social URLs) are optional so a chapter with no leads still renders;
 // the markdown body is the longer "about this chapter" copy.
 //
@@ -232,9 +233,10 @@ const chapters = defineCollection({
     // Per-chapter "Connect With Us" email; absent → fall back to the global
     // settings contact email.
     contactEmail: z.string().optional(),
-    leads: z
-      .array(z.object({ name: z.string(), role: z.string().optional(), photo: z.string().optional() }))
-      .optional(),
+    leads: z.array(leadSchema).optional(),
+    // A line under the leads block, for what a list of names cannot say —
+    // "We're looking for a co-lead". Absent → nothing extra renders.
+    leadsNote: z.string().optional(),
     links: z
       .array(z.object({ label: z.string(), url: z.string() }))
       .optional(),
@@ -292,9 +294,7 @@ const communities = defineCollection({
     tagline: z.string().optional(),
     showGallery: z.boolean().optional(),
     contactEmail: z.string().optional(),
-    leads: z
-      .array(z.object({ name: z.string(), role: z.string().optional(), photo: z.string().optional() }))
-      .optional(),
+    leads: z.array(leadSchema).optional(),
     links: z
       .array(z.object({ label: z.string(), url: z.string() }))
       .optional(),

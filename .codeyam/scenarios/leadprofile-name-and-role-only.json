@@ -1,0 +1,13 @@
+{
+  "name": "LeadProfile - Name And Role Only",
+  "id": "fb38a935-d9bb-4f59-8e28-d653cfb16c9b",
+  "url": "/isolated-components/LeadProfile/NameAndRoleOnly",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "LeadProfile",
+  "scenarioType": "component",
+  "demonstratesState": {"school": "false", "title": "false"},
+  "description": "An entry from before profiles existed, with only a name and role. The disc shows initials, and the title, school, bio and contact lines all drop out rather than leaving blanks."
+}

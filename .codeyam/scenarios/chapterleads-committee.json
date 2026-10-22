@@ -1,0 +1,12 @@
+{
+  "name": "ChapterLeads - Committee",
+  "id": "9f9e1d9f-bff3-4975-bc69-52ae52a85070",
+  "url": "/isolated-components/ChapterLeads-Committee",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterLeads",
+  "scenarioType": "component",
+  "description": "A chapter lead plus three committee members. Any lead whose role mentions committee leaves the full profiles and joins the compact Committee grid below them."
+}

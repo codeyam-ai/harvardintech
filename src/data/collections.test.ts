@@ -13,6 +13,7 @@ import {
   unknownFields,
   type RegistryField,
 } from '../lib/collectionRegistryDrift';
+import { leadSchema } from '../lib/leadSchema';
 
 // Schema-drift guard for the CMS registry.
 //
@@ -128,7 +129,9 @@ describe('committed CMS registry vs content schema', () => {
     const chapters = REGISTRY.collections.find((c) => c.id === 'chapters')!;
     const byName = (n: string) => chapters.fields.find((f) => f.name === n);
 
-    expect(declaredFieldNames(byName('leads')!.fields ?? [])).toEqual(['name', 'role', 'photo']);
+    // Read off `leadSchema` itself: the lead row grew from three keys to a full
+    // profile, and a hand-copied list here is one more place to forget.
+    expect(declaredFieldNames(byName('leads')!.fields ?? [])).toEqual(Object.keys(leadSchema.shape));
     expect(declaredFieldNames(byName('links')!.fields ?? [])).toEqual(['label', 'url']);
   });
 

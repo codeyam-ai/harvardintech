@@ -1,0 +1,12 @@
+{
+  "name": "LeadCommitteeGrid - Default",
+  "id": "5fb617a0-c0a7-4eee-8cf7-855f184e0972",
+  "url": "/isolated-components/LeadCommitteeGrid",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "LeadCommitteeGrid",
+  "scenarioType": "component",
+  "description": "Three committee members in the compact grid under the leads, each with a different mix of fields: one with title, school and a LinkedIn-linked name; one with only title and company; one with only school and class year. Fictional people."
+}

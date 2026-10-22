@@ -18,11 +18,9 @@ import EventGallery from './landing/EventGallery.astro';
 import type { EventLike } from '../lib/events';
 import { isForming } from '../lib/localPresence';
 import { bannerFor } from '../lib/pageBanner';
+import type { Lead } from '../lib/leadSchema';
+import { chapterLeadsHeading } from '../lib/leads';
 
-interface Lead {
-  name: string;
-  role?: string;
-}
 interface ChapterLink {
   label: string;
   url: string;
@@ -73,6 +71,8 @@ interface Props {
   /** The entry's own WhatsApp form override. Always a form, never a group. */
   whatsappFormUrl?: string;
   leads?: Lead[];
+  /** A line under the leads, e.g. "We're looking for a co-lead". */
+  leadsNote?: string;
   links?: ChapterLink[];
   /** Where the "back" link at the top of the content block points, and what it
    *  says. Defaults to the chapters row on the home page; a community page
@@ -95,6 +95,7 @@ const {
   callouts = [],
   whatsappFormUrl,
   leads = [],
+  leadsNote,
   links = [],
   backHref = '/#events',
   backLabel = '← All chapters',
@@ -137,6 +138,8 @@ const hasBody = Astro.slots.has('default');
         backHref={backHref}
         backLabel={backLabel}
         leads={leads}
+        leadsHeading={chapterLeadsHeading(leads.length)}
+        leadsNote={leadsNote}
         links={links}
         hasBody={hasBody}
       >

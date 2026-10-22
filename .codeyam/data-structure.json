@@ -349,7 +349,7 @@
         "name": "status",
         "type": "string",
         "required": false,
-        "description": "`active` or `forming`. Absent means active, so every chapter that existed before this field keeps its behaviour. A forming chapter has no lead yet: its page swaps the leads block for join-WhatsApp and online-events CTAs, and its roster card carries a Forming badge. Promoting a chapter is flipping this one select in /admin — the URL, the nav entry and the event tags all stay put."
+        "description": "`active` or `forming`. Absent means active, so every chapter that existed before this field keeps its behaviour. A forming chapter has no lead yet: its page swaps the leads block for join-WhatsApp and online-events CTAs, and its roster card carries a Forming badge. Promoting a chapter is flipping this one select in /admin \u2014 the URL, the nav entry and the event tags all stay put."
       },
       {
         "name": "whatsappFormUrl",
@@ -374,9 +374,16 @@
         "required": false
       },
       {
+        "name": "leadsNote",
+        "type": "string",
+        "required": false,
+        "description": "A line shown under the chapter's leads for what a list of names cannot say, e.g. \"We're looking for a London co-lead\". Absent means nothing renders."
+      },
+      {
         "name": "leads",
         "type": "array",
-        "required": false
+        "required": false,
+        "description": "A list of lead profiles. Each lead has a required `name` and optional `role` (Lead / Co-Lead / Committee member), `photo`, `title`, `company`, `school`, `degree`, `gradYear`, `linkedin`, `email` and `bio`. Leads and co-leads render as full profiles; any role containing 'committee' renders in a compact grid beneath them."
       },
       {
         "name": "links",
@@ -840,7 +847,7 @@
   },
   {
     "name": "Community",
-    "description": "A non-geographic Harvard in Tech community (Founders, AI) \u2014 the interest-based counterpart to a Chapter. Stored as a markdown file in the `communities` content collection; rendered on per-community routes at /communities/<slug>, and the source the base layout derives the nav Communities entries from (alongside the hand-authored WhatsApp link in nav.json). Shares the Chapter shape at the data level, but NOT at the render level: a community renders through its own `CommunityPage`, not the chapter page, because a chapter leads with a place and a community leads with what it does. `name` replaces `city` because a community has no location. An event reaches a community two ways — the `chapter` tag it always could use, or the newer `communities` list, which is what lets a London Founders co-working day sit on both the London chapter page and the Founders page without either tag having to win.",
+    "description": "A non-geographic Harvard in Tech community (Founders, AI) \u2014 the interest-based counterpart to a Chapter. Stored as a markdown file in the `communities` content collection; rendered on per-community routes at /communities/<slug>, and the source the base layout derives the nav Communities entries from (alongside the hand-authored WhatsApp link in nav.json). Shares the Chapter shape at the data level, but NOT at the render level: a community renders through its own `CommunityPage`, not the chapter page, because a chapter leads with a place and a community leads with what it does. `name` replaces `city` because a community has no location. An event reaches a community two ways \u2014 the `chapter` tag it always could use, or the newer `communities` list, which is what lets a London Founders co-working day sit on both the London chapter page and the Founders page without either tag having to win.",
     "category": "datastore",
     "order": 13,
     "fields": [
@@ -859,7 +866,7 @@
         "name": "whatsappFormUrl",
         "type": "string",
         "required": false,
-        "description": "The Google Form that gates entry to this community's WhatsApp group — the community's primary CTA. Never the group invite itself. Absent falls back to the site-wide form in `src/lib/contact.ts`."
+        "description": "The Google Form that gates entry to this community's WhatsApp group \u2014 the community's primary CTA. Never the group invite itself. Absent falls back to the site-wide form in `src/lib/contact.ts`."
       },
       {
         "name": "callouts",
@@ -895,7 +902,8 @@
       {
         "name": "leads",
         "type": "array",
-        "required": false
+        "required": false,
+        "description": "A list of lead profiles. Each lead has a required `name` and optional `role` (Lead / Co-Lead / Committee member), `photo`, `title`, `company`, `school`, `degree`, `gradYear`, `linkedin`, `email` and `bio`. Leads and co-leads render as full profiles; any role containing 'committee' renders in a compact grid beneath them."
       },
       {
         "name": "links",

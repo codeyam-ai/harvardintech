@@ -1675,6 +1675,33 @@
       "runner": "tests"
     },
     {
+      "description": "two or more leads get the plural heading",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "chapterLeadsHeading › is plural for several leads",
+      "line": 102,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "zero is plural too, though the block does not render then",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "chapterLeadsHeading › is plural for zero",
+      "line": 107,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a solo lead gets the singular heading",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "chapterLeadsHeading › is singular for one lead",
+      "line": 97,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
       "description": "The label promise the content admin makes: switching a city to active is all it takes to remove the note everywhere.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
@@ -2084,7 +2111,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › declares only real schema keys for every built-in extra",
-      "line": 177,
+      "line": 180,
       "registeredAt": "2026-07-27T18:48:12Z",
       "runner": "tests"
     },
@@ -2093,7 +2120,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › declares only real schema keys for every custom collection",
-      "line": 104,
+      "line": 105,
       "registeredAt": "2026-08-04T13:20:43Z",
       "runner": "tests"
     },
@@ -2102,7 +2129,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › declares the chapters list rows the schema expects",
-      "line": 127,
+      "line": 128,
       "registeredAt": "2026-07-27T18:48:12Z",
       "runner": "tests"
     },
@@ -2111,7 +2138,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › declares the hero video as an optional text field with guidance",
-      "line": 152,
+      "line": 155,
       "registeredAt": "2026-08-08T02:12:09Z",
       "runner": "tests"
     },
@@ -2120,7 +2147,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › maps the SEO group onto the frontmatter keys this site already uses",
-      "line": 221,
+      "line": 224,
       "registeredAt": "2026-07-27T18:48:12Z",
       "runner": "tests"
     },
@@ -2129,7 +2156,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › places the hero video directly after the hero image",
-      "line": 168,
+      "line": 171,
       "registeredAt": "2026-08-08T02:12:09Z",
       "runner": "tests"
     },
@@ -2138,7 +2165,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed CMS registry vs content schema › renders an editor input for every schema key of every collection",
-      "line": 198,
+      "line": 201,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -2255,7 +2282,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed page singletons vs CMS registry › keeps every retired-key excuse pointing at something real and still uneditable",
-      "line": 335,
+      "line": 338,
       "registeredAt": "2026-08-19T20:31:11.589811377+00:00",
       "runner": "tests"
     },
@@ -2264,7 +2291,7 @@
       "file": "src/data/collections.test.ts",
       "format": "vitest",
       "key": "committed page singletons vs CMS registry › renders an editor input for every key of every committed page singleton",
-      "line": 313,
+      "line": 316,
       "registeredAt": "2026-08-19T20:31:11.589811377+00:00",
       "runner": "tests"
     },
@@ -4303,6 +4330,15 @@
       "runner": "tests"
     },
     {
+      "description": "The cover image is carried through too. It once was not, so every chapter and community event card fell back to the placeholder instead of the Luma cover the event had.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "eventsTaggedTo › carries the cover image through to the event card",
+      "line": 295,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
       "description": "Every optional field is carried through, because the event card renders them — dropping one here would blank a card with no error anywhere.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
@@ -4316,7 +4352,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › does not match a tag that only looks like the owner id",
-      "line": 294,
+      "line": 303,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4325,7 +4361,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › excludes events with no tag at all",
-      "line": 302,
+      "line": 311,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4352,7 +4388,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches an owner named in the communities list",
-      "line": 317,
+      "line": 326,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4361,7 +4397,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches any id in the communities list, with no chapter tag at all",
-      "line": 340,
+      "line": 349,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4370,7 +4406,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns a doubly-matching event only once",
-      "line": 333,
+      "line": 342,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4379,7 +4415,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns nothing when no event is tagged to the owner",
-      "line": 309,
+      "line": 318,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4397,7 +4433,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › still matches the chapter tag on a dual-tagged event",
-      "line": 325,
+      "line": 334,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -6979,6 +7015,42 @@
       "key": "isBlogChannel › matches the blog index path",
       "line": 20,
       "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a lead or co-lead gets a full profile",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "isCommittee › does not match a chapter lead or co-lead",
+      "line": 16,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "editors type roles by hand, so case must not matter",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "isCommittee › ignores case",
+      "line": 11,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the role is free text, so the word is matched anywhere in it",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "isCommittee › matches a role that mentions committee",
+      "line": 6,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "an entry with no role at all is a full profile",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "isCommittee › treats a missing role as not committee",
+      "line": 22,
+      "registeredAt": "2026-10-22T20:05:18Z",
       "runner": "tests"
     },
     {
@@ -10554,7 +10626,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › does not mutate its input",
-      "line": 402,
+      "line": 411,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -10563,7 +10635,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › honours an explicit limit",
-      "line": 385,
+      "line": 394,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -10572,7 +10644,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › preserves the order it was given",
-      "line": 368,
+      "line": 377,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -10581,7 +10653,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns at most three events by default",
-      "line": 360,
+      "line": 369,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -10590,7 +10662,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns everything when there are fewer than the limit",
-      "line": 379,
+      "line": 388,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -10599,7 +10671,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns nothing for a limit of zero or less",
-      "line": 393,
+      "line": 402,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11663,6 +11735,51 @@
       "key": "school mapping › reports an empty cell as nothing, not as an empty school",
       "line": 136,
       "registeredAt": "2026-08-05T19:34:11Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a year without a degree still reads as a class year",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "schoolLine › formats a class year without a degree",
+      "line": 75,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the full mockup line: school, then degree and two-digit class year",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "schoolLine › formats school, degree and class year",
+      "line": 68,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "older entries have none of these fields, so the line drops out",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "schoolLine › returns an empty string when nothing is set",
+      "line": 90,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "degree and year can stand without a school",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "schoolLine › returns degree and year when the school is missing",
+      "line": 85,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a school alone has no separator",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "schoolLine › returns the school alone with no separator",
+      "line": 80,
+      "registeredAt": "2026-10-22T20:05:18Z",
       "runner": "tests"
     },
     {
@@ -13236,7 +13353,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › accepts a caller-supplied cutoff",
-      "line": 439,
+      "line": 448,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -13245,7 +13362,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › defaults its cutoff to ARCHIVE_BEFORE",
-      "line": 449,
+      "line": 458,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -13254,7 +13371,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › keeps the order of both halves",
-      "line": 425,
+      "line": 434,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -13263,7 +13380,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › puts the day before the cutoff in the archive and the cutoff day in recent",
-      "line": 415,
+      "line": 424,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -13272,7 +13389,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › returns two empty halves for an empty list",
-      "line": 458,
+      "line": 467,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -13337,6 +13454,24 @@
       "key": "splitEvents › treats an event exactly at now as upcoming",
       "line": 110,
       "registeredAt": "2026-06-13T17:26:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "no leads means two empty lists, not an error",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "splitLeads › returns two empty lists for no leads",
+      "line": 43,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "leads and committee members go to separate lists, keeping their order",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "splitLeads › separates profiles from committee members in input order",
+      "line": 29,
+      "registeredAt": "2026-10-22T20:05:18Z",
       "runner": "tests"
     },
     {
@@ -14937,6 +15072,33 @@
       "key": "tintedFlags › returns the same flags when called repeatedly on the same input",
       "line": 250,
       "registeredAt": "2026-07-31T19:59:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "both halves join with a comma, as on the mockup",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "titleLine › joins title and company with a comma",
+      "line": 50,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "either half can stand alone without a dangling comma",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "titleLine › returns a lone title or company without a comma",
+      "line": 55,
+      "registeredAt": "2026-10-22T20:05:18Z",
+      "runner": "tests"
+    },
+    {
+      "description": "nothing to say renders nothing, so the line drops out",
+      "file": "src/lib/leads.test.ts",
+      "format": "vitest",
+      "key": "titleLine › returns an empty string when both are missing",
+      "line": 61,
+      "registeredAt": "2026-10-22T20:05:18Z",
       "runner": "tests"
     },
     {

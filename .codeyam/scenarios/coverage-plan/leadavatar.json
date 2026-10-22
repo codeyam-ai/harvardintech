@@ -1,0 +1,18 @@
+{
+  "surface": "LeadAvatar",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "photo",
+      "value": "true",
+      "rationale": "source-derived state photo=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "photo",
+      "value": "false",
+      "rationale": "source-derived state photo=false",
+      "status": "covered"
+    }
+  ]
+}

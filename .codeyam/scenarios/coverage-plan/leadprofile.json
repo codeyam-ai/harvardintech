@@ -1,0 +1,30 @@
+{
+  "surface": "LeadProfile",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "school",
+      "value": "true",
+      "rationale": "source-derived state school=true",
+      "status": "planned"
+    },
+    {
+      "dimension": "school",
+      "value": "false",
+      "rationale": "source-derived state school=false",
+      "status": "planned"
+    },
+    {
+      "dimension": "title",
+      "value": "true",
+      "rationale": "source-derived state title=true",
+      "status": "planned"
+    },
+    {
+      "dimension": "title",
+      "value": "false",
+      "rationale": "source-derived state title=false",
+      "status": "planned"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+---
+// The committee members under the chapter leads, as a compact grid: a small
+// headshot disc, the name (linked to LinkedIn when there is one), and the
+// "Title, Company" and school lines in small type. Renders nothing for an
+// empty list.
+import LeadAvatar from './LeadAvatar.astro';
+import { titleLine, schoolLine } from '../../lib/leads';
+import type { Lead } from '../../lib/leadSchema';
+
+interface Props {
+  members?: Lead[];
+}
+const { members = [] } = Astro.props;
+---
+
+{
+  members.length > 0 ? (
+    <div class="committee">
+      <h3>Committee</h3>
+      <ul class="committee-grid">
+        {members.map((lead) => (
+          <li>
+            <LeadAvatar name={lead.name} photo={lead.photo} size={56} />
+            <span>
+              {lead.linkedin ? (
+                <a href={lead.linkedin} target="_blank" rel="noopener">
+                  <strong>{lead.name}</strong>
+                </a>
+              ) : (
+                <strong>{lead.name}</strong>
+              )}
+              {titleLine(lead) ? <span class="small">{titleLine(lead)}</span> : null}
+              {schoolLine(lead) ? <span class="small">{schoolLine(lead)}</span> : null}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : null
+}
+
+<style>
+  .committee {
+    margin-top: var(--s-6);
+  }
+  h3 {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 var(--s-3);
+  }
+  .committee-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--s-4);
+  }
+  li {
+    display: flex;
+    gap: var(--s-3);
+    align-items: center;
+  }
+  strong {
+    display: block;
+  }
+  .small {
+    display: block;
+    font-size: var(--t-sm);
+    color: var(--ink-3);
+  }
+</style>

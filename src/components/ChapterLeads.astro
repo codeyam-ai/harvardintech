@@ -1,23 +1,27 @@
 ---
-// The "Chapter leads" block: a heading and a wrapped list of named leads with
-// optional roles and headshots. Renders nothing when there are no leads, so a
-// chapter with no leads listed simply omits the section. A lead without a photo
-// keeps the plain name-and-role line rather than an empty circle.
-import { withBase } from '../lib/url';
-import { altFor } from '../lib/media';
+// The "Chapter leads" block: a heading, then each lead and co-lead as a full
+// `LeadProfile` (Nicole's 21 Oct mockup), then committee members in the compact
+// `LeadCommitteeGrid`, then an optional note. Renders nothing when there are no
+// leads, so a chapter with no leads listed simply omits the section.
+//
+// Every line of a profile beyond the name is optional and drops out when empty,
+// so the older `{ name, role }` entries still render as a name and role.
+import LeadProfile from './leads/LeadProfile.astro';
+import LeadCommitteeGrid from './leads/LeadCommitteeGrid.astro';
+import { splitLeads } from '../lib/leads';
+import type { Lead } from '../lib/leadSchema';
 
-interface Lead {
-  name: string;
-  role?: string;
-  photo?: string;
-}
 interface Props {
   leads?: Lead[];
   /** The heading over the list. "Chapter leads" is right for a city and wrong
    *  for a group, so a community page passes "Community lead" instead. */
   heading?: string;
+  /** A line under the leads for what a list of names cannot say — "We're
+   *  looking for a London co-lead". Absent → nothing renders. */
+  note?: string;
 }
-const { leads = [], heading = 'Chapter leads' } = Astro.props;
+const { leads = [], heading = 'Chapter leads', note } = Astro.props;
+const { profiles, committee } = splitLeads(leads);
 ---
 
 <style>
@@ -29,33 +33,21 @@ const { leads = [], heading = 'Chapter leads' } = Astro.props;
      it a fourth spelling of the same label. */
   .leads .kick {
     display: block;
-    margin: 0 0 var(--s-3);
+    margin: 0 0 var(--s-4);
   }
-  .leads-list {
+  .profiles {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-5);
+    display: grid;
+    gap: var(--s-6);
   }
-  .leads-list li {
-    display: flex;
-    align-items: center;
-    gap: var(--s-3);
-  }
-  .lead-photo {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-    background: var(--paper-2);
-  }
-  .lead-role {
-    display: block;
-    font-size: var(--t-sm);
-    color: var(--ink-3);
+  .note {
+    margin: var(--s-5) 0 0;
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+    color: var(--ink-2);
+    font-style: italic;
   }
 </style>
 
@@ -63,26 +55,15 @@ const { leads = [], heading = 'Chapter leads' } = Astro.props;
   leads.length > 0 ? (
     <div class="leads">
       <h2 class="kick">{heading}</h2>
-      <ul class="leads-list">
-        {leads.map((lead) => (
-          <li>
-            {lead.photo ? (
-              <img
-                class="lead-photo"
-                src={withBase(lead.photo)}
-                alt={altFor(lead.photo, lead.name)}
-                width="64"
-                height="64"
-                loading="lazy"
-              />
-            ) : null}
-            <span>
-              <strong>{lead.name}</strong>
-              {lead.role ? <span class="lead-role">{lead.role}</span> : null}
-            </span>
-          </li>
-        ))}
-      </ul>
+      {profiles.length > 0 ? (
+        <ul class="profiles">
+          {profiles.map((lead) => (
+            <LeadProfile lead={lead} />
+          ))}
+        </ul>
+      ) : null}
+      <LeadCommitteeGrid members={committee} />
+      {note?.trim() ? <p class="note">{note}</p> : null}
     </div>
   ) : null
 }

@@ -1,0 +1,47 @@
+---
+import Component from "../../../src/components/ChapterLeads.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for ChapterLeads with a lead and committee members — codeyam
+// screenshots the #codeyam-capture wrapper by navigating to
+// /isolated-components/ChapterLeads-Committee.
+//
+// Any lead whose role mentions "committee" leaves the full profiles and joins
+// the compact grid below them, which is how Nicole's Lead / Co-Lead / Committee
+// tiers show without a separate field. Fixture people, not real leads, so the
+// one headshot is a neutral silhouette and the committee falls back to initials.
+const silhouette =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><rect width="160" height="160" fill="#d9d2cd"/><circle cx="80" cy="62" r="30" fill="#9c9295"/><path d="M24 160c4-36 28-56 56-56s52 20 56 56z" fill="#9c9295"/></svg>',
+  );
+const leads = [
+  {
+    name: 'Amara Okafor',
+    role: 'Chapter Lead',
+    photo: silhouette,
+    title: 'Co-founder and CEO',
+    company: 'Lumen Health',
+    school: 'Harvard Kennedy School',
+    degree: 'MPA',
+    gradYear: 2019,
+    linkedin: 'https://www.linkedin.com/',
+  },
+  { name: 'Priya Natarajan', role: 'Committee member', title: 'Product Manager', company: 'Atlas Pay', school: 'HBS', degree: 'MBA', gradYear: 2021, linkedin: 'https://www.linkedin.com/' },
+  { name: 'Tom Whitfield', role: 'Committee member', title: 'Partner', company: 'Greyline Ventures' },
+  { name: 'Sofia Marquez', role: 'Committee member', school: 'Harvard Law School', degree: 'JD', gradYear: 2017 },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: ChapterLeads with committee</title>
+  </head>
+  <body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <div id="codeyam-capture" style="padding: var(--space-lg); max-width: 900px;">
+      <Component leads={leads} />
+    </div>
+  </body>
+</html>

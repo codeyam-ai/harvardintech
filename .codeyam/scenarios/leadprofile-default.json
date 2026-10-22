@@ -1,0 +1,13 @@
+{
+  "name": "LeadProfile - Default",
+  "id": "7497c6e4-4be3-431a-9681-a48983272bd1",
+  "url": "/isolated-components/LeadProfile",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "LeadProfile",
+  "scenarioType": "component",
+  "demonstratesState": {"school": "true", "title": "true"},
+  "description": "One lead with every field filled, matching Nicole's 21 Oct mockup: headshot disc, crimson rule, mono role, serif name, Title, Company, the mono School, Degree and class-year line, bio, and LinkedIn and email buttons. A fictional person."
+}
