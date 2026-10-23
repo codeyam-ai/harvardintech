@@ -950,7 +950,7 @@
     "testFile": "src/lib/momentumNetwork.test.ts"
   },
   {
-    "description": "Dev-only Astro integration exposing a content-layer refresh endpoint the seed adapter calls after writing a scenario's markdown. Astro normally notices a seed via its file watcher, but a collection whose directory had no matching files at boot never got a watcher at all — so seeding donors or testimonials for the first time in a session changed nothing on the page. Refreshing re-runs every loader, which both ingests the new files and registers the skipped watcher. It also invalidates the data-store module and pushes a reload before answering, because Astro only invalidates rendered pages when it sees the store change on disk. Its JSON reply reports how many entries each collection actually loaded (via loadedCollectionCounts), which the seed adapter uses to fail a capture whose collection came out empty.",
+    "description": "Dev-only Astro integration exposing a content-layer refresh endpoint the seed adapter calls after writing a scenario's markdown. Astro normally notices a seed via its file watcher, but a collection whose directory had no matching files at boot never got a watcher at all, so refreshing re-runs every loader, which ingests the new files and registers the skipped watcher. It composes helpers from devContentRefresh: it refuses with 409 while registerDevServer sees another live dev server sharing the store, waits for createQuietWaiter before and after refreshing so a 200 means the store has settled, runs one refresh at a time via createSerialQueue, then invalidates the data-store module, pushes a reload and reports loaded counts via loadedCollectionCounts. It also installs markServerErrorPages so Astro error pages fail the capture.",
     "filePath": "astro.config.mjs",
     "name": "codeyamContentRefresh",
     "untestabilityReason": {
@@ -1030,6 +1030,24 @@
       "content-sandbox"
     ],
     "testFile": "src/lib/emptiedCollections.test.ts"
+  },
+  {
+    "description": "Tracks watcher events under the watched paths and waits until none has arrived for 750ms, longer than the store's 500ms save debounce, giving up after 8s. The refresh endpoint waits for quiet before and after refreshContent so a 200 is only sent once the seeded content is what the next render will see.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "createQuietWaiter",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
+  },
+  {
+    "description": "Runs queued async jobs one at a time in order; a job that throws goes to its onError and does not block later jobs. Keeps two seeds from refreshing the content store at the same time.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "createSerialQueue",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
   },
   {
     "description": "The one line printed under a supporter's name in the roll: school, class year and location, joined only where they exist. Returns nothing at all rather than an empty parenthetical, because a bare separator reads as missing data rather than as a supporter who simply left the field blank. Anonymous supporters reach this with every field already withheld by donorPublicIdentity, so they correctly print no credit line at all.",
@@ -1159,6 +1177,15 @@
       "justification": "A bare network call plus its status check; the response is handed straight back and every decision made from it lives in main or in src/lib, which the integration tests cover.",
       "kind": "platform-glue"
     }
+  },
+  {
+    "description": "The duplicate-dev-server wording: the boot variant is logged when a server starts next to another, the seed variant is the 409 body the seed adapter prints as its FATAL reason. Names every other pid so the user knows what to stop.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "duplicateServerMessage",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
   },
   {
     "description": "Returns the shared inbox only for the six surfaces allowed to show it - footer, homepage contact, forming chapter, sponsor inquiry, llms.txt and structured data - and undefined everywhere else, which is how the owner's sparingly rule is enforced in one place.",
@@ -1716,6 +1743,15 @@
     "testFile": "src/lib/responsiveImage.test.ts"
   },
   {
+    "description": "Whether a process with the given pid exists, via a zero signal; EPERM counts as alive because the process exists but is not ours to signal. The default liveness check for registerDevServer.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "isAlive",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
+  },
+  {
     "description": "Decides whether a Content Hub channel is a route INTO the blog, so the Content Hub can drop it while the blog is hidden for launch. True for the blog index and for any individual post path; false for the external channels (Medium, LinkedIn, the newsletter) that must survive the hiding, and false for a different route whose name merely begins with the same letters. It matches on the PATH rather than the label because `channels` is a CMS-editable prop: a label-based rule would silently stop hiding the card the moment an editor renamed it.",
     "filePath": "src/lib/blogVisibility.ts",
     "name": "isBlogChannel",
@@ -1741,6 +1777,15 @@
     "filePath": "src/lib/embeddedPreview.ts",
     "name": "isEmbeddedPreview",
     "testFile": "src/lib/embeddedPreview.test.ts"
+  },
+  {
+    "description": "Whether a response is a server-error HTML page: status 500 or above with a text/html content type. JSON errors and 4xx pages are not.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "isErrorPage",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
   },
   {
     "description": "Decides whether a link leaves the site, treating the live domain, its www twin and the page's own origin as internal and ignoring relative paths, anchors, mailto and tel links.",
@@ -2147,6 +2192,15 @@
     "filePath": "src/lib/donorImport.js",
     "name": "mapUploadRows",
     "testFile": "src/lib/donorImport.test.ts"
+  },
+  {
+    "description": "Dev-server middleware that appends scenarioErrorMarker to every 5xx HTML response and drops its Content-Length so the marker is not truncated. Astro's dev error page drew its overlay client-side, so a capture of it used to pass every check and be saved as the scenario's frame.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "markServerErrorPages",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
   },
   {
     "description": "How one spreadsheet row relates to the supporters already on the wall: new, duplicate, or possible. The middle outcome is the point — names differing only by punctuation or a suffix might be one person or might be relatives, and deciding automatically either duplicates someone or merges two people, so it does neither and asks. A duplicate whose existing record is anonymous is flagged separately, because that is the specific path by which a withheld name reaches the public site: the upload carries the real name and no anonymity column, so a blind overwrite republishes what someone asked to keep private.",
@@ -2616,6 +2670,24 @@
     "testFile": "src/lib/redirects.test.ts"
   },
   {
+    "description": "What the seed adapter does with one refresh-endpoint status: 2xx is ok, 409 is a refusal that fails the seed because a second dev server shares the content store, anything else means this port is not the dev server so try the next one.",
+    "filePath": "src/lib/emptiedCollections.ts",
+    "name": "refreshOutcome",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/emptiedCollections.test.ts"
+  },
+  {
+    "description": "Registers this astro dev process as one empty file per pid under .astro/codeyam-dev-servers and returns the pids of the other live servers, deleting files for dead pids and non-pid names. Two dev servers in one project write the same data-store.json, so a non-empty result is what makes the refresh endpoint refuse a seed with 409; stopping the duplicate clears it.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "registerDevServer",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
+  },
+  {
     "description": "Up to `limit` other open projects to suggest at the bottom of one project's detail page. \"Related\" means ADJACENT IN EDITOR ORDER, wrapping past the end — not semantically similar: the collection carries no tag, category, or topic field, so there is nothing to compute similarity from, and of the honest alternatives the editor's own ordering is the only one reflecting a human decision. Wrapping means the last project still gets suggestions instead of none. Filtered through `openProjects` so a retired project is never advertised at the bottom of an open one — the detail route generates a page for every published entry regardless of `active`. Returns an empty list when there is no other open project, which is the collection's real state today.",
     "filePath": "src/lib/projects.ts",
     "name": "relatedProjects",
@@ -2756,6 +2828,15 @@
     "filePath": "src/lib/personalize.ts",
     "name": "sanitizeFirstName",
     "testFile": "src/lib/personalize.test.ts"
+  },
+  {
+    "description": "The hidden data-codeyam-scenario-error element, naming the HTTP status, that the capture's existing scenario-error check fails on.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "scenarioErrorMarker",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
   },
   {
     "description": "Top-level keys of one collection's z.object in the content-config source. Walks brace depth so a nested shape — a z.array(z.object) row like stats or donorTiers — contributes none of its own keys, which is what stops a row key looking like a missing top-level field. Returns an empty list for an undeclared collection rather than throwing, so the caller decides whether that is a failure. Extracted from src/data/collections.test.ts when the singleton guard became a second caller.",
@@ -3345,6 +3426,15 @@
     "testFile": "src/lib/gallery.test.ts"
   },
   {
+    "description": "Picks the Vite dependency cache for the running Astro command: the default node_modules/.vite for astro dev, a separate node_modules/.vite-build for build and check. A production-mode build sharing the dev cache replaced the dev server React runtime and broke every island with jsxDEV is not a function.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "viteCacheDir",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
+  },
+  {
     "description": "Where a forming city Volunteer button points: the volunteer interest form configured on the Volunteer page in the admin, trimmed, or the /volunteer page when that box is blank or whitespace.",
     "filePath": "src/lib/localPresence.ts",
     "name": "volunteerFormHref",
@@ -3367,6 +3457,15 @@
       "navigation"
     ],
     "testFile": "src/lib/pinnedHeader.test.ts"
+  },
+  {
+    "description": "The path prefixes whose watcher events mean the content store is still moving: the sandbox content root, the sandbox data root, and .astro/data-store.json. Unset roots are dropped so no empty prefix matches every event.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "watchedContentPaths",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
   },
   {
     "description": "Reads the webinar list off the old webinars page, pairing each write-up with its video URL, derived player URL and provider thumbnail. Only the first recording carried a title, which is why the importer names the rest by hand.",

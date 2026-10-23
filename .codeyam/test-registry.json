@@ -2462,7 +2462,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "countCollectionFiles › counts markdown files per collection directory",
-      "line": 136,
+      "line": 193,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -2471,7 +2471,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "countCollectionFiles › returns no counts for a missing root",
-      "line": 148,
+      "line": 205,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -2480,7 +2480,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "countLoadedEntries › counts entries per collection",
-      "line": 177,
+      "line": 234,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -2489,7 +2489,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "countLoadedEntries › leaves out a collection whose lookup throws",
-      "line": 186,
+      "line": 243,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -2498,7 +2498,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "countTrackedCollectionEntries › accepts a content dir with a trailing slash",
-      "line": 118,
+      "line": 175,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -2507,7 +2507,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "countTrackedCollectionEntries › counts markdown entries per collection",
-      "line": 96,
+      "line": 153,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -2516,7 +2516,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "countTrackedCollectionEntries › ignores non-markdown, root-level and nested files",
-      "line": 107,
+      "line": 164,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -2525,8 +2525,62 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "countTrackedCollectionEntries › returns no counts for an empty listing",
-      "line": 123,
+      "line": 180,
       "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A tree that never settles must not hang the seed past the cap.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "createQuietWaiter › gives up at capMs",
+      "line": 162,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Edits elsewhere in the project must not hold a seed.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "createQuietWaiter › ignores events outside the watched paths",
+      "line": 152,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Once quiet, there is nothing to wait for.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "createQuietWaiter › returns at once when already quiet",
+      "line": 143,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A seed's rewrite fires events; the refresh must wait until they stop.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "createQuietWaiter › waits until no watched event has arrived for quietMs",
+      "line": 134,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A failed refresh answers 500 but must not wedge every later seed.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "createSerialQueue › hands a failure to onError and keeps running later jobs",
+      "line": 197,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Two seeds arriving together must refresh one after the other, never interleaved.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "createSerialQueue › runs jobs one at a time in order",
+      "line": 183,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -3661,6 +3715,24 @@
       "key": "duplicate: the row hands off to the create form › reads the slug back off the query string",
       "line": 94,
       "registeredAt": "2026-08-25T01:10:11Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The boot log names every other pid so the user knows what to stop.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "duplicateServerMessage › names the other pids at boot",
+      "line": 84,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The 409 body is what the seed adapter prints as its FATAL reason.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "duplicateServerMessage › tells the seed caller to stop all but one",
+      "line": 91,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -4928,7 +5000,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "findEmptiedCollections › accepts a collection that is empty everywhere",
-      "line": 72,
+      "line": 73,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -4937,8 +5009,17 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "findEmptiedCollections › accepts a loaded count below the file count",
-      "line": 59,
+      "line": 60,
       "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Matching or fewer-loaded counts (drafts filtered out) are legitimate.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › does not flag loaded counts at or below the files on disk",
+      "line": 121,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -4946,7 +5027,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "findEmptiedCollections › does not treat a collection missing from the report as empty",
-      "line": 87,
+      "line": 88,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -4955,8 +5036,17 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "findEmptiedCollections › flags a collection missing from the working tree that git tracks",
-      "line": 19,
+      "line": 20,
       "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The leaked-seed failure: the server still holds the previous scenario's entries, more than the sandbox now has, so the frame shows the wrong content.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › flags a collection that loaded more entries than are on disk",
+      "line": 96,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -4964,8 +5054,17 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "findEmptiedCollections › flags a collection with files on disk that the dev server loaded none of",
-      "line": 32,
+      "line": 33,
       "registeredAt": "2026-10-15T15:33:58Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A seed that emptied a collection on purpose must still be caught when the server keeps serving the old entries — the stale check runs before the skip.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "findEmptiedCollections › flags stale entries even in a collection seeded to empty",
+      "line": 109,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -4973,7 +5072,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "findEmptiedCollections › never flags a collection the seed set to empty on purpose",
-      "line": 46,
+      "line": 47,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -4982,7 +5081,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "findEmptiedCollections › skips the load check when no counts were reported",
-      "line": 79,
+      "line": 80,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -6964,6 +7063,24 @@
       "runner": "tests"
     },
     {
+      "description": "A pid far past any real one must read as dead, or a stale registration would refuse every seed forever.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "isAlive › reports a pid with no process as dead",
+      "line": 36,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The current process exists, so the duplicate check must see it as live.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "isAlive › reports the current process as alive",
+      "line": 30,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
       "description": "A prefix check on the bare string would swallow any future route whose name merely starts with \"blog\" — the boundary is the path segment.",
       "file": "src/lib/blogVisibility.test.ts",
       "format": "vitest",
@@ -7141,6 +7258,33 @@
       "key": "isEmbeddedPreview › names the flag the CMS uses",
       "line": 74,
       "registeredAt": "2026-08-28T17:12:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Normal pages and a 404 page are legitimate captures.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "isErrorPage › is false below 500",
+      "line": 220,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A JSON 500 (an API route) is not a page anyone captures.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "isErrorPage › is false for non-HTML responses",
+      "line": 226,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Astro's dev error page is a 500 HTML response.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "isErrorPage › is true for a 5xx HTML response",
+      "line": 214,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -7791,7 +7935,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "listCollectionNames › lists collection directories and skips files",
-      "line": 161,
+      "line": 218,
       "registeredAt": "2026-10-15T15:35:16.983103215+00:00",
       "runner": "tests"
     },
@@ -7800,7 +7944,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "listCollectionNames › lists nothing for a missing root",
-      "line": 170,
+      "line": 227,
       "registeredAt": "2026-10-15T15:35:16.984954668+00:00",
       "runner": "tests"
     },
@@ -8108,6 +8252,42 @@
       "key": "mapping the spreadsheet columns › returns an empty object for a non-row rather than throwing",
       "line": 52,
       "registeredAt": "2026-08-05T19:34:11Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The bug: a 500 error page was saved as a good frame. It must now carry the marker.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "markServerErrorPages › appends the marker to a 500 HTML page",
+      "line": 270,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Ordinary pages must render untouched.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "markServerErrorPages › leaves a 200 page untouched",
+      "line": 295,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A JSON 500 from the refresh endpoint itself is not a page and stays as-is.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "markServerErrorPages › leaves a non-HTML 500 untouched",
+      "line": 305,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Astro may set the type with setHeader before writeHead(500) with no headers.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "markServerErrorPages › reads the content type set earlier with setHeader",
+      "line": 285,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -9861,7 +10041,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "parseLoadedCounts › reads the loaded counts from a JSON reply",
-      "line": 197,
+      "line": 254,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -9870,7 +10050,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "parseLoadedCounts › returns null for a plain text reply",
-      "line": 202,
+      "line": 259,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -9879,7 +10059,7 @@
       "file": "src/lib/emptiedCollections.test.ts",
       "format": "vitest",
       "key": "parseLoadedCounts › returns null when the reply has no loaded object",
-      "line": 207,
+      "line": 264,
       "registeredAt": "2026-10-15T15:33:58Z",
       "runner": "tests"
     },
@@ -10727,6 +10907,78 @@
       "key": "redirectsForBase › returns a new map rather than mutating the shared one",
       "line": 104,
       "registeredAt": "2026-09-16T16:08:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "409 is the duplicate-dev-server refusal; the seed must fail, not fall through.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "refreshOutcome › treats 409 as a refusal",
+      "line": 139,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A 2xx reply means the refresh ran.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "refreshOutcome › treats a 2xx reply as ok",
+      "line": 133,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Any other status means this port is not the dev server — try the next one.",
+      "file": "src/lib/emptiedCollections.test.ts",
+      "format": "vitest",
+      "key": "refreshOutcome › treats other statuses as try the next port",
+      "line": 144,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The directory is gitignored and may not exist yet on a fresh checkout.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "registerDevServer › creates the directory when missing",
+      "line": 75,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Stray files in the directory are not pids and must not count as servers.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "registerDevServer › removes entries that are not pids",
+      "line": 66,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Stopping the duplicate must be enough to clear the refusal.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "registerDevServer › removes the registration of a dead server",
+      "line": 58,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A lone server registers itself and sees no others, so seeds proceed.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "registerDevServer › returns no others when it is the only server",
+      "line": 43,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The 2026-10-23 failure: two servers in one project. Each must see the other.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "registerDevServer › returns the other live servers",
+      "line": 50,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -11681,6 +11933,15 @@
       "key": "sanitizeFirstName › trims and collapses whitespace from a merge field",
       "line": 21,
       "registeredAt": "2026-07-22T20:43:59Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The capture fails on this exact attribute, so it must be present and hidden.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "scenarioErrorMarker › carries the hidden data-codeyam-scenario-error attribute with the status",
+      "line": 234,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {
@@ -15765,6 +16026,33 @@
       "runner": "tests"
     },
     {
+      "description": "`astro build` runs under NODE_ENV=production, so its optimizer output must not land in the dev cache.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "viteCacheDir › gives a build its own cache",
+      "line": 322,
+      "registeredAt": "2026-10-23T22:07:50.337997412+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "`astro check` is the half of verify-build that poisoned the cache on 2026-10-23.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "viteCacheDir › gives astro check its own cache",
+      "line": 327,
+      "registeredAt": "2026-10-23T22:07:50.337997412+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A build sharing the dev server's dep cache replaced its React dev runtime with the production one (\"jsxDEV is not a function\" on every island).",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "viteCacheDir › keeps the dev server on the default cache",
+      "line": 317,
+      "registeredAt": "2026-10-23T22:07:50.337997412+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "With no form configured the button still has somewhere useful to go.",
       "file": "src/lib/localPresence.test.ts",
       "format": "vitest",
@@ -15888,6 +16176,24 @@
       "key": "watchPinnedHeader › returns a stop function that disconnects the observer",
       "line": 109,
       "registeredAt": "2026-10-09T20:56:50Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Without a sandbox only the store file is watched — no undefined prefix that would make every event match.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "watchedContentPaths › drops unset roots",
+      "line": 110,
+      "registeredAt": "2026-10-23T19:58:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Both sandbox roots and the store file are watched when the sandbox is active.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "watchedContentPaths › includes the sandbox roots and the data store file",
+      "line": 100,
+      "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
     {

@@ -1,0 +1,433 @@
+{
+  "timestamp": "2026-10-23T22:09:38Z",
+  "title": "Scenario captures no longer save wrong frames as successful",
+  "type": "fix",
+  "userRequest": "## Summary\n\nA full `recapture-stale` sweep on 2026-10-23 (337 scenarios, after the capture scripts were synced to the installed editor build) reported every scenario fresh. A side-by-side review of the 47 frames that changed found **18 wrong**, and every one was recorded as a good capture. Until this is fixed, recaptured screenshots can't be trusted, so `session-finalize` (which requires every screenshot fresh) can only be passed by committing wrong images. The sweep's frames were discarded and nothing from it was committed.\n\n## Evidence (2026-10-23)\n\nThree failure shapes, all on seeded scenarios:\n\n1. **Astro error page captured as the frame (8 scenarios).** The dev server threw `UnknownFilesystemError` from `MutableDataStore.writeToDisk` (`astro/dist/content/mutable-data-store.js:337`) while the seed was swapping content in. `.codeyam/logs/dev-server.log` shows the error 4 times between 15:15 and 15:17, each right after a burst of `[glob-loader] Reloaded data from …` lines. Affected: `cutover-runbook-nothing-started`, `cms-entry-editor-new-chapter-form`, `cms-media-library-adopted-images`, `cms-volunteer-page-editor`, `volunteer-page-rewritten-from-the-cms`, `site-page-long-title-and-no-description`, `hero-carousel`, and `momentum-fund-arriving-from-the-email` (desktop).\n2. **Another scenario's seed leaked into the frame.** Examples: `harvard-in-tech-no-upcoming-events` shows two London events; `harvard-in-tech-chapters-on-four-sizes` shows \"Chapters are coming soon\"; `momentum-fund-public-visitor` and `momentum-fund-the-goal-meter-held-as-coming-soon` show every middle section hidden, with the nav missing Chapters (the `momentum-fund-every-section-hidden` state). `momentum-fund-the-donor-wall-moved-to-the-top` captured the plain hero with no Chapters in the nav, though the live preview of the same scenario renders the network hero correctly.\n3. **Seed ignored; committed content shown.** `community-route-founders-with-leads-and-events` shows the committed Founders page; `webinars-route-nothing-published` shows the published recordings; `harvard-in-tech-upcoming-events-excludes-past-ones` shows \"No upcoming events\"; `harvard-in-tech-mission-band-hidden` still shows the mission band.\n\nOther notes:\n- Retried one at a time, scenarios that failed loudly in the sweep (404s, missing click targets) captured correctly. The wrong frames above are the silent kind: they pass every check the capture runs.\n- Disk (39% used) and memory (13 GB available) were fine.\n- The 26 loud failures in the first sweep pass (404 on seeded routes, \"served app is reading COMMITTED content\" blocks) are the same family, caught by the guard that exists.\n- Related: [[pre-existing-not-caused-by-this-change-the-contact-with-no-email-set-homepage-scenario-never-applies-its-seed-so-its]] (JSON singletons never reloaded after a seed). That one is a separate cause, but its fix lands in the same place: `codeyamContentRefresh` in `astro.config.mjs`.\n\n## Likely cause (unverified)\n\nThe seed adapter (`.codeyam/seed-adapter.ts`) re-initialises `.codeyam/tmp/content-sandbox/` (rm + copy) and rewrites it while Astro's glob-loader file watchers are still reacting to the previous scenario's writes. `refreshContent()` then races the watcher-triggered reloads:\n- a `writeToDisk` that hits a path mid-replacement gives the error page;\n- a reload that finishes after the refresh endpoint has already answered gives the previous scenario's data or committed data.\n\nThe endpoint answers 200 (\"the next render will see the seed\") without confirming the data store holds the seeded content.\n\n## Implementation\n\n1. **Reproduce deterministically.** Capture `momentum-fund-every-section-hidden` then `momentum-fund-public-visitor` back to back, and `harvard-in-tech-upcoming-events-excludes-past-ones` then `harvard-in-tech-no-upcoming-events`. Confirm the second frame of each pair shows the first one's state. Record the dev-server log around each capture.\n2. **Make the refresh endpoint confirm the seed landed** (`astro.config.mjs`, `codeyamContentRefresh`):\n   - wait for watcher activity to settle (no `glob-loader` reloads for ~250 ms) before calling `refreshContent()`;\n   - serialize concurrent refresh calls;\n   - after refreshing, verify against the seed: the adapter already reports `loaded` counts per collection, so compare them with the seed's row counts and return non-200 on a mismatch. The capture then fails loudly instead of saving a wrong frame.\n3. **Fail the capture on the Astro error overlay.** Treat a rendered `UnknownFilesystemError` (or any Astro error page) as a capture failure. Check whether the capture guard already has a hook for app error markers, and if this belongs upstream in codeyam-editor, write it up for them.\n4. **Recapture and verify by eye.** Recapture the 18 scenarios listed above, then compare each against its description (the review method: old vs new side by side, with the scenario description). Only then run `session-finalize`.\n\n## Scenarios to Demonstrate\n\n- The four back-to-back pairs from step 1, each frame showing its own seed\n- `momentum-fund-the-donor-wall-moved-to-the-top` showing the network hero, matching the live preview",
+  "description": "Scenario captures could save Astro's error page, another scenario's content, or the committed content, and still report success. Fixed at five points: (1) the content refresh waits for the content store to settle and runs one refresh at a time; (2) a seed refuses to run while a second dev server shares the content store; (3) a dev error page fails the capture; (4) a server still holding an earlier scenario's entries fails the seed; (5) found while recapturing: a scenario with no seed never reset the sandbox, so it rendered the previous scenario's seed. A new _default tier with an empty seed now makes every scenario start from committed content, and captures run one at a time. Also found while recapturing: astro check/build shared Vite's dependency cache with the dev server and swapped in React's production JSX runtime, breaking every interactive island ('jsxDEV is not a function'). Builds now use their own cache (viteCacheDir). The 18 frames named in the plan were recaptured and checked by eye against their descriptions. A forced recapture of all 116 application scenarios was then reviewed frame by frame against HEAD. Several committed frames were themselves wrong and are now correct: goal-meter-held-as-coming-soon was an Astro error page, and others showed leaked chapters or ignored seeds. SCOPE VERDICT: this cycle repairs the capture pipeline and delivers none of the project's deliverables. The one still-open deliverable, 'Bring all content to publication quality before going public', remains DEFERRED by the user's earlier decision (it needs material only the team can supply). No deferral in this cycle was decided by the agent. Follow-ups, not fixed: cms-media-library-adopted-images shows an empty library despite its name; in momentum-fund-filtering-the-donor-wall the highlighted node sits behind the intro text; three scenarios pin no clock, so their dates drift daily; hero-carousel lands on a random slide when captured through register. Upstream codeyam-editor reports owed: unseeded scenarios are not reset, unseeded captures run in parallel with seeding ones, register omits the scenario URL flag, re-registering a renamed scenario forks a duplicate slug, and the forced application sweep treats _default as a scenario.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/editor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/scenario-captures-save-wrong-frames-as-successful.md\t.codeyam/plans/completed/scenario-captures-save-wrong-frames-as-successful.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/brandglyph-four-ways-a-glyph-resolves--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/calloutcard-single-callout--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-lead-headshot--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-lead-headshot--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-marked-as-draft--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-retired-brand-name-flagged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-donor-fields-no-editor-can-change--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-volunteer-page-editor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-header-pinned-while-scrolling--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-our-mission-band--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-our-mission-band--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-whatsapp-band-with-the-hit-directory--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-whatsapp-band-with-the-hit-directory--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-derived-cities--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-derived-cities--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-no-chapters--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-no-chapters--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-short-line-at-ipad-width--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/seed-adapter.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/a0416602e8d57131749912489aeaa80d0b5aa6700248b6374e252f5b1d5d4575.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/ac8a02b20d778c1e5f6943003140328d01abcf80ab93b5103f84b324360ea704.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "astro.config.mjs",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/emptiedCollections.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/emptiedCollections.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/_default.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/scenario-captures-save-wrong-frames-as-successful.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/3b826d2293b0fa998ff91787221bccb9e54d3c5374566997a116f70362305787.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/f75757d801b49ff83d4afa144ccc184d5a3736719d140c6e354da0c6ca61973b.json",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/devContentRefresh.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/devContentRefresh.ts",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 54,
+    "passed": 54,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 54,
+        "passed": 54
+      }
+    ]
+  }
+}

@@ -9,6 +9,7 @@ import {
   findEmptiedCollections,
   listCollectionNames,
   parseLoadedCounts,
+  refreshOutcome,
 } from './emptiedCollections';
 
 describe('findEmptiedCollections', () => {
@@ -88,6 +89,62 @@ describe('findEmptiedCollections', () => {
     expect(
       findEmptiedCollections({ onDisk: { chapters: 6 }, loaded: {}, tracked: {}, seeded: none }),
     ).toEqual([]);
+  });
+
+  // The leaked-seed failure: the server still holds the previous scenario's
+  // entries, more than the sandbox now has, so the frame shows the wrong content.
+  it('flags a collection that loaded more entries than are on disk', () => {
+    const problems = findEmptiedCollections({
+      onDisk: { events: 2 },
+      loaded: { events: 44 },
+      tracked: { events: 44 },
+      seeded: none,
+    });
+    expect(problems).toHaveLength(1);
+    expect(problems[0]).toMatch(/^events: the dev server loaded 44 entries but the sandbox has 2 file/);
+  });
+
+  // A seed that emptied a collection on purpose must still be caught when the
+  // server keeps serving the old entries — the stale check runs before the skip.
+  it('flags stale entries even in a collection seeded to empty', () => {
+    const problems = findEmptiedCollections({
+      onDisk: { donors: 0 },
+      loaded: { donors: 5 },
+      tracked: { donors: 5 },
+      seeded: new Set(['donors']),
+    });
+    expect(problems).toHaveLength(1);
+    expect(problems[0]).toMatch(/still serving an earlier scenario/);
+  });
+
+  // Matching or fewer-loaded counts (drafts filtered out) are legitimate.
+  it('does not flag loaded counts at or below the files on disk', () => {
+    expect(
+      findEmptiedCollections({ onDisk: { events: 5 }, loaded: { events: 5 }, tracked: {}, seeded: none }),
+    ).toEqual([]);
+    expect(
+      findEmptiedCollections({ onDisk: { events: 5 }, loaded: { events: 3 }, tracked: {}, seeded: none }),
+    ).toEqual([]);
+  });
+});
+
+describe('refreshOutcome', () => {
+  // A 2xx reply means the refresh ran.
+  it('treats a 2xx reply as ok', () => {
+    expect(refreshOutcome(200)).toBe('ok');
+    expect(refreshOutcome(204)).toBe('ok');
+  });
+
+  // 409 is the duplicate-dev-server refusal; the seed must fail, not fall through.
+  it('treats 409 as a refusal', () => {
+    expect(refreshOutcome(409)).toBe('refused');
+  });
+
+  // Any other status means this port is not the dev server — try the next one.
+  it('treats other statuses as try the next port', () => {
+    expect(refreshOutcome(404)).toBe('try-next');
+    expect(refreshOutcome(500)).toBe('try-next');
+    expect(refreshOutcome(502)).toBe('try-next');
   });
 });
 

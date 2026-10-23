@@ -16,7 +16,8 @@
   },
   "database": null,
   "scenarios": {
-    "dir": ".codeyam/scenarios"
+    "dir": ".codeyam/scenarios",
+    "recaptureConcurrency": 1
   },
   "hooks": {},
   "testRunners": [

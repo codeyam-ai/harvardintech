@@ -232,7 +232,8 @@
         "src/lib/publishTrack.ts",
         "src/lib/previewGate.ts",
         "src/lib/redirects.ts",
-        "src/lib/emptiedCollections.ts"
+        "src/lib/emptiedCollections.ts",
+        "src/lib/devContentRefresh.ts"
       ],
       "importedBy": []
     },
@@ -2418,6 +2419,19 @@
     "src/lib/designSystem.test.ts": {
       "imports": [],
       "importedBy": []
+    },
+    "src/lib/devContentRefresh.test.ts": {
+      "imports": [
+        "src/lib/devContentRefresh.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/devContentRefresh.ts": {
+      "imports": [],
+      "importedBy": [
+        "astro.config.mjs",
+        "src/lib/devContentRefresh.test.ts"
+      ]
     },
     "src/lib/docLinks.test.ts": {
       "imports": [],
@@ -5509,7 +5523,8 @@
         "src/lib/emptiedCollections.ts::countCollectionFiles",
         "src/lib/emptiedCollections.ts::countTrackedCollectionEntries",
         "src/lib/emptiedCollections.ts::findEmptiedCollections",
-        "src/lib/emptiedCollections.ts::parseLoadedCounts"
+        "src/lib/emptiedCollections.ts::parseLoadedCounts",
+        "src/lib/emptiedCollections.ts::refreshOutcome"
       ],
       "importedBy": []
     },
@@ -5526,7 +5541,14 @@
         "src/lib/previewGate.ts::substitutePassphrase",
         "src/lib/redirects.ts::redirectsForBase",
         "src/lib/emptiedCollections.ts::countLoadedEntries",
-        "src/lib/emptiedCollections.ts::listCollectionNames"
+        "src/lib/emptiedCollections.ts::listCollectionNames",
+        "src/lib/devContentRefresh.ts::createQuietWaiter",
+        "src/lib/devContentRefresh.ts::createSerialQueue",
+        "src/lib/devContentRefresh.ts::duplicateServerMessage",
+        "src/lib/devContentRefresh.ts::markServerErrorPages",
+        "src/lib/devContentRefresh.ts::registerDevServer",
+        "src/lib/devContentRefresh.ts::viteCacheDir",
+        "src/lib/devContentRefresh.ts::watchedContentPaths"
       ],
       "importedBy": []
     },
@@ -8139,6 +8161,23 @@
         "src/lib/deployTracks.test.ts::__file_root__"
       ]
     },
+    "src/lib/devContentRefresh.test.ts::__file_root__": {
+      "filePath": "src/lib/devContentRefresh.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/devContentRefresh.ts::createQuietWaiter",
+        "src/lib/devContentRefresh.ts::createSerialQueue",
+        "src/lib/devContentRefresh.ts::duplicateServerMessage",
+        "src/lib/devContentRefresh.ts::isAlive",
+        "src/lib/devContentRefresh.ts::isErrorPage",
+        "src/lib/devContentRefresh.ts::markServerErrorPages",
+        "src/lib/devContentRefresh.ts::registerDevServer",
+        "src/lib/devContentRefresh.ts::scenarioErrorMarker",
+        "src/lib/devContentRefresh.ts::viteCacheDir",
+        "src/lib/devContentRefresh.ts::watchedContentPaths"
+      ],
+      "importedBy": []
+    },
     "src/lib/donatePageContent.ts::__file_root__": {
       "filePath": "src/lib/donatePageContent.ts",
       "name": "__file_root__",
@@ -8416,7 +8455,8 @@
         "src/lib/emptiedCollections.ts::countTrackedCollectionEntries",
         "src/lib/emptiedCollections.ts::findEmptiedCollections",
         "src/lib/emptiedCollections.ts::listCollectionNames",
-        "src/lib/emptiedCollections.ts::parseLoadedCounts"
+        "src/lib/emptiedCollections.ts::parseLoadedCounts",
+        "src/lib/emptiedCollections.ts::refreshOutcome"
       ],
       "importedBy": []
     },
@@ -12530,5 +12570,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-22T22:10:01Z"
+  "lastUpdated": "2026-10-23T22:12:13Z"
 }

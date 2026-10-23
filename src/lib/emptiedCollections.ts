@@ -91,6 +91,18 @@ export function parseLoadedCounts(body: string): Record<string, number> | null {
 }
 
 /**
+ * What the seed adapter does with one refresh-endpoint reply: `ok` is done,
+ * `refused` (409 — a second dev server shares the content store, so whatever is
+ * captured may be its content) fails the seed, and anything else means "not the
+ * dev server" — try the next port.
+ */
+export function refreshOutcome(status: number): 'ok' | 'refused' | 'try-next' {
+  if (status >= 200 && status < 300) return 'ok';
+  if (status === 409) return 'refused';
+  return 'try-next';
+}
+
+/**
  * Collections that came out empty when they should not have, as one message
  * each. Two ways a capture used to be reported as clean while rendering an
  * empty roster:
@@ -101,9 +113,13 @@ export function parseLoadedCounts(body: string): Record<string, number> | null {
  *    git tracks entries for it — the working tree is missing them (the old
  *    `git stash` capture workaround did exactly this).
  *
- * A collection the seed set to `[]` on purpose is never flagged. Exact counts
- * are not compared: a collection's loader can legitimately filter entries out
- * (drafts), so only "some on disk, none loaded" is a contradiction.
+ * And a third, the mirror of the first: the dev server loaded MORE entries than
+ * there are files, so it is still serving an earlier scenario's content.
+ *
+ * A collection the seed set to `[]` on purpose is never flagged as emptied.
+ * Exact counts are not compared: a collection's loader can legitimately filter
+ * entries out (drafts), so only "some on disk, none loaded" and "more loaded
+ * than on disk" are contradictions.
  */
 export function findEmptiedCollections(input: {
   onDisk: Record<string, number>;
@@ -114,6 +130,13 @@ export function findEmptiedCollections(input: {
   const { onDisk, loaded, tracked, seeded } = input;
   const problems: string[] = [];
   for (const [collection, files] of Object.entries(onDisk)) {
+    if (loaded && (loaded[collection] ?? 0) > files) {
+      problems.push(
+        `${collection}: the dev server loaded ${loaded[collection]} entries but the sandbox ` +
+          `has ${files} file(s) — it is still serving an earlier scenario`,
+      );
+      continue;
+    }
     if (seeded.has(collection) && files === 0) continue;
     if (files > 0 && loaded && loaded[collection] === 0) {
       problems.push(

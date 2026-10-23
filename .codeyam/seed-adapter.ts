@@ -53,6 +53,7 @@ import {
   countTrackedCollectionEntries,
   findEmptiedCollections,
   parseLoadedCounts,
+  refreshOutcome,
 } from '../src/lib/emptiedCollections';
 
 // codeyam-adapter-version: 5
@@ -383,6 +384,9 @@ export function resolveAppPort(projectRoot: string): number {
   return 4321;
 }
 
+/** The dev server answered, but refused the seed — fail it rather than retry. */
+class SeedRefusedError extends Error {}
+
 /**
  * Tell a running dev server to re-run its content loaders.
  *
@@ -413,15 +417,22 @@ export async function refreshDevContent(
 
   for (const port of candidates) {
     try {
+      // The endpoint waits for the content store to go quiet before and after
+      // refreshing (up to 8s each), so allow for both.
       const res = await fetch(`http://127.0.0.1:${port}/__codeyam_refresh_content`, {
         method: 'POST',
-        signal: AbortSignal.timeout(10_000),
+        signal: AbortSignal.timeout(30_000),
       });
-      if (res.ok) {
+      const outcome = refreshOutcome(res.status);
+      if (outcome === 'ok') {
         console.error(`[codeyam-seed] content refreshed via :${port}`);
         return { refreshed: true, loaded: parseLoadedCounts(await res.text()) };
       }
-    } catch {
+      // A refusal is not best-effort: what gets captured may be another dev
+      // server's content rather than this seed.
+      if (outcome === 'refused') throw new SeedRefusedError(await res.text());
+    } catch (err) {
+      if (err instanceof SeedRefusedError) throw err;
       // Nothing listening there, or it is not the dev server — try the next.
     }
   }

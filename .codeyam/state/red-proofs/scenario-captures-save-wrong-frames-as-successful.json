@@ -1,0 +1,69 @@
+{
+  "provenAt": "2026-10-23T19:54:09Z",
+  "slug": "scenario-captures-save-wrong-frames-as-successful",
+  "paths": [],
+  "runScope": [
+    "src/lib/emptiedCollections.ts",
+    "src/lib/devContentRefresh.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/emptiedCollections.ts",
+      "find": "if (loaded && (loaded[collection] ?? 0) > files) {",
+      "replace": "if (loaded && false) {"
+    },
+    {
+      "file": "src/lib/devContentRefresh.ts",
+      "find": "    if (isErrorPage(status, type)) {",
+      "replace": "    if (isErrorPage(status, type) && false) {"
+    },
+    {
+      "file": "src/lib/emptiedCollections.ts",
+      "find": "if (status === 409) return 'refused';",
+      "replace": ""
+    }
+  ],
+  "tests": {
+    "appends the marker to a 500 HTML page": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "flags a collection that loaded more entries than are on disk": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "flags stale entries even in a collection seeded to empty": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "reads the content type set earlier with setHeader": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "treats 409 as a refusal": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "treats 409 as a refusal"
+    ]
+  }
+}

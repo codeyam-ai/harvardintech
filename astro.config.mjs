@@ -20,6 +20,15 @@ import {
 } from './src/lib/previewGate';
 import { redirectsForBase } from './src/lib/redirects';
 import { countLoadedEntries, listCollectionNames } from './src/lib/emptiedCollections';
+import {
+  createQuietWaiter,
+  createSerialQueue,
+  duplicateServerMessage,
+  markServerErrorPages,
+  registerDevServer,
+  viteCacheDir,
+  watchedContentPaths,
+} from './src/lib/devContentRefresh';
 
 // --- codeyam content sandbox ---------------------------------------------
 // The site's "database" is the committed markdown under `src/content/` and the
@@ -126,6 +135,24 @@ async function loadedCollectionCounts(server) {
  * also invalidates the data-store virtual module and pushes a full reload before
  * answering, so a 200 means "the next render will see the seed".
  *
+ * A 200 only means that if the store has stopped moving, and on 2026-10-23 it
+ * often had not: 18 recaptured frames showed an error page, another scenario's
+ * content, or the committed content, and every one was saved as a good capture.
+ * Two causes, both handled here:
+ *
+ *  - The seed's sandbox reset (rm + copy) and rewrite fire watcher events that
+ *    Astro's glob loader is still applying after `refreshContent()` resolves,
+ *    and the store's save to disk is debounced by 500ms after the last of them.
+ *    So the handler waits for the sandbox and the store file to go quiet, both
+ *    before and after the refresh, and runs one refresh at a time.
+ *  - A SECOND `astro dev` in the same project (the editor had started two, two
+ *    seconds apart) writes the same `.astro/data-store.json`. Every page renders
+ *    from that file, so the other server's stale view wins whenever it writes
+ *    last, and two renames of the same temp file throw `UnknownFilesystemError`.
+ *    Each dev server registers itself, and while another is alive a refresh on
+ *    either answers 409, so the seed fails loudly instead of capturing the
+ *    other server's content.
+ *
  * Dev only: the endpoint exists solely so `.codeyam/seed-adapter.ts` can hit it,
  * and nothing registers it in a production build.
  *
@@ -141,28 +168,49 @@ function codeyamContentRefresh() {
   return {
     name: 'codeyam-content-refresh',
     hooks: {
-      'astro:server:setup': ({ server, refreshContent }) => {
+      'astro:server:setup': ({ server, refreshContent, logger }) => {
+        const root = server.config.root;
+        const serversDir = path.join(root, '.astro', 'codeyam-dev-servers');
+
+        const others = registerDevServer(serversDir);
+        if (others.length > 0) logger.error(duplicateServerMessage(others, 'boot'));
+
+        const store = createQuietWaiter({ watched: watchedContentPaths(root) });
+        server.watcher.on('all', (_event, file) => store.touch(file));
+
+        const enqueue = createSerialQueue();
         server.middlewares.use('/__codeyam_refresh_content', (_req, res) => {
-          Promise.resolve(refreshContent?.({ context: { reason: 'codeyam-seed' } }))
-            .then(async () => {
-              const mod = server.moduleGraph.getModuleById(DATA_STORE_MODULE_ID);
-              if (mod) server.moduleGraph.invalidateModule(mod);
-              server.ws.send({ type: 'full-reload', path: '*' });
-              // Report what each collection ACTUALLY loaded, so the seed adapter
-              // can fail a capture whose collection came out empty instead of
-              // letting it be reported as a clean recapture.
-              const loaded = await loadedCollectionCounts(server);
-              res.statusCode = 200;
-              res.setHeader('content-type', 'application/json');
-              res.end(JSON.stringify({ ok: true, loaded }));
-            })
-            .catch((err) => {
-              // Never take the dev server down over a refresh — the caller
-              // treats a non-200 as "fall back to the watcher".
-              res.statusCode = 500;
-              res.end(String(err));
-            });
+          const run = async () => {
+            const others = registerDevServer(serversDir);
+            if (others.length > 0) {
+              res.statusCode = 409;
+              res.end(duplicateServerMessage(others, 'seed'));
+              return;
+            }
+            await store.waitForQuiet();
+            await refreshContent?.({ context: { reason: 'codeyam-seed' } });
+            await store.waitForQuiet();
+            const mod = server.moduleGraph.getModuleById(DATA_STORE_MODULE_ID);
+            if (mod) server.moduleGraph.invalidateModule(mod);
+            server.ws.send({ type: 'full-reload', path: '*' });
+            // Report what each collection ACTUALLY loaded, so the seed adapter
+            // can fail a capture whose collection came out empty (or still holds
+            // an earlier scenario) instead of letting it be reported as a clean
+            // recapture.
+            const loaded = await loadedCollectionCounts(server);
+            res.statusCode = 200;
+            res.setHeader('content-type', 'application/json');
+            res.end(JSON.stringify({ ok: true, loaded }));
+          };
+          enqueue(run, (err) => {
+            // Never take the dev server down over a refresh — the caller
+            // treats a non-200 as "fall back to the watcher".
+            res.statusCode = 500;
+            res.end(String(err));
+          });
         });
+
+        server.middlewares.use(markServerErrorPages);
       },
     },
   };
@@ -358,6 +406,9 @@ export default defineConfig({
     resolve: {
       conditions: ['codeyam-source', 'module', 'browser', 'development|production'],
     },
+    // Builds get their own dep cache so they cannot swap the dev server's React
+    // runtime for the production one — see `viteCacheDir`.
+    cacheDir: viteCacheDir(process.argv),
     optimizeDeps: {
       // @codeyam/cms ships raw `.ts`/`.tsx` and the `codeyam-source` condition
       // above keeps us on it, so Vite treats it as SOURCE rather than a
