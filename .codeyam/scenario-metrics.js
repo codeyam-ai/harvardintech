@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: efe36b525a40410996e4cc5d412457aeba93156f  source-sha256: a04fa0caa95537feb2818cbea46ff576451e7fddd708bacf0361261e954351c2
+// codeyam-editor: 0.1.7  build: c870f4bd4df2e585028cfa8c3f9d48d54156ac4d  source-sha256: e1b0f970e834371fe7faec93943aaa33d2e9217311ebb759fe60910fff046bd0
 const LOADING_MARKERS = [
   "Loading scenario...",
   "Loading tests...",
@@ -232,18 +232,23 @@ function isCanvasDominated(state) {
 const CONTENT_SAMPLE_EDGE = 32;
 const MIN_CONTENT_LUMA_SPREAD = 8;
 
+// True for a usable decoded RGBA frame: `{ width, height, data }` with
+// non-zero dimensions and at least 4 bytes per pixel. Every pixel measure
+// below treats anything else as an empty frame.
+function isDecodedFrame(image) {
+  return !!(
+    image &&
+    image.width > 0 &&
+    image.height > 0 &&
+    image.data &&
+    image.data.length >= image.width * image.height * 4
+  );
+}
+
 // `image` is a decoded RGBA frame: `{ width, height, data }`, 4 bytes per pixel.
 // An empty or malformed frame is not content.
 function frameHasVisualContent(image) {
-  if (
-    !image ||
-    !(image.width > 0) ||
-    !(image.height > 0) ||
-    !image.data ||
-    image.data.length < image.width * image.height * 4
-  ) {
-    return false;
-  }
+  if (!isDecodedFrame(image)) return false;
   const { width, height, data } = image;
   const cells = CONTENT_SAMPLE_EDGE;
   const sums = new Float64Array(cells * cells);
@@ -267,6 +272,64 @@ function frameHasVisualContent(image) {
     if (mean > max) max = mean;
   }
   return Math.round(max) - Math.round(min) >= MIN_CONTENT_LUMA_SPREAD;
+}
+
+// A pixel counts as painted when any channel differs from the frame's dominant
+// colour by more than this, so a lossless frame's ±1 dithering stays unpainted.
+const PAINTED_CHANNEL_DELTA = 3;
+
+// How much a frame painted, measured against its dominant colour at native
+// resolution: `{ paintedPixels, bbox }`, where `bbox` is `{ x, y, width,
+// height }` around every painted pixel, or null when nothing was painted.
+// `frameHasVisualContent` averages a small widget into one or two cells and
+// cannot tell it from an empty frame; this can. Deliberately separate from that
+// boolean (which is pinned to its Rust twin) and only worth paying for on a
+// frame that already failed it. A malformed frame reads as unpainted.
+function frameContentStats(image) {
+  if (!isDecodedFrame(image)) return { paintedPixels: 0, bbox: null };
+  const { width, height, data } = image;
+  const tally = new Map();
+  let dominant = 0;
+  let dominantCount = 0;
+  for (let i = 0; i < width * height * 4; i += 4) {
+    const key = (data[i] << 16) | (data[i + 1] << 8) | data[i + 2];
+    const count = (tally.get(key) || 0) + 1;
+    tally.set(key, count);
+    if (count > dominantCount) {
+      dominant = key;
+      dominantCount = count;
+    }
+  }
+  const r = (dominant >> 16) & 0xff;
+  const g = (dominant >> 8) & 0xff;
+  const b = dominant & 0xff;
+  let paintedPixels = 0;
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const i = (y * width + x) * 4;
+      if (
+        Math.abs(data[i] - r) <= PAINTED_CHANNEL_DELTA &&
+        Math.abs(data[i + 1] - g) <= PAINTED_CHANNEL_DELTA &&
+        Math.abs(data[i + 2] - b) <= PAINTED_CHANNEL_DELTA
+      ) {
+        continue;
+      }
+      paintedPixels += 1;
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+  }
+  const bbox =
+    paintedPixels === 0
+      ? null
+      : { x: minX, y: minY, width: maxX - minX + 1, height: maxY - minY + 1 };
+  return { paintedPixels, bbox };
 }
 
 // Reduce a selector to the part a settled DOM can answer. Pseudo-elements
@@ -374,7 +437,9 @@ module.exports = {
   hasLoadingMarkers,
   hasRenderableContent,
   isCanvasDominated,
+  isDecodedFrame,
   frameHasVisualContent,
+  frameContentStats,
   CONTENT_SAMPLE_EDGE,
   MIN_CONTENT_LUMA_SPREAD,
   buildSettleAdvisory,

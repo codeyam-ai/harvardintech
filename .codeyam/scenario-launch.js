@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: efe36b525a40410996e4cc5d412457aeba93156f  source-sha256: 422fc5721e9d119776b8450dd80342423e8add5db4739cf7f518774ae49d4eca
+// codeyam-editor: 0.1.7  build: c870f4bd4df2e585028cfa8c3f9d48d54156ac4d  source-sha256: 7bf769d50c7695dc9f564bd2e86fe083027327629cef26d045da154668b3a453
 // Launching the capture browser: the Chromium flags that keep a headless
 // launch alive on dbus-less and containerized hosts, and the self-heal around
 // `chromium.launch()` — install a missing browser, retry a transient crash, and
@@ -7,7 +7,7 @@
 // out of scenario-check.js, which owns what happens once the browser is up.
 
 const path = require("path");
-const { execSync } = require("child_process");
+const { spawn } = require("child_process");
 const { chromium } = require("playwright");
 
 // Substring Playwright has emitted across every 1.x release when the
@@ -15,6 +15,15 @@ const { chromium } = require("playwright");
 // because Playwright includes the offending path inline.
 const PLAYWRIGHT_MISSING_BROWSER_PATTERN = "Executable doesn't exist";
 const PLAYWRIGHT_INSTALL_COMMAND = "npx playwright install chromium";
+// What `playwright install` prints when this Playwright release ships no
+// Chromium build for the host OS (e.g. 1.64 on macOS 13). The capture group is
+// Playwright's own host string, `mac13-arm64`. Retrying can never succeed.
+const PLAYWRIGHT_UNSUPPORTED_HOST_PATTERN = /does not support chromium on (\S+)/;
+// Stable first token of the error an unsupported-host install failure is
+// rethrown as — the other half of `CAPTURE_HOST_UNSUPPORTED_MARKER` in
+// `capture_host_unsupported.rs`, which turns it into a blocked precondition.
+const CAPTURE_HOST_UNSUPPORTED_MARKER = "CODEYAM_CAPTURE_HOST_UNSUPPORTED";
+const PLAYWRIGHT_RELEASE_NOTES_URL = "https://playwright.dev/docs/release-notes";
 
 // Substrings Playwright/Chromium emit when the browser process dies on a
 // transient launch crash. On the cloud VM the base image has no dbus session,
@@ -251,10 +260,86 @@ function missingSystemLibraryError(error, { env, platform } = {}) {
   return wrapped;
 }
 
+// Run the browser install, echoing its output to `stderr` as it arrives (so the
+// user still sees download progress, and stdout stays the capture's JSON
+// result) while also keeping it: the install's failure reason lives in that
+// output, not in its exit code. A failure rejects with `output` attached.
+function runPlaywrightInstall({ stderr = process.stderr } = {}) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(PLAYWRIGHT_INSTALL_COMMAND, {
+      shell: true,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let output = "";
+    const echo = (chunk) => {
+      output += chunk;
+      stderr.write(chunk);
+    };
+    child.stdout.on("data", echo);
+    child.stderr.on("data", echo);
+    child.on("error", (error) => {
+      error.output = output;
+      reject(error);
+    });
+    child.on("close", (code) => {
+      if (code === 0) return resolve();
+      const error = new Error(`\`${PLAYWRIGHT_INSTALL_COMMAND}\` exited with code ${code}`);
+      error.output = output;
+      reject(error);
+    });
+  });
+}
+
+// Everything an install failure said: its captured output (a string, or
+// execSync's `[stdin, stdout, stderr]` array) plus its message.
+function installFailureText(installError) {
+  if (!installError) return "";
+  const output = Array.isArray(installError.output)
+    ? installError.output.filter(Boolean).join("\n")
+    : installError.output || "";
+  return `${output}\n${installError.message || ""}`;
+}
+
+// Playwright's host string when the install failed because this Playwright
+// release does not support the host OS, else null.
+function unsupportedHost(installError) {
+  const match = installFailureText(installError).match(PLAYWRIGHT_UNSUPPORTED_HOST_PATTERN);
+  return match ? match[1] : null;
+}
+
+// The fix for an unsupported host. Deliberately names no version: which
+// Playwright last supported a given OS changes with every release, so the
+// release notes are the source of truth, not a table baked in here.
+function hostUnsupportedRemedy(host) {
+  return (
+    `the installed Playwright ships no Chromium for ${host}; pin \`playwright\` to an exact ` +
+    `older version that supports this OS in package.json and reinstall (no package.json: ` +
+    `\`npm install --prefix .codeyam playwright@<version>\`), then re-run the capture — ` +
+    `see ${PLAYWRIGHT_RELEASE_NOTES_URL} for each version's supported OS releases`
+  );
+}
+
+// The rethrown error for an unsupported-host install failure: marker line
+// naming Playwright's host string, a `remedy:` line, then the install's own
+// output as diagnostic — same line-oriented shape as `missingSystemLibraryError`.
+function hostUnsupportedError(host, installError) {
+  const wrapped = new Error(
+    `${CAPTURE_HOST_UNSUPPORTED_MARKER} ${host}\n` +
+      `remedy: ${hostUnsupportedRemedy(host)}\n` +
+      installFailureText(installError).trim(),
+  );
+  wrapped.cause = installError;
+  return wrapped;
+}
+
 // Self-heal around `chromium.launch()`. Two recoverable classes:
 //
-//   1. "missing browser" — run `npx playwright install chromium` synchronously
-//      (with `stdio: "inherit"` so the user sees progress) and retry once.
+//   1. "missing browser" — run `npx playwright install chromium` (echoing its
+//      output so the user sees progress) and retry once. An install that fails
+//      because Playwright does not support this host OS is rethrown as
+//      `hostUnsupportedError`; any other install failure is rethrown with the
+//      install's own reason — the launch's "Executable doesn't exist" would
+//      point at a download that was just attempted and failed.
 //   2. transient SIGSEGV launch crash — retry the launch up to
 //      `CAPTURE_LAUNCH_SIGSEGV_RETRIES` times with a short backoff, since the
 //      crash is environmental (dbus-less cloud VM) and clears on a retry.
@@ -275,8 +360,8 @@ async function launchChromiumWithSelfHeal({
       ...captureLaunchOptions(),
       env: { ...process.env, ...CAPTURE_LAUNCH_DBUS_ENV },
     }),
-  install = () => execSync(PLAYWRIGHT_INSTALL_COMMAND, { stdio: "inherit" }),
   stderr = process.stderr,
+  install = () => runPlaywrightInstall({ stderr }),
   sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
   env = process.env,
   platform = process.platform,
@@ -313,9 +398,16 @@ async function launchChromiumWithSelfHeal({
       "Playwright's Chromium browser is missing — installing it now (one-time ~150 MB download). Subsequent runs will be instant.\n",
     );
     try {
-      install();
-    } catch (_installError) {
-      throw error;
+      await install();
+    } catch (installError) {
+      const host = unsupportedHost(installError);
+      if (host) throw hostUnsupportedError(host, installError);
+      const wrapped = new Error(
+        `Playwright's Chromium browser is missing and installing it failed: ` +
+          `${installFailureText(installError).trim()}\n${error.message}`,
+      );
+      wrapped.cause = installError;
+      throw wrapped;
     }
     try {
       return await launch();
@@ -338,6 +430,7 @@ module.exports = {
   missingLibraryNames,
   missingLibraryRemedy,
   CAPTURE_BROWSER_DEPS_MISSING_MARKER,
+  CAPTURE_HOST_UNSUPPORTED_MARKER,
   CAPTURE_LAUNCH_ARGS,
   CAPTURE_DISABLED_FEATURES,
   captureLaunchOptions,
