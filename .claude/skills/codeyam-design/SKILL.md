@@ -1,13 +1,10 @@
 ---
 name: codeyam-design
 description: |
-  Inline design-exploration helper. Reads the user's product description
-  and any uploaded design assets, derives a brief-specific design read,
-  and generates a diverse, numbered set of HTML mockups spanning three
-  tiers — anchored (faithful to a curated design system), exploratory (a
-  system used as a springboard), and off-catalog (bespoke from the brief
-  + assets) — into .codeyam/design/project_mockups/, then listens for
-  "Let's use N" to lock the choice in.
+  Inline design-exploration helper. Reads the product description and any
+  uploaded design assets, generates a diverse numbered set of HTML mockups
+  (anchored, exploratory, off-catalog) into .codeyam/design/project_mockups/,
+  then listens for "Let's use N" to lock the choice in.
 ---
 
 # Design exploration
@@ -385,18 +382,30 @@ The preview is already on the Mockups tab (it switched at the start of Step 3), 
 
 ## Step 5 — iterate when asked
 
-When the UI dispatches an Iterate trigger (an `Iterate:` keyword followed by a fenced JSON feedback bundle, or the no-feedback variant), **do not regenerate anything immediately**. First post a short message asking the user what should happen to each design in the next round. There are four choices per design:
+When the UI dispatches an Iterate trigger (an `Iterate:` keyword followed by a fenced JSON feedback bundle, or the no-feedback variant), each design gets one of four choices for the next round:
 
-- **Keep** — carry it into the next round untouched. Do not edit the file.
-- **Iterate** — refine it in place with its notes applied, same `NN-` prefix and tier.
-- **Multiple versions** (2–4) — make that many distinct variations of its direction. The first reuses the design's own `NN-` prefix; the rest take the next free numbers. Never overwrite a slot the user kept.
-- **Replace** — redesign that slot fresh from the feedback (the redesign rules below).
+- **Keep**: carry it into the next round untouched. Do not edit the file.
+- **Iterate**: refine it in place with its notes applied, same `NN-` prefix and tier.
+- **Multiple versions** (2–4): make that many distinct variations of its direction. The first reuses the design's own `NN-` prefix; the rest take the next free numbers. Never overwrite a slot that is kept.
+- **Replace**: redesign that slot fresh from the feedback (the redesign rules below).
 
-**Wait for the user's reply before writing any mockup.** This is also where **cross-pollination** happens: if the user says "I like #5's layout but #2's palette," carry that explicitly into the refined slot.
+**With feedback, plan the round yourself. Do not ask the user what to do with each design.** Their stars and notes already say it, and asking again makes them repeat work. Infer each design's choice:
 
-**An Iterate trigger is never a selection.** The user has not picked a design: ratings, notes and the Iterate button all mean "make another round". Do not POST `/api/editor-design-select`, and do not tell them they chose, picked or locked in a design, not even the top-rated one. In your question, name each design by its number and plain name and suggest a choice for each (usually Keep or Iterate for the best-rated), so they can answer in a few words.
+- **A note:** do what it asks. Usually Iterate with the note applied; Replace if the note rejects the design; Multiple versions if it asks for variations or only praises it.
+- **4–5 stars, no note:** Multiple versions (2) of that direction.
+- **3 stars, no note:** Iterate.
+- **1–2 stars, no note:** Replace, changing direction clearly.
+- **No stars, no note** (the Iterate message lists these under "Designs with no feedback"): Replace, with a fresh idea that combines what the user liked in the designs they rated well. This is where **cross-pollination** happens: "the real sky from #6 with the sightings list from #5" goes into the replacements explicitly.
 
-**End that question with your suggestion as a fenced `design-plan` block.** The chat reads it to pre-fill a per-design decision card and hides it from the user, so it must be the last thing in the message, valid JSON, keyed by mockup filename, one verb (`keep`, `iterate`, `versions`, `replace`) per design:
+Then post a short plan, one line per design by number and plain name, saying what you will do and which note or rating it answers, and **start right away without waiting for a reply**. The user can still redirect you mid-round in the chat.
+
+**Ask only when a specific note is genuinely open:** it is ambiguous ("darker" could mean the background or the text), or two notes contradict each other. Then ask that one question, naming the design and quoting the note, with no `design-plan` block, and wait for the answer before writing any mockup. Never ask about a design whose feedback is clear, and never fall back to asking about every design.
+
+**With no feedback at all** (the no-feedback variant), there is nothing to infer from: post a short message asking what should happen to each design, suggesting a choice for each, and wait for the reply before writing any mockup.
+
+**An Iterate trigger is never a selection.** The user has not picked a design: ratings, notes and the Iterate button all mean "make another round". Do not POST `/api/editor-design-select`, and do not tell them they chose, picked or locked in a design, not even the top-rated one.
+
+**End the plan (or the no-feedback question) with the choices as a fenced `design-plan` block.** The chat reads it and hides it from the user (after a question it pre-fills a per-design decision card), so it must be the last thing in the message, valid JSON, keyed by mockup filename, one verb (`keep`, `iterate`, `versions`, `replace`) per design:
 
 ````
 ```design-plan
@@ -408,7 +417,7 @@ Designs left out of the block start on Replace, so include every design.
 
 **The user's reply may be a decision message** — it starts with `Design plan:`, lists one line per design, may carry `My note: …` with their own words, and ends with a `design-plan` block of `{"verb": …, "count": N}` per filename. Follow that JSON exactly: it is the user's choice for every design, and `count` is the number of versions. Their note still counts as feedback. A free-text reply works as before — read the choices out of it.
 
-Once the user answers, **switch the preview to the Mockups tab as the regeneration round begins** — before writing the first refreshed/placeholder card:
+Once the plan is posted (or the user answers your question), **switch the preview to the Mockups tab as the regeneration round begins** — before writing the first refreshed/placeholder card:
 
 ```bash
 curl -X POST http://localhost:$PORT/api/editor-design-active-tab "${AUTH[@]}" \
@@ -427,7 +436,7 @@ Best-effort, same caveats as Step 3 (resolve `$PORT` per Step 3's preamble — a
 
 **Write the feedback checklist first, then check every new file against it.** Rounds have come back with a note ignored ("I don't like the grid background" and the grid was still there), so this is a procedure, not a suggestion:
 
-1. **Before editing any file, and again after the user answers what to do with each design, re-read the feedback** (the Iterate message lists it design by design, and names the archived `feedback.json` when there is one). Notes are in the user's own words and may be in any language.
+1. **Before editing any file, and again after you post the plan, re-read the feedback** (the Iterate message lists it design by design, and names the archived `feedback.json` when there is one). Notes are in the user's own words and may be in any language.
 2. **Write the checklist in your working notes:** one line per design that has a note: the note, then the concrete change in the markup or CSS that resolves it. "No me gusta el fondo cuadriculado" becomes "remove the grid pattern from the page and every section background; use a plain surface or a different texture".
 3. **Iterated designs get their notes applied too.** Iterating on a design keeps its direction, never the thing its note rejected. (A design the user chose to **Keep** is the one exception: it stays untouched.) A redesign that starts from the old file inherits everything the note complained about, so strip that element on purpose.
 4. **A rating with no note is still signal:** 1 or 2 stars (rating 20 or 40) means change direction clearly (layout, palette and type), not a variation; 4 or 5 stars means keep what works and change little besides the notes.

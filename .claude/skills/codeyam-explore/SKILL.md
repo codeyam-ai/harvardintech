@@ -1,6 +1,6 @@
 ---
 name: codeyam-explore
-description: The first thing to run in an existing repo. Reads `editor assess`, explains where the repo stands in plain language, then offers a small menu of low-risk, clearly-labeled options — diagnose deeper, see your app as scenarios, adopt one vertical slice, go forward-only, or spin up a new companion app. Every option is additive and reversible, so trying codeyam on a real codebase never feels like a commitment. Opt-in and interactive, unlike the autonomous `/codeyam-onboard` flow.
+description: The first thing to run in an existing repo. Reads `editor assess`, explains where the repo stands in plain language, and offers low-risk, reversible options — diagnose deeper, see your app as scenarios, adopt one slice, go forward-only, or start a companion app.
 ---
 
 # CodeYam — Explore (First-Run Options Menu)

@@ -58,6 +58,7 @@ import re
 import shlex
 import subprocess
 import sys
+import tempfile
 import time
 
 # `_step_metadata` lives next to this file; add the hook directory to
@@ -407,13 +408,16 @@ def allow(reason):
 
 
 def notice(rule, message):
-    """Let the call through, but say something first — exit 0 with the text as
-    `additionalContext` on stdout.
+    """Queue a pointer for the call and FALL THROUGH — never exit.
 
-    The middle verdict between `allow` and `block`, for a call that is safe but
-    costs the caller something they should know about. It is deliberately NOT a
-    refusal: there is no `Next valid action:` contract to satisfy, because
-    nothing needs recovering.
+    For a call that may be safe but costs the caller something they should
+    know about. It is deliberately NOT a verdict: it used to exit 0 on the
+    spot, and because the notices run before the step-scoped gates, any
+    compound that tripped one skipped every gate below it —
+    `refresh-tests && cargo test` sailed past the test-run gate at `commit`
+    while a bare `cargo test` was refused. A notice must never answer for a
+    gate, so it rides on whichever verdict the run reaches instead: as
+    `additionalContext` on an allow, beside the refusal on a block.
 
     Not stderr: on an exit-0 PreToolUse hook stderr reaches only the debug
     log, so every notice printed there was invisible to the model and the user
@@ -421,10 +425,7 @@ def notice(rule, message):
     prints one would also be *granting* permission for the call, which is a
     much bigger claim than "here is a pointer" and would silently bypass a
     prompt the user might otherwise see."""
-    if _EXPLAIN_MODE:
-        _emit_verdict("NOTICE", rule, "", message)
-    _deliver_context_on_allow(message)
-    sys.exit(0)
+    _PENDING_CONTEXT.append(f"NOTICE ({rule}): {message}" if _EXPLAIN_MODE else message)
 
 
 def block(project_dir, rule, reason, next_action, reference="", detail="", evidence="", call=""):
@@ -582,9 +583,48 @@ def _test_run_block_message(state, slug, info):
         f"test runs are not allowed at {where} "
         f"(test_scope: none). The hardening phases already ran the tests; this "
         f"step is a presentation / commit gate, where a test run is out of "
-        f"scope.",
+        f"scope. A stale-partition refusal's own recovery, "
+        f"`{cli_command()} editor refresh-tests --partition <name>`, is the "
+        f"one run allowed here.",
         recovery,
     )
+
+
+def is_partition_refresh_only(command, project_dir):
+    """True when every test run in `command` is codeyam's own `refresh-tests`
+    narrowed by at least one `--partition` — the exact recovery a stale-
+    partition refusal prints — and nothing else.
+
+    That recovery is what `commit --out-of-workflow` names when the commit's
+    partitions are stale, and it fires at the commit and push slugs. Refusing
+    it there left a refusal whose only named way out was itself refused, and
+    the observed escape was stepping the workflow back to Glossary to run it.
+    A whole-suite or `--changed` run, a raw runner, or a mixed compound stays
+    a test run and stays blocked."""
+    saw_refresh = False
+    for segment in _split_commands(command):
+        try:
+            tokens = shlex.split(segment, posix=True)
+        except ValueError:
+            return False
+        if not (
+            _invokes_test_runner(tokens)
+            or _invokes_configured_script(tokens, project_dir)
+            or _shell_c_payload(tokens)
+        ):
+            continue
+        is_refresh = (
+            tokens
+            and _program_name(tokens[0]) in _CODEYAM_CLIS
+            and _codeyam_verb(tokens[1:]) == "refresh-tests"
+        )
+        has_partition = any(
+            tok == "--partition" or tok.startswith("--partition=") for tok in tokens
+        )
+        if not (is_refresh and has_partition):
+            return False
+        saw_refresh = True
+    return saw_refresh
 
 
 def _preview_hint(mode, project_dir):
@@ -1634,6 +1674,49 @@ def piped_gating_notice(subcommand):
         f"document above.\n"
         f"`| tee out.txt` remains the filter that costs you nothing."
     )
+
+
+def _pipe_notice_marker_path(session_id):
+    """Where this session records which subcommands' pipe notice it has seen.
+
+    Keyed on the session id and kept in the system temp dir rather than under
+    `.codeyam/state/`: the record is about one conversation, not the project, so
+    a new session (including one after `/clear`) starts with none, and nothing
+    lands in the working tree for a commit to sweep up."""
+    digest = hashlib.sha256(session_id.encode("utf-8")).hexdigest()[:16]
+    return os.path.join(tempfile.gettempdir(), f"codeyam-pipe-notice-{digest}.json")
+
+
+def claim_pipe_notice(session_id, subcommand):
+    """True when the pipe notice for `subcommand` should be shown this session,
+    recording that it was.
+
+    The notice is ~950 characters and was injected 694 times across measured
+    sessions, nearly all of them repeats an agent had already read. Once per
+    subcommand per session keeps the first, which is the one that matters.
+
+    Fails open: no session id, or a marker that cannot be read or written, means
+    show it — the same rule `_tool_loading_already_injected` follows in the step
+    hook. A missing notice is the costlier mistake, since the misleading `$?`
+    is in hand the moment the command finishes."""
+    if not session_id:
+        return True
+    path = _pipe_notice_marker_path(session_id)
+    try:
+        with open(path, "r") as f:
+            shown = json.load(f).get("shown", [])
+    except (IOError, ValueError, AttributeError):
+        shown = []
+    if not isinstance(shown, list):
+        shown = []
+    if subcommand in shown:
+        return False
+    try:
+        with open(path, "w") as f:
+            json.dump({"shown": shown + [subcommand]}, f)
+    except Exception:
+        pass
+    return True
 
 
 def compound_gating_command(command):
@@ -5334,13 +5417,16 @@ def main():
     # does not exist, the original harms are all still live and so is the block.
     #
     # A pipe that WINDOWS a live hand-off (`advance | head`) is not advised
-    # here: the notice exits 0, which would wave through the refusal the
-    # windowed-handoff guard below exists to issue. That pipe costs
-    # instructions, not just an exit code.
+    # here: the windowed-handoff guard below refuses it, and that pipe costs
+    # instructions, not just an exit code — the advisory would only be noise
+    # beside the refusal. The notice itself falls through (see `notice`), so
+    # every gate below still judges the call.
     if tool_name == "Bash":
         command = tool_input.get("command", "")
         piped = piped_gating_command(command)
-        if piped and not windowed_live_handoff(command):
+        if piped and windowed_live_handoff(command):
+            piped = None
+        if piped:
             if not _capture_available():
                 block(
                     project_dir,
@@ -5362,10 +5448,12 @@ def main():
                     ),
                     call=call,
                 )
-            notice("piped-gating-command", piped_gating_notice(piped))
+            if claim_pipe_notice(event.get("session_id", ""), piped):
+                notice("piped-gating-command", piped_gating_notice(piped))
         # Same severity, same reason: a compound that chains a gating command
-        # anywhere but last reports a status the caller cannot attribute.
-        compound = compound_gating_command(command)
+        # anywhere but last reports a status the caller cannot attribute. One
+        # advisory per call: the piped one already names the status read.
+        compound = None if piped else compound_gating_command(command)
         if compound and not windowed_live_handoff(command):
             notice("compound-gating-command", compound_gating_notice(*compound))
 
@@ -5562,9 +5650,16 @@ def main():
         #
         # An untokenizable command (None) is refused on the honest
         # unparseable reason rather than asserted to be a test run.
+        #
+        # Post-hardening slugs carve out ONE shape: a partition-narrowed
+        # `refresh-tests`, which is the recovery a stale-partition commit
+        # refusal names at exactly these slugs. Pre-Demo slugs get no carve-out.
         test_run = False
         if slug and test_run_slugs and slug not in test_run_slugs:
             test_run = is_test_run_command(command, project_dir)
+            post_hardening = (no_test_slugs.get(slug) or {}).get("kind") == "post-hardening"
+            if test_run and post_hardening and is_partition_refresh_only(command, project_dir):
+                test_run = False
         if test_run is None:
             refuse_unparseable(project_dir, command, call)
         if test_run:

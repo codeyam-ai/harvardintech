@@ -1079,6 +1079,10 @@ codeyam-editor editor fast-commit-stop
 codeyam-editor editor pre-commit-sync          # claims the commit queue; --recover if it bails
 codeyam-editor editor verify-merge-consistency # if that integrated a merge — see "After every merge"
 
+# When the branch carries platform surface (see "Cross-platform pitfalls"):
+# the finalize gates on these same checks, so get their verdict in ~90s first.
+codeyam-editor editor cross-check
+
 # The full, whole-repo finalize. Stamps lastFullFinalizeSha.
 codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.log
 ```
@@ -1585,14 +1589,21 @@ footguns behind each (all observed in real CI-fix rounds):
   not proof a platform was exercised; a *skipped* build's tests never ran.
 
 **MANDATE — when this surface is present, run the local repros BEFORE the first
-push, not after CI tells you:**
+`session-finalize`, not after it (and never after CI tells you):** the finalize
+runs these same cross-target checks as a gating Phase 4b, so a failure found
+here costs ~90 seconds instead of a blocked finalize. Measured on
+`editor-improvements-101`: a `session-finalize` spent 21 minutes before
+blocking on `cross-target build failed`, and a standalone `cross-check` then
+reported the identical `[FAIL] windows-clippy` in ~1.5 minutes.
 
 - `codeyam-editor editor cross-check` — compile/lint every cross-target locally,
-  in seconds. This is also now **enforced**: `session-finalize` runs the
-  cross-target checks as a gating phase (Phase 4b) whenever it detects
-  compile-affecting platform surface, and FAILS on a real cross-target
-  compile/clippy error (missing toolchains SKIP with an install hint, never
-  block). So the gate and this guidance reinforce each other — do not treat
+  in ~90 seconds on a warm cache. The first cross-target build after a toolchain
+  or target change pays a cold cross-compile cache and takes several minutes, so
+  a slow first run is expected, not a hang. This is also now **enforced**:
+  `session-finalize` runs the cross-target checks as a gating phase (Phase 4b)
+  whenever it detects compile-affecting platform surface, and FAILS on a real
+  cross-target compile/clippy error (missing toolchains SKIP with an install
+  hint, never block). So the gate and this guidance reinforce each other — do not treat
   `cross-check` as optional when the branch touches platform surface. A
   cross-target `[PASS]` is a COMPILE verdict, and the line now says so
   (`compiled for this target only; no test ran on it`). Do not read it as
@@ -1615,6 +1626,18 @@ push, not after CI tells you:**
   a `--start-from-phase 2` re-stamp, not after — a Windows fix verified this
   way costs one ~25-minute narrowed run instead of a re-stamp plus a full CI
   round.
+- **CI's test runner, not just CI's platforms.** None of the three verdicts
+  above runs the suite the way CI does when CI uses a different runner from the
+  local gates. On a Rust workspace whose CI runs `cargo nextest` under a
+  profile (`.config/nextest.toml`'s `ci`), that profile's per-test
+  `slow-timeout` / `terminate-after` budgets, leak detection and test groups
+  are enforced only in CI — a green local `cargo test` suite says nothing about
+  them, so a test over budget passes every local gate and fails CI as a
+  `TIMEOUT`. Reproduce a timeout-shaped CI failure under the same profile,
+  never with the local runner: `cargo nextest run --profile ci -E
+  'test(<name>)'`. A config edit that fixes one is validated in about a second
+  by the project's config check where one exists (this repo:
+  `scripts/check-nextest-config.sh`, run by `verify-build`).
 
 When a cross-target build fails, expect the skipped-platform-test-job trap:
 finalize names it explicitly, and you must treat that platform's tests as

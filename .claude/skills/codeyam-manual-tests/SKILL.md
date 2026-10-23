@@ -1,6 +1,6 @@
 ---
 name: codeyam-manual-tests
-description: Generate manual tests from recent commits — short, human-executable checks for the things an automated test cannot settle. Reads the commits since tests were last generated (or an explicit `range:` you hand it), maps them to the scenarios that demonstrate them, and writes 3–5 tests ranked by what no automated test can reach — discarding anything a unit test already asserts. Also handles a freeform "write me tests for X" request, seeded from chat. Read-only on git; additive under .codeyam/.
+description: Generate 3–5 manual tests from recent commits (or a `range:`) — short human-executable checks for what no automated test can settle, mapped to the scenarios that demonstrate them. Also handles a freeform "write me tests for X" request. Read-only on git; additive under .codeyam/.
 ---
 
 # CodeYam — Generate Manual Tests

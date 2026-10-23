@@ -261,6 +261,40 @@ def _record_audience_answer(project_dir, event_data):
         pass
 
 
+# Seconds to wait for the step-task sign-in. An observer like the two above:
+# a slow binary costs only the sign-in, and the task flag is already written.
+STEP_TASK_SIGN_IN_TIMEOUT_S = 3
+
+
+def _sign_in_step_task(project_dir):
+    """Record this session as the workflow's holder when it takes a step task.
+
+    On a harness without the Task tools, `track-step created` both writes the
+    task flag and signs the caller in as the workflow holder. The TaskCreate
+    path below wrote only the flag, so a build resumed after a context reset —
+    which re-creates its step task under a NEW session id — stayed invisible:
+    the step file kept naming the retired session, and `push` read that as "no
+    running workflow" and gave up the commit-queue head the terminal step still
+    needed. Running the same `track-step created` here makes both harnesses
+    sign in at the same moment. A one-off push never creates a step task, so it
+    still cannot keep the head for an abandoned build. Swallows every failure,
+    including a live foreign holder's refusal: a hook that raises interrupts
+    the turn.
+    """
+    try:
+        import subprocess
+
+        subprocess.run(
+            [cli_command(), "editor", "track-step", "created"],
+            cwd=project_dir,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=STEP_TASK_SIGN_IN_TIMEOUT_S,
+        )
+    except Exception:
+        pass
+
+
 def _log_question_copy(project_dir, event_data, in_cycle=True):
     """Append one line per question asked, to .codeyam/logs/question-copy.jsonl.
 
@@ -470,6 +504,80 @@ def _mark_tool_loading_injected(project_dir, session_id):
             json.dump({"session_id": session_id}, f)
     except Exception:
         pass
+
+
+# Marker recording what the step context last went out for, so the unchanged
+# copies stop. UserPromptSubmit used to inline the whole editor-mode-context.md
+# (up to ~4,800 characters) on EVERY prompt, and PostToolUse re-printed the
+# step restriction after EVERY Bash/Write/Edit call — 3,528 Bash + 1,055 Edit
+# copies across 30 measured sessions, all identical until the step changed.
+# Each injection is now keyed on (session, feature, step, label) and re-fires
+# only when that key moves. SessionStart deletes the marker, so a compaction
+# (which summarizes the earlier copy away) re-emits both on the next event.
+#
+# Unlike the tool-loading marker this does NOT fail open when session_id is
+# absent: the key's session part is simply empty, so a payload without one is
+# still deduped by (feature, step, label) rather than re-injecting every time.
+_STEP_CONTEXT_MARKER_REL = os.path.join(".codeyam", "state", "step-context-injected.json")
+
+# The restriction is still re-printed every Nth tool call within one step, so
+# a long step keeps it in recent view without paying for it on every call.
+STEP_REMINDER_EVERY_N_CALLS = 25
+
+
+def _step_injection_key(session_id, feature, step, label):
+    return f"{session_id or ''}|{feature}|{step}|{label}"
+
+
+def _read_step_context_marker(project_dir):
+    try:
+        with open(os.path.join(project_dir, _STEP_CONTEXT_MARKER_REL), "r") as f:
+            marker = json.load(f)
+        return marker if isinstance(marker, dict) else {}
+    except (IOError, ValueError):
+        return {}
+
+
+def _write_step_context_marker(project_dir, marker):
+    marker_path = os.path.join(project_dir, _STEP_CONTEXT_MARKER_REL)
+    try:
+        os.makedirs(os.path.dirname(marker_path), exist_ok=True)
+        with open(marker_path, "w") as f:
+            json.dump(marker, f)
+    except Exception:
+        pass
+
+
+def _clear_step_context_marker(project_dir):
+    try:
+        os.remove(os.path.join(project_dir, _STEP_CONTEXT_MARKER_REL))
+    except OSError:
+        pass
+
+
+def _step_context_due(project_dir, key):
+    """True when the full step context has not yet gone out for `key`, and
+    records that it now has. An unwritable marker re-reads as absent, so the
+    failure mode is the old every-prompt injection, never silence."""
+    marker = _read_step_context_marker(project_dir)
+    if marker.get("promptKey") == key:
+        return False
+    marker["promptKey"] = key
+    _write_step_context_marker(project_dir, marker)
+    return True
+
+
+def _step_reminder_due(project_dir, key):
+    """True on the first reminder-bearing tool call for `key` and on every
+    STEP_REMINDER_EVERY_N_CALLS-th call after it; counts this call either way."""
+    marker = _read_step_context_marker(project_dir)
+    calls = marker.get("toolCalls", 0) if marker.get("toolKey") == key else 0
+    if not isinstance(calls, int):
+        calls = 0
+    marker["toolKey"] = key
+    marker["toolCalls"] = calls + 1
+    _write_step_context_marker(project_dir, marker)
+    return calls % STEP_REMINDER_EVERY_N_CALLS == 0
 
 
 def _task_tools_available(project_dir):
@@ -723,6 +831,17 @@ def main():
     # to preload the tools every editor step depends on. Silent when
     # CODEYAM_EDITOR_ACTIVE is unset (handled by the early return above).
     if event_type == "session_start":
+        # A new, cleared or compacted context holds none of the hand-off text
+        # earlier advances printed, so forget what `advance` withholds as
+        # already shown (handoff_said_once.rs::said_once_path).
+        try:
+            os.remove(os.path.join(project_dir, ".codeyam", "state", "handoff-said-once.json"))
+        except OSError:
+            pass
+        # A new session, a resume, a /clear and a compaction all leave the
+        # agent without the step context it was last given, so the next
+        # prompt and the next tool call re-emit it.
+        _clear_step_context_marker(project_dir)
         print("<session-start-hook>")
         print(
             "Before your first turn, make TWO SEPARATE `ToolSearch` calls — they ask "
@@ -872,6 +991,7 @@ def main():
                         json.dump(tracking, f)
                 except Exception:
                     pass
+                _sign_in_step_task(project_dir)
         # TaskUpdate with status=completed → mark the current step's task
         # as completed. Only flips the flag if tracking is already on this
         # step (avoids treating unrelated task updates as step check-offs).
@@ -953,10 +1073,16 @@ def main():
             ])
             _mark_tool_loading_injected(project_dir, session_id)
 
+        # The context block and the step directives only change when the step
+        # does, so a later prompt in the same step gets the header line alone.
+        context_due = _step_context_due(
+            project_dir, _step_injection_key(session_id, feature, step, label)
+        )
+
         # Inject editor-mode-context.md directly so Gemini doesn't have to read it blindly
         context_path = os.path.join(project_dir, ".codeyam", "editor-mode-context.md")
         try:
-            if os.path.exists(context_path):
+            if context_due and os.path.exists(context_path):
                 with open(context_path, "r") as f:
                     lines.append("\n<editor-mode-context>")
                     lines.append(f.read().strip())
@@ -987,6 +1113,8 @@ def main():
                 "make the changes, re-register affected scenarios, and update the journal. "
                 "Then continue from the current step."
             )
+        elif not context_due:
+            pass
         elif mode_is_build(mode):
             lines.append(
                 f"You are on step {step}. Follow the `{_cli} editor` workflow. "
@@ -1002,7 +1130,7 @@ def main():
                 f"You are on step {step} of the `{mode}` track. "
                 f"Follow the `{_cli} editor` steps for this track."
             )
-        if restriction:
+        if restriction and context_due:
             lines.append(restriction)
         lines.append('</user-prompt-submit-hook>')
         print("\n".join(lines))
@@ -1097,7 +1225,10 @@ def main():
     if event_type == "post_tool_use":
         tool_name = event_data.get("tool_name", "")
         if tool_name in ("Bash", "Write", "Edit"):
-            if restriction:
+            if restriction and _step_reminder_due(
+                project_dir,
+                _step_injection_key(event_data.get("session_id"), feature, step, label),
+            ):
                 print(f"[Step {step}: {label}] {restriction}")
             return
 
