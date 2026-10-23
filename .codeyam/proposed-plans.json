@@ -173,7 +173,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 29
+      "rank": 20
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
@@ -222,8 +222,7 @@
       "severity": 2,
       "source": "codeyam-improvement",
       "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 33
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
@@ -235,7 +234,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
-      "rank": 21,
       "sightings": 3,
       "notes": [
         "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
@@ -251,7 +249,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
-      "rank": 14,
       "sightings": 4,
       "notes": [
         "2026-10-13: 2026-10-13: a new src/content/communities file 404'd until the sandbox snapshot was cleared and the server restarted; later copy edits only showed after copying the file into .codeyam/tmp/content-sandbox by hand.",
@@ -284,7 +281,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 18,
       "sightings": 2,
       "notes": [
         "2026-10-22: Seen again on momentum-fund-the-impact-band-with-real-quotes: the BLOCKED message quoted identical seed and committed mission text, while the actual cause was an unrelated `projects` collection loaded with 0 entries. The messag…"
@@ -298,7 +294,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
-      "rank": 22,
       "sightings": 3,
       "notes": [
         "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots.",
@@ -332,7 +327,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 12,
       "sightings": 8,
       "notes": [
         "2026-10-14: 2026-10-14: `refresh-tests --file src/lib/presenceConsistency.test.ts` printed `npx vitest run --changed` and reported 0 tests ('No test files found'). That file reads src/content from disk, and only content files had changed, …",
@@ -353,7 +347,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 38,
       "sightings": 1
     },
     {
@@ -365,7 +358,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "rank": 39,
       "sightings": 1
     },
     {
@@ -380,12 +372,13 @@
       "proposedAt": "2026-10-13T21:54:11.561341593+00:00",
       "kind": "tech-debt",
       "rank": 14,
-      "sightings": 5,
+      "sightings": 6,
       "notes": [
         "2026-10-14: 2026-10-14: same 'Recaptured' with a wrong frame on a CLEAN tree (nothing dirty under src/content or src/data): momentum-fund-the-donor-wall-moved-to-the-top captured the live /donate page (37% diff) twice and was reported as r…",
         "2026-10-14: 2026-10-14: with src/content/config.ts, 11 event files and src/data/collections.json dirty, plain targeted recaptures loaded seeds correctly. The git-stash workaround produced ~15 wrong frames reported as clean 'Recaptured' (AI…",
         "2026-10-15: 2026-10-15: project-side guard added for the empty-collection case; the general wrong-content case is still the editor's",
-        "2026-10-22: Batch recapture-stale again produced wrong London/chapter/community/events/volunteer frames (20-37% diffs) for a change that was attribute-only and invisible; the committed PNGs had to be restored by hand with git checkout."
+        "2026-10-22: Batch recapture-stale again produced wrong London/chapter/community/events/volunteer frames (20-37% diffs) for a change that was attribute-only and invisible; the committed PNGs had to be restored by hand with git checkout.",
+        "2026-10-23: Seen again in a new form: wrong frames were reported as successes because unseeded scenarios kept the previous seed and because builds poisoned the dev cache. Filed as their own reports."
       ],
       "decidedAt": "2026-10-22T13:53:30Z",
       "sightingsAtDecision": 4
@@ -418,7 +411,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 34,
       "sightings": 1
     },
     {
@@ -430,7 +422,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 40,
       "sightings": 1
     },
     {
@@ -442,7 +433,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 41,
       "sightings": 1
     },
     {
@@ -454,7 +444,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "rank": 42,
       "sightings": 1
     },
     {
@@ -466,7 +455,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 15,
       "sightings": 4,
       "notes": [
         "2026-10-14: 2026-10-14: volunteer refresh — 0 impacted, 0 stale, three affected frames found by hand; new unseeded scenario first captured 'No open projects' from a leftover seed.",
@@ -484,7 +472,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 43,
       "sightings": 1
     },
     {
@@ -496,7 +483,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
-      "rank": 44,
       "sightings": 1
     },
     {
@@ -529,7 +515,7 @@
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
-      "rank": 5,
+      "rank": 11,
       "sightings": 2,
       "notes": [
         "2026-10-22: Same gap seen on the blog: BlogPostArticle had no entry until this session added one, and BlogPostBody (src/components/BlogPostBody.astro, 67 lines) still has none."
@@ -545,7 +531,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 10,
       "sightings": 3,
       "notes": [
         "2026-10-15: Seen again: isolate WhatsappJoinCard HitDirectoryTeaser generated pages that spread `scenarios[name] ?? {}` into components with required props, failing astro-check with ts(2322).",
@@ -562,7 +547,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 35,
       "sightings": 1
     },
     {
@@ -574,7 +558,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 45,
       "sightings": 1
     },
     {
@@ -586,7 +569,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 46,
       "sightings": 1
     },
     {
@@ -598,7 +580,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "rank": 47,
       "sightings": 1
     },
     {
@@ -611,7 +592,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 9,
+      "rank": 15,
       "sightings": 1
     },
     {
@@ -624,7 +605,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 26,
       "sightings": 2,
       "notes": [
         "2026-10-15: 2026-10-15: brand-new tests, not renamed ones, landed with empty descriptions after a refresh-tests run"
@@ -639,7 +619,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 48,
       "sightings": 1
     },
     {
@@ -651,7 +630,7 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 3,
+      "rank": 1,
       "sightings": 1
     },
     {
@@ -663,7 +642,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "rank": 49,
       "sightings": 1
     },
     {
@@ -676,7 +654,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 8,
+      "rank": 14,
       "sightings": 3,
       "notes": [
         "2026-10-15: Seen again: register-test --line N for it.each rows in noPersonalEmail.test.ts and presenceConsistency.test.ts was undone by session-finalize's own phase-1 reconcile; only --warm-evidence plus --start-from-phase 2 got past it."
@@ -686,15 +664,15 @@
       "id": "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
       "title": "Editor preview proxy stopped answering after a dev-server double launch",
       "mode": "backend",
-      "body": "## What happened\nSee the original report.\n\n## What would have helped\nSee the original report.",
-      "reason": "Seen again: start and restart both double-launched the dev server.",
+      "body": "",
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 23,
-      "sightings": 3,
+      "rank": 17,
+      "sightings": 4,
       "notes": [
-        "2026-10-16: 2026-10-16: restart-dev-server and dev-server start each launched two astro dev trees ~2s apart (2 of 3 attempts); the editor tracked the second on :4323, then preview hard-failed 'app bound :4323 but the editor expects :4322' …"
+        "2026-10-16: 2026-10-16: restart-dev-server and dev-server start each launched two astro dev trees ~2s apart (2 of 3 attempts); the editor tracked the second on :4323, then preview hard-failed 'app bound :4323 but the editor expects :4322' …",
+        "2026-10-23: Seen again: earlier in this feature two astro dev servers wrote .astro/data-store.json concurrently (stale renders, UnknownFilesystemError); editing astro.config.mjs later left the dev server with no listening socket until dev-…"
       ]
     },
     {
@@ -705,7 +683,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 24,
       "sightings": 3,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: a page-by-page phone and tablet review needed full-length frames, so I wrote a throwaway Playwright script that sliced full pages into side-by-side strips against a scratch build."
@@ -721,7 +698,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 27,
       "sightings": 2
     },
     {
@@ -733,7 +709,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "rank": 36,
       "sightings": 2
     },
     {
@@ -766,7 +741,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 28,
       "sightings": 2,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: raising 40 sub-12px font sizes across 26 files had to be done as 26 Reads plus 33 Edit calls after a sed loop was refused."
@@ -781,7 +755,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 25,
       "sightings": 3,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: 13 of 206 checks failed as 404s on draft-blog, CMS-page and volunteer-project scenarios; each loaded fine once its own seed was applied.",
@@ -797,7 +770,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 50,
       "sightings": 1
     },
     {
@@ -809,23 +781,22 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "rank": 51,
       "sightings": 1
     },
     {
       "id": "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
       "title": "Move the dev content-sandbox wiring out of astro.config.mjs",
       "mode": "backend",
-      "body": "## Summary\n\n`astro.config.mjs` has grown to 418 lines and now holds three unrelated concerns: the dev-only content sandbox (`initContentSandbox`, the `SANDBOX_REL`/`SNAPSHOT_REL` conventions), the dev-only refresh endpoint (`codeyamContentRefresh`, `loadedCollectionCounts`), and the production build step that strips internal paths and fills in the passphrase (`internalPathsAndPassphrase`). The sandbox conventions are also duplicated by hand in `.codeyam/seed-adapter.ts`.\n\n## Key Decisions\n\n- Keep `astro.config.mjs` as composition only: it imports the integrations and wires env vars.\n- One module owns the sandbox path conventions, imported by both the config and the seed adapter, so the two sides cannot drift.\n- No behaviour change; the refresh endpoint's JSON reply and the seed adapter's empty-collection check stay as they are.\n\n## Implementation\n\n1. Move `initContentSandbox`, `SANDBOX_REL` and `SNAPSHOT_REL` into `src/lib/contentSandbox.ts` and import them from both `astro.config.mjs` and `.codeyam/seed-adapter.ts` (which today redefines the same constants).\n2. Move `codeyamContentRefresh` and `loadedCollectionCounts` into `src/lib/integrations/contentRefresh.mjs`.\n3. Move `internalPathsAndPassphrase` and `SELF_GATED_FILES` into `src/lib/integrations/internalPaths.mjs`.\n4. Re-run `verify-build`, restart the dev server once, and confirm `/__codeyam_refresh_content` still returns per-collection counts.",
-      "reason": "astro.config.mjs is 418 lines and mixes the dev content sandbox, the refresh endpoint and the production passphrase build step.",
-      "severity": 2,
+      "body": "",
       "source": "session-review",
-      "category": "debt",
       "status": "pending",
       "proposedAt": "2026-10-15T17:10:02.886201980+00:00",
       "kind": "tech-debt",
-      "rank": 7,
-      "sightings": 1
+      "rank": 8,
+      "sightings": 2,
+      "notes": [
+        "2026-10-23: Partly done this cycle: refresh helpers and viteCacheDir moved to src/lib/devContentRefresh.ts, but astro.config.mjs is still 469 lines."
+      ]
     },
     {
       "id": "the-plan-s-first-step-copy-unsaved-edits-into-test-setups-and-keep-a-list-folder-from-being-left-empty-across-a-restart-was-not-built-the-copying-already-worked-per-a-note-from-the-oct-14-run-that-i-did-not-re-check-and-the-restart-c",
@@ -836,7 +807,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T17:10:02.886201980+00:00",
-      "rank": 52,
       "sightings": 1
     },
     {
@@ -849,7 +819,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 30,
       "sightings": 1
     },
     {
@@ -861,7 +830,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 16,
       "sightings": 4,
       "notes": [
         "2026-10-15: 2026-10-15: also fires mid-batch with ONE dev server — back-to-back reseeds in a recapture-stale batch land before the store recovers; recapturing one slug at a time after curling a content page succeeded every time.",
@@ -878,7 +846,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "rank": 53,
       "sightings": 1
     },
     {
@@ -923,7 +890,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 54,
       "sightings": 1
     },
     {
@@ -935,7 +901,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 55,
       "sightings": 1
     },
     {
@@ -947,7 +912,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "rank": 56,
       "sightings": 1
     },
     {
@@ -962,7 +926,7 @@
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
       "kind": "tech-debt",
-      "rank": 4,
+      "rank": 10,
       "sightings": 1
     },
     {
@@ -977,7 +941,7 @@
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
       "kind": "tech-debt",
-      "rank": 6,
+      "rank": 9,
       "sightings": 1
     },
     {
@@ -990,7 +954,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 31,
       "sightings": 1
     },
     {
@@ -998,17 +961,17 @@
       "title": "Presentability scan flags command-line script output as debug logging",
       "mode": "backend",
       "body": "",
-      "reason": "Seen again at finalize: 33 hits, all intended CLI output in scripts/.",
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 17,
-      "sightings": 5,
+      "rank": 22,
+      "sightings": 6,
       "notes": [
         "2026-10-16: 2026-10-16: all 33 'debug logging' hits were scripts/*.mjs CLI output again.",
         "2026-10-22: Seen again: 33 console.log lines in scripts/*.mjs flagged, all intentional CLI progress and summary output.",
         "2026-10-22: The scan listed the same 33 console.log lines in scripts/*.mjs. They are the intended output of the import and snapshot CLIs, not debug logging.",
-        "2026-10-22: Seen again: all 33 debug-log candidates were the intended output of scripts/*.mjs command-line tools."
+        "2026-10-22: Seen again: all 33 debug-log candidates were the intended output of scripts/*.mjs command-line tools.",
+        "2026-10-23: Seen again at finalize: 33 hits, all deliberate CLI output in scripts/."
       ]
     },
     {
@@ -1020,7 +983,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 57,
       "sightings": 1
     },
     {
@@ -1032,7 +994,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 58,
       "sightings": 1
     },
     {
@@ -1044,7 +1005,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 59,
       "sightings": 1
     },
     {
@@ -1056,7 +1016,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "rank": 60,
       "sightings": 1
     },
     {
@@ -1085,7 +1044,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
-      "rank": 19,
       "sightings": 2,
       "notes": [
         "2026-10-22: prove-red could not route the node_modules paths of the patched CMS, so red was proven by hand-neutering each fix and recorded as agent-attested for 4 tests (image-uploads cycle, 2026-10-22)."
@@ -1100,7 +1058,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
-      "rank": 61,
       "sightings": 1
     },
     {
@@ -1112,7 +1069,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
-      "rank": 13,
       "sightings": 1
     },
     {
@@ -1127,7 +1083,7 @@
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
       "kind": "tech-debt",
-      "rank": 2,
+      "rank": 6,
       "sightings": 2,
       "notes": [
         "2026-10-22: Seen again: lead profiles touched it once more; the lead shape was pulled out to src/lib/leadSchema.ts, which is the pattern the split should follow."
@@ -1142,7 +1098,7 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
-      "rank": 32,
+      "rank": 16,
       "sightings": 1
     },
     {
@@ -1154,7 +1110,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
-      "rank": 37,
       "sightings": 1
     },
     {
@@ -1166,7 +1121,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
-      "rank": 62,
       "sightings": 1
     },
     {
@@ -1178,7 +1132,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
-      "rank": 63,
       "sightings": 1
     },
     {
@@ -1190,7 +1143,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
-      "rank": 64,
       "sightings": 1
     },
     {
@@ -1203,7 +1155,6 @@
       "status": "pending",
       "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
       "kind": "tech-debt",
-      "rank": 20,
       "sightings": 2,
       "notes": [
         "2026-10-22: After /clear the resume prompt said to resume at step 18 and run `wakeup-check` 'with the token from wakeup-arm', but the workflow was already at step 22 and the fresh session had no record of the token, so wakeup-check could n…"
@@ -1218,7 +1169,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
-      "rank": 65,
       "sightings": 1
     },
     {
@@ -1230,7 +1180,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
-      "rank": 66,
       "sightings": 1
     },
     {
@@ -1242,7 +1191,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
-      "rank": 67,
       "sightings": 1
     },
     {
@@ -1257,7 +1205,7 @@
       "status": "pending",
       "proposedAt": "2026-10-22T14:39:01.543207323+00:00",
       "kind": "tech-debt",
-      "rank": 1,
+      "rank": 2,
       "sightings": 1
     },
     {
@@ -1269,7 +1217,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T14:39:01.543207323+00:00",
-      "rank": 68,
       "sightings": 1
     },
     {
@@ -1281,7 +1228,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T14:39:01.543207323+00:00",
-      "rank": 69,
       "sightings": 1
     },
     {
@@ -1293,7 +1239,6 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T16:57:52.363779908+00:00",
-      "rank": 70,
       "sightings": 1
     },
     {
@@ -1306,7 +1251,6 @@
       "source": "codeyam-improvement",
       "status": "pending",
       "proposedAt": "2026-10-22T22:12:23.663684830+00:00",
-      "rank": 11,
       "sightings": 1
     },
     {
@@ -1329,6 +1273,164 @@
       "source": "session-review",
       "status": "pending",
       "proposedAt": "2026-10-22T22:12:23.663684830+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "show-adopted-images-in-the-cms-media-library-scenario",
+      "title": "Show adopted images in the CMS media library scenario",
+      "mode": "backend",
+      "body": "## Summary\nThe scenario `cms-media-library-adopted-images` captures `/admin/media` and its frame shows an empty library (\"No images yet\"). The committed frame at HEAD is identical, so this predates the capture fixes. The scenario's name promises a library holding images adopted from the site, which is the state an editor most needs to see documented.\n\n## Key Decisions\n- Decide from the media library's source what \"adopted\" means: images under `public/images` that the library lists, or entries in the `media` data file.\n- Seed only what that page reads. Do not change the app to make the screenshot pass.\n\n## Implementation\n- Read `node_modules/@codeyam/cms/src/pages/admin/media/index.astro` (and the repo patch under `patches/`) to find what the grid is built from.\n- Check whether the content sandbox copies `public/` (`.codeyam/tmp/content-sandbox/public`) and whether `.codeyam/seed-adapter.ts` seeds media at all.\n- Add the missing seed to `.codeyam/scenarios/cms-media-library-adopted-images.json`, recapture, and confirm the grid shows images.",
+      "reason": "The 'CMS Media Library - Adopted Images' screenshot shows 'No images yet', the opposite of what its name says.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "kind": "tech-debt",
+      "rank": 3,
+      "sightings": 1
+    },
+    {
+      "id": "keep-the-highlighted-supporter-visible-in-the-find-your-place-scenario",
+      "title": "Keep the highlighted supporter visible in the find-your-place scenario",
+      "mode": "ui",
+      "body": "## Summary\n`momentum-fund-filtering-the-donor-wall` (titled 'Finding Your Place In The Network') is meant to show one supporter's node lit gold with the rest dimmed. Its seed now honours all 19 donors, and with that layout the matched node renders behind the italic intro copy (around \"founding supporter\"), faint and easy to miss. Earlier frames, captured with only 10 donors, showed it in open space.\n\n## Key Decisions\n- Prefer fixing the scenario (choose a search term whose node falls in open space) over changing the network layout, unless a real visitor would hit the same overlap.\n- Check whether a real search can place the highlight under the copy. If it can, the fix belongs in the component.\n\n## Implementation\n- Inspect node placement in `src/components/donate/MomentumNetwork.astro` (seeded layout) for the 19-donor seed.\n- Try other search terms in `.codeyam/scenarios/momentum-fund-filtering-the-donor-wall.json`, or keep the highlighted node clear of the intro block.\n- Recapture and confirm the gold node is clearly visible.",
+      "reason": "With 19 seeded supporters, the gold node for the matched supporter lands behind the hero's intro text, so the frame barely shows what it documents.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "kind": "tech-debt",
+      "rank": 5,
+      "sightings": 1
+    },
+    {
+      "id": "pin-the-clock-for-scenarios-whose-dates-drift-daily",
+      "title": "Pin the clock for scenarios whose dates drift daily",
+      "mode": "backend",
+      "body": "## Summary\nThe recapture flagged time drift on `chapter-gallery-show-all-revealed`, `chapter-route-events-tagged-to-this-chapter` and `chapter-route-upcoming-above-recent`. The `events-route-*` and `harvard-in-tech-upcoming-events-excludes-past-ones` frames also moved by one day (Dec 3 to Dec 4) between captures. Each re-sweep produces churn that has to be reviewed by hand.\n\n## Key Decisions\n- Pin `clock` per scenario, not on `_default`, so scenarios that intentionally read today keep doing so.\n- Do not add a clock helper to app code. The scenario `clock` field already overrides `Date`.\n\n## Implementation\n- Add `\"clock\": {\"now\": \"2026-10-23T12:00:00Z\", \"frozen\": true}` to each affected scenario JSON under `.codeyam/scenarios/`.\n- Recapture and confirm a second capture on a later day is pixel-identical.",
+      "reason": "Several event scenarios use dates relative to today and pin no clock, so their screenshots change every day and look stale with no code change.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "fix",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "kind": "tech-debt",
+      "rank": 4,
+      "sightings": 1
+    },
+    {
+      "id": "split-the-586-line-seed-adapter",
+      "title": "Split the 586-line seed adapter",
+      "mode": "backend",
+      "body": "## Summary\n`.codeyam/seed-adapter.ts` (586 lines) owns the content-sandbox reset, every collection writer, the restart snapshot, the tracked-entry counts and the refresh/verification call. This cycle added refresh-outcome handling to it, and each new collection or check makes it longer.\n\n## Key Decisions\n- Move pure logic into `src/lib/` modules with unit tests, following `src/lib/emptiedCollections.ts` and `src/lib/devContentRefresh.ts`, and leave the adapter as orchestration.\n- Keep the adapter's command-line contract (`npx tsx .codeyam/seed-adapter.ts <seed-file>`) unchanged.\n\n## Implementation\n- Extract `resetSandboxFromProduction` / `snapshotSandbox` into a sandbox module, and the per-collection writers into their own module.\n- Add tests for each extracted function. Run a seeded capture end to end to confirm nothing changed.",
+      "reason": ".codeyam/seed-adapter.ts is 586 lines and mixes sandbox reset, per-collection writers, snapshotting and the refresh call.",
+      "severity": 2,
+      "source": "session-review",
+      "category": "debt",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "kind": "tech-debt",
+      "rank": 7,
+      "sightings": 1
+    },
+    {
+      "id": "unseeded-scenarios-render-the-previous-scenario-s-seeded-content",
+      "title": "Unseeded scenarios render the previous scenario's seeded content",
+      "mode": "backend",
+      "body": "## What happened\nOn an Astro content-collection stack, scenarios that declare no `seed` (and have no `_default` tier) skip the seed adapter entirely (`decide_seed_action` -> `NoSeed`). The sandbox keeps the previous scenario's seed: after an unseeded capture, `.codeyam/tmp/content-sandbox/content` still differed from `src/content` in 12 files. The only flush attempted is `POST /api/codeyam-revalidate`, which only the Next.js template mounts. On Astro it 404s, is classified `RouteNotMounted`, and the capture proceeds. Results: `/chapters/nyc` and `/chapters/sf-bay-area` answered 404 (the previous seed had no such chapters), the London chapter page showed another scenario's photo, and committed frames carried leaked chapters (\"Austin\") and missing menus. All were reported as successful captures. Separately, unseeded captures take the capture gate SHARED, so at concurrency 2 they ran beside a seeding capture and photographed its seed. Workaround in this project: an `_default.json` tier with `\"seed\": {}` (merged_seed then returns `Flat({})`, so every scenario runs the adapter) plus `scenarios.recaptureConcurrency: 1`.\n\n## What would have helped\nReset the content sandbox to committed content (or run the adapter with an empty seed) for every application scenario on content-collection stacks, and take the capture gate exclusively for any capture that depends on the sandbox being at baseline. Failing that, have `scenario-explain` and the capture log say that an unseeded scenario inherits whatever the previous capture left behind.",
+      "reason": "A scenario with no seed never resets the content sandbox, so its screenshot shows whatever the scenario before it seeded, and the capture reports success.",
+      "severity": 5,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "rank": 12,
+      "sightings": 1
+    },
+    {
+      "id": "build-commands-share-vite-s-dependency-cache-with-the-running-dev-server",
+      "title": "Build commands share Vite's dependency cache with the running dev server",
+      "mode": "backend",
+      "body": "## What happened\n`verify-build` started at 19:57:57 and, nine seconds later, `node_modules/.vite/deps/react_jsx-dev-runtime.js` held React's production build, still served under the dev server's unchanged `?v=` hash. Every page with a React island then failed capture with `pageerror: jsxDEV is not a function` (cutover runbook, every CMS editor screen). `astro check` and `astro build` run with NODE_ENV=production, and their content sync runs Vite's dependency optimizer into the default cache directory, the same one the live dev server serves from. Diagnosing it took a long detour. The fix here was `cacheDir: node_modules/.vite-build` for non-dev commands (`viteCacheDir` in `src/lib/devContentRefresh.ts`).\n\n## What would have helped\nHave `verify-build` (and any editor-run build) use an isolated Vite cache, or snapshot and restore `node_modules/.vite` around it. The capture failure message could also recognise `jsxDEV is not a function` and name the likely cause (a production-mode optimizer run in the shared cache) along with the restart-plus-clear-cache recovery.",
+      "reason": "verify-build ran astro check/build in production mode, which overwrote the dev server's React runtime and broke every interactive island until the dev server restarted.",
+      "severity": 4,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "rank": 13,
+      "sightings": 1
+    },
+    {
+      "id": "register-captures-without-the-scenario-flag-that-recapture-stale-adds",
+      "title": "register captures without the scenario flag that recapture-stale adds",
+      "mode": "backend",
+      "body": "## What happened\n`recapture-stale` captures through the proxy at `:14100/<path>?_codeyam_scenario=<slug>`, but `register @<scenario>.json` captures directly at `:4321/<path>` with no flag. This project turns off its hero carousel's autoplay when that flag is present, so `register` captured `hero-carousel` on whichever slide the timer had reached (slide 2), while the sweep captured slide 1. Three captures of one unchanged scenario produced three different frames.\n\n## What would have helped\nOne capture path, with the same URL and flags, whether a scenario is captured by `register`, `recapture-stale` or the preview. At minimum, `register` should append the same scenario flag.",
+      "reason": "The same scenario renders differently under register and recapture-stale, because only recapture adds ?_codeyam_scenario to the capture URL.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "rank": 18,
+      "sightings": 1
+    },
+    {
+      "id": "re-registering-a-renamed-scenario-s-own-json-forks-a-duplicate-slug",
+      "title": "Re-registering a renamed scenario's own JSON forks a duplicate slug",
+      "mode": "backend",
+      "body": "## What happened\n`momentum-fund-filtering-the-donor-wall.json` had been renamed to 'Momentum Fund - Finding Your Place In The Network'. Running `register @.codeyam/scenarios/momentum-fund-filtering-the-donor-wall.json` (the only way to recapture one scenario) wrote a new `momentum-fund-finding-your-place-in-the-network.json` with the SAME `id`, plus a second screenshot. It surfaced only as an unexpected new frame during review, and was removed with `editor delete`.\n\n## What would have helped\nA single-scenario recapture command (`recapture --target <slug>` that ignores freshness), or `register` keeping the existing slug when the payload's `id` matches an existing scenario.",
+      "reason": "register derives the slug from the scenario's name, so recapturing an existing scenario whose name changed created a second file with the same id.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "rank": 19,
+      "sightings": 1
+    },
+    {
+      "id": "a-forced-application-sweep-treats-the-default-tier-as-a-scenario",
+      "title": "A forced application sweep treats the _default tier as a scenario",
+      "mode": "backend",
+      "body": "## What happened\nAfter adding `.codeyam/scenarios/_default.json` (a defaults tier), `recapture-stale --type application --force --max-seconds 0` exited 1 with a single per-slug error: `{\"slug\":\"_default\",\"error\":\"Scenario has no URL to capture\"}`. The 115 real scenarios captured fine, but the run reported failure.\n\n## What would have helped\nExclude tier files (`_default`, shared sets) from sweep target selection, the same way scenario listing and coverage already do.",
+      "reason": "recapture-stale --type application --force tried to capture _default and failed the run with 'Scenario has no URL to capture'.",
+      "severity": 2,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "rank": 21,
+      "sightings": 1
+    },
+    {
+      "id": "the-plan-asked-for-the-seed-check-to-compare-loaded-counts-with-the-seed-s-exact-row-counts-the-built-check-only-fails-when-more-entries-are-loaded-than-there-are-files-or-when-files-exist-but-none-loaded-because-drafts-are-legitimately",
+      "title": "The plan asked for the seed check to compare loaded counts with the seed's exact row counts. The built check only fails when more entries are loaded than there are files, or when files exist but none loaded, because drafts are legitimately…",
+      "mode": "backend",
+      "body": "## Summary\n\nThe plan asked for the seed check to compare loaded counts with the seed's exact row counts. The built check only fails when more entries are loaded than there are files, or when files exist but none loaded, because drafts are legitimately…\n\nAt the approval gate for \"Screenshots you can trust again\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `scenario-captures-save-wrong-frames-as-successful` (now at `.codeyam/plans/completed/scenario-captures-save-wrong-frames-as-successful.md`).\n\nScenario screenshots now show the state they describe, and a capture that goes wrong fails instead of being saved as a success.\n\n## What you can now do\n- Trust the gallery: every frame that changed was checked by eye, and several wrong committed frames are fixed (one was an Astro error page).\n- Recapture the whole site in one pass: each scenario starts from committed content, so one scenario's test data can't leak into the next.\n- Run a build check while the preview is open without breaking the CMS and runbook screens (\"jsxDEV is not a function\").\n- See a capture fail clearly when the page errored, a second dev server is running, or the server still holds an earlier scenario.\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"Screenshots you can trust again\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-store-must-be-quiet-for-750ms-rather-than-the-planned-250ms-because-astro-saves-its-store-500ms-after-the-last-change",
+      "title": "The store must be quiet for 750ms rather than the planned 250ms, because Astro saves its store 500ms after the last change.",
+      "mode": "backend",
+      "body": "## Summary\n\nThe store must be quiet for 750ms rather than the planned 250ms, because Astro saves its store 500ms after the last change.\n\nAt the approval gate for \"Screenshots you can trust again\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `scenario-captures-save-wrong-frames-as-successful` (now at `.codeyam/plans/completed/scenario-captures-save-wrong-frames-as-successful.md`).\n\nScenario screenshots now show the state they describe, and a capture that goes wrong fails instead of being saved as a success.\n\n## What you can now do\n- Trust the gallery: every frame that changed was checked by eye, and several wrong committed frames are fixed (one was an Astro error page).\n- Recapture the whole site in one pass: each scenario starts from committed content, so one scenario's test data can't leak into the next.\n- Run a build check while the preview is open without breaking the CMS and runbook screens (\"jsxDEV is not a function\").\n- See a capture fail clearly when the page errored, a second dev server is running, or the server still holds an earlier scenario.\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"Screenshots you can trust again\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-write-up-for-codeyam-about-the-editor-starting-two-dev-servers-has-not-been-written-yet",
+      "title": "The write-up for CodeYam about the editor starting two dev servers has not been written yet.",
+      "mode": "backend",
+      "body": "## Summary\n\nThe write-up for CodeYam about the editor starting two dev servers has not been written yet.\n\nAt the approval gate for \"Screenshots you can trust again\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `scenario-captures-save-wrong-frames-as-successful` (now at `.codeyam/plans/completed/scenario-captures-save-wrong-frames-as-successful.md`).\n\nScenario screenshots now show the state they describe, and a capture that goes wrong fails instead of being saved as a success.\n\n## What you can now do\n- Trust the gallery: every frame that changed was checked by eye, and several wrong committed frames are fixed (one was an Astro error page).\n- Recapture the whole site in one pass: each scenario starts from committed content, so one scenario's test data can't leak into the next.\n- Run a build check while the preview is open without breaking the CMS and runbook screens (\"jsxDEV is not a function\").\n- See a capture fail clearly when the page errored, a second dev server is running, or the server still holds an earlier scenario.\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"Screenshots you can trust again\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "sightings": 1
     }
   ],
@@ -2264,6 +2366,53 @@
         "the-new-n-images-uploaded-click-a-photo-to-use-it-hint-after-a-multi-file-upload-is-checked-by-an-automated-test-only-there-is-no-screenshot-of-it-because-the-preview-cannot-simulate-choosing-files",
         "the-live-preview-shows-the-edited-date-in-the-cms-s-short-format-10-21-2026-while-the-published-page-shows-the-long-format-october-21-2026-making-them-match-is-a-change-to-the-cms-package-itself-agreed-as-a-follow-up"
       ]
+    },
+    {
+      "at": "2026-10-23T22:50:50.911451546+00:00",
+      "feature": "Screenshots you can trust again",
+      "notes": "This was a capture-pipeline session, not app work. Beyond the plan's four fixes, recapturing exposed two more causes of wrong frames reported as successes: unseeded scenarios kept the previous scenario's seed, and verify-build poisoned the…",
+      "proposedIds": [
+        "show-adopted-images-in-the-cms-media-library-scenario",
+        "keep-the-highlighted-supporter-visible-in-the-find-your-place-scenario",
+        "pin-the-clock-for-scenarios-whose-dates-drift-daily",
+        "split-the-586-line-seed-adapter",
+        "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+        "unseeded-scenarios-render-the-previous-scenario-s-seeded-content",
+        "build-commands-share-vite-s-dependency-cache-with-the-running-dev-server",
+        "register-captures-without-the-scenario-flag-that-recapture-stale-adds",
+        "re-registering-a-renamed-scenario-s-own-json-forks-a-duplicate-slug",
+        "a-forced-application-sweep-treats-the-default-tier-as-a-scenario",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "presentability-scan-flags-command-line-script-output-as-debug-logging",
+        "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
+        "the-plan-asked-for-the-seed-check-to-compare-loaded-counts-with-the-seed-s-exact-row-counts-the-built-check-only-fails-when-more-entries-are-loaded-than-there-are-files-or-when-files-exist-but-none-loaded-because-drafts-are-legitimately",
+        "the-store-must-be-quiet-for-750ms-rather-than-the-planned-250ms-because-astro-saves-its-store-500ms-after-the-last-change",
+        "the-write-up-for-codeyam-about-the-editor-starting-two-dev-servers-has-not-been-written-yet"
+      ],
+      "rankedIds": [
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "always-write-alt-text-for-images-uploaded-in-the-content-editor",
+        "show-adopted-images-in-the-cms-media-library-scenario",
+        "pin-the-clock-for-scenarios-whose-dates-drift-daily",
+        "keep-the-highlighted-supporter-visible-in-the-find-your-place-scenario",
+        "split-src-content-config-ts-along-its-collection-seams",
+        "split-the-586-line-seed-adapter",
+        "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+        "break-up-the-1-130-line-momentumnetwork-component",
+        "split-the-1-250-line-catch-all-isolation-page-into-one-page-per-component",
+        "give-eventcard-its-own-glossary-entry",
+        "unseeded-scenarios-render-the-previous-scenario-s-seeded-content",
+        "build-commands-share-vite-s-dependency-cache-with-the-running-dev-server",
+        "registry-reconcile-deletes-table-generated-test-entries",
+        "a-dead-session-s-plan-claim-blocks-the-audit-and-nothing-in-the-editor-can-release-it",
+        "seed-sandbox-reset-races-the-content-watcher-and-empties-collections",
+        "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
+        "register-captures-without-the-scenario-flag-that-recapture-stale-adds",
+        "re-registering-a-renamed-scenario-s-own-json-forks-a-duplicate-slug",
+        "syncing-capture-scripts-marks-every-screenshot-stale",
+        "a-forced-application-sweep-treats-the-default-tier-as-a-scenario",
+        "presentability-scan-flags-command-line-script-output-as-debug-logging"
+      ]
     }
   ],
   "syntheses": [
@@ -2311,6 +2460,17 @@
         "obs-f67956150bd9"
       ],
       "notes": "Six new observations from three sessions. The two phone-scrolling ones (event wall, empty role placeholders) are one session's polish findings, already fixed. The two design-choice ones describe how the owner prefers to decide, not an app need. The content-gap one has a single session behind it. No cluster has two sessions' evidence for the same need, so no idea this pass."
+    },
+    {
+      "at": "2026-10-23T22:50:50.911451546+00:00",
+      "consumedIds": [
+        "obs-1a61bc2a8af2",
+        "obs-58159fd37b85",
+        "obs-d470b11e97b1",
+        "obs-85e98170740b",
+        "obs-ddf6402522e2"
+      ],
+      "notes": "The five new observations (all 2026-10-22, two sessions) are about image uploads in the content editor: no feedback on upload, no record of which chapter a photo was for, and credit/alt-text records blocking deploys. Each was already answered by a shipped feature (uploads that register, per-chapter photo fields, uploads that publish freely), so no remaining unmet need clears the value bar. Zero ideas."
     }
   ]
 }
