@@ -1432,10 +1432,12 @@
       "reason": "verify-build ran astro check/build in production mode, which overwrote the dev server's React runtime and broke every interactive island until the dev server restarted.",
       "severity": 4,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "rank": 13,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:24Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "register-captures-without-the-scenario-flag-that-recapture-stale-adds",
