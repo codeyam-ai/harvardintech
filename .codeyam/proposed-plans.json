@@ -1415,10 +1415,12 @@
       "reason": "A scenario with no seed never resets the content sandbox, so its screenshot shows whatever the scenario before it seeded, and the capture reports success.",
       "severity": 5,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "rank": 12,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:19Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "build-commands-share-vite-s-dependency-cache-with-the-running-dev-server",
