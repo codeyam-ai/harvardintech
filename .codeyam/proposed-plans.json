@@ -989,9 +989,11 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:20Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "the-menu-s-small-arrow-glyph-stays-at-9px-it-is-an-icon-not-text-so-it-is-the-one-exception-to-the-12px-minimum",
