@@ -1195,9 +1195,11 @@
       "body": "## Summary\n\nThe copy-warning editor screenshots have not been re-captured; the pages load and show the warning, and the full check re-captures them.\n\nAt the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release` (now at `.codeyam/plans/completed/upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release.md`).\n\nThe site now runs the official @codeyam/cms 0.15.0 release. Copy warnings come from the package itself instead of a local patch.\n\n## What you can now do\n- Get copy-warning fixes from future CMS releases without re-patching\n- Upgrade the CMS more easily: the local patch only covers entry ordering now (560 lines, down from 891)\n- Rely on the same copy warnings and ordering controls as before; all 1781 tests pass on 0.15.0\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:19Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "always-write-alt-text-for-images-uploaded-in-the-content-editor",
