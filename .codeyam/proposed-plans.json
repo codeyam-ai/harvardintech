@@ -298,13 +298,15 @@
       "mode": "backend",
       "body": "",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
       "sightings": 3,
       "notes": [
         "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots.",
         "2026-10-15: 2026-10-15: a one-paragraph placeholder fix in src/pages/isolated-components/[name].astro plus the fonts change re-staled 63 screenshots."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:14:11Z",
+      "sightingsAtDecision": 3
     },
     {
       "id": "word-the-empty-events-message-for-communities-not-places",
