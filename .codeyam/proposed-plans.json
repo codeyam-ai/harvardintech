@@ -614,10 +614,12 @@
       "reason": "Saving was blocked for several turns; the user had to delete a git ref on GitHub by hand.",
       "severity": 4,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
       "rank": 15,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:21Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "auto-registered-renamed-tests-lose-their-descriptions",
