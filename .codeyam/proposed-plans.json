@@ -1143,9 +1143,11 @@
       "body": "## Summary\n\nSome sample-data screenshots for admin, donor and volunteer pages could not be refreshed because the dev server's content loader kept failing; their committed screenshots were left as they were.\n\nAt the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `cms--unblock-deploys-and-place-nicole-s-21-oct-uploads` (now at `.codeyam/plans/completed/cms--unblock-deploys-and-place-nicole-s-21-oct-uploads.md`).\n\nImages uploaded through the content admin no longer block the site from publishing, and Nicole's 21 Oct uploads are sorted.\n\n## What you can now do\n- Upload an image in the content admin and publish without a developer adding credit or alt-text records first\n- See Nicole's three event photos in the London chapter gallery, enlargeable like the others\n- Give any chapter or community lead a headshot: Nemo Shi and Stefan Pagacik now show theirs beside their names\n- Duplicate uploads and the layout mockup are gone from the public image folder\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:19Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "a-reset-prompt-s-step-number-can-knock-the-workflow-pointer-backward",
