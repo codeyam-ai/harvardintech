@@ -984,7 +984,7 @@
       "mode": "backend",
       "body": "",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
       "rank": 22,
       "sightings": 6,
@@ -994,7 +994,9 @@
         "2026-10-22: The scan listed the same 33 console.log lines in scripts/*.mjs. They are the intended output of the import and snapshot CLIs, not debug logging.",
         "2026-10-22: Seen again: all 33 debug-log candidates were the intended output of scripts/*.mjs command-line tools.",
         "2026-10-23: Seen again at finalize: 33 hits, all deliberate CLI output in scripts/."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:13:45Z",
+      "sightingsAtDecision": 6
     },
     {
       "id": "i-looked-page-by-page-at-390px-phones-and-768px-tablets-320px-and-1024px-were-checked-only-by-the-automated-sweep-no-failures-there-not-by-eye",
