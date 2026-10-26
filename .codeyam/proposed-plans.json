@@ -463,7 +463,7 @@
       "body": "## What happened\nSee the original report.\n\n## What would have helped\nSee the original report.",
       "reason": "Seen again.",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-14T18:39:30.077236670+00:00",
       "sightings": 4,
       "notes": [
@@ -471,7 +471,9 @@
         "2026-10-14: 2026-10-14: the stats/event/AI copy changes left the affected component scenarios reported fresh; each needed `recapture-stale --target <slug> --force`, and two seedless scenarios needed a re-register to pick up corrected descr…",
         "2026-10-15: Seen again 2026-10-15: scenario-for-changes left every src/content and src/data file unmapped, so the recapture list for a brand rename had to be assembled by hand from route lists.",
         "2026-10-16: 2026-10-16: changing the warning message in src/data/collections.json changed three scenarios' frames, yet coverage stayed '0 stale'; each needed `recapture-stale --force --target`."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:13:53Z",
+      "sightingsAtDecision": 4
     },
     {
       "id": "five-sheet-roles-carried-only-the-placeholder-text-propose-another-idea-for-a-volunteer-role-city-lead-social-events-ai-events-for-nyc-and-sf-founders-task-force-co-lead-or-lead-they-were-folded-into-the-city-and-founders-roles",
