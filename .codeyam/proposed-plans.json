@@ -664,13 +664,15 @@
       "reason": "session-finalize phase 1 dropped six hand-registered it.each tests, failing the strict audit twice.",
       "severity": 4,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "rank": 14,
       "sightings": 3,
       "notes": [
         "2026-10-15: Seen again: register-test --line N for it.each rows in noPersonalEmail.test.ts and presenceConsistency.test.ts was undone by session-finalize's own phase-1 reconcile; only --warm-evidence plus --start-from-phase 2 got past it."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:13:43Z",
+      "sightingsAtDecision": 3
     },
     {
       "id": "editor-preview-proxy-stopped-answering-after-a-dev-server-double-launch",
