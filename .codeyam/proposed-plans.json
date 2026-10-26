@@ -573,9 +573,11 @@
       "reason": "One unregistered component in the list stopped the whole coverage plan.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:58Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "event-cover-images-are-loaded-from-luma-s-servers-rather-than-copied-onto-the-site",
