@@ -247,7 +247,7 @@
       "mode": "backend",
       "body": "",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-10T00:01:04.361514979+00:00",
       "sightings": 4,
       "notes": [
@@ -255,7 +255,9 @@
         "2026-10-14: 2026-10-14: ten edited src/content files (stats, events, communities, pageCopy, sponsorLevels) still rendered their old values until I copied them into .codeyam/tmp/content-sandbox/content and removed the content-sandbox-active…",
         "2026-10-15: 2026-10-15: removing a line from dc-dmv.md and seattle.md did not show until the files were copied into the content sandbox by hand.",
         "2026-10-15: 2026-10-15: removing a line from dc-dmv.md and seattle.md did not show until the files were copied into the content sandbox by hand."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:13:50Z",
+      "sightingsAtDecision": 4
     },
     {
       "id": "give-the-chapter-sign-up-band-a-benefit-led-pitch",
