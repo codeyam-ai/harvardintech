@@ -629,12 +629,14 @@
       "reason": "Seen again: 18 brand-new tests were auto-registered with blank descriptions.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
       "sightings": 2,
       "notes": [
         "2026-10-15: 2026-10-15: brand-new tests, not renamed ones, landed with empty descriptions after a refresh-tests run"
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:14:26Z",
+      "sightingsAtDecision": 2
     },
     {
       "id": "the-reworded-sponsor-line-regular-global-calls-is-saved-but-the-sponsor-page-does-not-list-partnership-levels-right-now-so-nobody-sees-it-yet",
