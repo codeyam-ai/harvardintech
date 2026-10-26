@@ -1438,8 +1438,8 @@ assertion mismatches are never flakes.
 **Documented flake family — the port/process TOCTOU.** A single test in the
 real-port / real-process family (`port_reclaim` first-free, broker restart /
 survival, reverse-proxy controller boot, a git-tree-oid `finalize_debt` check)
-that fails in the ~21k-test parallel finalize Phase 1 but is **green via
-`test-on-base` / in isolation**, with the *failing test rotating run-to-run*, is
+that fails in the ~21k-test parallel finalize Phase 1 but is **green on a
+single in-place re-run**, with the *failing test rotating run-to-run*, is
 this environmental family — a sibling test stealing a just-freed ephemeral port
 in a bind→drop→reacquire window. Do NOT weaken the E2E assertion. Harden it
 through `free_local_port_retry(|port| …)` (the bindable-direction helper beside
@@ -1448,19 +1448,35 @@ on a fresh port when the drawn one was stolen; new offenders are caught at
 `verify-build` by the `test-port-races` static check. A *new* racy test the lint
 flags is a real bug to fix now, not a flake.
 
-**Settling "was this already failing?" — `test-on-base`, and when it cannot
-answer.** `codeyam-editor editor test-on-base <test or file> --ref <base>`
-re-runs the target in a throwaway checkout of the base and records the verdict,
-so `inherited-failures --unsettled` stops re-reporting it. It shares the
-project's installed dependency directories into that checkout (at the root and
-at the runner's `workingDir`), and runs a single vitest/jest file by naming it
-rather than through the runner's git-diff `--changed` mode, which selects
-nothing in a clean checkout. When it still collects nothing for a target that exists on the base, it reports
-**`COULD NOT RUN`** (exit `2`, nothing recorded) — the filter is right and the
-checkout could not run the runner. Do not re-check the name. Settle it with the
-two-read fallback instead: run the test directly in the working tree, and read
-`git log <base>..HEAD -- <test file> <file under test>` to see whether this
-branch touched either. A genuine **`NO MATCH`** is still the filter-miss answer.
+**A red test this branch did not cause — fix it on discovery, do not prove it
+red on the base first.** Proving it fails on a cold base worktree changes
+nothing about what happens next: the test gets fixed either way, and the proof
+costs minutes of cold compile and gigabytes of scratch target per test. Whatever
+the size of the fix, run this loop instead, in order:
+
+1. **Already fixed upstream?** `git fetch -q`, and check whether origin's new
+   commits touch the test or the code it covers. If they do,
+   `codeyam-editor editor sync-upstream` and re-run the test in place.
+2. **Flaky?** Re-run it once in place. Green with no code change meets the
+   flake bar above — harden it; never weaken the assertion.
+3. **Environmental?** A failure the runner-requirement probe explains (a
+   missing system library or toolchain) stays a reported environment error. No
+   claim, no fix commit.
+4. **Being fixed elsewhere?** `codeyam-editor editor test-fix-claim check
+   <test>` fetches every machine's claims first. `claimed-by …` means leave it
+   and carry on — the next sync picks up that fix. `landed <sha>` means sync.
+5. **Otherwise take it and fix it.** `test-fix-claim take <test>` (it takes
+   over a claim whose holder went quiet, and says so), fix it, and commit the
+   fix ON ITS OWN as `fix: …` with a `Codeyam-Fixes: <test>` trailer — unless
+   `git diff <base>..HEAD` shows this branch touched the test or the code it
+   covers, in which case the fix belongs in the feature commit. Then
+   `codeyam-editor editor push --fix-only <commit>` ships that one commit
+   without touching your tree or your unpushed feature work, and marks the
+   claim landed.
+
+"Is it mine?" only decides where the fix is committed, never whether it is
+made. `editor test-on-base` still exists for a person who wants that question
+answered by hand; it is no longer a step in this procedure.
 
 **Clear `REGISTRY_HAS_FOREIGN_HOST_GATED_TEST` mechanically, never by hand.** A
 test that gains a `#[cfg(target_os = …)]` / `#[cfg(unix)]` (or whose enclosing

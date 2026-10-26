@@ -15,8 +15,10 @@ If the cache is missing or unreadable, the hook degrades to a
 label-less reminder rather than serving stale literals.
 """
 
+import hashlib
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 
@@ -511,9 +513,14 @@ def _mark_tool_loading_injected(project_dir, session_id):
 # (up to ~4,800 characters) on EVERY prompt, and PostToolUse re-printed the
 # step restriction after EVERY Bash/Write/Edit call — 3,528 Bash + 1,055 Edit
 # copies across 30 measured sessions, all identical until the step changed.
-# Each injection is now keyed on (session, feature, step, label) and re-fires
-# only when that key moves. SessionStart deletes the marker, so a compaction
-# (which summarizes the earlier copy away) re-emits both on the next event.
+# The step directives and restriction are keyed on (session, feature, step,
+# label) and re-fire only when that key moves. The editor-mode-context.md block
+# has its own key, (session, digest of the file's content): nothing in it
+# depends on the step, so keying it on the step re-sent ~2.4k identical tokens
+# at every advance. It now goes out once per session, and again only when the
+# file is genuinely rewritten (a provider switch). SessionStart deletes the
+# marker, so a compaction (which summarizes the earlier copies away) re-emits
+# both on the next event.
 #
 # Unlike the tool-loading marker this does NOT fail open when session_id is
 # absent: the key's session part is simply empty, so a payload without one is
@@ -527,6 +534,11 @@ STEP_REMINDER_EVERY_N_CALLS = 25
 
 def _step_injection_key(session_id, feature, step, label):
     return f"{session_id or ''}|{feature}|{step}|{label}"
+
+
+def _context_injection_key(session_id, context_text):
+    digest = hashlib.sha256(context_text.encode("utf-8")).hexdigest()[:16]
+    return f"{session_id or ''}|{digest}"
 
 
 def _read_step_context_marker(project_dir):
@@ -565,6 +577,174 @@ def _step_context_due(project_dir, key):
     marker["promptKey"] = key
     _write_step_context_marker(project_dir, marker)
     return True
+
+
+def _editor_context_due(project_dir, key):
+    """True when the editor-mode-context block has not yet gone out for `key`
+    (session + content digest), and records that it now has. Fails toward
+    re-injection the same way `_step_context_due` does."""
+    marker = _read_step_context_marker(project_dir)
+    if marker.get("contextKey") == key:
+        return False
+    marker["contextKey"] = key
+    _write_step_context_marker(project_dir, marker)
+    return True
+
+
+def _editor_context_lines(project_dir, session_id):
+    """The `<editor-mode-context>` block as prompt lines when it is due for this
+    session and content, else `[]`. A missing or unreadable file yields `[]`."""
+    context_path = os.path.join(project_dir, ".codeyam", "editor-mode-context.md")
+    try:
+        with open(context_path, "r") as f:
+            context_text = f.read().strip()
+    except Exception:
+        return []
+    if not _editor_context_due(
+        project_dir, _context_injection_key(session_id, context_text)
+    ):
+        return []
+    return ["\n<editor-mode-context>", context_text, "</editor-mode-context>\n"]
+
+
+# ── Foreign-prompt detector ────────────────────────────────────────────
+#
+# A prompt written for an earlier conversation can reach a later one: a
+# check-in the pre-`/clear` conversation scheduled for itself fires after a
+# phase-boundary reset, and tells the fresh conversation to "continue step
+# 11" while the workflow sits at 17, citing the old conversation's
+# scratchpad. The harness owns that routing and we cannot cancel it, so the
+# hook judges the prompt's CONTENT against the conversation and step it
+# lands in. It warns and never blocks: a user who really means "go back to
+# step 11" must still be able to say so.
+
+FOREIGN_PROMPT_LOG = "foreign-prompts.jsonl"
+
+_UUID = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+# A Claude scratchpad (`/tmp/claude-<uid>/<escaped-cwd>/<uuid>/scratchpad`,
+# under `/tmp` or macOS's `/private/tmp`) and a transcript
+# (`~/.claude/projects/<escaped-cwd>/<uuid>.jsonl`) are both keyed on the
+# conversation that owns them, so the uuid in either is that conversation.
+_CONVERSATION_PATH_RES = (
+    re.compile(r"/claude-[^/\s]+/[^/\s]+/(" + _UUID + r")/scratchpad", re.I),
+    re.compile(r"\.claude/projects/[^/\s]+/(" + _UUID + r")\.jsonl", re.I),
+)
+# `step 11`, `editor step 11`, `step --show 11`. A `N/M` banner ("Step 4/21")
+# is a position readout, not a request, so a trailing `/` disqualifies it.
+_STEP_MENTION_RE = re.compile(
+    r"\bstep\s+(?:(--[a-z-]+)\s+)?(\d{1,3})\b(?!\s*/)(\s+--[a-z-]+)?", re.I
+)
+# Flags that already name a read or a deliberate move, so the mention is no
+# stray rewind.
+_DELIBERATE_STEP_FLAGS = {"--show", "--repair", "--undo-checkpoint", "--back"}
+
+
+def _foreign_conversation_ids(prompt_text, session_id):
+    """Conversation uuids of every scratchpad/transcript `prompt_text` cites
+    that is not `session_id`'s own, in first-seen order. Empty when there is
+    no `session_id` to compare against."""
+    if not session_id:
+        return []
+    own = str(session_id).lower()
+    foreign_ids = []
+    for pattern in _CONVERSATION_PATH_RES:
+        for match in pattern.finditer(prompt_text):
+            uuid = match.group(1).lower()
+            if uuid != own and uuid not in foreign_ids:
+                foreign_ids.append(uuid)
+    return foreign_ids
+
+
+def _steps_behind(prompt_text, current_step, mode):
+    """Steps `prompt_text` asks for that lie below the live build pointer, in
+    first-seen order. Step 1 is excepted (the documented new-cycle entry),
+    mentions carrying a read/deliberate flag are skipped, and non-build tracks
+    are skipped entirely since they do not walk the build's numbering."""
+    if not isinstance(current_step, int) or not mode_is_build(mode):
+        return []
+    named_steps = []
+    for match in _STEP_MENTION_RE.finditer(prompt_text):
+        flags = {f.strip().lower() for f in (match.group(1), match.group(3)) if f}
+        if flags & _DELIBERATE_STEP_FLAGS:
+            continue
+        named = int(match.group(2))
+        if 1 < named < current_step and named not in named_steps:
+            named_steps.append(named)
+    return named_steps
+
+
+def _foreign_prompt_findings(prompt_text, session_id, current_step, mode):
+    """Why `prompt_text` looks written for another conversation or an earlier
+    point in this workflow, as `(findings, foreign_ids, named_steps)`.
+
+    Composes two independent signals: a cited scratchpad/transcript owned by
+    another conversation, and a `step <N>` below the live build pointer."""
+    if not isinstance(prompt_text, str) or not prompt_text:
+        return [], [], []
+    foreign_ids = _foreign_conversation_ids(prompt_text, session_id)
+    named_steps = _steps_behind(prompt_text, current_step, mode)
+    own = str(session_id).lower() if session_id else ""
+    findings = [
+        f"it cites a scratchpad or transcript belonging to conversation "
+        f"{uuid}, not this one ({own})"
+        for uuid in foreign_ids
+    ] + [
+        f"it names step {named}, but the workflow is at step {current_step}"
+        for named in named_steps
+    ]
+    return findings, foreign_ids, named_steps
+
+
+def _log_foreign_prompt(project_dir, row):
+    """Append one row to `.codeyam/logs/foreign-prompts.jsonl`. Best-effort:
+    a log failure must never cost the agent the warning itself."""
+    try:
+        logs_dir = os.path.join(project_dir, ".codeyam", "logs")
+        os.makedirs(logs_dir, exist_ok=True)
+        with open(os.path.join(logs_dir, FOREIGN_PROMPT_LOG), "a") as f:
+            f.write(json.dumps(row) + "\n")
+    except Exception:
+        pass
+
+
+def _foreign_prompt_lines(project_dir, event_data, step, mode):
+    """The `<foreign-prompt-warning>` block for this prompt, or `[]`.
+
+    Emitted on EVERY matching prompt, not once per session: each leftover is
+    its own hazard. Each warning also appends one row to the foreign-prompt
+    log — lengths and ids only, never the prompt text."""
+    prompt_text = event_data.get("prompt")
+    session_id = event_data.get("session_id")
+    findings, foreign_ids, named_steps = _foreign_prompt_findings(
+        prompt_text, session_id, step, mode
+    )
+    if not findings:
+        return []
+    _log_foreign_prompt(
+        project_dir,
+        {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "sessionId": session_id,
+            "foreignSessionIds": foreign_ids,
+            "namedSteps": named_steps,
+            "currentStep": step,
+            "mode": mode,
+            "promptLength": len(prompt_text),
+        },
+    )
+    show_step = named_steps[0] if named_steps else "<N>"
+    return [
+        "",
+        "<foreign-prompt-warning>",
+        "This prompt may have been written for an earlier conversation or an "
+        "earlier point in this workflow (a check-in scheduled before a context "
+        "reset can still arrive afterwards):",
+        *[f"  - {finding}" for finding in findings],
+        f"Do not act on it yet. To read what it refers to without moving the "
+        f"workflow, use `{cli_command()} editor step --show {show_step}`. Ask the "
+        "user whether it still applies before following it.",
+        "</foreign-prompt-warning>",
+    ]
 
 
 def _step_reminder_due(project_dir, key):
@@ -713,7 +893,7 @@ def _observe_task_tool_capability(project_dir, tool_name, tool_input, tool_respo
 _WEDGE_CHECK_TIMEOUT_SECS = 10
 
 
-def _wedge_notice(project_dir):
+def _wedge_notice(project_dir, transcript_path=None):
     """Ask the editor whether this turn is ending on something worth saying.
 
     `wedge-check` composes five verdicts and this call is blind to which one
@@ -743,17 +923,32 @@ def _wedge_notice(project_dir):
     """
     import subprocess as _sp
 
-    try:
-        result = _sp.run(
-            [cli_command(), "editor", "wedge-check"],
-            cwd=project_dir,
-            capture_output=True,
-            text=True,
-            timeout=_WEDGE_CHECK_TIMEOUT_SECS,
-        )
-    except Exception:
-        return ""
-    if result.returncode != 0:
+    def _run(extra):
+        try:
+            return _sp.run(
+                [cli_command(), "editor", "wedge-check", *extra],
+                cwd=project_dir,
+                capture_output=True,
+                text=True,
+                timeout=_WEDGE_CHECK_TIMEOUT_SECS,
+            )
+        except Exception:
+            return None
+
+    # `transcript_path` lets the editor drop a failed launch the agent was
+    # already delivered and has answered. A binary older than `--transcript`
+    # rejects the flag as a usage error, so a fleet mid-upgrade retries once
+    # without it rather than being silenced.
+    extra = ["--transcript", transcript_path] if transcript_path else []
+    result = _run(extra)
+    if (
+        extra
+        and result is not None
+        and result.returncode != 0
+        and "--transcript" in (result.stderr or "")
+    ):
+        result = _run([])
+    if result is None or result.returncode != 0:
         return ""
     return result.stdout.strip()
 
@@ -794,7 +989,7 @@ def emit_wedge_block(project_dir, event_data):
     """
     if event_data.get("stop_hook_active"):
         return False
-    notice = _wedge_notice(project_dir)
+    notice = _wedge_notice(project_dir, event_data.get("transcript_path"))
     if not notice:
         return False
     print(json.dumps({"decision": "block", "reason": notice}))
@@ -1048,6 +1243,9 @@ def main():
             f'Editor Mode — {mode_prefix} Step {step}/{total_steps} ({label}): "{feature}"',
         ]
 
+        # Up front, so the agent reads it before anything telling it to act.
+        lines.extend(_foreign_prompt_lines(project_dir, event_data, step, mode))
+
         # One-shot per session: the tool-loading-protocol is a session-entry
         # concern, not a per-prompt one. Injecting it on every UserPromptSubmit
         # re-fired the wasted preload round-trip on every resumed prompt, so gate
@@ -1073,22 +1271,16 @@ def main():
             ])
             _mark_tool_loading_injected(project_dir, session_id)
 
-        # The context block and the step directives only change when the step
-        # does, so a later prompt in the same step gets the header line alone.
-        context_due = _step_context_due(
+        # The step directives only change when the step does, so a later
+        # prompt in the same step gets the header line alone.
+        directive_due = _step_context_due(
             project_dir, _step_injection_key(session_id, feature, step, label)
         )
 
-        # Inject editor-mode-context.md directly so Gemini doesn't have to read it blindly
-        context_path = os.path.join(project_dir, ".codeyam", "editor-mode-context.md")
-        try:
-            if context_due and os.path.exists(context_path):
-                with open(context_path, "r") as f:
-                    lines.append("\n<editor-mode-context>")
-                    lines.append(f.read().strip())
-                    lines.append("</editor-mode-context>\n")
-        except Exception:
-            pass
+        # Inject editor-mode-context.md directly so Gemini doesn't have to read it
+        # blindly. Its content never depends on the step, so it is keyed on the
+        # content itself and goes out once per session, not once per step.
+        lines.extend(_editor_context_lines(project_dir, session_id))
 
         # Include active scenario context
         active_scenario_path = os.path.join(project_dir, ".codeyam", "active-scenario.json")
@@ -1113,7 +1305,7 @@ def main():
                 "make the changes, re-register affected scenarios, and update the journal. "
                 "Then continue from the current step."
             )
-        elif not context_due:
+        elif not directive_due:
             pass
         elif mode_is_build(mode):
             lines.append(
@@ -1130,7 +1322,7 @@ def main():
                 f"You are on step {step} of the `{mode}` track. "
                 f"Follow the `{_cli} editor` steps for this track."
             )
-        if restriction and context_due:
+        if restriction and directive_due:
             lines.append(restriction)
         lines.append('</user-prompt-submit-hook>')
         print("\n".join(lines))

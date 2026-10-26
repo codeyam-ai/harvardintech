@@ -158,7 +158,9 @@ blob-report/
 .codeyam/state/context-reset-pending.json
 .codeyam/state/context-reset-fired.json
 .codeyam/state/provider-auth-verdict.json
+.codeyam/state/antigravity-session.json
 .codeyam/state/pre-commit-sync-last-integration.json
+.codeyam/state/pre-commit-sync-integrations.json
 .codeyam/state/dependency-provision.json
 .codeyam/state/setup-provision.json
 .codeyam/state/provisioning-lockfile-rewrites.jsonl
@@ -168,6 +170,7 @@ blob-report/
 .codeyam/state/hand-resolved-conflicts.json
 .codeyam/state/recapture-tuning.json
 .codeyam/state/sampled-freshness.json
+.codeyam/state/scoped-test-runs.json
 .codeyam/state/pre-commit-sync-orphan-bail.json
 .codeyam/state/step-highwater.json
 .codeyam/state/finalize-phase-fingerprints.json
@@ -188,8 +191,11 @@ blob-report/
 .codeyam/state/support-share.json
 .codeyam/state/support-share.jsonl
 .codeyam/state/context-reset-awaiting.json
+.codeyam/state/context-reset-awaiting/
 .codeyam/state/context-reset-unresumable.json
+.codeyam/state/context-reset-delivering.json
 .codeyam/state/agent-send-awaiting/
+.codeyam/state/run-complete-nudged/
 .codeyam/state/plan-complete-pending.json
 .codeyam/state/pre-commit-sync-parked-transient
 .codeyam/state/rebuild-self-job.json
@@ -216,6 +222,7 @@ blob-report/
 .codeyam/state/build-requests/
 .codeyam/state/credential-store-durability.json
 .codeyam/state/inline-agent-sessions.json
+.codeyam/state/inline-hook-ids.json
 .codeyam/state/finalize-snapshot.json
 .codeyam/state/inline-agent-sessions.json
 .codeyam/test-run-marker.json
