@@ -1006,9 +1006,11 @@
       "reason": "The Demo step could not get a verified capture even after two full editor-tab reloads.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:41Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "presentability-scan-flags-command-line-script-output-as-debug-logging",
