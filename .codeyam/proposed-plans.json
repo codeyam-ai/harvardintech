@@ -854,14 +854,16 @@
       "body": "## What happened\nSee the original report.\n\n## What would have helped\nSee the original report.",
       "reason": "Seen again.",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
       "sightings": 4,
       "notes": [
         "2026-10-15: 2026-10-15: also fires mid-batch with ONE dev server — back-to-back reseeds in a recapture-stale batch land before the store recovers; recapturing one slug at a time after curling a content page succeeded every time.",
         "2026-10-16: Seen again 2026-10-16: two recapture runs failed every seeded scenario with 'loaded 0 entries' across all collections while exactly one astro dev ran; a targeted single-scenario retry failed the same way, and only restart-dev-s…",
         "2026-10-16: 2026-10-16: 5 of 15 recaptures and two single-target recaptures right after a register failed 'loaded 0 entries' with one healthy server; each passed on retry after ~20s."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:13:58Z",
+      "sightingsAtDecision": 4
     },
     {
       "id": "the-teaser-sentence-says-the-directory-is-open-to-every-member-of-the-community-that-wording-is-mine-not-checked-against-how-the-directory-actually-grants-access",
