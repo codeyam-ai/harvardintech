@@ -223,8 +223,10 @@
       "reason": "The review said '2 seed-error candidates' but listed every scenario as ok, so the pair had to be found by hashing screenshots by hand.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
-      "proposedAt": "2026-10-09T22:43:01.998186848+00:00"
+      "status": "copied",
+      "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
+      "decidedAt": "2026-10-26T20:14:52Z",
+      "sightingsAtDecision": 0
     },
     {
       "id": "preview-flow-has-no-way-to-scroll-the-page",
