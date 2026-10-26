@@ -1070,9 +1070,11 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:20Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "it-covers-the-edit-form-for-existing-entries-only-the-add-a-new-entry-form-and-the-site-wide-settings-and-navigation-screens-do-not-warn-yet",
