@@ -686,14 +686,16 @@
       "mode": "backend",
       "body": "",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "rank": 17,
       "sightings": 4,
       "notes": [
         "2026-10-16: 2026-10-16: restart-dev-server and dev-server start each launched two astro dev trees ~2s apart (2 of 3 attempts); the editor tracked the second on :4323, then preview hard-failed 'app bound :4323 but the editor expects :4322' …",
         "2026-10-23: Seen again: earlier in this feature two astro dev servers wrote .astro/data-store.json concurrently (stale renders, UnknownFilesystemError); editing astro.config.mjs later left the dev server with no listening socket until dev-…"
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:13:55Z",
+      "sightingsAtDecision": 4
     },
     {
       "id": "preview-captures-cannot-take-a-full-page-screenshot",
