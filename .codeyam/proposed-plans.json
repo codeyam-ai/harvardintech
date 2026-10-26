@@ -1476,10 +1476,12 @@
       "reason": "register derives the slug from the scenario's name, so recapturing an existing scenario whose name changed created a second file with the same id.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "rank": 19,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:50Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "a-forced-application-sweep-treats-the-default-tier-as-a-scenario",
