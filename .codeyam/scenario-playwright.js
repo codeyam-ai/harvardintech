@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: efe36b525a40410996e4cc5d412457aeba93156f  source-sha256: 0c8163088d281441822725b8207da2c7f9482bc18434920352fcfdc6d2700b58
+// codeyam-editor: 0.1.7  build: 00daf862371b48ee63e549314f41a7519568de8c  source-sha256: 04879a603a70426d302141cf4efad69bece3d2790334c0b84d8126a1be4ee628
 const {
   hasLoadingMarkers,
   isCanvasDominated,
@@ -1469,6 +1469,73 @@ async function performInteractionSequence(
   }
 }
 
+// The query-param isolation harness renders a placeholder instead of the
+// component when the component manifest has no entry for it (most often a fresh
+// checkout, where the gitignored manifest is absent). That placeholder is a
+// perfectly stable page, so nothing else in the capture path notices it: an
+// interaction against it was reported as a selector miss, and a recapture
+// saved it over the scenario's good committed screenshot. The shipped harness
+// marks it with this attribute; harnesses scaffolded before the marker existed
+// are matched by codeyam's own placeholder wording inside `#codeyam-capture`
+// (a compatibility shim for text codeyam wrote, never app text).
+const ISOLATE_MISSING_ATTR = "data-codeyam-isolate-missing";
+const LEGACY_ISOLATE_MISSING_PATTERN = /^\s*No such component "([^"]*)"/;
+
+// The component name the harness placeholder reports as missing, or null when
+// the frame rendered something else.
+async function isolateMissingComponent(frame) {
+  return frame
+    .evaluate(
+      ({ attr, pattern }) => {
+        const marked = document.querySelector(`[${attr}]`);
+        if (marked) return marked.getAttribute(attr) || "";
+        const wrapper = document.getElementById("codeyam-capture");
+        if (!wrapper) return null;
+        const match = (wrapper.textContent || "").match(new RegExp(pattern));
+        return match ? match[1] : null;
+      },
+      {
+        attr: ISOLATE_MISSING_ATTR,
+        pattern: LEGACY_ISOLATE_MISSING_PATTERN.source,
+      },
+    )
+    .catch(() => null);
+}
+
+// `routing.componentManifest` from `.codeyam/stack.json`, for naming the file
+// in the error; a generic phrase when the stack declares none.
+function componentManifestPath() {
+  try {
+    const stack = JSON.parse(
+      fs.readFileSync(require("path").join(".codeyam", "stack.json"), "utf8"),
+    );
+    const manifest = stack && stack.routing && stack.routing.componentManifest;
+    if (typeof manifest === "string" && manifest) return manifest;
+  } catch (_) {}
+  return "the component manifest";
+}
+
+function isolateMissingComponentMessage(name, manifestPath) {
+  return (
+    `isolation harness has no component "${name}" — the component manifest ` +
+    `(${manifestPath}) is missing it. Run codeyam-editor editor isolate --all, ` +
+    `or restart the dev server to regenerate it.`
+  );
+}
+
+// Fail the capture when the frame is the harness placeholder. Called after the
+// scenario loads and before any interaction or screenshot, so an interaction
+// never runs against the placeholder and the committed PNG is never replaced.
+async function assertIsolatedComponentResolved(
+  frame,
+  { manifestPath = componentManifestPath } = {},
+) {
+  const missing = await isolateMissingComponent(frame);
+  if (missing !== null) {
+    throw new Error(isolateMissingComponentMessage(missing, manifestPath()));
+  }
+}
+
 module.exports = {
   logCaptureTiming,
   defaultReadServerState,
@@ -1503,4 +1570,8 @@ module.exports = {
   waitForPredicate,
   probeCanvasDominated,
   performInteractionSequence,
+  ISOLATE_MISSING_ATTR,
+  isolateMissingComponent,
+  isolateMissingComponentMessage,
+  assertIsolatedComponentResolved,
 };

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c870f4bd4df2e585028cfa8c3f9d48d54156ac4d  source-sha256: 8dd51c8f687c524ec12c55fbb57c5b6cc09453cae50c986040e65096b2221e93
+// codeyam-editor: 0.1.7  build: 00daf862371b48ee63e549314f41a7519568de8c  source-sha256: 0d88ba3f4f1b4a03477d52617745f6d65834ce819523d985d7e6967c9d4be914
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -93,6 +93,7 @@ const {
   waitForPixelStable,
   waitForPredicate,
   performInteractionSequence,
+  assertIsolatedComponentResolved,
   logCaptureTiming,
 } = require("./scenario-playwright");
 const { devicePixelRatioOf } = require("./scenario-targeting");
@@ -1594,6 +1595,7 @@ async function navigateFlowStep(page, stepPath, ctx) {
         });
   const frame = loadResult.frame;
   await waitForStablePage(page, frame, ctx.settleMs, ctx.loadingMarkers);
+  await assertIsolatedComponentResolved(frame);
   // A navigate loads a fresh route that must re-hydrate before the next
   // fill/click, or the interaction lands on inert SSR markup (the same
   // bug the top-level wait fixes, one route deeper). Bounded and
@@ -2075,6 +2077,11 @@ async function runScenarioCheckOnce(
       loadingMarkers,
       { confirmOnly: readyFastPath },
     );
+    // The isolation harness's "No such component" placeholder settles like any
+    // page, so it is refused here, before any interaction can be blamed for it
+    // and before the screenshot. The throw lands in the catch below, which
+    // writes no PNG, so the scenario's committed screenshot is left as it was.
+    await assertIsolatedComponentResolved(frame);
     // Checked before the screenshot below; a declared interaction may navigate
     // on purpose, so it is only acted on for a static capture.
     const reloadWatch = watchNavigationAfterReady(page, frame);
