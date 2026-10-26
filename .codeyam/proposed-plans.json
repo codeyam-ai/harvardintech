@@ -171,9 +171,11 @@
       "reason": "One required script sync turned 229 untouched scenarios stale and cost a long full sweep that changed nothing.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-09T17:47:04.948016884+00:00",
-      "rank": 20
+      "rank": 20,
+      "decidedAt": "2026-10-26T20:14:35Z",
+      "sightingsAtDecision": 0
     },
     {
       "id": "frame-the-past-events-section-in-the-two-events-page-scenarios",
