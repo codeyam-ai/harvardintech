@@ -1501,10 +1501,12 @@
       "reason": "recapture-stale --type application --force tried to capture _default and failed the run with 'Scenario has no URL to capture'.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "rank": 21,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:15:09Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "the-plan-asked-for-the-seed-check-to-compare-loaded-counts-with-the-seed-s-exact-row-counts-the-built-check-only-fails-when-more-entries-are-loaded-than-there-are-files-or-when-files-exist-but-none-loaded-because-drafts-are-legitimately",
