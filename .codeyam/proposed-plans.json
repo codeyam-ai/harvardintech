@@ -863,9 +863,11 @@
       "reason": "register-test --warm-evidence rewrote the whole partition cache with a handful of tests, producing 22 bogus audit findings.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:37Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "a-dev-server-start-before-the-content-sandbox-is-seeded-loads-zero-entries-for-every-collection",
