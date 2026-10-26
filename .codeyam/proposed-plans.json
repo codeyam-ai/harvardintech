@@ -1252,9 +1252,11 @@
       "body": "## Summary\n\nThe new 'N images uploaded — click a photo to use it' hint after a multi-file upload is checked by an automated test only; there is no screenshot of it, because the preview cannot simulate choosing files.\n\nAt the approval gate for \"Image uploads that work in the content editor\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `cms--fix-image-uploads-in-the-content-editor` (now at `.codeyam/plans/completed/cms--fix-image-uploads-in-the-content-editor.md`).\n\nUploading a photo in the content admin now works the first time, and publishing can no longer wipe photos from the media library.\n\n## What you can now do\n- Upload an image from a gallery row, hero field or the blog body's image button and it is placed right away\n- See the thumbnail of a new upload immediately, before publishing\n- Re-upload the same picture without getting a duplicate `-2` copy\n- Publish from an admin page that has been open a while without losing photos others published since\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"Image uploads that work in the content editor\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-22T14:39:01.543207323+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:20Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "the-live-preview-shows-the-edited-date-in-the-cms-s-short-format-10-21-2026-while-the-published-page-shows-the-long-format-october-21-2026-making-them-match-is-a-change-to-the-cms-package-itself-agreed-as-a-follow-up",
