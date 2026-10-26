@@ -539,13 +539,15 @@
       "reason": "Seen again with LeadProfile, LeadAvatar and LeadContactLinks.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "sightings": 3,
       "notes": [
         "2026-10-15: Seen again: isolate WhatsappJoinCard HitDirectoryTeaser generated pages that spread `scenarios[name] ?? {}` into components with required props, failing astro-check with ts(2322).",
         "2026-10-22: Seen again: three new lead components with required props broke astro-check until their isolation-props maps were typed Record<string, any> with satisfies."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:13:48Z",
+      "sightingsAtDecision": 3
     },
     {
       "id": "scenario-coverage-plan-generate-aborts-on-a-component-with-no-glossary-entry",
