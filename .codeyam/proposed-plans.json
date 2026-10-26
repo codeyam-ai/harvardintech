@@ -1184,9 +1184,11 @@
       "body": "## What happened\nThe Live Preview public host (hit.preview.fleet.codeyam.com) returned a Google load balancer 'unconditional drop overload' error. Trying to point the preview elsewhere, the running editor ignored `previewOrigin` in `.codeyam/editor.local.json`, and preview-host-setup's BLOCKED message told me to run a `change-origin` command that does not exist.\n\n## What would have helped\nHonour `previewOrigin` from editor.local.json (or say why it is ignored), name a real recovery command in the BLOCKED message, and surface the hosting-side overload as an infrastructure status instead of a project problem.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:15:01Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "lead-headshots-and-titles-for-nemo-and-stefan-were-added-beyond-this-plan-they-use-the-same-photo-field-the-queued-lead-profiles-plan-will-build-on",
