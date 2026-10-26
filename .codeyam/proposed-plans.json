@@ -775,12 +775,14 @@
       "mode": "backend",
       "body": "## What happened\n\nRecurrence. See the note.\n\n## What would have helped\n\nSee the original report.",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
       "sightings": 2,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: raising 40 sub-12px font sizes across 26 files had to be done as 26 Reads plus 33 Edit calls after a sed loop was refused."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:14:32Z",
+      "sightingsAtDecision": 2
     },
     {
       "id": "client-errors-impacted-scope-reports-404s-for-seeded-pages-that-load-fine-alone",
