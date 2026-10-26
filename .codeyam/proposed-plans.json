@@ -787,9 +787,11 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:21Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
