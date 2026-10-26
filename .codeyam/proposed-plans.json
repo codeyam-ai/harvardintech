@@ -709,12 +709,14 @@
       "mode": "backend",
       "body": "## What happened\n\nRecurrence. See the note.\n\n## What would have helped\n\nSee the original report.",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
       "sightings": 3,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: a page-by-page phone and tablet review needed full-length frames, so I wrote a throwaway Playwright script that sliced full pages into side-by-side strips against a scratch build."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:14:14Z",
+      "sightingsAtDecision": 3
     },
     {
       "id": "isolate-scaffolds-duplicate-routes-for-hand-written-isolation-pages",
