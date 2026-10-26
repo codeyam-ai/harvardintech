@@ -232,14 +232,16 @@
       "reason": "Seen again this session.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-09T22:43:01.998186848+00:00",
       "sightings": 3,
       "notes": [
         "2026-10-13: Hit again: the empty-events box sits below the fold on community pages; the first demo frame showed only the hero, and clicking the empty-state text was the only way to scroll to it.",
         "2026-10-14: 2026-10-14: a waitFor on #stats did not bring the below-fold stats band into the flow frame, so the demo filmstrip showed only the hero; the fix had to be shown through a separate isolated capture.",
         "2026-10-14: 2026-10-14: the /events demo frame stopped above the past-events grid, so the result cards could not be shown in the flow; I had to take element screenshots with a hand-written Playwright script."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:14:08Z",
+      "sightingsAtDecision": 3
     },
     {
       "id": "content-edits-stay-invisible-in-the-preview-until-the-sandbox-copy-is-replaced-by-hand",
