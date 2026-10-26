@@ -1164,10 +1164,12 @@
       "body": "## What happened\nDuring `recapture-stale`, seeded scenarios repeatedly failed with `[codeyam-seed] FATAL: <collection>: N file(s) in the sandbox, but the dev server loaded 0 entries` (projects, chapters, siteIntegrations, donors), different collections on different attempts. The dev-server log showed `[glob-loader] No files found matching \"**/*.md\" in directory \".codeyam/tmp/content-sandbox/content/projects\"` and ENOENT reads mid-copy. The seed adapter's `resetSandboxFromProduction` deletes and re-copies every collection directory non-atomically, and the file watcher's own reloads land after the explicit `/__codeyam_refresh_content` call. It took four rounds of per-slug recaptures with dev-server restarts plus `rm .astro/data-store.json` before I patched `.codeyam/seed-adapter.ts` to retry settle-and-refresh up to 4 times before failing.\n\n## What would have helped\nAn atomic sandbox swap (build in a sibling directory, then rename) or a built-in settle-and-retry in the generated seed adapter, so the fix doesn't live as a local patch to a generated file.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
       "rank": 16,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:43Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "editor-ignores-previeworigin-and-its-setup-message-names-a-command-that-does-not-exist",
