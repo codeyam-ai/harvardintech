@@ -325,7 +325,7 @@
       "body": "## What happened\nSee the original report.\n\n## What would have helped\nSee the original report.",
       "reason": "Seen again.",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
       "sightings": 8,
       "notes": [
@@ -336,7 +336,9 @@
         "2026-10-15: 2026-10-15: `refresh-tests --file src/lib/contentGaps.test.ts` reported 53 tests, i.e. it also ran cutoverProgress.test.ts.",
         "2026-10-16: Seen again 2026-10-16: four --file runs on four different test files each reported the same 138 tests from `vitest run --changed`; I had to switch to --test title filters to prove the new tests ran.",
         "2026-10-16: 2026-10-16: three --file runs on different files all reported the same 44 tests; the output showed `vitest run --changed`."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:13:39Z",
+      "sightingsAtDecision": 8
     },
     {
       "id": "the-phone-width-menu-was-not-captured-as-a-scenario-only-the-desktop-communities-menu-was-the-plan-asked-for-both",
