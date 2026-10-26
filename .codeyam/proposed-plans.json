@@ -818,9 +818,11 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:15:15Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "internal-scenario-names-for-example-harvard-in-tech-landing-page-and-test-data-that-copies-old-luma-and-strikingly-feeds-still-use-the-old-name-visitors-never-see-these",
