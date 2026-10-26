@@ -425,9 +425,11 @@
       "reason": "A hover used only to scroll a band into view for checking later blocked the Demo step as an 'inert control'.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:55Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "new-phone-tablet-frames-for-the-sticky-header-after-scrolling-the-our-mission-band-and-the-newsletter-call-to-action-were-not-added-the-new-frames-cover-the-three-things-that-were-actually-broken-stats-band-cookie-table-red-bar",
