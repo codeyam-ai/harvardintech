@@ -757,9 +757,11 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "sightings": 2
+      "sightings": 2,
+      "decidedAt": "2026-10-26T20:15:24Z",
+      "sightingsAtDecision": 2
     },
     {
       "id": "warn-content-editors-when-copy-uses-a-retired-brand-name",
