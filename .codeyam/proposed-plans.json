@@ -1461,10 +1461,12 @@
       "reason": "The same scenario renders differently under register and recapture-stale, because only recapture adds ?_codeyam_scenario to the capture URL.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "rank": 18,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:14:47Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "re-registering-a-renamed-scenario-s-own-json-forks-a-duplicate-slug",
