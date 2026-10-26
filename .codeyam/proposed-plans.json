@@ -783,13 +783,15 @@
       "body": "",
       "reason": "Seen again while building the blog preview date fix.",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-15T15:04:35.049347465+00:00",
       "sightings": 3,
       "notes": [
         "2026-10-16: Seen again 2026-10-16: 13 of 206 checks failed as 404s on draft-blog, CMS-page and volunteer-project scenarios; each loaded fine once its own seed was applied.",
         "2026-10-22: The batch recapture 404'd chapters/seattle, chapters/nyc, locked-preview and our-story, all of which load fine on their own."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:14:16Z",
+      "sightingsAtDecision": 3
     },
     {
       "id": "the-old-name-still-appears-inside-the-2020-webinar-video-thumbnail-images-because-it-is-part-of-the-pictures-not-text-that-can-be-edited",
