@@ -1273,9 +1273,11 @@
       "body": "## Summary\n\nFive older scenarios elsewhere on the site (the NYC gallery, two volunteer pages, an events page and a volunteer project) still fail to capture because their seeded content is not being served; this was true before this change and none of …\n\nAt the approval gate for \"Lead profiles for chapters and communities\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `ns--lead-profiles-with-headshot-bio-and-contact-links` (now at `.codeyam/plans/completed/ns--lead-profiles-with-headshot-bio-and-contact-links.md`).\n\nChapter and community pages now show real profiles of their leads, with photo, bio and contact links.\n\n## What you can now do\n- Give each lead a headshot, title and company, school and class year, bio, LinkedIn and email\n- List committee members, who appear in a compact grid below the leads\n- Leave fields out: a lead with only a name still shows, with initials in place of a photo\n- See London's page with Nemo Shi's full profile and the chapter's own text back\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"Lead profiles for chapters and communities\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-22T22:12:23.663684830+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:19Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "show-adopted-images-in-the-cms-media-library-scenario",
