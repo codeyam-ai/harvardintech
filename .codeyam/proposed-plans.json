@@ -1084,12 +1084,14 @@
       "body": "## What happened\nThis feature lives in node_modules/@codeyam/cms (kept via patch-package). `editor isolate CopyWarningNote CopyWarningsSummary` failed with 'not found in glossary or in source' because node_modules files are not in the dependency graph, so I hand-wrote four Astro isolation pages. `client-errors {\"scope\":\"impacted\"}` reported scenariosChecked=0 and `verify-build` skipped tsc and astro-check ('no matching files'). Each time I had to pick scenarios by hand. A dev-server restart was also needed before the edited package code was served at all.\n\n## What would have helped\nTreat files listed in a project's patch-package patches (or an opt-in path list) as project source: include them in the import graph, the impacted-scenario set, verify-build's file match, and `isolate`'s name resolution. Or have `isolate` print a clear 'dependency source, write the page by hand' path.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
       "sightings": 2,
       "notes": [
         "2026-10-22: prove-red could not route the node_modules paths of the patched CMS, so red was proven by hand-neutering each fix and recorded as agent-attested for 4 tests (image-uploads cycle, 2026-10-22)."
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:14:03Z",
+      "sightingsAtDecision": 2
     },
     {
       "id": "the-warning-appears-as-the-editor-types-not-only-when-they-press-save",
