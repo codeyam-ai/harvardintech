@@ -730,9 +730,11 @@
       "reason": "It created FormingChapterCta/ and ChapterPage/ route folders that collided with the project's existing hand-written pages.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-15T13:37:47.684829309+00:00",
-      "sightings": 2
+      "sightings": 2,
+      "decidedAt": "2026-10-26T20:14:29Z",
+      "sightingsAtDecision": 2
     },
     {
       "id": "dc-and-seattle-still-have-their-write-up-text-in-the-content-admin-but-whatsapp-only-city-pages-no-longer-show-it-so-editing-it-there-changes-nothing-until-the-city-becomes-an-active-chapter",
