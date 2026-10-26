@@ -678,9 +678,11 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:15:18Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "registry-reconcile-deletes-table-generated-test-entries",
