@@ -281,12 +281,14 @@
       "body": "## What happened\nSeen again.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-13T20:46:12.382387035+00:00",
       "sightings": 2,
       "notes": [
         "2026-10-22: Seen again on momentum-fund-the-impact-band-with-real-quotes: the BLOCKED message quoted identical seed and committed mission text, while the actual cause was an unrelated `projects` collection loaded with 0 entries. The messag…"
-      ]
+      ],
+      "decidedAt": "2026-10-26T20:14:01Z",
+      "sightingsAtDecision": 2
     },
     {
       "id": "editing-the-shared-isolation-route-re-stales-every-component-and-drags-unrelated-views-into-the-taxonomy-gate",
