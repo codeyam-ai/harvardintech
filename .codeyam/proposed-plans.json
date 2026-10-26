@@ -1423,9 +1423,11 @@
       "body": "## Summary\n\nThe plan asked for the seed check to compare loaded counts with the seed's exact row counts. The built check only fails when more entries are loaded than there are files, or when files exist but none loaded, because drafts are legitimately…\n\nAt the approval gate for \"Screenshots you can trust again\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `scenario-captures-save-wrong-frames-as-successful` (now at `.codeyam/plans/completed/scenario-captures-save-wrong-frames-as-successful.md`).\n\nScenario screenshots now show the state they describe, and a capture that goes wrong fails instead of being saved as a success.\n\n## What you can now do\n- Trust the gallery: every frame that changed was checked by eye, and several wrong committed frames are fixed (one was an Astro error page).\n- Recapture the whole site in one pass: each scenario starts from committed content, so one scenario's test data can't leak into the next.\n- Run a build check while the preview is open without breaking the CMS and runbook screens (\"jsxDEV is not a function\").\n- See a capture fail clearly when the page errored, a second dev server is running, or the server still holds an earlier scenario.\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"Screenshots you can trust again\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:20Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "the-store-must-be-quiet-for-750ms-rather-than-the-planned-250ms-because-astro-saves-its-store-500ms-after-the-last-change",
