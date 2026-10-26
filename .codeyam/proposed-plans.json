@@ -444,9 +444,11 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "ignored",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T17:41:19Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "content-edits-are-invisible-to-screenshot-staleness-and-to-the-impacted-scenario-check",
