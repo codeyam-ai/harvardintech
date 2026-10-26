@@ -1341,9 +1341,11 @@
       "reason": "A successful push printed a warning and a 'Next valid action' to delete a ref that no longer existed.",
       "severity": 2,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-10-22T22:12:23.663684830+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-10-26T20:15:06Z",
+      "sightingsAtDecision": 1
     },
     {
       "id": "since-you-approved-the-demo-the-linkedin-button-changed-from-a-hand-drawn-in-to-the-official-linkedin-logo-the-rest-of-the-site-uses-inside-the-same-round-button",
