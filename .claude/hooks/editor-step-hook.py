@@ -747,6 +747,107 @@ def _foreign_prompt_lines(project_dir, event_data, step, mode):
     ]
 
 
+# ── Stale-wakeup detector ──────────────────────────────────────────────
+#
+# A fallback wakeup armed through `wakeup-arm` carries its token in its own
+# prompt (`cyw1|<mode>|<step>|<feature epoch>`). The harness cannot cancel a
+# scheduled wakeup, so it fires whether or not the work it hedged finished —
+# hours later, after a `/clear`, into another feature, where it once drove
+# `track-step` and `advance` on the wrong workflow. Agents did not reliably
+# run `wakeup-check` themselves, so the hook judges the token before the
+# agent reads the prompt.
+
+# The epoch is `-` or an RFC 3339 stamp, spelled out so trailing prose
+# punctuation ("…32Z.") is never read into it — a token whose epoch gained a
+# character would compare as another feature's and judge a live wakeup STALE.
+_WAKEUP_TOKEN_RE = re.compile(
+    r"\bcyw1\|[A-Za-z-]+\|\d{1,3}\|"
+    r"(?:-(?![\w:])|\d{4}-\d{2}-\d{2}T[0-9:.]+(?:Z|[+-]\d{2}:\d{2}))"
+)
+_WAKEUP_CHECK_TIMEOUT_S = 10
+
+
+def _wakeup_tokens(prompt_text):
+    """Every distinct wakeup token in `prompt_text`, in first-seen order."""
+    if not isinstance(prompt_text, str):
+        return []
+    tokens = []
+    for match in _WAKEUP_TOKEN_RE.finditer(prompt_text):
+        if match.group(0) not in tokens:
+            tokens.append(match.group(0))
+    return tokens
+
+
+def _wakeup_check(project_dir, token):
+    """The `wakeup-check --format json` verdict for `token`, or None when it
+    cannot be had (an older binary, a timeout, unparseable output). Every
+    failure collapses to None: a hook that raised would cost the agent its
+    prompt."""
+    import subprocess as _sp
+
+    try:
+        result = _sp.run(
+            [cli_command(), "editor", "wakeup-check", "--token", token, "--format", "json"],
+            cwd=project_dir,
+            capture_output=True,
+            text=True,
+            timeout=_WAKEUP_CHECK_TIMEOUT_S,
+        )
+    except Exception:
+        return None
+    if result.returncode != 0:
+        return None
+    try:
+        verdict = json.loads(result.stdout)
+    except ValueError:
+        return None
+    return verdict if isinstance(verdict, dict) else None
+
+
+def _stale_wakeup_lines(project_dir, event_data):
+    """The `<stale-wakeup>` block for this prompt, or `[]`.
+
+    Only a token the editor itself judges STALE produces one; a LIVE or
+    WAITING wakeup, or one the editor could not judge, passes through
+    untouched."""
+    return _stale_wakeup_block(
+        _stale_wakeup_reasons(
+            event_data.get("prompt"), lambda token: _wakeup_check(project_dir, token)
+        )
+    )
+
+
+def _stale_wakeup_reasons(prompt_text, check):
+    """One reason per token in `prompt_text` that `check` judges STALE.
+
+    `check` maps a token to its `wakeup-check` verdict dict, or None when no
+    verdict could be had — which, like LIVE and WAITING, yields no reason."""
+    reasons = []
+    for token in _wakeup_tokens(prompt_text):
+        verdict = check(token)
+        if verdict and verdict.get("stale") is True:
+            reasons.append(verdict.get("reason") or "the workflow has moved on")
+    return reasons
+
+
+def _stale_wakeup_block(reasons):
+    """The `<stale-wakeup>` lines naming each reason, or `[]` for none."""
+    if not reasons:
+        return []
+    return [
+        "",
+        "<stale-wakeup>",
+        "STALE: dismiss without acting. This prompt is a fallback wakeup armed for "
+        "work that has already finished or belongs to another feature:",
+        *[f"  - {reason}" for reason in reasons],
+        "Run nothing it asks for — no `track-step`, no `advance`, no step command — "
+        "and do not re-fetch step context. Tell the user in one line that a leftover "
+        "wakeup fired and was dismissed. If a question to the user was open when it "
+        "arrived, ask that question again.",
+        "</stale-wakeup>",
+    ]
+
+
 def _step_reminder_due(project_dir, key):
     """True on the first reminder-bearing tool call for `key` and on every
     STEP_REMINDER_EVERY_N_CALLS-th call after it; counts this call either way."""
@@ -1060,8 +1161,14 @@ def main():
         print("</session-start-hook>")
         return
 
+    # Judged once, before anything else reads the prompt: a stale wakeup is
+    # neither a feature request to capture nor a request to route.
+    stale_wakeup_lines = (
+        _stale_wakeup_lines(project_dir, event_data) if event_type == "user_prompt" else []
+    )
+
     # ── Capture user's feature request prompt ──────────────────────────
-    if event_type == "user_prompt":
+    if event_type == "user_prompt" and not stale_wakeup_lines:
         prompt_text = event_data.get("prompt", "").strip()
         if prompt_text and not prompt_text.startswith("/"):
             should_capture = not os.path.exists(prompt_path)
@@ -1113,7 +1220,11 @@ def main():
         # build-vs-not call made before the request has been read. Advisory,
         # like every other directive this hook emits, and scoped to a real
         # user prompt: slash commands carry their own routing.
-        if event_type == "user_prompt":
+        if stale_wakeup_lines:
+            print("<user-prompt-submit-hook>")
+            print("\n".join(stale_wakeup_lines).strip("\n"))
+            print("</user-prompt-submit-hook>")
+        elif event_type == "user_prompt":
             entry_prompt = event_data.get("prompt", "").strip()
             if entry_prompt and not entry_prompt.startswith("/"):
                 print("<user-prompt-submit-hook>")
@@ -1244,6 +1355,7 @@ def main():
         ]
 
         # Up front, so the agent reads it before anything telling it to act.
+        lines.extend(stale_wakeup_lines)
         lines.extend(_foreign_prompt_lines(project_dir, event_data, step, mode))
 
         # One-shot per session: the tool-loading-protocol is a session-entry

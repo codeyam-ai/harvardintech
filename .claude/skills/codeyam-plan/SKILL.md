@@ -379,9 +379,11 @@ What it checks, and what it deliberately does not:
 
 | Section | Citation | Checked? |
 |---|---|---|
-| `## Implementation` | `**File**:` | Yes — you asserted it exists now |
-| `## Implementation` | `**New file**:` | No — you are about to create it |
-| `## Reused existing code` | paths and symbols | Yes — reuse presupposes existence |
+| `## Implementation` / `## Proposed changes` | `**File**:` | Yes — you asserted it exists now |
+| `## Implementation` / `## Proposed changes` | `**New file**:` | No — you are about to create it |
+| `## Implementation` / `## Proposed changes` | qualified symbols (`Type::method`, `self.view.x`) in prose | Yes, unless the line says it creates them ("Add", "new", "create") |
+| `## Reused existing code` | paths, symbols, qualified symbols | Yes — reuse presupposes existence |
+| `## Investigation`, `## Root cause`, `## Current behavior`, `## Background` | paths and qualified symbols | Yes — these describe the tree as it is (bare one-word symbols are not checked in prose) |
 | `## Reproduction Test` | anything | No — a proposed test names what is not there yet |
 | Any fenced code block | anything | No — fixtures are not citations |
 | `## Summary`, `## Key Decisions` | anything | No — prose names files illustratively |

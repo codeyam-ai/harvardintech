@@ -1071,6 +1071,25 @@ cost is per *cycle*, and a cheaper re-run is still a whole cycle — a
 batching the fixes that trigger it: see 8a's *land the whole set in ONE commit*
 before you fix the first red check.
 
+**Precondition — the strict audit reads ZERO gating findings before the first
+`session-finalize`.** The finalize is not the instrument that surfaces audit
+findings; it is the gate that confirms there are none. Before the block below:
+
+```bash
+codeyam-editor editor audit --format json        # the STRICT gather Phase 2 blocks on (see 4b's GOTCHA)
+codeyam-editor editor audit --only <INVARIANT_ID> # the fix loop, one finding at a time (`--only ?` lists ids)
+```
+
+Drive every non-`_ADVISORY` finding to zero — fix it, register it, or (only
+with the user's say-so, per 4b) accept it by name with `audit-baseline-add` —
+and only then start the finalize. A finalize started with a gating finding
+already known will block at Phase 0.6, after paying the full pre-audit cost
+described below, to tell you what the `audit` you already ran told you.
+`audit --only` answers the same question in 1–2 minutes. This is not optional
+on a branch carrying audit debt: on `editor-improvements-103` the agent held
+the first run's findings from `audit --format json` before starting it, and
+the two Phase 0.6 blocks that followed cost 69 minutes.
+
 ```bash
 # Stop fast-intent so finalize stamps the real marker, not a deferred one.
 codeyam-editor editor fast-commit-stop
@@ -1082,6 +1101,8 @@ codeyam-editor editor verify-merge-consistency # if that integrated a merge — 
 # When the branch carries platform surface (see "Cross-platform pitfalls"):
 # the finalize gates on these same checks, so get their verdict in ~90s first.
 codeyam-editor editor cross-check
+# Repaired a red Windows cross-target build on this branch? That suite has never
+# run — get its verdict with `windows-check` (see the MANDATE) before another round.
 
 # The full, whole-repo finalize. Stamps lastFullFinalizeSha.
 codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.log
@@ -1116,25 +1137,50 @@ codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.lo
 > it skips *every* hook, and `staticChecks` is the only thing between the pass
 > and a red CI.
 
-> **A Phase 0.6 block is the CHEAP failure, and on a branch carrying audit
-> debt it is the one to expect.** The finalize runs the strict audit *twice*:
-> once as a pre-audit before Phase 1's full suite (~45-50 min here), and again
-> as Phase 2 in its own position. The pre-audit blocks immediately on every
-> finding Phase 1 could not have changed — the not-cache-derived invariants
+> **A Phase 0.6 block is cheaper than a Phase 2 block — and still NOT cheap.
+> Do not budget it as a few minutes.** The finalize runs the strict audit
+> *twice*: once as a pre-audit before Phase 1's full suite, and again as Phase 2
+> in its own position. The pre-audit blocks on every finding Phase 1 could not
+> have changed — the not-cache-derived invariants
 > (`SOURCE_HAS_UNREGISTERED_ENTITY`, `SLUG_FILE_EXCEEDS_BUDGET`, the glossary
 > ones) plus any cache-derived finding whose partitions Phase 1 is going to
-> reuse anyway. So a `Phase 0.6/5:` block costs ~3 minutes, not ~52, and the
-> fix-then-rerun loop after it is minutes per turn rather than an hour.
-> Measured on `editor-improvements-88` before this existed:
-> `phase1=passed, phase2=failed, elapsed=3128.2s` for a verdict a standalone
-> `audit --only` reached in 100-190s.
+> reuse anyway — so it does spare you Phase 1. Measured on
+> `editor-improvements-88` before it existed: `phase1=passed, phase2=failed,
+> elapsed=3128.2s` for a verdict a standalone `audit --only` reached in
+> 100-190s.
+>
+> But "hoisted ahead of the full suite" is not "first". Phase 0.6 still runs
+> behind Phase 0 (session-cleanup), Phase 0.5 (`verify-build` + the
+> cross-target build), Phase 0.55, and its own reconciliation pre-check, and
+> then performs a full strict audit — which on this repo alone has measured
+> 641s on one machine and ~20 minutes on another. An earlier revision of this
+> paragraph said a Phase 0.6 block "costs ~3 minutes". That figure dated from a
+> much cheaper audit and is wrong by an order of magnitude. Measured on `editor-improvements-103`, from the
+> finalize log:
+>
+> | runId | outcome | elapsed |
+> |---|---|---|
+> | `59d6caa2` | Phase 0.6 BLOCKED (`UNCOVERED_GLOSSARY_ENTRY: 22`, `CHANGE_ITEM_LACKS_VERIFY: 1`) | 2098.6s (35 min) |
+> | `cdd75c20` | Phase 0.6 BLOCKED (`SOURCE_HAS_UNREGISTERED_ENTITY: 1`) | 2060.6s (34 min) |
+>
+> **Derive the figure for the repo in front of you rather than quoting one.**
+> Any constant here ages as the audit grows, which is how the old one went
+> wrong. Two sources record real time. The standalone audit's own cost is the
+> `timings` block of `codeyam-editor editor audit --timings --format json`.
+> `audit-history` records verdicts and counts, not durations, so it cannot
+> answer this. A whole blocked finalize's cost is the `elapsed=` on its run-end
+> line in `.codeyam/logs/session-finalize.log`, or in its run-keyed transcript.
+> Read the pre-audit's price as *everything up to and including one strict
+> audit*. The consequence is the precondition above: a known gating finding
+> goes to `audit --only`, never to a finalize.
 >
 > Findings it *cannot* settle — ones derived from runner output a partition
 > Phase 1 will re-run produces — are reported as deferred and left to Phase 2,
 > which remains the authority. A clean pre-audit therefore proves nothing about
-> merge-readiness on its own; only Phase 2 advances the marker. Budget one extra
-> ~3 min audit (~6%) on a run where nothing is wrong: the asymmetry is 3 minutes
-> against 52.
+> merge-readiness on its own; only Phase 2 advances the marker. On a run where
+> nothing is wrong, the pre-audit is one extra strict audit: a real cost, worth
+> paying because the alternative is the whole Phase 1 suite before Phase 2
+> reports the same block.
 
 > GOTCHA — **the marker-stamp trap.** A `session-finalize` that *skips* the
 > comprehensive whole-repo phase can leave `lastFullFinalizeSha` unstamped even
@@ -1467,15 +1513,18 @@ the size of the fix, run this loop instead, in order:
    and carry on — the next sync picks up that fix. `landed <sha>` means sync.
 5. **Otherwise take it and fix it.** `test-fix-claim take <test>` (it takes
    over a claim whose holder went quiet, and says so), fix it, and commit the
-   fix ON ITS OWN as `fix: …` with a `Codeyam-Fixes: <test>` trailer — unless
-   `git diff <base>..HEAD` shows this branch touched the test or the code it
-   covers, in which case the fix belongs in the feature commit. Then
+   fix ON ITS OWN as `fix: …` with a `Codeyam-Fixes: <test>` trailer. Then
    `codeyam-editor editor push --fix-only <commit>` ships that one commit
    without touching your tree or your unpushed feature work, and marks the
-   claim landed.
+   claim landed. Only if `--fix-only` refuses because the fix does not apply
+   onto origin without this branch's feature edits, fold it into the feature
+   commit: `codeyam-editor editor journal-commit-message` adds the
+   `Codeyam-Fixes:` trailer for every claim this session holds, and the
+   regular `push` stamps those claims landed.
 
-"Is it mine?" only decides where the fix is committed, never whether it is
-made. `editor test-on-base` still exists for a person who wants that question
+Every fix travels on its own by default, because a fix hidden in an unpushed
+feature commit is invisible to every other machine until the feature lands.
+"Is it mine?" never decides whether the fix is made. `editor test-on-base` still exists for a person who wants that question
 answered by hand; it is no longer a step in this procedure.
 
 **Clear `REGISTRY_HAS_FOREIGN_HOST_GATED_TEST` mechanically, never by hand.** A
@@ -1603,6 +1652,12 @@ footguns behind each (all observed in real CI-fix rounds):
   matrix where every *run* job is green can have skipped a whole platform, and
   any pre-existing failures on that platform stay invisible. A green CI run is
   not proof a platform was exercised; a *skipped* build's tests never ran.
+  **A skipped platform job is never a neutral result** — it is "no verdict",
+  and it reaches every decision that assumed CI would supply one, not just the
+  Windows build it is usually explained with. On `editor-improvements-103` a
+  `build-rust-linux-archive` killed by SIGTERM skipped the ubuntu `test-rust`
+  job, which was the very job a `--without-linux-suite` waiver had been
+  accepted on — so the branch had no Linux verdict anywhere, local or CI.
 
 **MANDATE — when this surface is present, run the local repros BEFORE the first
 `session-finalize`, not after it (and never after CI tells you):** the finalize
@@ -1632,7 +1687,14 @@ reported the identical `[FAIL] windows-clippy` in ~1.5 minutes.
   surface with a `crossPlatformTestCommand` configured is refused before Phase 1
   (exit `2`) unless you pass `--linux`, or `--without-linux-suite "<why>"` when
   this machine genuinely cannot run it. The waiver is logged as unverified; it
-  is the user's call, so ask before using it.
+  is the user's call, so ask before using it. **A waiver carries a post-push
+  obligation.** Its only justification is that CI's Linux test job supplies
+  the verdict instead, so after the first CI run on the waived branch, confirm
+  that job actually RAN — on this repo, that `assert-platform-suites-ran`
+  passed. A Linux test job that was skipped (because its build job failed,
+  was cancelled, or was killed) means the waiver is **unmet**: the branch has
+  no Linux verdict at all. Fix or re-run the build until the suite runs; do not
+  merge on the waiver alone.
 - `codeyam-editor editor windows-check` — the Windows verdict. `cross-check`
   only COMPILES for Windows; it never runs a Windows test or touches a Windows
   filesystem, so a green `windows-clippy` says nothing about a `MAX_PATH`
@@ -1641,7 +1703,17 @@ reported the identical `[FAIL] windows-clippy` in ~1.5 minutes.
   input on the pushed tip (`--run <id>` reads the verdict back). Run it BEFORE
   a `--start-from-phase 2` re-stamp, not after — a Windows fix verified this
   way costs one ~25-minute narrowed run instead of a re-stamp plus a full CI
-  round.
+  round. **It is MANDATORY whenever the Windows suite was previously DARK** —
+  a commit on this branch repaired a red Windows cross-target build, or the
+  last CI run's `assert-platform-suites-ran` (or your CI's equivalent) reported
+  the Windows test job skipped. Fixing the build is what lets that suite run
+  for the first time, so every failure in it is still unseen. With a local
+  `crossPlatformTestCommand.windows` runner, run it before pushing; without
+  one, run it on the push that carries the repair, before any further fix
+  round or re-stamp. Measured on `editor-improvements-103`: `04dafd6af`
+  repaired the windows-gnu build, the branch went straight to full CI, and two
+  rounds (runs `40202657897`, `40215887712`) surfaced 6 and then 4 Windows
+  failures that one `windows-check` would have shown together.
 - **CI's test runner, not just CI's platforms.** None of the three verdicts
   above runs the suite the way CI does when CI uses a different runner from the
   local gates. On a Rust workspace whose CI runs `cargo nextest` under a
@@ -1657,7 +1729,11 @@ reported the identical `[FAIL] windows-clippy` in ~1.5 minutes.
 
 When a cross-target build fails, expect the skipped-platform-test-job trap:
 finalize names it explicitly, and you must treat that platform's tests as
-UNVERIFIED until the build is fixed and its suite actually runs.
+UNVERIFIED until the build is fixed and its suite actually runs. "Actually
+runs" is something to confirm, not assume: both halves of the MANDATE above —
+`windows-check` after a dark Windows suite, and the waiver's post-push check —
+exist because a platform verdict was taken as something CI would provide
+without anyone reading whether CI provided it.
 
 ---
 

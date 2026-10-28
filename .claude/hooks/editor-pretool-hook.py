@@ -51,6 +51,7 @@ environment or the event — so nothing on the enforcement path can
 reach it.
 """
 
+import collections
 import hashlib
 import json
 import os
@@ -1796,9 +1797,27 @@ _PGREP_LONG_VALUE_FLAGS = frozenset(
     )
 )
 
-# One `pgrep` invocation, up to the next command boundary. `|` is a boundary so
-# a `| grep -v $$` filter is not swallowed into the flag scan.
-_PGREP_CALL = re.compile(r"\bpgrep\b([^;|&\n()]*)")
+# Where a `pgrep` invocation starts within one command. Where it ENDS is the end
+# of that command, as `_split_commands` cuts it.
+_PGREP_WORD = re.compile(r"\bpgrep\b")
+
+
+def _pgrep_calls(command):
+    """The argument text of every `pgrep` invocation in `command`, each cut at
+    the next UNQUOTED command boundary.
+
+    `|` is a boundary so a `| grep -v $$` filter is not swallowed into the flag
+    scan — but only outside quotes. A character-class regex cannot tell the
+    two apart, and cut `pgrep -f "cargo-clippy|clippy-driver"` at the `|`
+    inside the pattern; the truncated text then failed to tokenize and the
+    loop went unflagged. Observed 2026-10-24 on VM 8: that loop matched itself
+    and the session sat idle for 2h50m. So the cut is `_split_commands`'s, the
+    one quote-aware scanner every other guard already shares."""
+    return [
+        segment[match.end():]
+        for segment in _split_commands(command)
+        for match in _PGREP_WORD.finditer(segment)
+    ]
 
 # A wait loop, in the two halves that have to BOTH be present. The keyword
 # alone matches `for f in *.rs` on one line of a longer command; the body alone
@@ -1886,8 +1905,8 @@ def self_matching_pgrep_loop(command):
         return None
     if "$$" in command:
         return None
-    for match in _PGREP_CALL.finditer(command):
-        pattern = _pgrep_full_pattern(match.group(1))
+    for call in _pgrep_calls(command):
+        pattern = _pgrep_full_pattern(call)
         if not pattern:
             continue
         try:
@@ -1975,7 +1994,7 @@ def _source_patterns(source):
     """The full-argv patterns a pid-list producer `source` matches against:
     every `pgrep -f` operand, and — when it runs `ps` — every `grep PAT` /
     `awk '/PAT/'` filter. `grep -v` stages exclude rather than match."""
-    patterns = [_pgrep_full_pattern(m.group(1)) for m in _PGREP_CALL.finditer(source)]
+    patterns = [_pgrep_full_pattern(call) for call in _pgrep_calls(source)]
     patterns = [p for p in patterns if p]
     if _PS_CALL.search(source):
         for stage in source.split("|"):
@@ -2248,15 +2267,22 @@ def _lex_shell_words(command):
     return commands, heredocs
 
 
+def _redirect_word_count(tok):
+    """How many words the redirect `tok` occupies: 2 when its target is the
+    next word (`> out`, `2>> log`), 1 when it is attached (`>out`, `2>&1`)."""
+    return 2 if tok.rstrip("0123456789&<>") == "" and tok[-1] in "<>" else 1
+
+
 def _interpreter_code_source(texts, index, lang):
     """Where the interpreter at `texts[index]` reads its program from:
-    `("arg", word_index)` for `-c`/`-e` code, `("stdin", None)`, or
-    `("file", None)` for a script or module operand."""
+    `("arg", word_index)` for `-c`/`-e` code, `("stdin", None)`,
+    `("file", word_index)` for a script operand, or `("file", None)` for a
+    module (`-m`) or an operand this cannot place."""
     j = index + 1
     while j < len(texts):
         tok = texts[j]
         if _REDIRECT_TOKEN.match(tok):
-            j += 2 if tok.rstrip("0123456789&<>") == "" and tok[-1] in "<>" else 1
+            j += _redirect_word_count(tok)
             continue
         if tok == "-":
             return ("stdin", None)
@@ -2275,8 +2301,90 @@ def _interpreter_code_source(texts, index, lang):
         if tok.startswith("-"):
             j += 1
             continue
-        return ("file", None)
+        return ("file", j)
     return ("stdin", None)
+
+
+def _shell_script_operand(texts, index):
+    """The word index of the script a shell at `texts[index]` runs (`bash
+    fix.sh`), or None when it runs `-c` code, reads stdin, or names none. The
+    shell sibling of `_interpreter_code_source`, kept apart so the Python/JS
+    rules stay unchanged."""
+    j = index + 1
+    while j < len(texts):
+        tok = texts[j]
+        if _REDIRECT_TOKEN.match(tok):
+            j += _redirect_word_count(tok)
+            continue
+        if tok in ("-", "--") or (tok.startswith("-") and ("c" in tok or "s" in tok)):
+            return None
+        if tok in ("-o", "-O", "+o", "+O"):
+            j += 2
+            continue
+        if tok.startswith(("-", "+")):
+            j += 1
+            continue
+        return j
+    return None
+
+
+def _script_operand(texts):
+    """`(word_index, lang)` of the script file the program in command position
+    of a lexed command runs, or None when it runs none — `-c` code, stdin, a
+    module, or a program that is not an interpreter."""
+    wi = _command_word_index(texts)
+    if wi is None:
+        return None
+    program = _program_name(texts[wi])
+    if _PYTHON_INTERPRETER.match(program) or program in _JS_INTERPRETERS:
+        lang = "py" if _PYTHON_INTERPRETER.match(program) else "js"
+        kind, operand = _interpreter_code_source(texts, wi, lang)
+        if kind != "file":
+            return None
+    elif program in _SCRIPT_INTERPRETERS:
+        lang, operand = "sh", _shell_script_operand(texts, wi)
+    else:
+        return None
+    if operand is None or not texts[operand]:
+        return None
+    return operand, lang
+
+
+def _script_operands(command):
+    """`(path, position, lang)` for every script file an interpreter in
+    `command` runs: `python3 [-I] x.py`, `node x.js`, `bash x.sh`. `path` is the
+    operand as written, `position` its raw index (for `_cd_directory`), and
+    `lang` `"py"`, `"js"` or `"sh"`. Only an interpreter in command position
+    counts, so `grep python3 tool.py` names no script."""
+    lexed = _lex_shell_words(command)
+    if lexed is None:
+        return []
+    operands = []
+    for words in lexed[0]:
+        found = _script_operand([w[0] for w in words])
+        if found:
+            operand, lang = found
+            operands.append((words[operand][0], words[operand][1], lang))
+    return operands
+
+
+def _same_file(a, b):
+    """True when two shell paths, each already joined onto the directory it was
+    written in, name the same file."""
+    return os.path.normpath(a) == os.path.normpath(b)
+
+
+def _redirect_target(texts):
+    """The file a lexed command truncates or appends to with `>`/`>>`, or None."""
+    for wi, tok in enumerate(texts):
+        match = re.match(r"^[0-9&]*>>?(.*)$", tok)
+        if not match:
+            continue
+        if match.group(1):
+            return match.group(1)
+        if wi + 1 < len(texts):
+            return texts[wi + 1]
+    return None
 
 
 def _code_literal_spans(command, region, lang):
@@ -2357,13 +2465,46 @@ def _quoted_region(command, word):
     return region
 
 
-def _command_program(texts):
-    """The program a lexed command runs, past wrappers and assignments."""
-    for tok in texts:
+def _command_word_index(texts):
+    """The index of the word a lexed command runs, past wrappers and
+    assignments, or None when every word is one of those."""
+    for wi, tok in enumerate(texts):
         if tok in _COMMAND_PREFIXES or _ASSIGNMENT.match(tok):
             continue
-        return _program_name(tok)
-    return ""
+        return wi
+    return None
+
+
+def _command_program(texts):
+    """The program a lexed command runs, past wrappers and assignments."""
+    wi = _command_word_index(texts)
+    return "" if wi is None else _program_name(texts[wi])
+
+
+def _heredocs_run_as_scripts(command, commands, owners):
+    """`{owner: lang}` for each heredoc owner in `owners` that redirects its
+    body into a file a py/js interpreter elsewhere in `command` runs.
+
+    `cat > x.py <<'EOF' … EOF` then `python3 x.py`: the body is the program the
+    interpreter runs, so it is code, not the data a bare `cat` makes it. A
+    shell-run body needs no entry — `bash` already fails the command closed."""
+    run_as = {}
+    scripts = _script_operands(command)
+    for owner in owners:
+        words = commands[owner]
+        target = _redirect_target([w[0] for w in words]) if words else None
+        if not target:
+            continue
+        written = _join_onto(_cd_directory(command, words[0][1]), [target])[0]
+        for path, position, lang in scripts:
+            if lang not in ("py", "js"):
+                continue
+            if words[0][1] <= position < words[-1][2]:
+                continue
+            ran = _join_onto(_cd_directory(command, position), [path])[0]
+            if _same_file(written, ran):
+                run_as[owner] = lang
+    return run_as
 
 
 def write_construct_data_spans(command):
@@ -2414,6 +2555,9 @@ def write_construct_data_spans(command):
                     stdin_code[ci] = lang
                 else:
                     fail_closed = True
+    stdin_code.update(
+        _heredocs_run_as_scripts(command, commands, heredoc_owners - set(stdin_code))
+    )
     for owner, body_start, body_end in heredocs:
         if owner in stdin_code:
             region = [(command[i], i) for i in range(body_start, body_end)]
@@ -2921,16 +3065,39 @@ def _join_onto(directory, paths):
     ]
 
 
-def _cd_directory(command, position):
+def session_start_directory(cwd, project_dir):
+    """The directory a command starts in, as `_cd_directory` composes it: `""`
+    for the project root (or no `cwd` at all), a project-relative prefix for a
+    `cwd` inside the project, and the absolute `cwd` for one outside it.
+
+    `cwd` is the PreToolUse payload's field — the Bash tool's working directory,
+    which persists between calls. VM23 ced4fbc0 ran `cd crates/cad-core/src` in
+    one call and `python3 - <<'EOF'` with `p='domains/landscape/takeoff.rs'` in a
+    later one; read against the repo root, that path named nothing git tracks,
+    and the rewrite of tracked source went through unrefused. Pure."""
+    if not isinstance(cwd, str) or not os.path.isabs(cwd):
+        return ""
+    cwd = os.path.normpath(cwd)
+    if cwd == os.path.normpath(project_dir):
+        return ""
+    try:
+        rel = os.path.relpath(cwd, project_dir)
+    except ValueError:
+        return cwd
+    return cwd if rel.startswith("..") else rel
+
+
+def _cd_directory(command, position, start=""):
     """The directory the shell is in at `position`, as set by the `cd`s that
-    precede it — `""` when none did, None when one could not be resolved.
+    precede it — `start` when none did, None when one could not be resolved.
+    `start` is `session_start_directory`'s answer; `""` is the project root.
 
     A `cd` inside a subshell or `$(…)` that has closed before `position` no
     longer applies and is skipped. An unresolvable `cd` makes the answer
     unknown until a later absolute `cd` re-anchors it, which keeps the
     caller's repo-relative reading — the fail-closed direction."""
     shell = elide_heredoc_bodies(command[:position], keep_programs=False)
-    directory = ""
+    directory = start
     for match in _CD_CALL.finditer(shell):
         if _cd_scope_closed(shell, match.end()):
             continue
@@ -2944,22 +3111,24 @@ def _cd_directory(command, position):
     return directory
 
 
-def _rebased_on_cd(command, position, paths):
+def _rebased_on_cd(command, position, paths, start=""):
     """`paths` with each relative entry joined onto the directory a preceding
     `cd` moved the shell to (see `_cd_directory`).
 
     One session ran `cd <scratchpad> && cat > Cargo.toml <<'EOF'` and was
     refused for rewriting the project's own `Cargo.toml`: the relative name was
     read against the repo root, as if the `cd` had not happened."""
-    return _join_onto(_cd_directory(command, position), paths)
+    return _join_onto(_cd_directory(command, position, start), paths)
 
 
 # Where an in-place `sed`/`perl` sits, so its operands can be rebased too.
 _INPLACE_PROGRAM = re.compile(r"\b(?:sed|perl)\b")
 
 
-def write_targets(command):
-    """Parse `command` for in-process file-write constructs.
+def write_targets(command, start=""):
+    """Parse `command` for in-process file-write constructs. Relative targets
+    are rebased onto the directory the command runs in — `start` (see
+    `session_start_directory`) composed with any `cd` before the write.
 
     Returns `(explicit, opaque, append_only)`: `explicit` lists the paths the
     command writes to — literal, or resolved from a variable bound to a
@@ -2990,7 +3159,7 @@ def write_targets(command):
         if resolved is None:
             opaque = True
         else:
-            explicit.extend(_rebased_on_cd(command, position, resolved))
+            explicit.extend(_rebased_on_cd(command, position, resolved, start))
 
     for match in _OPEN_CALL.finditer(command):
         if _in_spans(match.start(), data):
@@ -3038,11 +3207,12 @@ def write_targets(command):
         truncating = True
         # The operands carry no position, so they are rebased only when every
         # in-place editor in the command runs in the SAME directory; otherwise
-        # they keep the repo-relative reading.
+        # they keep the reading from the directory the command started in.
         directories = {
-            _cd_directory(command, m.start()) for m in _INPLACE_PROGRAM.finditer(command)
+            _cd_directory(command, m.start(), start)
+            for m in _INPLACE_PROGRAM.finditer(command)
         }
-        directory = directories.pop() if len(directories) == 1 else None
+        directory = directories.pop() if len(directories) == 1 else start
         if paths is None:
             add(None, 0)
         else:
@@ -3063,6 +3233,9 @@ def _repo_relative(path, project_dir):
             return None
     else:
         rel = path
+    # A session-cwd prefix composed with an in-command `cd ..` reads
+    # `crates/app/src/../x.rs`; git wants the collapsed `crates/app/x.rs`.
+    rel = os.path.normpath(rel).replace(os.sep, "/")
     while rel.startswith("./"):
         rel = rel[2:]
     if not rel or rel.startswith(".."):
@@ -3199,7 +3372,7 @@ def _offending_stage(stages):
     return ""
 
 
-def scripted_rewrite_stage(command, project_dir):
+def scripted_rewrite_stage(command, project_dir, cwd=None):
     """`(tracked_path, stage, stage_count, append_only, target_inferred)` when
     `command` writes tracked source off-transcript, else None. `stage` is `""`
     when the offending half cannot be attributed; `append_only` is
@@ -3228,35 +3401,229 @@ def scripted_rewrite_stage(command, project_dir):
     half of a compound command. One session ran `cp <file> <backup> && perl
     -0pi …`; the whole call was refused, so the backup never happened and the
     agent lost its safety net without being told — the splitter knew both
-    stages and the refusal named only a file."""
-    return scripted_rewrite_verdict(command, project_dir)[0]
+    stages and the refusal named only a file.
+
+    `cwd` is the session's working directory (see `session_start_directory`);
+    None reads relative paths against the repo root, as before it existed."""
+    return scripted_rewrite_verdict(command, project_dir, cwd)[0]
 
 
-def scripted_rewrite_verdict(command, project_dir):
+def scripted_rewrite_verdict(command, project_dir, cwd=None):
     """`(found, consulted)`: `scripted_rewrite_stage`'s tuple (or None) plus
     the phrase naming how tracked-ness was decided, which the refusal's
     evidence must state truthfully — "consulted git ls-files" on a verdict
     that git never answered would hide the very degradation it is reporting."""
-    explicit, opaque, append_only = write_targets(command)
-    if not explicit and not opaque:
-        return None, ""
-    candidates = _path_tokens(command) if opaque else explicit
+    return scripted_rewrite_details(command, project_dir, cwd)[:2]
+
+
+# A script larger than this is not read: the hook answers inside a ~5s budget,
+# and an agent's scratch rewrite script is a few KiB.
+_MAX_SCRIPT_BYTES = 256 * 1024
+# Directories a run script is never read from: installed packages and build
+# output are not agent-authored rewrites.
+_UNREAD_SCRIPT_DIRS = frozenset(("node_modules", "target"))
+
+
+def script_run_write_targets(command, project_dir, start=""):
+    """The write targets inside every script file `command` runs, one
+    `(script, explicit, opaque, append_only, mentions)` per script that has a
+    write construct. `explicit` and `mentions` are rebased onto the directory
+    the interpreter runs in — where `open('x.rs', 'w')` actually lands.
+
+    VM21 4405d5c1 wrote `split_list.py` to its scratchpad, with
+    `open('/workspace/crates/app/src/mcp/tools.rs', 'w')` in it, then ran
+    `python3 <scratchpad>/split_list.py`. The run command carries no write
+    construct of its own, so the inline guard never saw the rewrite. A script
+    that is missing, unreadable, oversized, or not a regular file is skipped —
+    refusing every `python3 tool.py` the hook cannot read would block
+    legitimate tooling.
+
+    A script git TRACKS is skipped too. It is project tooling, reviewed as
+    source in its own right, and an agent's scratch rewrite is untracked by
+    definition. Without this, running 130 of this repo's own scripts
+    (`bash scripts/check-*.sh`, `node npm/*.js`) was refused through the
+    mentioned-path fallback. When git cannot answer, the script is skipped,
+    the same fail-open as an unreadable file."""
+    found = []
+    for path, position, _ in _script_operands(command):
+        directory = _cd_directory(command, position, start)
+        if directory is None:
+            continue
+        on_disk = os.path.join(project_dir, directory, os.path.expanduser(path))
+        text = _read_run_script(on_disk, project_dir)
+        if text is None:
+            continue
+        explicit, opaque, append_only = write_targets(text)
+        if explicit or opaque:
+            found.append((
+                path,
+                _join_onto(directory, explicit),
+                opaque,
+                append_only,
+                _join_onto(directory, _path_tokens(text)),
+            ))
+    return found
+
+
+def _read_run_script(on_disk, project_dir):
+    """The text of the script at `on_disk`, or None when the guard does not read
+    it: under an unread directory, tracked by git (or git could not say),
+    missing, not a regular file, oversized, or unreadable. Every None is the
+    fail-open direction — see `script_run_write_targets`."""
+    if set(os.path.normpath(on_disk).split(os.sep)) & _UNREAD_SCRIPT_DIRS:
+        return None
+    rel = _repo_relative(os.path.normpath(on_disk), project_dir)
+    if rel and _git_ls_files([rel], project_dir) != []:
+        return None
+    try:
+        if not os.path.isfile(on_disk) or os.path.getsize(on_disk) > _MAX_SCRIPT_BYTES:
+            return None
+        with open(on_disk, encoding="utf-8", errors="replace") as handle:
+            return handle.read()
+    except OSError:
+        return None
+
+
+# One place a write was found: the command's own text (`script == ""`) or a
+# script file it runs. `mentions` is filled only for an opaque write, whose
+# candidates are every path the source mentions rather than `explicit`.
+_WriteSource = collections.namedtuple(
+    "_WriteSource", "explicit opaque append_only mentions script"
+)
+
+
+def _rewrite_sources(command, project_dir, start=""):
+    """Every `_WriteSource` in `command`: its own text when that carries a write
+    construct, then one per script file it runs that does. Relative paths are
+    read from `start`, the directory the command begins in."""
+    sources = []
+    explicit, opaque, append_only = write_targets(command, start)
+    if explicit or opaque:
+        mentions = _join_onto(start, _path_tokens(command)) if opaque else []
+        sources.append(_WriteSource(explicit, opaque, append_only, mentions, ""))
+    for script, s_explicit, s_opaque, s_append, mentions in script_run_write_targets(
+        command, project_dir, start
+    ):
+        sources.append(
+            _WriteSource(s_explicit, s_opaque, s_append, mentions if s_opaque else [], script)
+        )
+    return sources
+
+
+def _script_carrying(sources, target, target_resolved, project_dir):
+    """The `script` of the first source that names `target` — by an explicit
+    write when the target was resolved, by a mention when it was inferred —
+    or `""` when that is the command's own text."""
+    for source in sources:
+        paths = source.explicit if target_resolved else source.mentions
+        if target in eligible_pathspecs(paths, project_dir):
+            return source.script
+    return ""
+
+
+def scripted_rewrite_details(command, project_dir, cwd=None):
+    """`(found, consulted, script)`: `scripted_rewrite_verdict`'s pair plus the
+    script file, as the command names it, whose contents carry the write — or
+    `""` when the command's own text does. The refusal names that script, so a
+    one-word `python3 x.py` is not told it "contains `open(p, 'w')`"."""
+    sources = _rewrite_sources(command, project_dir, session_start_directory(cwd, project_dir))
+    if not sources:
+        return None, "", ""
+    candidates = []
+    for source in sources:
+        candidates.extend(source.mentions if source.opaque else source.explicit)
     tracked, consulted = tracked_source_lookup(candidates, project_dir)
     if not tracked:
-        return None, consulted
-    resolved = eligible_pathspecs(explicit, project_dir)
+        return None, consulted, ""
+    resolved = eligible_pathspecs([p for s in sources for p in s.explicit], project_dir)
     target = next((path for path in tracked if path in resolved), tracked[0])
+    script = _script_carrying(sources, target, target in resolved, project_dir)
+    append_only = all(s.append_only for s in sources)
     stages = _split_commands(command)
     found = (target, _offending_stage(stages), len(stages), append_only, target not in resolved)
-    return found, consulted
+    return found, consulted, script
 
 
-def scripted_source_rewrite_target(command, project_dir):
+def scripted_source_rewrite_target(command, project_dir, cwd=None):
     """The git-tracked source file a scripted in-process rewrite would clobber,
     or None when `command` is not one. The verdict half of
     `scripted_rewrite_stage`, for callers that need only the path."""
-    found = scripted_rewrite_stage(command, project_dir)
+    found = scripted_rewrite_stage(command, project_dir, cwd)
     return found[0] if found else None
+
+
+# --- Split-by-script notice ------------------------------------------------
+#
+# The scripted-rewrite guard judges only TRACKED write targets, so a script that
+# reads a tracked source file and writes its content out into NEW files passes
+# it: the new files stay untracked until staged. Two file splits on 2026-10-24/25
+# were done exactly that way (VM 10 `wait_for/`, VM 18 `branch_queue/`), and VM
+# 10's awk mis-counted a function's end mid-split. Content moved out of a
+# tracked file is tracked source in every way that matters, since a reviewer
+# reads it as a diff. So this WARNS rather than refuses: a generator that writes
+# fresh output beside its input has the same shape, and the hook cannot tell
+# the two apart.
+
+
+def is_split_destination(source, written):
+    """True when `written` sits where content split out of `source` would land:
+    same suffix, and either inside `source`'s directory (`src/a.rs` →
+    `src/a/b.rs`, `src/b.rs`) or, for a file at the repo root, under a
+    directory named for it (`setup.py` → `setup/x.py`). Pure."""
+    stem, suffix = os.path.splitext(source)
+    if written == source or os.path.splitext(written)[1].lower() != suffix.lower():
+        return False
+    parent = os.path.dirname(source)
+    return written.startswith(f"{parent}/" if parent else f"{stem}/")
+
+
+def split_by_script_target(command, project_dir):
+    """`(source, written)` when `command` writes an UNTRACKED source file at a
+    split destination (`is_split_destination`) of a tracked source file it also
+    names, else None.
+
+    Only RESOLVED write targets are judged. An opaque target already falls back
+    to every tracked path the command mentions in `scripted_rewrite_verdict`,
+    which refuses, so this notice would never be reached for it."""
+    explicit, _, _ = write_targets(command)
+    written = eligible_pathspecs(explicit, project_dir)
+    if not written:
+        return None
+    already_tracked = set(tracked_source_paths(written, project_dir))
+    new_files = [path for path in written if path not in already_tracked]
+    if not new_files:
+        return None
+    mentioned = [
+        path
+        for path in eligible_pathspecs(_path_tokens(command), project_dir)
+        if path not in written
+    ]
+    sources = tracked_source_paths(mentioned, project_dir)
+    for new_file in new_files:
+        for source in sources:
+            if is_split_destination(source, new_file):
+                return source, new_file
+    return None
+
+
+def split_by_script_notice(source, written):
+    """The non-blocking warning for a `split_by_script_target` match. Names
+    both paths and the Edit-based way to move code. Pure."""
+    return (
+        f"WARNING (split-by-script): this command reads the tracked source file "
+        f"`{source}` and writes the new file `{written}` beside it, which is the "
+        f"shape of splitting a file by script. Content moved out of a tracked file "
+        f"counts as tracked source for CLAUDE.md's Edit-tool rule, even though the "
+        f"new file stays untracked until it is staged. A script's diff is computed "
+        f"at runtime, so a reviewer never sees what moved. And a script that counts "
+        f"braces or function ends parses the language with the wrong grammar: an "
+        f"awk split once cut a function in half. Instead, create the new file with "
+        f"Write, holding the moved items verbatim. Delete them from `{source}` with "
+        f"Edit, and let the compiler's errors list the imports to fix. "
+        f"`{cli_command()} editor rename-symbol` renames an identifier across "
+        f"source, glossary and registry. This command is NOT blocked: if it is a "
+        f"generator writing fresh output, carry on."
+    )
 
 
 # ── line-budget guard ──────────────────────────────────────────────────
@@ -3507,7 +3874,31 @@ def _inferred_target_refusal(path, append_only):
     )
 
 
-def scripted_rewrite_refusal(path, append_only=False, target_inferred=False):
+def _script_run_refusal(path, append_only, target_inferred, script):
+    """`scripted_rewrite_refusal` for a write found inside the script file
+    `script` rather than in the command. Its first sentence — the claim about
+    what THIS command does — is replaced with one about running the script; the
+    explanation and the recovery are the command-text variant's, unchanged."""
+    reason, next_action = scripted_rewrite_refusal(path, append_only, target_inferred)
+    if target_inferred:
+        construct = "an append" if append_only else "a scripted write"
+        claim = (
+            f"the script `{script}` this command runs performs {construct} "
+            f"whose destination could not be resolved statically, and "
+            f"`{path}` is a tracked source file the script mentions — so it "
+            f"is refused as if it wrote that file"
+        )
+    else:
+        verb = "would append to" if append_only else "would rewrite"
+        claim = f"running `{script}` {verb} the tracked source file `{path}`"
+    return (
+        f"{claim}. The hook read the script: a script file is an inline "
+        f"heredoc with one extra step. " + reason.split(". ", 1)[-1],
+        next_action,
+    )
+
+
+def scripted_rewrite_refusal(path, append_only=False, target_inferred=False, script=""):
     """The `(reason, next_action)` pair for a refused scripted write. Names the
     path that matched and the sanctioned alternatives — batching is the reason
     agents reach for a script, so the refusal has to answer it.
@@ -3524,7 +3915,13 @@ def scripted_rewrite_refusal(path, append_only=False, target_inferred=False):
     `replace_all` / `rename-symbol` answers "add 100 lines to the end". Calling
     it a rewrite and offering replace-shaped recoveries left the agent to
     re-read the file tail and synthesize an anchor by hand — the round trip
-    that made this the most-hit block on the fleet."""
+    that made this the most-hit block on the fleet.
+
+    `script` names the file a run interpreter reads its program from when the
+    write lives there rather than in the command (`python3 x.py`), so the
+    reason says what running it would do."""
+    if script:
+        return _script_run_refusal(path, append_only, target_inferred, script)
     if target_inferred:
         return _inferred_target_refusal(path, append_only)
     if append_only:
@@ -5340,13 +5737,20 @@ def main():
     # tracked source holds in every session — so it fires before the
     # `CODEYAM_EDITOR_ACTIVE` short-circuit below.
     if tool_name == "Bash":
-        found, consulted = scripted_rewrite_verdict(tool_input.get("command", ""), project_dir)
+        # The Bash tool's cwd persists between calls, so a `cd` in an EARLIER
+        # call decides where this command's relative paths land.
+        session_cwd = event.get("cwd")
+        found, consulted, script = scripted_rewrite_details(
+            tool_input.get("command", ""), project_dir, session_cwd
+        )
         if found:
             rewrite_target, stage, stage_count, append_only, target_inferred = found
             reason, next_action = scripted_rewrite_refusal(
-                rewrite_target, append_only, target_inferred
+                rewrite_target, append_only, target_inferred, script
             )
             evidence = resolved_context(project_dir, consulted)
+            if session_start_directory(session_cwd, project_dir):
+                evidence = f"{evidence}; session cwd {session_cwd}"
             compound = compound_stage_evidence(stage, stage_count)
             if compound:
                 evidence = f"{evidence}; {compound}"
@@ -5359,6 +5763,11 @@ def main():
                 evidence=evidence,
                 call=call,
             )
+        # Its non-blocking twin, same scope: a split into untracked files passes
+        # the guard above, and is still a scripted move of tracked source.
+        split = split_by_script_target(tool_input.get("command", ""), project_dir)
+        if split:
+            notice("split-by-script", split_by_script_notice(*split))
 
     # Preview-origin hand-write guard. Same scope as the guard above: a
     # half-applied origin switch breaks the preview in any session.

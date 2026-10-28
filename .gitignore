@@ -82,6 +82,10 @@ blob-report/
 .codeyam/setup-connections.json
 .codeyam/session-token
 .codeyam/agent-home/
+core
+!core/
+core.[0-9]*
+vgcore.*
 test-results/
 playwright-report/
 blob-report/
@@ -168,6 +172,9 @@ blob-report/
 .codeyam/state/session-results-snapshot.json
 .codeyam/state/pre-commit-sync-rebase-gate.json
 .codeyam/state/hand-resolved-conflicts.json
+.codeyam/state/plan-claim-conflict.json
+.codeyam/state/plan-conflict-acks.json
+.codeyam/state/plan-landed-fetch.stamp
 .codeyam/state/recapture-tuning.json
 .codeyam/state/sampled-freshness.json
 .codeyam/state/scoped-test-runs.json
@@ -212,6 +219,7 @@ blob-report/
 .codeyam/state/refusal-fingerprints.json
 .codeyam/state/pretool-hook-inflight/
 .codeyam/state/rebase-heal.json
+.codeyam/state/stage-feature-staged.json
 .codeyam/state/rebuild-self-restart.json
 .codeyam/state/build-source-snapshot.json
 .codeyam/state/push-auto-amend.json
@@ -223,6 +231,7 @@ blob-report/
 .codeyam/state/credential-store-durability.json
 .codeyam/state/inline-agent-sessions.json
 .codeyam/state/inline-hook-ids.json
+.codeyam/state/project-identity.json
 .codeyam/state/finalize-snapshot.json
 .codeyam/state/inline-agent-sessions.json
 .codeyam/test-run-marker.json
