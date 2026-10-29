@@ -1305,7 +1305,7 @@
       "status": "pending",
       "proposedAt": "2026-10-22T14:39:01.543207323+00:00",
       "kind": "tech-debt",
-      "rank": 2,
+      "rank": 4,
       "sightings": 1
     },
     {
@@ -1397,38 +1397,44 @@
       "status": "pending",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "kind": "tech-debt",
-      "rank": 3,
+      "rank": 5,
       "sightings": 1
     },
     {
       "id": "keep-the-highlighted-supporter-visible-in-the-find-your-place-scenario",
       "title": "Keep the highlighted supporter visible in the find-your-place scenario",
       "mode": "ui",
-      "body": "## Summary\n`momentum-fund-filtering-the-donor-wall` (titled 'Finding Your Place In The Network') is meant to show one supporter's node lit gold with the rest dimmed. Its seed now honours all 19 donors, and with that layout the matched node renders behind the italic intro copy (around \"founding supporter\"), faint and easy to miss. Earlier frames, captured with only 10 donors, showed it in open space.\n\n## Key Decisions\n- Prefer fixing the scenario (choose a search term whose node falls in open space) over changing the network layout, unless a real visitor would hit the same overlap.\n- Check whether a real search can place the highlight under the copy. If it can, the fix belongs in the component.\n\n## Implementation\n- Inspect node placement in `src/components/donate/MomentumNetwork.astro` (seeded layout) for the 19-donor seed.\n- Try other search terms in `.codeyam/scenarios/momentum-fund-filtering-the-donor-wall.json`, or keep the highlighted node clear of the intro block.\n- Recapture and confirm the gold node is clearly visible.",
-      "reason": "With 19 seeded supporters, the gold node for the matched supporter lands behind the hero's intro text, so the frame barely shows what it documents.",
+      "body": "## Summary\nThe highlighted supporter on the donor network can land under the hero text after a search.\n\n## Key Decisions\n- Keep the highlighted node clear of the hero copy rather than moving the copy.\n\n## Implementation\n- In the donor network component, offset or re-center the highlighted node away from the hero text area.\n- Recapture the find-your-place scenario with a 'kennedy' search.",
+      "reason": "Searching a name on the donate page can hide the matching supporter behind the headline.",
       "severity": 2,
       "source": "session-review",
       "category": "fix",
       "status": "pending",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "kind": "tech-debt",
-      "rank": 5,
-      "sightings": 1
+      "rank": 3,
+      "sightings": 2,
+      "notes": [
+        "2026-10-29: Seen again 2026-10-29: searching 'kennedy' on /donate puts Aisha Rahman's gold node under the hero copy."
+      ]
     },
     {
       "id": "pin-the-clock-for-scenarios-whose-dates-drift-daily",
       "title": "Pin the clock for scenarios whose dates drift daily",
       "mode": "backend",
-      "body": "## Summary\nThe recapture flagged time drift on `chapter-gallery-show-all-revealed`, `chapter-route-events-tagged-to-this-chapter` and `chapter-route-upcoming-above-recent`. The `events-route-*` and `harvard-in-tech-upcoming-events-excludes-past-ones` frames also moved by one day (Dec 3 to Dec 4) between captures. Each re-sweep produces churn that has to be reviewed by hand.\n\n## Key Decisions\n- Pin `clock` per scenario, not on `_default`, so scenarios that intentionally read today keep doing so.\n- Do not add a clock helper to app code. The scenario `clock` field already overrides `Date`.\n\n## Implementation\n- Add `\"clock\": {\"now\": \"2026-10-23T12:00:00Z\", \"frozen\": true}` to each affected scenario JSON under `.codeyam/scenarios/`.\n- Recapture and confirm a second capture on a later day is pixel-identical.",
-      "reason": "Several event scenarios use dates relative to today and pin no clock, so their screenshots change every day and look stale with no code change.",
+      "body": "## Summary\nSix scenarios render upcoming/past events from the real clock, so their captures drift daily.\n\n## Key Decisions\n- Pin a fixed 'now' for these scenarios rather than changing how the live site decides upcoming vs past.\n\n## Implementation\n- Give the six scenarios a fixed date via the seed adapter (.codeyam/seed-adapter.ts) and the event upcoming/past helpers.\n- Recapture and confirm the screenshots stay identical across days.",
+      "reason": "Six scenarios still read the real clock, so their screenshots change from day to day.",
       "severity": 2,
       "source": "session-review",
       "category": "fix",
       "status": "pending",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "kind": "tech-debt",
-      "rank": 4,
-      "sightings": 1
+      "rank": 2,
+      "sightings": 2,
+      "notes": [
+        "2026-10-29: Seen again 2026-10-29: chapter-route-new-york-city, community-route-ai-on-day-one, community-route-founders-with-leads-and-events, communitypage-founders-composed, eventcardgrid-past-events and upcoming-events drifted during th…"
+      ]
     },
     {
       "id": "split-the-586-line-seed-adapter",
@@ -1558,6 +1564,74 @@
       "sightings": 1,
       "decidedAt": "2026-10-26T17:41:19Z",
       "sightingsAtDecision": 1
+    },
+    {
+      "id": "seed-check-reports-seed-did-not-reach-render-when-the-text-comes-from-the-production-reset",
+      "title": "Seed check reports 'seed did not reach render' when the text comes from the production reset",
+      "mode": "backend",
+      "body": "## What happened\nmomentum-fund-the-donor-wall-moved-to-the-top failed capture with 'seed did not reach render' although the rendered text matched the committed text; mission.md comes from the production reset, not the seed. A plain retry passed.\n\n## What would have helped\nThe guard should compare against what the seed actually changed (or the reset baseline), and say which text it expected, so a match from the reset is not reported as a missing seed.",
+      "reason": "A capture failed once with a false seed error, then passed on retry.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "restart-dev-server-can-leave-two-astro-dev-servers-running",
+      "title": "restart-dev-server can leave two astro dev servers running",
+      "mode": "backend",
+      "body": "## What happened\nAfter restart-dev-server, two `astro dev` processes were running at once, so captures could be served by the stale one. I had to check the process list before every capture batch.\n\n## What would have helped\nrestart-dev-server should stop every existing dev server for the app before starting one, and refuse/report if a second one is still alive.",
+      "reason": "Two dev servers make captures hit the wrong one; had to check by hand before capturing.",
+      "severity": 3,
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-october-all-hands-events-screenshot-is-not-on-a-frozen-clock-it-shows-real-events-and-freezing-the-clock-broke-its-interaction",
+      "title": "The October all-hands events screenshot is not on a frozen clock: it shows real events, and freezing the clock broke its interaction.",
+      "mode": "backend",
+      "body": "## Summary\n\nThe October all-hands events screenshot is not on a frozen clock: it shows real events, and freezing the clock broke its interaction.\n\nAt the approval gate for \"Correct review screenshots\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `fix-the-four-wrong-review-screenshots` (now at `.codeyam/plans/completed/fix-the-four-wrong-review-screenshots.md`).\n\nThe review site's screenshots now show the pages they claim to show, and every saved screenshot has been rechecked against the current site.\n\n## What you can now do\n- Trust the four review screenshots that were showing the wrong page\n- Review 329 refreshed screenshots that match the site as it is today\n- Edit content locally and see the preview pick it up without a restart\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"Correct review screenshots\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "the-site-still-decides-upcoming-vs-past-events-using-today-s-real-date-so-the-frozen-clock-event-screenshots-will-drift-again-after-13-november-2026",
+      "title": "The site still decides upcoming vs past events using today's real date, so the frozen-clock event screenshots will drift again after 13 November 2026.",
+      "mode": "backend",
+      "body": "## Summary\n\nThe site still decides upcoming vs past events using today's real date, so the frozen-clock event screenshots will drift again after 13 November 2026.\n\nAt the approval gate for \"Correct review screenshots\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `fix-the-four-wrong-review-screenshots` (now at `.codeyam/plans/completed/fix-the-four-wrong-review-screenshots.md`).\n\nThe review site's screenshots now show the pages they claim to show, and every saved screenshot has been rechecked against the current site.\n\n## What you can now do\n- Trust the four review screenshots that were showing the wrong page\n- Review 329 refreshed screenshots that match the site as it is today\n- Edit content locally and see the preview pick it up without a restart\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"Correct review screenshots\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "no-automated-test-watches-the-dev-server-actually-reloading-the-settings-after-a-seed-only-the-part-that-picks-which-modules-to-reload-is-tested-the-reload-was-checked-by-eye-in-the-recaptured-screenshots",
+      "title": "No automated test watches the dev server actually reloading the settings after a seed. Only the part that picks which modules to reload is tested; the reload was checked by eye in the recaptured screenshots.",
+      "mode": "backend",
+      "body": "## Summary\n\nNo automated test watches the dev server actually reloading the settings after a seed. Only the part that picks which modules to reload is tested; the reload was checked by eye in the recaptured screenshots.\n\nAt the approval gate for \"Correct review screenshots\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `fix-the-four-wrong-review-screenshots` (now at `.codeyam/plans/completed/fix-the-four-wrong-review-screenshots.md`).\n\nThe review site's screenshots now show the pages they claim to show, and every saved screenshot has been rechecked against the current site.\n\n## What you can now do\n- Trust the four review screenshots that were showing the wrong page\n- Review 329 refreshed screenshots that match the site as it is today\n- Edit content locally and see the preview pick it up without a restart\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"Correct review screenshots\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
+      "sightings": 1
+    },
+    {
+      "id": "not-re-checked-this-session-that-the-e-mail-address-comes-back-when-an-unseeded-screenshot-is-loaded-right-after-the-no-email-one",
+      "title": "Not re-checked this session: that the e-mail address comes back when an unseeded screenshot is loaded right after the no-email one.",
+      "mode": "backend",
+      "body": "## Summary\n\nNot re-checked this session: that the e-mail address comes back when an unseeded screenshot is loaded right after the no-email one.\n\nAt the approval gate for \"Correct review screenshots\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `fix-the-four-wrong-review-screenshots` (now at `.codeyam/plans/completed/fix-the-four-wrong-review-screenshots.md`).\n\nThe review site's screenshots now show the pages they claim to show, and every saved screenshot has been rechecked against the current site.\n\n## What you can now do\n- Trust the four review screenshots that were showing the wrong page\n- Review 329 refreshed screenshots that match the site as it is today\n- Edit content locally and see the preview pick it up without a restart\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"Correct review screenshots\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
+      "sightings": 1
     }
   ],
   "rounds": [
@@ -2538,6 +2612,34 @@
         "syncing-capture-scripts-marks-every-screenshot-stale",
         "a-forced-application-sweep-treats-the-default-tier-as-a-scenario",
         "presentability-scan-flags-command-line-script-output-as-debug-logging"
+      ]
+    },
+    {
+      "at": "2026-10-29T19:54:12.778883793+00:00",
+      "feature": "Correct review screenshots",
+      "notes": "Screenshot-correction cycle with a full recapture (329 stale, 247 changed). Clock drift recurred on six scenarios, so pinning the clock moves up to #2; the donate-search overlap was seen again, #3. Two new CodeYam reports: false 'seed did …",
+      "proposedIds": [
+        "pin-the-clock-for-scenarios-whose-dates-drift-daily",
+        "keep-the-highlighted-supporter-visible-in-the-find-your-place-scenario",
+        "seed-check-reports-seed-did-not-reach-render-when-the-text-comes-from-the-production-reset",
+        "restart-dev-server-can-leave-two-astro-dev-servers-running",
+        "the-october-all-hands-events-screenshot-is-not-on-a-frozen-clock-it-shows-real-events-and-freezing-the-clock-broke-its-interaction",
+        "the-site-still-decides-upcoming-vs-past-events-using-today-s-real-date-so-the-frozen-clock-event-screenshots-will-drift-again-after-13-november-2026",
+        "no-automated-test-watches-the-dev-server-actually-reloading-the-settings-after-a-seed-only-the-part-that-picks-which-modules-to-reload-is-tested-the-reload-was-checked-by-eye-in-the-recaptured-screenshots",
+        "not-re-checked-this-session-that-the-e-mail-address-comes-back-when-an-unseeded-screenshot-is-loaded-right-after-the-no-email-one"
+      ],
+      "rankedIds": [
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "pin-the-clock-for-scenarios-whose-dates-drift-daily",
+        "keep-the-highlighted-supporter-visible-in-the-find-your-place-scenario",
+        "always-write-alt-text-for-images-uploaded-in-the-content-editor",
+        "show-adopted-images-in-the-cms-media-library-scenario",
+        "split-src-content-config-ts-along-its-collection-seams",
+        "split-the-586-line-seed-adapter",
+        "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+        "break-up-the-1-130-line-momentumnetwork-component",
+        "split-the-1-250-line-catch-all-isolation-page-into-one-page-per-component",
+        "give-eventcard-its-own-glossary-entry"
       ]
     }
   ],
