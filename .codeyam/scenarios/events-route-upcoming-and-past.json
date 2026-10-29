@@ -76,6 +76,10 @@
     ]
   },
   "scenarioType": "application",
+  "clock": {
+    "now": "2026-10-23T12:00:00Z",
+    "frozen": true
+  },
   "pageFilePath": "src/pages/events.astro",
   "interactions": [
     {

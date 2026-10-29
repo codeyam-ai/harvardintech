@@ -26,9 +26,11 @@ import {
   duplicateServerMessage,
   markServerErrorPages,
   registerDevServer,
+  transitiveImporters,
   viteCacheDir,
   watchedContentPaths,
 } from './src/lib/devContentRefresh';
+import { mirrorPublicImages, replaceWithCopy } from './src/lib/sandboxPublic';
 
 // --- codeyam content sandbox ---------------------------------------------
 // The site's "database" is the committed markdown under `src/content/` and the
@@ -83,12 +85,29 @@ function initContentSandbox(projectRoot) {
     [hasSnapshot ? snapshotContent : prodContent, sandboxContent],
     [hasSnapshot && fs.existsSync(snapshotData) ? snapshotData : prodData, sandboxData],
   ]) {
-    fs.rmSync(dest, { recursive: true, force: true });
-    if (fs.existsSync(src)) fs.cpSync(src, dest, { recursive: true });
-    else fs.mkdirSync(dest, { recursive: true });
+    replaceWithCopy(src, dest);
   }
+  mirrorPublicImages(projectRoot);
 
   return { sandboxContent, sandboxData };
+}
+
+/**
+ * JSON singletons (settings, nav, page copy) are read once, at module load, by
+ * whatever imports `contentRoot.ts`. Re-evaluate every such module so a seeded
+ * settings.json reaches the page. Invalidating them is not enough on its own:
+ * Astro also keeps each page's component instance, and clears that cache only
+ * when the watcher reports a change, so report one for the singleton reader.
+ *
+ * @param {import('vite').ViteDevServer} server @param {string} root
+ * @returns {number} how many modules were invalidated
+ */
+function reloadSingletonReaders(server, root) {
+  const contentRootFile = path.join(root, 'src', 'lib', 'contentRoot.ts');
+  const stale = transitiveImporters(server.moduleGraph.getModulesByFile(contentRootFile) ?? []);
+  for (const m of stale) server.moduleGraph.invalidateModule(m);
+  server.watcher.emit('change', contentRootFile);
+  return stale.size;
 }
 
 /**
@@ -192,6 +211,7 @@ function codeyamContentRefresh() {
             await store.waitForQuiet();
             const mod = server.moduleGraph.getModuleById(DATA_STORE_MODULE_ID);
             if (mod) server.moduleGraph.invalidateModule(mod);
+            const reloadedModules = reloadSingletonReaders(server, root);
             server.ws.send({ type: 'full-reload', path: '*' });
             // Report what each collection ACTUALLY loaded, so the seed adapter
             // can fail a capture whose collection came out empty (or still holds
@@ -200,7 +220,7 @@ function codeyamContentRefresh() {
             const loaded = await loadedCollectionCounts(server);
             res.statusCode = 200;
             res.setHeader('content-type', 'application/json');
-            res.end(JSON.stringify({ ok: true, loaded }));
+            res.end(JSON.stringify({ ok: true, loaded, reloadedModules }));
           };
           enqueue(run, (err) => {
             // Never take the dev server down over a refresh — the caller

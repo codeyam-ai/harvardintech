@@ -124,7 +124,7 @@
       "key": "KINDS_WITH_BODY › contains exactly the kinds that render prose",
       "line": 429,
       "registeredAt": "2026-08-19T17:04:46.459476559+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The slot bands entry bodies are editor guidance that must never reach the page — regressing this would publish those notes to visitors.",
@@ -133,7 +133,7 @@
       "key": "KINDS_WITH_BODY › excludes the slot bands whose entry body is an editing note",
       "line": 436,
       "registeredAt": "2026-08-19T17:04:46.483561958+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The 44px figure the responsive sweep judges tap targets against.",
@@ -1393,7 +1393,7 @@
       "key": "campaignLink › draws nothing when neither is set",
       "line": 398,
       "registeredAt": "2026-08-19T17:04:46.365399812+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The mirror rule — a url with no label has nothing to click.",
@@ -1402,7 +1402,7 @@
       "key": "campaignLink › draws nothing when the label is missing or blank",
       "line": 392,
       "registeredAt": "2026-08-19T17:04:46.342013238+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The shipped state: a label with no destination draws nothing, because a link that goes nowhere is worse than no link.",
@@ -1411,7 +1411,7 @@
       "key": "campaignLink › draws nothing when the url is missing or blank",
       "line": 386,
       "registeredAt": "2026-08-19T17:04:46.318672032+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The goal meter link beside the heading, with both halves trimmed so a pasted trailing newline never reaches the href.",
@@ -1420,7 +1420,7 @@
       "key": "campaignLink › returns the trimmed label and url when both are present",
       "line": 377,
       "registeredAt": "2026-08-19T17:04:46.296048795+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The ordinary case, and the one the whole share feature exists for.",
@@ -2534,7 +2534,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "createQuietWaiter › gives up at capMs",
-      "line": 162,
+      "line": 163,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -2543,7 +2543,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "createQuietWaiter › ignores events outside the watched paths",
-      "line": 152,
+      "line": 153,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -2552,7 +2552,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "createQuietWaiter › returns at once when already quiet",
-      "line": 143,
+      "line": 144,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -2561,7 +2561,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "createQuietWaiter › waits until no watched event has arrived for quietMs",
-      "line": 134,
+      "line": 135,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -2570,7 +2570,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "createSerialQueue › hands a failure to onError and keeps running later jobs",
-      "line": 197,
+      "line": 198,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -2579,7 +2579,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "createSerialQueue › runs jobs one at a time in order",
-      "line": 183,
+      "line": 184,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -3722,7 +3722,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "duplicateServerMessage › names the other pids at boot",
-      "line": 84,
+      "line": 85,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -3731,7 +3731,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "duplicateServerMessage › tells the seed caller to stop all but one",
-      "line": 91,
+      "line": 92,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -3841,7 +3841,7 @@
       "key": "emphasizedHeading › degrades to a plain heading on an empty marker pair",
       "line": 43,
       "registeredAt": "2026-08-19T17:03:01.056350650+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A half-typed marker must not leak a stray asterisk onto the pages largest sentence — no accent beats a stray glyph.",
@@ -3850,7 +3850,7 @@
       "key": "emphasizedHeading › degrades to a plain heading when the marker is never closed",
       "line": 35,
       "registeredAt": "2026-08-19T17:03:01.035534732+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "Only the first pair is parsed — this is one deliberate affordance, not a second markdown implementation.",
@@ -3859,7 +3859,7 @@
       "key": "emphasizedHeading › honours only the first marker pair",
       "line": 49,
       "registeredAt": "2026-08-19T17:03:01.076408522+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The accent need not be the tail — text before and after an emphasized clause both survive the split.",
@@ -3868,7 +3868,7 @@
       "key": "emphasizedHeading › keeps the text on both sides of a mid-sentence accent",
       "line": 17,
       "registeredAt": "2026-08-19T17:03:00.994820139+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A heading with no emphasis is the ordinary case for every other band and renders whole and unstyled.",
@@ -3877,7 +3877,7 @@
       "key": "emphasizedHeading › returns the whole heading as head when there is no marker",
       "line": 27,
       "registeredAt": "2026-08-19T17:03:01.016087007+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "No heading means draw no heading, matching sectionHeading, rather than an object the component must unpack to find nothing.",
@@ -3886,7 +3886,7 @@
       "key": "emphasizedHeading › returns undefined for a missing or empty heading",
       "line": 59,
       "registeredAt": "2026-08-19T17:03:01.096622023+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "emphasizedHeading splits the mission heading on its first markdown emphasis pair, so the crimson accent on the campaign design sentence is something an editor writes rather than a hardcoded span.",
@@ -3895,7 +3895,7 @@
       "key": "emphasizedHeading › splits a heading around its emphasized clause",
       "line": 7,
       "registeredAt": "2026-08-19T17:03:00.973644148+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A section with no slug still has to be nameable in the log line.",
@@ -5569,7 +5569,7 @@
       "key": "giftOrdinal › grows to three digits rather than truncating",
       "line": 420,
       "registeredAt": "2026-08-19T17:04:46.437217719+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "Zero-padded to two digits, matching the campaign designs 01 02 03 treatment.",
@@ -5578,7 +5578,7 @@
       "key": "giftOrdinal › numbers from 01 for the first card",
       "line": 405,
       "registeredAt": "2026-08-19T17:04:46.391311336+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The point of the function: the index is position WITHIN the band, so a duplicated grouped gift band restarts rather than continuing at 04.",
@@ -5587,7 +5587,7 @@
       "key": "giftOrdinal › restarts at 01 for a second band rather than continuing a running count",
       "line": 414,
       "registeredAt": "2026-08-19T17:04:46.414252481+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The configured case: a real account id produces Givebutter's loader with the acct and p parameters their embed snippet carries.",
@@ -7067,7 +7067,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "isAlive › reports a pid with no process as dead",
-      "line": 36,
+      "line": 37,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -7076,7 +7076,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "isAlive › reports the current process as alive",
-      "line": 30,
+      "line": 31,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -7265,7 +7265,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "isErrorPage › is false below 500",
-      "line": 220,
+      "line": 221,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -7274,7 +7274,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "isErrorPage › is false for non-HTML responses",
-      "line": 226,
+      "line": 227,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -7283,7 +7283,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "isErrorPage › is true for a 5xx HTML response",
-      "line": 214,
+      "line": 215,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -8259,7 +8259,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "markServerErrorPages › appends the marker to a 500 HTML page",
-      "line": 270,
+      "line": 271,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -8268,7 +8268,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "markServerErrorPages › leaves a 200 page untouched",
-      "line": 295,
+      "line": 296,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -8277,7 +8277,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "markServerErrorPages › leaves a non-HTML 500 untouched",
-      "line": 305,
+      "line": 306,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -8286,7 +8286,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "markServerErrorPages › reads the content type set earlier with setHeader",
-      "line": 285,
+      "line": 286,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -8459,7 +8459,7 @@
       "key": "mergeDonateFrame › falls back to the committed value when a campaign frame box is cleared",
       "line": 511,
       "registeredAt": "2026-08-19T17:04:46.654731914+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The personalized headline is what the whole email campaign is built around, so a cleared one has to fall back rather than ship a hero with no headline.",
@@ -8549,7 +8549,7 @@
       "key": "mergeDonateFrame › takes the campaign frame fields the editor filled in",
       "line": 402,
       "registeredAt": "2026-08-19T17:04:46.631225551+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The six text fields that used to live only in `donatePage.json` with no editor anywhere. They arrive through the same `preferText` door as `ctaTitle`, so what this pins is that they arrive AT ALL — before this they were unreachable from /admin no matter what an editor typed.",
@@ -8867,6 +8867,33 @@
       "runner": "tests"
     },
     {
+      "description": "The media library read an empty sandbox and showed \"No images yet\".",
+      "file": "src/lib/sandboxPublic.test.ts",
+      "format": "vitest",
+      "key": "mirrorPublicImages › copies the committed images into the sandbox public root",
+      "line": 53,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A project with no public/images must still boot with an empty library.",
+      "file": "src/lib/sandboxPublic.test.ts",
+      "format": "vitest",
+      "key": "mirrorPublicImages › creates an empty images folder when the project has none",
+      "line": 70,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An upload staged by one scenario must be gone before the next seed.",
+      "file": "src/lib/sandboxPublic.test.ts",
+      "format": "vitest",
+      "key": "mirrorPublicImages › drops images that are not committed",
+      "line": 62,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
       "description": "An exempted key is absent from the editor on purpose and must stay quiet.",
       "file": "src/lib/collectionRegistryDrift.test.ts",
       "format": "vitest",
@@ -8963,7 +8990,7 @@
       "key": "momentumSections entry notes › leaves no editor-facing note in a band whose body renders on the page",
       "line": 155,
       "registeredAt": "2026-08-19T17:10:34.208057020+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The reproduction test. The editor is being sent somewhere, and it has to exist — this is the assertion the three stale notes failed.",
@@ -9611,7 +9638,7 @@
       "key": "orderedSections › keeps a mission section",
       "line": 62,
       "registeredAt": "2026-08-19T17:04:46.507354317+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "Every declared kind is renderable — this fails if SECTION_KINDS and the filter ever drift apart.",
@@ -10941,7 +10968,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "registerDevServer › creates the directory when missing",
-      "line": 75,
+      "line": 76,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -10950,7 +10977,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "registerDevServer › removes entries that are not pids",
-      "line": 66,
+      "line": 67,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -10959,7 +10986,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "registerDevServer › removes the registration of a dead server",
-      "line": 58,
+      "line": 59,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -10968,7 +10995,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "registerDevServer › returns no others when it is the only server",
-      "line": 43,
+      "line": 44,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -10977,7 +11004,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "registerDevServer › returns the other live servers",
-      "line": 50,
+      "line": 51,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -11087,6 +11114,33 @@
       "key": "renumberEntries › reports only the rows whose number changed",
       "line": 202,
       "registeredAt": "2026-08-10T21:05:09Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The sandbox must start as the source tree, nested folders included.",
+      "file": "src/lib/sandboxPublic.test.ts",
+      "format": "vitest",
+      "key": "replaceWithCopy › copies a nested tree into a missing destination",
+      "line": 24,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A collection that does not exist in production still needs a directory to seed into.",
+      "file": "src/lib/sandboxPublic.test.ts",
+      "format": "vitest",
+      "key": "replaceWithCopy › leaves an empty destination when the source is missing",
+      "line": 43,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A file one scenario seeded must not leak into the next one.",
+      "file": "src/lib/sandboxPublic.test.ts",
+      "format": "vitest",
+      "key": "replaceWithCopy › removes files that only the old destination had",
+      "line": 34,
+      "registeredAt": "2026-10-29T18:04:07Z",
       "runner": "tests"
     },
     {
@@ -11330,7 +11384,7 @@
       "key": "resolveLayout › falls back to text-only for a typo of columns",
       "line": 296,
       "registeredAt": "2026-08-19T17:04:46.584575151+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A blank or absent field is the CMS's normal \"not filled in\" state.",
@@ -11366,7 +11420,7 @@
       "key": "resolveLayout › passes through the columns layout",
       "line": 289,
       "registeredAt": "2026-08-19T17:04:46.557794935+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The two layouts Nicole asked for, passed through unchanged.",
@@ -11940,7 +11994,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "scenarioErrorMarker › carries the hidden data-codeyam-scenario-error attribute with the status",
-      "line": 234,
+      "line": 235,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -12383,7 +12437,7 @@
       "key": "sectionKicker › returns the trimmed kicker",
       "line": 354,
       "registeredAt": "2026-08-19T17:04:46.225598427+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A caller with something to fall back to can supply it; the network band passes the campaign name it drew before.",
@@ -12392,7 +12446,7 @@
       "key": "sectionKicker › uses the caller fallback when the kicker is blank",
       "line": 369,
       "registeredAt": "2026-08-19T17:04:46.273562228+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "Blank draws nothing — the band as it looked before the field existed. There is no per-kind eyebrow to borrow, unlike sectionHeading.",
@@ -12401,7 +12455,7 @@
       "key": "sectionKicker › yields undefined for an absent or whitespace-only kicker",
       "line": 361,
       "registeredAt": "2026-08-19T17:04:46.251103431+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "every seeded member must declare a non-empty photo — this is the exact contract that was silently broken on the live site",
@@ -13742,7 +13796,7 @@
       "key": "splitParagraphs › collapses extra blank lines and trims each paragraph",
       "line": 95,
       "registeredAt": "2026-08-19T17:03:01.194842836+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A single newline is a textarea soft wrap, not a paragraph break; splitting on it would shatter wrapped prose.",
@@ -13751,7 +13805,7 @@
       "key": "splitParagraphs › does not split on a single newline",
       "line": 83,
       "registeredAt": "2026-08-19T17:03:01.156698387+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The trailing newline a textarea leaves must not render an empty paragraph, which shows on the page as an unexplained gap.",
@@ -13760,7 +13814,7 @@
       "key": "splitParagraphs › drops the empty trailing entry a textarea leaves behind",
       "line": 89,
       "registeredAt": "2026-08-19T17:03:01.176070538+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A body with no blank line is a single paragraph — what the band rendered before the field could hold two.",
@@ -13769,7 +13823,7 @@
       "key": "splitParagraphs › returns a body with no blank line as one paragraph",
       "line": 77,
       "registeredAt": "2026-08-19T17:03:01.137733746+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A whitespace-only body yields no paragraphs, so the band draws its heading and button with no stranded prose block.",
@@ -13778,7 +13832,7 @@
       "key": "splitParagraphs › returns no paragraphs for a blank or missing body",
       "line": 101,
       "registeredAt": "2026-08-19T17:03:01.215348212+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The reason the closing ask is ONE ctaBody field: blank lines make paragraphs, so there is no second box to leave half-filled.",
@@ -13787,7 +13841,7 @@
       "key": "splitParagraphs › splits a body on blank lines into paragraphs",
       "line": 68,
       "registeredAt": "2026-08-19T17:03:01.118052836+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "an empty role yields a single empty line, never throws",
@@ -14363,7 +14417,7 @@
       "key": "team docs › docs/archive/project-status-2026-09-16.html does not contain the retired passphrase",
       "line": 46,
       "registeredAt": "2026-10-02T00:50:22.094721122+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The passphrase retired on 2026-09-17 is in git history, so it must never be written down again anywhere in the repo - including in a document that was retired from the site to docs/archive/ but is still part of this repository.",
@@ -14372,7 +14426,7 @@
       "key": "team docs › docs/archive/supporter-recognition-review-2026-09-14.html does not contain the retired passphrase",
       "line": 46,
       "registeredAt": "2026-10-02T00:50:22.134003528+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
@@ -14417,7 +14471,7 @@
       "key": "team docs › docs/scoping/cutover-decisions-2026-10-01.md does not contain the retired passphrase",
       "line": 46,
       "registeredAt": "2026-10-02T00:50:29.365088190+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The cutover decisions record is a team doc like the others, so it carries the same two guards: it must not write down the passphrase retired on 2026-09-17, and it must not link the preview host the repo moved off, which 404s for whoever clicks it.",
@@ -14426,7 +14480,7 @@
       "key": "team docs › docs/scoping/cutover-decisions-2026-10-01.md has no link to the dead pre-move preview",
       "line": 46,
       "registeredAt": "2026-10-02T00:50:29.402051472+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "A link to the pre-move preview host 404s for whoever clicks it; the staging host is allowed because its hosting repo did not move.",
@@ -15297,7 +15351,7 @@
       "key": "tintedFlags › is unchanged by a mission band sitting between two narratives",
       "line": 213,
       "registeredAt": "2026-08-19T17:04:46.607752790+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The bespoke bands carry their own background, so they are never tinted by this rule.",
@@ -15507,6 +15561,51 @@
       "runner": "tests"
     },
     {
+      "description": "A page imports a helper that imports contentRoot.ts; the page held the stale settings.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "transitiveImporters › follows importers through intermediate modules",
+      "line": 344,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The root itself must be invalidated, or contentRoot.ts keeps its old reads.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "transitiveImporters › includes the roots",
+      "line": 339,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Modules that do not import the root must keep their cached instances.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "transitiveImporters › leaves out modules that do not import the root",
+      "line": 354,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "getModulesByFile returns nothing before the file is first loaded.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "transitiveImporters › returns an empty set for no roots",
+      "line": 371,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Vite module graphs contain import cycles; the walk must still end.",
+      "file": "src/lib/devContentRefresh.test.ts",
+      "format": "vitest",
+      "key": "transitiveImporters › terminates on an import cycle",
+      "line": 362,
+      "registeredAt": "2026-10-29T18:04:07Z",
+      "runner": "tests"
+    },
+    {
       "description": "Alt-text edits, reorders, and removals rewrite the manifest without adding records. Only ADDED records have to prove they brought bytes — a guard that fired on metadata edits would block the most common media change there is.",
       "file": "src/lib/mediaCommitGuard.test.ts",
       "format": "vitest",
@@ -15630,7 +15729,7 @@
       "key": "unknownSectionKinds › does not report the mission kind",
       "line": 117,
       "registeredAt": "2026-08-19T17:04:46.530095457+00:00",
-      "runner": "vitest"
+      "runner": "tests"
     },
     {
       "description": "The advisory the route warns with, so a dropped section is visible in the build log rather than silently missing from the page.",
@@ -16030,7 +16129,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "viteCacheDir › gives a build its own cache",
-      "line": 322,
+      "line": 323,
       "registeredAt": "2026-10-23T22:07:50.337997412+00:00",
       "runner": "tests"
     },
@@ -16039,7 +16138,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "viteCacheDir › gives astro check its own cache",
-      "line": 327,
+      "line": 328,
       "registeredAt": "2026-10-23T22:07:50.337997412+00:00",
       "runner": "tests"
     },
@@ -16048,7 +16147,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "viteCacheDir › keeps the dev server on the default cache",
-      "line": 317,
+      "line": 318,
       "registeredAt": "2026-10-23T22:07:50.337997412+00:00",
       "runner": "tests"
     },
@@ -16183,7 +16282,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "watchedContentPaths › drops unset roots",
-      "line": 110,
+      "line": 111,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },
@@ -16192,7 +16291,7 @@
       "file": "src/lib/devContentRefresh.test.ts",
       "format": "vitest",
       "key": "watchedContentPaths › includes the sandbox roots and the data store file",
-      "line": 100,
+      "line": 101,
       "registeredAt": "2026-10-23T19:58:30Z",
       "runner": "tests"
     },

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 00daf862371b48ee63e549314f41a7519568de8c  source-sha256: 0d88ba3f4f1b4a03477d52617745f6d65834ce819523d985d7e6967c9d4be914
+// codeyam-editor: 0.1.7  build: b0873eeb456580e3b290593af663f0e7dba6573e  source-sha256: a08c3d9c0afdefc56209b5119804e3af2538ed2215baab5780c07c200aa18731
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -71,6 +71,14 @@ const {
 } = require("./scenario-issues");
 
 const { attachHttpMocks } = require("./scenario-mocks");
+const {
+  resolveRenderedSourcesAttribution,
+  armRenderedSourcesAttribution,
+  retryUnarmedOnReadyTimeout,
+  renderedSourcesRecordPath,
+  recordRenderedSources,
+  renderedSourcesFromOutcome,
+} = require("./scenario-check-attribution");
 
 const {
   assertAppPortReachable,
@@ -422,65 +430,6 @@ function resolveRenderedSourcesSignal(config, readStack = readStackRenderedSourc
   return config && typeof config.renderedSourcesSignal === "string"
     ? normalizeRenderedSourcesSignal(config)
     : readStack();
-}
-
-// The record beside a screenshot: `<screenshot>.rendered.json`. The editor's
-// staleness check (`rendered_sources.rs`) reads the same spelling.
-function renderedSourcesRecordPath(outputPath) {
-  return `${outputPath}.rendered.json`;
-}
-
-// Evaluate the rendered-sources signal in the captured frame and record the
-// answer beside the screenshot as `{"sources": [...]}`. Any earlier record is
-// removed first, so a recapture that yields no usable answer never leaves the
-// previous capture's report standing. An empty array means "no information"
-// (no record, no warning); a throw or a non-array / non-string value is a
-// warning — non-blocking, because the editor then simply keeps the full static
-// render set. Returns the warning string, or null.
-async function recordRenderedSources(frame, signal, outputPath, { fsImpl = fs } = {}) {
-  const recordPath = renderedSourcesRecordPath(outputPath);
-  try {
-    fsImpl.rmSync(recordPath, { force: true });
-  } catch (_) {}
-  if (!signal) return null;
-  let outcome;
-  try {
-    outcome = await frame.evaluate((expr) => {
-      try {
-        return { value: (0, eval)(expr) };
-      } catch (e) {
-        return { error: String((e && e.message) || e) };
-      }
-    }, signal);
-  } catch (e) {
-    outcome = { error: String((e && e.message) || e) };
-  }
-  const { sources, warning } = renderedSourcesFromOutcome(outcome, signal);
-  if (sources) {
-    fsImpl.writeFileSync(recordPath, `${JSON.stringify({ sources }, null, 2)}\n`);
-  }
-  return warning;
-}
-
-// Judge what the signal evaluated to: `{ sources }` (sorted, deduped, blanks
-// dropped) for a usable answer, `{ warning }` for a throw or a value that is not
-// an array of strings, and neither for an empty answer — "no information",
-// which the editor already treats as "keep the static render set".
-function renderedSourcesFromOutcome(outcome, signal) {
-  if (outcome && outcome.error != null) {
-    return {
-      warning: `rendered-sources: \`${signal}\` threw (${outcome.error}); staleness keeps this scenario's full static render set. Fix capture.renderedSourcesSignal in .codeyam/stack.json or the app code that publishes it.`,
-    };
-  }
-  const value = outcome ? outcome.value : undefined;
-  if (!Array.isArray(value) || value.some((s) => typeof s !== "string")) {
-    const shape = Array.isArray(value) ? "an array with non-string entries" : typeof value;
-    return {
-      warning: `rendered-sources: \`${signal}\` returned ${shape}, not an array of source paths; staleness keeps this scenario's full static render set.`,
-    };
-  }
-  const sources = [...new Set(value.map((s) => s.trim()).filter((s) => s.length > 0))].sort();
-  return sources.length > 0 ? { sources, warning: null } : { warning: null };
 }
 
 // The readiness this capture waits on: a `readySignal` injected through config
@@ -1785,10 +1734,14 @@ async function runFlowSteps(page, initialFrame, steps, ctx) {
 
 // One capture, retried once if a dev server's live reload interrupted it (see
 // `retryOnLiveReload`).
+// A capture that missed its ready signal with rendered-source attribution armed
+// is retried once unarmed (see `retryUnarmedOnReadyTimeout`).
 async function runScenarioCheck(config, options = {}) {
-  return retryOnLiveReload(() => runScenarioCheckOnce(config, options), {
-    onRetry: (firstError) => logCaptureTiming("live-reload-retry", { firstError }),
-  });
+  const attempt = (cfg) =>
+    retryOnLiveReload(() => runScenarioCheckOnce(cfg, options), {
+      onRetry: (firstError) => logCaptureTiming("live-reload-retry", { firstError }),
+    });
+  return retryUnarmedOnReadyTimeout(await attempt(config), config, attempt);
 }
 
 // Ready a fresh capture context before its first navigation: authenticate it
@@ -1869,6 +1822,7 @@ async function writeCaptureScreenshot(
     allowMinimalRender,
     issues,
     warnings,
+    attribution = null,
   },
 ) {
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
@@ -1883,11 +1837,20 @@ async function writeCaptureScreenshot(
   // Ask the app which widget sources it drew in THIS frame, and record the
   // answer beside the screenshot it describes. Only when the app signalled
   // ready — a frame that never finished painting reports nothing useful.
+  // Attribution, when armed, stops watching here: what ran up to this shot is
+  // what drew it.
   if (ready) {
+    let attributed = null;
+    if (attribution) {
+      const outcome = await attribution.finish();
+      if (outcome.warning) warnings.push(outcome.warning);
+      attributed = outcome.record || null;
+    }
     const renderedWarning = await recordRenderedSources(
       frame,
       resolveRenderedSourcesSignal(config),
       outputPath,
+      { attributed },
     );
     if (renderedWarning) warnings.push(renderedWarning);
   }
@@ -1983,6 +1946,17 @@ async function runScenarioCheckOnce(
   await prepareCaptureContext(context, config, resolvedHarnessOrigin);
 
   const page = await context.newPage();
+  // Rendered-source attribution, when the stack opts in, watches from before
+  // the first navigation so the app's startup code is seen too. It never fails
+  // the capture: an unknown strategy or one that cannot start is a warning.
+  const attributionChoice = resolveRenderedSourcesAttribution(config);
+  if (attributionChoice.warning) interactionWarnings.push(attributionChoice.warning);
+  const attribution = await armRenderedSourcesAttribution(
+    context,
+    page,
+    attributionChoice.strategy,
+    { warnings: interactionWarnings },
+  );
   // Attach the network tracker BEFORE navigation so every request (the document
   // and every client-side data fetch) is counted. Used after DOM stability to
   // wait out an in-flight fetch that would otherwise be screenshotted as a
@@ -2310,6 +2284,7 @@ async function runScenarioCheckOnce(
         allowMinimalRender,
         issues,
         warnings: interactionWarnings,
+        attribution,
       });
     }
 
@@ -2338,6 +2313,7 @@ async function runScenarioCheckOnce(
       hydration,
       interactionWarnings,
     });
+    if (attribution) result.renderedSourcesAttribution = { strategy: attribution.strategy };
 
     // `capture-state` mode: attach the read-only page-state snapshot so the
     // backend can report localStorage + rendered text. Off by default, so a

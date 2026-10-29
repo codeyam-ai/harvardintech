@@ -120,6 +120,10 @@
     ]
   },
   "scenarioType": "application",
+  "clock": {
+    "now": "2026-10-23T12:00:00Z",
+    "frozen": true
+  },
   "pageFilePath": "src/pages/chapters/[slug].astro",
   "description": "After \"Show all 14 photos\" is pressed, the remaining two photos join the grid and the button removes itself. The extra photos were already in the page, so nothing is fetched and the newly revealed tiles are clickable straight away.",
   "interactions": [

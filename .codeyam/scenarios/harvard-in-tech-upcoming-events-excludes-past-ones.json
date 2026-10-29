@@ -43,6 +43,10 @@
     ]
   },
   "scenarioType": "application",
+  "clock": {
+    "now": "2026-10-23T12:00:00Z",
+    "frozen": true
+  },
   "pageFilePath": "src/pages/index.astro",
   "description": "The homepage events band seeded with events on BOTH sides of today, so it is the one capture that proves the page filters rather than merely listing. The band shows only the events still to come; the ones that have already happened are absent, and the count beside the heading agrees. This is the scenario the empty-seed one beside it cannot be: a page handing the band every event renders identically when the collection is empty, so only a mixed seed can tell the two behaviours apart. It exists because the homepage did NOT filter — it passed the whole collection to a section headed Upcoming events, so by the time every entered event had passed the band was advertising a community that appeared to have stopped meeting.",
   "interactions": [

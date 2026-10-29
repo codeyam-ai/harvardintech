@@ -55,6 +55,7 @@ import {
   parseLoadedCounts,
   refreshOutcome,
 } from '../src/lib/emptiedCollections';
+import { mirrorPublicImages, replaceWithCopy } from '../src/lib/sandboxPublic';
 
 // codeyam-adapter-version: 5
 //
@@ -238,13 +239,9 @@ export function resetSandboxFromProduction(
     [prodContent, sandboxContent],
     [prodData, sandboxData],
   ]) {
-    fs.rmSync(dest, { recursive: true, force: true });
-    if (fs.existsSync(src)) {
-      fs.cpSync(src, dest, { recursive: true });
-    } else {
-      fs.mkdirSync(dest, { recursive: true });
-    }
+    replaceWithCopy(src, dest);
   }
+  mirrorPublicImages(projectRoot);
   return { sandboxContent, sandboxData };
 }
 

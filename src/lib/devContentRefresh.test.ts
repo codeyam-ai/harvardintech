@@ -11,6 +11,7 @@ import {
   markServerErrorPages,
   registerDevServer,
   scenarioErrorMarker,
+  transitiveImporters,
   viteCacheDir,
   watchedContentPaths,
 } from './devContentRefresh';
@@ -326,5 +327,48 @@ describe('viteCacheDir', () => {
   // `astro check` is the half of verify-build that poisoned the cache on 2026-10-23.
   it('gives astro check its own cache', () => {
     expect(viteCacheDir(['node', 'astro', 'check'])).toBe('node_modules/.vite-build');
+  });
+});
+
+describe('transitiveImporters', () => {
+  type Mod = { id: string; importers: Set<Mod> };
+  const mod = (id: string): Mod => ({ id, importers: new Set() });
+  const ids = (mods: Set<Mod>) => [...mods].map((m) => m.id).sort();
+
+  // The root itself must be invalidated, or contentRoot.ts keeps its old reads.
+  it('includes the roots', () => {
+    expect(ids(transitiveImporters([mod('root')]))).toEqual(['root']);
+  });
+
+  // A page imports a helper that imports contentRoot.ts; the page held the stale settings.
+  it('follows importers through intermediate modules', () => {
+    const root = mod('root');
+    const helper = mod('helper');
+    const page = mod('page');
+    root.importers.add(helper);
+    helper.importers.add(page);
+    expect(ids(transitiveImporters([root]))).toEqual(['helper', 'page', 'root']);
+  });
+
+  // Modules that do not import the root must keep their cached instances.
+  it('leaves out modules that do not import the root', () => {
+    const root = mod('root');
+    const unrelated = mod('unrelated');
+    unrelated.importers.add(mod('other'));
+    expect(ids(transitiveImporters([root]))).toEqual(['root']);
+  });
+
+  // Vite module graphs contain import cycles; the walk must still end.
+  it('terminates on an import cycle', () => {
+    const a = mod('a');
+    const b = mod('b');
+    a.importers.add(b);
+    b.importers.add(a);
+    expect(ids(transitiveImporters([a]))).toEqual(['a', 'b']);
+  });
+
+  // getModulesByFile returns nothing before the file is first loaded.
+  it('returns an empty set for no roots', () => {
+    expect(transitiveImporters([]).size).toBe(0);
   });
 });

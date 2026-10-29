@@ -2260,6 +2260,15 @@
     "testFile": "src/lib/donorNetwork.test.ts"
   },
   {
+    "description": "Copies the committed public/images into the content sandbox's public root so the CMS media library shows real images in the preview and scenarios, and so uploads staged by one scenario never leak into the next.",
+    "filePath": "src/lib/sandboxPublic.ts",
+    "name": "mirrorPublicImages",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/sandboxPublic.test.ts"
+  },
+  {
     "description": "Schema keys the CMS renders no input for — the quiet direction of registry drift. Nothing breaks: the key renders on the site and validates fine, but it is absent from /admin, so an editor can neither set it nor learn it exists. The exempt list names keys that legitimately have no input. Extracted from src/data/collections.test.ts so the singleton guard could share it rather than carry a second copy.",
     "filePath": "src/lib/collectionRegistryDrift.ts",
     "name": "missingFields",
@@ -2694,6 +2703,18 @@
     "testFile": "src/lib/projects.test.ts"
   },
   {
+    "description": "Invalidates every module that imports contentRoot.ts and reports a watcher change for it, so Astro drops its cached page components and a seeded settings.json is re-read. Returns the number of modules invalidated.",
+    "filePath": "astro.config.mjs",
+    "name": "reloadSingletonReaders",
+    "tags": [
+      "content-sandbox"
+    ],
+    "untestabilityReason": {
+      "justification": "Drives a live Vite dev server's module graph and watcher; its graph walk is transitiveImporters, which is unit-tested.",
+      "kind": "platform-glue"
+    }
+  },
+  {
     "description": "The repeatable item list on a Strikingly section, or an empty list when the section has none.",
     "filePath": "src/lib/strikinglyArchive.js",
     "name": "repeatableList",
@@ -2701,6 +2722,15 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "Makes a destination directory an exact copy of a source tree, wiping what was there first and leaving it empty when the source is missing. Shared by every content-sandbox (re)initialisation in astro.config.mjs and the seed adapter.",
+    "filePath": "src/lib/sandboxPublic.ts",
+    "name": "replaceWithCopy",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/sandboxPublic.test.ts"
   },
   {
     "description": "The sweep's printed table (FAIL rows, ERR rows, totals) and its exit code, non-zero only on a fail finding or a page that would not load.",
@@ -3328,6 +3358,15 @@
     "filePath": "src/lib/pageCopyMerge.ts",
     "name": "toSponsorLevels",
     "testFile": "src/lib/pageCopyMerge.test.ts"
+  },
+  {
+    "description": "Returns the given modules plus every module that imports them directly or transitively, stopping on cycles. The content refresh invalidates this set for contentRoot.ts so seeded JSON singletons reach the page.",
+    "filePath": "src/lib/devContentRefresh.ts",
+    "name": "transitiveImporters",
+    "tags": [
+      "content-sandbox"
+    ],
+    "testFile": "src/lib/devContentRefresh.test.ts"
   },
   {
     "description": "The route keys still short of a required size. It returns keys rather than file paths so the failure message names the page a developer has to go and look at: 'not-found' is actionable where 'src/pages/404.astro' makes them work it out. This is what the committed-scenario guard asserts is empty, so a public page losing its multi-size coverage fails a test instead of going unnoticed.",

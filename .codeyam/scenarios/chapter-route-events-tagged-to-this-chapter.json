@@ -7,6 +7,10 @@
   ],
   "mocks": {},
   "scenarioType": "application",
+  "clock": {
+    "now": "2026-10-23T12:00:00Z",
+    "frozen": true
+  },
   "pageFilePath": "src/pages/chapters/[slug].astro",
   "description": "A chapter route whose events actually reach it, which happens only when each event's tag exactly matches the chapter's slug. It is the counterpart to the New York City scenario, where nothing is tagged and the sections stay away entirely. Note WHICH section renders: every event in the repo is now in the past, so London shows Recent events in London and no upcoming block at all. That is the recent-past feature doing the job it was built for — without it this page would be a hero over an empty calendar and would read as a dead chapter rather than a quiet one."
 }

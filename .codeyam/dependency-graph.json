@@ -84,10 +84,14 @@
     },
     ".codeyam/capture.js": {
       "imports": [
+        ".codeyam/scenario-launch.js",
+        ".codeyam/scenario-check-run.js",
         ".codeyam/scenario-metrics.js",
         ".codeyam/scenario-issues.js",
         ".codeyam/scenario-mocks.js",
+        ".codeyam/scenario-check-attribution.js",
         ".codeyam/scenario-playwright.js",
+        ".codeyam/scenario-targeting.js",
         ".codeyam/scenario-handlers.js",
         ".codeyam/scenario-interactivity.js"
       ],
@@ -163,6 +167,18 @@
         "src/pages/isolated-components/WhatsappJoinCard/[...state].astro"
       ]
     },
+    ".codeyam/scenario-check-attribution.js": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
+    ".codeyam/scenario-check-run.js": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
     ".codeyam/scenario-handlers.js": {
       "imports": [
         ".codeyam/scenario-issues.js"
@@ -182,22 +198,23 @@
     ".codeyam/scenario-issues.js": {
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js",
         ".codeyam/scenario-handlers.js",
-        ".codeyam/scenario-interactivity.js"
+        ".codeyam/scenario-interactivity.js",
+        ".codeyam/capture.js"
       ]
     },
     ".codeyam/scenario-launch.js": {
       "imports": [],
       "importedBy": [
+        ".codeyam/capture.js",
         ".codeyam/capture.js"
       ]
     },
     ".codeyam/scenario-metrics.js": {
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js",
-        ".codeyam/scenario-playwright.js"
+        ".codeyam/scenario-playwright.js",
+        ".codeyam/capture.js"
       ]
     },
     ".codeyam/scenario-mocks.js": {
@@ -218,12 +235,14 @@
       "imports": [],
       "importedBy": [
         ".codeyam/capture.js",
-        ".codeyam/scenario-playwright.js"
+        ".codeyam/scenario-playwright.js",
+        ".codeyam/capture.js"
       ]
     },
     ".codeyam/seed-adapter.ts": {
       "imports": [
-        "src/lib/emptiedCollections.ts"
+        "src/lib/emptiedCollections.ts",
+        "src/lib/sandboxPublic.ts"
       ],
       "importedBy": []
     },
@@ -233,7 +252,8 @@
         "src/lib/previewGate.ts",
         "src/lib/redirects.ts",
         "src/lib/emptiedCollections.ts",
-        "src/lib/devContentRefresh.ts"
+        "src/lib/devContentRefresh.ts",
+        "src/lib/sandboxPublic.ts"
       ],
       "importedBy": []
     },
@@ -3440,6 +3460,20 @@
         "src/pages/robots.txt.ts"
       ]
     },
+    "src/lib/sandboxPublic.test.ts": {
+      "imports": [
+        "src/lib/sandboxPublic.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/sandboxPublic.ts": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/seed-adapter.ts",
+        "astro.config.mjs",
+        "src/lib/sandboxPublic.test.ts"
+      ]
+    },
     "src/lib/sectionGroups.test.ts": {
       "imports": [
         "src/lib/sectionGroups.ts"
@@ -5267,27 +5301,19 @@
         ".claude/skills/review-session/scripts/session-tokens-report.mjs::__file_root__"
       ]
     },
-    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  devicePixelRatioOf,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  logCaptureTiming,\n}": {
+    ".codeyam/capture.js::{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  devicePixelRatioOf,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  logCaptureTiming,\n}",
+      "name": "{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n}",
       "imports": [
-        ".codeyam/scenario-playwright.js::__file_root__"
+        ".codeyam/scenario-check-run.js::__file_root__"
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  logCaptureTiming,\n}": {
+    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  scrollThroughDocument,\n  collectVisibleTextLength,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  logCaptureTiming,\n}",
+      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}",
       "imports": [
         ".codeyam/scenario-playwright.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    ".codeyam/capture.js::{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n  unmockedRouteFrom,\n}": {
-      "filePath": ".codeyam/capture.js",
-      "name": "{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n  unmockedRouteFrom,\n}",
-      "imports": [
-        ".codeyam/scenario-mocks.js::__file_root__"
       ],
       "importedBy": []
     },
@@ -5307,35 +5333,27 @@
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}": {
+    ".codeyam/capture.js::{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  createIssue,\n  pushIssue,\n  buildResult,\n}",
-      "imports": [
-        ".codeyam/scenario-issues.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  isCanvasDominated,\n  frameHasVisualContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n  stripStateSelector,\n  collectCssRuleMatches,\n}": {
-      "filePath": ".codeyam/capture.js",
-      "name": "{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  isCanvasDominated,\n  frameHasVisualContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n  stripStateSelector,\n  collectCssRuleMatches,\n}",
+      "name": "{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}",
       "imports": [
         ".codeyam/scenario-metrics.js::__file_root__"
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  isCanvasDominated,\n  frameHasVisualContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}": {
+    ".codeyam/capture.js::{\n  resolveRenderedSourcesAttribution,\n  armRenderedSourcesAttribution,\n  retryUnarmedOnReadyTimeout,\n  renderedSourcesRecordPath,\n  recordRenderedSources,\n  renderedSourcesFromOutcome,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  isCanvasDominated,\n  frameHasVisualContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
+      "name": "{\n  resolveRenderedSourcesAttribution,\n  armRenderedSourcesAttribution,\n  retryUnarmedOnReadyTimeout,\n  renderedSourcesRecordPath,\n  recordRenderedSources,\n  renderedSourcesFromOutcome,\n}",
       "imports": [
-        ".codeyam/scenario-metrics.js::__file_root__"
+        ".codeyam/scenario-check-attribution.js::__file_root__"
       ],
       "importedBy": []
     },
-    ".codeyam/capture.js::{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}": {
+    ".codeyam/capture.js::{ attachHttpMocks }": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}",
+      "name": "{ attachHttpMocks }",
       "imports": [
-        ".codeyam/scenario-handlers.js::__file_root__"
+        ".codeyam/scenario-mocks.js::__file_root__"
       ],
       "importedBy": []
     },
@@ -5344,6 +5362,14 @@
       "name": "{ devicePixelRatioOf }",
       "imports": [
         ".codeyam/scenario-targeting.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/capture.js::{ getInitScript }": {
+      "filePath": ".codeyam/capture.js",
+      "name": "{ getInitScript }",
+      "imports": [
+        ".codeyam/scenario-handlers.js::__file_root__"
       ],
       "importedBy": []
     },
@@ -5427,12 +5453,28 @@
         "src/pages/isolated-components/WhatsappJoinCard/[...state].astro::__file_root__"
       ]
     },
+    ".codeyam/scenario-check-attribution.js::__file_root__": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  resolveRenderedSourcesAttribution,\n  armRenderedSourcesAttribution,\n  retryUnarmedOnReadyTimeout,\n  renderedSourcesRecordPath,\n  recordRenderedSources,\n  renderedSourcesFromOutcome,\n}"
+      ]
+    },
+    ".codeyam/scenario-check-run.js::__file_root__": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n}"
+      ]
+    },
     ".codeyam/scenario-handlers.js::__file_root__": {
       "filePath": ".codeyam/scenario-handlers.js",
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js::{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}"
+        ".codeyam/capture.js::{ getInitScript }"
       ]
     },
     ".codeyam/scenario-handlers.js::{ createIssue }": {
@@ -5459,6 +5501,14 @@
       ],
       "importedBy": []
     },
+    ".codeyam/scenario-issues.js::__file_root__": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n  RELOADED_AFTER_READY,\n  retryOnLiveReload,\n}"
+      ]
+    },
     ".codeyam/scenario-launch.js::__file_root__": {
       "filePath": ".codeyam/scenario-launch.js",
       "name": "__file_root__",
@@ -5472,7 +5522,8 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}"
+        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}",
+        ".codeyam/capture.js::{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}"
       ]
     },
     ".codeyam/scenario-mocks.js::__file_root__": {
@@ -5480,7 +5531,15 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js::{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n  unmockedRouteFrom,\n}"
+        ".codeyam/capture.js::{ attachHttpMocks }"
+      ]
+    },
+    ".codeyam/scenario-playwright.js::__file_root__": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}"
       ]
     },
     ".codeyam/scenario-playwright.js::{\n  candidateLabelSummary,\n  noMatchGuidance,\n  describeMatchCandidates,\n  resolveTextTarget,\n  pickBestCandidate,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n}": {
@@ -5512,8 +5571,8 @@
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        ".codeyam/capture.js::{ devicePixelRatioOf }",
-        ".codeyam/scenario-playwright.js::{\n  candidateLabelSummary,\n  noMatchGuidance,\n  describeMatchCandidates,\n  resolveTextTarget,\n  pickBestCandidate,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n}"
+        ".codeyam/scenario-playwright.js::{\n  candidateLabelSummary,\n  noMatchGuidance,\n  describeMatchCandidates,\n  resolveTextTarget,\n  pickBestCandidate,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n}",
+        ".codeyam/capture.js::{ devicePixelRatioOf }"
       ]
     },
     ".codeyam/seed-adapter.ts::__file_root__": {
@@ -5524,7 +5583,9 @@
         "src/lib/emptiedCollections.ts::countTrackedCollectionEntries",
         "src/lib/emptiedCollections.ts::findEmptiedCollections",
         "src/lib/emptiedCollections.ts::parseLoadedCounts",
-        "src/lib/emptiedCollections.ts::refreshOutcome"
+        "src/lib/emptiedCollections.ts::refreshOutcome",
+        "src/lib/sandboxPublic.ts::mirrorPublicImages",
+        "src/lib/sandboxPublic.ts::replaceWithCopy"
       ],
       "importedBy": []
     },
@@ -5547,8 +5608,11 @@
         "src/lib/devContentRefresh.ts::duplicateServerMessage",
         "src/lib/devContentRefresh.ts::markServerErrorPages",
         "src/lib/devContentRefresh.ts::registerDevServer",
+        "src/lib/devContentRefresh.ts::transitiveImporters",
         "src/lib/devContentRefresh.ts::viteCacheDir",
-        "src/lib/devContentRefresh.ts::watchedContentPaths"
+        "src/lib/devContentRefresh.ts::watchedContentPaths",
+        "src/lib/sandboxPublic.ts::mirrorPublicImages",
+        "src/lib/sandboxPublic.ts::replaceWithCopy"
       ],
       "importedBy": []
     },
@@ -8173,6 +8237,7 @@
         "src/lib/devContentRefresh.ts::markServerErrorPages",
         "src/lib/devContentRefresh.ts::registerDevServer",
         "src/lib/devContentRefresh.ts::scenarioErrorMarker",
+        "src/lib/devContentRefresh.ts::transitiveImporters",
         "src/lib/devContentRefresh.ts::viteCacheDir",
         "src/lib/devContentRefresh.ts::watchedContentPaths"
       ],
@@ -10077,6 +10142,16 @@
         "src/lib/robots.test.ts::__file_root__",
         "src/pages/robots.txt.ts::__file_root__"
       ]
+    },
+    "src/lib/sandboxPublic.test.ts::__file_root__": {
+      "filePath": "src/lib/sandboxPublic.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/sandboxPublic.ts::SANDBOX_PUBLIC_REL",
+        "src/lib/sandboxPublic.ts::mirrorPublicImages",
+        "src/lib/sandboxPublic.ts::replaceWithCopy"
+      ],
+      "importedBy": []
     },
     "src/lib/sectionGroups.test.ts::__file_root__": {
       "filePath": "src/lib/sectionGroups.test.ts",
@@ -12570,5 +12645,5 @@
       ]
     }
   },
-  "lastUpdated": "2026-10-23T22:12:13Z"
+  "lastUpdated": "2026-10-29T19:50:49Z"
 }

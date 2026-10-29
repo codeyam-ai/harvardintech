@@ -1,0 +1,60 @@
+{
+  "provenAt": "2026-10-29T18:03:37Z",
+  "slug": "fix-the-four-wrong-review-screenshots",
+  "paths": [],
+  "runScope": [
+    "src/lib/sandboxPublic.ts",
+    "src/lib/sandboxPublic.test.ts",
+    "src/lib/devContentRefresh.ts",
+    "src/lib/devContentRefresh.test.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/sandboxPublic.ts",
+      "find": "  fs.rmSync(dest, { recursive: true, force: true });",
+      "replace": "  void 0;"
+    },
+    {
+      "file": "src/lib/devContentRefresh.ts",
+      "find": "for (const importer of mod.importers) stack.push(importer);",
+      "replace": "for (const importer of mod.importers) void importer;"
+    }
+  ],
+  "tests": {
+    "drops images that are not committed": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "follows importers through intermediate modules": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "removes files that only the old destination had": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "terminates on an import cycle": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "follows importers through intermediate modules",
+      "terminates on an import cycle"
+    ]
+  }
+}

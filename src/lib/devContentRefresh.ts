@@ -172,3 +172,21 @@ export function markServerErrorPages(_req: IncomingMessage, response: ServerResp
   };
   next();
 }
+
+/**
+ * Every module that imports one of `roots`, directly or through other modules,
+ * plus the roots themselves. The content refresh invalidates this set for
+ * `contentRoot.ts`, because its importers read JSON singletons once at module
+ * load and would otherwise keep serving the pre-seed values.
+ */
+export function transitiveImporters<T extends { importers: Set<T> }>(roots: Iterable<T>): Set<T> {
+  const seen = new Set<T>();
+  const stack = [...roots];
+  while (stack.length > 0) {
+    const mod = stack.pop()!;
+    if (seen.has(mod)) continue;
+    seen.add(mod);
+    for (const importer of mod.importers) stack.push(importer);
+  }
+  return seen;
+}

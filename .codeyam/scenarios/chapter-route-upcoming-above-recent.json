@@ -54,6 +54,10 @@
     ]
   },
   "scenarioType": "application",
+  "clock": {
+    "now": "2026-10-23T12:00:00Z",
+    "frozen": true
+  },
   "pageFilePath": "src/pages/chapters/[slug].astro",
   "description": "A chapter with something coming up AND a history behind it, showing the order the two blocks take on one page: Upcoming Events in London first, Recent events in London beneath it. This state cannot be produced from the committed content, because every event in the repo has already passed — which is exactly why it needs a seed. Without it, the upcoming block on a chapter route has no frame proving it renders at all, and a regression there would stay invisible until someone published a future event. The chapter is seeded without a hero photo so both sections fit the capture; a full-bleed hero is a whole viewport tall and would show neither."
 }
