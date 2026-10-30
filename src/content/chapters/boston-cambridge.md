@@ -8,9 +8,7 @@ status: active
 tagline: We are the Boston & Cambridge Chapter of Harvard Alumni in Tech.
 ---
 
-Founder dinners, campus meetups, and panels with Harvard faculty and alumni operators, steps from the Yard.
-
-Boston & Cambridge hosted an Alumni Day this year and will host more soon.
+A home base for Harvard alumni working in tech around Boston and Cambridge, steps from the Yard. We hosted an Alumni Day this year — follow our events to hear about the next time we get together in person.
 
 <!-- Banner slot: this is a Harvard campus facade, correct for Boston but not one of
      our own events. Replace it with the Alumni Day photo from the 2026-06-05 Cambridge

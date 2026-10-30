@@ -1,0 +1,133 @@
+{
+  "timestamp": "2026-10-30T22:08:37Z",
+  "title": "Tighten in-person chapter bios so they don't promise specific events",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe chapter pages for the four in-person cities (Boston & Cambridge, New York City, SF & Bay Area, London) open with copy that promises specific event formats the chapters can't yet reliably deliver — \"Founder dinners, campus meetups, and panels with Harvard faculty\", \"Regular founder dinners, panels…\", \"investor mixers\", \"founder roundtables\". Rewrite each chapter's \"about\" body copy to be shorter and more general: who the chapter is for and that it brings alumni together in person, without naming particular event types or a cadence. DC and Seattle already read honestly as online groups and are left alone.\n\n## Key Decisions\n\n- **All four in-person cities, not just Boston and NYC** — the user chose a consistent standard so no city page promises a particular kind of event.\n- **Body copy only; frontmatter mostly untouched** — the promises live in the markdown body. `blurb` and `tagline` are already general (\"Home of Harvard, our Cambridge and Boston community.\", \"We are the … Chapter of Harvard Alumni in Tech.\") and stay as is. NYC's blurb \"Our founding chapter and largest community\" is a claim about size, not events — keep it unless the user flags it at review.\n- **Short: one or two sentences per chapter** — e.g. Boston: \"A home base for Harvard alumni working in tech around Boston and Cambridge. We get together in person throughout the year — follow our events to hear about the next one.\" Final wording is the build step's call; it must not name event formats (dinners, panels, mixers, roundtables, socials) or a frequency (\"regular\", \"monthly\").\n- **Boston's \"hosted an Alumni Day this year and will host more soon\" line** — drop the \"will host more soon\" promise; a past-tense mention of the Alumni Day is fine to keep or fold into the general sentence. Keep the HTML banner-slot comment intact (it is an editor note, not rendered copy).\n- **Edits are content-only** — made in the markdown files (the same files the CodeYam CMS edits), so no schema, component or test changes are needed. No existing test pins chapter body text.\n\n## Implementation\n\n### 1. Boston & Cambridge\n\n**File**: `src/content/chapters/boston-cambridge.md`\n\nReplace the two body paragraphs with one or two short general sentences (see Key Decisions). Leave the banner-slot comment and frontmatter as is.\n\n### 2. New York City\n\n**File**: `src/content/chapters/nyc.md`\n\nReplace \"Regular founder dinners, panels, and community gatherings across the city.\" with a general line about bringing NYC alumni in tech together in person.\n\n### 3. SF & Bay Area\n\n**File**: `src/content/chapters/sf-bay-area.md`\n\nReplace \"Founder dinners, investor mixers, and small-group conversations…\" with a general line that keeps the geography (San Francisco, the Peninsula, Silicon Valley) but drops the event list.\n\n### 4. London\n\n**File**: `src/content/chapters/london.md`\n\nReplace \"Evening socials and founder roundtables connecting Harvard alumni across the UK and Europe.\" with a general line that keeps the UK/Europe reach. Leave the lead bio and `leadsNote` alone.\n\n### 5. Keep the isolated-component fixtures in step\n\n**File**: `src/pages/isolated-components/[name].astro`\n\nThe scenario fixtures still carry the old wording — the NYC body paragraph near line 1100 and an older NYC blurb near line 119 (\"…hosting monthly mixers, founder dinners, and the annual … Summit\"). Update them to match the new copy so scenario screenshots don't show promises the live pages no longer make.\n\n## Reused existing code\n\n- Chapter content collection schema in `src/content/config.ts` (`chapters`, body = \"about this chapter\" copy) — unchanged.\n- Chapter page `src/pages/chapters/[slug].astro` renders the body, `blurb` and `tagline` — unchanged.\n- DC and Seattle copy (`src/content/chapters/dc-dmv.md`, `src/content/chapters/seattle.md`) is the tone reference: plain, honest, no promised formats.\n\n## Scenarios to Demonstrate\n\n- Boston & Cambridge chapter page with the shortened copy (banner slot unchanged)\n- New York City chapter page with the shortened copy and its photo gallery\n- SF & Bay Area chapter page with the shortened copy and interim lead\n- London chapter page with the shortened copy alongside the lead profile and co-lead note",
+  "description": "Rewrote the bios for the four in-person chapters (Boston & Cambridge, NYC, SF & Bay Area, London) so they describe the chapter and point readers to the events list instead of promising founder dinners, monthly mixers or a summit that may not happen. London and NYC say \"Harvard alumni working in tech\" because the site brand guard rejects a lowercase \"Harvard alumni in tech\". The matching ChapterPage isolation fixture copy was updated too. Scope verdict: this content fix delivers none of the project's listed deliverables and defers none; it is a standalone copy correction. The bio sits below the captured viewport, so the scenario frames look unchanged.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/design/active_tab.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/tighten-in-person-chapter-bios-so-they-don-t-promise-specific-events.md\t.codeyam/plans/completed/tighten-in-person-chapter-bios-so-they-don-t-promise-specific-events.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/proposed-plans.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/chapterpage.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-event-photos--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-lead-headshot--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-photo-enlarged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/88218d8e59c92f8665f9b463e8fbdb6d880a557e0c9b8eb1c7431749ec3193b6.json",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/boston-cambridge.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/london.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/nyc.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/sf-bay-area.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/f9270137dd633fce7cf225760ceb0ce86282df33635e57190f68c9a701d77688.json",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 1872,
+    "passed": 1872,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1872,
+        "passed": 1872
+      }
+    ]
+  }
+}

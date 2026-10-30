@@ -3,9 +3,63 @@
   "surface_kind": "component",
   "states": [
     {
-      "dimension": "default",
-      "value": "default",
-      "rationale": "source-derived state default=default",
+      "dimension": "photos",
+      "value": "empty",
+      "rationale": "source-derived state photos=empty",
+      "status": "covered"
+    },
+    {
+      "dimension": "photos",
+      "value": "one",
+      "rationale": "source-derived state photos=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "photos",
+      "value": "many",
+      "rationale": "source-derived state photos=many",
+      "status": "covered"
+    },
+    {
+      "dimension": "leads",
+      "value": "empty",
+      "rationale": "source-derived state leads=empty",
+      "status": "covered"
+    },
+    {
+      "dimension": "leads",
+      "value": "one",
+      "rationale": "source-derived state leads=one",
+      "status": "covered"
+    },
+    {
+      "dimension": "leads",
+      "value": "many",
+      "rationale": "source-derived state leads=many",
+      "status": "planned"
+    },
+    {
+      "dimension": "forming",
+      "value": "true",
+      "rationale": "source-derived state forming=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "forming",
+      "value": "false",
+      "rationale": "source-derived state forming=false",
+      "status": "covered"
+    },
+    {
+      "dimension": "showGallery",
+      "value": "true",
+      "rationale": "source-derived state showGallery=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "showGallery",
+      "value": "false",
+      "rationale": "source-derived state showGallery=false",
       "status": "covered"
     }
   ]

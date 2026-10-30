@@ -116,7 +116,7 @@ const chapterPageStates = {
   Default: {
     name: 'New York City',
     region: 'New York, NY',
-    blurb: 'Our founding chapter and largest community, hosting monthly mixers, founder dinners, and the annual Harvard Alumni in Tech Summit.',
+    blurb: 'Our founding chapter and largest community.',
     heroImage: '/images/chapters/nyc.jpg',
     tagline: 'We are the New York Chapter of Harvard Alumni in Tech.',
     showGallery: true,
@@ -1097,7 +1097,7 @@ if (name && name.startsWith('MomentumNetwork')) {
           <ChapterPage {...chapterPageProps}>
             {/* Real chapter copy, not filler. A forming chapter does not render
                 its body at all, so this only shows on the active states. */}
-            <p>Regular founder dinners, panels, and community gatherings across the city.</p>
+            <p>Bringing Harvard alumni working in tech together in person across New York City. Follow our events to hear about the next time we meet.</p>
           </ChapterPage>
         ) : chapterHeroProps ? (
           <ChapterHero {...chapterHeroProps} />

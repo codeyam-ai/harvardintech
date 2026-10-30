@@ -19,4 +19,4 @@ status: active
 tagline: We are the New York Chapter of Harvard Alumni in Tech.
 ---
 
-Regular founder dinners, panels, and community gatherings across the city.
+Bringing Harvard alumni working in tech together in person across New York City. Follow our events to hear about the next time we meet.

@@ -16,4 +16,4 @@ status: active
 tagline: We are the SF & Bay Area Chapter of Harvard Alumni in Tech.
 ---
 
-Founder dinners, investor mixers, and small-group conversations with Harvard alumni building across San Francisco, the Peninsula, and Silicon Valley.
+A place for Harvard alumni building in tech across San Francisco, the Peninsula, and Silicon Valley to meet in person. Follow our events to hear about the next one.

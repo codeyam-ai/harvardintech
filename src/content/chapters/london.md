@@ -26,4 +26,4 @@ leads:
 leadsNote: We're looking for a London co-lead. If you'd like to help run the chapter, get in touch.
 ---
 
-Evening socials and founder roundtables connecting Harvard alumni across the UK and Europe.
+Connecting Harvard alumni working in tech across London, the UK, and Europe, in person. Follow our events to hear about the next time we meet.
