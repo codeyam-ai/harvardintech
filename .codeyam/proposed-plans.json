@@ -1634,6 +1634,17 @@
       "status": "pending",
       "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
       "sightings": 1
+    },
+    {
+      "id": "the-saved-page-screenshots-stop-above-the-bio-paragraph-so-the-new-wording-shows-only-in-the-demo-walkthrough-not-in-those-screenshots",
+      "title": "The saved page screenshots stop above the bio paragraph, so the new wording shows only in the demo walkthrough, not in those screenshots.",
+      "mode": "backend",
+      "body": "## Summary\n\nThe saved page screenshots stop above the bio paragraph, so the new wording shows only in the demo walkthrough, not in those screenshots.\n\nAt the approval gate for \"In-person chapter bios no longer promise specific events\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `tighten-in-person-chapter-bios-so-they-don-t-promise-specific-events` (now at `.codeyam/plans/completed/tighten-in-person-chapter-bios-so-they-don-t-promise-specific-events.md`).\n\nThe four in-person chapter pages now describe each chapter honestly and send readers to the events list instead of promising dinners, mixers or a summit.\n\n## What you can now do\n- Point people to the Boston & Cambridge, NYC, SF & Bay Area and London pages without them over-promising\n- Rely on the events list on each page as the single source for what's actually coming up\n- See consistent \"Harvard alumni working in tech\" wording across the chapter bios\n\nRead that plan and the code it changed before planning how to close the gap.",
+      "reason": "Approved past at the approval gate for \"In-person chapter bios no longer promise specific events\".",
+      "source": "session-review",
+      "status": "pending",
+      "proposedAt": "2026-10-30T22:12:32.421549964+00:00",
+      "sightings": 1
     }
   ],
   "rounds": [
@@ -2629,6 +2640,27 @@
         "the-site-still-decides-upcoming-vs-past-events-using-today-s-real-date-so-the-frozen-clock-event-screenshots-will-drift-again-after-13-november-2026",
         "no-automated-test-watches-the-dev-server-actually-reloading-the-settings-after-a-seed-only-the-part-that-picks-which-modules-to-reload-is-tested-the-reload-was-checked-by-eye-in-the-recaptured-screenshots",
         "not-re-checked-this-session-that-the-e-mail-address-comes-back-when-an-unseeded-screenshot-is-loaded-right-after-the-no-email-one"
+      ],
+      "rankedIds": [
+        "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
+        "pin-the-clock-for-scenarios-whose-dates-drift-daily",
+        "keep-the-highlighted-supporter-visible-in-the-find-your-place-scenario",
+        "always-write-alt-text-for-images-uploaded-in-the-content-editor",
+        "show-adopted-images-in-the-cms-media-library-scenario",
+        "split-src-content-config-ts-along-its-collection-seams",
+        "split-the-586-line-seed-adapter",
+        "move-the-dev-content-sandbox-wiring-out-of-astro-config-mjs",
+        "break-up-the-1-130-line-momentumnetwork-component",
+        "split-the-1-250-line-catch-all-isolation-page-into-one-page-per-component",
+        "give-eventcard-its-own-glossary-entry"
+      ]
+    },
+    {
+      "at": "2026-10-30T22:12:32.421549964+00:00",
+      "feature": "In-person chapter bios no longer promise specific events",
+      "notes": "Small copy-only cycle (four chapter markdown bios plus one isolation fixture). The brand guard test caught lowercase 'Harvard alumni in tech' and the wording was aligned to 'working in tech'. No new fixes, debt or CodeYam friction surfaced…",
+      "proposedIds": [
+        "the-saved-page-screenshots-stop-above-the-bio-paragraph-so-the-new-wording-shows-only-in-the-demo-walkthrough-not-in-those-screenshots"
       ],
       "rankedIds": [
         "the-momentum-fund-page-does-not-show-its-stats-block-today-so-its-updated-150-and-6-figures-are-saved-but-not-visible",
