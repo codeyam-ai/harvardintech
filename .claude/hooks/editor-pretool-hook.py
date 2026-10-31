@@ -404,8 +404,37 @@ def allow(reason):
     reason string is never printed, so it costs a normal call nothing."""
     if _EXPLAIN_MODE:
         _emit_verdict("ALLOWED", "", "", reason)
+    elif _AWAITING_USER_PROJECT_DIR:
+        record_awaiting_user(_AWAITING_USER_PROJECT_DIR)
     _deliver_context_on_allow()
     sys.exit(0)
+
+
+# Set in `main` when the call being judged is an `AskUserQuestion`, so the
+# allow verdict — whichever of the many exits it leaves through — records that
+# the session is about to park on its user. A refusal never reaches `allow`, so
+# a question the preview gate turns away does not stamp the marker.
+_AWAITING_USER_PROJECT_DIR = ""
+
+
+def record_awaiting_user(project_dir):
+    """Record when the session raised a question to its user.
+
+    Two readers want this: this machine's commit-queue liveness beat (which
+    tells waiters the truth and, holding the head, gives it up after a while)
+    and the plan run schedule's poller (which starts the next scheduled plan
+    once the question has outlived its grace). Neither cares whether a
+    workflow step is active, and the closing question is asked after
+    feature-complete has deleted the step state — so this is written on every
+    allowed question, not only inside the step gates. The step hook removes
+    the file once the answer arrives. Best-effort."""
+    try:
+        run_dir = os.path.join(project_dir, ".codeyam", "run")
+        os.makedirs(run_dir, exist_ok=True)
+        with open(os.path.join(run_dir, "awaiting-user.json"), "w") as f:
+            json.dump({"askedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, f)
+    except OSError:
+        pass
 
 
 def notice(rule, message):
@@ -5227,6 +5256,74 @@ def writes_into_codeyam(command):
     return any(".codeyam/" in path for path in explicit)
 
 
+# Programs that can only LOOK at a path — list it, count it, grep it, print it.
+# A pipeline made of nothing but these, with no output redirect, cannot hand a
+# store's bytes to a parser elsewhere in the compound, so a store it names is
+# co-occurrence, not a parse target. An allowlist, not a denylist: `cp`, `xargs`,
+# `while`, `for` and an assignment can all launder a store into the parse, and
+# none of them is here.
+_INSPECTION_ONLY_PROGRAMS = frozenset(
+    (
+        "ls", "cat", "head", "tail", "wc", "grep", "egrep", "rg", "sort", "uniq",
+        "cut", "tr", "stat", "du", "file", "diff", "test", "[", "echo", "printf",
+        "git", "true",
+    )
+)
+
+# Output redirects that discard rather than capture. Any other `>` makes the
+# pipeline a writer, and a written copy can be parsed in the next command.
+_DISCARDING_REDIRECT = re.compile(r"\d?>&\d|\d?>\s*/dev/null")
+
+
+def _is_inspection_only_stage(stage):
+    """True when `stage` runs an inspection-only program and writes nothing.
+
+    A leading assignment that itself names `.codeyam/` disqualifies the stage:
+    `S=.codeyam/scenarios ls` binds the store to a name a later parse can use."""
+    if ">" in _DISCARDING_REDIRECT.sub("", stage):
+        return False
+    for tok in stage.split():
+        if _ASSIGNMENT.match(tok):
+            if ".codeyam/" in tok:
+                return False
+            continue
+        if tok in _COMMAND_PREFIXES:
+            continue
+        return _program_name(tok) in _INSPECTION_ONLY_PROGRAMS
+    return False
+
+
+def without_standalone_inspections(command):
+    """`command` with every pipeline that only INSPECTS a path removed, so
+    the state-read guard judges the store a parse actually reads rather than
+    any store named anywhere in the compound.
+
+    `json.load(open('$S/audit.json')); ls .codeyam/scenarios | wc -l` names a
+    store, but the `ls` pipeline cannot feed the parse: it is a separate
+    command whose output goes to the terminal. Matching on the whole string
+    refused exactly that, twice in one session, and counted both toward the
+    recurring-guardrail ordinal. A pipe INTO the parser keeps the stages in one
+    pipeline, so `cat .codeyam/x.json | python3 -c 'json.load(sys.stdin)'` is
+    left intact and still refused.
+
+    A command containing a command or process substitution (`$(…)`, a backtick,
+    `<(…)`) is returned unchanged: the splitter treats the parentheses as
+    separators, so a substituted `ls .codeyam/…` would look standalone while
+    its output is in fact an argument of the parse. Unscoped is the old,
+    stricter verdict, which is the safe direction to fail."""
+    if "$(" in command or "`" in command or "<(" in command:
+        return command
+    scoped = command
+    for stages in _pipelines(command):
+        if any(parses_json(stage) for stage in stages):
+            continue
+        if not all(_is_inspection_only_stage(stage) for stage in stages):
+            continue
+        for stage in stages:
+            scoped = scoped.replace(stage, " ", 1)
+    return scoped
+
+
 def scripted_state_read_target(command):
     """The `(kind, store, inspector)` a scripted JSON parse of codeyam state
     touches, or None when `command` is not one.
@@ -5265,12 +5362,18 @@ def scripted_state_read_target(command):
     them: `elide_heredoc_bodies` keeps an EXECUTING body (`python3 - <<'EOF'`
     is a program) and drops a DATA one, so a commit message that quotes a
     `json.load(...)` line as prose — this feature's own plan file does — is
-    not read as a parse of anything."""
+    not read as a parse of anything.
+
+    Only the pipelines that could feed the parse are judged
+    (`without_standalone_inspections`): an `ls`/`grep` of a store elsewhere in
+    the same compound is co-occurrence, which never refuses — and so never
+    counts toward the recurring-guardrail ordinal either."""
     command = elide_heredoc_bodies(command)
     if is_inspector_invocation(command):
         return None
     if not parses_json(command):
         return None
+    command = without_standalone_inspections(command)
     if parses_command_output_transcript(command):
         return ("command-output", _COMMAND_OUTPUT_STORE, None)
     if parses_harness_tool_result(command):
@@ -5715,7 +5818,7 @@ def main():
     """Claude Code PreToolUse hook entry point: read the current
     editor step from `.codeyam/editor-step.json` and either allow or
     block the in-flight tool call based on the active step's rules."""
-    global _EXPLAIN_MODE
+    global _EXPLAIN_MODE, _AWAITING_USER_PROJECT_DIR
     # Set from argv ONCE, before any rule runs, and never read from the
     # environment or the event — see `_EXPLAIN_MODE`.
     _EXPLAIN_MODE = explain_requested(sys.argv[1:])
@@ -5729,6 +5832,9 @@ def main():
 
     tool_name = event.get("tool_name", "")
     tool_input = event.get("tool_input", {})
+    if tool_name == "AskUserQuestion":
+        # Ahead of the editor-mode exits below — see `record_awaiting_user`.
+        _AWAITING_USER_PROJECT_DIR = project_dir
     call = describe_call(tool_name, tool_input)
     report_unfinished_runs(project_dir, call)
 
@@ -6134,18 +6240,6 @@ def main():
                     call=call,
                 )
 
-        # The session is about to park on its user. Record when, so this
-        # machine's commit-queue liveness beat can tell waiters the truth and,
-        # if it holds the head, give it up after a while (the editor reads this
-        # file; the step hook removes it once the answer arrives).
-        try:
-            run_dir = os.path.join(project_dir, ".codeyam", "run")
-            os.makedirs(run_dir, exist_ok=True)
-            with open(os.path.join(run_dir, "awaiting-user.json"), "w") as f:
-                json.dump({"askedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, f)
-        except OSError:
-            pass
-
         allow("AskUserQuestion with the preview requirement satisfied")
 
     # Check Write/Edit to non-.codeyam files
@@ -6315,6 +6409,11 @@ def main():
                     '-m "<msg>"` instead (add `--allow-empty` for an empty commit). It runs the '
                     "static-check and test-cache gates itself before committing, and is the "
                     "gated replacement for `git commit --no-verify`, which skips every gate. "
+                    "Committing the fix for a test this session claimed with `test-fix-claim "
+                    "take`? Run `codeyam-editor editor commit --out-of-workflow --fixes "
+                    "'<test>' -m \"fix: …\"` — allowed at any slug for a claimed test, it runs "
+                    "only the static checks and returns the cursor — then `codeyam-editor "
+                    "editor push --fix-only HEAD`. "
                     "To read what "
                     "a later slug requires without moving the workflow pointer, run "
                     "`codeyam-editor editor step --show --slug <slug>`.",

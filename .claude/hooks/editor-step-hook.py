@@ -810,11 +810,30 @@ def _stale_wakeup_lines(project_dir, event_data):
     Only a token the editor itself judges STALE produces one; a LIVE or
     WAITING wakeup, or one the editor could not judge, passes through
     untouched."""
+    # Each verdict is a subprocess AND prunes its token's record, so it is
+    # asked once and shared by both readers below.
+    verdicts = {}
+
+    def check(token):
+        if token not in verdicts:
+            verdicts[token] = _wakeup_check(project_dir, token)
+        return verdicts[token]
+
+    prompt_text = event_data.get("prompt")
     return _stale_wakeup_block(
-        _stale_wakeup_reasons(
-            event_data.get("prompt"), lambda token: _wakeup_check(project_dir, token)
-        )
+        _stale_wakeup_reasons(prompt_text, check),
+        end_loop=_stale_wakeup_ends_loop(prompt_text, check),
     )
+
+
+def _stale_wakeup_ends_loop(prompt_text, check):
+    """True when any STALE verdict for a token in `prompt_text` says nothing is
+    left waiting (`endLoop`), so the whole check-in loop should be stopped."""
+    for token in _wakeup_tokens(prompt_text):
+        verdict = check(token)
+        if verdict and verdict.get("stale") is True and verdict.get("endLoop") is True:
+            return True
+    return False
 
 
 def _stale_wakeup_reasons(prompt_text, check):
@@ -830,10 +849,20 @@ def _stale_wakeup_reasons(prompt_text, check):
     return reasons
 
 
-def _stale_wakeup_block(reasons):
-    """The `<stale-wakeup>` lines naming each reason, or `[]` for none."""
+def _stale_wakeup_block(reasons, end_loop=False):
+    """The `<stale-wakeup>` lines naming each reason, or `[]` for none.
+
+    `end_loop` adds the one action a stale wakeup still owes: stopping the
+    check-in loop, which otherwise re-fires every ~20 minutes after the
+    feature is done."""
     if not reasons:
         return []
+    loop_line = (
+        ["Nothing is waiting. End the check-in loop now: call `ScheduleWakeup` with "
+         "`stop: true`, so no more of these fire."]
+        if end_loop
+        else []
+    )
     return [
         "",
         "<stale-wakeup>",
@@ -842,8 +871,9 @@ def _stale_wakeup_block(reasons):
         *[f"  - {reason}" for reason in reasons],
         "Run nothing it asks for — no `track-step`, no `advance`, no step command — "
         "and do not re-fetch step context. Tell the user in one line that a leftover "
-        "wakeup fired and was dismissed. If a question to the user was open when it "
-        "arrived, ask that question again.",
+        "wakeup fired and was dismissed. Ask the user nothing new on this turn; if a "
+        "question to the user was open when it arrived, ask that question again.",
+        *loop_line,
         "</stale-wakeup>",
     ]
 

@@ -36,7 +36,28 @@ top to bottom on first use; on later runs, recalled memories supply the deltas.
   half-aligned. "Aggressive" means *relentless toward done*, not *reckless*.
 - **Outward actions stay human-gated.** Pushing the branch, opening the PR,
   and merging the PR each require explicit user confirmation — they are
-  irreversible and are gated by this procedure's own logic.
+  irreversible and are gated by this procedure's own logic. The one standing
+  form of that confirmation is the scheduled invocation below.
+
+### Scheduled invocation — `scheduled-finalize` / `scheduled-merge`
+
+The plan run schedule types this skill into the agent terminal after its last
+Fast-commit plan completes, when the user ticked "Finalize the branch after
+the last plan" in the Run Schedule panel. The argument is the user's choice,
+recorded in that panel, of how far this run may go without them:
+
+- **`scheduled-finalize`** — run unattended through step 7 to merge-ready
+  (`verify-full-finalize` exit 0), then stop and report. Do **not** push.
+- **`scheduled-merge`** — the same, then treat push → PR create/update →
+  drive CI green → merge as **already confirmed**: do not ask before each of
+  those three. Every other rule still holds — the 8b stripped-body rule, the
+  read-back-before-retry rule, and 8a's investigate-before-classify.
+
+Neither token waives a **judgment call**. A bulk `SOURCE_HAS_UNREGISTERED`
+wall, an ambiguous fixture-vs-real classification, any delete/rewrite, or a
+red CI that needs classifying still **stops and asks**, exactly as in an
+interactive run — the user may be away, and the run waits for them rather than
+deciding for them. With no argument, every outward action asks as usual.
 
 There is also a **report-only mode** (see the last section): the cheap "just
 tell me what's misaligned, don't touch anything" path, including the
@@ -239,6 +260,30 @@ codeyam-editor editor restart-server
 > whether this session actually descends from the server before assuming it
 > needs protecting. Choosing `--defer-restart` to be safe, on a session that was
 > never at risk, guarantees the one outcome you were trying to avoid.
+
+**No server running?** (`rebuild-self` says `no editor server running`, or
+`server-identity` cannot reach one.) Start one for THIS project, by absolute
+path, and prove it is the right server before any server-routed step:
+
+```bash
+codeyam-editor start --no-open --project "$(pwd)"   # run from the repo root
+codeyam-editor editor server-identity
+```
+
+Read two rows before going on. `project dir:` must be this repo. `build:` must
+match the CLI; if it does not, the `rebuild-self --check` probe above settles
+whether that difference matters.
+
+> GOTCHA — **a bare `start` opens the Project Launcher, not this project.**
+> With two or more projects in the global registry, `codeyam-editor start`
+> without `--project` boots in launcher mode by design (it prints
+> `Launcher mode (N registered projects)` and serves the `/projects` selector),
+> even when run from inside this repo. Every server-routed step
+> (`refresh-tests`, `recapture-stale`, the finalize's Phase 1) then talks to the
+> launcher and fails opaquely, and `server-identity` reads
+> `(unknown — older server)` for every field. Pass an absolute path rather than
+> a project name: a name is substring-matched against the registry and can
+> select a sibling project.
 
 ---
 
@@ -1126,14 +1171,17 @@ codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.lo
 > ```bash
 > codeyam-editor editor rebuild-self                               # 1. the binary now carries this tree
 > CODEYAM_EDITOR_BIN="$(command -v codeyam-editor)" git commit -F <msg>   # 2. hosted-e2e RUNS (~70s) instead of refusing
-> codeyam-editor editor rebuild-self                               # 3. re-stamp at the new HEAD so the finalize can certify
+> codeyam-editor editor rebuild-self --check                       # 3. reads `current` — no re-stamp build needed
 > ```
 >
 > `CODEYAM_EDITOR_BIN` is `scripts/check-hosted-e2e.sh`'s documented override —
 > a binary named there is trusted as given — and step 1 is what makes trusting
-> it honest. Step 3 is a no-op after a **state-only** commit (no tracked source
-> moved, so `--check` already reads `current`); that is why later commits in the
-> same pass need no override at all. Never use `git commit --no-verify` here:
+> it honest. Step 3 used to be a second full `rebuild-self` (~2.5 minutes) that
+> only re-stamped the new HEAD sha into byte-identical source. It is no longer
+> needed: step 1 records what it compiled from the dirty tree, so a commit of
+> exactly that content reads `current`, as a **state-only** commit always did.
+> Run a real `rebuild-self` only if `--check` reads `stale`, which means a file
+> changed between step 1 and the commit. Never use `git commit --no-verify` here:
 > it skips *every* hook, and `staticChecks` is the only thing between the pass
 > and a red CI.
 
@@ -1276,7 +1324,9 @@ codeyam-editor editor session-finalize 2>&1 | tee /tmp/codeyam-audit-finalize.lo
 > before assuming the branch is broken.
 
 Only after `verify-full-finalize` exits 0 is the branch **merge-ready**.
-**Stop here and report unless the user explicitly authorized the push.** When
+**Stop here and report unless the user explicitly authorized the push.** An
+invocation with `scheduled-merge` is that authorization (see "Scheduled
+invocation" at the top); `scheduled-finalize` is not — stop and report. When
 authorized:
 
 ```bash
@@ -1411,6 +1461,37 @@ skill's job, not an outward action — the default is "root-cause and fix."
 Surface to the user only a genuine fork (approach A vs B with real ripple), as a
 real decision, never as a defer.
 
+**Iterate on the narrowest CI that can answer — one full PR run, at the end.**
+A full PR run answers every platform at once, and that is the only reason to
+pay for it. While you are still fixing, pick the cheapest run that answers the
+question you actually have:
+
+- **A suspected flake → rerun that job on the SAME commit.**
+  `gh run rerun <run-id> --job <job-id>` re-runs one job against an unchanged
+  tree. It is the proof the flake bar below demands and the cheapest possible
+  re-verification. A suspected flake never justifies a new push.
+- **A red check confined to one platform's suite → that platform's targeted
+  run.** For Windows that is `codeyam-editor editor windows-check`, which
+  dispatches CI's `windows_only` input on the pushed tip; read it back with
+  `windows-check --run <id>`. This includes a commit that changes only test
+  scheduling (a nextest override, a shard pin): it can only move Windows shard
+  times, so only the Windows suite can answer it.
+- **Only the final commit, carrying every fix, pays for full PR CI.**
+
+`windows-check` refuses an unpushed tip, and on a PR branch every push also
+starts the full PR run. If the CI skips draft PRs, as this repo's does, convert
+the PR to draft first (`gh pr ready <pr> --undo`). Push and iterate with the
+targeted runs, then `gh pr ready <pr>` to start the one full run on the final
+tip. Without that, each targeted run sits beside a full run that cancels the
+previous one and is cancelled by the next.
+
+Measured on PR #142: five full PR runs, each 33–50 minutes and ~39 jobs, to
+reach green. Three of the four red rounds were Windows-only: a repaired
+windows-gnu build whose newly-visible suite went straight to full CI (see the
+`windows-check` MANDATE), then a nextest override and a shard pin, each pushed
+as its own full run. Roughly one full run plus three Windows-only runs would
+have done.
+
 **Land the whole set in ONE commit — a post-finalize commit un-stamps the
 branch.** A CI run reports *every* failure it found, so the complete set is in
 front of you before you fix the first one. Investigate all of them (steps 1–3
@@ -1451,17 +1532,24 @@ commits cannot share one finalize, because the second does not exist yet. On
 minutes each, neither of which changed a single verdict. Two things now keep it
 cheap — lean on them rather than fighting the ordering:
 
-- **A commit touching only CI provider config re-proves only the static
-  checks.** `.github/workflows/**` (and the other CI config locations) is linted
-  by the static checks and read by nothing else a finalize runs, so the audit,
-  the dependency-graph rebuild, and the screenshot guard keep their recorded
-  passes across it, and the re-finalize re-stamps the marker after re-running
-  the static checks and the cheap whole-tree guards — minutes, not the audit's
-  ~45. Keep the visibility commit to CI config alone and it lands
-  in that cheap band; mix a source edit into it and every phase that reads that
-  source re-runs, as it must. The audit's skip still requires the static checks
-  to have passed on the current tree, so a broken workflow edit cannot slip
-  through on the audit's old pass.
+- **A commit touching only CI provider config or test-scheduling config does
+  not invalidate the audit.** `.github/workflows/**` (and the other CI config
+  locations) and `.config/nextest.toml` are linted by the static checks and read
+  by nothing else a finalize runs. The audit, the dependency-graph rebuild, and
+  the screenshot guard leave them out of their input fingerprints. When the
+  audit's recorded pass still matches, the re-finalize re-runs only the static
+  checks and the cheap whole-tree guards — minutes. That is the best case, not a
+  promise. On `editor-improvements-104` two such re-finalizes took **2,805 s and
+  2,698 s**. `.config/nextest.toml` was still an audit input then, and in the
+  second run the audit's recorded pass no longer matched. Each paid the strict
+  audit twice: the Phase 0.6 pre-audit, then Phase 2 on inputs Phase 1 had just
+  proven unchanged. Phase 2 now adopts a clean pre-audit verdict whenever Phase 1
+  rewrote no runner output and the audit's inputs have not moved since. So the
+  worst case for a config-only commit is **one** strict audit (~16 min here),
+  not two. Keep the visibility commit to config alone. Mix a source edit into it
+  and every phase that reads that source re-runs, as it must. The audit's skip
+  still requires the static checks to have passed on the current tree, so a
+  broken workflow edit cannot slip through on the audit's old pass.
 - **The fix commit pays for what it touched, not for the whole branch.** Phase
   fingerprinting re-runs only the phases whose inputs moved; that is the
   mechanism the price above already reflects.
@@ -1480,6 +1568,13 @@ labeled a flake ONLY when it **passed on a re-run with no code change**, OR it
 check that fails on two consecutive runs with the same signature is **by
 definition not a flake — it is a real bug. Fix it.** Build/compile errors and
 assertion mismatches are never flakes.
+
+**The first move on a suspected flake is a same-commit job rerun:**
+`gh run rerun <run-id> --job <job-id>`. Green there is the "passed on a re-run
+with no code change" this bar requires; red again with the same signature means
+it is a real bug. Either way the answer costs one job, not a push and a full PR
+run. On PR #142, Windows shard 2 in run 40650713940 was checked exactly this
+way.
 
 **Documented flake family — the port/process TOCTOU.** A single test in the
 real-port / real-process family (`port_reclaim` first-free, broker restart /
@@ -1713,7 +1808,22 @@ reported the identical `[FAIL] windows-clippy` in ~1.5 minutes.
   round or re-stamp. Measured on `editor-improvements-103`: `04dafd6af`
   repaired the windows-gnu build, the branch went straight to full CI, and two
   rounds (runs `40202657897`, `40215887712`) surfaced 6 and then 4 Windows
-  failures that one `windows-check` would have shown together.
+  failures that one `windows-check` would have shown together. The same thing
+  happened again on PR #142: `68ee5496e` repaired the windows-gnu build and the
+  branch went straight to full CI. So make the check concrete: **if any commit
+  on this branch fixes a `cross-check` `[FAIL] windows-clippy`, the Windows
+  suite was dark.** Run `windows-check` before the push that would start the
+  next full round.
+- **A newly slow Windows test is NOT a pin to add.** Every `main` run records
+  per-test Windows durations, and the next run places each test measured at
+  15s or more onto the lightest shard (`scripts/windows-shard-plan.py`; the
+  per-shard estimate is in `build-rust-windows-archive`'s step summary). So a
+  shard that timed out green on a PR usually rebalances itself once that test
+  has run on `main`. `WINDOWS_PINNED_SLOW_TESTS` in `.github/workflows/cicd.yml`
+  is now only for a test that must not share a shard: one shard's placed tests
+  run in PARALLEL, and in run 40650713940 the ~115s step-render budget guard
+  beside `every_query_surface…` (84s alone) pushed the latter past nextest's
+  120s kill. If you do pin, verify it with `windows-check`, not a full PR run.
 - **CI's test runner, not just CI's platforms.** None of the three verdicts
   above runs the suite the way CI does when CI uses a different runner from the
   local gates. On a Rust workspace whose CI runs `cargo nextest` under a
