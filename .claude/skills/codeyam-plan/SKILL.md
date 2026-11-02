@@ -550,8 +550,24 @@ ask. Rendering these three as prose leaves the user typing "commit it" by hand
   # Committing directly on main? Append " [skip ci]" to the message.
   git commit -m "plan: <short description of the feature/fix>" -- .codeyam/plans/<slug>.md
   git show --stat --name-only HEAD   # verify only the plan file (and any assets) are in the commit
+  codeyam-editor editor push         # ship the plan now — allowed at any workflow step
   codeyam-editor editor plan-complete
   ```
+  **Push the plan right after committing it, whatever step the editor
+  workflow is on.** Until it is pushed the plan exists only on this machine,
+  so other machines and the run schedule never see it. `codeyam-editor editor
+  push` takes its plan-only route when every unpushed commit is a plan or
+  state commit: it skips the commit queue and the workflow gates, and it
+  handles a remote that moved and a dirty working tree without touching your
+  uncommitted files. Never use a raw `git push` here — the pretool hook
+  refuses it outside the push step, and it cannot handle either case. Report
+  the outcome in one line: pushed; pushed with the local branch left behind
+  (its JSON says `"branchLeftBehind": true` — the next sync catches the branch
+  up, nothing to do); or, if it did not push (for example because this branch
+  also has unpushed feature commits), the `Next valid action:` line it
+  printed. A push that did not happen does not block `plan-complete` — the
+  plan is still committed.
+
   After the commit succeeds, `plan-complete` triggers a confirmation modal
   in the Plan tab offering to start another plan or return to the queued
   changes list. Its first line says whether an editor tab actually took the

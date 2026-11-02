@@ -94,6 +94,47 @@ def staged_paths_are_plans_only(project_dir):
     return all(l.startswith(PLAN_PATH_PREFIX) for l in lines)
 
 
+# The planning-state stores a proposed-plan decision commits beside the plan,
+# and the state directory a `chore: update codeyam state` commit touches.
+# Mirrors `PLANNING_STATE_FILES` / `STATE_DIR_PREFIX` in
+# `crates/codeyam-editor/src/commands/editor/push_plan_only.rs`.
+PLANNING_STATE_FILES = (".codeyam/proposed-plans.json", ".codeyam/project-deliverables.json")
+STATE_DIR_PREFIX = ".codeyam/state/"
+
+
+def _git_lines(project_dir, args):
+    """`git <args>` stdout lines, or None when git fails or times out."""
+    try:
+        result = subprocess.run(
+            ["git", *args], cwd=project_dir, capture_output=True, text=True, timeout=2
+        )
+    except Exception:
+        return None
+    if result.returncode != 0:
+        return None
+    return [l for l in result.stdout.splitlines() if l.strip()]
+
+
+def unpushed_range_is_plan_only(project_dir):
+    """True iff `@{upstream}..HEAD` holds at least one commit and every one of
+    them touches only planning paths or only `.codeyam/state/` — the range
+    `codeyam-editor editor push` ships at any step without the commit queue.
+    Mirrors `push_plan_only::commit_skips_queue`; anything git cannot answer
+    is False, so the refusal keeps its ordinary wording."""
+    shas = _git_lines(project_dir, ["rev-list", "@{upstream}..HEAD"])
+    if not shas:
+        return False
+    for sha in shas:
+        files = _git_lines(project_dir, ["diff-tree", "--no-commit-id", "--name-only", "-r", sha])
+        if not files:
+            return False
+        planning = all(f.startswith(PLAN_PATH_PREFIX) or f in PLANNING_STATE_FILES for f in files)
+        state = all(f.startswith(STATE_DIR_PREFIX) for f in files)
+        if not (planning or state):
+            return False
+    return True
+
+
 def git_add_paths_are_plans_only(command):
     """True iff a `git add` command targets only paths under .codeyam/plans/.
 
@@ -1051,6 +1092,13 @@ def _call_args(text, paren_index):
     """Top-level, comma-separated argument expressions of the call whose `(`
     sits at `paren_index`. Quote-aware so a comma or paren inside a string
     literal does not split an argument. Returns [] if the parens never close."""
+    return _call_span(text, paren_index)[0]
+
+
+def _call_span(text, paren_index):
+    """`(args, end)` for the call whose `(` sits at `paren_index`: its
+    top-level argument expressions (`_call_args`) and the index just past its
+    closing bracket — `([], -1)` when it never closes."""
     depth = 0
     quote = ""
     args = []
@@ -1074,13 +1122,13 @@ def _call_args(text, paren_index):
             depth -= 1
             if depth == 0:
                 args.append("".join(current))
-                return args
+                return args, i + 1
         if depth == 1 and ch == ",":
             args.append("".join(current))
             current = []
         else:
             current.append(ch)
-    return []
+    return [], -1
 
 
 def _is_redirection_ampersand(chars, index):
@@ -2754,7 +2802,7 @@ def _argv_value(command, index):
     return interpreter_argument(command, match.group("module"), int(match.group("index")))
 
 
-def resolve_identifier(command, name):
+def resolve_identifier(command, name, _seen=frozenset()):
     """Every string literal `name` is bound to in `command` — a Python or JS
     variable (`p = "…"`) — or None when it cannot be resolved.
 
@@ -2791,13 +2839,79 @@ def resolve_identifier(command, name):
         return None
     values = []
     assignment = re.compile(rf"(?<![\w.$])(?:(?:const|let|var)\s+)?{ident}\s*=(?![=>])\s*")
+    seen = _seen | {name}
     for match in assignment.finditer(command):
         value = _literal_value(command, match.end())
         resolved = [value] if value is not None else _argv_value(command, match.end())
         if resolved is None:
+            resolved = _concatenation_value(command, match.end(), seen)
+        if resolved is None:
             return None
         values.extend(v for v in resolved if v not in values)
     return values or None
+
+
+# `<ident> + "<literal>"`, and `os.path.join(<ident>, "<literal>", …)`.
+_CONCATENATION = re.compile(r"(?P<ident>[A-Za-z_$][\w$]*)\s*\+\s*(?P<rest>.+)", re.DOTALL)
+_PATH_JOIN = re.compile(r"(?:os\.)?path\.join\s*(?=\()")
+
+
+def _concatenated_paths(command, expr, seen=frozenset()):
+    """The paths `expr` names when it is `ident + "literal"` or
+    `os.path.join(ident, "literal", …)` and `ident` resolves
+    (`resolve_identifier`, which follows `= sys.argv[N]`) — else None.
+
+    VM19 e1e05d73 wrote `p = w + '/crates/…/step.rs'` with `w = sys.argv[1]`
+    bound to a scratch worktree, and was refused as rewriting the project's
+    tracked `step.rs`. Resolving the concatenation lets the guard judge the
+    real target; one that lands inside the project is still judged against
+    git, so it is still refused. Any unresolved part answers None (opaque)."""
+    expr = expr.strip()
+    parts = _path_join_parts(expr) if _PATH_JOIN.match(expr) else _plus_concat_parts(expr)
+    if parts is None:
+        return None
+    head, join, tail = parts
+    if not _BARE_IDENTIFIER.match(head) or head in seen:
+        return None
+    bases = resolve_identifier(command, head, seen)
+    if bases is None:
+        return None
+    return [join(base, tail) for base in bases]
+
+
+def _path_join_parts(expr):
+    """`(head, join, tail)` for `os.path.join(head, "lit", …)` spanning all of
+    `expr`, every argument after the first a string literal — else None."""
+    open_paren = _PATH_JOIN.match(expr).end()
+    args, close = _call_span(expr, open_paren)
+    if len(args) < 2 or close != len(expr):
+        return None
+    tail = [_string_literal(arg) for arg in args[1:]]
+    if any(literal is None for literal in tail):
+        return None
+    return args[0].strip(), lambda base, rest: os.path.join(base, *rest), tail
+
+
+def _plus_concat_parts(expr):
+    """`(head, join, tail)` for `head + "lit"` — else None."""
+    match = _CONCATENATION.fullmatch(expr)
+    if not match:
+        return None
+    literal = _string_literal(match.group("rest"))
+    if literal is None:
+        return None
+    return match.group("ident"), lambda base, rest: base + rest, literal
+
+
+def _concatenation_value(command, index, seen=frozenset()):
+    """`_concatenated_paths` for the assignment value starting at
+    `command[index]`, read to the end of its line (a trailing `;` dropped)."""
+    end = command.find("\n", index)
+    expr = command[index:] if end == -1 else command[index:end]
+    expr = expr.strip()
+    if expr.endswith(";"):
+        expr = expr[:-1]
+    return _concatenated_paths(command, expr, seen)
 
 
 def _shell_variable_values(command, name):
@@ -2994,7 +3108,8 @@ def inplace_edit_targets(command):
 def _resolved_expression(command, expr):
     """The literal paths a write construct's target expression names — the
     literal itself, the values of a bare variable bound to literals, or the
-    interpreter argument a `sys.argv[N]` / `process.argv[N]` holds — or None
+    interpreter argument a `sys.argv[N]` / `process.argv[N]` holds, or a
+    concatenation onto a resolvable variable (`_concatenated_paths`) — or None
     when it cannot be resolved."""
     literal = _string_literal(expr)
     if literal:
@@ -3008,7 +3123,7 @@ def _resolved_expression(command, expr):
     argv = _ARGV_REFERENCE.fullmatch(expr)
     if argv:
         return interpreter_argument(command, argv.group("module"), int(argv.group("index")))
-    return None
+    return _concatenated_paths(command, expr)
 
 
 # A Python f-string (`f'…'`, `rf"…"`) or a JS template literal (`` `…` ``),
@@ -3150,14 +3265,133 @@ def _rebased_on_cd(command, position, paths, start=""):
     return _join_onto(_cd_directory(command, position, start), paths)
 
 
+# A git context override. Any of them can point an invocation back at THIS
+# project's repository whatever directory it runs in, so their presence keeps
+# the commit-slug gate on (fail closed).
+_GIT_CONTEXT_OVERRIDE = re.compile(r"\bGIT_(?:DIR|WORK_TREE|INDEX_FILE|COMMON_DIR)\b")
+
+
+def git_invocation_directories(command, subcommand, start=""):
+    """The working directory of every `git <subcommand>` in `command`, or None
+    when any one cannot be resolved statically.
+
+    A directory is the `-C` operand (joined onto the `cd` directory when
+    relative), otherwise the directory a preceding `cd` moved the shell to
+    (`_cd_directory`), read from `start`. A `--git-dir` / `--work-tree` option
+    or a `GIT_DIR`-style variable anywhere in the command answers None, and so
+    does a command the lexer cannot model, or a `git` it cannot see (inside a
+    `bash -c` payload): each can aim the invocation back at the project.
+
+    VM15 94952b93 ran `cd $S/repo` (S = the scratchpad), `git init` and
+    `git add f`, and was refused by the commit-slug gate — which exists to
+    protect THIS project's index, not a throwaway fixture repo."""
+    if _GIT_CONTEXT_OVERRIDE.search(command):
+        return None
+    lexed = _lex_shell_words(command)
+    if lexed is None:
+        return None
+    directories = []
+    for words in lexed[0]:
+        texts = [w[0] for w in words]
+        payload = _shell_c_payload(texts)
+        if payload is not None and invokes_git_subcommand(payload, subcommand):
+            return None
+        wi = _command_word_index(texts)
+        if wi is None or _program_name(texts[wi]) != "git":
+            continue
+        rest = texts[wi + 1:]
+        if _git_subcommand(rest) != subcommand:
+            continue
+        directory = _git_option_directory(
+            command, rest, _cd_directory(command, words[wi][1], start)
+        )
+        if directory is None:
+            return None
+        directories.append(directory)
+    if not directories:
+        return None
+    return directories
+
+
+def _git_option_directory(command, rest, directory):
+    """The directory a git invocation runs in once its global options (`rest`,
+    the words after `git`) are applied to `directory` — the `cd` directory, or
+    None when that was unresolvable — or None (fail closed) when an option can
+    aim it elsewhere: `--git-dir` / `--work-tree`, `-c core.worktree=…`, or a
+    `-C` operand that does not expand to exactly one literal."""
+    skip = False
+    for index, tok in enumerate(rest):
+        if skip:
+            skip = False
+            continue
+        if tok.split("=", 1)[0] in ("--git-dir", "--work-tree"):
+            return None
+        if not tok.startswith("-"):
+            break
+        if tok not in _GIT_VALUE_OPTIONS:
+            continue
+        skip = True
+        value = rest[index + 1] if index + 1 < len(rest) else ""
+        if tok == "-c" and value.lower().startswith("core.worktree"):
+            return None
+        if tok == "-C":
+            values = _expand_shell_operand(command, value) if value else None
+            if directory is None or not values or len(set(values)) != 1:
+                return None
+            directory = _join_onto(directory, values)[0] if directory else values[0]
+    return directory
+
+
+def runs_git_outside_project(command, subcommand, project_dir, start=""):
+    """True when every `git <subcommand>` in `command` provably runs in a
+    directory outside `project_dir` — so the commit-slug gate, which guards
+    this project's index, has nothing to guard. Anything unresolved is False."""
+    directories = git_invocation_directories(command, subcommand, start)
+    if not directories:
+        return False
+    root = os.path.realpath(project_dir)
+    for directory in directories:
+        expanded = os.path.expanduser(directory)
+        if not os.path.isabs(expanded):
+            expanded = os.path.join(project_dir, expanded)
+        resolved = os.path.realpath(expanded)
+        try:
+            if os.path.commonpath([resolved, root]) == root:
+                return False
+        except ValueError:
+            continue
+    return True
+
+
 # Where an in-place `sed`/`perl` sits, so its operands can be rebased too.
 _INPLACE_PROGRAM = re.compile(r"\b(?:sed|perl)\b")
 
 
-def write_targets(command, start=""):
+_WRITE_CONSTRUCTS = ("open", "write_", "writeFile", ">")
+
+
+def _write_data_spans(command, lang="sh"):
+    """The spans of `command` that are DATA, not code, for the write scan:
+    none when no write construct appears at all, string/comment literals for
+    Python or JS source (`lang` `"py"` / `"js"`), and heredoc bodies plus
+    quoted literals for a shell command line."""
+    if not any(c in command for c in _WRITE_CONSTRUCTS):
+        return []
+    if lang in ("py", "js"):
+        return _code_literal_spans(command, [(ch, i) for i, ch in enumerate(command)], lang) or []
+    return write_construct_data_spans(command)
+
+
+def write_targets(command, start="", lang="sh"):
     """Parse `command` for in-process file-write constructs. Relative targets
     are rebased onto the directory the command runs in — `start` (see
     `session_start_directory`) composed with any `cd` before the write.
+
+    `lang` is the language `command` is written in: `"sh"` (the default, a
+    Bash command line) or `"py"` / `"js"` for the text of a script file an
+    interpreter runs (`script_run_write_targets`). Code is scanned for its own
+    write constructs only — shell redirects and in-place `sed` are skipped,
+    and the caller rebases the paths onto the interpreter's directory.
 
     Returns `(explicit, opaque, append_only)`: `explicit` lists the paths the
     command writes to — literal, or resolved from a variable bound to a
@@ -3180,13 +3414,19 @@ def write_targets(command, start=""):
     truncating = False
     # `>` is a construct too: without it a `cat >> f <<'EOF'` body was scanned
     # raw, so an arrow function's `=>` read as a truncating redirect.
-    constructs = ("open", "write_", "writeFile", ">")
-    data = write_construct_data_spans(command) if any(c in command for c in constructs) else []
+    # A script file is scanned in ITS language. Python and JS source has no
+    # shell redirects, no `cd`, and no in-place `sed`; reading it as shell made
+    # VM17 61083ec4's `len(words) >= 4` and `(?P<hashes>#*)` into "write
+    # targets" `=` and `#*`. Its own write constructs still count.
+    code = lang in ("py", "js")
+    data = _write_data_spans(command, lang)
 
     def add(resolved, position):
         nonlocal opaque
         if resolved is None:
             opaque = True
+        elif code:
+            explicit.extend(resolved)
         else:
             explicit.extend(_rebased_on_cd(command, position, resolved, start))
 
@@ -3221,6 +3461,9 @@ def write_targets(command, start=""):
                     resolve_identifier(command, receiver.group(1)) if receiver else None,
                     match.start(),
                 )
+
+    if code:
+        return explicit, opaque, appending and not truncating
 
     for match in _SHELL_REDIRECT.finditer(command):
         if _in_spans(match.start(), data):
@@ -3474,7 +3717,7 @@ def script_run_write_targets(command, project_dir, start=""):
     mentioned-path fallback. When git cannot answer, the script is skipped,
     the same fail-open as an unreadable file."""
     found = []
-    for path, position, _ in _script_operands(command):
+    for path, position, lang in _script_operands(command):
         directory = _cd_directory(command, position, start)
         if directory is None:
             continue
@@ -3482,7 +3725,7 @@ def script_run_write_targets(command, project_dir, start=""):
         text = _read_run_script(on_disk, project_dir)
         if text is None:
             continue
-        explicit, opaque, append_only = write_targets(text)
+        explicit, opaque, append_only = write_targets(text, lang=lang)
         if explicit or opaque:
             found.append((
                 path,
@@ -3877,17 +4120,70 @@ def compound_stage_evidence(stage, stage_count):
     )
 
 
-def _inferred_target_refusal(path, append_only):
+def prefix_assigned_interpreter_operand(command):
+    """`(name, program)` when an interpreter in `command` is handed `"$name"`
+    as an argument and `name`'s only binding is an assignment PREFIXING that
+    same command (`OUT=x.json python3 - "$OUT"`) — else None.
+
+    The shell expands `"$OUT"` before a prefix assignment takes effect, so the
+    script really receives an empty argument, and `_shell_variable_values`
+    rightly declines to resolve it. VM15 e04c941c followed the refusal's own
+    `F=path` … `python3 - "$F"` hint in exactly this shape and was refused
+    again with nothing saying why."""
+    lexed = _lex_shell_words(command)
+    if lexed is None:
+        return None
+    for words in lexed[0]:
+        texts = [w[0] for w in words]
+        wi = _command_word_index(texts)
+        if wi is None:
+            continue
+        program = _program_name(texts[wi])
+        if not (_PYTHON_INTERPRETER.match(program) or program in _JS_INTERPRETERS):
+            continue
+        prefixed = {
+            tok.split("=", 1)[0] for tok in texts[:wi] if _ASSIGNMENT.match(tok)
+        }
+        for tok in texts[wi + 1:]:
+            for match in re.finditer(r"\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?", tok):
+                name = match.group(1)
+                if name in prefixed and _shell_variable_values(command, name) is None:
+                    return name, program
+    return None
+
+
+def _prefix_trap_lead(command):
+    """The sentence a refusal leads with when `command` hands an interpreter a
+    prefix-assigned variable (`prefix_assigned_interpreter_operand`), naming
+    the corrected `NAME=…; python3 - "$NAME"` form — else ""."""
+    trap = prefix_assigned_interpreter_operand(command) if command else None
+    if not trap:
+        return ""
+    name, program = trap
+    return (
+        f"`{name}=… {program} - \"${name}\"` passes an EMPTY argument: the "
+        f"shell expands `\"${name}\"` before a prefix assignment applies, so "
+        f"the hook cannot resolve it either. Write `{name}=…; {program} - "
+        f"\"${name}\"` (note the `;`) to bind it first. "
+    )
+
+
+def _inferred_target_refusal(path, append_only, command=""):
     """The `(reason, next_action)` pair when the write's destination could not
     be resolved and `path` is only a tracked file the command MENTIONS.
 
     It must not claim the command writes `path` — that is an inference, and an
     agent told its command rewrites a file it demonstrably never opens learns to
     read the next refusal as a false positive. The block itself stays: erring
-    safe on an unresolvable target is what makes the guard worth having."""
+    safe on an unresolvable target is what makes the guard worth having.
+
+    When `command` hands an interpreter a prefix-assigned variable
+    (`prefix_assigned_interpreter_operand`), that is very likely WHY the target
+    did not resolve, so the reason leads with it and the corrected form."""
     construct = "an append" if append_only else "a scripted write"
+    prefix = _prefix_trap_lead(command)
     return (
-        f"this command performs {construct} whose destination could not be "
+        f"{prefix}this command performs {construct} whose destination could not be "
         f"resolved statically, and `{path}` is a tracked source file the command "
         f"mentions — so it is refused as if it wrote that file. A scripted write "
         f"computes its diff at runtime, so the change never appears in the "
@@ -3895,7 +4191,8 @@ def _inferred_target_refusal(path, append_only):
         f"that lets Edit refuse a file that changed underneath it.",
         f"if the destination is NOT tracked source, make it legible and re-run: "
         f"bind it to a literal in the same command — `p = \"path\"` … "
-        f"`open(p, \"w\")`, or `F=path` … `python3 - \"$F\"` reading "
+        f"`open(p, \"w\")`, or `F=path; python3 - \"$F\"` (a separate "
+        f"assignment, not a `F=path python3 …` prefix) reading "
         f"`sys.argv[1]` — and the hook judges that path instead of every path the "
         f"command mentions. If it IS tracked source, use the Edit tool; several "
         f"Edit calls in ONE message run in parallel, and `replace_all: true` covers "
@@ -3903,12 +4200,13 @@ def _inferred_target_refusal(path, append_only):
     )
 
 
-def _script_run_refusal(path, append_only, target_inferred, script):
+def _script_run_refusal(path, append_only, target_inferred, script, command=""):
     """`scripted_rewrite_refusal` for a write found inside the script file
     `script` rather than in the command. Its first sentence — the claim about
     what THIS command does — is replaced with one about running the script; the
     explanation and the recovery are the command-text variant's, unchanged."""
     reason, next_action = scripted_rewrite_refusal(path, append_only, target_inferred)
+    lead = _prefix_trap_lead(command) if target_inferred else ""
     if target_inferred:
         construct = "an append" if append_only else "a scripted write"
         claim = (
@@ -3921,13 +4219,13 @@ def _script_run_refusal(path, append_only, target_inferred, script):
         verb = "would append to" if append_only else "would rewrite"
         claim = f"running `{script}` {verb} the tracked source file `{path}`"
     return (
-        f"{claim}. The hook read the script: a script file is an inline "
+        f"{lead}{claim}. The hook read the script: a script file is an inline "
         f"heredoc with one extra step. " + reason.split(". ", 1)[-1],
         next_action,
     )
 
 
-def scripted_rewrite_refusal(path, append_only=False, target_inferred=False, script=""):
+def scripted_rewrite_refusal(path, append_only=False, target_inferred=False, script="", command=""):
     """The `(reason, next_action)` pair for a refused scripted write. Names the
     path that matched and the sanctioned alternatives — batching is the reason
     agents reach for a script, so the refusal has to answer it.
@@ -3948,11 +4246,14 @@ def scripted_rewrite_refusal(path, append_only=False, target_inferred=False, scr
 
     `script` names the file a run interpreter reads its program from when the
     write lives there rather than in the command (`python3 x.py`), so the
-    reason says what running it would do."""
+    reason says what running it would do.
+
+    `command`, when given, is the Bash command refused; an inferred target's
+    reason then names a prefix-assignment binding that left it unresolved."""
     if script:
-        return _script_run_refusal(path, append_only, target_inferred, script)
+        return _script_run_refusal(path, append_only, target_inferred, script, command)
     if target_inferred:
-        return _inferred_target_refusal(path, append_only)
+        return _inferred_target_refusal(path, append_only, command)
     if append_only:
         return (
             f"this command appends to the tracked source file `{path}`. "
@@ -4325,7 +4626,7 @@ _INSPECTOR_BY_STORE = [
     (".codeyam/stack.json", "project-info"),
     (".codeyam/starter", "starter-context"),
     (".codeyam/design/starter-seeded.json", "starter-context"),
-    (".codeyam/scenarios", "scenarios / scenario-explain"),
+    (".codeyam/scenarios", "scenarios / scenario-explain (edit mocks: add-mock / remove-mock)"),
     (".codeyam/test-cache", "test-cache-query"),
     (".codeyam/journal", "journal-find"),
     (".codeyam/plans", "plans / plan-show"),
@@ -5852,7 +6153,8 @@ def main():
         if found:
             rewrite_target, stage, stage_count, append_only, target_inferred = found
             reason, next_action = scripted_rewrite_refusal(
-                rewrite_target, append_only, target_inferred, script
+                rewrite_target, append_only, target_inferred, script,
+                tool_input.get("command", ""),
             )
             evidence = resolved_context(project_dir, consulted)
             if session_start_directory(session_cwd, project_dir):
@@ -6392,9 +6694,18 @@ def main():
         # substring test, so a mere MENTION of the verb was refused —
         # `echo "remember to git commit later"` at a plan slug, and any commit
         # whose own message discussed committing. `invokes_git_subcommand`
-        # asks whether the verb is what the command RUNS.
+        # asks whether the verb is what the command RUNS — and
+        # `runs_git_outside_project` asks WHICH repository it runs in: the gate
+        # guards this project's index, not a throwaway fixture repo.
+        git_start = session_start_directory(event.get("cwd"), project_dir)
         if invokes_git_subcommand(command, "commit"):
-            if slug and commit_slugs and slug not in commit_slugs and not staged_paths_are_plans_only(project_dir):
+            if (
+                slug
+                and commit_slugs
+                and slug not in commit_slugs
+                and not staged_paths_are_plans_only(project_dir)
+                and not runs_git_outside_project(command, "commit", project_dir, git_start)
+            ):
                 allowed = ", ".join(sorted(commit_slugs))
                 block(
                     project_dir,
@@ -6432,6 +6743,7 @@ def main():
                 and slug not in commit_slugs
                 and not git_add_paths_are_plans_only(command)
                 and not merge_in_progress(project_dir)
+                and not runs_git_outside_project(command, "add", project_dir, git_start)
             ):
                 allowed = ", ".join(sorted(commit_slugs))
                 block(
@@ -6440,7 +6752,11 @@ def main():
                     f"git add is only allowed at slug(s): {allowed}. "
                     f"You are at {_slug_label(state, slug)}.",
                     f"leave staging to the workflow — the {_commit_gate_phrase(commit_slugs)} slug runs "
-                    "`codeyam-editor editor stage-feature`, which stages this for you.",
+                    "`codeyam-editor editor stage-feature`, which stages this for you. "
+                    "Staging the fix for a test this session claimed with `test-fix-claim "
+                    "take`? Run `codeyam-editor editor commit --out-of-workflow --fixes "
+                    "'<test>' --stage <path> -m \"fix: …\"` — it stages exactly those paths "
+                    "and commits them — then `codeyam-editor editor push --fix-only HEAD`.",
                     reference="Plan-file commits (.codeyam/plans/*.md) are allowed at any step, "
                     "and `git add` is permitted while a rebase/merge is paused mid-operation.",
                     detail=slug,
@@ -6455,13 +6771,24 @@ def main():
         if invokes_git_subcommand(command, "push"):
             if slug and push_slugs and slug not in push_slugs:
                 allowed = ", ".join(sorted(push_slugs))
+                if unpushed_range_is_plan_only(project_dir):
+                    next_action = (
+                        "run `codeyam-editor editor push` — every unpushed commit is a plan "
+                        "or state commit, and plan-only pushes are allowed at any step. It "
+                        "skips the commit queue and handles a moved remote and a dirty tree, "
+                        "which a raw `git push` does not."
+                    )
+                else:
+                    next_action = (
+                        "keep advancing to the `push` slug, which runs "
+                        "`codeyam-editor editor push` with the queue held."
+                    )
                 block(
                     project_dir,
                     "git-push",
                     f"git push is only allowed at slug(s): {allowed}. "
                     f"You are at {_slug_label(state, slug)}.",
-                    "keep advancing to the `push` slug, which runs "
-                    "`codeyam-editor editor push` with the queue held.",
+                    next_action,
                     detail=slug,
                     evidence=(
                         f"{resolved_context(project_dir, state_path)}; `git push` is "

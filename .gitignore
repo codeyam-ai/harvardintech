@@ -187,6 +187,7 @@ blob-report/
 .codeyam/state/needs-login.json
 .codeyam/state/check-in-grant.json
 .codeyam/state/plan-run-schedule.json
+.codeyam/state/fix-only-proofs.json
 .codeyam/state/check-in-offer-decline.json
 .codeyam/remote-backup-preference.json
 .codeyam/state/harness-tasks-dir
