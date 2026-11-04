@@ -31,11 +31,12 @@ it.** Everything below is the contract; the procedure is the body.
   unregistered-entity wall, an ambiguous classification, a stale-looking
   doc, a CI fork — by the procedure's written rules, never by a mid-run
   question. Anything uncertain is left in place, never deleted.
-- **Too big to fix now → plan + excuse.** A fix over the procedure's
-  "too big" bar gets a `/codeyam-plan` plan, and exactly its findings are
-  excused in the audit baseline with a justification naming `plan:<slug>`.
-  `BASELINE_ENTRY_PLAN_MISSING_ADVISORY` keeps that excuse honest on every
-  later audit.
+- **Too big to fix now → plan, findings stay visible.** A fix over the
+  procedure's "too big" bar gets a `/codeyam-plan` plan, written without
+  asking. Its findings are **not** baselined: they keep failing the audit,
+  so the branch does not merge until the plan lands or the user decides
+  otherwise. The ship question names the open findings and the plan that
+  owns them.
 - **Supported-stack gate — sync or bail loud, never half-sync.** Read
   `.codeyam/stack.json` first. For a supported stack, drive to full sync.
   For one the engine does not yet support, fail loud and actionable
