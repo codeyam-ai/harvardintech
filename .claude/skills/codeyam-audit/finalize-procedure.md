@@ -33,13 +33,15 @@ top to bottom on first use; on later runs, recalled memories supply the deltas.
   mid-run question. The user running this audit usually cannot answer those
   questions and does not need to: the audit's job is to leave the codebase in
   the best shape it can. When the right fix is **too big for this pass** (the
-  bar is in step 4b), the run writes a `/codeyam-plan` plan for it and excuses
-  exactly those findings in the audit baseline with a justification naming
-  `plan:<slug>`. The `BASELINE_ENTRY_PLAN_MISSING_ADVISORY` check keeps that
-  excuse honest on every later audit.
+  bar is in step 4b), the run writes a `/codeyam-plan` plan for it and leaves
+  those findings **visible** — never baselined. They keep failing the audit,
+  so the branch is not merge-ready until the plan lands; the ship question
+  (step 7) names the open findings and the plan that owns them.
 - **It is idempotent and resumable.** Every run makes progress; re-running
   picks up where the last left off. A run ends **merge-ready, with a report**
-  of the decisions it made, the spend it made, and the plans it wrote — so the
+  of the decisions it made, the spend it made, and the plans it wrote — or,
+  when a too-big fix was planned, with everything else done and those open
+  findings named beside their plan — so the
   user can still disagree after the fact. It never bails-and-abandons mid-way,
   and never leaves the repo half-aligned. "Aggressive" means *relentless toward
   done*, not *reckless*: nothing uncertain is ever deleted (step 6).
@@ -72,6 +74,21 @@ recorded in that panel, of how far this run may go without them:
   asking. Every other rule still holds — the 8b stripped-body rule, the
   read-back-before-retry rule, 8a's investigate-before-classify, and 8a's
   scope-change re-ask.
+
+**Release the branch finalize lock when a scheduled run ends.** Before typing
+this skill, the schedule took a branch-wide lock so that only one computer on
+the branch finalizes it. That is the computer that finished last. Whatever
+ends this run must release that lock: merge-ready, merged, or failed and
+handed back to the user. Run:
+
+```bash
+codeyam-editor editor plan-schedule finalize-release
+```
+
+It is a no-op when this computer holds no lock, so run it on every terminal
+outcome without checking first. Skipping it leaves the next finalize on this
+branch refused, and the Run Schedule panel then reports a finalize "running"
+on this computer that has already ended.
 
 Judgment calls are decided by rule in **every** mode, so an unattended run
 never waits mid-way for an answer: the rules in step 4b, step 6, and step 8a
@@ -810,24 +827,22 @@ user can disagree after the fact.
   finding;
 - work outside this branch's scope that would need its own review.
 
-**Too big → plan + excuse, never a question.** Write a plan for the fix, then
-excuse exactly those findings in the baseline with a justification that names
-the plan:
+**Too big → plan, findings left visible, never a question.** Write a plan for
+the fix, and leave its findings exactly where they are:
 
 ```bash
 codeyam-editor editor plan-create --source codeyam-audit --prefix audit \
   --mode backend --title "<what the fix is>" --body-file <path>   # prints the slug
-codeyam-editor editor audit-baseline-add --invariant <CHECK> \
-  --item '<id exactly as audit --only <CHECK> prints it>' \
-  --justification 'plan:<slug> — <why this is deferred>'
 ```
 
-The plan's `## Acceptance` section must include: *"remove the baseline entries
-with `codeyam-editor editor audit-baseline-remove --invariant <CHECK> --item
-<ID>`"*. `audit-baseline-add` refuses a `plan:<slug>` that names no plan, and
-every later full audit reports `BASELINE_ENTRY_PLAN_MISSING_ADVISORY` when the
-plan disappears, or completes while its excuse still hides findings — so the
-excuse cannot quietly outlive its owner.
+Do **not** baseline those findings — not with a `plan:` justification, not with
+any other. CLAUDE.md's "No deferral primitives" rule forbids it: a suppression
+that points at a plan outlives the plan the day the plan is pruned or completed
+without the fix, and nothing gate-strength notices. The findings keep failing
+the strict audit, so `session-finalize` / `verify-full-finalize` will not pass
+and the branch is **not merge-ready** until the plan lands. That is the honest
+state. Carry on with every other fix in this pass, then end at step 7's ship
+question naming each open finding and the plan slug that owns it.
 
 The rules:
 
@@ -835,8 +850,8 @@ The rules:
   At or under the bar: register every entity in this pass, with the glossary
   discipline (a real description, a test where the entity has logic). Above
   the bar: register what belongs to this branch's own diff (the `--scope diff`
-  rows of `registry-query` / `evidence-query`), then plan + excuse the
-  inherited remainder.
+  rows of `registry-query` / `evidence-query`), then write a plan for the
+  inherited remainder and leave it visible.
 - **Ambiguous classifications** — is this a test fixture? derive-generated?
   testable pure logic or an untestable shim? Apply the written discipline:
   `glossary-skip-add` only for a genuine `test-fixture` / `derive-generated`
@@ -847,8 +862,7 @@ The rules:
 - **Anything that deletes or rewrites content** — see step 6: delete only what
   is clearly dead; leave anything uncertain in place and report it.
 - **Accepting a finding into the audit baseline** is allowed without asking in
-  exactly two cases: (a) the plan + excuse path above, whose justification
-  carries `plan:<slug>`; (b) a finding the check's own documentation says a
+  exactly one case: a finding the check's own documentation says a
   capture or test cannot distinguish (e.g. a genuine
   `SCENARIO_DISTINCT_CAPTURE_COLLISION` between two scenarios that differ only
   in state a capture cannot show). Every entry gets a justification. Never
@@ -931,9 +945,10 @@ The rules:
 > than absolute — check the fixture before assuming a line is untouchable.
 
 This is the convergence contract in practice: each run fixes all the mechanical
-drift it can, decides every judgment call by the rules above, defers what is
-too big by plan + excuse, and keeps going. It ends merge-ready, with a report of
-the decisions made and the plans written.
+drift it can, decides every judgment call by the rules above, writes a plan for
+what is too big while leaving its findings visible, and keeps going. It ends
+merge-ready — or, when a too-big plan owns open findings, with everything else
+done — with a report of the decisions made and the plans written.
 
 ---
 
@@ -1274,9 +1289,11 @@ codeyam-editor editor audit --only <INVARIANT_ID> # the fix loop, one finding at
 ```
 
 Drive every non-`_ADVISORY` finding to zero — fix it, register it, or (only in
-4b's two sanctioned cases: plan + excuse, or a finding a capture cannot
-distinguish) accept it by name with `audit-baseline-add` —
-and only then start the finalize. A finalize started with a gating finding
+4b's one sanctioned case: a finding a capture cannot distinguish) accept it by
+name with `audit-baseline-add` — and only then start the finalize. If a
+finding is owned by a too-big plan from step 4b, do **not** start the
+finalize: it would block on that finding. Skip to the run report and the ship
+question below, which names the finding and its plan. A finalize started with a gating finding
 already known will block at Phase 0.6, after paying the full pre-audit cost
 described below, to tell you what the `audit` you already ran told you.
 `audit --only` answers the same question for a fraction of a full audit's cost
@@ -1527,6 +1544,20 @@ questions.
 - **No** stops here: the branch stays merge-ready locally, and the report says
   so.
 
+**When a too-big plan from step 4b owns open findings**, the branch never
+reached `verify-full-finalize` exit 0, so it is not merge-ready: nothing is
+pushed or merged (`editor push` would refuse the uncovered range anyway). The
+run report lists each open finding beside the plan slug that owns it, and the
+ship question says so plainly and offers what is still possible, e.g.:
+
+> *"Everything else is fixed. 3 problems remain that need a bigger change, so
+> I wrote a plan for them; the branch can't merge until that plan is done.
+> Start that plan now?"*
+
+A yes runs that plan; a no leaves it queued and the branch unmerged. This
+holds under `scheduled-finalize` and `scheduled-merge` too: a standing yes
+never merges past a finding the run left visible — stop and report.
+
 `scheduled-merge` is a standing yes (see "Scheduled invocation" at the top);
 `scheduled-finalize` does not ask — it stops and reports, with the ship
 question waiting in the report. On a yes:
@@ -1683,8 +1714,9 @@ failure signature matches first.
 skill's job, not an outward action — the default is "root-cause and fix," and
 the ship question's yes already authorized the loop. A genuine fork (approach A
 vs B with real ripple) is **decided, not asked**: take the approach that changes
-less behavior. If both are large, plan + excuse the bigger fix (step 4b) and
-land the smaller one.
+less behavior. If both are large, write a plan for the bigger fix (step 4b) and
+land the smaller one. A red check the plan owns stays red — do not merge past
+it; stop and report it beside its plan slug.
 
 **The one re-ask.** If a fix made after the ship question's yes changes behavior
 beyond the red check itself — not just the failing test or its direct cause —
@@ -2085,20 +2117,26 @@ reported the identical `[FAIL] windows-clippy` in ~1.5 minutes.
 
   ```
   python3 scripts/windows-shard-plan.py plan --out /tmp/plan.json \
-    --pins "<the edited WINDOWS_PINNED_SLOW_TESTS list>"
-  codeyam-editor editor ci-job-log <shard N job id> > /tmp/shardN.log   # each of the 5 shards
+    --pins "<the edited WINDOWS_PINNED_SLOW_TESTS list>" \
+    --timings <windows-test-timings.json> --suite <suite listing> --shards 6
+  codeyam-editor editor ci-job-log <shard N job id> > /tmp/shardN.log   # each measured shard
   python3 scripts/windows-shard-plan.py check --plan /tmp/plan.json \
-    --log 1=/tmp/shard1.log … --log 5=/tmp/shard5.log
+    --log 1=/tmp/shard1.log … --log 6=/tmp/shard6.log
   ```
 
-  It projects each shard as its measured pool (less any test the new plan
-  moves out, plus any test it stops placing) plus its placed run (measured if
-  unchanged, else the sum of its tests' seconds), and exits `2` naming any
-  shard with less than ~130s of headroom under the cap — the run-to-run pool
-  variance observed for identical code (546–717s). Exit `3` means a shard
-  was not measured, which is no verdict. Pass `--timings` too when a table
-  exists. Then confirm the pushed pin with `windows-check`, not a full PR run,
-  and keep the PR in draft until it is green.
+  With `--timings` and `--suite` the plan's pool is `balanced`: module groups
+  split by measured duration, one filter per shard. `check` then re-reads each
+  shard's pool from its filter against the freshest per-test seconds and scales
+  by the measured wall/test-time ratio, so it projects a plan for a different
+  shard count than the measured run. Without them the pool is `sliced`, and
+  each shard is projected as its measured pool (less any test the new plan
+  moves out, plus any test it stops placing). Either way the placed run is
+  measured if unchanged, else the sum of its tests' seconds, and `check` exits
+  `2` naming any shard with less than ~130s of headroom under the cap — the
+  run-to-run pool variance observed for identical code (546–717s). Exit `3`
+  means a shard was not measured, which is no verdict. Then confirm the pushed
+  pin with `windows-check`, not a full PR run, and keep the PR in draft until
+  it is green.
 - **CI's test runner, not just CI's platforms.** None of the three verdicts
   above runs the suite the way CI does when CI uses a different runner from the
   local gates. On a Rust workspace whose CI runs `cargo nextest` under a
