@@ -478,201 +478,6 @@ def record_awaiting_user(project_dir):
         pass
 
 
-# The question-copy check, run on the payload the agent is actually sending.
-#
-# The step guidance tells the agent to run `check-question-copy --structured`
-# on its question before asking. That is a request to self-report, so the
-# checker graded whichever draft the agent chose to paste: reviewed sessions
-# checked a draft, fixed one term, introduced another, and sent the unchecked
-# version; or checked the body alone and sent an option naming a file path.
-# Scoring `tool_input` here grades the words the user will read.
-#
-# It bounces each distinct payload AT MOST ONCE. A re-send of the identical
-# payload goes through, so a finding the agent judges wrong costs one round
-# trip, never a stranded question — the checker's vocabulary has known false
-# positives, and a hard gate would teach agents to word around the lint
-# instead of for the reader. The step hook reads the same file to record
-# `bouncedFirst` on the question that finally reaches the user.
-QUESTION_COPY_BOUNCE_FILE = "question-copy-bounce.json"
-QUESTION_COPY_CHECK_TIMEOUT_S = 3
-# Bounded so the file cannot grow without limit across a long-lived project.
-QUESTION_COPY_BOUNCE_MAX_SESSIONS = 20
-QUESTION_COPY_BOUNCE_MAX_HASHES = 20
-
-
-def question_payload_hash(questions):
-    """Stable digest of a question payload: key order never changes it."""
-    canonical = json.dumps(questions, sort_keys=True, ensure_ascii=False)
-    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
-
-
-def _question_copy_bounce_path(project_dir):
-    return os.path.join(project_dir, ".codeyam", "run", QUESTION_COPY_BOUNCE_FILE)
-
-
-def _load_question_copy_bounces(project_dir):
-    try:
-        with open(_question_copy_bounce_path(project_dir), "r") as f:
-            doc = json.load(f)
-        return doc if isinstance(doc, dict) else {}
-    except (OSError, ValueError):
-        return {}
-
-
-def question_payload_was_bounced(project_dir, session_id, payload_hash):
-    entry = _load_question_copy_bounces(project_dir).get(session_id or "") or {}
-    return payload_hash in (entry.get("hashes") or [])
-
-
-def next_bounce_record(bounces, key, payload_hash):
-    """Return `bounces` with `payload_hash` recorded for session `key`.
-
-    Pure, so the caps are testable without a file: the session's hashes are
-    de-duplicated and capped to the newest `QUESTION_COPY_BOUNCE_MAX_HASHES`,
-    the session is marked `pending`, and it moves to the END of the mapping
-    so the oldest sessions are the first evicted once there are more than
-    `QUESTION_COPY_BOUNCE_MAX_SESSIONS`. A malformed entry starts over."""
-    bounces = dict(bounces)
-    entry = bounces.pop(key, None)
-    if not isinstance(entry, dict):
-        entry = {}
-    previous = entry.get("hashes")
-    if not isinstance(previous, list):
-        previous = []
-    hashes = [h for h in previous if h != payload_hash]
-    hashes.append(payload_hash)
-    bounces[key] = {"hashes": hashes[-QUESTION_COPY_BOUNCE_MAX_HASHES:], "pending": True}
-    while len(bounces) > QUESTION_COPY_BOUNCE_MAX_SESSIONS:
-        bounces.pop(next(iter(bounces)))
-    return bounces
-
-
-def remember_question_bounce(project_dir, session_id, payload_hash):
-    """Record that this payload was bounced, so its re-send passes.
-
-    `pending` is what the step hook consumes: the next question this session
-    actually asks is logged with `bouncedFirst: true`. Best-effort — a write
-    failure means the re-send is bounced once more, never that it is stuck."""
-    try:
-        bounces = next_bounce_record(
-            _load_question_copy_bounces(project_dir), session_id or "", payload_hash
-        )
-        path = _question_copy_bounce_path(project_dir)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w") as f:
-            json.dump(bounces, f)
-    except OSError:
-        pass
-
-
-def _question_copy_finding_lines(row):
-    """Render one structured-checker row as short, actionable lines.
-
-    The checker's JSON is the source of truth; this only lays it out. Each
-    line names the exact words that were flagged, so the agent can find
-    them in the payload it just tried to send."""
-    lines = []
-    for term in row.get("terms") or []:
-        lines.append(
-            f"`{term.get('matched') or term.get('term')}` is stated with no gloss — "
-            f"add the outcome, e.g. ({term.get('gloss')})"
-        )
-    recommended = row.get("recommended")
-    if recommended:
-        lines.append(recommended.get("guidance") or "an option is marked recommended without saying why")
-    for stake in row.get("stakes") or []:
-        lines.append(f"names a mechanism and no outcome — {stake.get('guidance')}")
-    unaccompanied = row.get("unaccompanied")
-    if unaccompanied:
-        excerpt = (unaccompanied.get("marker") or {}).get("excerpt", "")
-        lines.append(
-            f"the body carries technical detail (`{excerpt}`) with no plain sentence "
-            f"beside it — {unaccompanied.get('guidance')}"
-        )
-    for shape in row.get("shapes") or []:
-        lines.append(f"`{shape.get('matched')}` ({shape.get('shape')}) — {shape.get('guidance')}")
-    lines.extend(_option_finding_lines(row.get("options") or {}))
-    return lines
-
-
-def _option_finding_lines(options):
-    """Lines for the checker's `options` block: options that name a mechanism
-    instead of an outcome, and groups of options the reader cannot tell apart."""
-    lines = [
-        f'option "{label}" says what it operates on, not what happens to the reader'
-        for label in options.get("mechanismOptions") or []
-    ]
-    for group in options.get("indistinguishable") or []:
-        lines.append(
-            "options " + " and ".join(f'"{label}"' for label in group)
-            + " differ in nothing the reader can weigh"
-        )
-    return lines
-
-
-def run_structured_question_check(project_dir, questions):
-    """Run `check-question-copy --structured` over the real payload.
-
-    Returns the checker's rows, or None when the check could not run. Failing
-    open is deliberate and matches the step hook's `_flagged_terms`: a missing
-    binary, a timeout or unparseable output must never block a question,
-    because an unattended run would be stranded on a hook failure rather than
-    on anything the agent wrote. No `stderr=STDOUT`: under `--format json` the
-    marker lines go to stderr, and merging them is what would break the parse."""
-    try:
-        proc = subprocess.run(
-            [cli_command(), "editor", "check-question-copy", "--structured", "--format", "json"],
-            cwd=project_dir,
-            input=json.dumps({"questions": questions}).encode("utf-8"),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            timeout=QUESTION_COPY_CHECK_TIMEOUT_S,
-        )
-        doc = json.loads(proc.stdout.decode("utf-8", "replace"))
-        rows = doc.get("entries")
-    except Exception:
-        return None
-    return rows if isinstance(rows, list) else None
-
-
-def question_copy_findings(project_dir, questions):
-    """The finding lines for the real payload, or [] when the copy is clean OR
-    the check could not run (see `run_structured_question_check`). Each line is
-    prefixed `Qn:` when the payload asks more than one question."""
-    rows = run_structured_question_check(project_dir, questions) or []
-    lines = []
-    for index, row in enumerate(rows):
-        prefix = f"Q{index + 1}: " if len(rows) > 1 else ""
-        lines.extend(prefix + line for line in _question_copy_finding_lines(row or {}))
-    return lines
-
-
-def gate_question_copy(project_dir, session_id, questions, call):
-    """Bounce a question whose real payload has copy findings — once."""
-    if not questions:
-        return
-    payload_hash = question_payload_hash(questions)
-    if question_payload_was_bounced(project_dir, session_id, payload_hash):
-        return
-    findings = question_copy_findings(project_dir, questions)
-    if not findings:
-        return
-    remember_question_bounce(project_dir, session_id, payload_hash)
-    block(
-        project_dir,
-        "question-copy",
-        f"this question's copy has {len(findings)} finding(s), checked on the exact "
-        f"payload you are sending (body, header, every option label and description):\n"
-        + "\n".join(f"  - {line}" for line in findings),
-        "fix those words and send the revised question. If a finding is wrong, send the "
-        "SAME question again unchanged — each payload is bounced at most once, so the "
-        "re-send goes through.",
-        detail=payload_hash,
-        evidence=f"payload {payload_hash}; bounce record at {_question_copy_bounce_path(project_dir)}",
-        call=call,
-    )
-
-
 def notice(rule, message):
     """Queue a pointer for the call and FALL THROUGH — never exit.
 
@@ -803,7 +608,7 @@ def resolved_context(project_dir, consulted=""):
     return "; ".join(parts)
 
 
-def _test_run_block_message(state, slug, info, project_dir=None):
+def _test_run_block_message(state, slug, info):
     """Word the test-run block for `slug` from its phase kind.
 
     Returns a `(reason, next_action)` pair for `block`, which owns the
@@ -820,13 +625,7 @@ def _test_run_block_message(state, slug, info, project_dir=None):
     agent there that hardening "starts at Deconstruct" and to run tests at
     `*-extract-tdd` names a step it has already passed and cannot reach
     without `editor change`. The block is right at both; only the
-    explanation and the named recovery differ.
-
-    A post-hardening block while a rebase or merge is paused gets its own
-    recovery. The agent there has just hand-resolved a conflict and wants to
-    test it; "advance" would leave the rebase open, and no test run is owed
-    by the agent at all — finishing the sync runs the partitions owning every
-    hand-resolved file (`conflict_resolution_owed_run.rs`), in every mode."""
+    explanation and the named recovery differ."""
     where = _slug_label(state, slug)
     if not info or info.get("kind") != "post-hardening":
         # Pre-Demo, or no projection to judge by. This wording is accurate
@@ -839,16 +638,6 @@ def _test_run_block_message(state, slug, info, project_dir=None):
             f"hardening (tests, extraction, glossary) starts at Deconstruct.",
             "keep building — run tests at "
             "`ui-extract-tdd` / `backend-extract-tdd`.",
-        )
-    if project_dir and merge_in_progress(project_dir):
-        return (
-            f"test runs are not allowed at {where} (test_scope: none), and "
-            f"none is needed: a rebase is in progress, and when the sync "
-            f"finishes it runs the tests of the partitions that own every file "
-            f"you resolved by hand. A compile check (e.g. a build or type "
-            f"check) is not a test run and is allowed.",
-            f"`{cli_command()} editor pre-commit-sync --continue-rebase` — it "
-            f"finishes the rebase and runs those owed tests.",
         )
     next_slug = info.get("nextTestRunSlug")
     if next_slug:
@@ -6692,7 +6481,7 @@ def main():
             refuse_unparseable(project_dir, command, call)
         if test_run:
             reason, next_action = _test_run_block_message(
-                state, slug, no_test_slugs.get(slug), project_dir
+                state, slug, no_test_slugs.get(slug)
             )
             kind = (no_test_slugs.get(slug) or {}).get("kind") or "unclassified"
             block(
@@ -6753,10 +6542,7 @@ def main():
                     call=call,
                 )
 
-        gate_question_copy(
-            project_dir, event.get("session_id", ""), tool_input.get("questions") or [], call
-        )
-        allow("AskUserQuestion with the preview requirement satisfied and its copy checked")
+        allow("AskUserQuestion with the preview requirement satisfied")
 
     # Check Write/Edit to non-.codeyam files
     if tool_name in ("Write", "Edit"):

@@ -230,49 +230,6 @@ def _flagged_terms(project_dir, text):
 # `audience --set` instruction still stands) and never delays the turn more.
 AUDIENCE_RECORD_TIMEOUT_S = 3
 
-# Where a failed automatic save is noted, under .codeyam/logs/. The recorder
-# exits 0 even when its write fails (a hook must never interrupt the turn),
-# so without this line a save that never lands is indistinguishable from a
-# question that was never asked.
-AUDIENCE_RECORD_LOG = "audience-record.jsonl"
-
-# The marker `audience --record-answer` prints on stderr when it recognised
-# an answer but could not write it.
-AUDIENCE_SAVE_FAILED_MARKER = "could not save the answer"
-
-
-def _log_audience_record_failure(project_dir, reason, stderr_text=""):
-    """Append one JSON line naming why an automatic audience save failed.
-
-    Never raises and never prints: it is the failure path of an observer.
-    """
-    try:
-        logs_dir = os.path.join(project_dir, ".codeyam", "logs")
-        os.makedirs(logs_dir, exist_ok=True)
-        line = {
-            "ts": datetime.now(timezone.utc).isoformat(),
-            "reason": reason,
-            "stderrTail": (stderr_text or "")[-500:],
-        }
-        with open(os.path.join(logs_dir, AUDIENCE_RECORD_LOG), "a") as f:
-            f.write(json.dumps(line) + "\n")
-    except Exception:
-        pass
-
-
-def _audience_record_failure_reason(returncode, stderr_text):
-    """Why a finished `audience --record-answer` run failed, or None.
-
-    A non-zero exit is a failure; so is a zero exit carrying the recorder's
-    own save-failed line, because the recorder deliberately exits 0 on a
-    failed write.
-    """
-    if returncode != 0:
-        return "exit-%d" % returncode
-    if AUDIENCE_SAVE_FAILED_MARKER in (stderr_text or ""):
-        return "save-failed"
-    return None
-
 
 def _record_audience_answer(project_dir, event_data):
     """Save the answer to the one-time "explain or keep it brief?" question.
@@ -282,10 +239,8 @@ def _record_audience_answer(project_dir, event_data):
     question came back. This hands every answered question to
     `audience --record-answer`, which decides in Rust whether it was the
     audience question (the label vocabulary lives beside the step copy that
-    defines it) and records the choice. It prints nothing and never raises —
-    a hook that raises interrupts the turn — but a save that fails (non-zero
-    exit, the recorder's own failure line, a timeout, or an exception) is
-    noted in `.codeyam/logs/audience-record.jsonl` so it is visible.
+    defines it) and records the choice. It prints nothing and swallows every
+    failure: a hook that raises interrupts the turn.
     """
     try:
         import subprocess
@@ -296,26 +251,16 @@ def _record_audience_answer(project_dir, event_data):
                 "tool_response": event_data.get("tool_response"),
             }
         )
-        result = subprocess.run(
+        subprocess.run(
             [cli_command(), "editor", "audience", "--record-answer", "-"],
             cwd=project_dir,
             input=payload.encode("utf-8"),
             stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
             timeout=AUDIENCE_RECORD_TIMEOUT_S,
         )
-        stderr_text = (result.stderr or b"").decode("utf-8", "replace")
-        reason = _audience_record_failure_reason(result.returncode, stderr_text)
-        if reason:
-            _log_audience_record_failure(project_dir, reason, stderr_text)
-    except Exception as e:
-        # Classified by name, not `except subprocess.TimeoutExpired`: the
-        # import is inside the try, so naming the module in an except clause
-        # would itself raise if the import were what failed.
-        if type(e).__name__ == "TimeoutExpired":
-            _log_audience_record_failure(project_dir, "timeout")
-        else:
-            _log_audience_record_failure(project_dir, "exception: %s" % e)
+    except Exception:
+        pass
 
 
 # Seconds to wait for the step-task sign-in. An observer like the two above:
@@ -350,32 +295,6 @@ def _sign_in_step_task(project_dir):
         )
     except Exception:
         pass
-
-
-def _consume_question_bounce(project_dir, session_id):
-    """Return True once after the pretool hook bounced this session's question.
-
-    The pretool hook scores the real `AskUserQuestion` payload and bounces a
-    payload with copy findings once, leaving `pending: true` in
-    `.codeyam/run/question-copy-bounce.json` (a file the pretool hook owns;
-    its shape is `{session_id: {"hashes": [...], "pending": bool}}`). The
-    question that next reaches the user — revised or re-sent unchanged — is
-    the one the bounce acted on, so it is logged with `bouncedFirst: true`
-    and the flag is cleared. `question-copy-query --flagged` can then show
-    whether a bounce changed the copy. Swallows every failure."""
-    try:
-        path = os.path.join(project_dir, ".codeyam", "run", "question-copy-bounce.json")
-        with open(path, "r") as f:
-            bounces = json.load(f)
-        entry = bounces.get(session_id or "") if isinstance(bounces, dict) else None
-        if not isinstance(entry, dict) or not entry.get("pending"):
-            return False
-        entry["pending"] = False
-        with open(path, "w") as f:
-            json.dump(bounces, f)
-        return True
-    except Exception:
-        return False
 
 
 def _log_question_copy(project_dir, event_data, in_cycle=True):
@@ -417,7 +336,6 @@ def _log_question_copy(project_dir, event_data, in_cycle=True):
         os.makedirs(logs_dir, exist_ok=True)
         log_path = os.path.join(logs_dir, QUESTION_COPY_LOG)
         now = datetime.now(timezone.utc).isoformat()
-        bounced_first = _consume_question_bounce(project_dir, event_data.get("session_id", ""))
 
         with open(log_path, "a") as f:
             for question in questions:
@@ -448,7 +366,6 @@ def _log_question_copy(project_dir, event_data, in_cycle=True):
                                 project_dir,
                                 " ".join([text] + labels + descriptions),
                             ),
-                            "bouncedFirst": bounced_first,
                         }
                     )
                     + "\n"
@@ -588,23 +505,6 @@ def _mark_tool_loading_injected(project_dir, session_id):
         with open(marker_path, "w") as f:
             json.dump({"session_id": session_id}, f)
     except Exception:
-        pass
-
-
-def _reset_task_tool_marker(project_dir):
-    """Forget the previous session's tool-loading marker at SessionStart.
-
-    `_mark_tool_loading_injected` resets `taskToolsAvailable` only when the
-    injection fires, and the injection stops firing once the machine record
-    says the tools are absent. From then on the marker kept whatever an
-    earlier session wrote, and the editor (which reads the field without a
-    session id) trusted it: VM 17's marker read `true` for sessions that
-    never had the tools, so every hand-off rendered the TaskCreate block.
-    Removing the file here makes the field describe only the session that is
-    starting; the editor then falls back to the machine record."""
-    try:
-        os.remove(os.path.join(project_dir, _TOOL_LOADING_MARKER_REL))
-    except OSError:
         pass
 
 
@@ -1065,7 +965,7 @@ def _looks_like_task_tool_query(query):
     )
 
 
-def _task_tools_in_search_result(tool_response, query=""):
+def _task_tools_in_search_result(blob):
     """True when a Task*-preload response carries a Task* schema, else False.
 
     Only ever called for a query `_looks_like_task_tool_query` accepted, so the
@@ -1075,23 +975,11 @@ def _task_tools_in_search_result(tool_response, query=""):
     wording is what lets a PARTIAL result settle it: a query that resolved only
     its non-Task* names returns False here instead of going unrecorded.
 
-    Claude Code hands PostToolUse a STRUCTURED response —
-    `{"matches": [], "query": "select:TaskCreate,…", "total_deferred_tools": N}`
-    — not the "No matching deferred tools found" text the model is shown. The
-    echoed `query` carries every Task* name that was asked for, so a name scan
-    over the whole document read every empty answer as a hit and recorded
-    `True` on the fleet, where the tools never exist. So the `matches` list is
-    the answer when there is one; only an unstructured response falls back to
-    scanning the text, with the query echo removed first."""
-    if isinstance(tool_response, dict) and isinstance(tool_response.get("matches"), list):
-        names = json.dumps(tool_response["matches"], default=str).lower()
-        return any(name in names for name in _TASK_TOOL_NAMES)
-    blob = json.dumps(tool_response, default=str).lower() if tool_response else ""
+    The no-match marker stays as a fast path and is checked FIRST, so a response
+    that echoes the query back cannot be read as a hit — the echo necessarily
+    contains every Task* name the query asked for."""
     if any(marker in blob for marker in _NO_MATCHING_TOOLS_MARKERS):
         return False
-    lowered_query = (query or "").lower()
-    if lowered_query:
-        blob = blob.replace(lowered_query, "")
     return any(name in blob for name in _TASK_TOOL_NAMES)
 
 
@@ -1108,130 +996,23 @@ def _observe_task_tool_capability(project_dir, tool_name, tool_input, tool_respo
     opposite case and must not be mistaken for silence: it is the absence."""
     # Name-check BEFORE serializing: this runs on every PostToolUse, and a
     # `Read` of a large file would otherwise pay a full stringify to learn it
-    # is not a tool this function cares about. Matched on the step-tracking
-    # NAMES, not a `Task` prefix: `TaskStop` / `TaskOutput` manage background
-    # shells, exist on harnesses with no step-tracking tools, and a working one
-    # is no evidence that `TaskCreate` exists.
-    if tool_name != "ToolSearch" and tool_name.lower() not in _TASK_TOOL_NAMES:
-        return
-    if tool_name == "ToolSearch":
-        query = (tool_input or {}).get("query")
-        if not _looks_like_task_tool_query(query):
-            return
-        # Either way this is a recorded answer. Recording the positive matters
-        # as much as the negative: the SessionStart preload fires on a machine
-        # with nothing recorded, so a harness that GAINS the tools re-settles
-        # here rather than staying on `track-step` forever.
-        _settle_task_tools(project_dir, _task_tools_in_search_result(tool_response, query))
+    # is not a tool this function cares about.
+    if tool_name != "ToolSearch" and not tool_name.startswith("Task"):
         return
     blob = json.dumps(tool_response, default=str).lower() if tool_response else ""
-    _settle_task_tools(
-        project_dir, not any(marker in blob for marker in _TOOL_UNAVAILABLE_MARKERS)
-    )
-
-
-# What THIS MACHINE has learned about the Task* tools, beyond the current
-# session. Shared with `machine_task_tools::MACHINE_TASK_TOOLS_REL` in the
-# control-api crate, which reads it for the resume prompt and the step
-# hand-off, and which `editor track-step` also writes.
-_MACHINE_TASK_TOOLS_REL = os.path.join(".codeyam", "state", "harness-capabilities.json")
-
-# Told to a fresh conversation while the machine record says the tools are
-# absent. Kept word-for-word with `TASK_TOOLS_ABSENT_SENTENCE` in
-# `crates/control-api/src/machine_task_tools.rs`.
-_TASK_TOOLS_ABSENT_SENTENCE = (
-    "Task tools are not available in this harness (already observed on this "
-    "machine) — record step tasks with `codeyam-editor editor track-step "
-    "created|completed`; do not search for them."
-)
-
-
-def _machine_task_tools_absent(project_dir):
-    """True when this machine has recorded that its harness has no Task*
-    tools. Anything unreadable is False, which keeps the preload."""
-    try:
-        with open(os.path.join(project_dir, _MACHINE_TASK_TOOLS_REL), "r") as f:
-            return json.load(f).get("taskTools") == "absent"
-    except (IOError, ValueError, AttributeError):
-        return False
-
-
-def _settle_task_tools(project_dir, available):
-    """Record an observation for the session AND for the machine.
-
-    An absence is written to the machine record so the next conversation is
-    told up front; a presence removes it, so a machine whose harness gains the
-    tools stops being told to skip them."""
-    _record_task_tools_available(project_dir, available)
-    _record_machine_task_tools(project_dir, available)
-
-
-def _record_machine_task_tools(project_dir, available):
-    """Write (absent) or remove (available) the machine record. A no-op when
-    an absence is already recorded, so the first observation time survives.
-    Never raises: a hook failure must not break the tool call it observes."""
-    path = os.path.join(project_dir, _MACHINE_TASK_TOOLS_REL)
-    try:
-        if available:
-            if os.path.exists(path):
-                os.remove(path)
-        elif not _machine_task_tools_absent(project_dir):
-            os.makedirs(os.path.dirname(path), exist_ok=True)
-            with open(path, "w") as f:
-                json.dump(
-                    {
-                        "taskTools": "absent",
-                        "observedBy": "step-hook",
-                        "observedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                    },
-                    f,
-                )
-                f.write("\n")
-    except Exception:
-        pass
-
-
-def _session_start_tool_preload(project_dir):
-    """The SessionStart tool-preload instructions, ending in a newline.
-
-    With the machine record present the Task* question is already answered, so
-    the fresh conversation is told that instead of being sent on the empty
-    search (and the reasoning turn spent narrating it). Monitor still needs its
-    schema loaded either way."""
-    if _machine_task_tools_absent(project_dir):
-        return (
-            f"{_TASK_TOOLS_ABSENT_SENTENCE}\n"
-            f"Before your first Monitor call, run `ToolSearch` with "
-            f"`{SESSION_START_MONITOR_QUERY}` — a Monitor invoked without its "
-            "schema fails with `InputValidationError`.\n"
-        )
-    return (
-        "Before your first turn, make TWO SEPARATE `ToolSearch` calls — they ask "
-        "two different questions and a combined query answers neither:\n"
-        f"  1. `{TOOL_LOADING_SELECT_QUERY}` — the editor workflow's step-tracking "
-        "tools. If this returns `no matching deferred tools`, this harness does not "
-        "have them; that is a normal answer, it is recorded, and the workflow will "
-        "stop asking you for them and use `codeyam-editor editor track-step` instead. "
-        "Do NOT widen this query with other tool names — a name that resolves "
-        "everywhere masks the very absence this call exists to detect.\n"
-        f"  2. `{SESSION_START_MONITOR_QUERY}` — loads `Monitor`'s schema before any "
-        "call that needs it; a Monitor invoked without its schema fails with "
-        "`InputValidationError`.\n"
-    )
-
-
-def _should_inject_tool_loading_protocol(project_dir, session_id):
-    """Whether this prompt carries the per-prompt `<tool-loading-protocol>`.
-
-    Once per session (the session_id marker), and never once the Task*
-    question is answered as absent — by this session's observation or by the
-    machine record. The second clause matters because the marker fails open
-    when the harness omits session_id, re-injecting on every prompt."""
-    return (
-        not _tool_loading_already_injected(project_dir, session_id)
-        and _task_tools_available(project_dir) is not False
-        and not _machine_task_tools_absent(project_dir)
-    )
+    if tool_name == "ToolSearch":
+        if not _looks_like_task_tool_query((tool_input or {}).get("query")):
+            return
+        # Either way this is a recorded answer. Recording the positive matters
+        # as much as the negative: the SessionStart preload fires every session,
+        # so a harness that GAINS the tools re-settles here rather than staying
+        # on `track-step` forever.
+        _record_task_tools_available(project_dir, _task_tools_in_search_result(blob))
+        return
+    if any(marker in blob for marker in _TOOL_UNAVAILABLE_MARKERS):
+        _record_task_tools_available(project_dir, False)
+    else:
+        _record_task_tools_available(project_dir, True)
 
 
 # How long `wedge-check` is allowed to take. It is a directory listing and a
@@ -1383,15 +1164,24 @@ def main():
             os.remove(os.path.join(project_dir, ".codeyam", "state", "handoff-said-once.json"))
         except OSError:
             pass
-        _reset_task_tool_marker(project_dir)
         # A new session, a resume, a /clear and a compaction all leave the
         # agent without the step context it was last given, so the next
         # prompt and the next tool call re-emit it.
         _clear_step_context_marker(project_dir)
         print("<session-start-hook>")
         print(
-            _session_start_tool_preload(project_dir)
-            + "Monitor is for watching a CONDITION the harness will "
+            "Before your first turn, make TWO SEPARATE `ToolSearch` calls — they ask "
+            "two different questions and a combined query answers neither:\n"
+            f"  1. `{TOOL_LOADING_SELECT_QUERY}` — the editor workflow's step-tracking "
+            "tools. If this returns `no matching deferred tools`, this harness does not "
+            "have them; that is a normal answer, it is recorded, and the workflow will "
+            "stop asking you for them and use `codeyam-editor editor track-step` instead. "
+            "Do NOT widen this query with other tool names — a name that resolves "
+            "everywhere masks the very absence this call exists to detect.\n"
+            f"  2. `{SESSION_START_MONITOR_QUERY}` — loads `Monitor`'s schema before any "
+            "call that needs it; a Monitor invoked without its schema fails with "
+            "`InputValidationError`.\n"
+            "Monitor is for watching a CONDITION the harness will "
             "not notify you about; a backgrounded long command (refresh-tests, "
             "session-finalize) is not that — its completion notification arrives on its "
             "own, and `codeyam-editor editor wait-for` is the same-turn blocking path. "
@@ -1607,7 +1397,10 @@ def main():
         # the harness payload omits session_id the marker fails open and
         # re-injects on EVERY prompt, which is the shape the fleet measured.
         session_id = event_data.get("session_id")
-        if _should_inject_tool_loading_protocol(project_dir, session_id):
+        if (
+            not _tool_loading_already_injected(project_dir, session_id)
+            and _task_tools_available(project_dir) is not False
+        ):
             lines.extend([
                 '',
                 '<tool-loading-protocol>',

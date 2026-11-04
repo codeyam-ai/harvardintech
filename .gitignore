@@ -129,8 +129,6 @@ blob-report/
 .codeyam/preview-capture.png
 .codeyam/preview-capture.*.png
 .codeyam/scenarios/screenshots/*.css-matches.json
-.codeyam/preview-capture.png.*
-.codeyam/preview-capture.*.png.*
 .codeyam/preview-html/
 .codeyam/results-shown.json
 .codeyam/handoff-context.md
@@ -160,16 +158,9 @@ blob-report/
 .codeyam/state/handoff-sections/
 .codeyam/state/gitignore-drift-rebuild.json
 .codeyam/state/handoff-said-once.json
-.codeyam/state/check-in-loop.json
-.codeyam/state/idle-stopped-agents.json
-.codeyam/state/claude-launch-settings.json
-.codeyam/state/extraction-plan.md
-.codeyam/state/deconstruct-plan.md
-.codeyam/prototype-notes.md
 .codeyam/state/context-carry.md
 .codeyam/state/context-reset-pending.json
 .codeyam/state/context-reset-fired.json
-.codeyam/state/context-reset-last.json
 .codeyam/state/provider-auth-verdict.json
 .codeyam/state/antigravity-session.json
 .codeyam/state/pre-commit-sync-last-integration.json
@@ -201,7 +192,6 @@ blob-report/
 .codeyam/remote-backup-preference.json
 .codeyam/state/harness-tasks-dir
 .codeyam/state/tool-loading-injected.json
-.codeyam/state/harness-capabilities.json
 .codeyam/state/step-context-injected.json
 .codeyam/state/capture-host-unsupported.json
 .codeyam/state/hosted-published-ports.json
@@ -233,7 +223,6 @@ blob-report/
 .codeyam/state/rebase-heal.json
 .codeyam/state/stage-feature-staged.json
 .codeyam/state/rebuild-self-restart.json
-.codeyam/state/owed-rebuild.json
 .codeyam/state/build-source-snapshot.json
 .codeyam/state/push-auto-amend.json
 .codeyam/state/change-origin.json
@@ -253,4 +242,15 @@ blob-report/
 *.waits
 *.heartbeat
 docker-compose.cloud.yml
+.codeyam/preview-capture.png.*
+.codeyam/preview-capture.*.png.*
+.codeyam/state/check-in-loop.json
+.codeyam/state/idle-stopped-agents.json
+.codeyam/state/claude-launch-settings.json
+.codeyam/state/extraction-plan.md
+.codeyam/state/deconstruct-plan.md
+.codeyam/prototype-notes.md
+.codeyam/state/context-reset-last.json
+.codeyam/state/harness-capabilities.json
+.codeyam/state/owed-rebuild.json
 # codeyam-editor:end
