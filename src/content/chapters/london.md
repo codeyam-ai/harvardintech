@@ -10,6 +10,7 @@ showGallery: true
 photos:
   - image: /images/1784889425768.webp
   - image: /images/1782977679252.webp
+    caption: Live Coworking Session
   - image: /images/1782977679529.webp
   - image: /images/1784889426210.webp
 leadsNote: We're looking for a London co-lead. If you'd like to help run the chapter, get in touch.
