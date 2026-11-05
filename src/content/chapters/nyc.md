@@ -6,6 +6,7 @@ region: New York, NY
 blurb: Our founding chapter and largest community.
 heroImage: /images/bg/get-involved-bg.jpg
 tagline: We are the New York Chapter of Harvard Alumni in Tech.
+showGallery: true
 photos:
   - image: /images/unnamed-2.webp
     caption: Welcome Fall Mixer

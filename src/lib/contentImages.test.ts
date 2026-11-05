@@ -123,19 +123,34 @@ describe('chapter and community banners', () => {
     }
   });
 
-  // The shared 40-photo wall is New York event photography. It renders by
-  // DEFAULT, so any chapter without its own curated `photos` list silently
-  // showed New York's events under its own city name — London, Seattle, DC and
-  // Boston all did. Opting out has to be explicit.
+  // The shared 40-photo wall is New York event photography, and it is what a
+  // page with the gallery on but no curated `photos` falls back to — London,
+  // Seattle, DC and Boston all once showed New York's events under their own
+  // city name. So turning the gallery on requires photos of the page's own.
+  //
+  // The gallery is OFF by default (opt-in) rather than opt-out, because the
+  // CMS omits an unticked checkbox on save: an opt-out `showGallery: false`
+  // was erased by any edit to the page, and this check then blocked the deploy
+  // (2026-11-05, communities/ai.md). With opt-in, a dropped `false` is harmless.
   it('never fall back to the shared New York wall without curating their own photos', () => {
     for (const file of [...chapterFiles, ...communityFiles]) {
-      const text = readFileSync(file, 'utf-8');
-      const hasCuratedPhotos = /^photos:/m.test(text);
-      if (hasCuratedPhotos) continue;
+      if (frontmatterValue(file, 'showGallery') !== 'true') continue;
+      expect(
+        /^photos:/m.test(readFileSync(file, 'utf-8')),
+        `${file.replace(`${ROOT}/`, '')} sets showGallery: true but has no photos of its own`,
+      ).toBe(true);
+    }
+  });
+
+  // The converse, now that the gallery is opt-in: curated photos with the
+  // gallery left off would hide them silently.
+  it('turn the gallery on wherever they have curated photos', () => {
+    for (const file of chapterFiles) {
+      if (!/^photos:/m.test(readFileSync(file, 'utf-8'))) continue;
       expect(
         frontmatterValue(file, 'showGallery'),
-        `${file.replace(`${ROOT}/`, '')} has no photos of its own and does not set showGallery: false`,
-      ).toBe('false');
+        `${file.replace(`${ROOT}/`, '')} has curated photos but does not set showGallery: true`,
+      ).toBe('true');
     }
   });
 });

@@ -58,7 +58,10 @@ const {
   blurb,
   heroImage,
   tagline,
-  showGallery = true,
+  // OFF unless the entry turns it on. The CMS omits an unticked checkbox on
+  // save, so a `false` cannot survive an edit; a `true` default flipped every
+  // edited community onto the shared New York wall.
+  showGallery = false,
   callouts = [],
   whatsappFormUrl,
   joinBlurb,

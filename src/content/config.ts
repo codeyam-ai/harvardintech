@@ -212,8 +212,9 @@ const chapters = defineCollection({
     // Full-bleed city header (mirrors the live harvardintech.com chapter pages):
     // `heroImage` is the background photo, `tagline` the subtitle beneath the
     // "HARVARD IN TECH <CITY>" title. `showGallery` toggles the event photo
-    // gallery; absent → shown (the live site shows it on every chapter), set
-    // `false` to opt out. All optional → a chapter without them falls back
+    // gallery; absent → HIDDEN, set `true` to show it. Opt-in because the CMS
+    // drops an unticked checkbox on save, so an opt-out `false` was silently
+    // erased by any edit. All optional → a chapter without them falls back
     // to the centered header.
     heroImage: z.string().optional(),
     tagline: z.string().optional(),

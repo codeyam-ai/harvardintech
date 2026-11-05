@@ -9,6 +9,7 @@ callouts:
     text: The WhatsApp group is where papers, launches and job openings circulate between calls.
   - title: Researchers, founders and operators together
     text: People training models, people shipping them inside large companies, and people deciding whether to — in one room rather than three.
+showGallery: false
 blurb: For alumni working in and around artificial intelligence.
 tagline: A global community for Harvard alumni working in AI.
 leads:

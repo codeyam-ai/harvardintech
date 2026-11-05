@@ -86,7 +86,10 @@ const {
   blurb,
   heroImage,
   tagline,
-  showGallery = true,
+  // OFF unless the entry turns it on. The CMS omits an unticked checkbox on
+  // save, so a `false` cannot survive an edit; a `true` default flipped every
+  // edited chapter onto the shared New York wall.
+  showGallery = false,
   photos,
   events = [],
   eventsHeading,
