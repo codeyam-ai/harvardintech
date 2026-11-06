@@ -2864,6 +2864,11 @@
       "at": "2026-11-06T14:52:25.568975624+00:00",
       "feature": "CMS checkboxes that can't break deploys or ignore edits",
       "notes": "Resumed at reconcile after a context reset; reconcile to push ran clean. The audit showed only advisories once the 'all' partition was refreshed (1873 tests pass). The content diff was verified to be only the planned showGallery/active rem…"
+    },
+    {
+      "at": "2026-11-06T21:37:49.661214521+00:00",
+      "feature": "Background photos for volunteer roles",
+      "notes": "Resumed at reconcile after a context reset. The audit was clean apart from pre-existing advisories once the 'all' partition was refreshed (1886/1886 tests). Finalize passed by reusing that cache. .codeyam/design/user_files/ (a personal hea…"
     }
   ],
   "syntheses": [
