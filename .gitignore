@@ -157,6 +157,7 @@ blob-report/
 .codeyam/runner-timing-history.json
 .codeyam/state/last-advance.txt
 .codeyam/state/last-step-show.txt
+.codeyam/state/vitest-report.json
 .codeyam/state/handoff-sections/
 .codeyam/state/gitignore-drift-rebuild.json
 .codeyam/state/handoff-said-once.json
@@ -214,6 +215,7 @@ blob-report/
 .codeyam/state/context-reset-awaiting/
 .codeyam/state/context-reset-unresumable.json
 .codeyam/state/context-reset-delivering.json
+.codeyam/state/schedule-launch-delivering.json
 .codeyam/state/agent-send-awaiting/
 .codeyam/state/run-complete-nudged/
 .codeyam/state/plan-complete-pending.json
@@ -241,6 +243,7 @@ blob-report/
 .codeyam/state/audit-split.json
 .codeyam/state/claude-launch-provenance.json
 .codeyam/state/installed-by.json
+.codeyam/state/mcpb-update.json
 .codeyam/state/build-requests/
 .codeyam/state/credential-store-durability.json
 .codeyam/state/inline-agent-sessions.json

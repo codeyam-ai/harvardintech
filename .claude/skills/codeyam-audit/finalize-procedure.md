@@ -168,7 +168,8 @@ missing, and the workaround used.
 **NEVER rebase, amend, or force-push a branch that may be shared.** A
 concurrent session (or a teammate) may have committed under you at any moment.
 Integrate a moved primary branch by **merging it in**, never by rebasing onto
-it. Every other mistake in this procedure is recoverable; this one rewrites
+it — `codeyam-editor editor sync-upstream --base` is the command that does it.
+Every other mistake in this procedure is recoverable; this one rewrites
 history other people may be building on and cannot be undone.
 
 **Assume shared unless told otherwise.** On a genuinely private branch the
@@ -1326,9 +1327,13 @@ attribution trailers.
 # Stop fast-intent so finalize stamps the real marker, not a deferred one.
 codeyam-editor editor fast-commit-stop
 
-# Integrate any sibling commits by MERGING (never rebasing) — see rule 0.
+# Integrate a moved primary branch by MERGING (never rebasing) — see rule 0.
+# pre-commit-sync alone compares only against this branch's own upstream, which
+# on a branch one machine pushes is always level, so it never sees main move.
+codeyam-editor editor sync-upstream --base \
+  --trailer "<attribution trailer>"            # one --trailer per session attribution line
 codeyam-editor editor pre-commit-sync          # claims the commit queue; --recover if it bails
-codeyam-editor editor verify-merge-consistency # if that integrated a merge — see "After every merge"
+codeyam-editor editor verify-merge-consistency # if either integrated a merge — see "After every merge"
 
 # MANDATORY when the branch carries platform surface (see "Cross-platform
 # pitfalls"): the finalize's Phase 4b gates on these same checks and fails on
@@ -1613,8 +1618,10 @@ With the branch pushed and merge-ready:
   yes already covers this — do not ask again.
 - **Before waiting on any check, read `gh pr view <pr> --json
   mergeable,mergeStateStatus`.** If it says `CONFLICTING` / `DIRTY`, integrate
-  the base by merge (`git fetch origin && git merge origin/<base>`, never
-  rebase), resolve, commit, push — and only then start the CI wait. GitHub
+  the base by merge (`codeyam-editor editor sync-upstream --base --trailer
+  "<attribution trailer>"` — never a raw `git merge`, never a rebase), resolve
+  any conflict it stops on and finish with `sync-upstream --continue-rebase`,
+  push — and only then start the CI wait. GitHub
   creates no `refs/pull/<N>/merge` ref for a conflicting PR, so the
   `pull_request` workflow never fires: **the PR shows zero checks and no
   error**, and a wait on it can never end. `editor ci-failures` refuses with

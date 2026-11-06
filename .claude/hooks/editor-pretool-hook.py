@@ -592,6 +592,13 @@ def _question_copy_finding_lines(row):
     for shape in row.get("shapes") or []:
         lines.append(f"`{shape.get('matched')}` ({shape.get('shape')}) — {shape.get('guidance')}")
     lines.extend(_option_finding_lines(row.get("options") or {}))
+    for entry in row.get("optionUnaccompanied") or []:
+        finding = entry.get("finding") or {}
+        excerpt = (finding.get("marker") or {}).get("excerpt", "")
+        lines.append(
+            f'option "{entry.get("label")}" describes itself with technical detail '
+            f"(`{excerpt}`) and no plain sentence beside it — {finding.get('guidance')}"
+        )
     return lines
 
 
@@ -890,7 +897,7 @@ def is_partition_refresh_only(command, project_dir):
         except ValueError:
             return False
         if not (
-            _invokes_test_runner(tokens)
+            _runs_tests(tokens)
             or _invokes_configured_script(tokens, project_dir)
             or _shell_c_payload(tokens)
         ):
@@ -968,7 +975,7 @@ def _configured_test_scripts(project_dir):
     the stack-agnostic runners above, so the gate is config-aware rather than a
     fixed hardcoded list. Only tokens that look like a script path (`scripts/…`
     or ending in `.sh`) are lifted — that deliberately skips a bare interpreter
-    like `python3` in `python3 -m pytest`, which `_invokes_test_runner` already
+    like `python3` in `python3 -m pytest`, which `_test_runner_index` already
     covers and which would over-block if treated as a runner."""
     cfg_path = os.path.join(project_dir, ".codeyam", "editor.json")
     scripts = []
@@ -1016,10 +1023,11 @@ def _codeyam_verb(tokens):
     return None
 
 
-def _invokes_test_runner(tokens):
-    """True when the program in command position of one already-split command is
-    a test runner, in any of the shapes a runner is actually invoked through:
-    bare name, program + subcommand, interpreter + module, or codeyam CLI verb.
+def _test_runner_index(tokens):
+    """The index of the program in command position of one already-split command
+    that is a test runner, in any of the shapes a runner is actually invoked
+    through: bare name, program + subcommand, interpreter + module, or codeyam
+    CLI verb. None when no runner is invoked.
 
     Blind to quoted text by construction — `shlex` has already collapsed each
     quoted region into a single token, so a runner name inside a feature title,
@@ -1030,14 +1038,51 @@ def _invokes_test_runner(tokens):
         program = _program_name(tok)
         rest = tokens[index + 1:]
         if program in _TEST_RUNNER_PROGRAMS:
-            return True
+            return index
         if _leading_operand(rest) in _TEST_RUNNER_SUBCOMMANDS.get(program, ()):
-            return True
+            return index
         if _PYTHON_INTERPRETER.match(program) and _module_target(rest) in _TEST_RUNNER_PROGRAMS:
-            return True
+            return index
         if program in _CODEYAM_CLIS and _codeyam_verb(rest) in _CODEYAM_TEST_VERBS:
-            return True
-    return False
+            return index
+    return None
+
+
+# Flags that make any recognized runner print and exit without running a test.
+# A closed list on purpose: `cargo test --no-run` compiles the whole test binary
+# (the cost the pre-Demo gate exists to defer) and `pytest --collect-only`
+# imports every test module, so neither is here.
+_NON_EXECUTING_RUNNER_FLAGS = frozenset(("--help", "-h", "--version"))
+
+
+def _is_non_executing_runner_call(tokens, runner_index):
+    """True when the runner at `tokens[runner_index]` is asked only to print —
+    `--help` / `-h` / `--version`, or `refresh-tests --dry-run` (clap rejects
+    that flag without `--owed`, and `--owed --dry-run` lists the owed set
+    without running it).
+
+    Only the runner's OWN arguments count: everything after a `--` is handed to
+    the test binary, so `cargo test -- --help` still compiles the binary and is
+    still a run."""
+    args = tokens[runner_index + 1:]
+    if "--" in args:
+        args = args[:args.index("--")]
+    if any(arg in _NON_EXECUTING_RUNNER_FLAGS for arg in args):
+        return True
+    program = _program_name(tokens[runner_index])
+    return (
+        program in _CODEYAM_CLIS
+        and _codeyam_verb(args) == "refresh-tests"
+        and "--dry-run" in args
+    )
+
+
+def _runs_tests(tokens):
+    """True when one already-split command invokes a test runner AND asks it to
+    run tests — a help, version, or dry-run call invokes the runner but runs
+    nothing, which is how an agent checks a flag it just built."""
+    index = _test_runner_index(tokens)
+    return index is not None and not _is_non_executing_runner_call(tokens, index)
 
 
 def _shell_c_payload(tokens):
@@ -1104,7 +1149,7 @@ def is_test_run_command(command, project_dir):
         except ValueError:
             undecidable = True
             continue
-        if _invokes_test_runner(tokens):
+        if _runs_tests(tokens):
             return True
         if _invokes_configured_script(tokens, project_dir):
             return True
