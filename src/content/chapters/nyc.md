@@ -21,7 +21,11 @@ photos:
   - image: /images/gallery/event-31.jpg
   - image: /images/gallery/event-34.jpg
   - image: /images/gallery/event-37.jpg
-leads: []
+leads:
+  - name: Daniela Andrade
+    role: Chapter Co-Lead
+    photo: /images/daniela-andrade-headshot.webp
+    bio: Daniela Andrade is a Harvard College Class of 2025 graduate with a joint concentration in Neuroscience and Philosophy. At Harvard, she led Harvard Women in Entrepreneurship, which was named Harvard's Student Organization of the Year. She is currently the Co-Founder and CEO of a stealth AI startup and is passionate building communities for founders and tech professionals.
 links: []
 ---
 
