@@ -116,6 +116,7 @@ export interface ProjectEntryLike {
     title: string;
     blurb?: string;
     image?: string;
+    chapter?: string;
     applyUrl?: string;
     commitment?: string;
     startDate?: string | Date;
@@ -131,6 +132,8 @@ export interface ProjectCardData extends ProjectLike {
   slug: string;
   blurb?: string;
   image?: string;
+  /** Chapter slug for a city role; only drives the backdrop photo. */
+  chapter?: string;
   applyUrl?: string;
   commitment?: string;
   startDate?: string | Date;
@@ -156,6 +159,7 @@ export function projectCardData(entries: readonly ProjectEntryLike[]): ProjectCa
     title: entry.data.title,
     blurb: entry.data.blurb,
     image: entry.data.image,
+    chapter: entry.data.chapter,
     applyUrl: entry.data.applyUrl,
     commitment: entry.data.commitment,
     startDate: entry.data.startDate,
@@ -194,4 +198,51 @@ export function relatedProjects<T extends ProjectLike>(
   const current = open.findIndex((p) => p.slug === currentSlug);
   if (current === -1) return [];
   return [...open.slice(current + 1), ...open.slice(0, current)].slice(0, limit);
+}
+
+/** The shared photo a role falls back to when it has no image of its own and
+ *  no chapter photo to borrow — the homepage hero's first slide. */
+export const DEFAULT_PROJECT_BACKDROP = '/images/bg/hero-bg.jpg';
+
+/** The slice of a `chapters` entry the backdrop needs. */
+export interface ChapterPhotoLike {
+  id: string;
+  heroImage?: string;
+}
+
+/**
+ * The background photo for a role that has no `image` of its own.
+ *
+ * A city role names its chapter by slug (`chapter: london`) and borrows that
+ * chapter's `heroImage` — the same photo its homepage "Our chapters" card
+ * shows. Every other role, and any role whose slug matches no chapter (a typo,
+ * a retired city) or a chapter without a photo, gets the shared site photo.
+ * Never throws, so a mistyped CMS value degrades to the default instead of
+ * failing the build. The role's own `image`, when present, still wins — the
+ * components check that first.
+ */
+export function projectBackdrop(
+  project: { chapter?: string },
+  chapters: readonly ChapterPhotoLike[],
+): string {
+  const slug = project.chapter?.trim();
+  if (!slug) return DEFAULT_PROJECT_BACKDROP;
+  const match = chapters.find((c) => c.id === slug);
+  return match?.heroImage || DEFAULT_PROJECT_BACKDROP;
+}
+
+/** Flattens `chapters` collection entries to the slice the backdrop needs, so
+ *  the routes share one mapping and stay free of `astro:content` shapes. */
+export function chapterPhotos(
+  entries: readonly { id: string; data: { heroImage?: string } }[],
+): ChapterPhotoLike[] {
+  return entries.map((c) => ({ id: c.id, heroImage: c.data.heroImage }));
+}
+
+/** Each project with its `backdrop` attached. Non-mutating. */
+export function withProjectBackdrops<T extends { chapter?: string }>(
+  projects: readonly T[],
+  chapters: readonly ChapterPhotoLike[],
+): (T & { backdrop: string })[] {
+  return projects.map((p) => ({ ...p, backdrop: projectBackdrop(p, chapters) }));
 }

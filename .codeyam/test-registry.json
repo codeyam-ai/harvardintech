@@ -1792,6 +1792,33 @@
       "runner": "tests"
     },
     {
+      "description": "A chapter with no photo is kept, with heroImage left undefined.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "chapterPhotos › keeps a chapter without a photo",
+      "line": 424,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Flattens chapter collection entries to the id and photo the backdrop needs.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "chapterPhotos › maps entries to id and heroImage",
+      "line": 411,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The real state of the collection today: one entry, and soon after, none.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "chapterPhotos › returns an empty list for no entries",
+      "line": 276,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
       "description": "With no name the band makes no place claim at all.",
       "file": "src/lib/chapterSignUp.test.ts",
       "format": "vitest",
@@ -5279,7 +5306,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › accepts Date objects as well as ISO strings",
-      "line": 202,
+      "line": 206,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5288,7 +5315,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › collapses the repeated year when both dates share one",
-      "line": 168,
+      "line": 172,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5297,7 +5324,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › formats an inverted range as authored instead of reordering it",
-      "line": 196,
+      "line": 200,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5306,7 +5333,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › keeps both years when the range crosses a year boundary",
-      "line": 173,
+      "line": 177,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5315,7 +5342,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › reads as a deadline when only the end date is set",
-      "line": 183,
+      "line": 187,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5324,7 +5351,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › reads as a start when only the start date is set",
-      "line": 178,
+      "line": 182,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5333,7 +5360,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › returns null when the project has neither date",
-      "line": 189,
+      "line": 193,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -9474,7 +9501,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › does not mutate the input array",
-      "line": 83,
+      "line": 87,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -9483,7 +9510,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › filters and orders together",
-      "line": 57,
+      "line": 61,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -9492,7 +9519,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › ignores a legacy active flag",
-      "line": 32,
+      "line": 36,
       "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
@@ -9501,7 +9528,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › keeps a project explicitly marked not closed",
-      "line": 21,
+      "line": 25,
       "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
@@ -9510,7 +9537,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › keeps a project whose closed flag is absent",
-      "line": 14,
+      "line": 18,
       "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
@@ -9519,7 +9546,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › orders open projects by their order field",
-      "line": 38,
+      "line": 42,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -9528,7 +9555,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › places unordered projects after ordered ones",
-      "line": 48,
+      "line": 52,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -9537,7 +9564,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › removes a project ticked as closed",
-      "line": 26,
+      "line": 30,
       "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
@@ -9546,7 +9573,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › returns an empty array for no projects",
-      "line": 78,
+      "line": 82,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -9555,7 +9582,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › returns an empty array when every project is closed",
-      "line": 68,
+      "line": 72,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -10388,11 +10415,74 @@
       "runner": "tests"
     },
     {
+      "description": "A chapter that exists but has no photo also gets the default.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "projectBackdrop › falls back to the shared photo for a chapter without a photo",
+      "line": 364,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A mistyped or retired chapter slug degrades to the default instead of throwing.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "projectBackdrop › falls back to the shared photo for an unknown chapter slug",
+      "line": 359,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A role with no chapter falls back to the shared site photo.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "projectBackdrop › falls back to the shared photo when no chapter is set",
+      "line": 354,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A city role borrows its chapter's photo by slug.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "projectBackdrop › returns the matching chapter photo",
+      "line": 349,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With no chapters loaded at all, every role gets the default.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "projectBackdrop › returns the shared photo when the chapter list is empty",
+      "line": 379,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A blank chapter field counts as no chapter.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "projectBackdrop › treats a blank chapter as unset",
+      "line": 374,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The CMS can leave stray whitespace around a typed slug.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "projectBackdrop › trims whitespace around the chapter slug",
+      "line": 369,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
       "description": "Every field the card renders has to survive the projection — a field dropped here silently never reaches a suggestion card, with no type error to catch it.",
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › carries every card field through from the entry frontmatter",
-      "line": 219,
+      "line": 223,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10401,7 +10491,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › leaves absent optional fields undefined",
-      "line": 255,
+      "line": 259,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10410,7 +10500,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › preserves the order the entries arrived in",
-      "line": 263,
+      "line": 267,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10419,7 +10509,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › promotes the entry id to a slug",
-      "line": 212,
+      "line": 216,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10428,7 +10518,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › returns an empty list for no entries",
-      "line": 272,
+      "line": 276,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10437,7 +10527,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › falls back to the page-level volunteer CTA when the project has no apply link",
-      "line": 121,
+      "line": 125,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10446,7 +10536,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › names the fallback button when the page-level label is missing",
-      "line": 143,
+      "line": 147,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10455,7 +10545,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › returns null when both links are empty strings",
-      "line": 160,
+      "line": 164,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10464,7 +10554,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › returns null when neither the project nor the page has a link",
-      "line": 129,
+      "line": 133,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10473,7 +10563,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › treats an empty apply link as absent",
-      "line": 152,
+      "line": 156,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10482,7 +10572,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › uses the project apply link even with no page-level fallback configured",
-      "line": 134,
+      "line": 138,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10491,7 +10581,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › uses the project own apply link when it has one",
-      "line": 112,
+      "line": 116,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10500,7 +10590,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectPath › builds the detail path for a slug",
-      "line": 97,
+      "line": 101,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10509,7 +10599,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectPath › returns a site-root-relative path for the caller to base-prefix",
-      "line": 105,
+      "line": 109,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -11022,7 +11112,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › does not mutate the list it was given",
-      "line": 330,
+      "line": 334,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11031,7 +11121,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › honours a lower limit",
-      "line": 325,
+      "line": 329,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11040,7 +11130,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › never suggests a retired project",
-      "line": 303,
+      "line": 307,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11049,7 +11139,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › never suggests the project the reader is already on",
-      "line": 297,
+      "line": 301,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11058,7 +11148,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › returns an empty list when the current slug matches nothing open",
-      "line": 320,
+      "line": 324,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11067,7 +11157,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › returns an empty list when there is no other open project",
-      "line": 315,
+      "line": 319,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11076,7 +11166,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › returns only what is available when fewer than the limit exist",
-      "line": 309,
+      "line": 313,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11085,7 +11175,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › suggests the projects that follow the current one in editor order",
-      "line": 286,
+      "line": 290,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11094,7 +11184,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › wraps past the end of the list rather than coming up empty",
-      "line": 292,
+      "line": 296,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -16707,6 +16797,33 @@
       "key": "withCommunityItems › returns the menu unchanged when there are no communities",
       "line": 369,
       "registeredAt": "2026-07-30T13:54:13Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each project gains a backdrop and keeps its other fields.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "withProjectBackdrops › attaches a backdrop to each project",
+      "line": 388,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The input array and its objects are left untouched.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "withProjectBackdrops › does not mutate the input",
+      "line": 397,
+      "registeredAt": "2026-11-06T19:16:02Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty project list stays empty.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "withProjectBackdrops › returns an empty list for no projects",
+      "line": 404,
+      "registeredAt": "2026-11-06T19:16:02Z",
       "runner": "tests"
     },
     {

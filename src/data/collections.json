@@ -686,6 +686,13 @@
           "optional": true
         },
         {
+          "name": "chapter",
+          "label": "Chapter",
+          "type": "text",
+          "optional": true,
+          "hint": "For a city role, the chapter's web-address ending — \"london\", \"nyc\", \"sf-bay-area\", \"boston-cambridge\". The role then shows that chapter's photo when it has no image of its own. Leave blank for a non-city role; it shows the general site photo."
+        },
+        {
           "name": "applyUrl",
           "label": "Apply link",
           "type": "text",

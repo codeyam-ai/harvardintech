@@ -1,6 +1,7 @@
 ---
 title: City Volunteer — Boston / Cambridge
 blurb: Help run Harvard Alumni in Tech events in Boston and Cambridge — support local planning first, and lead it if you want to.
+chapter: boston-cambridge
 order: 4
 ---
 

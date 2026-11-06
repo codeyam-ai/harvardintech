@@ -424,7 +424,7 @@
   },
   {
     "name": "VolunteerProject",
-    "description": "An open volunteer project shown in the grid on /volunteer. Stored as a markdown file in the `projects` content collection and edited in the CMS, so organizers can open and close projects without a code change. `image` is the project thumbnail; `applyUrl` is where an interested volunteer goes. `closed: true` retires a project without deleting its record (ticked means hidden, so the CMS dropping an unticked box can never un-retire one). `startDate` / `endDate` are DISPLAY-ONLY \u2014 they format into a range on the card and detail header but never gate visibility, because on a static build a date-expired project would linger until the next deploy and then vanish without anyone touching the CMS; `closed` alone decides what appears.",
+    "description": "An open volunteer project shown in the grid on /volunteer. Stored as a markdown file in the `projects` content collection and edited in the CMS, so organizers can open and close projects without a code change. `image` is the project thumbnail; `applyUrl` is where an interested volunteer goes. `closed: true` retires a project without deleting its record (ticked means hidden, so the CMS dropping an unticked box can never un-retire one). `startDate` / `endDate` are DISPLAY-ONLY \u2014 they format into a range on the card and detail header but never gate visibility, because on a static build a date-expired project would linger until the next deploy and then vanish without anyone touching the CMS; `closed` alone decides what appears. `chapter` is an optional chapter slug (e.g. `london`) that only drives the role's backdrop photo: with no own `image`, the card and detail banner borrow that chapter's `heroImage`, else the shared site photo.",
     "category": "datastore",
     "order": 8,
     "fields": [
@@ -446,6 +446,11 @@
       },
       {
         "name": "image",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "chapter",
         "type": "string",
         "required": false
       },

@@ -1,0 +1,18 @@
+{
+  "surface": "VolunteerProjectHeader",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "onPhoto",
+      "value": "true",
+      "rationale": "source-derived state onPhoto=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "onPhoto",
+      "value": "false",
+      "rationale": "source-derived state onPhoto=false",
+      "status": "covered"
+    }
+  ]
+}

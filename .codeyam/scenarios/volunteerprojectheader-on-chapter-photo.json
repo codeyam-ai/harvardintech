@@ -1,0 +1,12 @@
+{
+  "name": "VolunteerProjectHeader - On Chapter Photo",
+  "id": "3b8f19c6-4ca9-4e99-8c41-55e77f24c7d0",
+  "url": "/isolated-components/VolunteerProjectHeader-OnPhoto",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "VolunteerProjectHeader",
+  "scenarioType": "component",
+  "description": "The detail page header for a London city role with no photo of its own: the banner switches to its photo tone with the London chapter photo behind the title, and the time commitment and back link invert to white so they stay readable on the scrim."
+}

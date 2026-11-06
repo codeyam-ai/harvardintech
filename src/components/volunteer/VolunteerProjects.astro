@@ -9,6 +9,9 @@ export interface VolunteerProjectLike extends ProjectLike {
   slug?: string;
   blurb?: string;
   image?: string;
+  /** Photo to show when there is no `image`: the role's chapter photo, or the
+   *  shared site photo. Resolved by the route (`withProjectBackdrops`). */
+  backdrop?: string;
   applyUrl?: string;
   commitment?: string;
   /** Display only — see `formatProjectDates`. Frontmatter reaches a component as
@@ -54,6 +57,7 @@ const open = openProjects(projects);
               title={p.title}
               blurb={p.blurb}
               image={p.image}
+              backdrop={p.backdrop}
               applyUrl={p.applyUrl}
               commitment={p.commitment}
               startDate={p.startDate}

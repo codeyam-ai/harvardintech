@@ -5,14 +5,16 @@ import "../../../src/styles/tokens.css";
 // Isolation page for VolunteerProjectThumb — codeyam screenshots the #codeyam-capture
 // wrapper by navigating to /isolated-components/VolunteerProjectThumb.
 //
-// All three branches at the real card width (a third of the 3-column grid), side
-// by side, because the property that matters is that they are the SAME HEIGHT —
+// Every branch at the real card width (a third of the 3-column grid), side by
+// side, because the property that matters is that they are the SAME HEIGHT —
 // that is what keeps a grid mixing photo and no-photo projects aligned, and it is
 // invisible in any single-branch capture.
 //
-// Left: linked photo (the clickable thumbnail Nicole expected).
-// Middle: photo with no link (a card rendered without a slug).
-// Right: the gradient placeholder for a project with no photo yet.
+// 1: linked photo (the clickable thumbnail Nicole expected).
+// 2: photo with no link (a card rendered without a slug).
+// 3: no own photo, so the role's chapter photo (London) under the crimson wash.
+// 4: the gradient placeholder — only reached when no backdrop is passed at all;
+//    real routes always attach one.
 ---
 
 <html lang="en">
@@ -28,6 +30,9 @@ import "../../../src/styles/tokens.css";
       </div>
       <div style="width: 320px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden;">
         <Component image="/images/chapters/nyc.jpg" />
+      </div>
+      <div style="width: 320px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden;">
+        <Component backdrop="/images/chapters/london.jpg" href="/volunteer/projects/city-volunteer-london" />
       </div>
       <div style="width: 320px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden;">
         <Component />

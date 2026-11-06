@@ -1,146 +1,22 @@
 {
   "$comment": "Per-developer settings (port, provider, proxy ports, startCommand, etc.) belong in editor.local.json. That file is gitignored and is deep-merged on top of this one at load time. See CLAUDE.md or run `codeyam-editor editor config-show` to inspect the effective config.",
-  "projectTitle": "Harvard Alumni in Tech",
-  "projectDescription": "We need to modernize the https://www.harvardintech.com/ website from the outside. The site was built with a no-code product so we need to faithfully reproduce it using modern technologies and host it as a GitHub pages website. It also needs a CRM that can be run locally or, ideally also in the cloud via GitHub pages as well (protected with a password and/or GitHub OAuth). Can we dig into this?",
-  "provider": "claude",
-  "startCommand": "npm run dev",
-  "port": 4321,
-  "env": {},
-  "toolchainPaths": [],
-  "proxy": {
-    "httpPort": 14100,
-    "dbPort": 14101,
-    "controlPort": 14199,
-    "httpsPassthrough": [],
-    "httpsPreview": false
-  },
-  "database": null,
-  "scenarios": {
-    "dir": ".codeyam/scenarios",
-    "recaptureConcurrency": 1
-  },
-  "hooks": {},
-  "testRunners": [
-    {
-      "name": "tests",
-      "command": "npx vitest run --reporter=json",
-      "outputFormat": "vitest-json",
-      "testFilePatterns": [
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/*.test.js",
-        "**/*.test.jsx"
-      ],
-      "sourceFilePatterns": [
-        "**/*.{ts,tsx,js,jsx,mjs}",
-        "src/**/*.{astro,css}",
-        "src/data/**/*.json",
-        "src/content/**",
-        "public/**",
-        "archive/**",
-        "scripts/**",
-        ".github/**",
-        "docs/archive/**",
-        "docs/scoping/**",
-        "docs/nicole-review.md",
-        "package.json",
-        "package-lock.json",
-        "tsconfig.json",
-        "patches/**"
-      ],
-      "excludePatterns": [
-        "**/node_modules/**",
-        "**/dist/**",
-        "**/build/**"
-      ],
-      "coverageExcludePaths": [],
-      "changedCommand": "npx vitest run --changed --reporter=json",
-      "targetedCommand": "npx vitest run -t \"{test_names}\" --reporter=json"
-    }
-  ],
-  "testPartitions": [],
-  "testCacheIgnorePatterns": [
-    "**/*.md",
-    ".gitattributes",
-    ".gitignore",
-    ".claude/**",
-    "**/.claude/**",
-    ".codex/**",
-    "**/.codex/**",
-    ".gemini/**",
-    "**/.gemini/**",
-    ".opencode/**",
-    "**/.opencode/**"
-  ],
-  "staticChecks": [
-    {
-      "name": "tsc",
-      "command": "npx tsc --noEmit",
-      "filePatterns": [
-        "**/*.ts",
-        "**/*.tsx"
-      ],
-      "excludePatterns": [
-        "**/node_modules/**",
-        "**/dist/**",
-        "**/build/**"
-      ],
-      "description": "TypeScript strict type-check"
-    },
-    {
-      "name": "astro-check",
-      "command": "npx astro check",
-      "filePatterns": [
-        "**/*.astro",
-        "**/*.ts",
-        "**/*.tsx"
-      ],
-      "excludePatterns": [
-        "**/node_modules/**",
-        "**/dist/**",
-        "**/build/**"
-      ],
-      "description": "Astro type-check (covers .astro files that tsc cannot)"
-    }
-  ],
-  "formatters": [],
-  "screenSizes": {
-    "Tablet": {
-      "width": 768,
-      "height": 1024
-    },
-    "Desktop": {
-      "width": 1440,
-      "height": 900
-    },
-    "Laptop": {
-      "width": 1280,
-      "height": 800
-    },
-    "Mobile": {
-      "width": 390,
-      "height": 844
-    }
-  },
-  "deviceScaleFactor": 3.0,
-  "defaultScreenSize": "Desktop",
   "apps": [
     {
-      "name": "Harvard in Tech",
-      "type": "web",
       "dir": ".",
+      "name": "Harvard in Tech",
       "port": 4321,
-      "startCommand": "npm run dev"
+      "startCommand": "npm run dev",
+      "type": "web"
     }
   ],
-  "files": {
-    "textLogMaxBytes": null,
-    "eventLogMaxBytes": null,
-    "logKeepRotated": null,
-    "journalShardEntries": null
-  },
   "audit": {
-    "testNamingConventions": {},
+    "allowedDocumentationOnlySlugs": [
+      "post-merge-drift-sweep"
+    ],
+    "branchBaseRef": "main",
+    "coverageBootstrap": {
+      "enabled": true
+    },
     "glossarySkip": [
       {
         "filePath": ".claude/hooks/_step_metadata.py",
@@ -788,94 +664,218 @@
         "reason": "editor-shipped"
       }
     ],
+    "itemShape": {
+      "changeWithoutVerify": "note",
+      "compound": "warning",
+      "vague": "warning"
+    },
+    "scenarioFreshnessDays": 14,
     "stepBudget": {
-      "maxLines": 80,
       "maxChecklistItems": 6,
+      "maxLines": 80,
       "severity": "warning"
     },
-    "itemShape": {
-      "compound": "warning",
-      "vague": "warning",
-      "changeWithoutVerify": "note"
-    },
-    "allowedDocumentationOnlySlugs": [
-      "post-merge-drift-sweep"
-    ],
-    "scenarioFreshnessDays": 14,
-    "branchBaseRef": "main",
-    "coverageBootstrap": {
-      "enabled": true
-    }
+    "testNamingConventions": {}
+  },
+  "catalogAutoAdd": {
+    "allow": [],
+    "deny": []
+  },
+  "cleanup": {
+    "completedPlanMinAgeDays": 90,
+    "completedPlanRetention": 20,
+    "logCompress": true,
+    "logDeleteDays": 30,
+    "logRotateDays": 7,
+    "screenshotPruneOrphans": true,
+    "tmpDeleteHours": 24
   },
   "coverageThresholds": {
     "global": {
       "minLinePercent": 90.0
     }
   },
-  "catalogAutoAdd": {
-    "allow": [],
-    "deny": []
+  "database": null,
+  "defaultScreenSize": "Desktop",
+  "deviceScaleFactor": 3.0,
+  "env": {},
+  "files": {
+    "eventLogMaxBytes": null,
+    "journalShardEntries": null,
+    "logKeepRotated": null,
+    "textLogMaxBytes": null
   },
-  "testParallelism": {
-    "loadGuard": true
-  },
-  "cleanup": {
-    "logRotateDays": 7,
-    "logDeleteDays": 30,
-    "logCompress": true,
-    "tmpDeleteHours": 24,
-    "screenshotPruneOrphans": true,
-    "completedPlanRetention": 20,
-    "completedPlanMinAgeDays": 90
-  },
-  "runnerTimeout": {
-    "mode": "auto",
-    "headroomSeconds": 90,
-    "floorSeconds": 900,
-    "changedFanoutThreshold": 2,
-    "changedFanoutPerUnitSeconds": 180,
-    "changedFanoutMaxExtraSeconds": 1800
-  },
-  "silenceHookStderr": false,
+  "formatters": [],
   "git": {
     "commitQueue": {
       "enabled": true,
-      "pollIntervalMs": 2000,
-      "waitTimeoutSec": 300,
+      "headAutoReclaimEnabled": true,
       "heartbeatIntervalSec": 15,
-      "serverHeartbeatIntervalSec": 60,
       "machineAliveHookTimeoutMs": 5000,
       "maxHookPrunePerSweep": 10,
       "maxProgressStallSec": 900,
-      "headAutoReclaimEnabled": true
+      "pollIntervalMs": 2000,
+      "serverHeartbeatIntervalSec": 60,
+      "waitTimeoutSec": 300
     },
     "planClaims": {
       "enabled": true,
       "fetchIntervalSec": 3
     }
   },
+  "hooks": {},
+  "port": 4321,
+  "projectDescription": "We need to modernize the https://www.harvardintech.com/ website from the outside. The site was built with a no-code product so we need to faithfully reproduce it using modern technologies and host it as a GitHub pages website. It also needs a CRM that can be run locally or, ideally also in the cloud via GitHub pages as well (protected with a password and/or GitHub OAuth). Can we dig into this?",
+  "projectTitle": "Harvard Alumni in Tech",
+  "provider": "claude",
+  "proxy": {
+    "controlPort": 14199,
+    "dbPort": 14101,
+    "httpPort": 14100,
+    "httpsPassthrough": [],
+    "httpsPreview": false
+  },
+  "runnerTimeout": {
+    "changedFanoutMaxExtraSeconds": 1800,
+    "changedFanoutPerUnitSeconds": 180,
+    "changedFanoutThreshold": 2,
+    "floorSeconds": 900,
+    "headroomSeconds": 90,
+    "mode": "auto"
+  },
+  "scenarios": {
+    "dir": ".codeyam/scenarios",
+    "recaptureConcurrency": 1
+  },
+  "screenSizes": {
+    "Desktop": {
+      "height": 900,
+      "width": 1440
+    },
+    "Laptop": {
+      "height": 800,
+      "width": 1280
+    },
+    "Mobile": {
+      "height": 844,
+      "width": 390
+    },
+    "Tablet": {
+      "height": 1024,
+      "width": 768
+    }
+  },
   "server": {
     "autoRestartOnStaleBinary": true,
-    "maxRssMb": 6144,
-    "devServerMaxRssMb": null
+    "devServerMaxRssMb": null,
+    "maxRssMb": 6144
   },
   "setupBrowserEnabled": false,
+  "silenceHookStderr": false,
+  "startCommand": "npm run dev",
+  "staticChecks": [
+    {
+      "command": "npx tsc --noEmit",
+      "description": "TypeScript strict type-check",
+      "excludePatterns": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**"
+      ],
+      "filePatterns": [
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "name": "tsc"
+    },
+    {
+      "command": "npx astro check",
+      "description": "Astro type-check (covers .astro files that tsc cannot)",
+      "excludePatterns": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**"
+      ],
+      "filePatterns": [
+        "**/*.astro",
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "name": "astro-check"
+    }
+  ],
+  "testCacheIgnorePatterns": [
+    "**/*.md",
+    ".gitattributes",
+    ".gitignore",
+    ".claude/**",
+    "**/.claude/**",
+    ".codex/**",
+    "**/.codex/**",
+    ".gemini/**",
+    "**/.gemini/**",
+    ".opencode/**",
+    "**/.opencode/**"
+  ],
+  "testParallelism": {
+    "loadGuard": true
+  },
+  "testPartitions": [],
+  "testRunners": [
+    {
+      "changedCommand": "npx vitest run --changed --reporter=json",
+      "command": "npx vitest run --reporter=json",
+      "coverageExcludePaths": [],
+      "excludePatterns": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**"
+      ],
+      "name": "tests",
+      "outputFormat": "vitest-json",
+      "sourceFilePatterns": [
+        "**/*.{ts,tsx,js,jsx,mjs}",
+        "src/**/*.{astro,css}",
+        "src/data/**/*.json",
+        "src/content/**",
+        "public/**",
+        "archive/**",
+        "scripts/**",
+        ".github/**",
+        "docs/archive/**",
+        "docs/scoping/**",
+        "docs/nicole-review.md",
+        "package.json",
+        "package-lock.json",
+        "tsconfig.json",
+        "patches/**"
+      ],
+      "targetedCommand": "npx vitest run -t \"{test_names}\" --reporter=json",
+      "testFilePatterns": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.test.js",
+        "**/*.test.jsx"
+      ]
+    }
+  ],
+  "toolchainPaths": [],
   "workflow": {
+    "audience": null,
     "checkIns": {
+      "hardeningCompleted": {
+        "autoAction": "commit",
+        "pause": true
+      },
       "planAccepted": {
         "pause": true
       },
       "prototypeCompleted": {
         "pause": true
       },
-      "hardeningCompleted": {
-        "pause": true,
-        "autoAction": "commit"
-      },
       "push": {
         "pause": true
       }
-    },
-    "audience": null
+    }
   }
 }

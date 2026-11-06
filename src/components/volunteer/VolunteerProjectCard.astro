@@ -20,6 +20,8 @@ interface Props {
   title: string;
   blurb?: string;
   image?: string;
+  /** Fallback photo (chapter or shared) used when there is no `image`. */
+  backdrop?: string;
   applyUrl?: string;
   commitment?: string;
   /** When the project runs. Display only, and passed straight through to
@@ -32,14 +34,14 @@ interface Props {
    *  did before detail pages existed: no links, same layout. */
   slug?: string;
 }
-const { title, blurb, image, applyUrl, commitment, startDate, endDate, slug } =
+const { title, blurb, image, backdrop, applyUrl, commitment, startDate, endDate, slug } =
   Astro.props as Props;
 
 const href = slug ? withBase(projectPath(slug)) : undefined;
 ---
 
 <article class="card proj">
-  <VolunteerProjectThumb image={image} href={href} />
+  <VolunteerProjectThumb image={image} backdrop={backdrop} href={href} />
   <div class="body">
     <h3>{href ? <a class="title-link" href={href}>{title}</a> : title}</h3>
     <VolunteerProjectMeta commitment={commitment} startDate={startDate} endDate={endDate} />

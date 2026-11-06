@@ -116,6 +116,37 @@
         "status": "covered"
       }
     },
+    "/volunteer/projects/[slug]": {
+      "empty": {
+        "status": "n-a",
+        "reason": "A detail page exists only for a published project, so there is no zero-project version of it; an unknown slug is never prerendered and lands on the site 404."
+      },
+      "single": {
+        "status": "covered"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "The suggestions below the CTA are capped at three by relatedProjects, so a large collection renders the same three-card row the typical scenarios show."
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Statically prerendered at build time with no client-side fetch, so a visitor never sees a pending state."
+      },
+      "edge": {
+        "status": "covered"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "No runtime data fetching: a bad entry fails the build rather than reaching a visitor, and an unknown slug is the site 404."
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "The page's one action is the sign-up button, an outbound link to the volunteer form; there is no in-page state to capture."
+      }
+    },
     "AdminDashboard": {
       "empty": {
         "status": "covered"

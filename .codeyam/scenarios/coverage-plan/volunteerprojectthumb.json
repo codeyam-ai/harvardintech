@@ -1,0 +1,42 @@
+{
+  "surface": "VolunteerProjectThumb",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "image",
+      "value": "true",
+      "rationale": "source-derived state image=true",
+      "status": "planned"
+    },
+    {
+      "dimension": "image",
+      "value": "false",
+      "rationale": "source-derived state image=false",
+      "status": "covered"
+    },
+    {
+      "dimension": "backdrop",
+      "value": "true",
+      "rationale": "source-derived state backdrop=true",
+      "status": "planned"
+    },
+    {
+      "dimension": "backdrop",
+      "value": "false",
+      "rationale": "source-derived state backdrop=false",
+      "status": "covered"
+    },
+    {
+      "dimension": "href",
+      "value": "true",
+      "rationale": "source-derived state href=true",
+      "status": "planned"
+    },
+    {
+      "dimension": "href",
+      "value": "false",
+      "rationale": "source-derived state href=false",
+      "status": "covered"
+    }
+  ]
+}

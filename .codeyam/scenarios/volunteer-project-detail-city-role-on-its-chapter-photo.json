@@ -1,0 +1,49 @@
+{
+  "name": "Volunteer Project Detail - City Role On Its Chapter Photo",
+  "id": "86204e45-27d1-4506-b1f6-95b191e9c168",
+  "url": "/volunteer/projects/city-volunteer-london",
+  "dimensions": [
+    "Desktop",
+    "Mobile"
+  ],
+  "mocks": {},
+  "seed": {
+    "projects": [
+      {
+        "blurb": "Help run Harvard Alumni in Tech in the Bay Area — start by supporting local events, and step up to lead or co-lead the chapter, its social events or its AI events.",
+        "body": "- Support, then possibly lead, local event planning.\n- Help find local venues, sponsors and partners.\n- Organize programming and event marketing.",
+        "chapter": "sf-bay-area",
+        "order": 1,
+        "slug": "city-volunteer-sf-bay-area",
+        "title": "City Volunteer or Lead — SF / Bay Area"
+      },
+      {
+        "blurb": "Help run Harvard Alumni in Tech in New York — start by supporting local events, and step up to lead or co-lead the chapter or its social events.",
+        "body": "- Support, then possibly lead, local event planning.\n- Help find local venues, sponsors and partners.\n- Organize programming and event marketing.",
+        "chapter": "nyc",
+        "order": 2,
+        "slug": "city-volunteer-new-york-city",
+        "title": "City Volunteer or Lead — New York City"
+      },
+      {
+        "blurb": "Help run Harvard Alumni in Tech events in London — support local planning first, and lead it if you want to.",
+        "body": "- Support, then possibly lead, local event planning.\n- Help find local venues, sponsors and partners.\n- Organize programming and event marketing.",
+        "chapter": "london",
+        "commitment": "~3 hrs / month",
+        "order": 5,
+        "slug": "city-volunteer-london",
+        "title": "City Volunteer — London"
+      },
+      {
+        "blurb": "Support Harvard Alumni in Tech's fundraising — the donation campaign launch, sponsor and partner activation, and possible membership offerings.",
+        "body": "Help plan the donation campaign launch and line up sponsors and partners.",
+        "order": 10,
+        "slug": "fundraising",
+        "title": "Fundraising"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/volunteer/projects/[slug].astro",
+  "description": "A London city role's own page when the role has no photo of its own. The banner borrows the London chapter photo behind the title, and the time commitment and back link turn white so they stay readable on it, where the paper banner shows them in crimson and grey. A role with its own photo keeps the paper banner. The Photo And Own Sign Up Link scenario shows that case."
+}

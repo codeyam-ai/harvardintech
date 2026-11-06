@@ -1,0 +1,18 @@
+{
+  "surface": "VolunteerProjectBackdrop",
+  "surface_kind": "component",
+  "states": [
+    {
+      "dimension": "href",
+      "value": "true",
+      "rationale": "source-derived state href=true",
+      "status": "covered"
+    },
+    {
+      "dimension": "href",
+      "value": "false",
+      "rationale": "source-derived state href=false",
+      "status": "covered"
+    }
+  ]
+}

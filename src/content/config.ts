@@ -316,6 +316,11 @@ const projects = defineCollection({
     title: z.string(),
     blurb: z.string().optional(),
     image: z.string().optional(),
+    // Slug of the chapter a city role belongs to (`london`, `nyc`, …). It only
+    // picks the backdrop photo: a role with no `image` borrows that chapter's
+    // `heroImage`. Free text like events' `chapter`; an unknown slug falls back
+    // to the shared site photo rather than failing the build.
+    chapter: z.string().optional(),
     applyUrl: z.string().optional(),
     commitment: z.string().optional(),
     // DISPLAY ONLY. These format into a range on the card and the detail page

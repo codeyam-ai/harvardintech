@@ -14,7 +14,13 @@ import { loadVolunteerCopy } from '../../../lib/volunteerPageContent';
 import LockedPreviewBody from '../../../components/LockedPreviewBody.astro';
 import { isLocked, isPreview, publishedEntries, routableEntries } from '../../../lib/drafts';
 import { INCLUDE_DRAFTS } from '../../../lib/draftVisibility';
-import { projectCardData, relatedProjects } from '../../../lib/projects';
+import {
+  chapterPhotos,
+  projectBackdrop,
+  projectCardData,
+  relatedProjects,
+  withProjectBackdrops,
+} from '../../../lib/projects';
 
 // Drafts get no page of their own on the public site — a project held back from
 // the grid but still live at its own URL would be public anyway. In dev and on
@@ -51,7 +57,15 @@ const { title, blurb, image, commitment, startDate, endDate, applyUrl } = projec
 
 // Flattened to the plain shape the card renders, so `relatedProjects` — and the
 // component below it — stay free of any `astro:content` type.
-const related = relatedProjects(projectCardData(siblings), project.id);
+// The backdrop photo behind the banner (only used when the project has no image
+// of its own) and on each suggestion card: the chapter's photo for a city role,
+// the shared site photo otherwise.
+const chapters = chapterPhotos(await getCollection('chapters'));
+const backdrop = projectBackdrop(project.data, chapters);
+const related = withProjectBackdrops(
+  relatedProjects(projectCardData(siblings), project.id),
+  chapters,
+);
 
 // The sign-up CTA and the fallback description come from the same editable copy
 // the /volunteer page uses, so an editor who changes the button there changes it
@@ -68,6 +82,7 @@ const copy = await loadVolunteerCopy(volunteerPage);
         title={title}
         blurb={blurb}
         image={image}
+        backdrop={backdrop}
         commitment={commitment}
         startDate={startDate}
         endDate={endDate}

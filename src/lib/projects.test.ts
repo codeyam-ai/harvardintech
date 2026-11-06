@@ -6,6 +6,10 @@ import {
   formatProjectDates,
   projectCardData,
   relatedProjects,
+  projectBackdrop,
+  withProjectBackdrops,
+  chapterPhotos,
+  DEFAULT_PROJECT_BACKDROP,
 } from './projects';
 
 describe('openProjects', () => {
@@ -331,5 +335,100 @@ describe('relatedProjects', () => {
     const input = [...all];
     relatedProjects(input, 'b');
     expect(input.map((p) => p.slug)).toEqual(['a', 'b', 'c', 'd']);
+  });
+});
+
+describe('projectBackdrop', () => {
+  const chapters = [
+    { id: 'london', heroImage: '/images/chapters/london.jpg' },
+    { id: 'nyc', heroImage: '/images/chapters/nyc.jpg' },
+    { id: 'no-photo' },
+  ];
+
+  // A city role borrows its chapter's photo by slug.
+  it('returns the matching chapter photo', () => {
+    expect(projectBackdrop({ chapter: 'london' }, chapters)).toBe('/images/chapters/london.jpg');
+  });
+
+  // A role with no chapter falls back to the shared site photo.
+  it('falls back to the shared photo when no chapter is set', () => {
+    expect(projectBackdrop({}, chapters)).toBe(DEFAULT_PROJECT_BACKDROP);
+  });
+
+  // A mistyped or retired chapter slug degrades to the default instead of throwing.
+  it('falls back to the shared photo for an unknown chapter slug', () => {
+    expect(projectBackdrop({ chapter: 'atlantis' }, chapters)).toBe(DEFAULT_PROJECT_BACKDROP);
+  });
+
+  // A chapter that exists but has no photo also gets the default.
+  it('falls back to the shared photo for a chapter without a photo', () => {
+    expect(projectBackdrop({ chapter: 'no-photo' }, chapters)).toBe(DEFAULT_PROJECT_BACKDROP);
+  });
+
+  // The CMS can leave stray whitespace around a typed slug.
+  it('trims whitespace around the chapter slug', () => {
+    expect(projectBackdrop({ chapter: '  nyc ' }, chapters)).toBe('/images/chapters/nyc.jpg');
+  });
+
+  // A blank chapter field counts as no chapter.
+  it('treats a blank chapter as unset', () => {
+    expect(projectBackdrop({ chapter: '   ' }, chapters)).toBe(DEFAULT_PROJECT_BACKDROP);
+  });
+
+  // With no chapters loaded at all, every role gets the default.
+  it('returns the shared photo when the chapter list is empty', () => {
+    expect(projectBackdrop({ chapter: 'london' }, [])).toBe(DEFAULT_PROJECT_BACKDROP);
+  });
+});
+
+describe('withProjectBackdrops', () => {
+  const chapters = [{ id: 'london', heroImage: '/images/chapters/london.jpg' }];
+
+  // Each project gains a backdrop and keeps its other fields.
+  it('attaches a backdrop to each project', () => {
+    const out = withProjectBackdrops([{ slug: 'a', chapter: 'london' }, { slug: 'b' }], chapters);
+    expect(out).toEqual([
+      { slug: 'a', chapter: 'london', backdrop: '/images/chapters/london.jpg' },
+      { slug: 'b', backdrop: DEFAULT_PROJECT_BACKDROP },
+    ]);
+  });
+
+  // The input array and its objects are left untouched.
+  it('does not mutate the input', () => {
+    const input = [{ slug: 'a', chapter: 'london' }];
+    withProjectBackdrops(input, chapters);
+    expect(input).toEqual([{ slug: 'a', chapter: 'london' }]);
+  });
+
+  // An empty project list stays empty.
+  it('returns an empty list for no projects', () => {
+    expect(withProjectBackdrops([], chapters)).toEqual([]);
+  });
+});
+
+describe('chapterPhotos', () => {
+  // Flattens chapter collection entries to the id and photo the backdrop needs.
+  it('maps entries to id and heroImage', () => {
+    // Real entries carry more fields than the photo; they must be dropped.
+    const entries = [
+      { id: 'london', data: { heroImage: '/images/chapters/london.jpg', name: 'London' } },
+      { id: 'nyc', data: { heroImage: '/images/chapters/nyc.jpg', name: 'New York' } },
+    ];
+    expect(chapterPhotos(entries)).toEqual([
+      { id: 'london', heroImage: '/images/chapters/london.jpg' },
+      { id: 'nyc', heroImage: '/images/chapters/nyc.jpg' },
+    ]);
+  });
+
+  // A chapter with no photo is kept, with heroImage left undefined.
+  it('keeps a chapter without a photo', () => {
+    expect(chapterPhotos([{ id: 'boston', data: {} }])).toEqual([
+      { id: 'boston', heroImage: undefined },
+    ]);
+  });
+
+  // No chapters in, no chapters out.
+  it('returns an empty list for no entries', () => {
+    expect(chapterPhotos([])).toEqual([]);
   });
 });

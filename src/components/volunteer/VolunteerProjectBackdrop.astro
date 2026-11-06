@@ -1,0 +1,56 @@
+---
+// A borrowed photo standing in for a role's own image on its card thumbnail:
+// the role's chapter photo, or the shared site photo. It sits under the same
+// crimson wash the homepage chapter cards use (OurChapters `.c::after`), so it
+// reads as atmosphere for the city rather than a photo of the role itself.
+//
+// Decorative throughout — empty alt, and when the card links through the
+// wrapper is `aria-hidden` with `tabindex="-1"`, because the card's title link
+// already carries the same destination for keyboard and screen-reader users.
+//
+// Same fixed 168px cropped band as the other thumbnail branches, so a grid
+// mixing photo, backdrop and placeholder cards stays level.
+import { withBase } from '../../lib/url';
+
+interface Props {
+  /** The borrowed photo, unprefixed. */
+  src: string;
+  /** Where the card links, already base-prefixed. Absent → no link. */
+  href?: string;
+}
+const { src, href } = Astro.props as Props;
+---
+
+{
+  href ? (
+    <a class="backdrop" href={href} tabindex="-1" aria-hidden="true">
+      <img class="img" src={withBase(src)} alt="" loading="lazy" />
+    </a>
+  ) : (
+    <div class="backdrop" aria-hidden="true">
+      <img class="img" src={withBase(src)} alt="" loading="lazy" />
+    </div>
+  )
+}
+
+<style>
+  .backdrop {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .img {
+    width: 100%;
+    height: 168px;
+    object-fit: cover;
+    display: block;
+    background: var(--paper-2);
+  }
+  .backdrop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 38%, rgba(124, 20, 36, 0.55), rgba(20, 16, 17, 0.9));
+    pointer-events: none;
+  }
+</style>

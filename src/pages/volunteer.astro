@@ -13,14 +13,18 @@ import { volunteerPage } from '../lib/site';
 import { loadVolunteerCopy } from '../lib/volunteerPageContent';
 import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
+import { chapterPhotos, withProjectBackdrops } from '../lib/projects';
 
-const projects = publishedEntries(
-  await getCollection('projects'),
-  INCLUDE_DRAFTS,
-).map((p) => ({
-  slug: p.id,
-  ...p.data,
-}));
+// Each role gets a `backdrop` photo for when it has no image of its own: its
+// chapter's photo for a city role, the shared site photo otherwise.
+const chapters = chapterPhotos(await getCollection('chapters'));
+const projects = withProjectBackdrops(
+  publishedEntries(await getCollection('projects'), INCLUDE_DRAFTS).map((p) => ({
+    slug: p.id,
+    ...p.data,
+  })),
+  chapters,
+);
 
 // Resolved here rather than inside the page component, so `VolunteerPage` stays
 // props-only and the isolated-component scenarios keep handing it their own copy.

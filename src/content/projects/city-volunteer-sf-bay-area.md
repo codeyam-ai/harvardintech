@@ -1,6 +1,7 @@
 ---
 title: City Volunteer or Lead — SF / Bay Area
 blurb: Help run Harvard Alumni in Tech in the Bay Area — start by supporting local events, and step up to lead or co-lead the chapter, its social events or its AI events.
+chapter: sf-bay-area
 order: 1
 ---
 

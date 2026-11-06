@@ -221,6 +221,14 @@
       "imports": [],
       "name": "__file_root__"
     },
+    ".codeyam/isolation-props/VolunteerProjectBackdrop.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/VolunteerProjectBackdrop.ts",
+      "importedBy": [
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
     ".codeyam/isolation-props/WhatsappJoinCard.ts::__file_root__": {
       "filePath": ".codeyam/isolation-props/WhatsappJoinCard.ts",
       "importedBy": [
@@ -2257,6 +2265,17 @@
       ],
       "name": "__file_root__"
     },
+    "src/components/volunteer/VolunteerProjectBackdrop.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectBackdrop.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectThumb.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
     "src/components/volunteer/VolunteerProjectBody.astro::__file_root__": {
       "filePath": "src/components/volunteer/VolunteerProjectBody.astro",
       "importedBy": [
@@ -2307,6 +2326,7 @@
     "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__": {
       "filePath": "src/components/volunteer/VolunteerProjectHeader.astro",
       "importedBy": [
+        "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro::__file_root__",
         "src/pages/isolated-components/VolunteerProjectHeader.astro::__file_root__"
       ],
       "imports": [
@@ -2363,7 +2383,8 @@
       ],
       "imports": [
         "src/lib/url.ts::withBase",
-        "src/lib/media.ts::altFor"
+        "src/lib/media.ts::altFor",
+        "src/components/volunteer/VolunteerProjectBackdrop.astro::__file_root__"
       ],
       "name": "__file_root__"
     },
@@ -4629,12 +4650,16 @@
       "filePath": "src/lib/projects.test.ts",
       "importedBy": [],
       "imports": [
+        "src/lib/projects.ts::__file_root__",
+        "src/lib/projects.ts::chapterPhotos",
         "src/lib/projects.ts::formatProjectDates",
         "src/lib/projects.ts::openProjects",
+        "src/lib/projects.ts::projectBackdrop",
         "src/lib/projects.ts::projectCardData",
         "src/lib/projects.ts::projectCta",
         "src/lib/projects.ts::projectPath",
-        "src/lib/projects.ts::relatedProjects"
+        "src/lib/projects.ts::relatedProjects",
+        "src/lib/projects.ts::withProjectBackdrops"
       ],
       "name": "__file_root__"
     },
@@ -4647,6 +4672,23 @@
         "src/lib/events.ts::__file_root__"
       ],
       "name": "__file_root__"
+    },
+    "src/lib/projects.ts::chapterPhotos": {
+      "filePath": "src/lib/projects.ts",
+      "importedBy": [
+        "src/pages/volunteer.astro::__file_root__",
+        "src/pages/volunteer/projects/[slug].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "chapterPhotos"
+    },
+    "src/lib/projects.ts::projectBackdrop": {
+      "filePath": "src/lib/projects.ts",
+      "importedBy": [
+        "src/pages/volunteer/projects/[slug].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "projectBackdrop"
     },
     "src/lib/projects.ts::projectCardData": {
       "filePath": "src/lib/projects.ts",
@@ -4663,6 +4705,15 @@
       ],
       "imports": [],
       "name": "relatedProjects"
+    },
+    "src/lib/projects.ts::withProjectBackdrops": {
+      "filePath": "src/lib/projects.ts",
+      "importedBy": [
+        "src/pages/volunteer.astro::__file_root__",
+        "src/pages/volunteer/projects/[slug].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "withProjectBackdrops"
     },
     "src/lib/publicRoutes.test.ts::__file_root__": {
       "filePath": "src/lib/publicRoutes.test.ts",
@@ -6946,6 +6997,16 @@
       ],
       "name": "__file_root__"
     },
+    "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectBackdrop.astro::__file_root__",
+        ".codeyam/isolation-props/VolunteerProjectBackdrop.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
     "src/pages/isolated-components/VolunteerProjectBody.astro::__file_root__": {
       "filePath": "src/pages/isolated-components/VolunteerProjectBody.astro",
       "importedBy": [],
@@ -6978,6 +7039,15 @@
       "importedBy": [],
       "imports": [
         "src/components/volunteer/VolunteerProjectCta.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__",
         "src/styles/tokens.css::__file_root__"
       ],
       "name": "__file_root__"
@@ -7224,7 +7294,9 @@
         "src/lib/site.ts::volunteerPage",
         "src/lib/volunteerPageContent.ts::loadVolunteerCopy",
         "src/lib/drafts.ts::publishedEntries",
-        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS"
+        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
+        "src/lib/projects.ts::chapterPhotos",
+        "src/lib/projects.ts::withProjectBackdrops"
       ],
       "name": "__file_root__"
     },
@@ -7242,8 +7314,11 @@
         "src/lib/drafts.ts::publishedEntries",
         "src/lib/drafts.ts::routableEntries",
         "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
+        "src/lib/projects.ts::chapterPhotos",
+        "src/lib/projects.ts::projectBackdrop",
         "src/lib/projects.ts::projectCardData",
-        "src/lib/projects.ts::relatedProjects"
+        "src/lib/projects.ts::relatedProjects",
+        "src/lib/projects.ts::withProjectBackdrops"
       ],
       "name": "__file_root__"
     },
@@ -7338,6 +7413,7 @@
         "src/pages/isolated-components/ComingSoon.astro::__file_root__",
         "src/pages/isolated-components/GiveRecognition.astro::__file_root__",
         "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro::__file_root__",
         "src/pages/isolated-components/CopyWarningsSummary-OneField.astro::__file_root__",
         "src/pages/isolated-components/NotFound.astro::__file_root__",
         "src/pages/isolated-components/GiveButton.astro::__file_root__",
@@ -7404,6 +7480,7 @@
         "src/pages/isolated-components/MediaCard-StagedUpload.astro::__file_root__",
         "src/pages/isolated-components/NavItemLabel.astro::__file_root__",
         "src/pages/isolated-components/StagingBar-Reviewing.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro::__file_root__",
         "src/pages/isolated-components/OrderArrows-OnlyRow.astro::__file_root__",
         "src/pages/isolated-components/LockedPreviewBody.astro::__file_root__",
         "src/pages/isolated-components/OnlineGroupEyebrow.astro::__file_root__",
@@ -7580,6 +7657,12 @@
     ".codeyam/isolation-props/MissionStatement.ts": {
       "importedBy": [
         "src/pages/isolated-components/MissionStatement/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/VolunteerProjectBackdrop.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro"
       ],
       "imports": []
     },
@@ -9330,6 +9413,15 @@
         "src/components/ui/BannerCta.astro"
       ]
     },
+    "src/components/volunteer/VolunteerProjectBackdrop.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectThumb.astro",
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro"
+      ],
+      "imports": [
+        "src/lib/url.ts"
+      ]
+    },
     "src/components/volunteer/VolunteerProjectBody.astro": {
       "importedBy": [
         "src/components/volunteer/VolunteerProjectPage.astro",
@@ -9375,6 +9467,7 @@
     "src/components/volunteer/VolunteerProjectHeader.astro": {
       "importedBy": [
         "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro",
         "src/pages/isolated-components/VolunteerProjectHeader.astro"
       ],
       "imports": [
@@ -9424,7 +9517,8 @@
       ],
       "imports": [
         "src/lib/url.ts",
-        "src/lib/media.ts"
+        "src/lib/media.ts",
+        "src/components/volunteer/VolunteerProjectBackdrop.astro"
       ]
     },
     "src/components/volunteer/VolunteerProjects.astro": {
@@ -10720,6 +10814,7 @@
         "src/components/volunteer/VolunteerProjects.astro",
         "src/components/volunteer/VolunteerProjectCta.astro",
         "src/lib/projects.test.ts",
+        "src/pages/volunteer.astro",
         "src/pages/volunteer/projects/[slug].astro"
       ],
       "imports": [
@@ -11205,6 +11300,7 @@
         "src/components/landing/OurChapters.astro",
         "src/components/landing/BoardMemberTile.astro",
         "src/components/SiteIcons.astro",
+        "src/components/volunteer/VolunteerProjectBackdrop.astro",
         "src/components/volunteer/VolunteerProjectThumb.astro",
         "src/components/volunteer/VolunteerProjectCard.astro",
         "src/components/volunteer/VolunteerProjectsEmpty.astro",
@@ -12229,6 +12325,14 @@
         "src/styles/tokens.css"
       ]
     },
+    "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectBackdrop.astro",
+        ".codeyam/isolation-props/VolunteerProjectBackdrop.ts",
+        "src/styles/tokens.css"
+      ]
+    },
     "src/pages/isolated-components/VolunteerProjectBody.astro": {
       "importedBy": [],
       "imports": [
@@ -12254,6 +12358,13 @@
       "importedBy": [],
       "imports": [
         "src/components/volunteer/VolunteerProjectCta.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectHeader.astro",
         "src/styles/tokens.css"
       ]
     },
@@ -12453,7 +12564,8 @@
         "src/lib/site.ts",
         "src/lib/volunteerPageContent.ts",
         "src/lib/drafts.ts",
-        "src/lib/draftVisibility.ts"
+        "src/lib/draftVisibility.ts",
+        "src/lib/projects.ts"
       ]
     },
     "src/pages/volunteer/projects/[slug].astro": {
@@ -12555,6 +12667,7 @@
         "src/pages/isolated-components/ComingSoon.astro",
         "src/pages/isolated-components/GiveRecognition.astro",
         "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro",
+        "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro",
         "src/pages/isolated-components/CopyWarningsSummary-OneField.astro",
         "src/pages/isolated-components/NotFound.astro",
         "src/pages/isolated-components/GiveButton.astro",
@@ -12621,6 +12734,7 @@
         "src/pages/isolated-components/MediaCard-StagedUpload.astro",
         "src/pages/isolated-components/NavItemLabel.astro",
         "src/pages/isolated-components/StagingBar-Reviewing.astro",
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro",
         "src/pages/isolated-components/OrderArrows-OnlyRow.astro",
         "src/pages/isolated-components/LockedPreviewBody.astro",
         "src/pages/isolated-components/OnlineGroupEyebrow.astro",
@@ -12645,5 +12759,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-06T14:42:16Z"
+  "lastUpdated": "2026-11-06T21:34:36Z"
 }

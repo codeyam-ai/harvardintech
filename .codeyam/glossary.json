@@ -642,6 +642,86 @@
     ]
   },
   {
+    "description": "Card thumbnail for a volunteer role with no photo of its own: a borrowed chapter or shared site photo under the crimson wash used by the homepage chapter cards. Decorative; optionally linked to the detail page.",
+    "filePath": "src/components/volunteer/VolunteerProjectBackdrop.astro",
+    "name": "VolunteerProjectBackdrop",
+    "scenarios": [
+      "volunteerprojectbackdrop-london-chapter-linked",
+      "volunteerprojectbackdrop-shared-site-photo"
+    ],
+    "tags": [
+      "volunteer-projects"
+    ]
+  },
+  {
+    "description": "One open volunteer project in the /volunteer grid: thumbnail or backdrop photo, title, commitment and dates, blurb, and the detail and sign-up links. Every field but the title is optional.",
+    "filePath": "src/components/volunteer/VolunteerProjectCard.astro",
+    "name": "VolunteerProjectCard",
+    "scenarios": [
+      "volunteerprojectcard-with-thumbnail"
+    ],
+    "tags": [
+      "volunteer-projects"
+    ]
+  },
+  {
+    "description": "Head of a volunteer project's detail page through PageBanner: back link, title, commitment and dates, blurb as lede. Paper tone when the project has its own image; photo tone with the backdrop behind the title when it does not.",
+    "filePath": "src/components/volunteer/VolunteerProjectHeader.astro",
+    "name": "VolunteerProjectHeader",
+    "scenarios": [
+      "volunteerprojectheader-long-title-and-blurb",
+      "volunteerprojectheader-on-chapter-photo"
+    ],
+    "tags": [
+      "volunteer-projects"
+    ]
+  },
+  {
+    "description": "A volunteer project's own page, composition only: photo, header with backdrop fallback, rendered description, sign-up CTA, and related projects.",
+    "filePath": "src/components/volunteer/VolunteerProjectPage.astro",
+    "name": "VolunteerProjectPage",
+    "scenarios": [
+      "volunteerprojectpage-full-project"
+    ],
+    "tags": [
+      "volunteer-projects"
+    ]
+  },
+  {
+    "description": "A volunteer project card's fixed-height thumbnail: the project's own photo, else a borrowed backdrop photo via VolunteerProjectBackdrop, else the gradient placeholder. Optionally linked to the detail page.",
+    "filePath": "src/components/volunteer/VolunteerProjectThumb.astro",
+    "name": "VolunteerProjectThumb",
+    "scenarios": [
+      "volunteerprojectthumb-linked-bare-and-placeholder"
+    ],
+    "tags": [
+      "volunteer-projects"
+    ]
+  },
+  {
+    "description": "The open-projects section of /volunteer: heading, intro, and either the card grid or the empty state, with openProjects deciding which projects show and in what order. Threads each project's backdrop to its card.",
+    "filePath": "src/components/volunteer/VolunteerProjects.astro",
+    "name": "VolunteerProjects",
+    "scenarios": [
+      "volunteerprojects-populated-grid"
+    ],
+    "tags": [
+      "volunteer-projects"
+    ]
+  },
+  {
+    "description": "The 'You may also be interested in' tail of a volunteer project's detail page: up to three other open projects as cards, each carrying its backdrop photo.",
+    "filePath": "src/components/volunteer/VolunteerRelatedProjects.astro",
+    "name": "VolunteerRelatedProjects",
+    "scenarios": [
+      "volunteerrelatedprojects-one-other-project",
+      "volunteerrelatedprojects-three-suggestions"
+    ],
+    "tags": [
+      "volunteer-projects"
+    ]
+  },
+  {
     "description": "One recording's card - cover still, title, speaker line and year - with the whole card as a single link, since the cover is the part a reader aims at. A missing cover is meaningful rather than a fallback: a recording whose host lost the video has no real still, so the card shows a plain block instead of captioning a provider placeholder as a video still.",
     "filePath": "src/components/WebinarCard.astro",
     "name": "WebinarCard",
@@ -894,6 +974,15 @@
     "filePath": "src/lib/nav.ts",
     "name": "chapterNavItems",
     "testFile": "src/lib/nav.test.ts"
+  },
+  {
+    "description": "Flattens chapters collection entries to id and heroImage, the slice projectBackdrop needs, so routes share one mapping.",
+    "filePath": "src/lib/projects.ts",
+    "name": "chapterPhotos",
+    "tags": [
+      "volunteer-projects"
+    ],
+    "testFile": "src/lib/projects.test.ts"
   },
   {
     "description": "Builds the heading and line for the chapter page Stay in touch band: names the city when given (Hear about London events first) and falls back to place-neutral wording for a missing or blank name.",
@@ -2579,6 +2668,15 @@
     "testFile": "src/lib/localPresence.test.ts"
   },
   {
+    "description": "Picks the fallback background photo for a volunteer role with no image of its own: its chapter's heroImage by slug, or DEFAULT_PROJECT_BACKDROP when the chapter is unset, unknown, or has no photo. Never throws.",
+    "filePath": "src/lib/projects.ts",
+    "name": "projectBackdrop",
+    "tags": [
+      "volunteer-projects"
+    ],
+    "testFile": "src/lib/projects.test.ts"
+  },
+  {
     "description": "Projects collection entries projected into the flat shape the cards render, with the entry's `id` promoted to `slug`. Lives in the lib rather than inline in the detail route because it is the piece most likely to drift silently: a new field on the `projects` schema that is not added here simply never reaches a suggestion card, with no type error and no failing build to say so. Keeps `relatedProjects` and every card component free of any `astro:content` type. Non-mutating; preserves input order so the caller decides sorting.",
     "filePath": "src/lib/projects.ts",
     "name": "projectCardData",
@@ -3559,6 +3657,15 @@
     "filePath": "src/lib/nav.ts",
     "name": "withCommunityItems",
     "testFile": "src/lib/nav.test.ts"
+  },
+  {
+    "description": "Returns each project with a backdrop photo attached via projectBackdrop. Non-mutating.",
+    "filePath": "src/lib/projects.ts",
+    "name": "withProjectBackdrops",
+    "tags": [
+      "volunteer-projects"
+    ],
+    "testFile": "src/lib/projects.test.ts"
   },
   {
     "description": "Adds the site webfont links (preconnects plus the one Google Fonts stylesheet) to an HTML document head, once. Used by the middleware so isolated-component previews render in the site fonts instead of Times and Arial; a document already linking the stylesheet, or with no head, comes back unchanged.",

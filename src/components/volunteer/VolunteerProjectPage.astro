@@ -19,6 +19,9 @@ interface Props {
   title: string;
   blurb?: string;
   image?: string;
+  /** Photo behind the banner title when there is no `image` — the role's
+   *  chapter photo or the shared site photo (`projectBackdrop`). */
+  backdrop?: string;
   commitment?: string;
   startDate?: string | Date;
   endDate?: string | Date;
@@ -38,6 +41,7 @@ const {
   title,
   blurb,
   image,
+  backdrop,
   commitment,
   startDate,
   endDate,
@@ -58,6 +62,8 @@ const {
   <VolunteerProjectHeader
     title={title}
     blurb={blurb}
+    image={image}
+    backdrop={backdrop}
     commitment={commitment}
     startDate={startDate}
     endDate={endDate}

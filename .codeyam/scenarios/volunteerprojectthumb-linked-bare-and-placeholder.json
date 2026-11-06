@@ -1,6 +1,6 @@
 {
   "name": "VolunteerProjectThumb - Linked Bare And Placeholder",
-  "id": "961e8f16-ee46-4c52-93da-aee397d379c4",
+  "id": "3a6af2a2-b06a-4881-95bc-4db0a92e21e3",
   "url": "/isolated-components/VolunteerProjectThumb",
   "dimensions": [
     "Desktop"
@@ -8,6 +8,5 @@
   "mocks": {},
   "componentName": "VolunteerProjectThumb",
   "scenarioType": "component",
-  "pageFilePath": "src/components/volunteer/VolunteerProjectThumb.astro",
-  "description": "All three thumbnail branches at real card width: a photo linked to its detail page, a photo with no link, and the gradient placeholder for a project with no photo yet. Shown side by side because the property that matters is that all three are the SAME HEIGHT — that is what keeps a grid mixing photo and no-photo projects aligned, and it is invisible in any single-branch shot. At 720px and below, where the project grids are one column, the placeholder is not drawn; the Volunteer Page - Fall 2026 Roles scenario shows that at Mobile."
+  "description": "Every thumbnail branch at real card width: a photo linked to its detail page, a photo with no link, a role with no photo of its own borrowing its chapter photo (London) under the crimson wash, and the gradient placeholder that only renders when no backdrop is passed. Shown side by side because the property that matters is that all four are the SAME HEIGHT — that is what keeps a grid mixing photo and no-photo projects aligned, and it is invisible in any single-branch shot. At 720px and below the placeholder is not drawn, but a backdrop photo stays."
 }

@@ -1,0 +1,31 @@
+---
+import Component from "../../../src/components/volunteer/VolunteerProjectHeader.astro";
+import "../../../src/styles/tokens.css";
+
+// Isolation page for VolunteerProjectHeader's PHOTO tone — codeyam screenshots
+// the #codeyam-capture wrapper by navigating to
+// /isolated-components/VolunteerProjectHeader-OnPhoto.
+//
+// A London city role with no photo of its own, so the banner borrows the London
+// chapter photo behind the title. The point of the capture is the inverted meta
+// row and back link: on the paper tone they are crimson and grey, which vanish
+// on the photo scrim, so here they must read white.
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isolated: VolunteerProjectHeader — On Photo</title>
+  </head>
+  <body style="margin: 0;">
+    <div id="codeyam-capture">
+      <Component
+        title="City Volunteer — London"
+        blurb="Help run Harvard Alumni in Tech events in London — support local planning first, and lead it if you want to."
+        backdrop="/images/chapters/london.jpg"
+        commitment="~3 hrs / month"
+      />
+    </div>
+  </body>
+</html>

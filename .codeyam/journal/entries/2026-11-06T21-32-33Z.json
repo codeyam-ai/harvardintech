@@ -1,0 +1,507 @@
+{
+  "timestamp": "2026-11-06T21:32:33Z",
+  "title": "Background photos for volunteer roles",
+  "type": "feature",
+  "userRequest": "## Summary\n\nOpen volunteer roles on `/volunteer` currently show a faint crimson gradient box where a thumbnail would go, because no project in `src/content/projects/` has an `image`. Give every role a background photo instead. A city role (e.g. \"City Volunteer — London\") borrows its chapter's photo — the same `heroImage` the homepage \"Our chapters\" cards show — and every other role (Writer, Fundraising, Editorial…) gets one shared site photo, `/images/bg/hero-bg.jpg` (the homepage hero's first slide). The photo appears on the card in the grid AND behind the title on the role's own page (`/volunteer/projects/<slug>`). A project that has its own uploaded `image` keeps working exactly as it does today.\n\n## Key Decisions\n\n- **Explicit `chapter` field on projects, not title-sniffing.** Projects have no link to a city today. Add an optional `chapter` field holding the chapter's slug (`london`, `nyc`, `sf-bay-area`, `boston-cambridge`), mirroring the `chapter` field events already use. Parsing \"— London\" out of a title was considered and rejected: `nyc-ai-events` says \"NYC\" and \"New York\", and any title rewrite would silently drop the photo.\n- **CMS field is free text with a hint, like events' `chapter`** — not a `select`. A select would hard-code the city list and go stale the day a chapter is added. A misspelt slug simply falls back to the shared photo, never breaks the build.\n- **Own image always wins.** Resolution order: project `image` → chapter `heroImage` → shared default. When the project has its own image the detail page stays as it is now (uncropped `VolunteerProjectPhoto` band + paper header — see the comment in `VolunteerProjectHeader.astro` for why that's deliberate). Only a *fallback* backdrop goes behind the banner title.\n- **Fallback photos get the chapter cards' crimson wash.** On the card thumbnail, a borrowed photo (chapter or default) is overlaid with the same gradient `OurChapters.astro` uses (`.c::after`), so it reads as atmosphere for the city rather than a photo of the role. A project's own uploaded image is shown plain.\n- **Resolved in the routes, not in components.** `volunteer.astro` and `[slug].astro` already load collections; they also load `chapters` and attach a `backdrop` string to each project. Components stay props-only, so isolated-component scenarios keep working by passing `backdrop` directly.\n- **Known content wrinkle (out of scope, mention to user):** the Boston chapter's `heroImage` is also `/images/bg/hero-bg.jpg`, so Boston's city role will look like a non-city role; and `nyc.md` points at `get-involved-bg.jpg` even though `public/images/chapters/nyc.jpg` exists. Both are one-line CMS fixes on the chapter entries, not code.\n\n## Implementation\n\n### 1. Schema + CMS field\n\n**File**: `src/content/config.ts`\n\nAdd `chapter: z.string().optional()` to the `projects` collection schema, with a short comment that it is the chapter slug and only drives the backdrop photo.\n\n**File**: `src/data/collections.json`\n\nAdd a `chapter` field to the `projects` collection (`type: \"text\"`, `optional: true`), placed after `image`, with a hint modelled on the events one: *\"For a city role, the chapter's web-address ending — \"london\", \"nyc\", \"sf-bay-area\", \"boston-cambridge\". The role then shows that chapter's photo when it has no image of its own. Leave blank for a non-city role; it shows the general site photo.\"* Check `src/data/collections.test.ts` for any per-collection field assertions that need updating.\n\n### 2. Backdrop resolver (pure, unit-tested)\n\n**File**: `src/lib/projects.ts`\n\n- Add `chapter?: string` to `ProjectEntryLike.data` and `ProjectCardData`, and carry it through `projectCardData` (the comment above that function warns that a field missing from the projection silently never reaches a card).\n- Add `DEFAULT_PROJECT_BACKDROP = '/images/bg/hero-bg.jpg'` (new).\n- Add `projectBackdrop(project: { chapter?: string }, chapters: readonly { id: string; heroImage?: string }[]): string` (new) — the matched chapter's `heroImage` if the slug matches a chapter that has one, else the default. Pure, never throws, empty-string `chapter` treated as absent.\n- Add `withProjectBackdrops(projects, chapters)` (new) — maps a list, adding `backdrop` to each. Used by both routes.\n\n**File**: `src/lib/projects.test.ts`\n\nTests for: matched chapter → its heroImage; matched chapter with no heroImage → default; unknown/misspelt slug → default; no chapter → default; empty string → default; `projectCardData` carries `chapter`; `withProjectBackdrops` is non-mutating.\n\n### 3. Routes load chapters and attach backdrops\n\n**File**: `src/pages/volunteer.astro`\n\n`await getCollection('chapters')`, map to `{ id, heroImage }`, and pass the projects through `withProjectBackdrops` before handing them to `VolunteerPage`.\n\n**File**: `src/pages/volunteer/projects/[slug].astro`\n\nSame: load chapters, compute this project's `backdrop` with `projectBackdrop`, and run `related` through `withProjectBackdrops` so suggestion cards get photos too. Pass `backdrop` to `VolunteerProjectPage`.\n\n### 4. Card thumbnail uses the backdrop\n\n**Files**: `src/components/volunteer/VolunteerProjects.astro`, `src/components/volunteer/VolunteerProjectCard.astro`, `src/components/volunteer/VolunteerProjectThumb.astro`, `src/components/volunteer/VolunteerRelatedProjects.astro`\n\nAdd `backdrop?: string` to `VolunteerProjectLike` and thread it down to the thumb. In the thumb: own `image` → unchanged; else `backdrop` → render the photo with the crimson wash overlay (reuse the gradient from `OurChapters.astro`), same 168px height, still `alt=\"\"`/decorative; neither → the existing gradient placeholder (keeps isolated scenarios that pass no backdrop unchanged). The \"hide placeholder below 720px\" rule should only apply to the true placeholder, not a backdrop photo.\n\n### 5. Detail page banner uses the backdrop\n\n**Files**: `src/components/volunteer/VolunteerProjectPage.astro`, `src/components/volunteer/VolunteerProjectHeader.astro`\n\nAdd `backdrop?: string` to both. In the header: when the project has no own `image` and a `backdrop` is given, render `PageBanner` with `tone=\"photo\"` and `image={backdrop}`; otherwise keep `tone` paper as today. Update the header's top comment to describe the new rule. Verify the meta row and back link stay legible on the photo tone's scrim (they may need the light-on-dark styles the photo tone uses for the lede).\n\n### 6. Tag the city roles\n\n**Files**: `src/content/projects/city-volunteer-london.md`, `src/content/projects/city-volunteer-new-york-city.md`, `src/content/projects/city-volunteer-sf-bay-area.md`, `src/content/projects/city-volunteer-boston-cambridge.md`, `src/content/projects/nyc-ai-events.md`\n\nAdd `chapter: london` / `nyc` / `sf-bay-area` / `boston-cambridge` / `nyc` respectively.\n\n## Reused existing code\n\n- `PageBanner` from `src/components/ui/PageBanner.astro` — its `tone=\"photo\"` already handles image + scrim + paper fallback\n- `OurChapters` from `src/components/landing/OurChapters.astro` — the crimson gradient wash to copy onto the thumbnail\n- `projectCardData`, `openProjects`, `relatedProjects` from `src/lib/projects.ts`\n- `withBase` from `src/lib/url.ts`, `altFor` from `src/lib/media.ts`\n- The events collection's `chapter` field (schema in `src/content/config.ts`, CMS hint in `src/data/collections.json`) as the precedent for a slug-valued text field\n\n## Scenarios to Demonstrate\n\n- `/volunteer` with the real fall roles: London, NYC, SF city roles show their chapter photos with the crimson wash; Writer / Fundraising show the shared site photo; no grey gradient boxes remain (update `volunteer-page-open-projects` / `volunteer-page-fall-2026-roles` seed data with `chapter` values)\n- A project with its own uploaded image AND a chapter — own image shown plain on the card, uncropped photo band on the detail page (existing `volunteer-project-detail-photo-and-own-sign-up-link`)\n- Detail page for \"City Volunteer — London\" with no own image — London photo behind the banner title, meta row and back link legible\n- Detail page for a non-city role — shared site photo behind the banner\n- A project whose `chapter` is misspelt (`londn`) — falls back to the shared photo, no error\n- Phone width (≤720px) — single-column grid shows backdrop photos, not hidden\n- Empty state (`volunteer-page-no-open-projects`) — unchanged",
+  "description": "Volunteer roles tied to a city chapter now show that chapter's photo, washed so text stays readable, behind the role on the /volunteer list thumbnails and behind the header of the role's detail page; roles with no chapter (or an unknown chapter) keep the shared site photo. The chapter-to-photo lookup moved into one tested helper (chapterPhotos) used by both pages, with projectBackdrop/withProjectBackdrops picking the photo per role and a new VolunteerProjectBackdrop component drawing it. 13 new unit tests; full suite 1886/1886 green.\n\nScope verdict: no project deliverable is advanced or deferred by this cycle — it is a site polish feature outside the deliverables list. Open deliverables unchanged: content publication quality remains deferred (user-decided), needing team-supplied material.\n\nDisclosures: the misspelt-chapter case is covered by a unit test rather than its own screenshot, because it looks the same as a role with no chapter. The London detail-page screenshot gives the role a time commitment the real London entry lacks, so the white commitment line can be seen. Known, out of scope: the Boston chapter uses the shared site photo as its hero image, and the NYC chapter's hero is the skyline image rather than its chapter photo. src/content/config.ts is over its size budget; the split is left to the end-of-cycle refactor plan.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/data-structure.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/editor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/background-photos-for-volunteer-roles.md\t.codeyam/plans/completed/background-photos-for-volunteer-roles.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/proposed-plans.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcard-with-thumbnail--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcard-with-thumbnail--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcta-own-link-and-fallback--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcta-own-link-and-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-long-title-and-blurb--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-long-title-and-blurb--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectmeta-every-date-shape--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectmeta-every-date-shape--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojects-populated-grid--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojects-populated-grid--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectthumb-linked-bare-and-placeholder--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectthumb-linked-bare-and-placeholder--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-one-other-project--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-one-other-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-three-suggestions--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-three-suggestions--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-page-fall-2026-roles.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-full-description-no-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectthumb-linked-bare-and-placeholder.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/3ca2a0e796a5ba5793fa39a5b77702bdfc05902e7411693bd1da87208a77297f.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/98d5644e8be2a4c6e6fd01af0d4c94e626ccf4b225b9b7e8d5030c01f0fed33a.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectCard.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectHeader.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectThumb.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjects.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerRelatedProjects.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/projects/city-volunteer-boston-cambridge.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/projects/city-volunteer-london.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/projects/city-volunteer-new-york-city.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/projects/city-volunteer-sf-bay-area.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/projects/nyc-ai-events.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/collections.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/projects.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/projects.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/VolunteerProjectThumb.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/volunteer.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/volunteer/projects/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/design/user_files/daniela headshot.jpeg",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/user_files/manifest.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/isolation-props/VolunteerProjectBackdrop.ts",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/volunteerprojectbackdrop.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/volunteerprojectheader.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/coverage-plan/volunteerprojectthumb.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-city-role-on-its-chapter-photo--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-city-role-on-its-chapter-photo--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-city-role-on-its-chapter-photo--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectbackdrop-london-chapter-linked--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectbackdrop-london-chapter-linked--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectbackdrop-shared-site-photo--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectbackdrop-shared-site-photo--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-on-chapter-photo--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-on-chapter-photo--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-city-role-on-its-chapter-photo.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectbackdrop-london-chapter-linked.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectbackdrop-shared-site-photo.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectheader-on-chapter-photo.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/b8e8edb917ec9a094cf3ec2e86d4c654f3ed161c6a879a8a759e2d24506d4df5.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/e3ceeaa171a3e88b9e48b1d44599388810a2a36a6e29c6d9d96f190772a03266.json",
+      "status": "added"
+    },
+    {
+      "path": "src/components/volunteer/VolunteerProjectBackdrop.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Volunteer Page - Fall 2026 Roles",
+      "screenshotPath": "volunteer-page-fall-2026-roles--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects",
+      "screenshotPath": "volunteer-page-no-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Open Projects",
+      "screenshotPath": "volunteer-page-open-projects--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS",
+      "screenshotPath": "volunteer-page-rewritten-from-the-cms--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - City Role On Its Chapter Photo",
+      "screenshotPath": "volunteer-project-detail-city-role-on-its-chapter-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo",
+      "screenshotPath": "volunteer-project-detail-full-description-no-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link",
+      "screenshotPath": "volunteer-project-detail-photo-and-own-sign-up-link--mobile.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested",
+      "screenshotPath": "volunteer-project-detail-retired-projects-never-suggested--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectBackdrop - London Chapter Linked",
+      "screenshotPath": "volunteerprojectbackdrop-london-chapter-linked--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectBackdrop - Shared Site Photo",
+      "screenshotPath": "volunteerprojectbackdrop-shared-site-photo--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectCard - Linked Through To Its Detail Page",
+      "screenshotPath": "volunteerprojectcard-with-thumbnail--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectCta - Own Link And Fallback",
+      "screenshotPath": "volunteerprojectcta-own-link-and-fallback--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectHeader - Long Title And Blurb",
+      "screenshotPath": "volunteerprojectheader-long-title-and-blurb--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectHeader - On Chapter Photo",
+      "screenshotPath": "volunteerprojectheader-on-chapter-photo--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectMeta - Every Date Shape",
+      "screenshotPath": "volunteerprojectmeta-every-date-shape--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectPage - Full Project",
+      "screenshotPath": "volunteerprojectpage-full-project--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectThumb - Linked Bare And Placeholder",
+      "screenshotPath": "volunteerprojectthumb-linked-bare-and-placeholder--desktop.png"
+    },
+    {
+      "name": "VolunteerProjects - Populated Grid",
+      "screenshotPath": "volunteerprojects-populated-grid--desktop.png"
+    },
+    {
+      "name": "VolunteerRelatedProjects - One Other Project",
+      "screenshotPath": "volunteerrelatedprojects-one-other-project--desktop.png"
+    },
+    {
+      "name": "VolunteerRelatedProjects - Three Suggestions",
+      "screenshotPath": "volunteerrelatedprojects-three-suggestions--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1886,
+    "passed": 1886,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1886,
+        "passed": 1886
+      }
+    ]
+  }
+}
