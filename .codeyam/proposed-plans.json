@@ -1768,6 +1768,55 @@
       ],
       "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
       "retiredReason": "migrated-to-findings"
+    },
+    {
+      "id": "event-screenshots-and-pages-drift-because-upcoming-vs-past-uses-today-s-real-date",
+      "title": "Event screenshots and pages drift because upcoming-vs-past uses today's real date",
+      "mode": "backend",
+      "body": "## Root cause\nsplitEvents and its sibling default `now` to `new Date()`, and EventsPage falls back to the real clock when no `now` is passed, so any scenario that does not pin the clock renders a different upcoming/past split each day.\n\n## Evidence\nfnd-d558032361d4, fnd-709798b72fe0, fnd-4c1c3ad75b6d. Producing code on HEAD: `src/lib/events.ts:117`, `src/lib/events.ts:139`, `src/components/EventsPage.astro:43`.\n\n## Smallest fix\nThread one injectable 'now' from the page/scenario layer into every events call and have every events scenario pin it, including the all-hands one whose interaction broke when frozen.\n\n## Cost of leaving it\nEvent screenshots keep showing up as stale or changed with no code change, which buries real visual regressions and costs a recapture every session.",
+      "reason": "Two sessions hit event scenarios whose screenshots change daily, and freezing the clock broke one interaction.",
+      "source": "debt-synthesis",
+      "status": "pending",
+      "proposedAt": "2026-11-06T14:52:25.568975624+00:00",
+      "kind": "tech-debt",
+      "sightings": 1,
+      "evidenceIds": [
+        "fnd-d558032361d4",
+        "fnd-709798b72fe0",
+        "fnd-4c1c3ad75b6d"
+      ],
+      "evidenceSessions": 4,
+      "ideaRank": 1,
+      "theme": {
+        "lane": "app",
+        "score": 238,
+        "verifiedAt": "bf671a98b6254107d5e9e402087c86e33d4e4ecd"
+      }
+    },
+    {
+      "id": "captures-can-show-stale-content-right-after-a-seed-changes-it",
+      "title": "Captures can show stale content right after a seed changes it",
+      "mode": "backend",
+      "body": "## Root cause\nAfter a seed rewrites sandboxed content, the dev server's content collections reload asynchronously, and the capture does not wait for the reload to settle. A frame can then be taken against the old entry, or a revalidate request can fail transiently. In this cycle the preview also served a stale community entry until the dev server restarted.\n\n## Evidence\nfnd-b162c321a97c / fnd-ec41426497c1 (reported '✓ Recaptured' on a mid-reload frame), fnd-aa00fd37e59f / fnd-9974c5fe4c7c (revalidate POST failed three times during the seed reload). The producing code is in codeyam-editor's capture pipeline, which is not in this repo, so no file:line is quoted here.\n\n## Smallest fix\nAfter seeding, wait until the server reports that the content reload matching the seed's write has finished before navigating, and fail the capture instead of reporting success when it times out.\n\n## Cost of leaving it\nScreenshots can certify content that isn't what the scenario seeded, and recaptures waste retries on transient failures.",
+      "reason": "A recapture reported success on a frame taken mid-reload, which is a wrong-result.",
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-11-06T14:52:25.568975624+00:00",
+      "kind": "tech-debt",
+      "sightings": 1,
+      "evidenceIds": [
+        "fnd-b162c321a97c",
+        "fnd-ec41426497c1",
+        "fnd-aa00fd37e59f",
+        "fnd-9974c5fe4c7c"
+      ],
+      "evidenceSessions": 1,
+      "ideaRank": 1,
+      "theme": {
+        "lane": "codeyam-improvement",
+        "score": 485,
+        "notVerified": true
+      }
     }
   ],
   "rounds": [
@@ -2808,6 +2857,11 @@
       "at": "2026-11-06T00:17:58.455597852+00:00",
       "feature": "Photo galleries stay off unless a page asks for one",
       "notes": "Finalize-only cycle: the gallery opt-in fix (d48091a) was already live. Syncing with origin set off DEPENDENCY_STALE_SCREENSHOTS across 329 scenarios (shared font/layout). The full recapture took about 90 minutes; most diffs were letter-sp…"
+    },
+    {
+      "at": "2026-11-06T14:52:25.568975624+00:00",
+      "feature": "CMS checkboxes that can't break deploys or ignore edits",
+      "notes": "Resumed at reconcile after a context reset; reconcile to push ran clean. The audit showed only advisories once the 'all' partition was refreshed (1873 tests pass). The content diff was verified to be only the planned showGallery/active rem…"
     }
   ],
   "syntheses": [
@@ -2866,6 +2920,66 @@
         "obs-ddf6402522e2"
       ],
       "notes": "The five new observations (all 2026-10-22, two sessions) are about image uploads in the content editor: no feedback on upload, no record of which chapter a photo was for, and credit/alt-text records blocking deploys. Each was already answered by a shipped feature (uploads that register, per-chapter photo fields, uploads that publish freely), so no remaining unmet need clears the value bar. Zero ideas."
+    },
+    {
+      "at": "2026-11-06T14:52:25.568975624+00:00",
+      "lane": "app",
+      "consumedIds": [
+        "fnd-16ac1ffef5d1",
+        "fnd-6391c4126403",
+        "fnd-b13ac7088173",
+        "fnd-8fdac2054c5b",
+        "fnd-8113557627a3",
+        "fnd-91285918beb1",
+        "fnd-c820693ba2a6",
+        "fnd-02c9e0438ba4",
+        "fnd-c7398a36f3a9",
+        "fnd-69412ce37c70",
+        "fnd-f0413e7b3c60",
+        "fnd-e65ae97edc2d",
+        "fnd-edef01d2963a",
+        "fnd-e1b3f1167f9d",
+        "fnd-6ca25a680ed3",
+        "fnd-6acd79c88f75",
+        "fnd-279dfbdf04e5",
+        "fnd-d558032361d4",
+        "fnd-709798b72fe0",
+        "fnd-4c1c3ad75b6d",
+        "fnd-2b13a04db8a5",
+        "fnd-678ccb005feb",
+        "fnd-eba57f557f56",
+        "fnd-2353fd0f3ca7",
+        "fnd-fe026ab59a8f",
+        "fnd-636d00efe805",
+        "fnd-8bde61e314b2",
+        "fnd-e34a67221b48"
+      ],
+      "keptIds": [
+        "event-screenshots-and-pages-drift-because-upcoming-vs-past-uses-today-s-real-date"
+      ],
+      "notes": "Most of this batch is migrated approval-gate disclosures (content, legal wording, unconfirmed photos), which are not code debt and were not themed. The CMS-drops-unticked-checkbox pair came from one session and this cycle removed the affected checkboxes."
+    },
+    {
+      "at": "2026-11-06T14:52:25.568975624+00:00",
+      "lane": "codeyam-improvement",
+      "consumedIds": [
+        "fnd-5c7123a4d1ca",
+        "fnd-164f894161cd",
+        "fnd-b162c321a97c",
+        "fnd-aa00fd37e59f",
+        "fnd-39f966a2e2c5",
+        "fnd-87c2ffa26875",
+        "fnd-ec41426497c1",
+        "fnd-9974c5fe4c7c",
+        "fnd-d1796e9bb6f2",
+        "fnd-55fc212702a9",
+        "fnd-db8ab32bf816",
+        "fnd-fb165f6db346"
+      ],
+      "keptIds": [
+        "captures-can-show-stale-content-right-after-a-seed-changes-it"
+      ],
+      "notes": "The lockfile-staging and bare-task-id wait-for findings came from one session with time-lost impact only, so they were not admitted yet."
     }
   ]
 }
