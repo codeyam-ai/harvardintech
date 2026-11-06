@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c870f4bd4df2e585028cfa8c3f9d48d54156ac4d  source-sha256: bdeacdc1165b33aff68a5ea99da19e26c12d3c74e76cf25f0fd699b91556d461
+// codeyam-editor: 0.1.7  build: 265bd72da3f9589144bc951d802239dad68fc784  source-sha256: a56bdc227b2714458e1a7694386afcb3bbd2671f141117674ed2be8fd13dadaf
 // npm/scenario-check-run.js — the decision half of one scenario capture: the
 // context options it opens with, the page collectors that turn console and
 // network events into issues, the navigation-status verdict, the settle
@@ -235,6 +235,13 @@ function buildCaptureContextOptions(config, appOrigin) {
     // Explicit, because a flow step that exports a file must produce evidence
     // rather than a download nobody waits on (see `saveFlowDownload`).
     acceptDownloads: true,
+    // Granted so a copy-button scenario can reach its post-click state: a
+    // headless context denies the clipboard by default, so `writeText` rejects
+    // and the "copied!" frame never renders. A scenario that needs a FAILING
+    // clipboard injects that through its mocks rather than through a denial.
+    // Stack assumption: the capture browser is Chromium (`launchChromiumWithSelfHeal`),
+    // which accepts these permission names; Firefox/WebKit would reject them.
+    permissions: ["clipboard-read", "clipboard-write"],
   };
   if (config.colorScheme) contextOptions.colorScheme = config.colorScheme;
   if (config.deviceScaleFactor)

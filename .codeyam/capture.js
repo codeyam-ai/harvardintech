@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: b0873eeb456580e3b290593af663f0e7dba6573e  source-sha256: a08c3d9c0afdefc56209b5119804e3af2538ed2215baab5780c07c200aa18731
+// codeyam-editor: 0.1.7  build: 1bbe2360ac6e81ca4d466e3debedefd9331160ab  source-sha256: 7052f7c36415980efebcfa586ec3dac7b341cc416d1cd3afe7688854a77792b8
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -70,7 +70,7 @@ const {
   retryOnLiveReload,
 } = require("./scenario-issues");
 
-const { attachHttpMocks } = require("./scenario-mocks");
+const { attachHttpMocks, recordInPageMockHits } = require("./scenario-mocks");
 const {
   resolveRenderedSourcesAttribution,
   armRenderedSourcesAttribution,
@@ -2288,6 +2288,9 @@ async function runScenarioCheckOnce(
       });
     }
 
+    // Fold in the mocks the proxy's in-page fetch shim answered, which the
+    // route tally above never sees.
+    await recordInPageMockHits(page, mockObserver, httpMocks);
     const result = buildResult({
       loaded,
       hasContent,
@@ -2336,6 +2339,7 @@ async function runScenarioCheckOnce(
       createIssue("navigation", error.message || String(error), { url }),
     );
 
+    await recordInPageMockHits(page, mockObserver, httpMocks);
     return buildResult({
       loaded,
       hasContent: false,

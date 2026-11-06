@@ -1,0 +1,38 @@
+{
+  "claimStartedAt": "2026-11-05T22:21:47Z",
+  "completedAt": "2026-11-06T00:13:32Z",
+  "completedBy": {
+    "agentProvider": "claude",
+    "codeyamEditorVersion": "0.1.7",
+    "currentStep": "ui-step22",
+    "machine": "codeyam-editor-codeyam-editor-1",
+    "originId": "1bc8bab3-cc0e-493f-ba28-8ea5eadc07fe",
+    "pid": 7,
+    "priority": 0,
+    "selectedPlan": "make-chapter-and-community-gallery-opt-in-so-cms-saves-can-t-break-deploys",
+    "sessionId": "79b04b3c-8db8-40c8-8a13-f2ac922e3a54",
+    "startedAt": "2026-11-05T22:21:47Z"
+  },
+  "createdAt": "2026-11-05T22:21:42Z",
+  "deliverables": [
+    "package-lock.json",
+    "public/images/1784889425768.webp",
+    "public/images/1784889426210.webp",
+    "public/images/james-headshot.webp",
+    "public/images/james-nicholson-hit.webp",
+    "public/images/unnamed-2.webp",
+    "src/components/ChapterPage.astro",
+    "src/components/CommunityPage.astro",
+    "src/content/chapters/london.md",
+    "src/content/chapters/nyc.md",
+    "src/content/communities/ai.md",
+    "src/content/config.ts",
+    "src/data/media.json",
+    "src/lib/contentImages.test.ts"
+  ],
+  "journalTimestamp": "2026-11-06T00:13:32Z",
+  "mode": "ui",
+  "planFile": "completed/make-chapter-and-community-gallery-opt-in-so-cms-saves-can-t-break-deploys.md",
+  "slug": "make-chapter-and-community-gallery-opt-in-so-cms-saves-can-t-break-deploys",
+  "title": "Make chapter and community gallery opt-in so CMS saves can't break deploys"
+}

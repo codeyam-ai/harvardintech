@@ -167,7 +167,7 @@
       "file": "src/lib/contentImages.test.ts",
       "format": "vitest",
       "key": "Mohammed Ally's testimonial › has no event photo until a real Colorado one exists",
-      "line": 149,
+      "line": 164,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -1616,8 +1616,17 @@
       "file": "src/lib/contentImages.test.ts",
       "format": "vitest",
       "key": "chapter and community banners › never fall back to the shared New York wall without curating their own photos",
-      "line": 130,
+      "line": 135,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The converse, now that the gallery is opt-in: curated photos with the gallery left off would hide them silently.",
+      "file": "src/lib/contentImages.test.ts",
+      "format": "vitest",
+      "key": "chapter and community banners › turn the gallery on wherever they have curated photos",
+      "line": 147,
+      "registeredAt": "2026-11-06T00:15:25.805450881+00:00",
       "runner": "tests"
     },
     {

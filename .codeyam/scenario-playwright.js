@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 00daf862371b48ee63e549314f41a7519568de8c  source-sha256: 04879a603a70426d302141cf4efad69bece3d2790334c0b84d8126a1be4ee628
+// codeyam-editor: 0.1.7  build: 1bbe2360ac6e81ca4d466e3debedefd9331160ab  source-sha256: 67d2ad4782f07d64e00439f36d5c2b583a9d88fd61987329135b5d72cb0a7204
 const {
   hasLoadingMarkers,
   isCanvasDominated,
@@ -1127,34 +1127,54 @@ async function performKeyboardInteraction(frame, { action, value }) {
   }
 }
 
+// How often a not-yet-rendered interaction target is looked up again.
+const TARGET_APPEAR_POLL_MS = 250;
+
 // Resolve a step's target to the single element to act on. Shared by
 // `performInteraction` and by callers that need the target's box BEFORE
 // acting (the pixel-effect signal clips its before/after shots to it).
+//
+// A target that is not there yet is re-polled until `appearTimeoutMs` is
+// spent: a page that keeps polling never reaches network idle, so the settle
+// before a step can time out while a fetch-gated control is still on its way.
+// The default of 0 keeps a single look for callers that only need geometry.
 async function resolveInteractionTarget(
   frame,
   interaction,
-  { warnings, canvasProbe = probeCanvasDominated } = {},
+  {
+    warnings,
+    canvasProbe = probeCanvasDominated,
+    appearTimeoutMs = 0,
+    sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+    now = Date.now,
+  } = {},
 ) {
   const { action, selector, text } = interaction || {};
 
-  let baseLocator;
+  let matchedByText;
   let targetDesc;
-  let matchedByText = false;
-  let matchCount;
   if (typeof text === "string" && text.length > 0) {
-    const resolved = await resolveTextTarget(frame, text, action);
-    baseLocator = resolved.baseLocator;
-    matchCount = resolved.matchCount;
-    targetDesc = `text "${text}"`;
     matchedByText = true;
+    targetDesc = `text "${text}"`;
   } else if (typeof selector === "string" && selector.length > 0) {
-    baseLocator = frame.locator(selector);
-    matchCount = await baseLocator.count();
+    matchedByText = false;
     targetDesc = `selector "${selector}"`;
   } else {
     throw new Error(
       "preview-interact: interaction requires a `text` or `selector` target",
     );
+  }
+
+  const lookUp = async () => {
+    if (matchedByText) return resolveTextTarget(frame, text, action);
+    const locator = frame.locator(selector);
+    return { baseLocator: locator, matchCount: await locator.count() };
+  };
+  const deadline = now() + appearTimeoutMs;
+  let { baseLocator, matchCount } = await lookUp();
+  while (matchCount === 0 && now() < deadline) {
+    await sleep(TARGET_APPEAR_POLL_MS);
+    ({ baseLocator, matchCount } = await lookUp());
   }
 
   if (matchCount === 0) {
@@ -1205,7 +1225,7 @@ async function resolveInteractionTarget(
 async function performInteraction(
   frame,
   interaction,
-  { timeoutMs = 5000, warnings } = {},
+  { timeoutMs = 5000, appearTimeoutMs = timeoutMs, warnings } = {},
 ) {
   const { action, value, position, from, to, steps, button, deltaX, deltaY } =
     interaction || {};
@@ -1223,6 +1243,7 @@ async function performInteraction(
 
   const { locator, targetDesc } = await resolveInteractionTarget(frame, interaction, {
     warnings,
+    appearTimeoutMs,
   });
 
   // Only the keys Playwright accepts, so an absent field never reaches it as
@@ -1447,6 +1468,7 @@ async function performInteractionSequence(
   interactions,
   {
     timeoutMs = 5000,
+    appearTimeoutMs = timeoutMs,
     settleMs = 5000,
     loadingMarkers,
     settle = waitForStablePage,
@@ -1456,7 +1478,11 @@ async function performInteractionSequence(
 ) {
   for (let i = 0; i < interactions.length; i += 1) {
     try {
-      await performInteraction(frame, interactions[i], { timeoutMs, warnings });
+      await performInteraction(frame, interactions[i], {
+        timeoutMs,
+        appearTimeoutMs,
+        warnings,
+      });
     } catch (err) {
       // Prefix the failing step's index so a miss in a multi-step sequence is
       // locatable, matching the model-side `interactions[i]` validator.

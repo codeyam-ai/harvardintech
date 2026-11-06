@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c23ce41100a6229ea1b7b518a4114f87721740ec  source-sha256: 842fe8af5acf3082377137298daa0b4f76066a541e64ade3f8516a0947b4cfd6
+// codeyam-editor: 0.1.7  build: 1bbe2360ac6e81ca4d466e3debedefd9331160ab  source-sha256: d671e6a8ff8f2fcf9ffbfd7fead563efb6c90449891aaa90b913c87f76d79206
 // Route matcher for the capture harness — one of THREE implementations of a
 // single semantic. The authority is the Rust engine
 // (crates/mock-engine/src/route_parser.rs), where the contract is written down;
@@ -302,6 +302,35 @@ function createMockObserver(httpMocks, appOrigin) {
   };
 }
 
+// Count the mocks the proxy's in-page fetch shim (crates/proxy-http/src/
+// fetch_patch.js) answered. The proxy inlines the active mocks into that shim,
+// which resolves a matching fetch with an in-page Response — the request never
+// reaches the network, so the `page.route` tally in `attachHttpMocks` cannot
+// see it, and a mock that served the frame read as unused. The shim leaves each
+// request it answered on `window.__codeyamMockHits`; every frame is read because
+// the scenario page renders inside the harness iframe. A frame that cannot be
+// evaluated, or never ran the shim, contributes nothing.
+async function recordInPageMockHits(page, observer, httpMocks) {
+  if (!httpMocks || Object.keys(httpMocks).length === 0) return;
+  for (const frame of page.frames()) {
+    let hits;
+    try {
+      hits = await frame.evaluate(() => window.__codeyamMockHits);
+    } catch {
+      continue;
+    }
+    if (!Array.isArray(hits)) continue;
+    for (const hit of hits) {
+      if (!hit || typeof hit.method !== "string" || typeof hit.url !== "string") continue;
+      const entry = findHttpMockEntry(httpMocks, {
+        method: () => hit.method,
+        url: () => hit.url,
+      });
+      if (entry) observer.recordFulfilled(entry.key);
+    }
+  }
+}
+
 // Passive request inventory. `page.on` observes; it never routes, so attaching
 // this cannot change what the page loads.
 function attachRequestInventory(page, observer, httpMocks) {
@@ -437,6 +466,7 @@ module.exports = {
   createRequestInventory,
   createMockObserver,
   attachHttpMocks,
+  recordInPageMockHits,
   isDeclaredErrorMock,
   unmockedRouteFrom,
 };
