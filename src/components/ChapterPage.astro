@@ -34,14 +34,16 @@ interface Props {
   blurb?: string;
   heroImage?: string;
   tagline?: string;
-  showGallery?: boolean;
   /**
-   * This surface's own curated photos. Absent or EMPTY falls back to the shared
-   * 40-photo gallery, which is what every chapter showed before this existed —
-   * so a chapter nobody has curated looks exactly as it did.
+   * This surface's own curated photos. The "Photos from <name>" gallery renders
+   * exactly when this is non-empty; there is no separate on/off switch. A
+   * checkbox could not be trusted: the CMS omits an unticked box on save, so a
+   * `false` never survived an edit, and photos with the box unticked (or the
+   * box ticked with no photos) failed the deploy. Absent or EMPTY renders no
+   * gallery; the shared New York wall is never borrowed here.
    *
-   * /communities renders this same shell and deliberately never passes it,
-   * which is what keeps community pages byte-for-byte unchanged.
+   * /communities renders this same shell and has no photos field, so a
+   * community page never shows a gallery.
    */
   photos?: { image?: string; caption?: string }[];
   events?: EventLike[];
@@ -86,10 +88,6 @@ const {
   blurb,
   heroImage,
   tagline,
-  // OFF unless the entry turns it on. The CMS omits an unticked checkbox on
-  // save, so a `false` cannot survive an edit; a `true` default flipped every
-  // edited chapter onto the shared New York wall.
-  showGallery = false,
   photos,
   events = [],
   eventsHeading,
@@ -149,15 +147,12 @@ const hasBody = Astro.slots.has('default');
         <slot />
       </PageNarrowBody>
       {
-        /* An empty `photos` list is treated as absent, not as "an empty gallery":
-           the CMS leaves an empty array behind when an editor removes the last
-           row. `cap` is passed ONLY here; the landing page stays uncapped. */
-        showGallery ? (
-          photos?.length ? (
-            <EventGallery photos={photos} cap={12} heading={`Photos from ${name}`} />
-          ) : (
-            <EventGallery phoneCap={12} />
-          )
+        /* The gallery follows the photos: shown when this page has its own,
+           absent otherwise. An empty `photos` list (what the CMS leaves behind
+           when an editor removes the last row) counts as none. `cap` is passed
+           ONLY here; the landing page stays uncapped. */
+        photos?.length ? (
+          <EventGallery photos={photos} cap={12} heading={`Photos from ${name}`} />
         ) : null
       }
       {/* Every active chapter page ends by offering the way in that needs no

@@ -36,18 +36,16 @@ const { Content } = await render(community);
 // `photos` is DELIBERATELY absent from this destructure and from the
 // CommunityPage call below. A chapter curates its own gallery in /admin and
 // passes it through; a community is scoped out of that feature on purpose, so
-// it keeps the shared 40-photo event wall every page showed before per-chapter
-// galleries existed. The boundary is enforced twice over: the `communities`
-// schema declares no `photos` field (src/content/config.ts), so there is nothing
-// on `community.data` to forward even if this call site grew the prop.
-// `showGallery: false` still hides the section outright, as it does for a chapter.
+// a community page shows no photo gallery. The boundary is enforced twice over:
+// the `communities` schema declares no `photos` field (src/content/config.ts),
+// so there is nothing on `community.data` to forward even if this call site
+// grew the prop.
 const {
   name,
   fullName,
   blurb,
   heroImage,
   tagline,
-  showGallery,
   leads,
   links,
   callouts,
@@ -83,7 +81,6 @@ const recent = recentPastEvents(past);
         blurb={blurb}
         heroImage={heroImage}
         tagline={tagline}
-        showGallery={showGallery}
         callouts={callouts}
         whatsappFormUrl={whatsappFormUrl}
         joinBlurb={joinBlurb}

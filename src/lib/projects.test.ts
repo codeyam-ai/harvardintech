@@ -9,22 +9,29 @@ import {
 } from './projects';
 
 describe('openProjects', () => {
-  // Absent `active` means open (see filterActiveBoardMembers) — a project whose
-  // editor never touched the toggle must stay visible, not silently vanish.
-  it('keeps a project whose active flag is absent', () => {
+  // Absent `closed` means open (see filterActiveBoardMembers) — the CMS writes
+  // nothing for an unticked box, so a project nobody closed must stay visible.
+  it('keeps a project whose closed flag is absent', () => {
     expect(openProjects([{ title: 'Newsletter editor' }]).map((p) => p.title)).toEqual([
       'Newsletter editor',
     ]);
   });
 
-  // An explicit active: true is kept, same as the absent case.
-  it('keeps a project explicitly marked active', () => {
-    expect(openProjects([{ title: 'Speaker outreach', active: true }])).toHaveLength(1);
+  // An explicit closed: false is kept, same as the absent case.
+  it('keeps a project explicitly marked not closed', () => {
+    expect(openProjects([{ title: 'Speaker outreach', closed: false }])).toHaveLength(1);
   });
 
-  // active: false is the one value that retires a project from the page.
-  it('removes a project explicitly marked inactive', () => {
-    expect(openProjects([{ title: 'Retired project', active: false }])).toEqual([]);
+  // closed: true is the one value that retires a project from the page.
+  it('removes a project ticked as closed', () => {
+    expect(openProjects([{ title: 'Retired project', closed: true }])).toEqual([]);
+  });
+
+  // A leftover legacy `active: false` line no longer retires anything — the
+  // ticked Closed box is the only signal, so stale data cannot hide a role.
+  it('ignores a legacy active flag', () => {
+    const legacy = [{ title: 'Legacy', active: false }] as unknown as { title: string }[];
+    expect(openProjects(legacy)).toHaveLength(1);
   });
 
   // Open projects come back in the editor-chosen order.
@@ -49,7 +56,7 @@ describe('openProjects', () => {
   // The closed-filter and the ordering compose in one pass.
   it('filters and orders together', () => {
     const result = openProjects([
-      { title: 'closed', order: 1, active: false },
+      { title: 'closed', order: 1, closed: true },
       { title: 'open-b', order: 3 },
       { title: 'open-a', order: 2 },
     ]);
@@ -61,8 +68,8 @@ describe('openProjects', () => {
   it('returns an empty array when every project is closed', () => {
     expect(
       openProjects([
-        { title: 'a', active: false },
-        { title: 'b', active: false },
+        { title: 'a', closed: true },
+        { title: 'b', closed: true },
       ]),
     ).toEqual([]);
   });
@@ -223,7 +230,7 @@ describe('projectCardData', () => {
             startDate: '2026-12-01',
             endDate: '2027-03-03',
             order: 2,
-            active: true,
+            closed: false,
           },
         },
       ]),
@@ -238,7 +245,7 @@ describe('projectCardData', () => {
         startDate: '2026-12-01',
         endDate: '2027-03-03',
         order: 2,
-        active: true,
+        closed: false,
       },
     ]);
   });
@@ -249,7 +256,7 @@ describe('projectCardData', () => {
     const [card] = projectCardData([{ id: 'speaker-outreach', data: { title: 'Speaker outreach' } }]);
     expect(card.commitment).toBeUndefined();
     expect(card.startDate).toBeUndefined();
-    expect(card.active).toBeUndefined();
+    expect(card.closed).toBeUndefined();
   });
 
   // Order is preserved so the caller — not this projection — decides sorting.
@@ -291,10 +298,10 @@ describe('relatedProjects', () => {
     expect(relatedProjects(all, 'c').map((p) => p.slug)).not.toContain('c');
   });
 
-  // The route generates a page for every published entry regardless of `active`,
+  // The route generates a page for every published entry regardless of `closed`,
   // so without this filter a retired project would be advertised on an open one.
   it('never suggests a retired project', () => {
-    const withRetired = [...all, { slug: 'retired', title: 'Retired', order: 5, active: false }];
+    const withRetired = [...all, { slug: 'retired', title: 'Retired', order: 5, closed: true }];
     expect(relatedProjects(withRetired, 'd').map((p) => p.slug)).not.toContain('retired');
   });
 

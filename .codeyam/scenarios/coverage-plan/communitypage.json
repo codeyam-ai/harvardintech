@@ -19,18 +19,6 @@
       "value": "many",
       "rationale": "source-derived state leads=many",
       "status": "planned"
-    },
-    {
-      "dimension": "showGallery",
-      "value": "true",
-      "rationale": "source-derived state showGallery=true",
-      "status": "covered"
-    },
-    {
-      "dimension": "showGallery",
-      "value": "false",
-      "rationale": "source-derived state showGallery=false",
-      "status": "covered"
     }
   ]
 }

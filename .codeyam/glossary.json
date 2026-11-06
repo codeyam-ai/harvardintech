@@ -1350,7 +1350,7 @@
     "testFile": "src/lib/momentumNetworkDom.test.ts"
   },
   {
-    "description": "Returns a new array of board members visible on the public Board of Directors, keeping every member whose active field is not explicitly false — so existing entries with no active field (and members who never toggled the CMS checkbox) remain shown. Does not mutate the input.",
+    "description": "Keeps only current board members for public display: drops anyone with retired: true. Absent (what the CMS writes for an unticked box) means shown; returns a new array.",
     "filePath": "src/lib/team.ts",
     "name": "filterActiveBoardMembers",
     "testFile": "src/lib/team.test.ts"
@@ -2381,7 +2381,7 @@
     }
   },
   {
-    "description": "Selects the volunteer projects to render — those not explicitly closed (`active !== false`), ordered by `order`. Absent `active` means open, matching the board-member convention, so a project whose toggle was never touched still shows.",
+    "description": "The volunteer projects to render: drops any with closed: true (absent means open, since the CMS omits an unticked box), then sorts by order. Non-mutating.",
     "filePath": "src/lib/projects.ts",
     "name": "openProjects",
     "testFile": "src/lib/projects.test.ts"

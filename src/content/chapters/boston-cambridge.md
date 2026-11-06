@@ -2,7 +2,6 @@
 blurb: Home of Harvard, our Cambridge and Boston community.
 city: Boston & Cambridge
 heroImage: /images/bg/hero-bg.jpg
-showGallery: false
 region: Boston & Cambridge, MA
 status: active
 tagline: We are the Boston & Cambridge Chapter of Harvard Alumni in Tech.

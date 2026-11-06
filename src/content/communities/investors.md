@@ -7,7 +7,6 @@ callouts:
     text: The conversation happens in the Investors group inside the HIT WhatsApp community.
   - title: In person, too
     text: A first gathering is planned, possibly with HIT Boston/Cambridge.
-showGallery: false
 leads:
   - name: Stefan Pagacik
     role: Investor Community Digital Lead

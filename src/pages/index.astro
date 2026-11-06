@@ -63,8 +63,8 @@ const posts = publishedEntries(await getCollection('blog'), showDrafts)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .map((p) => ({ slug: p.id, ...p.data }));
 
-// Board of Directors — editable via the CMS `team` collection. Members toggled
-// off (`active: false`) are filtered out, then sorted by the `order` field so
+// Board of Directors — editable via the CMS `team` collection. Members ticked
+// as retired (`retired: true`) are filtered out, then sorted by the `order` field so
 // the public board matches the curated sequence; when the resulting list is
 // empty the section falls back to the faithful board graphic.
 const board = sortBoardMembers(

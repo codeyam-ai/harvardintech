@@ -19,7 +19,6 @@ import ChapterHero from './ChapterHero.astro';
 import CommunityCallouts from './CommunityCallouts.astro';
 import JoinWhatsAppCta from './JoinWhatsAppCta.astro';
 import PageNarrowBody from './PageNarrowBody.astro';
-import EventGallery from './landing/EventGallery.astro';
 import type { EventLike } from '../lib/events';
 import { bannerFor } from '../lib/pageBanner';
 import type { Lead } from '../lib/leadSchema';
@@ -37,7 +36,6 @@ interface Props {
   blurb?: string;
   heroImage?: string;
   tagline?: string;
-  showGallery?: boolean;
   /** "What happens here" cards. The most important field on this page: it is
    *  what a community can say about itself before it has any events. */
   callouts?: { title: string; text?: string }[];
@@ -58,10 +56,6 @@ const {
   blurb,
   heroImage,
   tagline,
-  // OFF unless the entry turns it on. The CMS omits an unticked checkbox on
-  // save, so a `false` cannot survive an edit; a `true` default flipped every
-  // edited community onto the shared New York wall.
-  showGallery = false,
   callouts = [],
   whatsappFormUrl,
   joinBlurb,
@@ -134,12 +128,5 @@ const headingName = fullName ?? name;
 >
   <slot />
 </PageNarrowBody>
-
-{
-  /* A community has no curated gallery of its own — that is a chapter feature —
-     so this is always the shared event wall, and `showGallery: false` still
-     turns it off. */
-  showGallery ? <EventGallery phoneCap={12} /> : null
-}
 
 <ChapterConnect />

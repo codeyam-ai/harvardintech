@@ -6,7 +6,6 @@ region: London, UK
 blurb: Our European hub across the London tech scene.
 heroImage: /images/chapters/london.jpg
 tagline: We are the London Chapter of Harvard Alumni in Tech.
-showGallery: true
 photos:
   - image: /images/1784889425768.webp
   - image: /images/1782977679252.webp

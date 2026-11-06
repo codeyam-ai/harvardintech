@@ -37,7 +37,6 @@
     ],
     "team": [
       {
-        "active": true,
         "name": "Ben Wei",
         "order": 1,
         "photo": "/images/team/ben-wei.png",
@@ -45,7 +44,6 @@
         "slug": "ben-wei"
       },
       {
-        "active": true,
         "name": "Peter Boyce",
         "order": 2,
         "photo": "/images/team/peter-boyce.png",
@@ -53,7 +51,6 @@
         "slug": "peter-boyce"
       },
       {
-        "active": true,
         "name": "Krysia Lenzo",
         "order": 3,
         "photo": "/images/team/krysia-lenzo.png",
@@ -61,7 +58,6 @@
         "slug": "krysia-lenzo"
       },
       {
-        "active": true,
         "name": "Jessica Li",
         "order": 4,
         "photo": "/images/team/jessica-li.png",
@@ -69,7 +65,6 @@
         "slug": "jessica-li"
       },
       {
-        "active": true,
         "name": "Nadia Eldeib",
         "order": 5,
         "photo": "/images/team/nadia-eldeib.png",

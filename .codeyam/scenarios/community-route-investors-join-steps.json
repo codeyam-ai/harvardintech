@@ -33,7 +33,6 @@
           }
         ],
         "name": "Investors",
-        "showGallery": false,
         "slug": "investors",
         "tagline": "For Harvard Alumni in Tech venture capital and angel investing.",
         "whatsappFormUrl": "https://forms.gle/GqgaCDDWhWAgpJC68"
@@ -42,14 +41,12 @@
         "blurb": "For alumni working in and around artificial intelligence.",
         "body": "A cross-chapter community for Harvard alumni working in AI.",
         "name": "AI",
-        "showGallery": false,
         "slug": "ai"
       },
       {
         "blurb": "For alumni building companies — from first idea to scale.",
         "body": "A working community for Harvard alumni who are building.",
         "name": "Founders",
-        "showGallery": false,
         "slug": "founders"
       }
     ],

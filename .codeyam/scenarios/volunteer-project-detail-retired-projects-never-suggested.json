@@ -19,10 +19,10 @@
         "title": "Social Media Marketing Specialist- Events"
       },
       {
-        "active": false,
         "applyUrl": "https://hi.switchy.io/wEYK",
         "blurb": "Help stand up our next city chapter: find a venue, rally the first 30 alumni, and run the launch mixer.",
         "body": "Toronto has more than 400 Harvard alumni working in technology and no chapter to bring them together. This project takes the city from a mailing list to a first real event.\n\n## What you'll do\n\n- Scout and book a venue for a 30–50 person evening mixer, working with our events budget.\n- Draft the invitation and work with the newsletter editor to reach Toronto-area alumni.\n- Recruit two or three co-organizers who will keep the chapter running after launch.\n- Run the launch mixer itself, including a short welcome and a round of introductions.\n- Write a short handover note so the standing chapter team inherits your contacts and vendor list.\n\n## What we're looking for\n\nYou don't need event-management experience — you need to be organized, comfortable emailing strangers, and based in or near Toronto. We'll pair you with an organizer from the NYC chapter who has done this twice.",
+        "closed": true,
         "commitment": "~3 hrs / week",
         "endDate": "2027-03-03",
         "image": "/images/events/sf-attendees-square.webp",
@@ -42,10 +42,10 @@
         "title": "Newsletter editor"
       },
       {
-        "active": false,
         "applyUrl": "https://hi.switchy.io/wEYK",
         "blurb": "Line up founders, operators, and investors for panels and roundtables across all five chapters.",
         "body": "Every panel we run starts with someone asking. This project is that someone.\n\nYou'll keep a running shortlist of alumni and non-alumni speakers by topic, make the first approach, and hand confirmed speakers to the chapter organizer running the event. Most of the work is email and a shared tracker.\n\nWe'll give you the templates that have worked, and warm introductions wherever we have them.",
+        "closed": true,
         "commitment": "~2 hrs / week",
         "endDate": "2026-11-20",
         "order": 4,
@@ -56,7 +56,7 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/volunteer/projects/[slug].astro",
-  "description": "Two of the four projects in this seed have been retired with the Active toggle, and neither appears in the row. That is the whole reason the suggestion list is filtered through openProjects: the detail route generates a page for every published entry regardless of Active, so a closed project still has a readable URL and without the filter would be advertised to a reader who can no longer sign up for it. What is left is a single suggestion - the one other project still open - which also shows the section holding its shape when there is not enough to fill a row: the heading reads the same in the singular, and the lone card keeps one-third width instead of stretching across. The frame is scrolled past the site-wide volunteer CTA to reach the section.",
+  "description": "Two of the four projects in this seed have been retired by ticking Closed, and neither appears in the row. That is the whole reason the suggestion list is filtered through openProjects: the detail route generates a page for every published entry regardless of Closed, so a closed project still has a readable URL and without the filter would be advertised to a reader who can no longer sign up for it. What is left is a single suggestion - the one other project still open - which also shows the section holding its shape when there is not enough to fill a row: the heading reads the same in the singular, and the lone card keeps one-third width instead of stretching across. The frame is scrolled past the site-wide volunteer CTA to reach the section.",
   "interactions": [
     {
       "action": "hover",

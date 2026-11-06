@@ -179,6 +179,36 @@
         "status": "added"
       }
     },
+    "BoardOfDirectors": {
+      "empty": {
+        "status": "covered"
+      },
+      "single": {
+        "status": "n-a",
+        "reason": "The organisation always has more than one director; one tile is not a state the board can reach, and the row layout is the same for one as for five"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "covered"
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "The homepage is statically prerendered from the team collection; there is no client fetch and no pending state"
+      },
+      "edge": {
+        "status": "added"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "Team entries are schema-validated at build; a malformed entry fails the build rather than reaching this view"
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "The board is read-only presentation; tiles carry no action"
+      }
+    },
     "ChapterLeads": {
       "empty": {
         "status": "covered"

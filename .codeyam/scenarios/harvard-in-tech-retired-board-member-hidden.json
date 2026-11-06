@@ -1,0 +1,64 @@
+{
+  "name": "Harvard in Tech - Retired Board Member Hidden",
+  "id": "1acc2092-71a5-49ba-a906-f2d9dc9f7a90",
+  "url": "/",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "team": [
+      {
+        "name": "Former Director",
+        "order": 0,
+        "retired": true,
+        "role": "Board Member · Harvard C'05",
+        "slug": "former-director"
+      },
+      {
+        "name": "Ben Wei",
+        "order": 1,
+        "photo": "/images/team/ben-wei.png",
+        "role": "Co-Founder · Harvard C'08",
+        "slug": "ben-wei"
+      },
+      {
+        "name": "Peter Boyce",
+        "order": 2,
+        "photo": "/images/team/peter-boyce.png",
+        "role": "Co-Founder · Harvard C'13",
+        "slug": "peter-boyce"
+      },
+      {
+        "name": "Krysia Lenzo",
+        "order": 3,
+        "photo": "/images/team/krysia-lenzo.png",
+        "role": "Executive Director · Harvard C'12",
+        "slug": "krysia-lenzo"
+      },
+      {
+        "name": "Jessica Li",
+        "order": 4,
+        "photo": "/images/team/jessica-li.png",
+        "role": "Director of Operations · Harvard C'19",
+        "slug": "jessica-li"
+      },
+      {
+        "name": "Nadia Eldeib",
+        "order": 5,
+        "photo": "/images/team/nadia-eldeib.png",
+        "role": "Director of Growth · Harvard C'13",
+        "slug": "nadia-eldeib"
+      }
+    ]
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/index.astro",
+  "description": "The homepage board after a former director has been retired in the CMS: their entry is still in the team collection with Retired ticked, and the board leaves them out while every current director stays. Before this, taking someone off the board meant unticking Active, which the CMS never saved, so they stayed on the live site. A retired director who would have sorted first is the one hidden, so a broken filter would show at the start of the row.",
+  "interactions": [
+    {
+      "action": "hover",
+      "selector": "#board"
+    }
+  ]
+}

@@ -132,9 +132,9 @@ const pages = defineCollection({
 });
 
 // Team / board members. `photo` and `bio` are optional so a name-and-role-only
-// entry still renders; `order` controls display order. `active` toggles whether
-// a member appears on the public Board of Directors — an absent `active` means
-// shown, so existing entries (and members who never toggled it) stay visible.
+// entry still renders; `order` controls display order. `retired` takes a former
+// member off the public Board of Directors — absent means shown, so every
+// current member (and anyone whose box the CMS left out) stays visible.
 const team = defineCollection({
   loader: collectionGlob('team'),
   schema: z.object({
@@ -143,7 +143,10 @@ const team = defineCollection({
     photo: z.string().optional(),
     bio: z.string().optional(),
     order: z.number().optional(),
-    active: z.boolean().optional(),
+    // `retired: true` hides a former board member without deleting the entry.
+    // Ticked is the exception on purpose: the CMS omits an unticked checkbox on
+    // save, so the safe reading of "absent" has to be "still on the board".
+    retired: z.boolean().optional(),
     draft: z.boolean().optional(),
   }),
 });
@@ -211,18 +214,15 @@ const chapters = defineCollection({
     blurb: z.string().optional(),
     // Full-bleed city header (mirrors the live harvardintech.com chapter pages):
     // `heroImage` is the background photo, `tagline` the subtitle beneath the
-    // "HARVARD IN TECH <CITY>" title. `showGallery` toggles the event photo
-    // gallery; absent → HIDDEN, set `true` to show it. Opt-in because the CMS
-    // drops an unticked checkbox on save, so an opt-out `false` was silently
-    // erased by any edit. All optional → a chapter without them falls back
-    // to the centered header.
+    // "HARVARD IN TECH <CITY>" title. All optional → a chapter without them
+    // falls back to the centered header.
     heroImage: z.string().optional(),
     tagline: z.string().optional(),
-    showGallery: z.boolean().optional(),
-    // This chapter's OWN event photos, curated in /admin. Absent or empty →
-    // the page falls back to the shared 40-photo landing-page gallery, which
-    // is what every chapter showed before this field existed — so adding the
-    // field changed nothing until someone curates a chapter.
+    // This chapter's OWN event photos, curated in /admin. The "Photos from
+    // <city>" gallery shows exactly when this list is non-empty; absent or
+    // empty → no gallery. There is deliberately no on/off checkbox: the CMS
+    // drops an unticked box on save, so a `showGallery` flag could not hold a
+    // `false`, and a flag that disagreed with the photos failed the deploy.
     //
     // `caption` is editorial ("Spring mixer at Cornell Tech") and is what makes
     // the lightbox worth opening. Alt text deliberately does NOT live here:
@@ -293,7 +293,6 @@ const communities = defineCollection({
     blurb: z.string().optional(),
     heroImage: z.string().optional(),
     tagline: z.string().optional(),
-    showGallery: z.boolean().optional(),
     contactEmail: z.string().optional(),
     leads: z.array(leadSchema).optional(),
     links: z
@@ -307,8 +306,10 @@ const communities = defineCollection({
 
 // Open volunteer projects, rendered as the grid on /volunteer. Everything but
 // the title is optional so an organizer can post a project the moment it opens
-// and fill in the thumbnail/commitment later. `active: false` retires a project
+// and fill in the thumbnail/commitment later. `closed: true` retires a project
 // without deleting its record (absent → shown, matching the `team` convention).
+// Ticked is the exception because the CMS omits an unticked checkbox on save:
+// an opt-out `active: false` could never survive an edit.
 const projects = defineCollection({
   loader: collectionGlob('projects'),
   schema: z.object({
@@ -321,12 +322,12 @@ const projects = defineCollection({
     // header; they never decide whether a project appears. Do not add date
     // filtering here on the assumption it was forgotten: this is a static
     // build, so a date-expired project would linger until the next deploy and
-    // then vanish without anyone touching the CMS. `active` is the one toggle
+    // then vanish without anyone touching the CMS. `closed` is the one toggle
     // that retires a project, and it takes effect on publish.
     startDate: z.coerce.date().optional(),
     endDate: z.coerce.date().optional(),
     order: z.number().optional(),
-    active: z.boolean().optional(),
+    closed: z.boolean().optional(),
     draft: z.boolean().optional(),
     ...sitePreviewFields,
   }),

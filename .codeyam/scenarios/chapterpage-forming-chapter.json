@@ -1,6 +1,6 @@
 {
   "name": "ChapterPage - Forming Chapter",
-  "id": "e75f6c54-98ba-4931-9f4a-51beb8190cb4",
+  "id": "25b3a375-adcf-4ce5-bd3a-f6927ba494f5",
   "url": "/isolated-components/ChapterPage-Forming",
   "dimensions": [
     "Desktop"
@@ -8,5 +8,5 @@
   "mocks": {},
   "componentName": "ChapterPage",
   "scenarioType": "component",
-  "description": "A forming (WhatsApp-only) chapter page, the state DC and Seattle are in: the hero with the Online group kicker, then the three-button band (WhatsApp, newsletter, volunteer or co-lead), and nothing else. The fixture deliberately PASSES a lead, a callout and showGallery true; none of them may render, because a forming page shows no leads, callouts, write-up, events, gallery, sign-up band, global-community band or Connect with us. Compare with ChapterPage - Full Chapter for the active shape, which keeps every section."
+  "description": "A forming (WhatsApp-only) chapter page, the state DC and Seattle are in: the hero with the Online group kicker, then the three-button band (WhatsApp, newsletter, volunteer or co-lead), and nothing else. The fixture deliberately PASSES a lead, a callout and a curated photo, and none of them may render: a forming page shows no leads, callouts, write-up, events, gallery, sign-up band, global-community band or Connect with us. Compare with ChapterPage - Full Chapter for the active shape, which keeps every section."
 }

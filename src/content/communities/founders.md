@@ -8,7 +8,6 @@ callouts:
   - title: No stage requirement
     text: Pre-idea through post-Series A. There is no application and nothing to qualify for beyond being alumni-affiliated and building something.
 heroImage: /images/events/founders-summit-pair.webp
-showGallery: false
 name: Founders
 tagline: A working community for Harvard alumni who are building.
 whatsappFormUrl: https://forms.gle/GqgaCDDWhWAgpJC68

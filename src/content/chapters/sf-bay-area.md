@@ -2,7 +2,6 @@
 blurb: Our West Coast chapter across San Francisco and Silicon Valley.
 city: SF & Bay Area
 heroImage: /images/events/sf-group-brick-wall.webp
-showGallery: false
 leads:
   - name: Jessica Li
     role: Interim chapter lead

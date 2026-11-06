@@ -647,7 +647,6 @@
         "src/components/CommunityCallouts.astro::__file_root__",
         "src/components/JoinWhatsAppCta.astro::__file_root__",
         "src/components/PageNarrowBody.astro::__file_root__",
-        "src/components/landing/EventGallery.astro::__file_root__",
         "src/lib/events.ts::EventLike",
         "src/lib/pageBanner.ts::bannerFor",
         "src/lib/leadSchema.ts::Lead"
@@ -1717,7 +1716,6 @@
       "filePath": "src/components/landing/EventGallery.astro",
       "importedBy": [
         "src/components/landing/HomeSections.astro::__file_root__",
-        "src/components/CommunityPage.astro::__file_root__",
         "src/components/ChapterPage.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ],
@@ -5533,7 +5531,8 @@
       "filePath": "src/lib/team.ts",
       "importedBy": [
         "src/lib/team.test.ts::__file_root__",
-        "src/pages/index.astro::__file_root__"
+        "src/pages/index.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__"
       ],
       "imports": [],
       "name": "filterActiveBoardMembers"
@@ -7165,6 +7164,7 @@
         "src/components/nav/PrimaryNav.astro::__file_root__",
         "src/components/nav/UtilityBar.astro::__file_root__",
         "src/lib/momentumSectionsContent.ts::loadMomentumSections",
+        "src/lib/team.ts::filterActiveBoardMembers",
         "src/lib/donatePageContent.ts::loadAccomplishments",
         "src/lib/nav.ts::chapterNavItems",
         "src/lib/nav.ts::communityNavItems",
@@ -7932,7 +7932,6 @@
         "src/components/CommunityCallouts.astro",
         "src/components/JoinWhatsAppCta.astro",
         "src/components/PageNarrowBody.astro",
-        "src/components/landing/EventGallery.astro",
         "src/lib/events.ts",
         "src/lib/pageBanner.ts",
         "src/lib/leadSchema.ts"
@@ -8836,7 +8835,6 @@
     "src/components/landing/EventGallery.astro": {
       "importedBy": [
         "src/components/landing/HomeSections.astro",
-        "src/components/CommunityPage.astro",
         "src/components/ChapterPage.astro",
         "src/pages/isolated-components/[name].astro"
       ],
@@ -11164,7 +11162,8 @@
         "src/components/landing/BoardMemberTile.astro",
         "src/lib/team.test.ts",
         "src/lib/donors.ts",
-        "src/pages/index.astro"
+        "src/pages/index.astro",
+        "src/pages/isolated-components/[name].astro"
       ],
       "imports": []
     },
@@ -12407,6 +12406,7 @@
         "src/components/nav/PrimaryNav.astro",
         "src/components/nav/UtilityBar.astro",
         "src/lib/momentumSectionsContent.ts",
+        "src/lib/team.ts",
         "src/lib/donatePageContent.ts",
         "src/lib/nav.ts",
         "src/lib/site.ts",
@@ -12645,5 +12645,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-06T00:15:43Z"
+  "lastUpdated": "2026-11-06T14:42:16Z"
 }

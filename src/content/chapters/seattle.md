@@ -2,7 +2,6 @@
 blurb: Alumni across Seattle and the Pacific Northwest, meeting online in our WhatsApp group and at our virtual events.
 city: Seattle / Pacific Northwest
 heroImage: /images/chapters/seattle.jpg
-showGallery: false
 region: Seattle, WA
 status: forming
 tagline: The Harvard Alumni in Tech online group for the Pacific Northwest.

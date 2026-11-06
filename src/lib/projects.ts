@@ -8,9 +8,10 @@ import { formatEventDate } from './events';
 
 export interface ProjectLike extends Ordered {
   title: string;
-  /** Absent means OPEN. An editor who never touches the toggle should still
-   *  see their project on the page — only an explicit `false` retires it. */
-  active?: boolean;
+  /** Absent means OPEN; only a ticked `closed` retires a project. Opt-in
+   *  because the CMS omits an unticked checkbox on save, so an opt-out
+   *  `active: false` never survived an edit. */
+  closed?: boolean;
   /** The entry's id. Only `relatedProjects` needs it, to know which project the
    *  reader is already on and where to start the wrap-around. */
   slug?: string;
@@ -20,7 +21,7 @@ export interface ProjectLike extends Ordered {
  * The projects to render: currently-open ones, ordered. Non-mutating.
  */
 export function openProjects<T extends ProjectLike>(projects: readonly T[]): T[] {
-  return sortByOrder(projects.filter((p) => p.active !== false));
+  return sortByOrder(projects.filter((p) => p.closed !== true));
 }
 
 /**
@@ -120,7 +121,7 @@ export interface ProjectEntryLike {
     startDate?: string | Date;
     endDate?: string | Date;
     order?: number;
-    active?: boolean;
+    closed?: boolean;
   };
 }
 
@@ -160,7 +161,7 @@ export function projectCardData(entries: readonly ProjectEntryLike[]): ProjectCa
     startDate: entry.data.startDate,
     endDate: entry.data.endDate,
     order: entry.data.order,
-    active: entry.data.active,
+    closed: entry.data.closed,
   }));
 }
 
@@ -177,7 +178,7 @@ export function projectCardData(entries: readonly ProjectEntryLike[]): ProjectCa
  *
  * Filtered through `openProjects` so a retired project is never advertised at
  * the bottom of an open one — the detail route generates a page for every
- * published entry regardless of `active`, so without this a closed project would
+ * published entry regardless of `closed`, so without this a closed project would
  * be suggested. Reusing the helper keeps "what counts as open" in one place.
  *
  * Returns `[]` when there is no other open project — which is today's real

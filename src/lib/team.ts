@@ -10,7 +10,8 @@ export interface BoardMemberLike {
   photo?: string;
   bio?: string;
   order?: number;
-  active?: boolean;
+  /** Ticked in the CMS when someone leaves the board. Absent means current. */
+  retired?: boolean;
 }
 
 /**
@@ -39,13 +40,14 @@ export function sortBoardMembers<T extends BoardMemberLike>(members: T[]): T[] {
 }
 
 /**
- * Keep only board members marked active for public display. A member is shown
- * unless `active` is explicitly false, so existing entries with no `active`
- * field (and members who never toggled the CMS checkbox) remain on the board.
+ * Keep only current board members for public display: everyone not marked
+ * `retired`. The flag is opt-in (ticked = hidden) because the CMS omits an
+ * unticked checkbox on save — an opt-out `active: false` was erased by the next
+ * edit, so unticking "Active" never actually took anyone off the board.
  * Returns a new array — the input is not mutated.
  */
 export function filterActiveBoardMembers<T extends BoardMemberLike>(members: T[]): T[] {
-  return members.filter((m) => m.active !== false);
+  return members.filter((m) => m.retired !== true);
 }
 
 /**

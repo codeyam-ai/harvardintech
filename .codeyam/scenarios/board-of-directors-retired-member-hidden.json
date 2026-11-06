@@ -1,0 +1,13 @@
+{
+  "name": "Board of Directors - Retired Member Hidden",
+  "id": "8ddfebe9-0734-4d2f-95b9-51e52bd946e8",
+  "url": "/isolated-components/BoardOfDirectors-Retired",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "BoardOfDirectors",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/landing/BoardOfDirectors.astro",
+  "description": "Six board entries go in, and one of them, a former director, has Retired ticked in the CMS. The list runs through the same filter the homepage uses, so the board still reads 05 directors and the former director never appears. Retiring someone used to mean unticking Active, which the CMS never saved, so the person stayed on the site. Ticking Retired is the way that sticks."
+}

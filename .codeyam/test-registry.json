@@ -167,7 +167,7 @@
       "file": "src/lib/contentImages.test.ts",
       "format": "vitest",
       "key": "Mohammed Ally's testimonial › has no event photo until a real Colorado one exists",
-      "line": 164,
+      "line": 140,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -1609,24 +1609,6 @@
       "key": "chapter and community banners › finds chapter and community entries to check",
       "line": 105,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "The shared 40-photo wall is New York event photography. It renders by DEFAULT, so any chapter without its own curated `photos` list silently showed New York's events under its own city name — London, Seattle, DC and Boston all did. Opting out has to be explicit.",
-      "file": "src/lib/contentImages.test.ts",
-      "format": "vitest",
-      "key": "chapter and community banners › never fall back to the shared New York wall without curating their own photos",
-      "line": 135,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "The converse, now that the gallery is opt-in: curated photos with the gallery left off would hide them silently.",
-      "file": "src/lib/contentImages.test.ts",
-      "format": "vitest",
-      "key": "chapter and community banners › turn the gallery on wherever they have curated photos",
-      "line": 147,
-      "registeredAt": "2026-11-06T00:15:25.805450881+00:00",
       "runner": "tests"
     },
     {
@@ -4780,39 +4762,48 @@
       "runner": "tests"
     },
     {
-      "description": "an explicitly active member is kept",
+      "description": "a leftover legacy active: false line no longer hides anyone",
       "file": "src/lib/team.test.ts",
       "format": "vitest",
-      "key": "filterActiveBoardMembers › keeps a member with active: true",
-      "line": 75,
-      "registeredAt": "2026-06-15T16:33:22Z",
-      "runner": "tests"
-    },
-    {
-      "description": "a member with no active field defaults to shown (backward-compatible)",
-      "file": "src/lib/team.test.ts",
-      "format": "vitest",
-      "key": "filterActiveBoardMembers › keeps a member with no active field",
-      "line": 85,
-      "registeredAt": "2026-06-15T16:33:22Z",
-      "runner": "tests"
-    },
-    {
-      "description": "mixed list keeps only the non-false members, order preserved",
-      "file": "src/lib/team.test.ts",
-      "format": "vitest",
-      "key": "filterActiveBoardMembers › keeps active and undefined members while dropping inactive ones",
+      "key": "filterActiveBoardMembers › ignores a legacy active flag",
       "line": 90,
-      "registeredAt": "2026-06-15T16:33:22Z",
+      "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
     {
-      "description": "an explicitly inactive member is removed",
+      "description": "absent — what the CMS writes for an unticked box — means still on the board",
       "file": "src/lib/team.test.ts",
       "format": "vitest",
-      "key": "filterActiveBoardMembers › removes a member with active: false",
+      "key": "filterActiveBoardMembers › keeps a member with no retired field",
+      "line": 85,
+      "registeredAt": "2026-11-06T01:56:54Z",
+      "runner": "tests"
+    },
+    {
+      "description": "an explicit retired: false is kept",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › keeps a member with retired: false",
       "line": 80,
-      "registeredAt": "2026-06-15T16:33:22Z",
+      "registeredAt": "2026-11-06T01:56:54Z",
+      "runner": "tests"
+    },
+    {
+      "description": "mixed list drops only the retired members, order preserved",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › keeps current members while dropping retired ones",
+      "line": 96,
+      "registeredAt": "2026-11-06T01:56:54Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a member ticked as retired is hidden from the board",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › removes a member with retired: true",
+      "line": 75,
+      "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
     {
@@ -4825,12 +4816,12 @@
       "runner": "tests"
     },
     {
-      "description": "an all-inactive list returns empty (board falls back to the graphic)",
+      "description": "an all-retired list returns empty (board falls back to the graphic)",
       "file": "src/lib/team.test.ts",
       "format": "vitest",
-      "key": "filterActiveBoardMembers › returns an empty array when every member is inactive",
-      "line": 96,
-      "registeredAt": "2026-06-15T16:33:22Z",
+      "key": "filterActiveBoardMembers › returns an empty array when every member is retired",
+      "line": 102,
+      "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
     {
@@ -5288,7 +5279,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › accepts Date objects as well as ISO strings",
-      "line": 195,
+      "line": 202,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5297,7 +5288,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › collapses the repeated year when both dates share one",
-      "line": 161,
+      "line": 168,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5306,7 +5297,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › formats an inverted range as authored instead of reordering it",
-      "line": 189,
+      "line": 196,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5315,7 +5306,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › keeps both years when the range crosses a year boundary",
-      "line": 166,
+      "line": 173,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5324,7 +5315,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › reads as a deadline when only the end date is set",
-      "line": 176,
+      "line": 183,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5333,7 +5324,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › reads as a start when only the start date is set",
-      "line": 171,
+      "line": 178,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -5342,7 +5333,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "formatProjectDates › returns null when the project has neither date",
-      "line": 182,
+      "line": 189,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -9483,7 +9474,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › does not mutate the input array",
-      "line": 76,
+      "line": 83,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -9492,26 +9483,35 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › filters and orders together",
-      "line": 50,
+      "line": 57,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
     {
-      "description": "An explicit active: true is kept, same as the absent case.",
+      "description": "A leftover legacy `active: false` line no longer retires anything — the ticked Closed box is the only signal, so stale data cannot hide a role.",
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
-      "key": "openProjects › keeps a project explicitly marked active",
+      "key": "openProjects › ignores a legacy active flag",
+      "line": 32,
+      "registeredAt": "2026-11-06T01:56:54Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An explicit closed: false is kept, same as the absent case.",
+      "file": "src/lib/projects.test.ts",
+      "format": "vitest",
+      "key": "openProjects › keeps a project explicitly marked not closed",
       "line": 21,
-      "registeredAt": "2026-07-22T20:43:59Z",
+      "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
     {
-      "description": "Absent `active` means open (see filterActiveBoardMembers) — a project whose editor never touched the toggle must stay visible, not silently vanish.",
+      "description": "Absent `closed` means open (see filterActiveBoardMembers) — the CMS writes nothing for an unticked box, so a project nobody closed must stay visible.",
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
-      "key": "openProjects › keeps a project whose active flag is absent",
+      "key": "openProjects › keeps a project whose closed flag is absent",
       "line": 14,
-      "registeredAt": "2026-07-22T20:43:59Z",
+      "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
     {
@@ -9519,7 +9519,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › orders open projects by their order field",
-      "line": 31,
+      "line": 38,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -9528,17 +9528,17 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › places unordered projects after ordered ones",
-      "line": 41,
+      "line": 48,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
     {
-      "description": "active: false is the one value that retires a project from the page.",
+      "description": "closed: true is the one value that retires a project from the page.",
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
-      "key": "openProjects › removes a project explicitly marked inactive",
+      "key": "openProjects › removes a project ticked as closed",
       "line": 26,
-      "registeredAt": "2026-07-22T20:43:59Z",
+      "registeredAt": "2026-11-06T01:56:54Z",
       "runner": "tests"
     },
     {
@@ -9546,7 +9546,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › returns an empty array for no projects",
-      "line": 71,
+      "line": 78,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -9555,7 +9555,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "openProjects › returns an empty array when every project is closed",
-      "line": 61,
+      "line": 68,
       "registeredAt": "2026-07-22T20:43:59Z",
       "runner": "tests"
     },
@@ -10392,7 +10392,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › carries every card field through from the entry frontmatter",
-      "line": 212,
+      "line": 219,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10401,7 +10401,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › leaves absent optional fields undefined",
-      "line": 248,
+      "line": 255,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10410,7 +10410,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › preserves the order the entries arrived in",
-      "line": 256,
+      "line": 263,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10419,7 +10419,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › promotes the entry id to a slug",
-      "line": 205,
+      "line": 212,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10428,7 +10428,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCardData › returns an empty list for no entries",
-      "line": 265,
+      "line": 272,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -10437,7 +10437,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › falls back to the page-level volunteer CTA when the project has no apply link",
-      "line": 114,
+      "line": 121,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10446,7 +10446,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › names the fallback button when the page-level label is missing",
-      "line": 136,
+      "line": 143,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10455,7 +10455,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › returns null when both links are empty strings",
-      "line": 153,
+      "line": 160,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10464,7 +10464,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › returns null when neither the project nor the page has a link",
-      "line": 122,
+      "line": 129,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10473,7 +10473,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › treats an empty apply link as absent",
-      "line": 145,
+      "line": 152,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10482,7 +10482,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › uses the project apply link even with no page-level fallback configured",
-      "line": 127,
+      "line": 134,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10491,7 +10491,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectCta › uses the project own apply link when it has one",
-      "line": 105,
+      "line": 112,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10500,7 +10500,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectPath › builds the detail path for a slug",
-      "line": 90,
+      "line": 97,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -10509,7 +10509,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "projectPath › returns a site-root-relative path for the caller to base-prefix",
-      "line": 98,
+      "line": 105,
       "registeredAt": "2026-07-31T23:04:44Z",
       "runner": "tests"
     },
@@ -11022,7 +11022,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › does not mutate the list it was given",
-      "line": 323,
+      "line": 330,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11031,7 +11031,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › honours a lower limit",
-      "line": 318,
+      "line": 325,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11040,7 +11040,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › never suggests a retired project",
-      "line": 296,
+      "line": 303,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11049,7 +11049,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › never suggests the project the reader is already on",
-      "line": 290,
+      "line": 297,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11058,7 +11058,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › returns an empty list when the current slug matches nothing open",
-      "line": 313,
+      "line": 320,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11067,7 +11067,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › returns an empty list when there is no other open project",
-      "line": 308,
+      "line": 315,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11076,7 +11076,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › returns only what is available when fewer than the limit exist",
-      "line": 302,
+      "line": 309,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11085,7 +11085,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › suggests the projects that follow the current one in editor order",
-      "line": 279,
+      "line": 286,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -11094,7 +11094,7 @@
       "file": "src/lib/projects.test.ts",
       "format": "vitest",
       "key": "relatedProjects › wraps past the end of the list rather than coming up empty",
-      "line": 285,
+      "line": 292,
       "registeredAt": "2026-08-10T14:54:59Z",
       "runner": "tests"
     },
@@ -13857,7 +13857,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › returns a single empty string for an empty role",
-      "line": 132,
+      "line": 138,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -13866,7 +13866,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › returns a single-element array when there is no separator",
-      "line": 122,
+      "line": 128,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -13875,7 +13875,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › splits a role on the middot into two lines",
-      "line": 111,
+      "line": 117,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -13884,7 +13884,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › splits every occurrence of the separator",
-      "line": 127,
+      "line": 133,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -13893,7 +13893,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › trims whitespace around the separator",
-      "line": 116,
+      "line": 122,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },

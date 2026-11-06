@@ -3,7 +3,6 @@ title: IG Content Creator
 blurb: Help grow Harvard Alumni in Tech’s presence on Instagram by creating engaging, on-brand content that brings our community, events, and impact to life. This project includes developing Instagram posts, Reels, Stories, and other visual content designed to increase awareness, engagement, and connection with our audience.
 startDate: 2026-09-01
 endDate: 2026-12-01
-active: true
 ---
 
 - Create Instagram posts and Stories featuring Harvard Alumni in Tech events, including event highlights, speakers, key takeaways, and post-event moments.

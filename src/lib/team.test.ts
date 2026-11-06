@@ -69,37 +69,43 @@ describe('sortBoardMembers', () => {
 });
 
 describe('filterActiveBoardMembers', () => {
-  const make = (name: string, active?: boolean): BoardMemberLike => ({ name, role: 'r', active });
+  const make = (name: string, retired?: boolean): BoardMemberLike => ({ name, role: 'r', retired });
 
-  // an explicitly active member is kept
-  it('keeps a member with active: true', () => {
-    expect(filterActiveBoardMembers([make('A', true)]).map((m) => m.name)).toEqual(['A']);
+  // a member ticked as retired is hidden from the board
+  it('removes a member with retired: true', () => {
+    expect(filterActiveBoardMembers([make('A', true)])).toEqual([]);
   });
 
-  // an explicitly inactive member is removed
-  it('removes a member with active: false', () => {
-    expect(filterActiveBoardMembers([make('A', false)])).toEqual([]);
+  // an explicit retired: false is kept
+  it('keeps a member with retired: false', () => {
+    expect(filterActiveBoardMembers([make('A', false)]).map((m) => m.name)).toEqual(['A']);
   });
 
-  // a member with no active field defaults to shown (backward-compatible)
-  it('keeps a member with no active field', () => {
+  // absent — what the CMS writes for an unticked box — means still on the board
+  it('keeps a member with no retired field', () => {
     expect(filterActiveBoardMembers([make('A')]).map((m) => m.name)).toEqual(['A']);
   });
 
-  // mixed list keeps only the non-false members, order preserved
-  it('keeps active and undefined members while dropping inactive ones', () => {
-    const out = filterActiveBoardMembers([make('A', true), make('B', false), make('C')]);
+  // a leftover legacy active: false line no longer hides anyone
+  it('ignores a legacy active flag', () => {
+    const legacy = [{ name: 'A', role: 'r', active: false }] as unknown as BoardMemberLike[];
+    expect(filterActiveBoardMembers(legacy).map((m) => m.name)).toEqual(['A']);
+  });
+
+  // mixed list drops only the retired members, order preserved
+  it('keeps current members while dropping retired ones', () => {
+    const out = filterActiveBoardMembers([make('A', false), make('B', true), make('C')]);
     expect(out.map((m) => m.name)).toEqual(['A', 'C']);
   });
 
-  // an all-inactive list returns empty (board falls back to the graphic)
-  it('returns an empty array when every member is inactive', () => {
-    expect(filterActiveBoardMembers([make('A', false), make('B', false)])).toEqual([]);
+  // an all-retired list returns empty (board falls back to the graphic)
+  it('returns an empty array when every member is retired', () => {
+    expect(filterActiveBoardMembers([make('A', true), make('B', true)])).toEqual([]);
   });
 
   // does not mutate the caller's array
   it('returns a new array without mutating the input', () => {
-    const input = [make('A', true), make('B', false)];
+    const input = [make('A', false), make('B', true)];
     const out = filterActiveBoardMembers(input);
     expect(input.map((m) => m.name)).toEqual(['A', 'B']);
     expect(out).not.toBe(input);

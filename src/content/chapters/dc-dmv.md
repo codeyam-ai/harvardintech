@@ -2,7 +2,6 @@
 blurb: Alumni across DC, Maryland and Virginia, meeting online in our WhatsApp group and at our virtual events.
 city: DC and DMV Area
 heroImage: /images/chapters/dc-dmv.jpg
-showGallery: false
 region: Washington, DC
 status: forming
 tagline: The Harvard Alumni in Tech online group for the Washington metro area.

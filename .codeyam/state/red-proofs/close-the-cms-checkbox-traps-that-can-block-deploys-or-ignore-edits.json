@@ -1,0 +1,54 @@
+{
+  "provenAt": "2026-11-06T01:56:15Z",
+  "slug": "close-the-cms-checkbox-traps-that-can-block-deploys-or-ignore-edits",
+  "paths": [],
+  "runScope": [
+    "src/lib/team.ts",
+    "src/lib/projects.ts",
+    "src/lib/team.test.ts",
+    "src/lib/projects.test.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/team.ts",
+      "find": "m.retired !== true",
+      "replace": "(m as { active?: boolean }).active !== false"
+    },
+    {
+      "file": "src/lib/projects.ts",
+      "find": "p.closed !== true",
+      "replace": "(p as { active?: boolean }).active !== false"
+    }
+  ],
+  "tests": {
+    "ignores a legacy active flag": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "removes a member with retired: true": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "removes a project ticked as closed": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "removes a member with retired: true",
+      "ignores a legacy active flag",
+      "removes a project ticked as closed"
+    ]
+  }
+}

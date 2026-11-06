@@ -200,18 +200,11 @@
           "hint": "Subtitle beneath the city name in the page banner."
         },
         {
-          "name": "showGallery",
-          "label": "Show event gallery",
-          "type": "boolean",
-          "optional": true,
-          "hint": "Blank shows the gallery; switch off to hide it on this chapter."
-        },
-        {
           "name": "photos",
           "label": "Chapter photos",
           "type": "list",
           "optional": true,
-          "hint": "This chapter's own event photos. Leave empty to show the shared event gallery.",
+          "hint": "This chapter's own event photos. Adding one shows a \"Photos from\" gallery on the chapter page; leave it empty and the page has no gallery.",
           "fields": [
             {
               "name": "image",
@@ -411,13 +404,6 @@
           "type": "text",
           "optional": true,
           "hint": "Subtitle beneath the community name in the page banner."
-        },
-        {
-          "name": "showGallery",
-          "label": "Show event gallery",
-          "type": "boolean",
-          "optional": true,
-          "hint": "Blank shows the gallery; switch off to hide it on this community."
         },
         {
           "name": "contactEmail",
@@ -723,7 +709,7 @@
           "label": "End date",
           "type": "date",
           "optional": true,
-          "hint": "When the project wraps up. Use the Active toggle to take a finished project off the page."
+          "hint": "When the project wraps up. Tick Closed to take a finished project off the page."
         },
         {
           "name": "order",
@@ -732,10 +718,11 @@
           "optional": true
         },
         {
-          "name": "active",
-          "label": "Open for applications",
+          "name": "closed",
+          "label": "Closed — no longer taking applications",
           "type": "boolean",
-          "optional": true
+          "optional": true,
+          "hint": "Tick to take this role off the volunteer page and stop suggesting it. Leave unticked while it is open."
         }
       ]
     },
@@ -1702,10 +1689,11 @@
     ],
     "team": [
       {
-        "name": "active",
-        "label": "Active",
+        "name": "retired",
+        "label": "Retired — hide from the board",
         "type": "boolean",
-        "optional": true
+        "optional": true,
+        "hint": "Tick when someone leaves the board; their entry is kept but no longer shown. Leave unticked for current members."
       }
     ]
   },

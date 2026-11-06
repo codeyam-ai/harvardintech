@@ -2,7 +2,6 @@
 title: Marketing & Ops
 blurb: Join the team behind Harvard Alumni in Tech's content, design, website, analytics and sponsorships.
 order: 9
-active: true
 ---
 
 Open to:

@@ -32,6 +32,7 @@ import MomentumNetwork from '../../components/donate/MomentumNetwork.astro';
 import PrimaryNav from '../../components/nav/PrimaryNav.astro';
 import UtilityBar from '../../components/nav/UtilityBar.astro';
 import { loadMomentumSections } from '../../lib/momentumSectionsContent';
+import { filterActiveBoardMembers } from '../../lib/team';
 import { loadAccomplishments } from '../../lib/donatePageContent';
 import {
   chapterNavItems,
@@ -119,7 +120,13 @@ const chapterPageStates = {
     blurb: 'Our founding chapter and largest community.',
     heroImage: '/images/chapters/nyc.jpg',
     tagline: 'We are the New York Chapter of Harvard Alumni in Tech.',
-    showGallery: true,
+    // The chapter's own photos are what turn its gallery on; there is no
+    // separate switch.
+    photos: [
+      { image: '/images/gallery/event-01.jpg', caption: 'Welcome Fall Mixer' },
+      { image: '/images/gallery/event-03.jpg' },
+      { image: '/images/gallery/event-14.jpg' },
+    ],
     leads: [
       { name: 'Jessica Li', role: 'Chapter Lead' },
       { name: 'Ben Wei', role: 'Events' },
@@ -152,7 +159,7 @@ const chapterPageStates = {
     blurb: 'Alumni across DC, Maryland and Virginia, meeting online in our WhatsApp group and at our virtual events.',
     heroImage: '/images/gallery/event-18.jpg',
     tagline: 'The Harvard Alumni in Tech online group for the Washington metro area.',
-    showGallery: true,
+    photos: [{ image: '/images/gallery/event-18.jpg', caption: 'Should not render' }],
     leads: [{ name: 'Should Not Render', role: 'A forming chapter names no lead' }],
     callouts: [{ title: 'Should not render', text: 'A forming chapter shows no callouts.' }],
   },
@@ -281,11 +288,11 @@ const contactUsStates = {
 // UpcomingEvents (no-events guard) and BoardOfDirectors (board graphic when the
 // member list is empty).
 const SAMPLE_BOARD = [
-  { name: 'Ben Wei', role: "Founder · Harvard C'08", photo: '/images/team/ben-wei.png', order: 1, active: true },
-  { name: 'Peter Boyce', role: "Founder · Harvard C'13", photo: '/images/team/peter-boyce.png', order: 2, active: true },
-  { name: 'Krysia Lenzo', role: "Executive Director · Harvard C'12", photo: '/images/team/krysia-lenzo.png', order: 3, active: true },
-  { name: 'Jessica Li', role: "Board Member · Harvard C'16", photo: '/images/team/jessica-li.png', order: 4, active: true },
-  { name: 'Nadia Eldeib', role: "Board Member · Harvard C'14", photo: '/images/team/nadia-eldeib.png', order: 5, active: true },
+  { name: 'Ben Wei', role: "Founder · Harvard C'08", photo: '/images/team/ben-wei.png', order: 1 },
+  { name: 'Peter Boyce', role: "Founder · Harvard C'13", photo: '/images/team/peter-boyce.png', order: 2 },
+  { name: 'Krysia Lenzo', role: "Executive Director · Harvard C'12", photo: '/images/team/krysia-lenzo.png', order: 3 },
+  { name: 'Jessica Li', role: "Board Member · Harvard C'16", photo: '/images/team/jessica-li.png', order: 4 },
+  { name: 'Nadia Eldeib', role: "Board Member · Harvard C'14", photo: '/images/team/nadia-eldeib.png', order: 5 },
 ];
 // Bios, at the two lengths that actually stress the row. `Default` above carries
 // none, which mirrors production: every director ships with an empty bio, so the
@@ -318,6 +325,15 @@ const boardOfDirectorsStates = {
   // the one where a layout that reserves space for a missing bio looks broken.
   SomeBios: {
     members: SAMPLE_BOARD.map((m, i) => (i === 0 || i === 4 ? { ...m, bio: BOARD_BIOS[i] } : m)),
+  },
+  // A sixth, former director ticked "Retired" in the CMS. Run through the same
+  // filter the homepage uses, so the board must still read five directors —
+  // the retired entry is kept in content but never shown.
+  Retired: {
+    members: filterActiveBoardMembers([
+      ...SAMPLE_BOARD,
+      { name: 'Former Director', role: "Board Member · Harvard C'05", order: 6, retired: true },
+    ]),
   },
 };
 
@@ -829,6 +845,7 @@ export async function getStaticPaths() {
     { params: { name: 'BoardOfDirectors-Empty' } },
     { params: { name: 'BoardOfDirectors-Bios' } },
     { params: { name: 'BoardOfDirectors-SomeBios' } },
+    { params: { name: 'BoardOfDirectors-Retired' } },
     { params: { name: 'HeroCarousel' } },
     { params: { name: 'Stats' } },
     { params: { name: 'OurChapters' } },
