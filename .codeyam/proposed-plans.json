@@ -372,9 +372,14 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-13T21:20:09.271540424+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "recapture-photographs-live-content-for-seeded-scenarios-while-src-content-is-dirty-and-reports-success",
@@ -438,9 +443,14 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-14T16:43:24.119143379+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "the-visual-second-pass-looked-at-the-homepage-events-privacy-and-the-open-menu-by-eye-not-every-phone-and-tablet-frame-of-all-14-audit-scenarios-the-board-grid-at-tablet-and-the-longest-chapter-name-were-not-re-checked",
@@ -540,14 +550,17 @@
       "severity": 2,
       "source": "session-review",
       "category": "debt",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
       "kind": "tech-debt",
       "rank": 11,
       "sightings": 2,
       "notes": [
-        "2026-10-22: Same gap seen on the blog: BlogPostArticle had no entry until this session added one, and BlogPostBody (src/components/BlogPostBody.astro, 67 lines) still has none."
-      ]
+        "2026-10-22: Same gap seen on the blog: BlogPostArticle had no entry until this session added one, and BlogPostBody (src/components/BlogPostBody.astro, 67 lines) still has none.",
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "generated-isolation-pages-fail-the-type-check-for-components-with-required-props",
@@ -601,9 +614,14 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-14T21:06:39.554932721+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "found-in-passing-not-caused-by-this-work-the-momentum-fund-donor-wall-moved-to-the-top-scenario-no-longer-opens-on-the-donor-network-as-its-description-says-its-refreshed-screenshot-shows-the-page-as-it-really-renders-today",
@@ -670,10 +688,15 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-14T23:12:48.519030105+00:00",
       "rank": 1,
       "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings",
       "offeredCount": 2,
       "lastOfferedAt": "2026-10-30T22:12:43.358799556+00:00"
     },
@@ -853,14 +876,17 @@
       "mode": "backend",
       "body": "",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-15T17:10:02.886201980+00:00",
       "kind": "tech-debt",
       "rank": 8,
       "sightings": 2,
       "notes": [
-        "2026-10-23: Partly done this cycle: refresh helpers and viteCacheDir moved to src/lib/devContentRefresh.ts, but astro.config.mjs is still 469 lines."
-      ]
+        "2026-10-23: Partly done this cycle: refresh helpers and viteCacheDir moved to src/lib/devContentRefresh.ts, but astro.config.mjs is still 469 lines.",
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "the-plan-s-first-step-copy-unsaved-edits-into-test-setups-and-keep-a-list-folder-from-being-left-empty-across-a-restart-was-not-built-the-copying-already-worked-per-a-note-from-the-oct-14-run-that-i-did-not-re-check-and-the-restart-c",
@@ -914,9 +940,14 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-15T18:45:42.742164237+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "pre-existing-not-caused-by-this-change-the-contact-with-no-email-set-homepage-scenario-never-applies-its-seed-so-its-screenshot-still-shows-the-e-mail-disc-it-is-meant-to-hide",
@@ -971,9 +1002,14 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-15T21:23:41.340366830+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "i-also-rewrote-the-runbook-s-d2-recommendation-which-used-to-say-go-public-and-hide-unfinished-sections-to-match-the-2026-10-02-ruling",
@@ -997,11 +1033,13 @@
       "severity": 2,
       "source": "session-review",
       "category": "debt",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
       "kind": "tech-debt",
       "rank": 10,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "size-ledger"
     },
     {
       "id": "break-up-the-1-130-line-momentumnetwork-component",
@@ -1012,11 +1050,16 @@
       "severity": 2,
       "source": "session-review",
       "category": "debt",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
       "kind": "tech-debt",
       "rank": 9,
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "preview-verify-keeps-reporting-an-unreloaded-editor-tab-after-the-user-reloads-it",
@@ -1098,9 +1141,14 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-16T15:11:36.259820285+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "move-the-copy-warning-support-out-of-the-local-cms-patch-and-into-codeyam-cms",
@@ -1155,9 +1203,14 @@
       "body": "",
       "reason": "Disclosed at the approval gate: the built work differs from the plan here.",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-16T17:07:16.158225577+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "split-src-content-config-ts-along-its-collection-seams",
@@ -1168,14 +1221,16 @@
       "severity": 2,
       "source": "session-review",
       "category": "debt",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
       "kind": "tech-debt",
       "rank": 6,
       "sightings": 2,
       "notes": [
         "2026-10-22: Seen again: lead profiles touched it once more; the lead shape was pulled out to src/lib/leadSchema.ts, which is the pattern the split should follow."
-      ]
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "size-ledger"
     },
     {
       "id": "seed-sandbox-reset-races-the-content-watcher-and-empties-collections",
@@ -1224,9 +1279,14 @@
       "body": "## Summary\n\nNicole has not confirmed London is the right home for the three uploaded photos.\n\nAt the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `cms--unblock-deploys-and-place-nicole-s-21-oct-uploads` (now at `.codeyam/plans/completed/cms--unblock-deploys-and-place-nicole-s-21-oct-uploads.md`).\n\nImages uploaded through the content admin no longer block the site from publishing, and Nicole's 21 Oct uploads are sorted.\n\n## What you can now do\n- Upload an image in the content admin and publish without a developer adding credit or alt-text records first\n- See Nicole's three event photos in the London chapter gallery, enlargeable like the others\n- Give any chapter or community lead a headshot: Nemo Shi and Stefan Pagacik now show theirs beside their names\n- Duplicate uploads and the layout mockup are gone from the public image folder\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"CMS uploads publish freely; Nicole's photos and lead headshots placed\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-22T13:11:35.264885978+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "some-sample-data-screenshots-for-admin-donor-and-volunteer-pages-could-not-be-refreshed-because-the-dev-server-s-content-loader-kept-failing-their-committed-screenshots-were-left-as-they-were",
@@ -1265,9 +1325,14 @@
       "body": "## Summary\n\nNot confirmed that the 0.15.0 release was built from the merged PR #7: its copy-warning files match the old patch byte for byte, but GitHub access here could not tie the release commit to the merge.\n\nAt the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release` (now at `.codeyam/plans/completed/upgrade-to-codeyam-cms-0-15-0-and-drop-the-copy-warning-half-of-the-local-patch-blocked-on-jared-s-npm-release.md`).\n\nThe site now runs the official @codeyam/cms 0.15.0 release. Copy warnings come from the package itself instead of a local patch.\n\n## What you can now do\n- Get copy-warning fixes from future CMS releases without re-patching\n- Upgrade the CMS more easily: the local patch only covers entry ordering now (560 lines, down from 891)\n- Rely on the same copy warnings and ordering controls as before; all 1781 tests pass on 0.15.0\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"CMS upgraded to 0.15.0 with a slimmer local patch\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-22T13:52:52.336548455+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "the-copy-warning-and-ordering-tests-have-not-run-on-0-15-0-yet-they-run-in-the-full-check-after-you-save",
@@ -1304,11 +1369,16 @@
       "severity": 2,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-22T14:39:01.543207323+00:00",
       "kind": "tech-debt",
       "rank": 4,
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "the-plan-said-every-inserted-image-should-get-alt-text-that-was-not-added-images-inserted-into-an-entry-body-still-fall-back-to-the-file-name-as-their-alt-text-as-before",
@@ -1343,9 +1413,14 @@
       "body": "## Summary\n\nThe live preview shows the edited date in the CMS's short format (10/21/2026), while the published page shows the long format (October 21, 2026). Making them match is a change to the CMS package itself, agreed as a follow-up.\n\nAt the approval gate for \"Blog preview shows the edited date live\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `cms--blog-preview-shows-the-edited-date-live` (now at `.codeyam/plans/completed/cms--blog-preview-shows-the-edited-date-live.md`).\n\nWhen you change a blog post's date in the content admin, the live preview beside the form now updates to show it.\n\n## What you can now do\n- Edit a post's date and see it in the preview before you save\n- Edit the title or body and see each one land in its own place in the preview\n- Edit the body of a post with a video or form embed without the embed disappearing from the preview\n- Published posts look exactly as before. Only the preview changed\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"Blog preview shows the edited date live\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-22T16:57:52.363779908+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "push-reports-a-failed-plan-claim-delete-for-a-claim-that-is-already-gone",
@@ -1396,11 +1471,16 @@
       "severity": 2,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "kind": "tech-debt",
       "rank": 5,
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "keep-the-highlighted-supporter-visible-in-the-find-your-place-scenario",
@@ -1411,14 +1491,17 @@
       "severity": 2,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "kind": "tech-debt",
       "rank": 3,
       "sightings": 2,
       "notes": [
-        "2026-10-29: Seen again 2026-10-29: searching 'kennedy' on /donate puts Aisha Rahman's gold node under the hero copy."
-      ]
+        "2026-10-29: Seen again 2026-10-29: searching 'kennedy' on /donate puts Aisha Rahman's gold node under the hero copy.",
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "pin-the-clock-for-scenarios-whose-dates-drift-daily",
@@ -1429,14 +1512,17 @@
       "severity": 2,
       "source": "session-review",
       "category": "fix",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "kind": "tech-debt",
       "rank": 2,
       "sightings": 2,
       "notes": [
-        "2026-10-29: Seen again 2026-10-29: chapter-route-new-york-city, community-route-ai-on-day-one, community-route-founders-with-leads-and-events, communitypage-founders-composed, eventcardgrid-past-events and upcoming-events drifted during th…"
-      ]
+        "2026-10-29: Seen again 2026-10-29: chapter-route-new-york-city, community-route-ai-on-day-one, community-route-founders-with-leads-and-events, communitypage-founders-composed, eventcardgrid-past-events and upcoming-events drifted during th…",
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "split-the-586-line-seed-adapter",
@@ -1447,11 +1533,13 @@
       "severity": 2,
       "source": "session-review",
       "category": "debt",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-23T22:50:50.911451546+00:00",
       "kind": "tech-debt",
       "rank": 7,
-      "sightings": 1
+      "sightings": 1,
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "size-ledger"
     },
     {
       "id": "unseeded-scenarios-render-the-previous-scenario-s-seeded-content",
@@ -1575,9 +1663,14 @@
       "reason": "A capture failed once with a false seed error, then passed on retry.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "restart-dev-server-can-leave-two-astro-dev-servers-running",
@@ -1587,9 +1680,14 @@
       "reason": "Two dev servers make captures hit the wrong one; had to check by hand before capturing.",
       "severity": 3,
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "the-october-all-hands-events-screenshot-is-not-on-a-frozen-clock-it-shows-real-events-and-freezing-the-clock-broke-its-interaction",
@@ -1598,9 +1696,14 @@
       "body": "## Summary\n\nThe October all-hands events screenshot is not on a frozen clock: it shows real events, and freezing the clock broke its interaction.\n\nAt the approval gate for \"Correct review screenshots\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `fix-the-four-wrong-review-screenshots` (now at `.codeyam/plans/completed/fix-the-four-wrong-review-screenshots.md`).\n\nThe review site's screenshots now show the pages they claim to show, and every saved screenshot has been rechecked against the current site.\n\n## What you can now do\n- Trust the four review screenshots that were showing the wrong page\n- Review 329 refreshed screenshots that match the site as it is today\n- Edit content locally and see the preview pick it up without a restart\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"Correct review screenshots\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "the-site-still-decides-upcoming-vs-past-events-using-today-s-real-date-so-the-frozen-clock-event-screenshots-will-drift-again-after-13-november-2026",
@@ -1609,9 +1712,14 @@
       "body": "## Summary\n\nThe site still decides upcoming vs past events using today's real date, so the frozen-clock event screenshots will drift again after 13 November 2026.\n\nAt the approval gate for \"Correct review screenshots\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `fix-the-four-wrong-review-screenshots` (now at `.codeyam/plans/completed/fix-the-four-wrong-review-screenshots.md`).\n\nThe review site's screenshots now show the pages they claim to show, and every saved screenshot has been rechecked against the current site.\n\n## What you can now do\n- Trust the four review screenshots that were showing the wrong page\n- Review 329 refreshed screenshots that match the site as it is today\n- Edit content locally and see the preview pick it up without a restart\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"Correct review screenshots\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "no-automated-test-watches-the-dev-server-actually-reloading-the-settings-after-a-seed-only-the-part-that-picks-which-modules-to-reload-is-tested-the-reload-was-checked-by-eye-in-the-recaptured-screenshots",
@@ -1620,9 +1728,14 @@
       "body": "## Summary\n\nNo automated test watches the dev server actually reloading the settings after a seed. Only the part that picks which modules to reload is tested; the reload was checked by eye in the recaptured screenshots.\n\nAt the approval gate for \"Correct review screenshots\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `fix-the-four-wrong-review-screenshots` (now at `.codeyam/plans/completed/fix-the-four-wrong-review-screenshots.md`).\n\nThe review site's screenshots now show the pages they claim to show, and every saved screenshot has been rechecked against the current site.\n\n## What you can now do\n- Trust the four review screenshots that were showing the wrong page\n- Review 329 refreshed screenshots that match the site as it is today\n- Edit content locally and see the preview pick it up without a restart\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"Correct review screenshots\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "not-re-checked-this-session-that-the-e-mail-address-comes-back-when-an-unseeded-screenshot-is-loaded-right-after-the-no-email-one",
@@ -1631,9 +1744,14 @@
       "body": "## Summary\n\nNot re-checked this session: that the e-mail address comes back when an unseeded screenshot is loaded right after the no-email one.\n\nAt the approval gate for \"Correct review screenshots\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `fix-the-four-wrong-review-screenshots` (now at `.codeyam/plans/completed/fix-the-four-wrong-review-screenshots.md`).\n\nThe review site's screenshots now show the pages they claim to show, and every saved screenshot has been rechecked against the current site.\n\n## What you can now do\n- Trust the four review screenshots that were showing the wrong page\n- Review 329 refreshed screenshots that match the site as it is today\n- Edit content locally and see the preview pick it up without a restart\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"Correct review screenshots\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-29T19:54:12.778883793+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     },
     {
       "id": "the-saved-page-screenshots-stop-above-the-bio-paragraph-so-the-new-wording-shows-only-in-the-demo-walkthrough-not-in-those-screenshots",
@@ -1642,9 +1760,14 @@
       "body": "## Summary\n\nThe saved page screenshots stop above the bio paragraph, so the new wording shows only in the demo walkthrough, not in those screenshots.\n\nAt the approval gate for \"In-person chapter bios no longer promise specific events\" the user approved the built work past this gap: it differs from what the plan asked for. Built from plan `tighten-in-person-chapter-bios-so-they-don-t-promise-specific-events` (now at `.codeyam/plans/completed/tighten-in-person-chapter-bios-so-they-don-t-promise-specific-events.md`).\n\nThe four in-person chapter pages now describe each chapter honestly and send readers to the events list instead of promising dinners, mixers or a summit.\n\n## What you can now do\n- Point people to the Boston & Cambridge, NYC, SF & Bay Area and London pages without them over-promising\n- Rely on the events list on each page as the single source for what's actually coming up\n- See consistent \"Harvard alumni working in tech\" wording across the chapter bios\n\nRead that plan and the code it changed before planning how to close the gap.",
       "reason": "Approved past at the approval gate for \"In-person chapter bios no longer promise specific events\".",
       "source": "session-review",
-      "status": "pending",
+      "status": "retired",
       "proposedAt": "2026-10-30T22:12:32.421549964+00:00",
-      "sightings": 1
+      "sightings": 1,
+      "notes": [
+        "2026-11-06: migrated to a debt finding"
+      ],
+      "decidedAt": "2026-11-06T00:17:48.842073895+00:00",
+      "retiredReason": "migrated-to-findings"
     }
   ],
   "rounds": [
@@ -2675,6 +2798,11 @@
         "split-the-1-250-line-catch-all-isolation-page-into-one-page-per-component",
         "give-eventcard-its-own-glossary-entry"
       ]
+    },
+    {
+      "at": "2026-11-06T00:17:48.842073895+00:00",
+      "feature": "Photo galleries stay off unless a page asks for one",
+      "notes": "Finalize-only cycle: the gallery opt-in fix (d48091a) was already live. Syncing with origin set off DEPENDENCY_STALE_SCREENSHOTS across 329 scenarios (shared font/layout). The full recapture took about 90 minutes; most diffs were letter-sp…"
     }
   ],
   "syntheses": [
