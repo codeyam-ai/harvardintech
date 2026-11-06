@@ -2803,6 +2803,11 @@
       "at": "2026-11-06T00:17:48.842073895+00:00",
       "feature": "Photo galleries stay off unless a page asks for one",
       "notes": "Finalize-only cycle: the gallery opt-in fix (d48091a) was already live. Syncing with origin set off DEPENDENCY_STALE_SCREENSHOTS across 329 scenarios (shared font/layout). The full recapture took about 90 minutes; most diffs were letter-sp…"
+    },
+    {
+      "at": "2026-11-06T00:17:58.455597852+00:00",
+      "feature": "Photo galleries stay off unless a page asks for one",
+      "notes": "Finalize-only cycle: the gallery opt-in fix (d48091a) was already live. Syncing with origin set off DEPENDENCY_STALE_SCREENSHOTS across 329 scenarios (shared font/layout). The full recapture took about 90 minutes; most diffs were letter-sp…"
     }
   ],
   "syntheses": [
