@@ -1789,7 +1789,6 @@
         "fnd-4c1c3ad75b6d"
       ],
       "evidenceSessions": 4,
-      "ideaRank": 1,
       "offeredCount": 2,
       "lastOfferedAt": "2026-11-06T21:38:02.516073980+00:00",
       "theme": {
@@ -1823,6 +1822,48 @@
         "lane": "codeyam-improvement",
         "score": 485,
         "notVerified": true
+      }
+    },
+    {
+      "id": "tell-organizers-when-the-site-stops-updating-itself",
+      "title": "Tell organizers when the site stops updating itself",
+      "mode": "backend",
+      "body": "## Who benefits\nVolunteer organizers and editors who are not developers. They rely on the site updating on its own (CMS saves deploy, the nightly Luma import adds events) and do not read GitHub Actions logs.\n\n## Evidence\n- obs-1797287eaa3b (2026-11-06): one ordinary CMS save silently stopped every deploy until a developer changed code.\n- obs-f05b342faa7c (2026-11-09): an organizer noticed missing London events only by checking the site against Luma by hand, because the import had been importing nothing for two weeks.\n\n## Smallest useful version\nWhen the deploy workflow fails, or the Luma import ends with a refused feed, send one notification (an email or a GitHub issue opened by the workflow) to a configured organizer address. It should say in plain words what stopped and since when.\n\n## Case against\nGitHub already emails the person whose push triggered a failed workflow. The two root causes seen so far have each been fixed in code. A notification channel needs an owner to watch it, and for a small volunteer site it may be noise between incidents. Making the import fail loudly (see the app theme) might cover most of the need for free.",
+      "reason": "In two sessions an organizer had no signal that the site's publishing pipeline had broken, and found out late, by hand.",
+      "severity": 3,
+      "source": "feature-synthesis",
+      "status": "pending",
+      "proposedAt": "2026-11-09T22:26:52.153476989+00:00",
+      "kind": "feature",
+      "sightings": 2,
+      "evidenceIds": [
+        "obs-1797287eaa3b",
+        "obs-f05b342faa7c"
+      ],
+      "evidenceSessions": 2,
+      "ideaRank": 1
+    },
+    {
+      "id": "a-refused-luma-feed-still-ends-the-nightly-import-green",
+      "title": "A refused Luma feed still ends the nightly import green",
+      "mode": "backend",
+      "body": "## Root cause\nWhen Luma refuses the feed (HTTP 429 or 5xx), fetchFeed returns null, and main() treats that as 'offline': it leaves the committed events alone and returns ok: true. The workflow run therefore stays green. The only signal is a ::warning:: annotation, and no test observes it. The User-Agent fix removed the cause seen on 2026-10-23, but a new refusal would again go unnoticed for as long as the last one did.\n\n## Evidence\nfnd-322ed885ca31 (wrong-result) and fnd-09539cd9bffc (untested warning). On HEAD: scripts/import-luma.mjs:93 emits the ::warning:: annotation, and scripts/import-luma.mjs:128 returns { ok: true, offline: true } for a refused feed. src/lib/lumaImport.test.ts:180 asserts offline is true but nothing about the warning or the exit status.\n\n## Smallest fix\nTell 'unreachable' (network error, where staying green is fine) apart from 'refused' (an HTTP error status). For a refused feed, return ok: false, or fail after N consecutive refused nights. Add a test that captures stderr and asserts the ::warning:: line.\n\n## Cost of leaving it\nThe next time Luma changes what it accepts, events stop appearing on the site with a green build, and an organizer finds out by hand weeks later, as happened in October.",
+      "reason": "The import silently imported nothing for about two weeks. After the fix, a refused feed is still reported as success, and the one warning line has no test.",
+      "source": "debt-synthesis",
+      "status": "pending",
+      "proposedAt": "2026-11-09T22:26:52.153476989+00:00",
+      "kind": "tech-debt",
+      "sightings": 2,
+      "evidenceIds": [
+        "fnd-322ed885ca31",
+        "fnd-09539cd9bffc"
+      ],
+      "evidenceSessions": 1,
+      "ideaRank": 1,
+      "theme": {
+        "lane": "app",
+        "score": 493,
+        "verifiedAt": "f80b92e7cf1556543c11c29145424e28b9411360"
       }
     }
   ],
@@ -2884,6 +2925,16 @@
       "at": "2026-11-09T15:50:42.111928732+00:00",
       "feature": "Luma import fix, clearer copy, and a Global community menu",
       "notes": "Laura's feedback cycle: Luma User-Agent fix, copy edits, Global community nav group (nestUnderColumn). Pushed to origin/main cleanly, nothing pulled. package-lock.json left dirty (provisioning, not ours). Follow-ups: test for the import wa…"
+    },
+    {
+      "at": "2026-11-09T22:26:52.153476989+00:00",
+      "feature": "Global community menu: Newsletter above WhatsApp",
+      "notes": "This cycle closed the Global community menu restructure: a one-column stack with a Newsletter section above the WhatsApp community, approved after the user rejected three other layouts. A Luma refresh (NYC Nov 18 event) went into the same …"
+    },
+    {
+      "at": "2026-11-09T22:27:16.892795602+00:00",
+      "feature": "Global community menu: Newsletter above WhatsApp",
+      "notes": "This cycle closed the Global community menu restructure: a one-column stack with a Newsletter section above the WhatsApp community, approved after the user rejected three other layouts. A Luma refresh (NYC Nov 18 event) went into the same …"
     }
   ],
   "syntheses": [
@@ -3002,6 +3053,51 @@
         "captures-can-show-stale-content-right-after-a-seed-changes-it"
       ],
       "notes": "The lockfile-staging and bare-task-id wait-for findings came from one session with time-lost impact only, so they were not admitted yet."
+    },
+    {
+      "at": "2026-11-09T22:26:52.153476989+00:00",
+      "consumedIds": [
+        "obs-1797287eaa3b",
+        "obs-eb986a6f058d",
+        "obs-f05b342faa7c",
+        "obs-bde904bcaa41",
+        "obs-a13837c8713a",
+        "obs-511031ae5e67"
+      ],
+      "keptIds": [
+        "tell-organizers-when-the-site-stops-updating-itself"
+      ],
+      "notes": "Clustered the two 'pipeline broke silently' observations (two sessions). The separate-Luma-calendar observation comes from one session only, so it is held back. The duplicate observation rows are the same evidence."
+    },
+    {
+      "at": "2026-11-09T22:26:52.153476989+00:00",
+      "lane": "app",
+      "consumedIds": [
+        "fnd-aa727dbfa413",
+        "fnd-322ed885ca31",
+        "fnd-09539cd9bffc",
+        "fnd-e7e4a368b9b0",
+        "fnd-0d722bdd65a8"
+      ],
+      "keptIds": [
+        "a-refused-luma-feed-still-ends-the-nightly-import-green"
+      ],
+      "notes": "The chapter hero image finding is cosmetic and was seen in one session only, so it is not admitted. The duplicate rows from 11-09 are the same finding recorded twice."
+    },
+    {
+      "at": "2026-11-09T22:27:16.892795602+00:00",
+      "keptIds": [
+        "tell-organizers-when-the-site-stops-updating-itself"
+      ],
+      "notes": "Clustered the two 'pipeline broke silently' observations (two sessions). The separate-Luma-calendar observation comes from one session only, so it is held back. The duplicate observation rows are the same evidence."
+    },
+    {
+      "at": "2026-11-09T22:27:16.892795602+00:00",
+      "lane": "app",
+      "keptIds": [
+        "a-refused-luma-feed-still-ends-the-nightly-import-green"
+      ],
+      "notes": "The chapter hero image finding is cosmetic and was seen in one session only, so it is not admitted. The duplicate rows from 11-09 are the same finding recorded twice."
     }
   ]
 }
