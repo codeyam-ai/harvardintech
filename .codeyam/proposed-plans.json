@@ -1832,16 +1832,21 @@
       "reason": "In two sessions an organizer had no signal that the site's publishing pipeline had broken, and found out late, by hand.",
       "severity": 3,
       "source": "feature-synthesis",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "tell-organizers-when-the-site-stops-updating-itself",
       "proposedAt": "2026-11-09T22:26:52.153476989+00:00",
       "kind": "feature",
       "sightings": 2,
+      "decidedAt": "2026-11-09T22:28:21Z",
+      "sightingsAtDecision": 2,
       "evidenceIds": [
         "obs-1797287eaa3b",
         "obs-f05b342faa7c"
       ],
       "evidenceSessions": 2,
-      "ideaRank": 1
+      "ideaRank": 1,
+      "offeredCount": 1,
+      "lastOfferedAt": "2026-11-09T22:27:29.987988168+00:00"
     },
     {
       "id": "a-refused-luma-feed-still-ends-the-nightly-import-green",
@@ -1860,6 +1865,8 @@
       ],
       "evidenceSessions": 1,
       "ideaRank": 1,
+      "offeredCount": 1,
+      "lastOfferedAt": "2026-11-09T22:27:29.987988168+00:00",
       "theme": {
         "lane": "app",
         "score": 493,
