@@ -2872,6 +2872,11 @@
       "at": "2026-11-06T21:37:49.661214521+00:00",
       "feature": "Background photos for volunteer roles",
       "notes": "Resumed at reconcile after a context reset. The audit was clean apart from pre-existing advisories once the 'all' partition was refreshed (1886/1886 tests). Finalize passed by reusing that cache. .codeyam/design/user_files/ (a personal hea…"
+    },
+    {
+      "at": "2026-11-09T15:50:32.870482059+00:00",
+      "feature": "Luma import fix, clearer copy, and a Global community menu",
+      "notes": "Laura's feedback cycle: Luma User-Agent fix, copy edits, Global community nav group (nestUnderColumn). Pushed to origin/main cleanly, nothing pulled. package-lock.json left dirty (provisioning, not ours). Follow-ups: test for the import wa…"
     }
   ],
   "syntheses": [
