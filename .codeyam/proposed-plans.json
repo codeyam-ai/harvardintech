@@ -2877,6 +2877,11 @@
       "at": "2026-11-09T15:50:32.870482059+00:00",
       "feature": "Luma import fix, clearer copy, and a Global community menu",
       "notes": "Laura's feedback cycle: Luma User-Agent fix, copy edits, Global community nav group (nestUnderColumn). Pushed to origin/main cleanly, nothing pulled. package-lock.json left dirty (provisioning, not ours). Follow-ups: test for the import wa…"
+    },
+    {
+      "at": "2026-11-09T15:50:42.111928732+00:00",
+      "feature": "Luma import fix, clearer copy, and a Global community menu",
+      "notes": "Laura's feedback cycle: Luma User-Agent fix, copy edits, Global community nav group (nestUnderColumn). Pushed to origin/main cleanly, nothing pulled. package-lock.json left dirty (provisioning, not ours). Follow-ups: test for the import wa…"
     }
   ],
   "syntheses": [
