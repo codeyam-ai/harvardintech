@@ -6,7 +6,10 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-29T19:51:44Z"
+  },
   "componentName": "GlobalCommunityAction",
   "scenarioType": "component",
-  "description": "One action card from the global-community band, showing the newsletter pitch as it ships: 'Get the newsletter', with a line that leads with what lands in the inbox — events, chapter news and alumni stories, local news first. The whole card is the link rather than just its label, which is the right call when three cards carry the entire band and the alternative is a short tap target floating inside a large box. The newsletter action is the fixture because it has the longest blurb, capturing the card at its tallest shape."
+  "description": "One action card from the global-community band, showing the newsletter pitch as it ships: 'Subscribe to the newsletter' — the one label every newsletter link on the site now shares (just 'Subscribe' in the header) — with a line that leads with what lands in the inbox — events, chapter news and alumni stories, local news first. The whole card is the link rather than just its label, which is the right call when three cards carry the entire band and the alternative is a short tap target floating inside a large box. The newsletter action is the fixture because it has the longest blurb, capturing the card at its tallest shape."
 }

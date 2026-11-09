@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: efe36b525a40410996e4cc5d412457aeba93156f  source-sha256: 1e8c260517a4c76f3fd8972c25ada9bcd623b43d1042bb0cc317fb2f5e1d0787
+// codeyam-editor: 0.1.7  build: fd21dd6a37bf477d3c105b5af0962eed166e262d  source-sha256: 5ef2dbf93dd27a02012eb99b149abfd4ad6a79aa858365c52dfd505cd3316de6
 // Interaction targeting for the capture harness: turn a step's visible-text or
 // CSS-selector target into the one element to act on, explain a miss in terms
 // the author can act on, and measure where a pointer step lands inside its
@@ -105,6 +105,22 @@ function noMatchGuidance({ targetDesc, matchedByText, candidateLabels, canvasDom
     `behind a tab, dialog, or conditional render), that the id/attribute is ` +
     `spelled as the markup emits it, and that the page rendered and hydrated ` +
     `at all. ${queryParamHint}`
+  );
+}
+
+// The redirect a text wait on a canvas page gets: why it cannot work, and the
+// three forms that do. The wait-side sibling of `noMatchGuidance`'s canvas
+// branch — both answer "this label is painted, not page text".
+function canvasTextWaitGuidance() {
+  return (
+    `cannot be awaited: this page is canvas-dominated (it paints into a ` +
+    `canvas with no visible page text), and canvas-painted words are never ` +
+    `in the DOM, so a text wait could only time out. Instead: wait for the ` +
+    `painted frame to stop changing with {"waitFor":{"canvas":true,"timeoutMs":8000}}; ` +
+    `click by position on the canvas ` +
+    `({"click":{"selector":"canvas","position":{"x":120,"y":40}}}, CSS pixels ` +
+    `from its top-left, read off the frame captured just before the step); or ` +
+    `drop the wait and capture — the capture already settles on pixels.`
   );
 }
 
@@ -325,6 +341,7 @@ module.exports = {
   INTERACTIVE_SELECTOR,
   collectInteractiveLabels,
   candidateLabelSummary,
+  canvasTextWaitGuidance,
   noMatchGuidance,
   describeMatchCandidates,
   resolveTextTarget,

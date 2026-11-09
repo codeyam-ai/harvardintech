@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "DeployStatus",
   "scenarioType": "component",
   "description": "The build has finished and the poll is watching the site's own marker for the new bytes to appear. Captured because it is the stage the old bug died on, and because it reads almost identically to the state that replaced it: both say the site is catching up, but this one is still WATCHING (close reads 'Keep editing', no Check again) while 'unconfirmed' has stopped watching (close reads 'Done', Check again offered). Having both captured makes that distinction reviewable rather than a claim in a comment."

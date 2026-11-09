@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-09-28T17:23:38Z"
+  },
   "componentName": "GiveCollage",
   "scenarioType": "component",
   "pageFilePath": "src/components/give/GiveCollage.astro",

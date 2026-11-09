@@ -1686,6 +1686,15 @@
     "testFile": "src/lib/donorFilter.test.ts"
   },
   {
+    "description": "Whether a header dropdown splits into titled columns: true once any of its children carries non-empty children of its own. PrimaryNav uses it to choose the column layout; the Global community menu takes that branch, flat lists like Content hub do not.",
+    "filePath": "src/lib/nav.ts",
+    "name": "hasColumns",
+    "tags": [
+      "nav"
+    ],
+    "testFile": "src/lib/nav.test.ts"
+  },
+  {
     "description": "Whether any sponsor on the wall is illustrative, which is what makes the wall render its 'example placements, not actual sponsors' notice. Deliberately ANY rather than ALL: one sample entry sitting beside three real partners is exactly the case where a reader would otherwise assume the whole row is real, so the notice has to fire on the mixed state too. Shipping sample logos silently would assert partnerships that do not exist, so this predicate is what makes shipping them honest at all.",
     "filePath": "src/lib/sponsors.ts",
     "name": "hasPlaceholderSponsors",
@@ -2384,6 +2393,15 @@
     "filePath": "src/lib/momentumNetwork.ts",
     "name": "nearestNeighborEdges",
     "testFile": "src/lib/momentumNetwork.test.ts"
+  },
+  {
+    "description": "Returns a menu group's children with new items appended inside the first titled column carrying the given label (an item that has children), or appended flat when no such column exists. A same-labelled plain link is not treated as a column. Used by withCommunityItems to nest AI, Founders and Investors under the WhatsApp community column of the Global community menu. Never mutates its inputs.",
+    "filePath": "src/lib/nav.ts",
+    "name": "nestUnderColumn",
+    "tags": [
+      "nav"
+    ],
+    "testFile": "src/lib/nav.test.ts"
   },
   {
     "description": "The whole picture: supporters placed, wired, and the glow clusters under them, in one seeded pass. Centres are computed here and passed down rather than recomputed inside placeNodes, so the blooms and the people they sit under come from the same draw of the same stream — computing them twice would advance the PRNG differently and drift the light away from the supporters. Callers pass donors already draft-filtered by publishedEntries.",
@@ -3647,13 +3665,13 @@
     "testFile": "src/lib/url.test.ts"
   },
   {
-    "description": "Returns a new top-level menu with the derived Chapters dropdown inserted directly after the item labelled Programs, and appended when no such item exists so a rename or deletion in the CMS degrades sensibly. The dropdown lists the cities, then Global community for the alumni near none of them, then closes with the call to action Lead or co-lead a chapter linking to the volunteer page — the one place the menu asks for chapter leads, rather than tagging individual cities with a note that goes stale the day a lead is found. With no chapter items the group is omitted entirely, global entry and call to action included: an empty dropdown is a caret opening onto nothing, and the CMS nav serializer collapses one back into a plain link. Injected here rather than marked in nav.json because the CMS drops unknown keys on save. Does not mutate the caller's list.",
+    "description": "Returns a new top-level menu with the derived Chapters dropdown inserted directly after the item labelled Events, and appended when no such item exists so a rename or deletion in the CMS degrades sensibly. The dropdown lists only places: the cities, then the call to action Lead or co-lead a chapter linking to the volunteer page, the one place the menu asks for chapter leads. The former Global community link moved to its own top-level menu in 2026-11. With no chapter items the group is omitted entirely, call to action included: an empty dropdown is a caret opening onto nothing, and the CMS nav serializer collapses one back into a plain link. Injected here rather than marked in nav.json because the CMS drops unknown keys on save. Does not mutate the caller list.",
     "filePath": "src/lib/nav.ts",
     "name": "withChapterGroup",
     "testFile": "src/lib/nav.test.ts"
   },
   {
-    "description": "The top-level menu with the derived community links merged into the existing Communities group, after whatever that group already lists by hand. This is the deliberate asymmetry with withChapterGroup: Chapters is a group this module owns and injects wholesale, while Communities is a group an editor already owns in nav.json (the WhatsApp link), so derived items are appended to its children rather than replacing them. With no communities the menu is returned unchanged — including not creating an absent group, since an empty dropdown is the same caret-onto-nothing the chapters rule avoids. Copies the group rather than mutating it, because the layout passes the shared nav.items singleton straight in.",
+    "description": "The top-level menu with the derived community links merged into the existing Global community group. When that group has a WhatsApp community column the links nest inside it via nestUnderColumn, since AI, Founders and Investors are groups inside the WhatsApp community; otherwise they are appended after the hand-authored links. Chapters is a group this module owns and injects wholesale, while Global community is editor-owned in nav.json, so derived items join it rather than replace it. With no communities the menu is returned unchanged, and an absent group is not created. Copies rather than mutates, because the layout passes the shared nav.items singleton straight in.",
     "filePath": "src/lib/nav.ts",
     "name": "withCommunityItems",
     "testFile": "src/lib/nav.test.ts"

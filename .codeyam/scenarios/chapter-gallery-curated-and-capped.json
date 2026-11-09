@@ -2,13 +2,13 @@
   "name": "Chapter Gallery - Curated and Capped",
   "id": "6dfdb2b5-f586-4af1-bdf5-a3c762ff1d27",
   "url": "/chapters/nyc",
-  "demonstratesState": {
-    "photos": "many"
-  },
   "dimensions": [
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T14:49:49Z"
+  },
   "seed": {
     "chapters": [
       {
@@ -125,6 +125,9 @@
   "scenarioType": "application",
   "pageFilePath": "src/pages/chapters/[slug].astro",
   "description": "New York has curated 14 of its own event photos, so the chapter shows those instead of the shared 38-photo wall. Twelve render immediately and the rest sit behind \"Show all 14 photos\"; any tile opens in the lightbox, where a caption appears only for the photos that were given one.",
+  "demonstratesState": {
+    "photos": "many"
+  },
   "interactions": [
     {
       "action": "click",

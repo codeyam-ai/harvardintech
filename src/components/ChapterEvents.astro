@@ -58,9 +58,9 @@ const show = hasEvents || !isPast;
         ) : (
           <EmptyState
             title={emptyTitle ?? `No events scheduled in ${name} yet.`}
-            body="We'll announce the next one to the mailing list first."
+            body="We'll announce the next one in the newsletter first."
             actionHref={siteLinks().mailingList}
-            actionLabel="Get event announcements"
+            actionLabel="Subscribe to the newsletter"
           />
         )}
       </div>

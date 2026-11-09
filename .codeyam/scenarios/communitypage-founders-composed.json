@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "CommunityPage",
   "scenarioType": "component",
   "description": "A whole community page in the page type communities got when they stopped rendering through ChapterPage. The order is the point: what the community does, then how to join it, then events — not a chapter's place-then-calendar sequence. A community may never have listable events at all, so the join ask cannot sit below them. The hero kicker reads Community rather than the old Harvard Alumni in Tech Founders title, which read as a product name."

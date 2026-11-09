@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "SponsorInquiry",
   "scenarioType": "component",
-  "description": "The closing ask in its current state: the email CTA works today, and the form panel carries reader-facing copy saying the form is on the way. The generic embed fallback names the two props a developer would set, which is right for an unconfigured embed nobody has reached and wrong on a page a prospective sponsor lands on \u2014 hence the override. The Harvard disclaimer sits under the CTA, where a reader deciding to write will actually see it.",
-  "pageFilePath": "src/components/sponsor/SponsorInquiry.astro"
+  "pageFilePath": "src/components/sponsor/SponsorInquiry.astro",
+  "description": "The closing ask in its current state: the email CTA works today, and the form panel carries reader-facing copy saying the form is on the way. The generic embed fallback names the two props a developer would set, which is right for an unconfigured embed nobody has reached and wrong on a page a prospective sponsor lands on — hence the override. The Harvard disclaimer sits under the CTA, where a reader deciding to write will actually see it."
 }

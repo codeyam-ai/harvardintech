@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "PrimaryNav",
   "scenarioType": "component",
   "description": "An empty chapters collection, which is where production actually started. There is no Chapters button in the menu bar at all — the group is omitted rather than rendered as a caret that opens onto nothing, and rather than left as an empty dropdown, which the CMS nav serializer would collapse back into a plain link pointing nowhere."

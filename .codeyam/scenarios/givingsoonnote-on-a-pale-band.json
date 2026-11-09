@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-29T19:51:44Z"
+  },
   "componentName": "GivingSoonNote",
   "scenarioType": "component",
   "description": "What replaces a giving button while the campaign is closed, in its default tone — the one the priorities list and the empty donor wall use. It is deliberately not a button: the site cannot take a gift yet, so anything shaped like an action would promise one. The message states when the campaign opens and what the 2026 goal is, and the link underneath is the one thing a reader can actually do instead."

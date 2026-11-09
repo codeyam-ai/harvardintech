@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-02T00:44:03Z"
+  },
   "seed": {
     "command": "bash .codeyam/seed-cutover-progress.sh",
     "data": {

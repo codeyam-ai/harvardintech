@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-15T15:01:42Z"
+  },
   "scenarioType": "application",
   "pageFilePath": "node_modules/@codeyam/cms/src/pages/admin/[collection]/index.astro",
   "description": "The same supporter with 'List anonymously' switched on, and every one of the four identity values still sitting in the form. That is the point of the frame, not an oversight: the entry keeps the school, the class year, the location and the message for the team's records, and donorPublicIdentity and donorWhy are what stop them reaching a reader. Each of the four hints says so at the moment an editor is deciding whether to type something in. The suppression itself is not visible here — nothing renders these fields yet, since the network that will draw them does not exist — so it is pinned in src/lib/donors.test.ts, where withholding school, class year and location TOGETHER for an anonymous supporter is the load-bearing assertion of this feature.",

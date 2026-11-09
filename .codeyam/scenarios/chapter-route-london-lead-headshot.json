@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-30T22:11:17Z"
+  },
   "scenarioType": "application",
   "pageFilePath": "src/pages/chapters/[slug].astro",
   "description": "London's chapter-lead block from the live content entry: Nemo Shi as a full profile with his headshot on the crimson disc, role, bio and LinkedIn button, under the singular Chapter lead heading, followed by the co-lead note. The photo is the one he supplied on 22 Oct; its alt text comes from the media library.",

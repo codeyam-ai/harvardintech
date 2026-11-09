@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-29T19:51:44Z"
+  },
   "componentName": "GivingCampaign",
   "scenarioType": "component",
   "description": "The launch switch seen on the homepage band. With a platform URL set the coming-soon note becomes a real Donate button pointing straight at Givebutter, and the blurb returns to the present tense. Read it against its pair, the plain Giving Campaign scenario, which takes no URL and is the state the site ships today: one CMS field is the whole difference, and no code changes between the two frames."

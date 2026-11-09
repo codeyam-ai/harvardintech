@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "VolunteerProjectBody",
   "scenarioType": "component",
-  "description": "The prose column holding a project's rendered markdown: paragraphs, a heading, and the long bulleted list an organizer actually wrote. Proves the :global prose rules reach slotted content, which scoped styles alone cannot do because the markdown tags never appear in the component's own template.",
-  "pageFilePath": "src/components/volunteer/VolunteerProjectBody.astro"
+  "pageFilePath": "src/components/volunteer/VolunteerProjectBody.astro",
+  "description": "The prose column holding a project's rendered markdown: paragraphs, a heading, and the long bulleted list an organizer actually wrote. Proves the :global prose rules reach slotted content, which scoped styles alone cannot do because the markdown tags never appear in the component's own template."
 }

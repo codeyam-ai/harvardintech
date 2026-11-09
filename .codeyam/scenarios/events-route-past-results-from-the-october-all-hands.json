@@ -6,9 +6,12 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "scenarioType": "application",
   "pageFilePath": "src/pages/events.astro",
-  "description": "The /events past grid now that the NYC Fall Welcome Mixer is written up after the fact: its card leads with \"Sold out within 24 hours, with more than 90% of registrants attending\", the October 2026 volunteer all-hands figure, instead of the old space-is-limited pitch. The card clamps its description, which is why the result comes first. Alumni Day (June 5) sits at the bottom of the frame; its 120-alumni write-up is in the card below the fold. The hover only scrolls the past grid into view.",
+  "description": "The /events past grid now that the NYC Fall Welcome Mixer is written up after the fact: its card leads with \"Sold out within 24 hours, with more than 90% of registrants attending\", the October 2026 volunteer all-hands figure, instead of the old space-is-limited pitch. The card clamps its description, which is why the result comes first. The grid now opens with the London Alumni Founders Co-working Day of October 9, one of the two London events the Luma import missed while Luma was refusing its requests (fixed 2026-11-06 by naming the importer in a User-Agent header); the earlier monthly London co-working days fill the rest of the frame, and Alumni Day (June 5) is below the fold. The hover only scrolls the past grid into view.",
   "interactions": [
     {
       "action": "hover",

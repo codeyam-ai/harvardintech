@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T21:35:19Z"
+  },
   "componentName": "VolunteerProjectHeader",
   "scenarioType": "component",
   "description": "The detail page header for a London city role with no photo of its own: the banner switches to its photo tone with the London chapter photo behind the title, and the time commitment and back link invert to white so they stay readable on the scrim."

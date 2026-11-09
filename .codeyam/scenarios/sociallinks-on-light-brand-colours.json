@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-09-29T19:27:12Z"
+  },
   "componentName": "SocialLinks",
   "scenarioType": "component",
   "pageFilePath": "src/components/ui/SocialLinks.astro",

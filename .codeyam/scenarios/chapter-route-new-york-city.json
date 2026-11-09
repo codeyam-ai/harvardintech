@@ -9,6 +9,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "scenarioType": "application",
   "pageFilePath": "src/pages/chapters/[slug].astro",
   "description": "The founding chapter with NO events tagged to it — the counterpart to London, where tags match and the events section appears. Neither an upcoming nor a recent block renders here, which is the assertion: both sections stay away entirely rather than leaving an empty heading behind. It is also the state a chapter sits in whenever its tags are typo'd, since a near-miss tag belongs to nobody and looks exactly like this."

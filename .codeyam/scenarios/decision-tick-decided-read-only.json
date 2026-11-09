@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "DecisionTick",
   "scenarioType": "component",
   "description": "What the wider team sees on a decided decision: the answer and who gave it, with no controls at all. Worth capturing separately from the signed-in view because the read-only path is a different branch rather than the same markup with disabled buttons — and because this is the view that matters most for the page's actual purpose. The point of committing an answer is that everyone can read it; being able to change it is the narrower privilege."

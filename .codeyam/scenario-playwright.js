@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 1bbe2360ac6e81ca4d466e3debedefd9331160ab  source-sha256: 67d2ad4782f07d64e00439f36d5c2b583a9d88fd61987329135b5d72cb0a7204
+// codeyam-editor: 0.1.7  build: fd21dd6a37bf477d3c105b5af0962eed166e262d  source-sha256: f982e7246a090e93f2bfe48e8dca532d4c91626ce6077b0dd05fcb63dcea737c
 const {
   hasLoadingMarkers,
   isCanvasDominated,
@@ -7,6 +7,7 @@ const {
 } = require("./scenario-metrics");
 const {
   candidateLabelSummary,
+  canvasTextWaitGuidance,
   noMatchGuidance,
   describeMatchCandidates,
   resolveTextTarget,
@@ -1241,6 +1242,15 @@ async function performInteraction(
     return;
   }
 
+  // Before target resolution: `hidden` must pass on an absent target.
+  if (action === "waitFor") {
+    const bound = { defaultTimeoutMs: Math.max(timeoutMs, 8000) };
+    return waitForPredicate(frame, interaction, bound).catch(async (error) => {
+      const labels = await candidateLabelSummary(frame);
+      throw new Error(`preview-interact: ${error.message}. Candidate interactive labels: ${labels}`);
+    });
+  }
+
   const { locator, targetDesc } = await resolveInteractionTarget(frame, interaction, {
     warnings,
     appearTimeoutMs,
@@ -1316,7 +1326,7 @@ async function performInteraction(
       }
       default:
         throw new Error(
-          `preview-interact: unknown action "${action}" (expected click | fill | press | hover | drag | wheel | key | type)`,
+          `preview-interact: unknown action "${action}" (expected click | fill | press | hover | drag | wheel | key | type | waitFor)`,
         );
     }
   } catch (error) {
@@ -1390,7 +1400,7 @@ async function waitForPredicate(
   predicate,
   { defaultTimeoutMs = 8000, canvasProbe = probeCanvasDominated } = {},
 ) {
-  const { text, selector, timeoutMs } = predicate || {};
+  const { text, selector, timeoutMs, state = "visible" } = predicate || {};
   const bound =
     typeof timeoutMs === "number" && timeoutMs > 0 ? timeoutMs : defaultTimeoutMs;
 
@@ -1411,11 +1421,13 @@ async function waitForPredicate(
   }
 
   try {
-    await locator.waitFor({ state: "visible", timeout: bound });
+    // `hidden` also resolves when nothing matches, so a spinner that is
+    // removed (not merely hidden) still ends the wait.
+    await locator.waitFor({ state, timeout: bound });
   } catch (_) {
     const lateCanvas = byText && (await canvasProbe(frame));
     throw new Error(
-      `waitFor: predicate ${desc} did not become visible within ${bound}ms` +
+      `waitFor: predicate ${desc} did not become ${state} within ${bound}ms` +
         (lateCanvas ? `. The page is now canvas-dominated: ${canvasTextWaitGuidance()}` : ""),
     );
   }
@@ -1434,21 +1446,6 @@ async function probeCanvasDominated(frame) {
   } catch (_) {
     return false;
   }
-}
-
-// The redirect a text wait on a canvas page gets: why it cannot work, and the
-// three forms that do.
-function canvasTextWaitGuidance() {
-  return (
-    `cannot be awaited: this page is canvas-dominated (it paints into a ` +
-    `canvas with no visible page text), and canvas-painted words are never ` +
-    `in the DOM, so a text wait could only time out. Instead: wait for the ` +
-    `painted frame to stop changing with {"waitFor":{"canvas":true,"timeoutMs":8000}}; ` +
-    `click by position on the canvas ` +
-    `({"click":{"selector":"canvas","position":{"x":120,"y":40}}}, CSS pixels ` +
-    `from its top-left, read off the frame captured just before the step); or ` +
-    `drop the wait and capture — the capture already settles on pixels.`
-  );
 }
 
 // Drive an ordered sequence of interactions against the settled frame, settling

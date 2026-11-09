@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "SponsorPage",
   "scenarioType": "component",
-  "description": "The whole sponsorship page in one frame as it ships today \u2014 hero, the four partnership levels, the example wall behind its notice, and the inquiry section with the disclaimer. Useful for judging whether the page reads as a coherent pitch top to bottom, which the section-by-section scenarios cannot show.",
-  "pageFilePath": "src/components/SponsorPage.astro"
+  "pageFilePath": "src/components/SponsorPage.astro",
+  "description": "The whole sponsorship page in one frame as it ships today — hero, the four partnership levels, the example wall behind its notice, and the inquiry section with the disclaimer. Useful for judging whether the page reads as a coherent pitch top to bottom, which the section-by-section scenarios cannot show."
 }

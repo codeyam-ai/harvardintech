@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-29T19:51:44Z"
+  },
   "componentName": "MissionStatement",
   "scenarioType": "component",
   "description": "The Our mission band with no entry copy at all, so it renders its own wording: the OUR MISSION eyebrow, the heading 'Building a global alumni community to' with its crimson tail 'inspire and steward the future of tech.', the official HAA-recognized SIG line, and the three goals as a row under crimson rules. This is what an editor who empties the entry still gets, rather than a blank band."

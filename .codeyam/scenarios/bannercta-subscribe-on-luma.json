@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "BannerCta",
   "scenarioType": "component",
   "description": "The solid pill under the /events banner text, reading Subscribe on Luma with no arrow, per the site button system. It points at the outside Luma calendar, so it opens in a new tab."

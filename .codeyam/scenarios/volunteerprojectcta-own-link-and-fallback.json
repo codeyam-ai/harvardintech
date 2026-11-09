@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T21:35:19Z"
+  },
   "componentName": "VolunteerProjectCta",
   "scenarioType": "component",
-  "description": "Both branches of the call-to-action together. Top: a project with its own sign-up link, labelled Get involved. Bottom: a project with none, falling back to the site-wide Volunteer with us CTA \u2014 the branch that keeps a project posted before its form exists from ending with no way in. The third branch, neither link, renders nothing and so has no pixels to show.",
-  "pageFilePath": "src/components/volunteer/VolunteerProjectCta.astro"
+  "pageFilePath": "src/components/volunteer/VolunteerProjectCta.astro",
+  "description": "Both branches of the call-to-action together. Top: a project with its own sign-up link, labelled Get involved. Bottom: a project with none, falling back to the site-wide Volunteer with us CTA — the branch that keeps a project posted before its form exists from ending with no way in. The third branch, neither link, renders nothing and so has no pixels to show."
 }

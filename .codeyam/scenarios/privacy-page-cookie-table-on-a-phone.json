@@ -6,6 +6,9 @@
     "Mobile"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "scenarioType": "application",
   "pageFilePath": "src/pages/[slug].astro",
   "description": "The privacy page at 390px, scrolled to its cookie table — the only markdown table on the site. Unstyled, it ran off a small phone and scrolled the whole page sideways (found by the October responsive sweep at 320 and 360px). It now keeps to the text column: all four columns fit at 390px, and on a narrower phone it scrolls inside its own box while the page stays still.",

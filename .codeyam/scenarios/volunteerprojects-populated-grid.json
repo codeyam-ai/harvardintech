@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T21:35:19Z"
+  },
   "componentName": "VolunteerProjects",
   "scenarioType": "component",
   "pageFilePath": "src/components/volunteer/VolunteerProjects.astro",
-  "description": "The open-projects section with three projects \u2014 the state /volunteer reaches once organizers post work in the CMS. Every card now links through to its own detail page, and the mix is deliberate: one project with a photo and a sign-up form, one with a photo but no form yet, and one with neither. All three cards stay the same height, which is what keeps a mixed grid aligned."
+  "description": "The open-projects section with three projects — the state /volunteer reaches once organizers post work in the CMS. Every card now links through to its own detail page, and the mix is deliberate: one project with a photo and a sign-up form, one with a photo but no form yet, and one with neither. All three cards stay the same height, which is what keeps a mixed grid aligned."
 }

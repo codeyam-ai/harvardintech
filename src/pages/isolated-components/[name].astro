@@ -372,13 +372,21 @@ const ourChaptersStates = {
 // literal here so the states stay deterministic when someone edits the real nav.
 const AUTHORED_NAV_ITEMS = [
   { label: 'Events', url: '/events/' },
-  { label: 'Communities', children: [{ label: 'WhatsApp', url: '/#community' }] },
+  {
+    label: 'Global community',
+    children: [
+      {
+        label: 'WhatsApp community',
+        children: [{ label: 'Join the community', url: '/#community' }],
+      },
+      { label: 'Newsletter', url: 'https://mailchi.mp/0222623e1169/fbrj32e9wb' },
+    ],
+  },
   {
     label: 'Content hub',
     children: [
       { label: 'Webinars', url: '/webinars/' },
       { label: 'Medium', url: 'https://medium.com/harvard-in-tech' },
-      { label: 'Newsletter', url: 'https://mailchi.mp/0222623e1169/fbrj32e9wb' },
     ],
   },
   {
@@ -1234,7 +1242,10 @@ if (name && name.startsWith('MomentumNetwork')) {
          route (it reports `interactionEffect: none` and captures the resting
          menu) — so a scenario relying on the interaction shows a CLOSED menu and
          demonstrates nothing. Pinning the state is what makes the derived
-         Communities items visible in the captured frame. It overrides only the
+         community items visible in the captured frame. The group is now
+         "Global community" (2026-11): a titled WhatsApp community column, with
+         the derived AI, Founders and Investors nested inside it, beside a
+         Newsletter column. It overrides only the
          two properties the reveal animates, so what renders is what a visitor
          sees mid-hover, not a bespoke layout. -->
     <style is:global>
@@ -1248,15 +1259,15 @@ if (name && name.startsWith('MomentumNetwork')) {
         visibility: visible;
         transform: translateX(-50%) translateY(0);
       }
-      /* Get involved is the LAST item (Events, Chapters, Communities, Content
-         hub, About, Get involved) — the dropdown that absorbed Support, so its
+      /* Get involved is the LAST item (Events, Chapters, Global community,
+         Content hub, About, Get involved) — the dropdown that absorbed Support, so its
          three links are the visible proof Membership was dissolved. */
       .nav-stage--get-involved-open .links > .nav-item:nth-child(6) .mega {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
       }
-      /* Chapters is the SECOND item (Events, Chapters, Communities), and it
+      /* Chapters is the SECOND item (Events, Chapters, Global community), and it
          is the group this module injects rather than one nav.json authors —
          which is exactly why its contents need to be visible in a capture. */
       .nav-stage--chapters-open .links > .nav-item:nth-child(2) .mega {

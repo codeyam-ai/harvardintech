@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-29T19:51:44Z"
+  },
   "componentName": "MissionStatement",
   "scenarioType": "component",
   "description": "An editor's rewrite: a custom eyebrow, lede, and a heading written without any *emphasis* markers, so the whole sentence stays ink with no crimson tail rather than breaking. The goals, which this entry does not set, keep their default row of three."

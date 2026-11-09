@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T14:49:49Z"
+  },
   "componentName": "ChapterPage",
   "scenarioType": "component",
   "pageFilePath": "src/components/ChapterPage.astro"

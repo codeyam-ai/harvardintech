@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T14:49:49Z"
+  },
   "componentName": "LeadAvatar",
   "scenarioType": "component",
   "description": "The 56px committee-tile size with no photo. The initials scale down with the disc so they stay inside it."

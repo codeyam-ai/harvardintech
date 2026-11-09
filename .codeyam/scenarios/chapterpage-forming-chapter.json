@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "ChapterPage",
   "scenarioType": "component",
   "description": "A forming (WhatsApp-only) chapter page, the state DC and Seattle are in: the hero with the Online group kicker, then the three-button band (WhatsApp, newsletter, volunteer or co-lead), and nothing else. The fixture deliberately PASSES a lead, a callout and a curated photo, and none of them may render: a forming page shows no leads, callouts, write-up, events, gallery, sign-up band, global-community band or Connect with us. Compare with ChapterPage - Full Chapter for the active shape, which keeps every section."

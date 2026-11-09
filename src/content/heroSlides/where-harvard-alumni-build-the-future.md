@@ -5,7 +5,7 @@ lede: 'Furthering innovation and connecting alumni technologists with the resour
 image: /images/bg/hero-bg.jpg
 order: 1
 ctas:
-  - label: 'Join the mailing list'
+  - label: 'Subscribe to the newsletter'
     url: 'https://mailchi.mp/0222623e1169/fbrj32e9wb'
     variant: solid
   - label: 'Join WhatsApp'

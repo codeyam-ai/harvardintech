@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T14:49:49Z"
+  },
   "componentName": "HomeSections",
   "scenarioType": "component",
-  "description": "The homepage band stack with one band in each visibility state, which is the only place the three can be compared directly since a real page shows one arrangement at a time. Stats renders normally, the event gallery is replaced by its coming-soon placeholder, and a drafted Support us band is absent entirely. The drafted band is passed in on purpose: the component renders nothing for it, so the three states are total here rather than depending on the page filtering first.",
-  "pageFilePath": "src/components/landing/HomeSections.astro"
+  "pageFilePath": "src/components/landing/HomeSections.astro",
+  "description": "The homepage band stack with one band in each visibility state, which is the only place the three can be compared directly since a real page shows one arrangement at a time. Stats renders normally, the event gallery is replaced by its coming-soon placeholder, and a drafted Support us band is absent entirely. The drafted band is passed in on purpose: the component renders nothing for it, so the three states are total here rather than depending on the page filtering first."
 }

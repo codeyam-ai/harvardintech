@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-16T15:08:00Z"
+  },
   "componentName": "EventCardMedia",
   "scenarioType": "component",
   "description": "The square at the top of an event card with a real Luma cover: the Leaders in Engineering panel artwork, square with its own title text, shown whole rather than cropped to a wider ratio and fetched from Luma at card size."

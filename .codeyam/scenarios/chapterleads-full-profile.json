@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "ChapterLeads",
   "scenarioType": "component",
   "description": "The leads block with one fully filled-in lead: the heading over a single complete profile with every optional line. A fictional person with a silhouette headshot."

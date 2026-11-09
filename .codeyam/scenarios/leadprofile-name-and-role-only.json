@@ -6,8 +6,14 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T14:49:49Z"
+  },
   "componentName": "LeadProfile",
   "scenarioType": "component",
-  "demonstratesState": {"school": "false", "title": "false"},
-  "description": "An entry from before profiles existed, with only a name and role. The disc shows initials, and the title, school, bio and contact lines all drop out rather than leaving blanks."
+  "description": "An entry from before profiles existed, with only a name and role. The disc shows initials, and the title, school, bio and contact lines all drop out rather than leaving blanks.",
+  "demonstratesState": {
+    "school": "false",
+    "title": "false"
+  }
 }

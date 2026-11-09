@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "SponsorWall",
   "scenarioType": "component",
-  "description": "The production default the moment the sample entries are deleted, and the state a visitor sees before any partnership is signed. No notice, no dashed boxes, no empty level headings \u2014 just the editable invitation to be the first organization listed. This is the state most visitors will actually meet, so it has to read as deliberate rather than unfinished.",
-  "pageFilePath": "src/components/sponsor/SponsorWall.astro"
+  "pageFilePath": "src/components/sponsor/SponsorWall.astro",
+  "description": "The production default the moment the sample entries are deleted, and the state a visitor sees before any partnership is signed. No notice, no dashed boxes, no empty level headings — just the editable invitation to be the first organization listed. This is the state most visitors will actually meet, so it has to read as deliberate rather than unfinished."
 }

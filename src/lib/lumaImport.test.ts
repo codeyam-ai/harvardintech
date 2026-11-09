@@ -151,6 +151,21 @@ describe('importing from Luma', () => {
     expect(fs.readdirSync(outDir)).toEqual([]);
   });
 
+  // Luma rate-limits Node's default User-Agent with a 429 on every request; the
+  // nightly import failed soft on that for two weeks before anyone noticed.
+  it('names itself with a User-Agent on every feed request', async () => {
+    const agents: (string | undefined)[] = [];
+    const recording = async (url: string, init?: { headers?: Record<string, string> }) => {
+      agents.push(init?.headers?.['User-Agent']);
+      return stubFetch([MIXER])(url);
+    };
+
+    await importLuma({ argv: ['--past', '--dry-run'], outDir, fetchImpl: recording });
+
+    expect(agents).toHaveLength(2);
+    for (const agent of agents) expect(agent).toMatch(/^harvardintech-site-import\//);
+  });
+
   // A calendar that is briefly unreachable must not empty the events page or
   // break a deploy — the build ships what is already committed.
   it('leaves the collection alone and does not fail when Luma is unreachable', async () => {

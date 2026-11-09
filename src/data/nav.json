@@ -5,11 +5,20 @@
       "url": "/events/"
     },
     {
-      "label": "Communities",
+      "label": "Global community",
       "children": [
         {
-          "label": "WhatsApp",
-          "url": "/#community"
+          "label": "WhatsApp community",
+          "children": [
+            {
+              "label": "Join the community",
+              "url": "/#community"
+            }
+          ]
+        },
+        {
+          "label": "Newsletter",
+          "url": "https://mailchi.mp/0222623e1169/fbrj32e9wb"
         }
       ]
     },
@@ -27,10 +36,6 @@
         {
           "label": "LinkedIn",
           "url": "https://www.linkedin.com/company/harvardintech/"
-        },
-        {
-          "label": "Newsletter",
-          "url": "https://mailchi.mp/0222623e1169/fbrj32e9wb"
         }
       ]
     },

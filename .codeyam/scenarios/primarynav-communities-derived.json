@@ -6,7 +6,10 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "PrimaryNav",
   "scenarioType": "component",
-  "description": "The Communities dropdown pinned open for capture. WhatsApp is the hand-authored link an editor keeps in nav.json; AI, Founders and Investors below it are generated from the communities collection at render time and sorted alphabetically. This is the asymmetry with Chapters: that group is injected whole by the layout, while this one already belongs to an editor, so the derived items join its children rather than replacing them. Investors, the third community, reached the menu with no nav edit at all — adding its content file was enough. The panel is pinned by the isolation route rather than a scenario interaction, because a hover or click does not survive the screenshot on this route and would capture the resting, closed menu."
+  "description": "The Global community dropdown pinned open for capture — what replaced the old Communities menu after the 2026-11-06 site feedback. It splits into two titled columns: a WhatsApp community column, and Newsletter beside it (moved here from Content hub). The WhatsApp column opens with Join the community, the hand-authored link an editor keeps in nav.json, and AI, Founders and Investors follow inside the same column, because they are groups within the WhatsApp community rather than its peers. Those three are generated from the communities collection at render time and sorted alphabetically: Chapters is injected whole by the layout, while this group already belongs to an editor, so the derived items nest into its WhatsApp column rather than replacing anything. Investors, the third community, reached the menu with no nav edit at all — adding its content file was enough. The panel is pinned by the isolation route rather than a scenario interaction, because a hover or click does not survive the screenshot on this route and would capture the resting, closed menu."
 }

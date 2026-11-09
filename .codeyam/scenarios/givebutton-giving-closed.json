@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "GiveButton",
   "scenarioType": "component",
   "description": "The state production actually ships in: no donation platform configured, so the pill is gone and the note stands in its place. A blank Donate URL used to make every giving button open a pre-addressed inquiry email, asking for a gift the organization could not accept. Both tones are shown because the replacement is text rather than a pill, so unlike the crimson button it cannot sit on any ground."

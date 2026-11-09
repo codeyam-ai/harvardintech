@@ -44,28 +44,20 @@ export interface CommunityLike {
 /** The label the injected dropdown carries in the header. */
 export const CHAPTERS_LABEL = 'Chapters';
 
-/**
- * The last entry in the Chapters dropdown: somewhere to go for the large
- * majority of alumni who are not in one of the four cities.
- *
- * Before this, a visitor who opened Chapters and found no city near them hit a
- * dead end — the menu's implicit message was "this is not for you". The item
- * points at the homepage band that offers the WhatsApp community, the
- * newsletter and volunteering, none of which need a local chapter to join.
- *
- * It lives beside the chapter items rather than in `nav.json` because it is
- * only meaningful WITH them: on a site with no chapters published the dropdown
- * does not exist and neither should this.
- */
-export const GLOBAL_COMMUNITY_ITEM: NavItem = {
-  label: 'Global community',
-  url: '/#global-community',
-};
-
 /** The group derived communities are merged INTO. Unlike Chapters — a group
- *  this module injects wholesale — Communities already exists in `nav.json`
- *  carrying hand-authored links (WhatsApp), so the derived items join it. */
-export const COMMUNITIES_LABEL = 'Communities';
+ *  this module injects wholesale — Global community already exists in
+ *  `nav.json` carrying hand-authored links (WhatsApp, Newsletter), so the
+ *  derived items join it.
+ *
+ *  It replaced a "Communities" menu plus a "Global community" link under
+ *  Chapters (feedback, 2026-11-06): the online ways to stay connected now live
+ *  in one menu, and Chapters lists only places. */
+export const COMMUNITIES_LABEL = 'Global community';
+
+/** The column inside Global community the derived communities nest under. AI,
+ *  Founders and Investors are groups INSIDE the WhatsApp community, so listing
+ *  them as its peers misdescribed them. */
+export const WHATSAPP_GROUP_LABEL = 'WhatsApp community';
 
 /**
  * The dropdown's closing call to action. The chapters recruit leads and
@@ -117,17 +109,9 @@ export function chapterNavItems(chapters: ChapterLike[]): NavItem[] {
  * The top-level menu with the derived Chapters dropdown inserted directly after
  * `Programs`, or appended when no such item exists.
  *
- * The dropdown ends with `GLOBAL_COMMUNITY_ITEM`, so the menu always offers a
- * way in to someone who lives in none of the listed cities — which is most
- * alumni. It is appended HERE rather than by the caller because it is part of
- * what this group means, and a caller that forgot it would leave that visitor
- * at a dead end with nothing to say so.
- *
  * With no chapters the group is omitted entirely rather than rendered empty: an
  * empty dropdown is a caret that opens onto nothing, and the CMS serializer
- * collapses it back into a plain link pointing nowhere. The global item does
- * NOT keep it alive on its own — a lone "Global community" under a "Chapters"
- * caret would be a menu lying about what it contains.
+ * collapses it back into a plain link pointing nowhere.
  *
  * The dropdown then closes with `LEAD_CTA_ITEM`, the one place the menu asks
  * for chapter leads and co-leads.
@@ -139,7 +123,7 @@ export function withChapterGroup(items: NavItem[], chapterItems: NavItem[]): Nav
 
   const group: NavItem = {
     label: CHAPTERS_LABEL,
-    children: [...chapterItems, GLOBAL_COMMUNITY_ITEM, LEAD_CTA_ITEM],
+    children: [...chapterItems, LEAD_CTA_ITEM],
   };
   const anchor = items.findIndex((item) => item.label === INSERT_AFTER_LABEL);
   if (anchor === -1) return [...items, group];
@@ -163,8 +147,40 @@ export function communityNavItems(communities: CommunityLike[]): NavItem[] {
 }
 
 /**
+ * `children` with `items` appended inside the first column labelled
+ * `columnLabel`, or appended flat after the existing children when there is no
+ * such column.
+ *
+ * A column is an item that HAS children: a plain link that happens to carry the
+ * same label is a leaf, and nesting under it would turn a working link into a
+ * heading with no url. Returns a new array; nothing passed in is mutated.
+ */
+export function nestUnderColumn(children: NavItem[], columnLabel: string, items: NavItem[]): NavItem[] {
+  const column = children.findIndex(
+    (child) => child.label === columnLabel && (child.children?.length ?? 0) > 0,
+  );
+  if (column === -1) return [...children, ...items];
+
+  return children.map((child, i) =>
+    i === column ? { ...child, children: [...(child.children ?? []), ...items] } : child,
+  );
+}
+
+/**
+ * Whether a dropdown's panel splits into titled columns: true once any of its
+ * children carries children of its own. Global community (a WhatsApp column
+ * beside a Newsletter link) takes this branch; a flat list like Content hub
+ * does not. A childless item is not a dropdown, so it never has columns.
+ */
+export function hasColumns(item: NavItem): boolean {
+  return (item.children ?? []).some((child) => (child.children?.length ?? 0) > 0);
+}
+
+/**
  * The top-level menu with the derived community links merged into the existing
- * `Communities` group, after whatever that group already lists by hand.
+ * `Global community` group, after whatever that group already lists by hand.
+ * When the group has a `WhatsApp community` column, they nest inside it instead,
+ * since that is where those communities actually live.
  *
  * This is the asymmetry with `withChapterGroup`: Chapters is a group this module
  * OWNS, so it injects the whole thing; Communities is a group an editor already
@@ -188,7 +204,7 @@ export function withCommunityItems(items: NavItem[], communityItems: NavItem[]):
   const existing = items[anchor];
   const merged: NavItem = {
     ...existing,
-    children: [...(existing.children ?? []), ...communityItems],
+    children: nestUnderColumn(existing.children ?? [], WHATSAPP_GROUP_LABEL, communityItems),
   };
 
   return [...items.slice(0, anchor), merged, ...items.slice(anchor + 1)];

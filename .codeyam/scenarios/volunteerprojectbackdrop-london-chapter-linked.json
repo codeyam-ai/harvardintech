@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T21:35:19Z"
+  },
   "componentName": "VolunteerProjectBackdrop",
   "scenarioType": "component",
   "description": "A London city role's card thumbnail when the role has no photo of its own: the London chapter photo under the same crimson wash as the homepage chapter cards, linked through to the role's detail page. Same 168px band as every other thumbnail branch."

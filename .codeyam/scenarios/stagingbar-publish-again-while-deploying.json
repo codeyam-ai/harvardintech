@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "StagingBar",
   "scenarioType": "component",
   "description": "The state that used to be impossible: a deploy in flight and a fresh change ready to publish at the same time. Both pills are the assertion — the chip is the first publish still deploying, the bar below is a second edit staged since, with 'Review & publish' live rather than blocked. Publishing was previously a phase the component sat in until Pages finished, so a second publish had to wait out the first. The watch now lives beside the publish flow rather than inside it."

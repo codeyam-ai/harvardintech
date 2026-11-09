@@ -4,10 +4,11 @@ import * as path from 'node:path';
 import {
   chapterNavItems,
   withChapterGroup,
-  GLOBAL_COMMUNITY_ITEM,
   LEAD_CTA_ITEM,
   communityNavItems,
   withCommunityItems,
+  nestUnderColumn,
+  hasColumns,
   internalNavUrls,
   unresolvedNavUrls,
   withoutHiddenSections,
@@ -17,10 +18,16 @@ import { ONLINE_NOTE } from './localPresence';
 import type { NavItem } from './site';
 
 // The menu an editor sees before any chapter is derived into it: the leading
-// items of `nav.json` — Events, a plain link, then the Communities group.
+// items of `nav.json` — Events, a plain link, then the Global community group:
+// a titled WhatsApp column beside a plain Newsletter link.
+const WHATSAPP_COLUMN: NavItem = {
+  label: 'WhatsApp community',
+  children: [{ label: 'Join the community', url: '/#community' }],
+};
+const NEWSLETTER: NavItem = { label: 'Newsletter', url: 'https://example.com/newsletter' };
 const HAND_AUTHORED: NavItem[] = [
   { label: 'Events', url: '/events/' },
-  { label: 'Communities', children: [{ label: 'WhatsApp', url: '/#community' }] },
+  { label: 'Global community', children: [WHATSAPP_COLUMN, NEWSLETTER] },
 ];
 
 /** A chapter as the layout passes it in: `{ slug, ...data }`, the same shape
@@ -44,14 +51,10 @@ describe('chapterNavItems', () => {
     const items = withChapterGroup(HAND_AUTHORED, chapterNavItems(chapters));
     const group = items.find((i) => i.label === 'Chapters');
 
-    // Global community and the lead call to action always close the dropdown —
-    // asserted here as part of the whole `children` array rather than only in
-    // their own tests, so this reproduction keeps pinning the FULL menu.
-    expect(group?.children).toEqual([
-      { label: 'Miami', url: '/chapters/miami/' },
-      GLOBAL_COMMUNITY_ITEM,
-      LEAD_CTA_ITEM,
-    ]);
+    // The lead call to action always closes the dropdown — asserted here as
+    // part of the whole `children` array rather than only in its own test, so
+    // this reproduction keeps pinning the FULL menu.
+    expect(group?.children).toEqual([{ label: 'Miami', url: '/chapters/miami/' }, LEAD_CTA_ITEM]);
   });
 
   // Menu order must match the "Our chapters" cards exactly, or the two surfaces
@@ -123,7 +126,7 @@ describe('withChapterGroup', () => {
   it('inserts the group directly after Events', () => {
     const items = withChapterGroup(HAND_AUTHORED, chapterItems);
 
-    expect(items.map((i) => i.label)).toEqual(['Events', 'Chapters', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Events', 'Chapters', 'Global community']);
   });
 
   // The anchor is a plain link, not a dropdown — the slot is found by label
@@ -134,18 +137,15 @@ describe('withChapterGroup', () => {
       chapterItems,
     );
 
-    expect(items.map((i) => i.label)).toEqual(['Programs', 'Events', 'Chapters', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Programs', 'Events', 'Chapters', 'Global community']);
   });
 
   // Events is editable in the CMS, so it can be renamed or deleted. That must
   // degrade to a sensible position rather than throwing or dropping Chapters.
   it('appends the group when there is no Events item', () => {
-    const items = withChapterGroup(
-      [{ label: 'Communities', children: [{ label: 'WhatsApp', url: '/#community' }] }],
-      chapterItems,
-    );
+    const items = withChapterGroup([HAND_AUTHORED[1]], chapterItems);
 
-    expect(items.map((i) => i.label)).toEqual(['Communities', 'Chapters']);
+    expect(items.map((i) => i.label)).toEqual(['Global community', 'Chapters']);
   });
 
   // An empty dropdown renders as a caret that opens onto nothing, and the CMS
@@ -153,7 +153,7 @@ describe('withChapterGroup', () => {
   it('omits the group entirely when there are no chapters', () => {
     const items = withChapterGroup(HAND_AUTHORED, []);
 
-    expect(items.map((i) => i.label)).toEqual(['Events', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Events', 'Global community']);
     expect(items.find((i) => i.label === 'Chapters')).toBeUndefined();
   });
 
@@ -166,19 +166,19 @@ describe('withChapterGroup', () => {
     expect(HAND_AUTHORED).toEqual(original);
   });
 
-  // Most alumni are not in one of the four cities. Before this entry existed,
-  // opening Chapters and finding nowhere near you was a dead end — the menu's
-  // implicit answer was "not for you". It comes after every city.
-  it('lists the Global community entry after the cities', () => {
+  // Chapters lists places only (feedback, 2026-11-06). The old "Global
+  // community" link under the cities moved to its own top-level menu, so the
+  // dropdown is the cities followed directly by the lead call to action.
+  it('lists only the cities before the lead call to action', () => {
     const items = withChapterGroup(HAND_AUTHORED, chapterItems);
     const group = items.find((i) => i.label === 'Chapters');
 
-    expect(group?.children?.slice(0, 2)).toEqual([...chapterItems, GLOBAL_COMMUNITY_ITEM]);
-    expect(GLOBAL_COMMUNITY_ITEM).toEqual({ label: 'Global community', url: '/#global-community' });
+    expect(group?.children).toEqual([...chapterItems, LEAD_CTA_ITEM]);
+    expect(JSON.stringify(group)).not.toContain('global-community');
   });
 
-  // The one place the menu asks for chapter leads and co-leads. It is LAST, after
-  // the global entry, and marked `cta` so it renders as a call to action rather
+  // The one place the menu asks for chapter leads and co-leads. It is LAST,
+  // after every city, and marked `cta` so it renders as a call to action rather
   // than as one more city.
   it('closes the dropdown with the lead call to action', () => {
     const items = withChapterGroup(HAND_AUTHORED, chapterItems);
@@ -191,8 +191,8 @@ describe('withChapterGroup', () => {
     });
   });
 
-  // The global entry must NOT keep an otherwise-empty group alive: a "Chapters"
-  // caret whose only child is "Global community" is a menu lying about what it
+  // The lead call to action must NOT keep an otherwise-empty group alive: a
+  // "Chapters" caret with no cities in it is a menu lying about what it
   // contains. The no-chapters rule wins over the always-append rule.
   it('does not resurrect the group for the global entry alone', () => {
     const items = withChapterGroup(HAND_AUTHORED, []);
@@ -332,27 +332,43 @@ describe('communityNavItems', () => {
 describe('withCommunityItems', () => {
   const communityItems = [{ label: 'Founders', url: '/communities/founders' }];
 
-  // The asymmetry with Chapters: Communities is an editor-owned group that
-  // already lists WhatsApp by hand, so derived items JOIN it rather than replace
-  // it. Losing the hand-authored link is the failure this pins.
-  it('appends derived items after the hand-authored ones', () => {
+  // AI, Founders and Investors are groups INSIDE the WhatsApp community, so
+  // they nest under its column, after the hand-authored join link — not beside
+  // it as peers. The Newsletter link next to the column is left alone.
+  it('nests derived items under the WhatsApp community column', () => {
     const items = withCommunityItems(HAND_AUTHORED, communityItems);
-    const group = items.find((i) => i.label === 'Communities');
+    const group = items.find((i) => i.label === 'Global community');
 
     expect(group?.children).toEqual([
-      { label: 'WhatsApp', url: '/#community' },
-      { label: 'Founders', url: '/communities/founders' },
+      {
+        label: 'WhatsApp community',
+        children: [
+          { label: 'Join the community', url: '/#community' },
+          { label: 'Founders', url: '/communities/founders' },
+        ],
+      },
+      NEWSLETTER,
     ]);
+  });
+
+  // An editor can flatten the group in the CMS (no WhatsApp column). The
+  // derived items must still reach the header, appended after the authored
+  // links the way the group worked before it had columns.
+  it('appends derived items after the hand-authored ones when there is no column', () => {
+    const flat: NavItem[] = [{ label: 'Global community', children: [NEWSLETTER] }];
+    const items = withCommunityItems(flat, communityItems);
+
+    expect(items[0].children).toEqual([NEWSLETTER, ...communityItems]);
   });
 
   // Merging must not disturb the rest of the menu — the group stays in its slot.
   it('leaves the surrounding menu order untouched', () => {
     const items = withCommunityItems(HAND_AUTHORED, communityItems);
 
-    expect(items.map((i) => i.label)).toEqual(['Events', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Events', 'Global community']);
   });
 
-  // Communities is editable in the CMS, so it can be renamed or deleted. A
+  // Global community is editable in the CMS, so it can be renamed or deleted. A
   // published community must still reach the header rather than vanish.
   it('creates the group when nav.json no longer has one', () => {
     const items = withCommunityItems(
@@ -360,7 +376,7 @@ describe('withCommunityItems', () => {
       communityItems,
     );
 
-    expect(items.map((i) => i.label)).toEqual(['Events', 'Communities']);
+    expect(items.map((i) => i.label)).toEqual(['Events', 'Global community']);
     expect(items[1].children).toEqual(communityItems);
   });
 
@@ -379,6 +395,81 @@ describe('withCommunityItems', () => {
     withCommunityItems(HAND_AUTHORED, communityItems);
 
     expect(HAND_AUTHORED).toEqual(original);
+  });
+});
+
+describe('nestUnderColumn', () => {
+  const added: NavItem[] = [{ label: 'AI', url: '/communities/ai/' }];
+
+  // The column exists: the new items go inside it, after its own links, and
+  // the siblings either side keep their place.
+  it('appends inside the named column after its existing links', () => {
+    const result = nestUnderColumn([WHATSAPP_COLUMN, NEWSLETTER], 'WhatsApp community', added);
+
+    expect(result).toEqual([
+      { ...WHATSAPP_COLUMN, children: [...WHATSAPP_COLUMN.children!, ...added] },
+      NEWSLETTER,
+    ]);
+  });
+
+  // No column by that name: fall back to a flat append so nothing is dropped.
+  it('appends flat when no column has the label', () => {
+    expect(nestUnderColumn([NEWSLETTER], 'WhatsApp community', added)).toEqual([NEWSLETTER, ...added]);
+  });
+
+  // A plain LINK with the column's label is not a column. Nesting under it
+  // would turn a working link into a heading with no url.
+  it('does not nest under a same-labelled link that has no children', () => {
+    const link: NavItem = { label: 'WhatsApp community', url: '/#community' };
+
+    expect(nestUnderColumn([link], 'WhatsApp community', added)).toEqual([link, ...added]);
+  });
+
+  // Only the FIRST matching column takes the items, so a duplicated label in
+  // the CMS cannot list the same community twice.
+  it('nests under the first matching column only', () => {
+    const result = nestUnderColumn([WHATSAPP_COLUMN, WHATSAPP_COLUMN], 'WhatsApp community', added);
+
+    expect(result[0].children).toHaveLength(2);
+    expect(result[1]).toEqual(WHATSAPP_COLUMN);
+  });
+
+  // An empty group with nothing to add stays empty.
+  it('returns an empty list for empty inputs', () => {
+    expect(nestUnderColumn([], 'WhatsApp community', [])).toEqual([]);
+  });
+
+  // The children come from the shared nav.json singleton; copying, not
+  // pushing, keeps every later reader's menu intact.
+  it('does not mutate the column it nests into', () => {
+    const before = JSON.parse(JSON.stringify(WHATSAPP_COLUMN));
+    nestUnderColumn([WHATSAPP_COLUMN], 'WhatsApp community', added);
+
+    expect(WHATSAPP_COLUMN).toEqual(before);
+  });
+});
+
+describe('hasColumns', () => {
+  // Global community is the authored group that splits into columns: one
+  // titled WhatsApp column plus a plain Newsletter link in its own column.
+  it('is true when any child carries children', () => {
+    expect(hasColumns(HAND_AUTHORED[1])).toBe(true);
+  });
+
+  // Content hub, About and Get involved are flat lists and render as one column.
+  it('is false for a flat dropdown', () => {
+    expect(hasColumns({ label: 'Content hub', children: [NEWSLETTER] })).toBe(false);
+  });
+
+  // A plain top-level link is not a dropdown at all.
+  it('is false for an item with no children', () => {
+    expect(hasColumns({ label: 'Events', url: '/events/' })).toBe(false);
+  });
+
+  // A child whose `children` is an empty array is still a leaf; an editor
+  // emptying a column in the CMS must not leave an untitled column behind.
+  it('ignores a child whose children list is empty', () => {
+    expect(hasColumns({ label: 'Group', children: [{ label: 'Empty', children: [] }] })).toBe(false);
   });
 });
 
@@ -559,11 +650,23 @@ describe('committed nav.json', () => {
   });
 
   // Communities are derived too, so the same rule applies: the group keeps its
-  // hand-authored WhatsApp link and nothing else pointing at a community page.
+  // hand-authored WhatsApp and Newsletter links and nothing, at any depth,
+  // pointing at a community page.
   it('does not hand-list the communities', () => {
-    const group = nav.items.find((i) => i.label === 'Communities');
+    const group = nav.items.find((i) => i.label === 'Global community');
 
-    expect(group?.children?.some((c) => c.url?.startsWith('/communities/'))).toBe(false);
+    expect(group).toBeDefined();
+    expect(internalNavUrls([group!]).some((url) => url.startsWith('/communities/'))).toBe(false);
+  });
+
+  // The 2026-11-06 feedback: the derived communities belong inside the
+  // WhatsApp community, so the committed group must carry that column for them
+  // to nest into — and the newsletter beside it.
+  it('gives Global community a WhatsApp column and a Newsletter link', () => {
+    const group = nav.items.find((i) => i.label === 'Global community');
+
+    expect(group?.children?.map((c) => c.label)).toEqual(['WhatsApp community', 'Newsletter']);
+    expect(group?.children?.[0].children?.map((c) => c.url)).toEqual(['/#community']);
   });
 
   // Every derived link must land on a page too — the derivation is exactly where
@@ -585,7 +688,7 @@ describe('committed nav.json', () => {
   it('lists the simplified top-level menu in order', () => {
     expect(nav.items.map((i) => i.label)).toEqual([
       'Events',
-      'Communities',
+      'Global community',
       'Content hub',
       'About',
       'Get involved',
@@ -602,22 +705,23 @@ describe('committed nav.json', () => {
   });
 
   // A dropdown that opens onto one item teaches visitors menus are not worth
-  // opening. Communities is exempt: its single authored link is joined at render
-  // time by the derived community pages.
-  it('has no other dropdown holding a single item', () => {
-    const singles = nav.items
-      .filter((i) => i.label !== 'Communities' && i.children?.length === 1)
-      .map((i) => i.label);
+  // opening.
+  it('has no dropdown holding a single item', () => {
+    const singles = nav.items.filter((i) => i.children?.length === 1).map((i) => i.label);
 
     expect(singles).toEqual([]);
   });
 
-  // Mission sat three levels deep under Membership. Two levels is the ceiling
-  // now, so no child may carry children of its own.
-  it('nests no deeper than two levels', () => {
-    const nested = nav.items.flatMap((i) => i.children ?? []).filter((c) => c.children?.length);
+  // Mission once sat three levels deep under Membership, buried in a list.
+  // A third level is allowed again only as a TITLED COLUMN, which the header
+  // renders side by side: the WhatsApp community column is the one place that
+  // uses it, and nothing may go deeper than its links.
+  it('nests a third level only as the Global community WhatsApp column', () => {
+    const columns = nav.items.flatMap((i) => (i.children ?? []).filter((c) => c.children?.length));
+    const fourthLevel = columns.flatMap((c) => c.children ?? []).filter((l) => l.children?.length);
 
-    expect(nested.map((c) => c.label)).toEqual([]);
+    expect(columns.map((c) => c.label)).toEqual(['WhatsApp community']);
+    expect(fourthLevel).toEqual([]);
   });
 
   // Volunteer, Donate and Sponsorship share one dropdown, so Get involved is
@@ -629,16 +733,19 @@ describe('committed nav.json', () => {
   });
 
   // The newsletter link must reach the sign-up form everyone else on the site
-  // uses, not the LinkedIn newsletter page it pointed at before.
+  // uses, not the LinkedIn newsletter page it pointed at before. It lives under
+  // Global community now (feedback, 2026-11-06), and only there.
   it('points Newsletter at the site mailing-list sign-up', () => {
     const settings = JSON.parse(
       fs.readFileSync(path.join(REPO_ROOT, 'src/data/settings.json'), 'utf-8'),
     ) as { links: { mailingList: string } };
     const newsletter = nav.items
-      .find((i) => i.label === 'Content hub')
+      .find((i) => i.label === 'Global community')
       ?.children?.find((c) => c.label === 'Newsletter');
+    const contentHub = nav.items.find((i) => i.label === 'Content hub');
 
     expect(newsletter?.url).toBe(settings.links.mailingList);
+    expect(contentHub?.children?.some((c) => c.label === 'Newsletter')).toBe(false);
   });
 });
 

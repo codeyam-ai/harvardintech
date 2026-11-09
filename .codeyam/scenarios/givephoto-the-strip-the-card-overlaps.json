@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-22T13:08:47Z"
+  },
   "componentName": "GivePhoto",
   "scenarioType": "component",
   "pageFilePath": "src/components/give/GivePhoto.astro",

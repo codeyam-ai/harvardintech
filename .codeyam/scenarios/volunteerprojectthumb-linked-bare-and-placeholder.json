@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T21:35:19Z"
+  },
   "componentName": "VolunteerProjectThumb",
   "scenarioType": "component",
   "description": "Every thumbnail branch at real card width: a photo linked to its detail page, a photo with no link, a role with no photo of its own borrowing its chapter photo (London) under the crimson wash, and the gradient placeholder that only renders when no backdrop is passed. Shown side by side because the property that matters is that all four are the SAME HEIGHT — that is what keeps a grid mixing photo and no-photo projects aligned, and it is invisible in any single-branch shot. At 720px and below the placeholder is not drawn, but a backdrop photo stays."

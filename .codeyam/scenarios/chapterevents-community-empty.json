@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "ChapterEvents",
   "scenarioType": "component",
   "description": "The events section a community page shows with nothing on the calendar. The empty line used to be built from the page's subject as a place, which on a community read 'No events scheduled in AI yet.' as though AI were somewhere you could go. Communities now pass their own empty line, 'No AI events scheduled yet.', the same way they already passed their own heading, and the heading above it spells the name out as Artificial Intelligence (AI). Chapters pass neither and keep the place wording, which is right for a city."

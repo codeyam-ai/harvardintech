@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T14:49:49Z"
+  },
   "seed": {
     "homeSections": [
       {
@@ -15,10 +18,10 @@
         "title": "Hero"
       },
       {
+        "kicker": "Our mission",
         "kind": "mission",
         "order": 1.5,
         "slug": "mission",
-        "kicker": "Our mission",
         "title": "Building a global alumni community to *inspire and steward the future of tech.*"
       },
       {

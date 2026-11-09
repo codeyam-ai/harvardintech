@@ -6,7 +6,10 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "FormingChapterCta",
   "scenarioType": "component",
-  "description": "The whole body of a forming (WhatsApp-only) chapter page under its hero. The band reads DC and DMV Area meets online for now, with a one-line intro and three buttons: Request to join WhatsApp (the Google sign-up form, never the group itself), Subscribe to newsletter, and Volunteer or co-lead (the volunteer interest form set on the Volunteer page in the admin). The owner asked for exactly these three asks and nothing else, so there is no Contact us line under it any more."
+  "description": "The whole body of a forming (WhatsApp-only) chapter page under its hero. The band reads DC and DMV Area meets online for now, with a one-line intro and three buttons: Request to join WhatsApp (the Google sign-up form, never the group itself), Subscribe to the newsletter (the label every newsletter link on the site now shares), and Volunteer or co-lead (the volunteer interest form set on the Volunteer page in the admin). The owner asked for exactly these three asks and nothing else, so there is no Contact us line under it any more."
 }

@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "WhatsappCommunity",
   "scenarioType": "component",
   "description": "The WhatsApp band with the directory teaser switched off, so only the heading, lede and join card show. This is the off switch if the directory announcement has to be pulled."

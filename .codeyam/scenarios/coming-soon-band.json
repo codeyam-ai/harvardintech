@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "ComingSoon",
   "scenarioType": "component",
-  "description": "The placeholder a section renders when an editor switches Show as coming soon on. Deliberately a designed band rather than a gap or an apology: the state exists so a section can be honest about what is on the way instead of vanishing, so it has to read as intentional to a visitor who does not know a section is missing. The counterpart state is Draft, which removes the band and its menu link together.",
-  "pageFilePath": "src/components/ComingSoon.astro"
+  "pageFilePath": "src/components/ComingSoon.astro",
+  "description": "The placeholder a section renders when an editor switches Show as coming soon on. Deliberately a designed band rather than a gap or an apology: the state exists so a section can be honest about what is on the way instead of vanishing, so it has to read as intentional to a visitor who does not know a section is missing. The counterpart state is Draft, which removes the band and its menu link together."
 }

@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "SponsorPage",
   "scenarioType": "component",
-  "description": "The whole page with the sponsors collection empty \u2014 the real production day-one view. The pitch and the levels carry it, and the wall degrades to its invitation rather than leaving a hole, which is the test of whether this page can ship before a single partnership exists.",
-  "pageFilePath": "src/components/SponsorPage.astro"
+  "pageFilePath": "src/components/SponsorPage.astro",
+  "description": "The whole page with the sponsors collection empty — the real production day-one view. The pitch and the levels carry it, and the wall degrades to its invitation rather than leaving a hole, which is the test of whether this page can ship before a single partnership exists."
 }

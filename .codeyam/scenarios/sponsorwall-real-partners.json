@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "SponsorWall",
   "scenarioType": "component",
-  "description": "The state the page exists for: named partners across the levels, no example notice anywhere, and entries that are real links out to each organization. Also shows the trailing 'Other partners' group catching a sponsor with a tier that matches no declared level \u2014 free-text tiers make that typo possible, and the sponsor must still reach the page rather than vanish.",
-  "pageFilePath": "src/components/sponsor/SponsorWall.astro"
+  "pageFilePath": "src/components/sponsor/SponsorWall.astro",
+  "description": "The state the page exists for: named partners across the levels, no example notice anywhere, and entries that are real links out to each organization. Also shows the trailing 'Other partners' group catching a sponsor with a tier that matches no declared level — free-text tiers make that typo possible, and the sponsor must still reach the page rather than vanish."
 }

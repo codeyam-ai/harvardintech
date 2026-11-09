@@ -29,6 +29,7 @@
 import NavItemLabel from './NavItemLabel.astro';
 import { externalLinkAttrs } from '../../lib/externalLink';
 import { withBase } from '../../lib/url';
+import { hasColumns } from '../../lib/nav';
 import type { NavItem } from '../../lib/site';
 
 interface Props {
@@ -65,7 +66,7 @@ const { items, subscribeUrl } = Astro.props as Props;
           </button>
           <div class="mega">
             <div class="mega-in">
-              {item.children.some((c) => c.children && c.children.length > 0) ? (
+              {hasColumns(item) ? (
                 item.children.map((group) => (
                   <div class="mega-col">
                     {group.children && group.children.length > 0 ? (
@@ -432,6 +433,15 @@ const { items, subscribeUrl } = Astro.props as Props;
       margin-top: 0;
       padding-top: 0;
       border-top: 0;
+    }
+    /* A column that is a plain link (Newsletter beside the WhatsApp community
+       column in Global community) is a peer of the titled column above it, not
+       one of its rows. Without this it took the same left rule and indent as
+       the rows and read as a fourth WhatsApp group under Investors. */
+    .mega-col a.mega-h-link {
+      padding-left: 0;
+      border-left: 0;
+      margin-top: 6px;
     }
   }
 

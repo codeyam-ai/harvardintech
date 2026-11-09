@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "WhatsappJoinCard",
   "scenarioType": "component",
   "description": "The How to join card on its own, with the live form and admissions-criteria links. It is the site's standard card: white, a hairline border and a crimson left rule. Inside are the sentence, the criteria link under it, and a single larger Apply to join the community button closing the card."

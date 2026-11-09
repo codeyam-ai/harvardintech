@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "CalloutCard",
   "scenarioType": "component",
   "description": "One what-happens-here card on its own, bounded to the width a grid cell actually gives it. Captured apart from the grid for the reason every other card on this site has its own frame: the card is the thing with a look and the grid is only an arrangement, so a padding or rule change reads plainly here and competes with neighbours in the grid shot."

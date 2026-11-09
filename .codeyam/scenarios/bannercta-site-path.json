@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "BannerCta",
   "scenarioType": "component",
   "description": "The same banner pill pointing at a page on this site, as the /volunteer banner does: the link is prefixed with the site base and stays in the same tab."

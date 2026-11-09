@@ -304,8 +304,8 @@
     ".codeyam/scenario-metrics.js::__file_root__": {
       "filePath": ".codeyam/scenario-metrics.js",
       "importedBy": [
-        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}",
-        ".codeyam/capture.js::{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}"
+        ".codeyam/capture.js::{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}",
+        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -318,21 +318,13 @@
       "imports": [],
       "name": "__file_root__"
     },
-    ".codeyam/scenario-playwright.js::__file_root__": {
-      "filePath": ".codeyam/scenario-playwright.js",
-      "importedBy": [
-        ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}"
-      ],
-      "imports": [],
-      "name": "__file_root__"
-    },
-    ".codeyam/scenario-playwright.js::{\n  candidateLabelSummary,\n  noMatchGuidance,\n  describeMatchCandidates,\n  resolveTextTarget,\n  pickBestCandidate,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n}": {
+    ".codeyam/scenario-playwright.js::{\n  candidateLabelSummary,\n  canvasTextWaitGuidance,\n  noMatchGuidance,\n  describeMatchCandidates,\n  resolveTextTarget,\n  pickBestCandidate,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n}": {
       "filePath": ".codeyam/scenario-playwright.js",
       "importedBy": [],
       "imports": [
         ".codeyam/scenario-targeting.js::__file_root__"
       ],
-      "name": "{\n  candidateLabelSummary,\n  noMatchGuidance,\n  describeMatchCandidates,\n  resolveTextTarget,\n  pickBestCandidate,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n}"
+      "name": "{\n  candidateLabelSummary,\n  canvasTextWaitGuidance,\n  noMatchGuidance,\n  describeMatchCandidates,\n  resolveTextTarget,\n  pickBestCandidate,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n}"
     },
     ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}": {
       "filePath": ".codeyam/scenario-playwright.js",
@@ -341,23 +333,6 @@
         ".codeyam/scenario-metrics.js::__file_root__"
       ],
       "name": "{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}"
-    },
-    ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}": {
-      "filePath": ".codeyam/scenario-playwright.js",
-      "importedBy": [],
-      "imports": [
-        ".codeyam/scenario-metrics.js::__file_root__"
-      ],
-      "name": "{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}"
-    },
-    ".codeyam/scenario-targeting.js::__file_root__": {
-      "filePath": ".codeyam/scenario-targeting.js",
-      "importedBy": [
-        ".codeyam/scenario-playwright.js::{\n  candidateLabelSummary,\n  noMatchGuidance,\n  describeMatchCandidates,\n  resolveTextTarget,\n  pickBestCandidate,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n}",
-        ".codeyam/capture.js::{ devicePixelRatioOf }"
-      ],
-      "imports": [],
-      "name": "__file_root__"
     },
     ".codeyam/seed-adapter.ts::__file_root__": {
       "filePath": ".codeyam/seed-adapter.ts",
@@ -2048,6 +2023,7 @@
         "src/components/nav/NavItemLabel.astro::__file_root__",
         "src/lib/externalLink.ts::externalLinkAttrs",
         "src/lib/url.ts::withBase",
+        "src/lib/nav.ts::hasColumns",
         "src/lib/site.ts::NavItem"
       ],
       "name": "__file_root__"
@@ -4230,7 +4206,9 @@
         "src/lib/nav.ts::__file_root__",
         "src/lib/nav.ts::chapterNavItems",
         "src/lib/nav.ts::communityNavItems",
+        "src/lib/nav.ts::hasColumns",
         "src/lib/nav.ts::internalNavUrls",
+        "src/lib/nav.ts::nestUnderColumn",
         "src/lib/nav.ts::unresolvedNavUrls",
         "src/lib/nav.ts::withChapterGroup",
         "src/lib/nav.ts::withCommunityItems",
@@ -4283,6 +4261,14 @@
       "imports": [],
       "name": "communityNavItems"
     },
+    "src/lib/nav.ts::hasColumns": {
+      "filePath": "src/lib/nav.ts",
+      "importedBy": [
+        "src/lib/nav.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "hasColumns"
+    },
     "src/lib/nav.ts::internalNavUrls": {
       "filePath": "src/lib/nav.ts",
       "importedBy": [
@@ -4290,6 +4276,14 @@
       ],
       "imports": [],
       "name": "internalNavUrls"
+    },
+    "src/lib/nav.ts::nestUnderColumn": {
+      "filePath": "src/lib/nav.ts",
+      "importedBy": [
+        "src/lib/nav.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "nestUnderColumn"
     },
     "src/lib/nav.ts::unresolvedNavUrls": {
       "filePath": "src/lib/nav.ts",
@@ -7717,8 +7711,8 @@
     },
     ".codeyam/scenario-metrics.js": {
       "importedBy": [
-        ".codeyam/scenario-playwright.js",
-        ".codeyam/capture.js"
+        ".codeyam/capture.js",
+        ".codeyam/scenario-playwright.js"
       ],
       "imports": []
     },
@@ -7733,14 +7727,16 @@
         ".codeyam/capture.js"
       ],
       "imports": [
-        ".codeyam/scenario-metrics.js"
+        ".codeyam/scenario-metrics.js",
+        ".codeyam/scenario-targeting.js"
       ]
     },
     ".codeyam/scenario-targeting.js": {
       "importedBy": [
         ".codeyam/capture.js",
         ".codeyam/scenario-playwright.js",
-        ".codeyam/capture.js"
+        ".codeyam/capture.js",
+        ".codeyam/scenario-playwright.js"
       ],
       "imports": []
     },
@@ -9186,6 +9182,7 @@
         "src/components/nav/NavItemLabel.astro",
         "src/lib/externalLink.ts",
         "src/lib/url.ts",
+        "src/lib/nav.ts",
         "src/lib/site.ts"
       ]
     },
@@ -10630,6 +10627,7 @@
     },
     "src/lib/nav.ts": {
       "importedBy": [
+        "src/components/nav/PrimaryNav.astro",
         "src/lib/nav.test.ts",
         "src/lib/eventsIntro.ts",
         "src/pages/isolated-components/[name].astro",
@@ -12759,5 +12757,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-06T21:34:36Z"
+  "lastUpdated": "2026-11-09T15:46:40Z"
 }

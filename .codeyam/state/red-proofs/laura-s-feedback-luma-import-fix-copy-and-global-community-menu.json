@@ -1,0 +1,39 @@
+{
+  "provenAt": "2026-11-06T23:12:23Z",
+  "slug": "laura-s-feedback-luma-import-fix-copy-and-global-community-menu",
+  "paths": [],
+  "runScope": [
+    "src/lib/nav.ts",
+    "src/lib/nav.test.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/nav.ts",
+      "find": "  if (column === -1) return [...children, ...items];",
+      "replace": "  if (column > -2) return [...children, ...items];"
+    }
+  ],
+  "tests": {
+    "appends inside the named column after its existing links": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "nests derived items under the WhatsApp community column": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "nests derived items under the WhatsApp community column",
+      "appends inside the named column after its existing links"
+    ]
+  }
+}

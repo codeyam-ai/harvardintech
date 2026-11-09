@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "scenarioType": "application",
   "pageFilePath": "src/pages/chapters/[slug].astro",
   "description": "The first of London's uploaded photos opened in the lightbox from the live page. It shows the alt text written for the upload is carried through, and that a photo with no caption opens cleanly — Nicole gave none for these three.",

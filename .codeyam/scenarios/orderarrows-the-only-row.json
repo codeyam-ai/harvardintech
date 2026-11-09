@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-08-17T18:33:51Z"
+  },
   "componentName": "OrderArrows",
   "scenarioType": "component",
   "pageFilePath": "node_modules/@codeyam/cms/src/components/admin/OrderArrows.tsx",

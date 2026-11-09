@@ -1,6 +1,13 @@
 {
   "checks": {
-    "SCENARIO_DISTINCT_CAPTURE_COLLISION": []
+    "SCENARIO_DISTINCT_CAPTURE_COLLISION": [
+      "board-of-directors == board-of-directors-retired-member-hidden"
+    ]
+  },
+  "justifications": {
+    "SCENARIO_DISTINCT_CAPTURE_COLLISION": {
+      "board-of-directors == board-of-directors-retired-member-hidden": "Intended identical output: the retired-member scenario feeds six board entries with one marked retired and must render exactly the active five-member board the default scenario shows. A matching frame is the proof the retired director is filtered out; the filter itself is unit-tested in src/lib/team.ts tests."
+    }
   },
   "version": 1
 }

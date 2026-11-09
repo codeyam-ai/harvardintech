@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-22T22:10:37Z"
+  },
   "componentName": "LeadContactLinks",
   "scenarioType": "component",
   "description": "A lead with both contact routes: the official LinkedIn mark and the envelope as round outlined icon buttons, drawn from the shared BrandGlyph set."

@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-15T15:01:42Z"
+  },
   "scenarioType": "application",
   "pageFilePath": "node_modules/@codeyam/cms/src/pages/admin/[collection]/index.astro",
   "description": "The Donors editor with the four fields The Momentum Network draws a supporter node from — School, Class year, Location, and Why I gave — filled in on a new entry. Reached by driving the form rather than by URL, because the CMS renders the new-entry editor in place; the fills also scroll the new block into a viewport-sized frame, which is the only way it lands above the fold. Note what the frame does and does not prove: School renders as a DROPDOWN rather than the text box a free-text field would give, but it reads '— none —' because a native select option cannot be committed through the capture harness's verbs. That the dropdown offers exactly the thirteen schools resolveSchool accepts is asserted in src/lib/selectOptions.test.ts, which is a durable check rather than a screenshot of an open menu.",

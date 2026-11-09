@@ -7,6 +7,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "EventsIntro",
   "scenarioType": "component",
   "pageFilePath": "src/components/EventsIntro.astro",

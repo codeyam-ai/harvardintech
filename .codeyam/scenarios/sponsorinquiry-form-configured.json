@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "SponsorInquiry",
   "scenarioType": "component",
-  "description": "The same section once a real inquiry form URL is set in the CMS \u2014 the embed replaces the placeholder and the email CTA stays alongside it, because the two serve different readers: one ready to give specifics, one who would rather just write. This is the only part of the sponsorship page still waiting on the team.",
-  "pageFilePath": "src/components/sponsor/SponsorInquiry.astro"
+  "pageFilePath": "src/components/sponsor/SponsorInquiry.astro",
+  "description": "The same section once a real inquiry form URL is set in the CMS — the embed replaces the placeholder and the email CTA stays alongside it, because the two serve different readers: one ready to give specifics, one who would rather just write. This is the only part of the sponsorship page still waiting on the team."
 }

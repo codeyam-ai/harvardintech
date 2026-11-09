@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "ChapterEvents",
   "scenarioType": "component",
   "description": "The same events section a chapter page renders, with the heading overridden for a community. The default phrasing is built from the page's subject — fine for a place ('Upcoming events in San Francisco'), wrong for a group ('Upcoming events in Founders'), so /communities passes 'Upcoming founders events' instead. The cards themselves are the shared EventCards, unchanged, which is the point: only the sentence above them differs."

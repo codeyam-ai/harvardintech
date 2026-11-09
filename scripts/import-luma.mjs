@@ -73,12 +73,24 @@ export function readExisting(outDir) {
   return { byLumaSlug, byFilename };
 }
 
+/**
+ * Luma answers Node's default User-Agent with HTTP 429 on every request, so
+ * the import must name itself. Without this header every nightly run from
+ * 2026-10-23 on failed soft, and new events (the NYC happy hour, the London
+ * co-working day) never reached the site.
+ */
+const REQUEST_HEADERS = {
+  'User-Agent': 'harvardintech-site-import/1.0 (+https://github.com/codeyam-ai/harvardintech)',
+};
+
 /** One `get-items` request. Returns null — never throws — when Luma is unreachable. */
 async function fetchFeed(period, fetchImpl) {
   try {
-    const response = await fetchImpl(lumaFeedUrl({ period }));
+    const response = await fetchImpl(lumaFeedUrl({ period }), { headers: REQUEST_HEADERS });
     if (!response.ok) {
-      console.error(`luma ${period}: HTTP ${response.status}`);
+      // A GitHub Actions annotation, so a feed that keeps refusing shows on the
+      // run summary instead of hiding in a green build's log.
+      console.error(`::warning::luma ${period}: HTTP ${response.status}`);
       return null;
     }
     return await response.json();

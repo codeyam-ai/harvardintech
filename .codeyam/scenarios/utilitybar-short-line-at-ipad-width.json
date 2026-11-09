@@ -6,6 +6,9 @@
     "Tablet"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "UtilityBar",
   "scenarioType": "component",
   "description": "The red city bar at 768px shows the one-line 'A global community' form. The full city list wrapped to two lines on an iPad, so the short form the owner chose for phones now applies up to the 1040px header breakpoint."

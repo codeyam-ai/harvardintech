@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-09-28T17:23:38Z"
+  },
   "componentName": "VolunteerProjectPhoto",
   "scenarioType": "component",
-  "description": "The detail page's photo band, shown with the real 1200x1200 square an editor uploaded. Uncropped and height-bounded rather than cover-cropped: the grid thumbnail crops so a mixed grid stays aligned, which makes this the only place the whole picture is visible. The bound is what stops a square upload pushing the description off the first screen.",
-  "pageFilePath": "src/components/volunteer/VolunteerProjectPhoto.astro"
+  "pageFilePath": "src/components/volunteer/VolunteerProjectPhoto.astro",
+  "description": "The detail page's photo band, shown with the real 1200x1200 square an editor uploaded. Uncropped and height-bounded rather than cover-cropped: the grid thumbnail crops so a mixed grid stays aligned, which makes this the only place the whole picture is visible. The bound is what stops a square upload pushing the description off the first screen."
 }

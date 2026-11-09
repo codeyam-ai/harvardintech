@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "scenarioType": "application",
   "pageFilePath": "src/pages/chapters/[slug].astro",
   "description": "London's own gallery, built from the three photos Nicole uploaded through /admin on 21 Oct: the evening reception under the crystal ceiling and two shots of the London co-working day. They are the real content entries, not a seed, so this is exactly what a visitor sees. The duplicate copies and her layout mockup that came in with the same uploads are gone, so the gallery shows three tiles and nothing else.",

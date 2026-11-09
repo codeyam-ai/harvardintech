@@ -1,0 +1,4991 @@
+{
+  "timestamp": "2026-11-09T15:42:35Z",
+  "title": "Laura's feedback: Luma import fix, copy, and Global community menu",
+  "type": "feature",
+  "userRequest": "## Context\n\nLaura's site feedback (2026-11-06): one bug and seven copy or navigation suggestions. This prototype fixes the bug, makes the copy changes and restructures the menu. Past-event photos on /events is **not** prototyped and should become its own plan.\n\n## What was prototyped (working tree)\n\n### 1. Bug: the NYC page says \"no events scheduled\"\n- **Root cause:** Luma answers Node's default User-Agent with HTTP 429. Every nightly `import-luma.mjs` run from at least 2026-10-23 to 2026-11-06 failed this way. The script treats that as \"unreachable\" and exits 0, so the deploy stayed green and imported nothing.\n- **Fix:** `scripts/import-luma.mjs` now sends a named `User-Agent` header (`REQUEST_HEADERS`). A non-200 response is also logged as a `::warning::` annotation, so the failure shows on the run summary.\n- **Test:** `src/lib/lumaImport.test.ts` has a new test, \"names itself with a User-Agent on every feed request\". It passes.\n- **Real import run locally:** it added `src/content/events/2026-10-09-alumni-founders-co-working-day-october.md` and `2026-11-13-alumni-founders-co-working-day-november.md` (London), which the broken import had missed.\n- **Still open:** the NYC happy hour is **not on the Harvard in Tech Luma calendar** (`cal-KK3JJjJ39Jwt9kI`). The live feed's only upcoming event is the London one. The happy hour must be added to that calendar, or co-listed on it, before it can appear. Fixing the import alone won't make it show up.\n\n### 2. Copy edits\n- `src/content/homeSections/mission.md`: removed the repeated \"for technology\" from the mission intro, as Laura suggested.\n- `src/components/GlobalCommunityCta.astro`: the intro now reads \"Stay connected wherever you are. All three are open to every alum, with or without a chapter nearby.\" The WhatsApp card blurb now says what members will find there (AI, building companies, investing).\n- `src/components/landing/WhatsappCommunity.astro`: the lede now adds what's inside (active AI conversations, groups for founders and investors, introductions).\n\n### 3. One label for the newsletter\nThe Mailchimp link appeared with six different labels. It is now \"Subscribe\" in the header button and \"Subscribe to the newsletter\" everywhere else. Files changed: `heroSlides/where-harvard-alumni-build-the-future.md`, `HeroCarousel.astro`, `OurChapters.astro` (label and body), `ChapterSignUp.astro`, `GlobalCommunityCta.astro`, `FormingChapterCta.astro`, `UpcomingEvents.astro`, `ChapterEvents.astro` (label and body). \"Subscribe on Luma\" was left as it is because it does something different (it follows the event calendar).\n\n### 4. Menu restructure\n- `src/data/nav.json`: the \"Communities\" menu is now **\"Global community\"**. It has two columns: a \"WhatsApp community\" column (\"Join the community\" → `/#community`) and a \"Newsletter\" link. Newsletter was removed from \"Content hub\".\n- `src/lib/nav.ts`: removed `GLOBAL_COMMUNITY_ITEM` from the Chapters dropdown, which now lists only cities plus the lead call to action. `COMMUNITIES_LABEL` is now `'Global community'`. Added `WHATSAPP_GROUP_LABEL`. `withCommunityItems` now nests the derived communities (AI, Founders, Investors) inside the WhatsApp column when that column exists, and falls back to appending them as before.\n- The CMS nav serializer (`normalizeNavItem`) recurses and keeps nesting, so the two-level menu survives a save from /admin.\n\n## Remaining work for Build\n\n1. **`src/lib/nav.test.ts`: 9 tests fail** because they pin the old menu. Update them for the new design:\n   - remove the expectation that \"Global community\" is listed after the cities\n   - the group is now named \"Global community\"\n   - communities nest under the WhatsApp column\n   - \"nests no deeper than two levels\" must now allow the Global community columns. Check whether the rule was meant to cap depth at three, and update it accordingly\n   - the Newsletter URL assertion now applies to Global community, not Content hub\n   - add a test for the WhatsApp-column nesting and its fallback\n2. Fix the remaining \"Communities\" fixtures: `src/pages/isolated-components/[name].astro:375` and `FocusAreas.astro:55` (decide whether that label should also become \"Global community\").\n3. Check the dropdown with columns on desktop and in the mobile drawer (`PrimaryNav.astro` mega-col branch). Register scenarios for the new menu open on desktop and mobile.\n4. Recapture the scenarios affected by the label and copy changes (hero, mission, chapters, chapter page empty events, global community band, WhatsApp band).\n5. Decide whether the `/#global-community` homepage band still earns its place now that nothing in the menu links to it. It still closes every chapter page.\n6. Then run `npm test` and `astro check`.\n\n## Out of scope / follow-ups\n- **Past-event photos on /events:** a separate prototype. Photos are available in chapter `photos:`, the homepage gallery and `archive/strikingly/events/`.\n- **NYC happy hour:** content work. Someone has to put it on the HIT Luma calendar.\n\n## Recap for Laura (draft response)\n- **NYC \"no events\":** you found a real bug. The nightly sync from Luma had been silently blocked for about two weeks, so no new events reached any page. It's fixed and the missed London events now appear. The NYC happy hour still has to be added to the Harvard in Tech Luma calendar; once it is, it will show up on the NYC page on its own.\n- **Mission sentence:** changed to your suggested wording.\n- **Photos from past events:** agreed, and it's queued as its own design pass.\n- **Subscribe vs. \"Join the mailing list\":** every newsletter button now uses one label, \"Subscribe to the newsletter\" (\"Subscribe\" in the header). \"Subscribe on Luma\" stays separate because it follows the event calendar.\n- **Global community wording:** rewritten as \"Stay connected wherever you are…\"\n- **WhatsApp \"why join\":** added what's inside: active AI conversations, groups for founders and investors, and alumni ready to make introductions.\n- **Communities menu:** restructured as you suggested. A top-level \"Global community\" menu now groups the online ways to connect, with AI, Founders and Investors nested under the WhatsApp community. The orphan \"Global community\" link is gone from Chapters.\n- **Newsletter under Content hub:** moved to the Global community menu.",
+  "description": "Acts on Laura's 2026-11-06 site feedback. The nightly Luma import had silently imported nothing since about 2026-10-23 because Luma answers Node's default User-Agent with HTTP 429; the importer now names itself in a User-Agent header and turns a refused feed into a GitHub Actions warning. A real import run brought in the two missed London co-working days (October 9 and November 13). The copy changes: the mission intro drops the repeated 'for technology', the Global community and WhatsApp bands say what members get, and every newsletter link now reads 'Subscribe to the newsletter' ('Subscribe' in the header). The menu's 'Communities' group is now 'Global community': a WhatsApp community column with AI, Founders and Investors nested inside it (new nestUnderColumn), plus Newsletter moved there from Content hub; the Global community link under Chapters is gone. Added beyond the plan: on phones Newsletter took the WhatsApp rows' rule and indent and read as a fourth group, so it now sits flush-left. Disclosed at the gate: the NYC happy hour still won't appear until it is on the Harvard in Tech Luma calendar; that Luma accepts the new header rests on the prototype's real import run, not a fresh check; no test observes the new failure warning (follow-up). Scope verdict: no deliverable changed status. This advances 'bring all content to publication quality', which stays deferred by the user's decision. Past-event photos on /events and whether the homepage Global community band stays are left for later plans. Also accepted the Board of Directors 'retired member hidden' scenario matching the default board frame as intended (audit baseline, with reason).",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/audit-baseline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/completed/laura-s-feedback-luma-import-fix-copy-and-global-community-menu.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenario-playwright.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenario-targeting.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/accomplishmentcard-one-cell-of-the-evidence-strip.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/bannercta-site-path.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/bannercta-subscribe-on-luma.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blog-post-a-retained-medium-stub.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blog-preview-link-shared-draft.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blogpostarticle-an-ordinary-post.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blogpostarticle-post-with-an-embed.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blogpostbody-locked-prompt-replaces-the-article.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/blogpostbody-nothing-encrypted-article-renders.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/board-of-directors-empty.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/board-of-directors-every-bio-written.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/board-of-directors-retired-member-hidden.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/board-of-directors-two-of-five-bios-written.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/board-of-directors.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/boardmembertile-initials-instead-of-a-headshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/boardmembertile-no-bio-yet.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/boardmembertile-with-a-bio.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/brandglyph-four-ways-a-glyph-resolves.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/brandmark-both-grounds-at-three-sizes.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/calloutcard-single-callout.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-a-single-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-curated-and-capped.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-photo-enlarged.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-gallery-three-photos-three-columns.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-london-event-photos.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-london-lead-headshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-london-photo-enlarged.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-longest-chapter-name-wraps.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-new-york-city.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-sf-bay-area.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterconnect-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterevents-community-empty.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterevents-community-heading.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterevents-nothing-scheduled-yet.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterevents-recent-past-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterevents-rich-list.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterhero-no-image-fallback.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterhero-with-image.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterleads-committee.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterleads-full-profile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterleads-headshots-beside-names.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterleads-no-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterleads-two-leads-one-without-a-role.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterpage-forming-chapter.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterpage-full-chapter.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterpage-sparse-no-leads.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chaptersignup-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-analytics-and-embeds.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-blog-duplicate-is-not-momentum-fund-only.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-blog-editor-edited-date-shows-in-the-preview.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-blog-list-a-preview-link-and-a-locked-one.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-blog-list-drafts-and-published.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-chapter-editor-marked-as-draft.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-chapter-editor-new-york-city.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-dashboard-empty.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-dashboard-populated.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-donors-editor-anonymous-keeps-the-data-the-page-withholds-it.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-donors-editor-the-supporter-identity-fields.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-entry-editor-change-staged-for-review.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-entry-editor-new-chapter-form.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-entry-editor-retired-brand-name-flagged.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-events-the-collection-0-7-removed.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-media-library-adopted-images.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-momentum-sections-a-move-staged-but-not-yet-published.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-momentum-sections-a-section-still-in-draft.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-momentum-sections-in-order-with-arrows.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-momentum-sections-the-duplicate-built-up-in-draft.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-momentum-sections-two-bands-under-their-own-names.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-new-section-prefilled-by-duplicate.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-page-settings-adding-a-donor-wall-tier.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-page-settings-momentum-fund-page.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-page-settings-the-momentum-network-copy-an-editor-can-now-reach.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-publish-review-nothing-to-publish.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-publish-review-plain-language-change-summary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-publish-review-what-the-edit-actually-did.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-section-editor-section-type-is-a-dropdown.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-section-editor-the-donor-fields-no-editor-can-change.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-section-editor-the-second-band-pointed-at-its-own-cards.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-section-editor-where-the-pillar-cards-actually-live.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-site-settings.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-sponsorship-level-editor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-team-board-members-in-their-own-order.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-testimonials-the-fields-behind-a-quote.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cms-volunteer-page-editor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/coming-soon-band.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-ai-on-day-one.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-founders-with-leads-and-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-investors-join-steps.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/community-route-investors-lead-headshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/communitycallouts-what-happens-here.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/communitypage-founders-composed.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/contactus-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/contactus-no-email-set.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/content-hub-empty.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/content-hub.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/copywarningnote-retired-brand-under-a-field.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/copywarningnote-two-retired-forms-in-one-field.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/copywarningssummary-one-field-flagged.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/copywarningssummary-two-fields-flagged.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-a-tick-that-could-not-be-saved.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-complete.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-content-still-missing.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-cutover-day.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-decisions-answered-nothing-begun.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-nothing-started.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-partway-through.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-the-records-on-a-phone.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/cutover-runbook-waiting-on-one-answer.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/decision-tick-decided-read-only.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/decision-tick-decided.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/decision-tick-open.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/decision-tick-writing-the-answer.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/deploychip-change-is-live.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/deploychip-published-still-updating.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/deploychip-publishing.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/deploystatus-build-failed.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/deploystatus-live.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/deploystatus-published-still-updating.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/deploystatus-publishing-dismissible.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/deploystatus-waiting-for-the-site.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/embedform-configured-form.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/embedform-embedded-iframe.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/embedform-unconfigured-fallback.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/emptystate-both-ways-out.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/emptystate-nothing-to-offer-yet.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/event-gallery.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventcardgrid-past-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventcardgrid-three-uneven-cards.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventcardmedia-luma-cover.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventcardmedia-no-cover-brand-mark.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventgallery-small-screen-cap.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/events-route-past-results-from-the-october-all-hands.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventsintro-the-page-s-own-title.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventsintroband-closing-flush-against-the-calendar.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventspage-no-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventspage-several-recent-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/eventspage-upcoming-and-past.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/focus-areas.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/formingchaptercta-with-contact-address.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/galleryexpand-fourteen-photos.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/gallerylightbox-no-caption.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/gallerylightbox-photo-open.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/gallerytile-captioned-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/gallerytile-keyboard-focus.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/get-involved.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/giftpillarcard-with-inline-link.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/giftpillars-numbered-bordered-grid.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/giftpillars-the-duplicated-band-shows-its-own-cards.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/giftpillars-three-pillars.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givebutton-both-variants.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givebutton-giving-closed.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/giveclose-the-final-ask.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givecollage-six-photographs-in-one-frame.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givefaq-every-question-closed.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givehero-the-opening-ask.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givephoto-the-strip-the-card-overlaps.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/giverecognition-the-placeholder-supporter-card.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givestatement-both-tones-together.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/giving-campaign-a-platform-is-live.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/giving-campaign.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givingcard-no-platform-connected.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givingsoonnote-on-a-dark-band.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/givingsoonnote-on-a-pale-band.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/globalcommunityaction-newsletter-card.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/globalcommunitycta-three-ways-in.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/globeicon-sizes-on-light-and-dark.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/goalmeter-a-campaign-name-that-runs-long.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/goalmeter-navy-chrome-with-campaign-link.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/goalmeter-the-2026-goal-before-launch.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/goalmeter-the-band-around-givebutter-s-meter.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-of-directors.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-on-four-sizes.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-chapter-published-since-the-menu-was-written.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-chapters-on-four-sizes.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-contact-on-four-sizes.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-contact-with-no-email-set.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-header-pinned-while-scrolling.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-homepage-phased-for-launch.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-landing-page.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-mission-band-coming-soon.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-mission-band-hidden.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-no-upcoming-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-numbers-band-on-an-ipad.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-our-mission-band.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-phone-menu-open.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-retired-board-member-hidden.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-whatsapp-band-with-the-hit-directory.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/hero-carousel.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/herocarousel-the-second-slide-reached-by-its-dot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/hitdirectoryteaser-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/hitdirectoryteaser-long-copy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/home-sections-all-three-visibility-states.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/imagefield-staged-upload.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/joinwhatsappcta-community-primary-action.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/leadavatar-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/leadavatar-initials.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/leadavatar-small-initials.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/leadcommitteegrid-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/leadcontactlinks-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/leadcontactlinks-linkedin-only.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/leadprofile-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/leadprofile-name-and-role-only.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/locked-preview-password-required.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/locked-preview-unlocked-with-the-password.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/locked-preview-wrong-password.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/lockedpreviewbody-before-the-password.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/luma-calendar.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/lumacalendar-nothing-upcoming.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/lumasubscribe-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/mediacard-staged-upload.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/missionstatement-default-wording.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/missionstatement-edited-without-an-accent.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-a-giving-platform-is-chosen.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-a-mistyped-section-type-and-a-missing-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-arriving-from-the-email.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-every-section-hidden.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-filtering-the-donor-wall.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-public-visitor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-sections-reordered-by-an-editor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-the-donor-wall-moved-to-the-top.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-the-first-donor-on-the-wall.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-the-goal-meter-held-as-coming-soon.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-the-impact-band-with-real-quotes.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-fund-two-pillar-bands-with-their-own-cards.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-network-a-supporter-selected.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-network-a-supporter-who-wrote-no-message.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-network-anonymity-among-named-supporters.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-network-day-one-the-grid-unlit.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-network-the-campaign-at-scale.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentum-network-the-first-gift.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumaccomplishments-campaign-track-record.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumclose-closing-ask.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumclose-photo-split.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentummission-gold-band.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumnarrative-image-layout-without-an-image.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumnarrative-image-left.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumnarrative-image-right.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumnarrative-text-only.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumnarrative-two-prose-columns.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumstats-campaign-figures.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumtestimonials-photo-led-rows.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/momentumtestimonials-three-quotes.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/navitemlabel-plain-and-online-rows.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/notfound-the-only-frame-it-can-have.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/onlinegroupeyebrow-over-a-forming-city-card.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/orderarrows-bottom-row.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/orderarrows-middle-row.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/orderarrows-the-only-row.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/orderarrows-top-row.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/our-chapters-empty.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/our-chapters.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/pagebanner-paper-tone-longest-name.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/pagebanner-photo-tone-over-a-city.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/pagenarrowbody-leads-body-and-links.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/pasteventsmore-the-link-out-to-luma.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/previews-index-the-shareable-list-link.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/primarynav-communities-derived.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/primarynav-derived-chapters.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/primarynav-get-involved-merged.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/primarynav-no-chapters-yet.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/primarynav-sixth-chapter-published.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/privacy-page-cookie-table-on-a-phone.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/privacy-page-the-written-policy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/responsiveimg-serves-a-photo-with-its-srcset.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/.capture-pipeline.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/accomplishmentcard-one-cell-of-the-evidence-strip--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/bannercta-site-path--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/bannercta-subscribe-on-luma--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-post-a-retained-medium-stub--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blog-preview-link-shared-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostarticle-an-ordinary-post--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostarticle-post-with-an-embed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostbody-locked-prompt-replaces-the-article--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/blogpostbody-nothing-encrypted-article-renders--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors-every-bio-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors-retired-member-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/board-of-directors-two-of-five-bios-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembertile-initials-instead-of-a-headshot--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembertile-no-bio-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembertile-with-a-bio--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/brandglyph-four-ways-a-glyph-resolves--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/brandmark-both-grounds-at-three-sizes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/calloutcard-single-callout--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-a-single-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-curated-and-capped--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-show-all-revealed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-gallery-three-photos-three-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-events-tagged-to-this-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-event-photos--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-event-photos--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-lead-headshot--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-lead-headshot--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-photo-enlarged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-london-photo-enlarged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-longest-chapter-name-wraps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-sf-bay-area--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-upcoming-above-recent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-community-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-community-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-community-heading--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-nothing-scheduled-yet--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-nothing-scheduled-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-recent-past-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-rich-list--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-with-image--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterleads-committee--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterleads-full-profile--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterleads-headshots-beside-names--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterleads-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterleads-two-leads-one-without-a-role--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-forming-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-forming-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chaptersignup-default--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chaptersignup-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-analytics-and-embeds--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-blog-duplicate-is-not-momentum-fund-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-blog-editor-edited-date-shows-in-the-preview--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-blog-list-a-preview-link-and-a-locked-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-blog-list-drafts-and-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-marked-as-draft--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-marked-as-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-chapter-editor-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-dashboard-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-dashboard-populated--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-donors-editor-anonymous-keeps-the-data-the-page-withholds-it--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-donors-editor-the-supporter-identity-fields--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-change-staged-for-review--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-change-staged-for-review--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-new-chapter-form--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-retired-brand-name-flagged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-entry-editor-retired-brand-name-flagged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-events-the-collection-0-7-removed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-media-library-adopted-images--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-momentum-sections-a-move-staged-but-not-yet-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-momentum-sections-a-section-still-in-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-momentum-sections-in-order-with-arrows--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-momentum-sections-the-duplicate-built-up-in-draft--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-momentum-sections-two-bands-under-their-own-names--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-new-section-prefilled-by-duplicate--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-adding-a-donor-wall-tier--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-momentum-fund-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-the-momentum-network-copy-an-editor-can-now-reach--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-page-settings-the-momentum-network-copy-an-editor-can-now-reach--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-publish-review-nothing-to-publish--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-publish-review-plain-language-change-summary--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-publish-review-what-the-edit-actually-did--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-section-type-is-a-dropdown--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-donor-fields-no-editor-can-change--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-the-second-band-pointed-at-its-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-section-editor-where-the-pillar-cards-actually-live--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-site-settings--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-sponsorship-level-editor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-team-board-members-in-their-own-order--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-testimonials-the-fields-behind-a-quote--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cms-volunteer-page-editor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/coming-soon-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-ai-on-day-one--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-join-steps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-lead-headshot--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/community-route-investors-lead-headshot--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitycallouts-what-happens-here--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/communitypage-founders-composed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-default--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/content-hub-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningnote-retired-brand-under-a-field--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningnote-two-retired-forms-in-one-field--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningssummary-one-field-flagged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/copywarningssummary-two-fields-flagged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-a-tick-that-could-not-be-saved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-complete--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-content-still-missing--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-cutover-day--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-decisions-answered-nothing-begun--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-nothing-started--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-partway-through--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-the-records-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/cutover-runbook-waiting-on-one-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-decided--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-decided-read-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-open--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/decision-tick-writing-the-answer--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploychip-change-is-live--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploychip-published-still-updating--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploychip-publishing--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploystatus-build-failed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploystatus-live--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploystatus-live--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploystatus-published-still-updating--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploystatus-publishing-dismissible--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/deploystatus-waiting-for-the-site--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-configured-form--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-embedded-iframe--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-unconfigured-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/emptystate-both-ways-out--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/emptystate-nothing-to-offer-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/event-gallery--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventcardgrid-past-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventcardgrid-past-events--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventcardgrid-three-uneven-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventcardmedia-luma-cover--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventcardmedia-no-cover-brand-mark--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventcardmedia-no-cover-brand-mark--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventgallery-small-screen-cap--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventgallery-small-screen-cap--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-the-calendar-with-no-past-events-yet--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintro-the-page-s-own-title--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventsintroband-closing-flush-against-the-calendar--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-no-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-several-recent-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/eventspage-upcoming-and-past--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/focus-areas--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/formingchaptercta-with-contact-address--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/formingchaptercta-with-contact-address--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/galleryexpand-fourteen-photos--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/galleryexpand-fourteen-photos--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerylightbox-no-caption--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerylightbox-photo-open--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerylightbox-photo-open--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerytile-captioned-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/gallerytile-keyboard-focus--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/get-involved--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/get-involved--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillarcard-with-inline-link--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillarcard-with-inline-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-numbered-bordered-grid--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-numbered-bordered-grid--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-the-duplicated-band-shows-its-own-cards--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-the-duplicated-band-shows-its-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-three-pillars--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giftpillars-three-pillars--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givebutton-both-variants--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givebutton-giving-closed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giveclose-the-final-ask--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givecollage-six-photographs-in-one-frame--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givefaq-every-question-closed--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givehero-the-opening-ask--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givephoto-the-strip-the-card-overlaps--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giverecognition-the-placeholder-supporter-card--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givestatement-both-tones-together--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giving-campaign--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giving-campaign--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giving-campaign-a-platform-is-live--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/giving-campaign-a-platform-is-live--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingcard-no-platform-connected--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingcard-no-platform-connected--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingsoonnote-on-a-dark-band--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingsoonnote-on-a-dark-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingsoonnote-on-a-pale-band--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/givingsoonnote-on-a-pale-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunityaction-newsletter-card--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunityaction-newsletter-card--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunitycta-three-ways-in--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globalcommunitycta-three-ways-in--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/globeicon-sizes-on-light-and-dark--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/goalmeter-a-campaign-name-that-runs-long--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/goalmeter-a-campaign-name-that-runs-long--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/goalmeter-navy-chrome-with-campaign-link--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/goalmeter-navy-chrome-with-campaign-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/goalmeter-the-2026-goal-before-launch--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/goalmeter-the-2026-goal-before-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/goalmeter-the-band-around-givebutter-s-meter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/goalmeter-the-band-around-givebutter-s-meter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-chapters-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--laptop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-on-four-sizes--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-contact-with-no-email-set--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-header-pinned-while-scrolling--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-header-pinned-while-scrolling--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-homepage-phased-for-launch--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-mission-band-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-our-mission-band--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-our-mission-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-our-mission-band--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-phone-menu-open--tablet.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-retired-board-member-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-retired-board-member-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-whatsapp-band-with-the-hit-directory--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-whatsapp-band-with-the-hit-directory--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-whatsapp-band-with-the-hit-directory--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero-carousel--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hero-carousel--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/herocarousel-the-second-slide-reached-by-its-dot--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/herocarousel-the-second-slide-reached-by-its-dot--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hitdirectoryteaser-default--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hitdirectoryteaser-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hitdirectoryteaser-long-copy--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/hitdirectoryteaser-long-copy--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/home-sections-all-three-visibility-states--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/imagefield-staged-upload--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/imagefield-staged-upload--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/joinwhatsappcta-community-primary-action--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/joinwhatsappcta-community-primary-action--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/leadavatar-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/leadavatar-initials--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/leadavatar-small-initials--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/leadcommitteegrid-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/leadcontactlinks-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/leadcontactlinks-linkedin-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/leadprofile-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/leadprofile-name-and-role-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-password-required--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-unlocked-with-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/locked-preview-wrong-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/lockedpreviewbody-before-the-password--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/lockedpreviewbody-before-the-password--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/luma-calendar--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/luma-calendar--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/luma-calendar--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/luma-calendar--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/lumacalendar-nothing-upcoming--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/lumacalendar-nothing-upcoming--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/lumacalendar-nothing-upcoming--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/lumasubscribe-default--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/lumasubscribe-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/mediacard-staged-upload--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/mediacard-staged-upload--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/missionstatement-default-wording--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/missionstatement-default-wording--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/missionstatement-edited-without-an-accent--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/missionstatement-edited-without-an-accent--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-giving-platform-is-chosen--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-arriving-from-the-email--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-every-section-hidden--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-filtering-the-donor-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-public-visitor--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-sections-reordered-by-an-editor--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-donor-wall-moved-to-the-top--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-first-donor-on-the-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-the-impact-band-with-real-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-a-supporter-selected--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-a-supporter-who-wrote-no-message--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-anonymity-among-named-supporters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-day-one-the-grid-unlit--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-the-campaign-at-scale--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentum-network-the-first-gift--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumaccomplishments-campaign-track-record--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumclose-closing-ask--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumclose-photo-split--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentummission-gold-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumnarrative-image-layout-without-an-image--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumnarrative-image-left--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumnarrative-image-right--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumnarrative-text-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumnarrative-two-prose-columns--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumstats-campaign-figures--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumtestimonials-photo-led-rows--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/momentumtestimonials-three-quotes--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/navitemlabel-plain-and-online-rows--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/navitemlabel-plain-and-online-rows--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/notfound-the-only-frame-it-can-have--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/onlinegroupeyebrow-over-a-forming-city-card--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/orderarrows-bottom-row--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/orderarrows-middle-row--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/orderarrows-the-only-row--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/orderarrows-top-row--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/our-chapters-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pagebanner-paper-tone-longest-name--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pagebanner-photo-tone-over-a-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pagenarrowbody-leads-body-and-links--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/pasteventsmore-the-link-out-to-luma--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/previews-index-the-shareable-list-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-communities-derived--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-communities-derived--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-derived-chapters--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-derived-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-get-involved-merged--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-get-involved-merged--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-no-chapters-yet--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-no-chapters-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-sixth-chapter-published--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/primarynav-sixth-chapter-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-cookie-table-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/privacy-page-the-written-policy--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/responsiveimg-serves-a-photo-with-its-srcset--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sectionhead-centered--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sectionhead-kicker-title-intro-and-action--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-a-page-written-in-the-cms--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/site-page-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sitepagebody-cookie-table-on-a-phone--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sitepagebody-markdown-an-editor-can-write--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sitepageheader-long-title-and-no-description--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sitepageheader-title-and-lede--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sociallinks-on-dark-no-badges--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sociallinks-on-light-brand-colours--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsor-route-example-partner-wall--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-awaiting-a-form--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-form-configured--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorinquiry-no-email-and-no-form--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorlevels-four-partnership-levels--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-no-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorpage-full-page-with-examples--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-example-placements--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-no-partners-yet--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/sponsorwall-real-partners--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stagingbar-publish-again-while-deploying--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stagingbar-reviewing-before-publish--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/stats-band-six-figures-in-two-rows-at-ipad-width--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-commit-refused--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-done-with-attribution--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/step-tick-read-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/support-us--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-every-field-filled--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-quote-without-an-event-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/testimonialcard-with-role--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/upcoming-events-empty--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-derived-cities--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-derived-cities--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-no-chapters--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-no-chapters--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/utilitybar-short-line-at-ipad-width--tablet.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-fall-2026-roles--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-no-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-open-projects--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-page-rewritten-from-the-cms--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-city-role-on-its-chapter-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-city-role-on-its-chapter-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-full-description-no-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-photo-and-own-sign-up-link--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteer-project-detail-retired-projects-never-suggested--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerbenefit-long-copy--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerbenefits-four-blocks--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerhero-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectbackdrop-london-chapter-linked--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectbackdrop-shared-site-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectbody-rendered-markdown--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcard-with-thumbnail--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcardlinks-both-detail-only-and-apply-only--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectcta-own-link-and-fallback--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-long-title-and-blurb--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectheader-on-chapter-photo--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectmeta-every-date-shape--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectpage-full-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectphoto-square-upload--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojects-populated-grid--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectsempty-production-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerprojectthumb-linked-bare-and-placeholder--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-one-other-project--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/volunteerrelatedprojects-three-suggestions--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarcard-cover-speakers-and-year--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarcard-recording-whose-host-lost-it--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--laptop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinars-route-the-surviving-recordings--mobile.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-a-single-recording--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-nothing-published--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspage-recordings-with-and-without-a-cover--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/webinarspointer-the-line-to-the-recordings--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community-no-directory--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsapp-community-no-directory--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/whatsappjoincard-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sectionhead-centered.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sectionhead-kicker-title-intro-and-action.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/site-page-a-page-written-in-the-cms.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/site-page-long-title-and-no-description.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sitepagebody-cookie-table-on-a-phone.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sitepagebody-markdown-an-editor-can-write.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sitepageheader-long-title-and-no-description.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sitepageheader-title-and-lede.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sociallinks-on-dark-no-badges.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sociallinks-on-light-brand-colours.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsor-route-example-partner-wall.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorinquiry-awaiting-a-form.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorinquiry-form-configured.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorinquiry-no-email-and-no-form.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorlevels-four-partnership-levels.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorpage-full-page-no-partners.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorpage-full-page-with-examples.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorwall-example-placements.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorwall-no-partners-yet.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/sponsorwall-real-partners.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/stagingbar-publish-again-while-deploying.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/stagingbar-reviewing-before-publish.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/stats-band-six-figures-in-two-rows-at-ipad-width.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/stats-band.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/step-tick-commit-refused.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/step-tick-done-with-attribution.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/step-tick-read-only.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/support-us.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/testimonialcard-every-field-filled.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/testimonialcard-quote-without-an-event-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/testimonialcard-with-role.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/upcoming-events-empty.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/upcoming-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/utilitybar-derived-cities.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/utilitybar-no-chapters.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/utilitybar-short-line-at-ipad-width.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-page-fall-2026-roles.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-page-no-open-projects.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-page-open-projects.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-page-rewritten-from-the-cms.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-city-role-on-its-chapter-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-full-description-no-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-photo-and-own-sign-up-link.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteer-project-detail-retired-projects-never-suggested.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerbenefit-long-copy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerbenefits-four-blocks.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerhero-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectbackdrop-london-chapter-linked.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectbackdrop-shared-site-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectbody-rendered-markdown.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectcard-with-thumbnail.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectcardlinks-both-detail-only-and-apply-only.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectcta-own-link-and-fallback.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectheader-long-title-and-blurb.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectheader-on-chapter-photo.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectmeta-every-date-shape.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectpage-full-project.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectphoto-square-upload.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojects-populated-grid.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectsempty-production-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerprojectthumb-linked-bare-and-placeholder.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerrelatedprojects-one-other-project.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/volunteerrelatedprojects-three-suggestions.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinarcard-cover-speakers-and-year.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinarcard-recording-whose-host-lost-it.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinars-route-nothing-published.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinars-route-the-surviving-recordings.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinarspage-a-single-recording.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinarspage-nothing-published.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinarspage-recordings-with-and-without-a-cover.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/webinarspointer-the-line-to-the-recordings.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/whatsapp-community-no-directory.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/whatsapp-community.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/whatsappjoincard-default.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/b8e8edb917ec9a094cf3ec2e86d4c654f3ed161c6a879a8a759e2d24506d4df5.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/e3ceeaa171a3e88b9e48b1d44599388810a2a36a6e29c6d9d96f190772a03266.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": "package-lock.json",
+      "status": "modified"
+    },
+    {
+      "path": "scripts/import-luma.mjs",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterEvents.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterSignUp.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/FormingChapterCta.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/GlobalCommunityCta.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/HeroCarousel.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/OurChapters.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/UpcomingEvents.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/WhatsappCommunity.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/nav/PrimaryNav.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/heroSlides/where-harvard-alumni-build-the-future.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/homeSections/mission.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/data/nav.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/lumaImport.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/nav.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/nav.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/GlobalCommunityAction.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/NavItemLabel.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/laura-s-feedback-luma-import-fix-copy-and-global-community-menu.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/9fcbc83ad695bff853e59163674f16a4254427b0ea4f0085f6e45a856d5d813a.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/eb70d59b6e96f9e8edfcc4396d90d59d8cdcbfb87269cc0edb9712858db9ff04.json",
+      "status": "added"
+    },
+    {
+      "path": "src/content/events/2026-10-09-alumni-founders-co-working-day-october.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/events/2026-11-13-alumni-founders-co-working-day-november.md",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Blog Post - A Retained Medium Stub",
+      "screenshotPath": "blog-post-a-retained-medium-stub--mobile.png"
+    },
+    {
+      "name": "Blog Preview Link - Shared Draft",
+      "screenshotPath": "blog-preview-link-shared-draft--desktop.png"
+    },
+    {
+      "name": "CMS Analytics And Embeds",
+      "screenshotPath": "cms-analytics-and-embeds--desktop.png"
+    },
+    {
+      "name": "CMS Blog - Duplicate Is Not Momentum-Fund-Only",
+      "screenshotPath": "cms-blog-duplicate-is-not-momentum-fund-only--desktop.png"
+    },
+    {
+      "name": "CMS Blog Editor - Edited Date Shows In The Preview",
+      "screenshotPath": "cms-blog-editor-edited-date-shows-in-the-preview--desktop.png"
+    },
+    {
+      "name": "CMS Blog List - A Preview Link And A Locked One",
+      "screenshotPath": "cms-blog-list-a-preview-link-and-a-locked-one--desktop.png"
+    },
+    {
+      "name": "CMS Blog List - Drafts And Published",
+      "screenshotPath": "cms-blog-list-drafts-and-published--desktop.png"
+    },
+    {
+      "name": "CMS Chapter Editor - Marked As Draft",
+      "screenshotPath": "cms-chapter-editor-marked-as-draft--desktop.png"
+    },
+    {
+      "name": "CMS Chapter Editor - New York City",
+      "screenshotPath": "cms-chapter-editor-new-york-city--desktop.png"
+    },
+    {
+      "name": "CMS Dashboard - Empty",
+      "screenshotPath": "cms-dashboard-empty--desktop.png"
+    },
+    {
+      "name": "CMS Dashboard - Populated",
+      "screenshotPath": "cms-dashboard-populated--desktop.png"
+    },
+    {
+      "name": "CMS Donors Editor - Anonymous Keeps The Data, The Page Withholds It",
+      "screenshotPath": "cms-donors-editor-anonymous-keeps-the-data-the-page-withholds-it--desktop.png"
+    },
+    {
+      "name": "CMS Donors Editor - The Supporter Identity Fields",
+      "screenshotPath": "cms-donors-editor-the-supporter-identity-fields--desktop.png"
+    },
+    {
+      "name": "CMS Entry Editor - Change Staged For Review",
+      "screenshotPath": "cms-entry-editor-change-staged-for-review--desktop.png"
+    },
+    {
+      "name": "CMS Entry Editor - New Chapter Form",
+      "screenshotPath": "cms-entry-editor-new-chapter-form--desktop.png"
+    },
+    {
+      "name": "CMS Entry Editor - Retired Brand Name Flagged",
+      "screenshotPath": "cms-entry-editor-retired-brand-name-flagged--desktop.png"
+    },
+    {
+      "name": "CMS Events - The Collection 0.7 Removed",
+      "screenshotPath": "cms-events-the-collection-0-7-removed--desktop.png"
+    },
+    {
+      "name": "CMS Media Library - Adopted Images",
+      "screenshotPath": "cms-media-library-adopted-images--desktop.png"
+    },
+    {
+      "name": "CMS Momentum Sections - A Move Staged But Not Yet Published",
+      "screenshotPath": "cms-momentum-sections-a-move-staged-but-not-yet-published--desktop.png"
+    },
+    {
+      "name": "CMS Momentum Sections - A Section Still In Draft",
+      "screenshotPath": "cms-momentum-sections-a-section-still-in-draft--desktop.png"
+    },
+    {
+      "name": "CMS Momentum Sections - In Order With Arrows",
+      "screenshotPath": "cms-momentum-sections-in-order-with-arrows--desktop.png"
+    },
+    {
+      "name": "CMS Momentum Sections - The Duplicate Built Up In Draft",
+      "screenshotPath": "cms-momentum-sections-the-duplicate-built-up-in-draft--desktop.png"
+    },
+    {
+      "name": "CMS Momentum Sections - Two Bands Under Their Own Names",
+      "screenshotPath": "cms-momentum-sections-two-bands-under-their-own-names--desktop.png"
+    },
+    {
+      "name": "CMS New Section - Prefilled By Duplicate",
+      "screenshotPath": "cms-new-section-prefilled-by-duplicate--desktop.png"
+    },
+    {
+      "name": "CMS Page Settings - Adding A Donor Wall Tier",
+      "screenshotPath": "cms-page-settings-adding-a-donor-wall-tier--desktop.png"
+    },
+    {
+      "name": "CMS Page Settings - Momentum Fund Page",
+      "screenshotPath": "cms-page-settings-momentum-fund-page--desktop.png"
+    },
+    {
+      "name": "CMS Page Settings - The Momentum Network Copy An Editor Can Now Reach",
+      "screenshotPath": "cms-page-settings-the-momentum-network-copy-an-editor-can-now-reach--desktop.png"
+    },
+    {
+      "name": "CMS Publish Review - Nothing To Publish",
+      "screenshotPath": "cms-publish-review-nothing-to-publish--desktop.png"
+    },
+    {
+      "name": "CMS Publish Review - Plain Language Change Summary",
+      "screenshotPath": "cms-publish-review-plain-language-change-summary--desktop.png"
+    },
+    {
+      "name": "CMS Publish Review - What The Edit Actually Did",
+      "screenshotPath": "cms-publish-review-what-the-edit-actually-did--desktop.png"
+    },
+    {
+      "name": "CMS Section Editor - Section Type Is A Dropdown",
+      "screenshotPath": "cms-section-editor-section-type-is-a-dropdown--desktop.png"
+    },
+    {
+      "name": "CMS Section Editor - The Donor Fields No Editor Can Change",
+      "screenshotPath": "cms-section-editor-the-donor-fields-no-editor-can-change--desktop.png"
+    },
+    {
+      "name": "CMS Section Editor - The Second Band Pointed At Its Own Cards",
+      "screenshotPath": "cms-section-editor-the-second-band-pointed-at-its-own-cards--desktop.png"
+    },
+    {
+      "name": "CMS Section Editor - Where The Pillar Cards Actually Live",
+      "screenshotPath": "cms-section-editor-where-the-pillar-cards-actually-live--desktop.png"
+    },
+    {
+      "name": "CMS Site Settings",
+      "screenshotPath": "cms-site-settings--desktop.png"
+    },
+    {
+      "name": "CMS Sponsorship Level Editor",
+      "screenshotPath": "cms-sponsorship-level-editor--desktop.png"
+    },
+    {
+      "name": "CMS Team - Board Members In Their Own Order",
+      "screenshotPath": "cms-team-board-members-in-their-own-order--desktop.png"
+    },
+    {
+      "name": "CMS Testimonials - The Fields Behind A Quote",
+      "screenshotPath": "cms-testimonials-the-fields-behind-a-quote--desktop.png"
+    },
+    {
+      "name": "CMS Volunteer Page Editor",
+      "screenshotPath": "cms-volunteer-page-editor--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - A Single Photo",
+      "screenshotPath": "chapter-gallery-a-single-photo--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Curated and Capped",
+      "screenshotPath": "chapter-gallery-curated-and-capped--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Photo Enlarged",
+      "screenshotPath": "chapter-gallery-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Show All Revealed",
+      "screenshotPath": "chapter-gallery-show-all-revealed--desktop.png"
+    },
+    {
+      "name": "Chapter Gallery - Three Photos, Three Columns",
+      "screenshotPath": "chapter-gallery-three-photos-three-columns--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Events Tagged To This Chapter",
+      "screenshotPath": "chapter-route-events-tagged-to-this-chapter--desktop.png"
+    },
+    {
+      "name": "Chapter Route - London Event Photos",
+      "screenshotPath": "chapter-route-london-event-photos--desktop.png"
+    },
+    {
+      "name": "Chapter Route - London Lead Headshot",
+      "screenshotPath": "chapter-route-london-lead-headshot--desktop.png"
+    },
+    {
+      "name": "Chapter Route - London Photo Enlarged",
+      "screenshotPath": "chapter-route-london-photo-enlarged--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Longest Chapter Name Wraps",
+      "screenshotPath": "chapter-route-longest-chapter-name-wraps--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--mobile.png"
+    },
+    {
+      "name": "Chapter Route - SF & Bay Area",
+      "screenshotPath": "chapter-route-sf-bay-area--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Upcoming Above Recent",
+      "screenshotPath": "chapter-route-upcoming-above-recent--desktop.png"
+    },
+    {
+      "name": "Community Route - AI On Day One",
+      "screenshotPath": "community-route-ai-on-day-one--desktop.png"
+    },
+    {
+      "name": "Community Route - Founders With Leads And Events",
+      "screenshotPath": "community-route-founders-with-leads-and-events--mobile.png"
+    },
+    {
+      "name": "Community Route - Investors Join Steps",
+      "screenshotPath": "community-route-investors-join-steps--desktop.png"
+    },
+    {
+      "name": "Community Route - Investors Lead Headshot",
+      "screenshotPath": "community-route-investors-lead-headshot--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - A Tick That Could Not Be Saved",
+      "screenshotPath": "cutover-runbook-a-tick-that-could-not-be-saved--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Complete",
+      "screenshotPath": "cutover-runbook-complete--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Content Still Missing",
+      "screenshotPath": "cutover-runbook-content-still-missing--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Cutover Day",
+      "screenshotPath": "cutover-runbook-cutover-day--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Decisions Answered Nothing Begun",
+      "screenshotPath": "cutover-runbook-decisions-answered-nothing-begun--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Nothing Started",
+      "screenshotPath": "cutover-runbook-nothing-started--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - Partway Through",
+      "screenshotPath": "cutover-runbook-partway-through--desktop.png"
+    },
+    {
+      "name": "Cutover Runbook - The Records On A Phone",
+      "screenshotPath": "cutover-runbook-the-records-on-a-phone--mobile.png"
+    },
+    {
+      "name": "Cutover Runbook - Waiting On One Answer",
+      "screenshotPath": "cutover-runbook-waiting-on-one-answer--desktop.png"
+    },
+    {
+      "name": "Events Route - Past Results From The October All-Hands",
+      "screenshotPath": "events-route-past-results-from-the-october-all-hands--desktop.png"
+    },
+    {
+      "name": "Events Route - The Calendar With No Past Events Yet",
+      "screenshotPath": "events-route-the-calendar-with-no-past-events-yet--mobile.png"
+    },
+    {
+      "name": "Events Route - Upcoming and Past",
+      "screenshotPath": "events-route-upcoming-and-past--mobile.png"
+    },
+    {
+      "name": "Harvard In Tech - Header Pinned While Scrolling",
+      "screenshotPath": "harvard-in-tech-header-pinned-while-scrolling--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Mission Band Coming Soon",
+      "screenshotPath": "harvard-in-tech-mission-band-coming-soon--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Mission Band Hidden",
+      "screenshotPath": "harvard-in-tech-mission-band-hidden--desktop.png"
+    },
+    {
+      "name": "Harvard In Tech - Numbers Band On An iPad",
+      "screenshotPath": "harvard-in-tech-numbers-band-on-an-ipad--tablet.png"
+    },
+    {
+      "name": "Harvard In Tech - Our Mission Band",
+      "screenshotPath": "harvard-in-tech-our-mission-band--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board On Four Sizes",
+      "screenshotPath": "harvard-in-tech-board-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapter Published Since The Menu Was Written",
+      "screenshotPath": "harvard-in-tech-chapter-published-since-the-menu-was-written--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Chapters On Four Sizes",
+      "screenshotPath": "harvard-in-tech-chapters-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact On Four Sizes",
+      "screenshotPath": "harvard-in-tech-contact-on-four-sizes--tablet.png"
+    },
+    {
+      "name": "Harvard in Tech - Contact With No Email Set",
+      "screenshotPath": "harvard-in-tech-contact-with-no-email-set--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Homepage Phased For Launch",
+      "screenshotPath": "harvard-in-tech-homepage-phased-for-launch--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Phone Menu Open",
+      "screenshotPath": "harvard-in-tech-phone-menu-open--mobile.png"
+    },
+    {
+      "name": "Harvard in Tech - Retired Board Member Hidden",
+      "screenshotPath": "harvard-in-tech-retired-board-member-hidden--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Upcoming Events Excludes Past Ones",
+      "screenshotPath": "harvard-in-tech-upcoming-events-excludes-past-ones--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - WhatsApp Band With The HIT Directory",
+      "screenshotPath": "harvard-in-tech-whatsapp-band-with-the-hit-directory--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Password Required",
+      "screenshotPath": "locked-preview-password-required--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Unlocked With The Password",
+      "screenshotPath": "locked-preview-unlocked-with-the-password--desktop.png"
+    },
+    {
+      "name": "Locked Preview - Wrong Password",
+      "screenshotPath": "locked-preview-wrong-password--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Giving Platform Is Chosen",
+      "screenshotPath": "momentum-fund-a-giving-platform-is-chosen--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - A Mistyped Section Type And A Missing Photo",
+      "screenshotPath": "momentum-fund-a-mistyped-section-type-and-a-missing-photo--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Arriving From The Email",
+      "screenshotPath": "momentum-fund-arriving-from-the-email--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Every Section Hidden",
+      "screenshotPath": "momentum-fund-every-section-hidden--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Finding Your Place In The Network",
+      "screenshotPath": "momentum-fund-filtering-the-donor-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Public Visitor",
+      "screenshotPath": "momentum-fund-public-visitor--mobile.png"
+    },
+    {
+      "name": "Momentum Fund - The Donor Wall Moved To The Top",
+      "screenshotPath": "momentum-fund-the-donor-wall-moved-to-the-top--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The First Donor On The Wall",
+      "screenshotPath": "momentum-fund-the-first-donor-on-the-wall--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Goal Meter Held As Coming Soon",
+      "screenshotPath": "momentum-fund-the-goal-meter-held-as-coming-soon--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - The Impact Band With Real Quotes",
+      "screenshotPath": "momentum-fund-the-impact-band-with-real-quotes--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Two Pillar Bands With Their Own Cards",
+      "screenshotPath": "momentum-fund-two-pillar-bands-with-their-own-cards--desktop.png"
+    },
+    {
+      "name": "Previews Index - The Shareable List Link",
+      "screenshotPath": "previews-index-the-shareable-list-link--desktop.png"
+    },
+    {
+      "name": "Privacy Page - Cookie Table On A Phone",
+      "screenshotPath": "privacy-page-cookie-table-on-a-phone--mobile.png"
+    },
+    {
+      "name": "Privacy Page - The Written Policy",
+      "screenshotPath": "privacy-page-the-written-policy--desktop.png"
+    },
+    {
+      "name": "Site Page - A Page Written In The CMS",
+      "screenshotPath": "site-page-a-page-written-in-the-cms--mobile.png"
+    },
+    {
+      "name": "Site Page - Long Title And No Description",
+      "screenshotPath": "site-page-long-title-and-no-description--desktop.png"
+    },
+    {
+      "name": "Sponsor Route - Example Partner Wall",
+      "screenshotPath": "sponsor-route-example-partner-wall--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - Fall 2026 Roles",
+      "screenshotPath": "volunteer-page-fall-2026-roles--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - No Open Projects",
+      "screenshotPath": "volunteer-page-no-open-projects--desktop.png"
+    },
+    {
+      "name": "Volunteer Page - Open Projects",
+      "screenshotPath": "volunteer-page-open-projects--mobile.png"
+    },
+    {
+      "name": "Volunteer Page - Rewritten From The CMS",
+      "screenshotPath": "volunteer-page-rewritten-from-the-cms--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - City Role On Its Chapter Photo",
+      "screenshotPath": "volunteer-project-detail-city-role-on-its-chapter-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Full Description No Photo",
+      "screenshotPath": "volunteer-project-detail-full-description-no-photo--desktop.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Photo And Own Sign-up Link",
+      "screenshotPath": "volunteer-project-detail-photo-and-own-sign-up-link--mobile.png"
+    },
+    {
+      "name": "Volunteer Project Detail - Retired Projects Never Suggested",
+      "screenshotPath": "volunteer-project-detail-retired-projects-never-suggested--desktop.png"
+    },
+    {
+      "name": "Webinars Route - Nothing Published",
+      "screenshotPath": "webinars-route-nothing-published--desktop.png"
+    },
+    {
+      "name": "Webinars Route - The Surviving Recordings",
+      "screenshotPath": "webinars-route-the-surviving-recordings--mobile.png"
+    },
+    {
+      "name": "AccomplishmentCard - One Cell Of The Evidence Strip",
+      "screenshotPath": "accomplishmentcard-one-cell-of-the-evidence-strip--desktop.png"
+    },
+    {
+      "name": "BannerCta - Site Path",
+      "screenshotPath": "bannercta-site-path--desktop.png"
+    },
+    {
+      "name": "BannerCta - Subscribe On Luma",
+      "screenshotPath": "bannercta-subscribe-on-luma--desktop.png"
+    },
+    {
+      "name": "BlogPostArticle - An Ordinary Post",
+      "screenshotPath": "blogpostarticle-an-ordinary-post--desktop.png"
+    },
+    {
+      "name": "BlogPostArticle - Post With An Embed",
+      "screenshotPath": "blogpostarticle-post-with-an-embed--desktop.png"
+    },
+    {
+      "name": "BlogPostBody - Locked, Prompt Replaces The Article",
+      "screenshotPath": "blogpostbody-locked-prompt-replaces-the-article--desktop.png"
+    },
+    {
+      "name": "BlogPostBody - Nothing Encrypted, Article Renders",
+      "screenshotPath": "blogpostbody-nothing-encrypted-article-renders--desktop.png"
+    },
+    {
+      "name": "Board of Directors",
+      "screenshotPath": "board-of-directors--desktop.png"
+    },
+    {
+      "name": "Board of Directors - Empty",
+      "screenshotPath": "board-of-directors-empty--desktop.png"
+    },
+    {
+      "name": "Board of Directors - Every Bio Written",
+      "screenshotPath": "board-of-directors-every-bio-written--desktop.png"
+    },
+    {
+      "name": "Board of Directors - Retired Member Hidden",
+      "screenshotPath": "board-of-directors-retired-member-hidden--desktop.png"
+    },
+    {
+      "name": "Board of Directors - Two Of Five Bios Written",
+      "screenshotPath": "board-of-directors-two-of-five-bios-written--desktop.png"
+    },
+    {
+      "name": "BoardMemberTile - Initials Instead Of A Headshot",
+      "screenshotPath": "boardmembertile-initials-instead-of-a-headshot--desktop.png"
+    },
+    {
+      "name": "BoardMemberTile - No Bio Yet",
+      "screenshotPath": "boardmembertile-no-bio-yet--desktop.png"
+    },
+    {
+      "name": "BoardMemberTile - With A Bio",
+      "screenshotPath": "boardmembertile-with-a-bio--desktop.png"
+    },
+    {
+      "name": "BrandGlyph - Four Ways A Glyph Resolves",
+      "screenshotPath": "brandglyph-four-ways-a-glyph-resolves--desktop.png"
+    },
+    {
+      "name": "BrandMark - Both Grounds At Three Sizes",
+      "screenshotPath": "brandmark-both-grounds-at-three-sizes--desktop.png"
+    },
+    {
+      "name": "CalloutCard - Single Callout",
+      "screenshotPath": "calloutcard-single-callout--desktop.png"
+    },
+    {
+      "name": "ChapterConnect - Default",
+      "screenshotPath": "chapterconnect-default--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Community Empty",
+      "screenshotPath": "chapterevents-community-empty--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Community Heading",
+      "screenshotPath": "chapterevents-community-heading--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Nothing Scheduled Yet",
+      "screenshotPath": "chapterevents-nothing-scheduled-yet--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Recent Past Events",
+      "screenshotPath": "chapterevents-recent-past-events--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Rich List",
+      "screenshotPath": "chapterevents-rich-list--desktop.png"
+    },
+    {
+      "name": "ChapterHero - No Image Fallback",
+      "screenshotPath": "chapterhero-no-image-fallback--desktop.png"
+    },
+    {
+      "name": "ChapterHero - With Image",
+      "screenshotPath": "chapterhero-with-image--desktop.png"
+    },
+    {
+      "name": "ChapterLeads - Committee",
+      "screenshotPath": "chapterleads-committee--desktop.png"
+    },
+    {
+      "name": "ChapterLeads - Full Profile",
+      "screenshotPath": "chapterleads-full-profile--desktop.png"
+    },
+    {
+      "name": "ChapterLeads - Headshots Beside Names",
+      "screenshotPath": "chapterleads-headshots-beside-names--desktop.png"
+    },
+    {
+      "name": "ChapterLeads - No Photo",
+      "screenshotPath": "chapterleads-no-photo--desktop.png"
+    },
+    {
+      "name": "ChapterLeads - Two Leads, One Without A Role",
+      "screenshotPath": "chapterleads-two-leads-one-without-a-role--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Forming Chapter",
+      "screenshotPath": "chapterpage-forming-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Sparse No Leads",
+      "screenshotPath": "chapterpage-sparse-no-leads--desktop.png"
+    },
+    {
+      "name": "ChapterSignUp - Default",
+      "screenshotPath": "chaptersignup-default--desktop.png"
+    },
+    {
+      "name": "Coming Soon Band",
+      "screenshotPath": "coming-soon-band--desktop.png"
+    },
+    {
+      "name": "CommunityCallouts - What Happens Here",
+      "screenshotPath": "communitycallouts-what-happens-here--desktop.png"
+    },
+    {
+      "name": "CommunityPage - Founders Composed",
+      "screenshotPath": "communitypage-founders-composed--desktop.png"
+    },
+    {
+      "name": "ContactUs - Default",
+      "screenshotPath": "contactus-default--desktop.png"
+    },
+    {
+      "name": "ContactUs - No Email Set",
+      "screenshotPath": "contactus-no-email-set--desktop.png"
+    },
+    {
+      "name": "Content Hub",
+      "screenshotPath": "content-hub--desktop.png"
+    },
+    {
+      "name": "Content Hub - Empty",
+      "screenshotPath": "content-hub-empty--desktop.png"
+    },
+    {
+      "name": "CopyWarningNote - Retired Brand Under A Field",
+      "screenshotPath": "copywarningnote-retired-brand-under-a-field--desktop.png"
+    },
+    {
+      "name": "CopyWarningNote - Two Retired Forms In One Field",
+      "screenshotPath": "copywarningnote-two-retired-forms-in-one-field--desktop.png"
+    },
+    {
+      "name": "CopyWarningsSummary - One Field Flagged",
+      "screenshotPath": "copywarningssummary-one-field-flagged--desktop.png"
+    },
+    {
+      "name": "CopyWarningsSummary - Two Fields Flagged",
+      "screenshotPath": "copywarningssummary-two-fields-flagged--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Decided",
+      "screenshotPath": "decision-tick-decided--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Decided Read Only",
+      "screenshotPath": "decision-tick-decided-read-only--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Open",
+      "screenshotPath": "decision-tick-open--desktop.png"
+    },
+    {
+      "name": "Decision Tick - Writing The Answer",
+      "screenshotPath": "decision-tick-writing-the-answer--desktop.png"
+    },
+    {
+      "name": "DeployChip - Change Is Live",
+      "screenshotPath": "deploychip-change-is-live--desktop.png"
+    },
+    {
+      "name": "DeployChip - Published, Still Updating",
+      "screenshotPath": "deploychip-published-still-updating--desktop.png"
+    },
+    {
+      "name": "DeployChip - Publishing",
+      "screenshotPath": "deploychip-publishing--desktop.png"
+    },
+    {
+      "name": "DeployStatus - Build Failed",
+      "screenshotPath": "deploystatus-build-failed--desktop.png"
+    },
+    {
+      "name": "DeployStatus - Live",
+      "screenshotPath": "deploystatus-live--desktop.png"
+    },
+    {
+      "name": "DeployStatus - Published, Still Updating",
+      "screenshotPath": "deploystatus-published-still-updating--desktop.png"
+    },
+    {
+      "name": "DeployStatus - Publishing, Dismissible",
+      "screenshotPath": "deploystatus-publishing-dismissible--desktop.png"
+    },
+    {
+      "name": "DeployStatus - Waiting For The Site",
+      "screenshotPath": "deploystatus-waiting-for-the-site--desktop.png"
+    },
+    {
+      "name": "EmbedForm - Configured Form",
+      "screenshotPath": "embedform-configured-form--desktop.png"
+    },
+    {
+      "name": "EmbedForm - Embedded Iframe",
+      "screenshotPath": "embedform-embedded-iframe--desktop.png"
+    },
+    {
+      "name": "EmbedForm - Unconfigured Fallback",
+      "screenshotPath": "embedform-unconfigured-fallback--desktop.png"
+    },
+    {
+      "name": "EmptyState - Both Ways Out",
+      "screenshotPath": "emptystate-both-ways-out--desktop.png"
+    },
+    {
+      "name": "EmptyState - Nothing To Offer Yet",
+      "screenshotPath": "emptystate-nothing-to-offer-yet--desktop.png"
+    },
+    {
+      "name": "Event Gallery",
+      "screenshotPath": "event-gallery--desktop.png"
+    },
+    {
+      "name": "EventCardGrid - Past Events",
+      "screenshotPath": "eventcardgrid-past-events--mobile.png"
+    },
+    {
+      "name": "EventCardGrid - Three Uneven Cards",
+      "screenshotPath": "eventcardgrid-three-uneven-cards--desktop.png"
+    },
+    {
+      "name": "EventCardMedia - Luma Cover",
+      "screenshotPath": "eventcardmedia-luma-cover--desktop.png"
+    },
+    {
+      "name": "EventCardMedia - No Cover, Brand Mark",
+      "screenshotPath": "eventcardmedia-no-cover-brand-mark--mobile.png"
+    },
+    {
+      "name": "EventGallery - Small Screen Cap",
+      "screenshotPath": "eventgallery-small-screen-cap--mobile.png"
+    },
+    {
+      "name": "EventsIntro - The Page's Own Title",
+      "screenshotPath": "eventsintro-the-page-s-own-title--mobile.png"
+    },
+    {
+      "name": "EventsIntroBand - Closing Flush Against The Calendar",
+      "screenshotPath": "eventsintroband-closing-flush-against-the-calendar--mobile.png"
+    },
+    {
+      "name": "EventsPage - No Events",
+      "screenshotPath": "eventspage-no-events--desktop.png"
+    },
+    {
+      "name": "EventsPage - Several Recent Events",
+      "screenshotPath": "eventspage-several-recent-events--desktop.png"
+    },
+    {
+      "name": "EventsPage - Upcoming and Past",
+      "screenshotPath": "eventspage-upcoming-and-past--desktop.png"
+    },
+    {
+      "name": "Focus Areas",
+      "screenshotPath": "focus-areas--desktop.png"
+    },
+    {
+      "name": "FormingChapterCta - With Contact Address",
+      "screenshotPath": "formingchaptercta-with-contact-address--desktop.png"
+    },
+    {
+      "name": "GalleryExpand - Fourteen Photos",
+      "screenshotPath": "galleryexpand-fourteen-photos--desktop.png"
+    },
+    {
+      "name": "GalleryLightbox - No Caption",
+      "screenshotPath": "gallerylightbox-no-caption--desktop.png"
+    },
+    {
+      "name": "GalleryLightbox - Photo Open",
+      "screenshotPath": "gallerylightbox-photo-open--desktop.png"
+    },
+    {
+      "name": "GalleryTile - Captioned Photo",
+      "screenshotPath": "gallerytile-captioned-photo--desktop.png"
+    },
+    {
+      "name": "GalleryTile - Keyboard Focus",
+      "screenshotPath": "gallerytile-keyboard-focus--desktop.png"
+    },
+    {
+      "name": "Get Involved",
+      "screenshotPath": "get-involved--desktop.png"
+    },
+    {
+      "name": "GiftPillarCard - With Inline Link",
+      "screenshotPath": "giftpillarcard-with-inline-link--desktop.png"
+    },
+    {
+      "name": "GiftPillars - Numbered Bordered Grid",
+      "screenshotPath": "giftpillars-numbered-bordered-grid--desktop.png"
+    },
+    {
+      "name": "GiftPillars - The Duplicated Band Shows Its Own Cards",
+      "screenshotPath": "giftpillars-the-duplicated-band-shows-its-own-cards--desktop.png"
+    },
+    {
+      "name": "GiftPillars - Three Pillars",
+      "screenshotPath": "giftpillars-three-pillars--desktop.png"
+    },
+    {
+      "name": "GiveButton - Both Variants",
+      "screenshotPath": "givebutton-both-variants--desktop.png"
+    },
+    {
+      "name": "GiveButton - Giving Closed",
+      "screenshotPath": "givebutton-giving-closed--desktop.png"
+    },
+    {
+      "name": "GiveClose - The Final Ask",
+      "screenshotPath": "giveclose-the-final-ask--desktop.png"
+    },
+    {
+      "name": "GiveCollage - Six Photographs In One Frame",
+      "screenshotPath": "givecollage-six-photographs-in-one-frame--desktop.png"
+    },
+    {
+      "name": "GiveFaq - Every Question Closed",
+      "screenshotPath": "givefaq-every-question-closed--desktop.png"
+    },
+    {
+      "name": "GiveHero - The Opening Ask",
+      "screenshotPath": "givehero-the-opening-ask--desktop.png"
+    },
+    {
+      "name": "GivePhoto - The Strip The Card Overlaps",
+      "screenshotPath": "givephoto-the-strip-the-card-overlaps--desktop.png"
+    },
+    {
+      "name": "GiveRecognition - The Placeholder Supporter Card",
+      "screenshotPath": "giverecognition-the-placeholder-supporter-card--desktop.png"
+    },
+    {
+      "name": "GiveStatement - Both Tones Together",
+      "screenshotPath": "givestatement-both-tones-together--desktop.png"
+    },
+    {
+      "name": "Giving Campaign",
+      "screenshotPath": "giving-campaign--desktop.png"
+    },
+    {
+      "name": "Giving Campaign - A Platform Is Live",
+      "screenshotPath": "giving-campaign-a-platform-is-live--desktop.png"
+    },
+    {
+      "name": "GivingCard - No Platform Connected",
+      "screenshotPath": "givingcard-no-platform-connected--desktop.png"
+    },
+    {
+      "name": "GivingSoonNote - On A Dark Band",
+      "screenshotPath": "givingsoonnote-on-a-dark-band--desktop.png"
+    },
+    {
+      "name": "GivingSoonNote - On A Pale Band",
+      "screenshotPath": "givingsoonnote-on-a-pale-band--desktop.png"
+    },
+    {
+      "name": "GlobalCommunityAction - Newsletter Card",
+      "screenshotPath": "globalcommunityaction-newsletter-card--desktop.png"
+    },
+    {
+      "name": "GlobalCommunityCta - Three Ways In",
+      "screenshotPath": "globalcommunitycta-three-ways-in--desktop.png"
+    },
+    {
+      "name": "GlobeIcon - Sizes On Light And Dark",
+      "screenshotPath": "globeicon-sizes-on-light-and-dark--desktop.png"
+    },
+    {
+      "name": "GoalMeter - A Campaign Name That Runs Long",
+      "screenshotPath": "goalmeter-a-campaign-name-that-runs-long--desktop.png"
+    },
+    {
+      "name": "GoalMeter - Navy Chrome With Campaign Link",
+      "screenshotPath": "goalmeter-navy-chrome-with-campaign-link--desktop.png"
+    },
+    {
+      "name": "GoalMeter - The 2026 Goal Before Launch",
+      "screenshotPath": "goalmeter-the-2026-goal-before-launch--desktop.png"
+    },
+    {
+      "name": "GoalMeter - The Band Around Givebutter's Meter",
+      "screenshotPath": "goalmeter-the-band-around-givebutter-s-meter--desktop.png"
+    },
+    {
+      "name": "Hero Carousel",
+      "screenshotPath": "hero-carousel--desktop.png"
+    },
+    {
+      "name": "HeroCarousel - The Second Slide, Reached By Its Dot",
+      "screenshotPath": "herocarousel-the-second-slide-reached-by-its-dot--desktop.png"
+    },
+    {
+      "name": "HitDirectoryTeaser - Default",
+      "screenshotPath": "hitdirectoryteaser-default--desktop.png"
+    },
+    {
+      "name": "HitDirectoryTeaser - Long Copy",
+      "screenshotPath": "hitdirectoryteaser-long-copy--desktop.png"
+    },
+    {
+      "name": "Home Sections - All Three Visibility States",
+      "screenshotPath": "home-sections-all-three-visibility-states--desktop.png"
+    },
+    {
+      "name": "ImageField - Staged Upload",
+      "screenshotPath": "imagefield-staged-upload--desktop.png"
+    },
+    {
+      "name": "JoinWhatsAppCta - Community Primary Action",
+      "screenshotPath": "joinwhatsappcta-community-primary-action--desktop.png"
+    },
+    {
+      "name": "LeadAvatar - Default",
+      "screenshotPath": "leadavatar-default--desktop.png"
+    },
+    {
+      "name": "LeadAvatar - Initials",
+      "screenshotPath": "leadavatar-initials--desktop.png"
+    },
+    {
+      "name": "LeadAvatar - Small Initials",
+      "screenshotPath": "leadavatar-small-initials--desktop.png"
+    },
+    {
+      "name": "LeadCommitteeGrid - Default",
+      "screenshotPath": "leadcommitteegrid-default--desktop.png"
+    },
+    {
+      "name": "LeadContactLinks - Default",
+      "screenshotPath": "leadcontactlinks-default--desktop.png"
+    },
+    {
+      "name": "LeadContactLinks - LinkedIn Only",
+      "screenshotPath": "leadcontactlinks-linkedin-only--desktop.png"
+    },
+    {
+      "name": "LeadProfile - Default",
+      "screenshotPath": "leadprofile-default--desktop.png"
+    },
+    {
+      "name": "LeadProfile - Name And Role Only",
+      "screenshotPath": "leadprofile-name-and-role-only--desktop.png"
+    },
+    {
+      "name": "LockedPreviewBody - Before The Password",
+      "screenshotPath": "lockedpreviewbody-before-the-password--desktop.png"
+    },
+    {
+      "name": "Luma Calendar",
+      "screenshotPath": "luma-calendar--mobile.png"
+    },
+    {
+      "name": "LumaCalendar - Nothing Upcoming",
+      "screenshotPath": "lumacalendar-nothing-upcoming--mobile.png"
+    },
+    {
+      "name": "LumaSubscribe - Default",
+      "screenshotPath": "lumasubscribe-default--desktop.png"
+    },
+    {
+      "name": "MediaCard - Staged Upload",
+      "screenshotPath": "mediacard-staged-upload--desktop.png"
+    },
+    {
+      "name": "MissionStatement - Default Wording",
+      "screenshotPath": "missionstatement-default-wording--desktop.png"
+    },
+    {
+      "name": "MissionStatement - Edited Without An Accent",
+      "screenshotPath": "missionstatement-edited-without-an-accent--desktop.png"
+    },
+    {
+      "name": "Momentum Fund - Sections Reordered By An Editor",
+      "screenshotPath": "momentum-fund-sections-reordered-by-an-editor--desktop.png"
+    },
+    {
+      "name": "Momentum Network - A Supporter Selected",
+      "screenshotPath": "momentum-network-a-supporter-selected--desktop.png"
+    },
+    {
+      "name": "Momentum Network - A Supporter Who Wrote No Message",
+      "screenshotPath": "momentum-network-a-supporter-who-wrote-no-message--desktop.png"
+    },
+    {
+      "name": "Momentum Network - Anonymity Among Named Supporters",
+      "screenshotPath": "momentum-network-anonymity-among-named-supporters--desktop.png"
+    },
+    {
+      "name": "Momentum Network - Day One, The Grid Unlit",
+      "screenshotPath": "momentum-network-day-one-the-grid-unlit--desktop.png"
+    },
+    {
+      "name": "Momentum Network - The Campaign At Scale",
+      "screenshotPath": "momentum-network-the-campaign-at-scale--desktop.png"
+    },
+    {
+      "name": "Momentum Network - The First Gift",
+      "screenshotPath": "momentum-network-the-first-gift--desktop.png"
+    },
+    {
+      "name": "MomentumAccomplishments - Campaign Track Record",
+      "screenshotPath": "momentumaccomplishments-campaign-track-record--desktop.png"
+    },
+    {
+      "name": "MomentumClose - Closing Ask",
+      "screenshotPath": "momentumclose-closing-ask--desktop.png"
+    },
+    {
+      "name": "MomentumClose - Photo Split",
+      "screenshotPath": "momentumclose-photo-split--desktop.png"
+    },
+    {
+      "name": "MomentumMission - Gold Band",
+      "screenshotPath": "momentummission-gold-band--desktop.png"
+    },
+    {
+      "name": "MomentumNarrative - Image Layout Without An Image",
+      "screenshotPath": "momentumnarrative-image-layout-without-an-image--desktop.png"
+    },
+    {
+      "name": "MomentumNarrative - Image Left",
+      "screenshotPath": "momentumnarrative-image-left--desktop.png"
+    },
+    {
+      "name": "MomentumNarrative - Image Right",
+      "screenshotPath": "momentumnarrative-image-right--desktop.png"
+    },
+    {
+      "name": "MomentumNarrative - Text Only",
+      "screenshotPath": "momentumnarrative-text-only--desktop.png"
+    },
+    {
+      "name": "MomentumNarrative - Two Prose Columns",
+      "screenshotPath": "momentumnarrative-two-prose-columns--desktop.png"
+    },
+    {
+      "name": "MomentumStats - Campaign Figures",
+      "screenshotPath": "momentumstats-campaign-figures--desktop.png"
+    },
+    {
+      "name": "MomentumTestimonials - Photo-Led Rows",
+      "screenshotPath": "momentumtestimonials-photo-led-rows--desktop.png"
+    },
+    {
+      "name": "MomentumTestimonials - Three Quotes",
+      "screenshotPath": "momentumtestimonials-three-quotes--desktop.png"
+    },
+    {
+      "name": "NavItemLabel - Plain And Online Rows",
+      "screenshotPath": "navitemlabel-plain-and-online-rows--desktop.png"
+    },
+    {
+      "name": "NotFound - The Only Frame It Can Have",
+      "screenshotPath": "notfound-the-only-frame-it-can-have--desktop.png"
+    },
+    {
+      "name": "OnlineGroupEyebrow - Over A Forming City Card",
+      "screenshotPath": "onlinegroupeyebrow-over-a-forming-city-card--desktop.png"
+    },
+    {
+      "name": "OrderArrows - Bottom Row",
+      "screenshotPath": "orderarrows-bottom-row--desktop.png"
+    },
+    {
+      "name": "OrderArrows - Middle Row",
+      "screenshotPath": "orderarrows-middle-row--desktop.png"
+    },
+    {
+      "name": "OrderArrows - The Only Row",
+      "screenshotPath": "orderarrows-the-only-row--desktop.png"
+    },
+    {
+      "name": "OrderArrows - Top Row",
+      "screenshotPath": "orderarrows-top-row--desktop.png"
+    },
+    {
+      "name": "Our Chapters",
+      "screenshotPath": "our-chapters--desktop.png"
+    },
+    {
+      "name": "Our Chapters - Empty",
+      "screenshotPath": "our-chapters-empty--desktop.png"
+    },
+    {
+      "name": "PageBanner - Paper Tone, Longest Name",
+      "screenshotPath": "pagebanner-paper-tone-longest-name--desktop.png"
+    },
+    {
+      "name": "PageBanner - Photo Tone Over A City",
+      "screenshotPath": "pagebanner-photo-tone-over-a-city--desktop.png"
+    },
+    {
+      "name": "PageNarrowBody - Leads Body And Links",
+      "screenshotPath": "pagenarrowbody-leads-body-and-links--desktop.png"
+    },
+    {
+      "name": "PastEventsMore - The Link Out To Luma",
+      "screenshotPath": "pasteventsmore-the-link-out-to-luma--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Communities Derived",
+      "screenshotPath": "primarynav-communities-derived--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Derived Chapters",
+      "screenshotPath": "primarynav-derived-chapters--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Get Involved Merged",
+      "screenshotPath": "primarynav-get-involved-merged--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - No Chapters Yet",
+      "screenshotPath": "primarynav-no-chapters-yet--desktop.png"
+    },
+    {
+      "name": "PrimaryNav - Sixth Chapter Published",
+      "screenshotPath": "primarynav-sixth-chapter-published--desktop.png"
+    },
+    {
+      "name": "ResponsiveImg - Serves A Photo With Its Srcset",
+      "screenshotPath": "responsiveimg-serves-a-photo-with-its-srcset--desktop.png"
+    },
+    {
+      "name": "SectionHead - Centered",
+      "screenshotPath": "sectionhead-centered--desktop.png"
+    },
+    {
+      "name": "SectionHead - Kicker, Title, Intro And Action",
+      "screenshotPath": "sectionhead-kicker-title-intro-and-action--desktop.png"
+    },
+    {
+      "name": "SitePageBody - Cookie Table On A Phone",
+      "screenshotPath": "sitepagebody-cookie-table-on-a-phone--mobile.png"
+    },
+    {
+      "name": "SitePageBody - Markdown An Editor Can Write",
+      "screenshotPath": "sitepagebody-markdown-an-editor-can-write--desktop.png"
+    },
+    {
+      "name": "SitePageHeader - Long Title And No Description",
+      "screenshotPath": "sitepageheader-long-title-and-no-description--desktop.png"
+    },
+    {
+      "name": "SitePageHeader - Title And Lede",
+      "screenshotPath": "sitepageheader-title-and-lede--desktop.png"
+    },
+    {
+      "name": "SocialLinks - On Dark, No Badges",
+      "screenshotPath": "sociallinks-on-dark-no-badges--desktop.png"
+    },
+    {
+      "name": "SocialLinks - On Light, Brand Colours",
+      "screenshotPath": "sociallinks-on-light-brand-colours--desktop.png"
+    },
+    {
+      "name": "SponsorInquiry - Awaiting A Form",
+      "screenshotPath": "sponsorinquiry-awaiting-a-form--desktop.png"
+    },
+    {
+      "name": "SponsorInquiry - Form Configured",
+      "screenshotPath": "sponsorinquiry-form-configured--desktop.png"
+    },
+    {
+      "name": "SponsorInquiry - No Email And No Form",
+      "screenshotPath": "sponsorinquiry-no-email-and-no-form--desktop.png"
+    },
+    {
+      "name": "SponsorLevels - Four Partnership Levels",
+      "screenshotPath": "sponsorlevels-four-partnership-levels--desktop.png"
+    },
+    {
+      "name": "SponsorPage - Full Page No Partners",
+      "screenshotPath": "sponsorpage-full-page-no-partners--desktop.png"
+    },
+    {
+      "name": "SponsorPage - Full Page With Examples",
+      "screenshotPath": "sponsorpage-full-page-with-examples--desktop.png"
+    },
+    {
+      "name": "SponsorWall - Example Placements",
+      "screenshotPath": "sponsorwall-example-placements--desktop.png"
+    },
+    {
+      "name": "SponsorWall - No Partners Yet",
+      "screenshotPath": "sponsorwall-no-partners-yet--desktop.png"
+    },
+    {
+      "name": "SponsorWall - Real Partners",
+      "screenshotPath": "sponsorwall-real-partners--desktop.png"
+    },
+    {
+      "name": "StagingBar - Publish Again While Deploying",
+      "screenshotPath": "stagingbar-publish-again-while-deploying--desktop.png"
+    },
+    {
+      "name": "StagingBar - Reviewing Before Publish",
+      "screenshotPath": "stagingbar-reviewing-before-publish--desktop.png"
+    },
+    {
+      "name": "Stats Band",
+      "screenshotPath": "stats-band--mobile.png"
+    },
+    {
+      "name": "Stats Band - Six Figures In Two Rows At iPad Width",
+      "screenshotPath": "stats-band-six-figures-in-two-rows-at-ipad-width--tablet.png"
+    },
+    {
+      "name": "Step Tick - Commit Refused",
+      "screenshotPath": "step-tick-commit-refused--desktop.png"
+    },
+    {
+      "name": "Step Tick - Done With Attribution",
+      "screenshotPath": "step-tick-done-with-attribution--desktop.png"
+    },
+    {
+      "name": "Step Tick - Read Only",
+      "screenshotPath": "step-tick-read-only--desktop.png"
+    },
+    {
+      "name": "Support Us",
+      "screenshotPath": "support-us--desktop.png"
+    },
+    {
+      "name": "TestimonialCard - Every Field Filled",
+      "screenshotPath": "testimonialcard-every-field-filled--desktop.png"
+    },
+    {
+      "name": "TestimonialCard - Quote Without An Event Photo",
+      "screenshotPath": "testimonialcard-quote-without-an-event-photo--desktop.png"
+    },
+    {
+      "name": "TestimonialCard - With Role",
+      "screenshotPath": "testimonialcard-with-role--desktop.png"
+    },
+    {
+      "name": "Upcoming Events",
+      "screenshotPath": "upcoming-events--desktop.png"
+    },
+    {
+      "name": "Upcoming Events - Empty",
+      "screenshotPath": "upcoming-events-empty--mobile.png"
+    },
+    {
+      "name": "UtilityBar - Derived Cities",
+      "screenshotPath": "utilitybar-derived-cities--mobile.png"
+    },
+    {
+      "name": "UtilityBar - No Chapters",
+      "screenshotPath": "utilitybar-no-chapters--mobile.png"
+    },
+    {
+      "name": "UtilityBar - Short Line At iPad Width",
+      "screenshotPath": "utilitybar-short-line-at-ipad-width--tablet.png"
+    },
+    {
+      "name": "VolunteerBenefit - Long Copy",
+      "screenshotPath": "volunteerbenefit-long-copy--desktop.png"
+    },
+    {
+      "name": "VolunteerBenefits - Four Blocks",
+      "screenshotPath": "volunteerbenefits-four-blocks--desktop.png"
+    },
+    {
+      "name": "VolunteerHero - Default",
+      "screenshotPath": "volunteerhero-default--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectBackdrop - London Chapter Linked",
+      "screenshotPath": "volunteerprojectbackdrop-london-chapter-linked--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectBackdrop - Shared Site Photo",
+      "screenshotPath": "volunteerprojectbackdrop-shared-site-photo--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectBody - Rendered Markdown",
+      "screenshotPath": "volunteerprojectbody-rendered-markdown--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectCard - Linked Through To Its Detail Page",
+      "screenshotPath": "volunteerprojectcard-with-thumbnail--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectCardLinks - Both Detail Only And Apply Only",
+      "screenshotPath": "volunteerprojectcardlinks-both-detail-only-and-apply-only--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectCta - Own Link And Fallback",
+      "screenshotPath": "volunteerprojectcta-own-link-and-fallback--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectHeader - Long Title And Blurb",
+      "screenshotPath": "volunteerprojectheader-long-title-and-blurb--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectHeader - On Chapter Photo",
+      "screenshotPath": "volunteerprojectheader-on-chapter-photo--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectMeta - Every Date Shape",
+      "screenshotPath": "volunteerprojectmeta-every-date-shape--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectPage - Full Project",
+      "screenshotPath": "volunteerprojectpage-full-project--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectPhoto - Square Upload",
+      "screenshotPath": "volunteerprojectphoto-square-upload--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectThumb - Linked Bare And Placeholder",
+      "screenshotPath": "volunteerprojectthumb-linked-bare-and-placeholder--desktop.png"
+    },
+    {
+      "name": "VolunteerProjects - Populated Grid",
+      "screenshotPath": "volunteerprojects-populated-grid--desktop.png"
+    },
+    {
+      "name": "VolunteerProjectsEmpty - Production Default",
+      "screenshotPath": "volunteerprojectsempty-production-default--desktop.png"
+    },
+    {
+      "name": "VolunteerRelatedProjects - One Other Project",
+      "screenshotPath": "volunteerrelatedprojects-one-other-project--desktop.png"
+    },
+    {
+      "name": "VolunteerRelatedProjects - Three Suggestions",
+      "screenshotPath": "volunteerrelatedprojects-three-suggestions--desktop.png"
+    },
+    {
+      "name": "WebinarCard - Cover, Speakers And Year",
+      "screenshotPath": "webinarcard-cover-speakers-and-year--desktop.png"
+    },
+    {
+      "name": "WebinarCard - Recording Whose Host Lost It",
+      "screenshotPath": "webinarcard-recording-whose-host-lost-it--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - A Single Recording",
+      "screenshotPath": "webinarspage-a-single-recording--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - Nothing Published",
+      "screenshotPath": "webinarspage-nothing-published--desktop.png"
+    },
+    {
+      "name": "WebinarsPage - Recordings With And Without A Cover",
+      "screenshotPath": "webinarspage-recordings-with-and-without-a-cover--desktop.png"
+    },
+    {
+      "name": "WebinarsPointer - The Line To The Recordings",
+      "screenshotPath": "webinarspointer-the-line-to-the-recordings--desktop.png"
+    },
+    {
+      "name": "Whatsapp Community",
+      "screenshotPath": "whatsapp-community--desktop.png"
+    },
+    {
+      "name": "Whatsapp Community - No Directory",
+      "screenshotPath": "whatsapp-community-no-directory--desktop.png"
+    },
+    {
+      "name": "WhatsappJoinCard - Default",
+      "screenshotPath": "whatsappjoincard-default--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 1899,
+    "passed": 1899,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1899,
+        "passed": 1899
+      }
+    ]
+  }
+}

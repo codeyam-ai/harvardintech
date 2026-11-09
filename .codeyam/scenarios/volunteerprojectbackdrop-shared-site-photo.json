@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T21:35:19Z"
+  },
   "componentName": "VolunteerProjectBackdrop",
   "scenarioType": "component",
   "description": "The fallback for a role with no chapter, or a chapter with no photo: the shared site photo under the crimson wash, unlinked as on a card rendered without a slug."

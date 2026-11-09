@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "BlogPostBody",
   "scenarioType": "component",
   "pageFilePath": "src/components/BlogPostBody.astro",

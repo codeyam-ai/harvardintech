@@ -6,8 +6,11 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "SponsorLevels",
   "scenarioType": "component",
-  "description": "The partnership levels as a sponsor reads them: Presenting, Chapter, Event and Community, each scoped by what it underwrites and what the sponsor gets. No dollar amounts anywhere \u2014 a Harvard Shared Interest Group may only solicit sponsorship against real event or operating expenses, so each level is sized in a conversation instead of sold off a rate card.",
-  "pageFilePath": "src/components/sponsor/SponsorLevels.astro"
+  "pageFilePath": "src/components/sponsor/SponsorLevels.astro",
+  "description": "The partnership levels as a sponsor reads them: Presenting, Chapter, Event and Community, each scoped by what it underwrites and what the sponsor gets. No dollar amounts anywhere — a Harvard Shared Interest Group may only solicit sponsorship against real event or operating expenses, so each level is sized in a conversation instead of sold off a rate card."
 }

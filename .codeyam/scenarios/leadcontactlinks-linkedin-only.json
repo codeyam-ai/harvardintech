@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-10-22T22:10:37Z"
+  },
   "componentName": "LeadContactLinks",
   "scenarioType": "component",
   "description": "A lead with a LinkedIn URL and no email, the most common real entry: only the LinkedIn button renders, with no gap left for the missing email."

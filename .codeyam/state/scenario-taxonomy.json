@@ -27,8 +27,7 @@
         "reason": "Static content page with no data fetching; no failure/error state can occur."
       },
       "key-interaction": {
-        "status": "n-a",
-        "reason": "Primary actions are outbound links (Subscribe, Volunteer, View Events, mailto); no in-page interactive state to capture."
+        "status": "covered"
       }
     },
     "/donate": {

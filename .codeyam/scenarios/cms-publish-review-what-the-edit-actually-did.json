@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-08-28T19:27:10Z"
+  },
   "browserState": {
     "localStorage": {
       "codeyam-cms:pending-changes": "[{\"collection\": \"chapters\", \"slug\": \"nyc\", \"path\": \"src/content/chapters/nyc.md\", \"title\": \"New York City\", \"original\": \"---\\ncity: New York City\\nregion: New York, NY\\nblurb: Our founding chapter and largest community.\\n---\\n\", \"updated\": \"---\\ncity: New York City\\nregion: New York, NY\\nblurb: Our founding chapter and largest community - now hosting monthly founder dinners.\\n---\\n\", \"kind\": \"edit\"}]"

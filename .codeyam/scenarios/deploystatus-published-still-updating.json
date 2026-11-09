@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "DeployStatus",
   "scenarioType": "component",
   "description": "How a watch that runs out of budget now ends. pollDeploy used to return whichever in-flight stage it was sitting on — a non-terminal value nothing could move off — which is what left the panel unclosable. It resolves to 'unconfirmed' instead: the commit is stated as fact, the deploy is not claimed, and there are three ways out (Check again, View live site, Done). Captured because the wording carries it — this has to read as a slow deploy, not a failure."

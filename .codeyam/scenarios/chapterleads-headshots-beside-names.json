@@ -6,8 +6,14 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "ChapterLeads",
   "scenarioType": "component",
-  "demonstratesState": {"leads": "many", "profiles": "many"},
-  "description": "Leads with a headshot show it in the round crimson-backed disc beside their name and role; a lead with no photo gets their initials on the same disc rather than an empty circle. Nemo Shi and Stefan Pagacik are the two real headshots, Peter Boyce the no-photo branch."
+  "description": "Leads with a headshot show it in the round crimson-backed disc beside their name and role; a lead with no photo gets their initials on the same disc rather than an empty circle. Nemo Shi and Stefan Pagacik are the two real headshots, Peter Boyce the no-photo branch.",
+  "demonstratesState": {
+    "leads": "many",
+    "profiles": "many"
+  }
 }

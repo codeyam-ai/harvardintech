@@ -6,6 +6,9 @@
     "Desktop"
   ],
   "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
   "componentName": "PageNarrowBody",
   "scenarioType": "component",
   "description": "The narrow closing block a chapter page and a community page share: back link, leads, markdown body, then the entry's own links. It was written twice when communities got their own page type, differing only in the leads heading and the back-link wording — the shape where a spacing or accessibility fix lands on one copy and silently misses the other. Capturing it once is what makes the two pages provably share it."
