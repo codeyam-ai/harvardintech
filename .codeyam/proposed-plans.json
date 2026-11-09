@@ -1855,10 +1855,13 @@
       "body": "## Root cause\nWhen Luma refuses the feed (HTTP 429 or 5xx), fetchFeed returns null, and main() treats that as 'offline': it leaves the committed events alone and returns ok: true. The workflow run therefore stays green. The only signal is a ::warning:: annotation, and no test observes it. The User-Agent fix removed the cause seen on 2026-10-23, but a new refusal would again go unnoticed for as long as the last one did.\n\n## Evidence\nfnd-322ed885ca31 (wrong-result) and fnd-09539cd9bffc (untested warning). On HEAD: scripts/import-luma.mjs:93 emits the ::warning:: annotation, and scripts/import-luma.mjs:128 returns { ok: true, offline: true } for a refused feed. src/lib/lumaImport.test.ts:180 asserts offline is true but nothing about the warning or the exit status.\n\n## Smallest fix\nTell 'unreachable' (network error, where staying green is fine) apart from 'refused' (an HTTP error status). For a refused feed, return ok: false, or fail after N consecutive refused nights. Add a test that captures stderr and asserts the ::warning:: line.\n\n## Cost of leaving it\nThe next time Luma changes what it accepts, events stop appearing on the site with a green build, and an organizer finds out by hand weeks later, as happened in October.",
       "reason": "The import silently imported nothing for about two weeks. After the fix, a refused feed is still reported as success, and the one warning line has no test.",
       "source": "debt-synthesis",
-      "status": "pending",
+      "status": "written",
+      "planSlug": "a-refused-luma-feed-still-ends-the-nightly-import-green",
       "proposedAt": "2026-11-09T22:26:52.153476989+00:00",
       "kind": "tech-debt",
       "sightings": 2,
+      "decidedAt": "2026-11-09T22:28:24Z",
+      "sightingsAtDecision": 2,
       "evidenceIds": [
         "fnd-322ed885ca31",
         "fnd-09539cd9bffc"
