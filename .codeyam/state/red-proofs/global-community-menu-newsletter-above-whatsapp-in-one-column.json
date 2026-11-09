@@ -1,0 +1,41 @@
+{
+  "provenAt": "2026-11-09T19:35:08Z",
+  "slug": "global-community-menu-newsletter-above-whatsapp-in-one-column",
+  "paths": [
+    "src/data/nav.json"
+  ],
+  "runScope": [
+    "src/data/nav.json"
+  ],
+  "tests": {
+    "gives Global community a Newsletter section above the WhatsApp column": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "nests a third level only as the Global community sections": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "points Newsletter at the site mailing-list sign-up": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "gives Global community a Newsletter section above the WhatsApp column",
+      "nests a third level only as the Global community sections",
+      "points Newsletter at the site mailing-list sign-up"
+    ]
+  }
+}

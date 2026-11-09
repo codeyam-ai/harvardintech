@@ -1,15 +1,15 @@
 {
   "name": "PrimaryNav - Communities Derived",
-  "id": "614cb966-d301-48c7-98db-ffb90f61801d",
+  "id": "e8c37b9d-217d-4057-a343-da61a0d21933",
   "url": "/isolated-components/PrimaryNav-CommunitiesOpen",
   "dimensions": [
     "Desktop"
   ],
   "mocks": {},
   "clock": {
-    "now": "2026-11-06T00:16:38Z"
+    "now": "2026-11-09T15:47:38Z"
   },
   "componentName": "PrimaryNav",
   "scenarioType": "component",
-  "description": "The Global community dropdown pinned open for capture — what replaced the old Communities menu after the 2026-11-06 site feedback. It splits into two titled columns: a WhatsApp community column, and Newsletter beside it (moved here from Content hub). The WhatsApp column opens with Join the community, the hand-authored link an editor keeps in nav.json, and AI, Founders and Investors follow inside the same column, because they are groups within the WhatsApp community rather than its peers. Those three are generated from the communities collection at render time and sorted alphabetically: Chapters is injected whole by the layout, while this group already belongs to an editor, so the derived items nest into its WhatsApp column rather than replacing anything. Investors, the third community, reached the menu with no nav edit at all — adding its content file was enough. The panel is pinned by the isolation route rather than a scenario interaction, because a hover or click does not survive the screenshot on this route and would capture the resting, closed menu."
+  "description": "The Global community dropdown pinned open for capture — what replaced the old Communities menu after the November 2026 site feedback. It reads top to bottom in one column: a NEWSLETTER section holding a single Subscribe link to the site mailing-list sign-up (moved here from Content hub), then the WHATSAPP COMMUNITY section, both titled the same way and with no divider between them. Side by side, the one-link Newsletter section beside a long WhatsApp list read as a half-empty second column, so any menu made of titled sections now stacks. The WhatsApp section opens with Join the community, the hand-authored link an editor keeps in nav.json, and AI, Founders and Investors follow inside the same section, because they are groups within the WhatsApp community rather than its peers. Those three are generated from the communities collection at render time and sorted alphabetically, and they find the WhatsApp section by its label even though it is no longer first. The panel is pinned by the isolation route rather than a scenario interaction, because a hover or click does not survive the screenshot on this route and would capture the resting, closed menu."
 }

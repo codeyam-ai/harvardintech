@@ -1697,7 +1697,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems online note › drops the note once the city is promoted to active",
-      "line": 246,
+      "line": 250,
       "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
@@ -1706,7 +1706,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems online note › keeps the note inside the injected group",
-      "line": 234,
+      "line": 238,
       "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
@@ -1715,7 +1715,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems online note › leaves an active chapter as a plain link",
-      "line": 217,
+      "line": 221,
       "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
@@ -1724,7 +1724,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems online note › notes a forming city as an online group",
-      "line": 209,
+      "line": 213,
       "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
@@ -1733,7 +1733,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems online note › treats a chapter with no status as active",
-      "line": 226,
+      "line": 230,
       "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
@@ -1742,7 +1742,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems status ordering › orders active chapters before forming ones",
-      "line": 259,
+      "line": 263,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1751,7 +1751,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems status ordering › still lists every forming chapter",
-      "line": 278,
+      "line": 282,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -1760,7 +1760,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › builds the url from the slug, not the city",
-      "line": 82,
+      "line": 86,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1769,7 +1769,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › includes a chapter that nav.json does not list",
-      "line": 48,
+      "line": 52,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1778,7 +1778,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › orders by the order field, falling back to city for ties and absent values",
-      "line": 62,
+      "line": 66,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -1787,7 +1787,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "chapterNavItems › returns no items for no chapters",
-      "line": 90,
+      "line": 94,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -2192,7 +2192,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed chapters › lists the six chapters alphabetically by city",
-      "line": 774,
+      "line": 780,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2201,7 +2201,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed chapters › pins no chapter with an order, so the roster sorts alphabetically",
-      "line": 767,
+      "line": 773,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2210,7 +2210,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › derives community links that all resolve to a page",
-      "line": 674,
+      "line": 680,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2219,17 +2219,17 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › does not hand-list the communities",
-      "line": 655,
+      "line": 660,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
     {
-      "description": "The 2026-11-06 feedback: the derived communities belong inside the WhatsApp community, so the committed group must carry that column for them to nest into — and the newsletter beside it.",
+      "description": "The 2026-11-06 feedback: the derived communities belong inside the WhatsApp community, so the committed group must carry that column for them to nest into. The 2026-11-09 feedback put a titled Newsletter section above it, so the menu reads top to bottom in one column.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
-      "key": "committed nav.json › gives Global community a WhatsApp column and a Newsletter link",
-      "line": 665,
-      "registeredAt": "2026-11-06T23:12:27Z",
+      "key": "committed nav.json › gives Global community a Newsletter section above the WhatsApp column",
+      "line": 671,
+      "registeredAt": "2026-11-09T19:35:14Z",
       "runner": "tests"
     },
     {
@@ -2237,7 +2237,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › groups volunteering and giving under Get involved",
-      "line": 729,
+      "line": 735,
       "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
@@ -2246,7 +2246,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › has no dropdown holding a single item",
-      "line": 709,
+      "line": 715,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -2255,7 +2255,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › lists the simplified top-level menu in order",
-      "line": 688,
+      "line": 694,
       "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
@@ -2264,17 +2264,17 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › makes Events a plain link to the events page",
-      "line": 700,
+      "line": 706,
       "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
     {
-      "description": "Mission once sat three levels deep under Membership, buried in a list. A third level is allowed again only as a TITLED COLUMN, which the header renders side by side: the WhatsApp community column is the one place that uses it, and nothing may go deeper than its links.",
+      "description": "Mission once sat three levels deep under Membership, buried in a list. A third level is allowed again only as a TITLED SECTION, which the header stacks in one column: Global community's Newsletter and WhatsApp community sections are the only place that uses it, and nothing may go deeper.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
-      "key": "committed nav.json › nests a third level only as the Global community WhatsApp column",
-      "line": 719,
-      "registeredAt": "2026-11-06T23:12:27Z",
+      "key": "committed nav.json › nests a third level only as the Global community sections",
+      "line": 725,
+      "registeredAt": "2026-11-09T19:35:14Z",
       "runner": "tests"
     },
     {
@@ -2282,7 +2282,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › no longer hand-lists the chapters",
-      "line": 648,
+      "line": 653,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -2291,7 +2291,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › points Newsletter at the site mailing-list sign-up",
-      "line": 738,
+      "line": 744,
       "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
@@ -2300,7 +2300,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › points every internal link at a page that exists",
-      "line": 636,
+      "line": 641,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -2327,7 +2327,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › builds the url from the slug, not the name",
-      "line": 319,
+      "line": 323,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2336,7 +2336,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › honours an order pin ahead of the unpinned entries",
-      "line": 308,
+      "line": 312,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2345,7 +2345,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › orders alphabetically by name when nothing is pinned",
-      "line": 300,
+      "line": 304,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2354,7 +2354,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "communityNavItems › returns no items for no communities",
-      "line": 327,
+      "line": 331,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -3614,7 +3614,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "draft visibility › omits a drafted chapter from the production menu",
-      "line": 110,
+      "line": 114,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -3623,7 +3623,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "draft visibility › shows a drafted chapter while authoring",
-      "line": 116,
+      "line": 120,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -6044,7 +6044,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "hasColumns › ignores a child whose children list is empty",
-      "line": 471,
+      "line": 476,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -6053,7 +6053,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "hasColumns › is false for a flat dropdown",
-      "line": 460,
+      "line": 465,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -6062,7 +6062,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "hasColumns › is false for an item with no children",
-      "line": 465,
+      "line": 470,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -6071,7 +6071,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "hasColumns › is true when any child carries children",
-      "line": 455,
+      "line": 460,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -7112,7 +7112,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "internalNavUrls › collects site-internal urls at every level and skips external ones",
-      "line": 479,
+      "line": 484,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -9258,7 +9258,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "nestUnderColumn › appends flat when no column has the label",
-      "line": 416,
+      "line": 421,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -9267,7 +9267,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "nestUnderColumn › appends inside the named column after its existing links",
-      "line": 406,
+      "line": 411,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -9276,7 +9276,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "nestUnderColumn › does not mutate the column it nests into",
-      "line": 444,
+      "line": 449,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -9285,7 +9285,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "nestUnderColumn › does not nest under a same-labelled link that has no children",
-      "line": 422,
+      "line": 427,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -9294,7 +9294,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "nestUnderColumn › nests under the first matching column only",
-      "line": 430,
+      "line": 435,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -9303,7 +9303,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "nestUnderColumn › returns an empty list for empty inputs",
-      "line": 438,
+      "line": 443,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -16060,7 +16060,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › ignores a trailing slash difference",
-      "line": 584,
+      "line": 589,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -16069,7 +16069,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › reports a url with no page behind it",
-      "line": 576,
+      "line": 581,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -16078,7 +16078,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › resolves a bare fragment against the home page",
-      "line": 570,
+      "line": 575,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -16087,7 +16087,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "unresolvedNavUrls › resolves a fragment against its page",
-      "line": 564,
+      "line": 569,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -16795,7 +16795,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › appends the group when there is no Events item",
-      "line": 145,
+      "line": 149,
       "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
@@ -16804,7 +16804,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › closes the dropdown with the lead call to action",
-      "line": 183,
+      "line": 187,
       "registeredAt": "2026-10-08T21:38:27Z",
       "runner": "tests"
     },
@@ -16813,7 +16813,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › does not mutate the caller list",
-      "line": 162,
+      "line": 166,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -16822,7 +16822,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › does not resurrect the group for the global entry alone",
-      "line": 197,
+      "line": 201,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -16831,7 +16831,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › ignores a leftover Programs item when placing the group",
-      "line": 134,
+      "line": 138,
       "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
@@ -16840,7 +16840,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › inserts the group directly after Events",
-      "line": 126,
+      "line": 130,
       "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
@@ -16849,7 +16849,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › lists only the cities before the lead call to action",
-      "line": 172,
+      "line": 176,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -16858,7 +16858,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withChapterGroup › omits the group entirely when there are no chapters",
-      "line": 153,
+      "line": 157,
       "registeredAt": "2026-07-28T15:22:30Z",
       "runner": "tests"
     },
@@ -16867,7 +16867,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › appends derived items after the hand-authored ones when there is no column",
-      "line": 357,
+      "line": 362,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -16876,7 +16876,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › creates the group when nav.json no longer has one",
-      "line": 373,
+      "line": 378,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -16885,7 +16885,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › does not mutate the caller list or its groups",
-      "line": 393,
+      "line": 398,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -16894,7 +16894,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › leaves the surrounding menu order untouched",
-      "line": 365,
+      "line": 370,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -16903,7 +16903,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › nests derived items under the WhatsApp community column",
-      "line": 338,
+      "line": 343,
       "registeredAt": "2026-11-06T23:12:27Z",
       "runner": "tests"
     },
@@ -16912,7 +16912,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withCommunityItems › returns the menu unchanged when there are no communities",
-      "line": 385,
+      "line": 390,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -16993,7 +16993,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › does not mutate the input tree",
-      "line": 545,
+      "line": 550,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -17002,7 +17002,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › drops a dropdown left empty by the removal",
-      "line": 534,
+      "line": 539,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -17011,7 +17011,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › drops a link to a hidden band",
-      "line": 520,
+      "line": 525,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -17020,7 +17020,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › keeps an item that has no children to begin with",
-      "line": 553,
+      "line": 558,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -17029,7 +17029,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › leaves links to real pages alone",
-      "line": 527,
+      "line": 532,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },
@@ -17038,7 +17038,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "withoutHiddenSections › returns the menu unchanged when nothing is hidden",
-      "line": 540,
+      "line": 545,
       "registeredAt": "2026-08-03T21:22:17Z",
       "runner": "tests"
     },

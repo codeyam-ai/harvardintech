@@ -19,15 +19,19 @@ import type { NavItem } from './site';
 
 // The menu an editor sees before any chapter is derived into it: the leading
 // items of `nav.json` — Events, a plain link, then the Global community group:
-// a titled WhatsApp column beside a plain Newsletter link.
+// a titled Newsletter section above a titled WhatsApp column.
 const WHATSAPP_COLUMN: NavItem = {
   label: 'WhatsApp community',
   children: [{ label: 'Join the community', url: '/#community' }],
 };
 const NEWSLETTER: NavItem = { label: 'Newsletter', url: 'https://example.com/newsletter' };
+const NEWSLETTER_SECTION: NavItem = {
+  label: 'Newsletter',
+  children: [{ label: 'Subscribe', url: 'https://example.com/newsletter' }],
+};
 const HAND_AUTHORED: NavItem[] = [
   { label: 'Events', url: '/events/' },
-  { label: 'Global community', children: [WHATSAPP_COLUMN, NEWSLETTER] },
+  { label: 'Global community', children: [NEWSLETTER_SECTION, WHATSAPP_COLUMN] },
 ];
 
 /** A chapter as the layout passes it in: `{ slug, ...data }`, the same shape
@@ -334,12 +338,14 @@ describe('withCommunityItems', () => {
 
   // AI, Founders and Investors are groups INSIDE the WhatsApp community, so
   // they nest under its column, after the hand-authored join link — not beside
-  // it as peers. The Newsletter link next to the column is left alone.
+  // it as peers. The Newsletter section above the column is left alone, and
+  // the column is found by its label even though it is not the first child.
   it('nests derived items under the WhatsApp community column', () => {
     const items = withCommunityItems(HAND_AUTHORED, communityItems);
     const group = items.find((i) => i.label === 'Global community');
 
     expect(group?.children).toEqual([
+      NEWSLETTER_SECTION,
       {
         label: 'WhatsApp community',
         children: [
@@ -347,7 +353,6 @@ describe('withCommunityItems', () => {
           { label: 'Founders', url: '/communities/founders' },
         ],
       },
-      NEWSLETTER,
     ]);
   });
 
@@ -450,8 +455,8 @@ describe('nestUnderColumn', () => {
 });
 
 describe('hasColumns', () => {
-  // Global community is the authored group that splits into columns: one
-  // titled WhatsApp column plus a plain Newsletter link in its own column.
+  // Global community is the authored group of titled sections: a Newsletter
+  // section above the WhatsApp community column.
   it('is true when any child carries children', () => {
     expect(hasColumns(HAND_AUTHORED[1])).toBe(true);
   });
@@ -661,12 +666,13 @@ describe('committed nav.json', () => {
 
   // The 2026-11-06 feedback: the derived communities belong inside the
   // WhatsApp community, so the committed group must carry that column for them
-  // to nest into — and the newsletter beside it.
-  it('gives Global community a WhatsApp column and a Newsletter link', () => {
+  // to nest into. The 2026-11-09 feedback put a titled Newsletter section above
+  // it, so the menu reads top to bottom in one column.
+  it('gives Global community a Newsletter section above the WhatsApp column', () => {
     const group = nav.items.find((i) => i.label === 'Global community');
 
-    expect(group?.children?.map((c) => c.label)).toEqual(['WhatsApp community', 'Newsletter']);
-    expect(group?.children?.[0].children?.map((c) => c.url)).toEqual(['/#community']);
+    expect(group?.children?.map((c) => c.label)).toEqual(['Newsletter', 'WhatsApp community']);
+    expect(group?.children?.[1].children?.map((c) => c.url)).toEqual(['/#community']);
   });
 
   // Every derived link must land on a page too — the derivation is exactly where
@@ -713,14 +719,14 @@ describe('committed nav.json', () => {
   });
 
   // Mission once sat three levels deep under Membership, buried in a list.
-  // A third level is allowed again only as a TITLED COLUMN, which the header
-  // renders side by side: the WhatsApp community column is the one place that
-  // uses it, and nothing may go deeper than its links.
-  it('nests a third level only as the Global community WhatsApp column', () => {
+  // A third level is allowed again only as a TITLED SECTION, which the header
+  // stacks in one column: Global community's Newsletter and WhatsApp community
+  // sections are the only place that uses it, and nothing may go deeper.
+  it('nests a third level only as the Global community sections', () => {
     const columns = nav.items.flatMap((i) => (i.children ?? []).filter((c) => c.children?.length));
     const fourthLevel = columns.flatMap((c) => c.children ?? []).filter((l) => l.children?.length);
 
-    expect(columns.map((c) => c.label)).toEqual(['WhatsApp community']);
+    expect(columns.map((c) => c.label)).toEqual(['Newsletter', 'WhatsApp community']);
     expect(fourthLevel).toEqual([]);
   });
 
@@ -744,7 +750,7 @@ describe('committed nav.json', () => {
       ?.children?.find((c) => c.label === 'Newsletter');
     const contentHub = nav.items.find((i) => i.label === 'Content hub');
 
-    expect(newsletter?.url).toBe(settings.links.mailingList);
+    expect(newsletter?.children?.map((c) => c.url)).toEqual([settings.links.mailingList]);
     expect(contentHub?.children?.some((c) => c.label === 'Newsletter')).toBe(false);
   });
 });

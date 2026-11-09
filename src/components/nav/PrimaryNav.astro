@@ -65,7 +65,7 @@ const { items, subscribeUrl } = Astro.props as Props;
             {item.label} <span class="caret">▾</span>
           </button>
           <div class="mega">
-            <div class="mega-in">
+            <div class:list={['mega-in', { 'mega-in--stacked': hasColumns(item) }]}>
               {hasColumns(item) ? (
                 item.children.map((group) => (
                   <div class="mega-col">
@@ -247,6 +247,13 @@ const { items, subscribeUrl } = Astro.props as Props;
     flex-direction: column;
     gap: 9px;
     min-width: 140px;
+  }
+  /* A menu of titled sections (Global community: Newsletter, then the WhatsApp
+     community) stacks them in one column, read top to bottom. Side by side, a
+     one-link section beside a long list read as a half-empty second column. */
+  .mega-in--stacked {
+    flex-direction: column;
+    gap: 18px;
   }
   .mega-h {
     font-family: var(--font-mono);

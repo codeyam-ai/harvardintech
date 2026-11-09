@@ -8,6 +8,15 @@
       "label": "Global community",
       "children": [
         {
+          "label": "Newsletter",
+          "children": [
+            {
+              "label": "Subscribe",
+              "url": "https://mailchi.mp/0222623e1169/fbrj32e9wb"
+            }
+          ]
+        },
+        {
           "label": "WhatsApp community",
           "children": [
             {
@@ -15,10 +24,6 @@
               "url": "/#community"
             }
           ]
-        },
-        {
-          "label": "Newsletter",
-          "url": "https://mailchi.mp/0222623e1169/fbrj32e9wb"
         }
       ]
     },
