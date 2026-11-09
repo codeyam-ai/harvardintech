@@ -1805,10 +1805,12 @@
       "body": "## Root cause\nAfter a seed rewrites sandboxed content, the dev server's content collections reload asynchronously, and the capture does not wait for the reload to settle. A frame can then be taken against the old entry, or a revalidate request can fail transiently. In this cycle the preview also served a stale community entry until the dev server restarted.\n\n## Evidence\nfnd-b162c321a97c / fnd-ec41426497c1 (reported '✓ Recaptured' on a mid-reload frame), fnd-aa00fd37e59f / fnd-9974c5fe4c7c (revalidate POST failed three times during the seed reload). The producing code is in codeyam-editor's capture pipeline, which is not in this repo, so no file:line is quoted here.\n\n## Smallest fix\nAfter seeding, wait until the server reports that the content reload matching the seed's write has finished before navigating, and fail the capture instead of reporting success when it times out.\n\n## Cost of leaving it\nScreenshots can certify content that isn't what the scenario seeded, and recaptures waste retries on transient failures.",
       "reason": "A recapture reported success on a frame taken mid-reload, which is a wrong-result.",
       "source": "codeyam-improvement",
-      "status": "pending",
+      "status": "copied",
       "proposedAt": "2026-11-06T14:52:25.568975624+00:00",
       "kind": "tech-debt",
       "sightings": 1,
+      "decidedAt": "2026-11-09T16:23:54Z",
+      "sightingsAtDecision": 1,
       "evidenceIds": [
         "fnd-b162c321a97c",
         "fnd-ec41426497c1",
