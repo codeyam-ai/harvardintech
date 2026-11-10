@@ -1,4 +1,11 @@
 {
   "name": "_default",
-  "seed": {}
+  "seed": {
+    "siteClock": [
+      {
+        "slug": "now",
+        "now": "2026-11-10T12:00:00Z"
+      }
+    ]
+  }
 }

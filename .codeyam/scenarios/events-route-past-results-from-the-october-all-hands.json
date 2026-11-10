@@ -17,5 +17,13 @@
       "action": "hover",
       "text": "Sold out within 24 hours"
     }
-  ]
+  ],
+  "seed": {
+    "siteClock": [
+      {
+        "slug": "now",
+        "now": "2026-11-06T00:16:38Z"
+      }
+    ]
+  }
 }

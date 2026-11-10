@@ -27,7 +27,8 @@ import { siteLinks } from '../lib/site';
 // the Luma calendar sits above this body on /events.
 interface Props {
   events?: EventLike[];
-  now?: string | Date;
+  /** The site's "now": `siteNow()` on the route, a fixed date in scenarios. */
+  now: string | Date;
   /**
    * Render the page's own title and standfirst.
    *
@@ -40,7 +41,7 @@ interface Props {
 }
 const { events = [], now, showIntro = true } = Astro.props;
 
-const { past } = splitEvents(events, now ?? new Date());
+const { past } = splitEvents(events, now);
 const { recent } = splitArchive(past);
 // With no past events and no intro, the only thing left in this section is the
 // one-line webinars pointer, and the full section padding left it floating in a

@@ -18,6 +18,7 @@ import { siteLinks } from '../lib/site';
 import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
 import { calendarEmbedUrl } from '../lib/events';
+import { siteNow } from '../lib/siteClock';
 
 // Drafts are shown while authoring and on the review track, never on the public site.
 const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS).map((e) => ({
@@ -28,7 +29,9 @@ const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS).m
 // No upcoming event → no embed, so LumaCalendar shows its compact card. The
 // collection is re-imported from Luma by the nightly deploy, so this flips back
 // to the embed within a day of a new event being posted.
-const embedUrl = calendarEmbedUrl(events, LUMA_EMBED_URL);
+// One "now" for the embed decision and the past grid, so they cannot disagree.
+const now = siteNow();
+const embedUrl = calendarEmbedUrl(events, LUMA_EMBED_URL, now);
 ---
 
 <BaseLayout title="Events" description="Upcoming and past Harvard Alumni in Tech events.">
@@ -39,5 +42,5 @@ const embedUrl = calendarEmbedUrl(events, LUMA_EMBED_URL);
       code because it carries the calendar id that `lumaFeed.test.ts` pins to
       the importer — the two must name the same calendar. */}
   <LumaCalendar calendarUrl={siteLinks().luma} embedUrl={embedUrl} />
-  <EventsPage events={events} showIntro={false} />
+  <EventsPage events={events} now={now} showIntro={false} />
 </BaseLayout>

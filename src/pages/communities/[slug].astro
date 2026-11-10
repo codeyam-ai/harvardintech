@@ -8,6 +8,7 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CommunityPage from '../../components/CommunityPage.astro';
 import { splitEvents, eventsTaggedTo, recentPastEvents } from '../../lib/events';
+import { siteNow } from '../../lib/siteClock';
 import LockedPreviewBody from '../../components/LockedPreviewBody.astro';
 import { isLocked, isPreview, publishedEntries, routableEntries } from '../../lib/drafts';
 import { INCLUDE_DRAFTS } from '../../lib/draftVisibility';
@@ -59,7 +60,7 @@ const {
 // page. The chapters route warns about tags matching neither list, so a typo is
 // still caught.
 const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS);
-const { upcoming, past } = splitEvents(eventsTaggedTo(events, community.id));
+const { upcoming, past } = splitEvents(eventsTaggedTo(events, community.id), siteNow());
 const recent = recentPastEvents(past);
 ---
 

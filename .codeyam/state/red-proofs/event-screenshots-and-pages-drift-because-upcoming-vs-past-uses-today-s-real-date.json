@@ -1,0 +1,47 @@
+{
+  "provenAt": "2026-11-10T20:39:57Z",
+  "slug": "event-screenshots-and-pages-drift-because-upcoming-vs-past-uses-today-s-real-date",
+  "paths": [],
+  "runScope": [
+    "src/lib/siteClock.ts",
+    "src/lib/siteClock.test.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/siteClock.ts",
+      "find": "  return Number.isNaN(date.valueOf()) ? undefined : date;",
+      "replace": "  return undefined;"
+    }
+  ],
+  "tests": {
+    "reads a double-quoted ISO date from the frontmatter": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "reads siteClock/now.md under the active content root on every call": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "returns the pinned date when the file carries one": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "returns the pinned date when the file carries one",
+      "reads siteClock/now.md under the active content root on every call",
+      "reads a double-quoted ISO date from the frontmatter"
+    ]
+  }
+}

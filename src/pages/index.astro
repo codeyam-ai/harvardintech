@@ -17,6 +17,7 @@ import { emailFor } from '../lib/contact';
 import { loadVolunteerCopy } from '../lib/volunteerPageContent';
 import { publishedEntries } from '../lib/drafts';
 import { splitEvents } from '../lib/events';
+import { siteNow } from '../lib/siteClock';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
 import { sortBoardMembers, filterActiveBoardMembers } from '../lib/team';
 import { loadHomeSections, loadHeroSlides, loadHomeStats } from '../lib/homeSectionsContent';
@@ -48,7 +49,7 @@ const allEvents = publishedEntries(await getCollection('events'), showDrafts).ma
   slug: e.id,
   ...e.data,
 }));
-const { upcoming: events } = splitEvents(allEvents);
+const { upcoming: events } = splitEvents(allEvents, siteNow());
 
 // Regional chapters for the "Our chapters" section. Sorted in-component: active
 // cities before forming ones, then by `order`. The spread carries `status`

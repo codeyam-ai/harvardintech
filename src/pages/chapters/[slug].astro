@@ -11,6 +11,7 @@ import {
   eventsTaggedTo,
   recentPastEvents,
 } from '../../lib/events';
+import { siteNow } from '../../lib/siteClock';
 import LockedPreviewBody from '../../components/LockedPreviewBody.astro';
 import { isLocked, isPreview, publishedEntries, routableEntries } from '../../lib/drafts';
 import { INCLUDE_DRAFTS } from '../../lib/draftVisibility';
@@ -84,7 +85,7 @@ const {
 // Both halves of the split are used now: what is coming up, and the last few
 // that happened. A chapter between events used to render as a blank page.
 const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS);
-const { upcoming, past } = splitEvents(eventsTaggedTo(events, chapter.id));
+const { upcoming, past } = splitEvents(eventsTaggedTo(events, chapter.id), siteNow());
 const recent = recentPastEvents(past);
 ---
 

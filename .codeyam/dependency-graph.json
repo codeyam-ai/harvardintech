@@ -5188,6 +5188,35 @@
       "imports": [],
       "name": "volunteerPage"
     },
+    "src/lib/siteClock.test.ts::__file_root__": {
+      "filePath": "src/lib/siteClock.test.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/siteClock.ts::SITE_CLOCK_FILE",
+        "src/lib/siteClock.ts::pinnedNow",
+        "src/lib/siteClock.ts::siteNow"
+      ],
+      "name": "__file_root__"
+    },
+    "src/lib/siteClock.ts::__file_root__": {
+      "filePath": "src/lib/siteClock.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/contentRoot.ts::contentRoot"
+      ],
+      "name": "__file_root__"
+    },
+    "src/lib/siteClock.ts::siteNow": {
+      "filePath": "src/lib/siteClock.ts",
+      "importedBy": [
+        "src/pages/chapters/[slug].astro::__file_root__",
+        "src/pages/index.astro::__file_root__",
+        "src/pages/events.astro::__file_root__",
+        "src/pages/communities/[slug].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "siteNow"
+    },
     "src/lib/siteFonts.test.ts::__file_root__": {
       "filePath": "src/lib/siteFonts.test.ts",
       "importedBy": [],
@@ -5806,6 +5835,7 @@
         "src/lib/events.ts::recentPastEvents",
         "src/lib/events.ts::splitEvents",
         "src/lib/events.ts::unmatchedChapterTags",
+        "src/lib/siteClock.ts::siteNow",
         "src/components/LockedPreviewBody.astro::__file_root__",
         "src/lib/drafts.ts::isLocked",
         "src/lib/drafts.ts::isPreview",
@@ -5824,6 +5854,7 @@
         "src/lib/events.ts::eventsTaggedTo",
         "src/lib/events.ts::recentPastEvents",
         "src/lib/events.ts::splitEvents",
+        "src/lib/siteClock.ts::siteNow",
         "src/components/LockedPreviewBody.astro::__file_root__",
         "src/lib/drafts.ts::isLocked",
         "src/lib/drafts.ts::isPreview",
@@ -5898,7 +5929,8 @@
         "src/lib/site.ts::siteLinks",
         "src/lib/drafts.ts::publishedEntries",
         "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
-        "src/lib/events.ts::calendarEmbedUrl"
+        "src/lib/events.ts::calendarEmbedUrl",
+        "src/lib/siteClock.ts::siteNow"
       ],
       "name": "__file_root__"
     },
@@ -5913,6 +5945,7 @@
         "src/lib/volunteerPageContent.ts::loadVolunteerCopy",
         "src/lib/drafts.ts::publishedEntries",
         "src/lib/events.ts::splitEvents",
+        "src/lib/siteClock.ts::siteNow",
         "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
         "src/lib/team.ts::filterActiveBoardMembers",
         "src/lib/team.ts::sortBoardMembers",
@@ -9845,6 +9878,7 @@
         "src/lib/givePageContent.ts",
         "src/lib/site.ts",
         "src/lib/contentRoot.test.ts",
+        "src/lib/siteClock.ts",
         "src/content/config.ts"
       ],
       "imports": []
@@ -11127,6 +11161,24 @@
         "src/lib/luma.ts"
       ]
     },
+    "src/lib/siteClock.test.ts": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/siteClock.ts"
+      ]
+    },
+    "src/lib/siteClock.ts": {
+      "importedBy": [
+        "src/lib/siteClock.test.ts",
+        "src/pages/chapters/[slug].astro",
+        "src/pages/index.astro",
+        "src/pages/events.astro",
+        "src/pages/communities/[slug].astro"
+      ],
+      "imports": [
+        "src/lib/contentRoot.ts"
+      ]
+    },
     "src/lib/siteFonts.test.ts": {
       "importedBy": [],
       "imports": [
@@ -11413,6 +11465,7 @@
         "src/layouts/BaseLayout.astro",
         "src/components/ChapterPage.astro",
         "src/lib/events.ts",
+        "src/lib/siteClock.ts",
         "src/components/LockedPreviewBody.astro",
         "src/lib/drafts.ts",
         "src/lib/draftVisibility.ts"
@@ -11424,6 +11477,7 @@
         "src/layouts/BaseLayout.astro",
         "src/components/CommunityPage.astro",
         "src/lib/events.ts",
+        "src/lib/siteClock.ts",
         "src/components/LockedPreviewBody.astro",
         "src/lib/drafts.ts",
         "src/lib/draftVisibility.ts"
@@ -11483,7 +11537,8 @@
         "src/lib/site.ts",
         "src/lib/drafts.ts",
         "src/lib/draftVisibility.ts",
-        "src/lib/events.ts"
+        "src/lib/events.ts",
+        "src/lib/siteClock.ts"
       ]
     },
     "src/pages/index.astro": {
@@ -11495,6 +11550,7 @@
         "src/lib/volunteerPageContent.ts",
         "src/lib/drafts.ts",
         "src/lib/events.ts",
+        "src/lib/siteClock.ts",
         "src/lib/draftVisibility.ts",
         "src/lib/team.ts",
         "src/lib/homeSectionsContent.ts",
@@ -12767,5 +12823,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-10T20:16:20Z"
+  "lastUpdated": "2026-11-10T22:15:37Z"
 }

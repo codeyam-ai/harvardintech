@@ -51,6 +51,14 @@ function collectionGlob(collection: string): Loader {
   return {
     ...inner,
     load: async (context) => {
+      // A one-off build (no watcher) has nothing to load from a folder that does
+      // not exist — e.g. `siteClock`, which only a codeyam sandbox ever seeds —
+      // and Astro would warn about it. In dev keep loading so the watcher still
+      // notices the folder if a scenario creates it later.
+      if (!context.watcher && !fs.existsSync(dir)) {
+        context.store.clear();
+        return;
+      }
       const hasMarkdown =
         fs.existsSync(dir) && fs.readdirSync(dir).some((file) => /\.mdx?$/.test(file));
       if (!hasMarkdown) context.store.clear();
@@ -882,7 +890,19 @@ const siteIntegrations = defineCollection({
   }),
 });
 
+// A scenario's pinned "now" (`src/lib/siteClock.ts`): one `now.md` whose
+// frontmatter `now` is the date pages split upcoming from past events against.
+// Only ever seeded into a codeyam sandbox, never committed — so production has no
+// such folder and renders against the real clock. Declared here because the seed
+// adapter refuses a seeded table the dev server does not load as a collection.
+// Not in the CMS: nobody should be able to move the site's clock from /admin.
+const siteClock = defineCollection({
+  loader: collectionGlob('siteClock'),
+  schema: z.object({ now: z.string() }),
+});
+
 export const collections = {
+  siteClock,
   blog,
   pages,
   team,

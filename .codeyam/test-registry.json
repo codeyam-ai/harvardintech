@@ -10424,6 +10424,51 @@
       "runner": "tests"
     },
     {
+      "description": "the `now:` line is found wherever it sits among other frontmatter keys",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "pinnedNow › finds now among other frontmatter lines",
+      "line": 29,
+      "registeredAt": "2026-11-10T20:40:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the seed adapter writes the value quoted, so the quoted form must parse",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "pinnedNow › reads a double-quoted ISO date from the frontmatter",
+      "line": 15,
+      "registeredAt": "2026-11-10T20:40:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a hand-written file may use single quotes or none; both mean the same date",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "pinnedNow › reads single-quoted and unquoted dates alike",
+      "line": 21,
+      "registeredAt": "2026-11-10T20:40:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a value that is not a date must not become an Invalid Date that empties both the upcoming and past lists",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "pinnedNow › returns undefined when the now value is not a date",
+      "line": 42,
+      "registeredAt": "2026-11-10T20:40:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "no `now:` key means nothing is pinned, so the caller uses the real clock",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "pinnedNow › returns undefined when there is no now line",
+      "line": 35,
+      "registeredAt": "2026-11-10T20:40:28Z",
+      "runner": "tests"
+    },
+    {
       "description": "Founding supporters read larger, which is how the badge survives a design where every node is otherwise the same crimson.",
       "file": "src/lib/momentumNetwork.test.ts",
       "format": "vitest",
@@ -13553,6 +13598,42 @@
       "key": "site writing standard › writes every site-authored heading in sentence case",
       "line": 160,
       "registeredAt": "2026-10-02T21:35:26Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the seeded file lands under the sandbox content root; the default reader must look exactly there, and re-read on each call so a scenario switch takes effect without restarting the dev server",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "siteNow › default reader › reads siteClock/now.md under the active content root on every call",
+      "line": 84,
+      "registeredAt": "2026-11-10T20:40:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "production has no siteClock folder, so the read throws — use real time",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "siteNow › falls back to the real clock when the file cannot be read",
+      "line": 55,
+      "registeredAt": "2026-11-10T20:40:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a present but unusable file must not freeze the site on a bad date",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "siteNow › falls back to the real clock when the file has no usable date",
+      "line": 65,
+      "registeredAt": "2026-11-10T20:40:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a readable file with a usable date wins over the real clock",
+      "file": "src/lib/siteClock.test.ts",
+      "format": "vitest",
+      "key": "siteNow › returns the pinned date when the file carries one",
+      "line": 49,
+      "registeredAt": "2026-11-10T20:40:28Z",
       "runner": "tests"
     },
     {

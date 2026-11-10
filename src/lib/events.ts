@@ -109,12 +109,13 @@ export { formatLongDate as formatEventDate } from './dates';
 
 /**
  * Split a flat list of events into `upcoming` (date >= now, soonest first) and
- * `past` (date < now, most recent first), relative to `now` (defaults to the
- * current time). Events exactly at `now` count as upcoming.
+ * `past` (date < now, most recent first), relative to `now`. Events exactly at
+ * `now` count as upcoming. `now` is required: callers pass the site's one clock
+ * (`siteNow()`), so a scenario can pin it and no page reads the real time alone.
  */
 export function splitEvents<T extends EventLike>(
   events: T[],
-  now: string | Date = new Date(),
+  now: string | Date,
 ): { upcoming: T[]; past: T[] } {
   const reference = toEventDate(now).valueOf();
   const upcoming = events
@@ -136,7 +137,7 @@ export function splitEvents<T extends EventLike>(
 export function calendarEmbedUrl(
   events: readonly Pick<EventLike, 'date'>[],
   embedUrl: string | undefined,
-  now: string | Date = new Date(),
+  now: string | Date,
 ): string | undefined {
   if (!embedUrl) return undefined;
   const reference = toEventDate(now).valueOf();
