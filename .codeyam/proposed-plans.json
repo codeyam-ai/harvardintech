@@ -3022,6 +3022,11 @@
       "at": "2026-11-10T18:03:40.596621977+00:00",
       "feature": "A refused Luma feed now turns the nightly import red",
       "notes": "Backend fix landed and pushed as e234055b. The first finalize failed on 4 TS2339 errors: union inference in import-luma.mjs dropped the optional `refused` field. An explicit @returns ImportResult fixed it, and the second finalize passed 19…"
+    },
+    {
+      "at": "2026-11-10T20:20:28.401103422+00:00",
+      "feature": "Phone menu sections stay on screen when tapped",
+      "notes": "Single-rule CSS fix in PrimaryNav's drawer breakpoint, guarded by stylesheet-reading tests, because jsdom cannot cascade media queries. The heading tap is folded into harvard-in-tech-phone-menu-open. Pre-existing seed-not-landing captures …"
     }
   ],
   "syntheses": [
