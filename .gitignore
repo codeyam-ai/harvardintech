@@ -66,6 +66,7 @@ blob-report/
 .codeyam/preview-env.json
 .codeyam/preview-capture.png
 .codeyam/server-state.json
+.codeyam/plan-quality.jsonl
 
 # codeyam-editor:start
 # Managed by `codeyam-editor init` / `codeyam-editor start`.
@@ -139,6 +140,7 @@ blob-report/
 .codeyam/coverage-check.json
 .codeyam/server.json
 .codeyam/server-state.json
+.codeyam/plan-quality.jsonl
 .codeyam/queue.json
 .codeyam/active-scenario.json
 .codeyam/armed-wakeups.json
