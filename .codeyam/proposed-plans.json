@@ -3027,6 +3027,16 @@
       "at": "2026-11-10T20:20:28.401103422+00:00",
       "feature": "Phone menu sections stay on screen when tapped",
       "notes": "Single-rule CSS fix in PrimaryNav's drawer breakpoint, guarded by stylesheet-reading tests, because jsdom cannot cascade media queries. The heading tap is folded into harvard-in-tech-phone-menu-open. Pre-existing seed-not-landing captures …"
+    },
+    {
+      "at": "2026-11-10T22:19:26.626745826+00:00",
+      "feature": "Event pages and screenshots no longer drift with the calendar",
+      "notes": "Fix shipped as b6df076b. A one-off production build now skips content folders that do not exist (siteClock is only ever seeded in a sandbox); dev still loads them so the watcher notices a seeded folder. The donors 'No files found' build wa…"
+    },
+    {
+      "at": "2026-11-10T22:19:46.508646255+00:00",
+      "feature": "Event pages and screenshots no longer drift with the calendar",
+      "notes": "Fix shipped as b6df076b. A one-off production build now skips content folders that do not exist (siteClock is only ever seeded in a sandbox); dev still loads them so the watcher notices a seeded folder. The donors 'No files found' build wa…"
     }
   ],
   "syntheses": [
