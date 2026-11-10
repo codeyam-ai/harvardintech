@@ -1817,7 +1817,6 @@
         "fnd-9974c5fe4c7c"
       ],
       "evidenceSessions": 1,
-      "ideaRank": 1,
       "theme": {
         "lane": "codeyam-improvement",
         "score": 485,
@@ -1874,6 +1873,74 @@
         "lane": "app",
         "score": 493,
         "verifiedAt": "f80b92e7cf1556543c11c29145424e28b9411360"
+      }
+    },
+    {
+      "id": "seeded-screenshots-can-silently-show-the-real-content-instead-of-the-scenario-s-data",
+      "title": "Seeded screenshots can silently show the real content instead of the scenario's data",
+      "mode": "backend",
+      "body": "## Root cause\nThe content-collection seed adapter writes the scenario's files into the content sandbox, but the running Astro dev server does not always re-read them (its content-layer cache keeps serving the previous or committed content). The capture then proceeds because nothing checks that the seed actually reached the rendered page.\n\n## Evidence\nfnd-b79f5b5a1dda and fnd-489d51ed84e3 (2026-11-09: community-route-investors-join-steps rendered committed content, passed on retry). 2026-11-10: chapter-gallery-photo-enlarged rendered London's committed photos while .codeyam/tmp/content-sandbox/content/chapters/london.md held the seed; only the distinct-capture collision check noticed. Producer: the seed adapter's refresh path in .codeyam/seed-adapter.ts (`[codeyam-seed] content refreshed via :4321`); not verified against codeyam-editor source from this repo.\n\n## Smallest fix\nAfter seeding and before capturing, assert one seeded value (for example a seeded title or caption) appears in the fetched HTML; on a miss, restart the dev server once and retry, then fail loudly instead of capturing.\n\n## Cost of leaving it\nWrong screenshots are committed as green, and a full-corpus recapture (over an hour here) is the only recovery once it is noticed.",
+      "reason": "Bulk recaptures report success while recording frames that ignore the seed, so wrong screenshots get committed.",
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-11-10T17:07:08.625205929+00:00",
+      "kind": "tech-debt",
+      "sightings": 1,
+      "evidenceIds": [
+        "fnd-b79f5b5a1dda",
+        "fnd-489d51ed84e3"
+      ],
+      "evidenceSessions": 1,
+      "ideaRank": 1,
+      "theme": {
+        "lane": "codeyam-improvement",
+        "score": 481,
+        "notVerified": true
+      }
+    },
+    {
+      "id": "screenshot-refresh-refuses-to-run-when-the-user-has-legitimately-added-new-content",
+      "title": "Screenshot refresh refuses to run when the user has legitimately added new content",
+      "mode": "backend",
+      "body": "## Root cause\nThe content-sandbox pollution guard treats any untracked file under src/content as a seed write, without distinguishing files the user or an importer created on purpose.\n\n## Evidence\nfnd-2d7e1fd4e89f, fnd-cfcf884fba2b: src/content/events/2026-11-18-harvard-alumni-in-tech-goodbye-fall-rooftop-mixer.md (a requested Luma import) made recapture-stale refuse to run. Producer: recapture-stale's sandbox-pollution pre-flight in codeyam-editor; not verified from this repo.\n\n## Smallest fix\nCompare against the files the seed adapter itself wrote this run (it already knows them) rather than all untracked content files.\n\n## Cost of leaving it\nEvery content import mid-cycle blocks screenshot refresh and forces a manual move-aside workaround.",
+      "reason": "A real imported event file was mistaken for seed pollution and blocked recapture until it was moved aside by hand.",
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-11-10T17:07:08.625205929+00:00",
+      "kind": "tech-debt",
+      "sightings": 1,
+      "evidenceIds": [
+        "fnd-2d7e1fd4e89f",
+        "fnd-cfcf884fba2b"
+      ],
+      "evidenceSessions": 1,
+      "ideaRank": 2,
+      "theme": {
+        "lane": "codeyam-improvement",
+        "score": 385,
+        "notVerified": true
+      }
+    },
+    {
+      "id": "finishing-a-change-can-be-blocked-by-a-file-the-editor-itself-just-wrote",
+      "title": "Finishing a change can be blocked by a file the editor itself just wrote",
+      "mode": "backend",
+      "body": "## Root cause\n.codeyam/manual-test-candidates.jsonl is written by feature-complete but is missing from the standard editor-managed .gitignore entries and the allowlist, so the guard blocks the state commit.\n\n## Evidence\nfnd-2e060d54d39b (2026-11-09). Later commit 7baf180f 'chore: ignore generated manual-test candidates' added it to this project's .gitignore by hand. Producer: the editor's standard gitignore entry list; not verified from this repo.\n\n## Smallest fix\nAdd the file to the editor-managed .gitignore block written for every project.\n\n## Cost of leaving it\nEvery project hits a blocked completion modal the first time approval deviations exist.",
+      "reason": "feature-complete wrote a state file that its own tracked-paths guard then refused to commit.",
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-11-10T17:07:08.625205929+00:00",
+      "kind": "tech-debt",
+      "sightings": 1,
+      "evidenceIds": [
+        "fnd-2e060d54d39b"
+      ],
+      "evidenceSessions": 1,
+      "ideaRank": 3,
+      "theme": {
+        "lane": "codeyam-improvement",
+        "score": 385,
+        "notVerified": true
       }
     }
   ],
@@ -2945,6 +3012,11 @@
       "at": "2026-11-09T22:27:16.892795602+00:00",
       "feature": "Global community menu: Newsletter above WhatsApp",
       "notes": "This cycle closed the Global community menu restructure: a one-column stack with a Newsletter section above the WhatsApp community, approved after the user rejected three other layouts. A Luma refresh (NYC Nov 18 event) went into the same …"
+    },
+    {
+      "at": "2026-11-10T17:07:08.625205929+00:00",
+      "feature": "Clearer WhatsApp join steps: time estimate and Mac tip",
+      "notes": "WhatsApp join copy shipped (0235c0bf). The dev server can silently stop picking up content-sandbox seed writes; verify with a curl for a seeded string before a bulk recapture. A queue of ~25 approved homepage/events/community/donate copy e…"
     }
   ],
   "syntheses": [
@@ -3108,6 +3180,31 @@
         "a-refused-luma-feed-still-ends-the-nightly-import-green"
       ],
       "notes": "The chapter hero image finding is cosmetic and was seen in one session only, so it is not admitted. The duplicate rows from 11-09 are the same finding recorded twice."
+    },
+    {
+      "at": "2026-11-10T17:07:08.625205929+00:00",
+      "lane": "codeyam-improvement",
+      "consumedIds": [
+        "fnd-342e6a386f6b",
+        "fnd-4af77099f273",
+        "fnd-615464727cf0",
+        "fnd-2d7e1fd4e89f",
+        "fnd-b79f5b5a1dda",
+        "fnd-993c925c71c1",
+        "fnd-cfcf884fba2b",
+        "fnd-489d51ed84e3",
+        "fnd-c6f695568cb7",
+        "fnd-2e060d54d39b",
+        "fnd-0be745e53dda",
+        "fnd-daa6290f3f6a",
+        "fnd-af8130a35f42"
+      ],
+      "keptIds": [
+        "seeded-screenshots-can-silently-show-the-real-content-instead-of-the-scenario-s-data",
+        "screenshot-refresh-refuses-to-run-when-the-user-has-legitimately-added-new-content",
+        "finishing-a-change-can-be-blocked-by-a-file-the-editor-itself-just-wrote"
+      ],
+      "notes": "Double-start dev server (fnd-4af77099f273, fnd-615464727cf0) and expectation-diff false REMOVED (fnd-993c925c71c1, fnd-c6f695568cb7) each come from a single session with time-lost impact, so they do not yet meet the admission bar; pre-existing untracked files auto-committed (fnd-342e6a386f6b) likewise."
     }
   ]
 }
