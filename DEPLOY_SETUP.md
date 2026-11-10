@@ -65,9 +65,14 @@ Three things worth knowing:
   reverted by the next run. Deduplication is on the Luma slug inside each
   entry's `link`, not on the filename, so an entry filed under a slightly
   different date is still recognised as the same event.
-- **It fails soft.** If Luma cannot be reached the script reports it and exits
-  0; the build ships the events already committed rather than failing or
-  emptying the events page.
+- **It fails soft when Luma is unreachable, and loud when Luma refuses.** In
+  both cases nothing is written and the site is still published with the events
+  already committed. A network error (Luma could not be reached) leaves the run
+  green. An HTTP error from Luma (it answered, but refused: "too many
+  requests", "server error") marks the run **failed** after the site is
+  published. If the Actions tab shows a red run whose last step is "Fail the run
+  if Luma refused the feed", new events are not reaching the site; the build
+  job's "Import events from Luma" step names the HTTP status.
 - **GitHub disables a scheduled workflow after 60 days of repository
   inactivity.** A quiet stretch after launch therefore stops the nightly import
   with no notice. Any push, or one manual run from the Actions tab

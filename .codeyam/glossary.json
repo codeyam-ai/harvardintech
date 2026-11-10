@@ -1056,6 +1056,12 @@
     }
   },
   {
+    "description": "Maps every Luma payload to importable entries, dedupes on the Luma slug across overlapping periods so the first wins, and counts the feed items the mapping dropped.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "collectEntries",
+    "testFile": "src/lib/lumaImport.test.ts"
+  },
+  {
     "description": "The loader every content collection uses: Astro's glob, wrapped to clear the collection's stored entries when its directory has no markdown left. Astro's own loader returns early on an empty directory, before the line that deletes the entries it did not just re-read — harmless for an always-populated collection, but every scenario re-initialises the sandbox from production before writing its seed, so a collection one scenario filled is empty for the next and the stale entries would leak across. Clearing first makes 'no files' mean 'no entries', which is what an empty directory has always meant everywhere else. The clear is scoped to the one collection being loaded.",
     "filePath": "src/content/config.ts",
     "name": "collectionGlob",
@@ -1429,9 +1435,15 @@
     "testFile": "src/lib/strikinglyArchive.test.ts"
   },
   {
-    "description": "One `get-items` request that returns null rather than throwing when Luma is unreachable or answers non-200 — the seam that lets the import fail soft and leave committed events in place. Private.",
+    "description": "One Luma get-items request that never throws: returns the payload, the HTTP status when Luma refused with an error response, or the message when the request failed or the body was unreadable.",
     "filePath": "scripts/import-luma.mjs",
     "name": "fetchFeed",
+    "testFile": "src/lib/lumaImport.test.ts"
+  },
+  {
+    "description": "Fetches every requested Luma feed period before anything is written, returning the payloads, or the first refusal (HTTP status) or unreachable failure so a refused second request cannot half-import the first.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "fetchPeriods",
     "testFile": "src/lib/lumaImport.test.ts"
   },
   {
@@ -2478,6 +2490,12 @@
     "testFile": "src/lib/sitePages.test.ts"
   },
   {
+    "description": "Builds the result of an import that wrote nothing because a feed was missing: ok false with the refused status when Luma refused, ok true when it was merely unreachable.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "offlineResult",
+    "testFile": "src/lib/lumaImport.test.ts"
+  },
+  {
     "description": "The UTC offset of a timezone at a given instant, in minutes, derived by re-reading the zoned wall clock as if it were UTC. Private; it is what makes the written date carry a real offset rather than an assumed one.",
     "filePath": "src/lib/lumaFeed.js",
     "name": "offsetMinutes",
@@ -2692,6 +2710,12 @@
     "filePath": "src/lib/localPresence.ts",
     "name": "presenceSummary",
     "testFile": "src/lib/localPresence.test.ts"
+  },
+  {
+    "description": "Prints the import report: how many entries were written or would be, which were left alone, and how many feed items were dropped.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "printSummary",
+    "testFile": "src/lib/lumaImport.test.ts"
   },
   {
     "description": "Picks the fallback background photo for a volunteer role with no image of its own: its chapter's heroImage by slug, or DEFAULT_PROJECT_BACKDROP when the chapter is unset, unknown, or has no photo. Never throws.",
@@ -3713,6 +3737,12 @@
     "filePath": "src/lib/nav.ts",
     "name": "withoutHiddenSections",
     "testFile": "src/lib/nav.test.ts"
+  },
+  {
+    "description": "Writes each entry not already in the events collection, matched on Luma slug then filename; leaves existing entries alone unless --force and touches nothing under --dry-run.",
+    "filePath": "scripts/import-luma.mjs",
+    "name": "writeEntries",
+    "testFile": "src/lib/lumaImport.test.ts"
   },
   {
     "description": "Returns a hostname's other spelling — the apex for a www host, the www form for an apex — so a site origin counts as its own under either one and a link home is never treated as leaving the site.",

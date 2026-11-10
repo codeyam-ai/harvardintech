@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
@@ -181,16 +181,76 @@ describe('importing from Luma', () => {
     expect(fs.readdirSync(outDir)).toEqual(['existing.md']);
   });
 
-  // A 503 answers without throwing, so the failure path that catches a network
-  // error never sees it — and parsing that body would yield zero entries, which
-  // reads as "the calendar is empty" rather than "the calendar is down".
-  it('treats a non-200 from Luma the same way as an unreachable one', async () => {
+  // The reproduction: from 2026-10-23 Luma answered every request with a 429,
+  // the import called that "offline" and exited 0, and the nightly run stayed
+  // green for two weeks with no new event reaching the site. A refusal must
+  // fail the import, leave the committed events alone, and say why on the
+  // GitHub Actions run summary.
+  it('fails without touching the collection when Luma refuses the feed with a 429', async () => {
+    fs.writeFileSync(path.join(outDir, 'existing.md'), '---\ntitle: "Kept"\ndate: 2026-01-01\n---\n');
+    const rateLimited = async () => ({ ok: false, status: 429, json: async () => ({}) });
+    const stderr = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const result = await importLuma({ argv: [], outDir, fetchImpl: rateLimited });
+
+    expect(result.ok).toBe(false);
+    expect(result.refused).toBe(429);
+    expect(result.written).toEqual([]);
+    expect(fs.readdirSync(outDir)).toEqual(['existing.md']);
+    const logged = stderr.mock.calls.map((call) => call.join(' ')).join('\n');
+    expect(logged).toContain('::warning::luma upcoming: HTTP 429');
+    stderr.mockRestore();
+  });
+
+  // A 503 answers without throwing, so it never reaches the network-error path,
+  // and parsing its body would read as "the calendar is empty". It is a refusal
+  // like the 429, not a blip, so the import fails rather than staying green.
+  it('fails rather than staying green when Luma answers with a server error', async () => {
     const serverError = async () => ({ ok: false, status: 503, json: async () => ({}) });
 
     const result = await importLuma({ argv: [], outDir, fetchImpl: serverError });
 
+    expect(result.ok).toBe(false);
+    expect(result.offline).toBe(true);
+    expect(result.refused).toBe(503);
+  });
+
+  // With --past the importer makes two requests. If the second is refused, the
+  // first one's events must not be half-written: every feed is fetched before
+  // anything touches the collection.
+  it('writes nothing when the past feed is refused after the upcoming one succeeded', async () => {
+    const pastRefused = async (url: string) =>
+      String(url).includes('period=past')
+        ? { ok: false, status: 429, json: async () => ({}) }
+        : stubFetch([MIXER])(url);
+    const stderr = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const result = await importLuma({ argv: ['--past'], outDir, fetchImpl: pastRefused });
+
+    expect(result.ok).toBe(false);
+    expect(result.refused).toBe(429);
+    expect(fs.readdirSync(outDir)).toEqual([]);
+    const logged = stderr.mock.calls.map((call) => call.join(' ')).join('\n');
+    expect(logged).toContain('::warning::luma past: HTTP 429');
+    stderr.mockRestore();
+  });
+
+  // A 200 whose body is not JSON (a captive portal, a truncated response) is a
+  // problem on the way to Luma, not Luma refusing us, so it stays a soft blip.
+  it('treats an unreadable 200 response as unreachable, not refused', async () => {
+    const garbled = async () => ({
+      ok: true,
+      status: 200,
+      json: async () => {
+        throw new SyntaxError('Unexpected token in JSON');
+      },
+    });
+
+    const result = await importLuma({ argv: [], outDir, fetchImpl: garbled });
+
     expect(result.ok).toBe(true);
     expect(result.offline).toBe(true);
+    expect(result.refused).toBeUndefined();
   });
 
   // The same rule the mapping enforces, checked where it actually matters: on

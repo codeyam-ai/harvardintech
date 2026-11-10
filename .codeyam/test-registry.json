@@ -6530,8 +6530,26 @@
       "file": "src/lib/lumaImport.test.ts",
       "format": "vitest",
       "key": "importing from Luma › does not write a private event",
-      "line": 198,
+      "line": 258,
       "registeredAt": "2026-09-18T20:25:49Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A 503 answers without throwing, so it never reaches the network-error path, and parsing its body would read as \"the calendar is empty\". It is a refusal like the 429, not a blip, so the import fails rather than staying green.",
+      "file": "src/lib/lumaImport.test.ts",
+      "format": "vitest",
+      "key": "importing from Luma › fails rather than staying green when Luma answers with a server error",
+      "line": 208,
+      "registeredAt": "2026-11-10T17:52:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The reproduction: from 2026-10-23 Luma answered every request with a 429, the import called that \"offline\" and exited 0, and the nightly run stayed green for two weeks with no new event reaching the site. A refusal must fail the import, leave the committed events alone, and say why on the GitHub Actions run summary.",
+      "file": "src/lib/lumaImport.test.ts",
+      "format": "vitest",
+      "key": "importing from Luma › fails without touching the collection when Luma refuses the feed with a 429",
+      "line": 189,
+      "registeredAt": "2026-11-10T17:52:56Z",
       "runner": "tests"
     },
     {
@@ -6589,12 +6607,12 @@
       "runner": "tests"
     },
     {
-      "description": "A 503 answers without throwing, so the failure path that catches a network error never sees it — and parsing that body would yield zero entries, which reads as \"the calendar is empty\" rather than \"the calendar is down\".",
+      "description": "A 200 whose body is not JSON (a captive portal, a truncated response) is a problem on the way to Luma, not Luma refusing us, so it stays a soft blip.",
       "file": "src/lib/lumaImport.test.ts",
       "format": "vitest",
-      "key": "importing from Luma › treats a non-200 from Luma the same way as an unreachable one",
-      "line": 187,
-      "registeredAt": "2026-09-18T20:25:49Z",
+      "key": "importing from Luma › treats an unreadable 200 response as unreachable, not refused",
+      "line": 240,
+      "registeredAt": "2026-11-10T17:52:56Z",
       "runner": "tests"
     },
     {
@@ -6613,6 +6631,15 @@
       "key": "importing from Luma › writes nothing under --dry-run",
       "line": 143,
       "registeredAt": "2026-09-18T20:25:49Z",
+      "runner": "tests"
+    },
+    {
+      "description": "With --past the importer makes two requests. If the second is refused, the first one's events must not be half-written: every feed is fetched before anything touches the collection.",
+      "file": "src/lib/lumaImport.test.ts",
+      "format": "vitest",
+      "key": "importing from Luma › writes nothing when the past feed is refused after the upcoming one succeeded",
+      "line": 221,
+      "registeredAt": "2026-11-10T17:52:56Z",
       "runner": "tests"
     },
     {

@@ -92,6 +92,10 @@ jobs:
   build:
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
+    # Read by the deploy job's last step: a refused Luma feed fails the run
+    # only AFTER the site is published (see "Import events from Luma").
+    outputs:
+      luma_outcome: ${{ steps.luma.outcome }}
     steps:
       # Check out the branch TIP, not `github.sha`. This mattered when promote.yml
       # called this workflow after a fast-forward; with one branch it is simply
@@ -144,10 +148,18 @@ jobs:
       # does not wait for someone to re-type an event that already exists.
       #
       # It never overwrites an entry that is already in the collection, so an
-      # edit made in /admin survives every run. If Luma is unreachable the
-      # script says so and exits 0, and the build ships the events already
-      # committed rather than failing or emptying the page.
+      # edit made in /admin survives every run. If Luma is unreachable (network
+      # error) the script says so and exits 0, and the build ships the events
+      # already committed rather than failing or emptying the page.
+      #
+      # If Luma REFUSES the feed (an HTTP error such as 429 or 503) the script
+      # exits 1. `continue-on-error` lets the build and deploy go ahead on the
+      # committed events, so a Luma problem never holds back a CMS edit, and
+      # the deploy job's last step then fails the run. Until 2026-11 a refusal
+      # stayed green, and a 429 on every request went unnoticed for two weeks.
       - name: Import events from Luma
+        id: luma
+        continue-on-error: true
         run: node scripts/import-luma.mjs --past
       # Commit them back so the repo, the CMS and the site agree on what the
       # calendar holds. `--quiet` exits non-zero only when there is something
@@ -206,6 +218,14 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      # The site is already published by this point. `outcome` (not
+      # `conclusion`) is what records the import's real exit code under
+      # `continue-on-error`.
+      - name: Fail the run if Luma refused the feed
+        if: needs.build.outputs.luma_outcome == 'failure'
+        run: |
+          echo "::error::Luma refused the event feed, so no new events were imported. The site was published with the events already committed. See the 'Import events from Luma' step of the build job for the HTTP status."
+          exit 1
 
 # The gated review track returns at launch as a PRIVATE EDITOR BUILD OF `main`
 # published to the kept second repository (nseldeib/harvardintech-staging) and

@@ -1,0 +1,55 @@
+{
+  "provenAt": "2026-11-10T17:52:45Z",
+  "slug": "a-refused-luma-feed-still-ends-the-nightly-import-green",
+  "paths": [
+    "scripts/import-luma.mjs"
+  ],
+  "runScope": [
+    "scripts/import-luma.mjs"
+  ],
+  "tests": {
+    "fails rather than staying green when Luma answers with a server error": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "fails without touching the collection when Luma refuses the feed with a 429": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "leaves the collection alone and does not fail when Luma is unreachable": {
+      "withoutFix": "pass",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "treats an unreadable 200 response as unreachable, not refused": {
+      "withoutFix": "pass",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "writes nothing when the past feed is refused after the upcoming one succeeded": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "fails without touching the collection when Luma refuses the feed with a 429",
+      "fails rather than staying green when Luma answers with a server error",
+      "writes nothing when the past feed is refused after the upcoming one succeeded"
+    ]
+  }
+}

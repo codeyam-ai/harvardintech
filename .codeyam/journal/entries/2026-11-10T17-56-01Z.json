@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-11-10T17:56:01Z",
+  "title": "A refused Luma feed still ends the nightly import green",
+  "type": "fix",
+  "userRequest": "## Root cause\nWhen Luma refuses the feed (HTTP 429 or 5xx), fetchFeed returns null, and main() treats that as 'offline': it leaves the committed events alone and returns ok: true. The workflow run therefore stays green. The only signal is a ::warning:: annotation, and no test observes it. The User-Agent fix removed the cause seen on 2026-10-23, but a new refusal would again go unnoticed for as long as the last one did.\n\n## Evidence\nfnd-322ed885ca31 (wrong-result) and fnd-09539cd9bffc (untested warning). On HEAD: scripts/import-luma.mjs:93 emits the ::warning:: annotation, and scripts/import-luma.mjs:128 returns { ok: true, offline: true } for a refused feed. src/lib/lumaImport.test.ts:180 asserts offline is true but nothing about the warning or the exit status.\n\n## Smallest fix\nTell 'unreachable' (network error, where staying green is fine) apart from 'refused' (an HTTP error status). For a refused feed, return ok: false, or fail after N consecutive refused nights. Add a test that captures stderr and asserts the ::warning:: line.\n\n## Cost of leaving it\nThe next time Luma changes what it accepts, events stop appearing on the site with a green build, and an organizer finds out by hand weeks later, as happened in October.",
+  "description": "When Luma refuses the event feed with an HTTP error (e.g. 429 or 503), the nightly import now exits 1 so the run goes red, while the site is still published first with the already-committed events. An unreachable feed (network error, unreadable body) still passes quietly. The importer's main() was split into single-job helpers (fetchPeriods, offlineResult, collectEntries, writeEntries, printSummary); deploy.yml marks the import step continue-on-error and fails the deploy job at the end when the import failed; DEPLOY_SETUP.md explains the two cases. Scope verdict: this was a maintenance fix outside the listed deliverables, so no deliverable was delivered or deferred by this cycle. Standing deferrals unchanged: content publication quality (deferred by user, needs team-supplied material). Out of scope by user decision: notifying organizers by email/issue, queued separately as tell-organizers-when-the-site-stops-updating-itself. Known limits: the workflow change is only verifiable on GitHub Actions, and no test checks the process exit code directly.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/a-refused-luma-feed-still-ends-the-nightly-import-green.md",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/plans/completed/a-refused-luma-feed-still-ends-the-nightly-import-green.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/31891f632d15b0173826d50e50757d6424127e2a9d1759ab129fd7c056f0a24d.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/7c8c8a9100f3848a1d7fd2179d4ab89aab718fc360ac4d44c933664646582f31.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "status": "modified"
+    },
+    {
+      "path": "DEPLOY_SETUP.md",
+      "status": "modified"
+    },
+    {
+      "path": "scripts/import-luma.mjs",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/lumaImport.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/a-refused-luma-feed-still-ends-the-nightly-import-green.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/36e82535aa52c5a6182170f50c40cfbfe92bd678e2ef758f7cd1119c4e76c4d4.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/40932ad7ff1dc7c90bf71fbccaa724baa7552241d1bf9dd55f36a865e9606788.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/436bbf2a2dbf684a08866a5fe5e2d2c11b87ab2a75da109a1543dea4d27fbb4e.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/527263c53e94f008e838f9c0a9211d80fa7c3888f8f528c0cb94075fad7035ba.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/771d66ca2580f9546d28ca95c097f7f3f40f96bc6e23684a9b280ca0db004a8a.json",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 13,
+        "passed": 13
+      }
+    ]
+  }
+}

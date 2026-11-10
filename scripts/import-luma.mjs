@@ -27,10 +27,18 @@
  * date for it is the 29th, so a filename comparison would import it a second
  * time and the site would list the panel twice.
  *
- * IT FAILS SOFT. If Luma cannot be reached the script says so and exits 0
- * having written nothing, leaving the committed events in place. A calendar
- * that is briefly unreachable should not empty the events page or break a
- * deploy — the same reasoning that kept the blog off a build-time Medium fetch.
+ * IT FAILS SOFT WHEN LUMA IS UNREACHABLE, AND LOUD WHEN LUMA REFUSES. Either
+ * way it writes nothing and leaves the committed events in place — a calendar
+ * that is briefly down should not empty the events page.
+ *   - Unreachable (the request threw: DNS, socket, timeout) exits 0. That is a
+ *     blip on the runner's side and tomorrow's run catches up.
+ *   - Refused (Luma answered with an HTTP error, e.g. 429 or 503) exits 1.
+ *     Luma deciding not to serve us does not fix itself: from 2026-10-23 a 429
+ *     on every request was treated as "offline", the run stayed green, and no
+ *     new event reached the site for two weeks until an organizer checked by
+ *     hand. The deploy workflow still publishes the site when this happens and
+ *     then marks the run failed, so the refusal is seen without holding back
+ *     anything else.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -83,20 +91,29 @@ const REQUEST_HEADERS = {
   'User-Agent': 'harvardintech-site-import/1.0 (+https://github.com/codeyam-ai/harvardintech)',
 };
 
-/** One `get-items` request. Returns null — never throws — when Luma is unreachable. */
+/**
+ * One `get-items` request. Never throws. Returns `{ payload }` on success,
+ * `{ refused: status }` when Luma answered with an HTTP error, or
+ * `{ unreachable: message }` when the request itself failed.
+ */
 async function fetchFeed(period, fetchImpl) {
+  let response;
   try {
-    const response = await fetchImpl(lumaFeedUrl({ period }), { headers: REQUEST_HEADERS });
-    if (!response.ok) {
-      // A GitHub Actions annotation, so a feed that keeps refusing shows on the
-      // run summary instead of hiding in a green build's log.
-      console.error(`::warning::luma ${period}: HTTP ${response.status}`);
-      return null;
-    }
-    return await response.json();
+    response = await fetchImpl(lumaFeedUrl({ period }), { headers: REQUEST_HEADERS });
   } catch (error) {
     console.error(`luma ${period}: ${error.message}`);
-    return null;
+    return { unreachable: error.message };
+  }
+  if (!response.ok) {
+    // A GitHub Actions annotation, so the refusal shows on the run summary.
+    console.error(`::warning::luma ${period}: HTTP ${response.status}`);
+    return { refused: response.status };
+  }
+  try {
+    return { payload: await response.json() };
+  } catch (error) {
+    console.error(`luma ${period}: unreadable response: ${error.message}`);
+    return { unreachable: error.message };
   }
 }
 
@@ -111,6 +128,7 @@ async function fetchFeed(period, fetchImpl) {
  *   outDir?: string,
  *   fetchImpl?: (url: string) => Promise<{ ok: boolean, status?: number, json: () => Promise<any> }>,
  * }} [options]
+ * @returns {Promise<ImportResult>}
  */
 export async function main({
   argv = process.argv.slice(2),
@@ -120,16 +138,68 @@ export async function main({
   const args = parseArgs(argv);
   const periods = args.past ? ['upcoming', 'past'] : ['upcoming'];
 
+  const fetched = await fetchPeriods(periods, fetchImpl);
+  if (!fetched.payloads) return offlineResult(fetched.refused);
+
+  const { entries, dropped } = collectEntries(fetched.payloads);
+  const { written, skipped } = writeEntries(entries, readExisting(outDir), args, outDir);
+  printSummary({ written, skipped, dropped, dryRun: args.dryRun });
+  return { ok: true, offline: false, written, skipped, dropped };
+}
+
+/**
+ * Every period's feed, fetched before anything is written so a refusal on the
+ * second request cannot leave the first one's events half-imported. Returns
+ * `{ payloads }`, or `{ refused: status }` / `{ unreachable: true }` for the
+ * first period that failed.
+ */
+async function fetchPeriods(periods, fetchImpl) {
   const payloads = [];
   for (const period of periods) {
-    const payload = await fetchFeed(period, fetchImpl);
-    if (payload === null) {
-      console.error('luma unreachable — leaving the committed events alone');
-      return { ok: true, offline: true, written: [], skipped: [], dropped: 0 };
+    const result = await fetchFeed(period, fetchImpl);
+    if (result.refused !== undefined) {
+      console.error(
+        `luma refused the ${period} feed (HTTP ${result.refused}) — leaving the committed events alone and failing so it is noticed`,
+      );
+      return { refused: result.refused };
     }
-    payloads.push(payload);
+    if (result.unreachable !== undefined) {
+      console.error('luma unreachable — leaving the committed events alone');
+      return { unreachable: true };
+    }
+    payloads.push(result.payload);
   }
+  return { payloads };
+}
 
+/**
+ * @typedef {{
+ *   ok: boolean,
+ *   offline: boolean,
+ *   refused?: number,
+ *   written: string[],
+ *   skipped: string[],
+ *   dropped: number,
+ * }} ImportResult
+ */
+
+/**
+ * The result of a run that wrote nothing because a feed was missing. A refusal
+ * is `ok: false` so the command exits 1; an unreachable feed stays `ok: true`.
+ * @param {number | undefined} refused
+ * @returns {ImportResult}
+ */
+function offlineResult(refused) {
+  const base = { offline: true, written: [], skipped: [], dropped: 0 };
+  return refused === undefined ? { ok: true, ...base } : { ok: false, refused, ...base };
+}
+
+/**
+ * The importable entries across every payload, deduped on the Luma slug (the
+ * two periods can overlap around "now"; the first one wins), plus how many raw
+ * feed items the mapping dropped.
+ */
+function collectEntries(payloads) {
   const seenLumaSlug = new Set();
   const entries = [];
   let dropped = 0;
@@ -138,17 +208,22 @@ export async function main({
     const mapped = lumaEntriesFromFeed(payload);
     dropped += raw - mapped.length;
     for (const entry of mapped) {
-      // The two periods can overlap around "now"; the first one wins.
       if (entry.lumaSlug && seenLumaSlug.has(entry.lumaSlug)) continue;
       if (entry.lumaSlug) seenLumaSlug.add(entry.lumaSlug);
       entries.push(entry);
     }
   }
+  return { entries, dropped };
+}
 
-  const existing = readExisting(outDir);
+/**
+ * Write each entry that is not already in the collection (matched on Luma slug,
+ * then filename). An existing entry is left alone unless `--force`; nothing
+ * touches disk under `--dry-run`.
+ */
+function writeEntries(entries, existing, args, outDir) {
   const written = [];
   const skipped = [];
-
   for (const entry of entries) {
     const filename = `${entry.slug}.md`;
     const already =
@@ -168,15 +243,17 @@ export async function main({
     }
     written.push(path.basename(file));
   }
+  return { written, skipped };
+}
 
-  const verb = args.dryRun ? 'would write' : 'wrote';
+function printSummary({ written, skipped, dropped, dryRun }) {
+  const verb = dryRun ? 'would write' : 'wrote';
   console.log(`${verb} ${written.length}, left ${skipped.length} alone, feed dropped ${dropped}`);
   for (const name of written) console.log(`  + ${name}`);
   if (skipped.length > 0) {
     console.log('\nAlready in the collection and untouched:');
     for (const name of skipped) console.log(`  = ${name}`);
   }
-  return { ok: true, offline: false, written, skipped, dropped };
 }
 
 // Run only when invoked as a command, so the module can be imported and
