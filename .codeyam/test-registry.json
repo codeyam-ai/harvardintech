@@ -307,6 +307,33 @@
       "runner": "tests"
     },
     {
+      "description": "Owner, 2026-11-09: both join prompts say the whole process takes under 3 minutes.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "WhatsApp join notes › promises the whole join takes under 3 minutes",
+      "line": 150,
+      "registeredAt": "2026-11-09T22:50:45Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The invite link often fails in the WhatsApp Mac app; the fix offered is the phone.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "WhatsApp join notes › tells Mac users to open the invite link on their phone",
+      "line": 156,
+      "registeredAt": "2026-11-09T22:50:45Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each note is one finished sentence, so the two read cleanly side by side.",
+      "file": "src/lib/contact.test.ts",
+      "format": "vitest",
+      "key": "WhatsApp join notes › writes each note as one finished sentence",
+      "line": 163,
+      "registeredAt": "2026-11-09T22:50:45Z",
+      "runner": "tests"
+    },
+    {
       "description": "An editor typing the slug into a CMS box does not normalize it first.",
       "file": "src/lib/sitePages.test.ts",
       "format": "vitest",
@@ -2363,7 +2390,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "connectLinks › adds an E-mail entry only when an address is present",
-      "line": 41,
+      "line": 43,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -2372,7 +2399,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "connectLinks › does not duplicate an e-mail link an editor already added as a social",
-      "line": 56,
+      "line": 58,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -2381,7 +2408,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "connectLinks › keeps every social in settings order, LinkedIn included",
-      "line": 36,
+      "line": 38,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -2390,7 +2417,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "connectLinks › never emits a mailto for a blank address",
-      "line": 49,
+      "line": 51,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -2399,7 +2426,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "contact destinations › joins WhatsApp through the form and links the criteria doc",
-      "line": 138,
+      "line": 140,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -2408,7 +2435,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "contact destinations › points volunteer calls to action at the volunteer page",
-      "line": 133,
+      "line": 135,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -3326,7 +3353,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "displayConnectLinks › changes only the label, never the destination",
-      "line": 88,
+      "line": 90,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -3335,7 +3362,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "displayConnectLinks › leaves the synthesized e-mail entry untouched",
-      "line": 74,
+      "line": 76,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -3344,7 +3371,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "displayConnectLinks › offers the socials alone when there is no address",
-      "line": 81,
+      "line": 83,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -3353,7 +3380,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "displayConnectLinks › shows Twitter under its current name and leaves the others alone",
-      "line": 65,
+      "line": 67,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -3767,7 +3794,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › lists exactly the five surfaces in the email rule",
-      "line": 99,
+      "line": 101,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -3776,7 +3803,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "emailFor › returns nothing for every surface when the setting is blank",
-      "line": 123,
+      "line": 125,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -11382,7 +11409,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "resolveContactEmail › returns the trimmed address",
-      "line": 28,
+      "line": 30,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -14100,7 +14127,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "sponsorCta › emails the shared inbox when there is no form",
-      "line": 160,
+      "line": 185,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -14136,7 +14163,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "sponsorCta › ignores a blank form URL",
-      "line": 155,
+      "line": 180,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -14145,7 +14172,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "sponsorCta › offers no button when an inquiry form is configured",
-      "line": 150,
+      "line": 175,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },
@@ -14154,7 +14181,7 @@
       "file": "src/lib/contact.test.ts",
       "format": "vitest",
       "key": "sponsorCta › offers no button when there is no form, address or LinkedIn",
-      "line": 175,
+      "line": 200,
       "registeredAt": "2026-09-16T00:20:28Z",
       "runner": "tests"
     },

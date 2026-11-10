@@ -1,6 +1,6 @@
 {
   "name": "WhatsappJoinCard - Default",
-  "id": "ba6b6c02-feb4-49ce-9e38-724a2eafb577",
+  "id": "43c77d48-7baa-4661-b375-142bfb4a3504",
   "url": "/isolated-components/WhatsappJoinCard",
   "dimensions": [
     "Desktop"
@@ -11,5 +11,5 @@
   },
   "componentName": "WhatsappJoinCard",
   "scenarioType": "component",
-  "description": "The How to join card on its own, with the live form and admissions-criteria links. It is the site's standard card: white, a hairline border and a crimson left rule. Inside are the sentence, the criteria link under it, and a single larger Apply to join the community button closing the card."
+  "description": "The How to join card on its own, with the live form and admissions-criteria links. It is the site's standard card: white, a hairline border and a crimson left rule. The sentence ends with how long joining takes (under 3 minutes), the criteria link sits under it, and the larger Apply to join the community button closes the card. Under the button, in small grey type, a tip says that if the invite link won't open in WhatsApp on a Mac, it can be opened on a phone instead."
 }

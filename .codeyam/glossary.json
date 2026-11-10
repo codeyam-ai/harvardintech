@@ -758,6 +758,14 @@
     ]
   },
   {
+    "description": "The homepage How to join card in the WhatsApp band: a sentence linking the alumni-verification form that ends with how long joining takes, the admissions-criteria link, the Apply to join the community button, and a small tip under it for people whose WhatsApp Mac app will not open the invite link.",
+    "filePath": "src/components/landing/WhatsappJoinCard.astro",
+    "name": "WhatsappJoinCard",
+    "scenarios": [
+      "whatsappjoincard-default"
+    ]
+  },
+  {
     "description": "Resolves a share-image path to an absolute URL for og:image and twitter:image, which crawlers refuse to resolve relatively. Unlike canonicalFor it KEEPS the deploy's base path, because a share image must name where the file is fetchable rather than where the page is advertised.",
     "filePath": "src/lib/seo.ts",
     "name": "absoluteImageUrl",

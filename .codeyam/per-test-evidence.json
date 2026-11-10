@@ -305,6 +305,33 @@
       "pass|full|2026-10-22T13:06:10.254Z"
     ]
   },
+  "WhatsApp join notes › promises the whole join takes under 3 minutes": {
+    "file": "src/lib/contact.test.ts",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-09T22:51:06.325Z"
+    ]
+  },
+  "WhatsApp join notes › tells Mac users to open the invite link on their phone": {
+    "file": "src/lib/contact.test.ts",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-09T22:51:06.325Z"
+    ]
+  },
+  "WhatsApp join notes › writes each note as one finished sentence": {
+    "file": "src/lib/contact.test.ts",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-09T22:51:06.325Z"
+    ]
+  },
   "a CMS page cannot claim a redirected address › catches a redirected slug however the editor typed it": {
     "file": "src/lib/sitePages.test.ts",
     "lastRunAt": "2026-11-09T15:45:48.636Z",
@@ -1306,8 +1333,8 @@
   },
   "byPresence › does not mutate its input": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -1315,8 +1342,8 @@
   },
   "byPresence › honours the order pin within a tier": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -1324,8 +1351,8 @@
   },
   "byPresence › puts active chapters before forming ones": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -1693,7 +1720,7 @@
   },
   "chapterNavItems online note › drops the note once the city is promoted to active": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1702,7 +1729,7 @@
   },
   "chapterNavItems online note › keeps the note inside the injected group": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1711,7 +1738,7 @@
   },
   "chapterNavItems online note › leaves an active chapter as a plain link": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1720,7 +1747,7 @@
   },
   "chapterNavItems online note › notes a forming city as an online group": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1729,7 +1756,7 @@
   },
   "chapterNavItems online note › treats a chapter with no status as active": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1738,7 +1765,7 @@
   },
   "chapterNavItems status ordering › orders active chapters before forming ones": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1747,7 +1774,7 @@
   },
   "chapterNavItems status ordering › still lists every forming chapter": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1756,7 +1783,7 @@
   },
   "chapterNavItems › builds the url from the slug, not the city": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1765,7 +1792,7 @@
   },
   "chapterNavItems › includes a chapter that nav.json does not list": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1774,7 +1801,7 @@
   },
   "chapterNavItems › orders by the order field, falling back to city for ties and absent values": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1783,7 +1810,7 @@
   },
   "chapterNavItems › returns no items for no chapters": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -1864,8 +1891,8 @@
   },
   "chapterStatus › defaults to active when no status is set": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -1873,8 +1900,8 @@
   },
   "chapterStatus › falls back to active on an unrecognised value": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -1882,8 +1909,8 @@
   },
   "chapterStatus › isForming is the forming half of the same rule": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -1891,8 +1918,8 @@
   },
   "chapterStatus › reads an explicit status": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -2190,7 +2217,7 @@
   },
   "committed chapters › lists the six chapters alphabetically by city": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2199,7 +2226,7 @@
   },
   "committed chapters › pins no chapter with an order, so the roster sorts alphabetically": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2208,7 +2235,7 @@
   },
   "committed nav.json › derives community links that all resolve to a page": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2217,7 +2244,7 @@
   },
   "committed nav.json › does not hand-list the communities": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2226,7 +2253,7 @@
   },
   "committed nav.json › gives Global community a Newsletter section above the WhatsApp column": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2235,7 +2262,7 @@
   },
   "committed nav.json › groups volunteering and giving under Get involved": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2244,7 +2271,7 @@
   },
   "committed nav.json › has no dropdown holding a single item": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2253,7 +2280,7 @@
   },
   "committed nav.json › lists the simplified top-level menu in order": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2262,7 +2289,7 @@
   },
   "committed nav.json › makes Events a plain link to the events page": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2271,7 +2298,7 @@
   },
   "committed nav.json › nests a third level only as the Global community sections": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2280,7 +2307,7 @@
   },
   "committed nav.json › no longer hand-lists the chapters": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2289,7 +2316,7 @@
   },
   "committed nav.json › points Newsletter at the site mailing-list sign-up": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2300,7 +2327,7 @@
   },
   "committed nav.json › points every internal link at a page that exists": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2327,7 +2354,7 @@
   },
   "communityNavItems › builds the url from the slug, not the name": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2336,7 +2363,7 @@
   },
   "communityNavItems › honours an order pin ahead of the unpinned entries": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2345,7 +2372,7 @@
   },
   "communityNavItems › orders alphabetically by name when nothing is pinned": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2354,7 +2381,7 @@
   },
   "communityNavItems › returns no items for no communities": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -2363,8 +2390,8 @@
   },
   "connectLinks › adds an E-mail entry only when an address is present": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -2372,8 +2399,8 @@
   },
   "connectLinks › does not duplicate an e-mail link an editor already added as a social": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -2381,8 +2408,8 @@
   },
   "connectLinks › keeps every social in settings order, LinkedIn included": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -2390,8 +2417,8 @@
   },
   "connectLinks › never emits a mailto for a blank address": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -2399,8 +2426,8 @@
   },
   "contact destinations › joins WhatsApp through the form and links the criteria doc": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -2408,8 +2435,8 @@
   },
   "contact destinations › points volunteer calls to action at the volunteer page": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3326,8 +3353,8 @@
   },
   "displayConnectLinks › changes only the label, never the destination": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3335,8 +3362,8 @@
   },
   "displayConnectLinks › leaves the synthesized e-mail entry untouched": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3344,8 +3371,8 @@
   },
   "displayConnectLinks › offers the socials alone when there is no address": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3353,8 +3380,8 @@
   },
   "displayConnectLinks › shows Twitter under its current name and leaves the others alone": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3614,7 +3641,7 @@
   },
   "draft visibility › omits a drafted chapter from the production menu": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -3623,7 +3650,7 @@
   },
   "draft visibility › shows a drafted chapter while authoring": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -3767,8 +3794,8 @@
   },
   "emailFor › lists exactly the five surfaces in the email rule": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3776,8 +3803,8 @@
   },
   "emailFor › returns nothing for every surface when the setting is blank": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3785,8 +3812,8 @@
   },
   "emailFor › returns nothing for the unlisted surface \"\"": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3794,8 +3821,8 @@
   },
   "emailFor › returns nothing for the unlisted surface \"chapterConnect\"": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3803,8 +3830,8 @@
   },
   "emailFor › returns nothing for the unlisted surface \"getInvolved\"": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3812,8 +3839,8 @@
   },
   "emailFor › returns nothing for the unlisted surface \"supportUs\"": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3821,8 +3848,8 @@
   },
   "emailFor › returns the address for contactUs": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3830,8 +3857,8 @@
   },
   "emailFor › returns the address for footer": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3839,8 +3866,8 @@
   },
   "emailFor › returns the address for llms": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3848,8 +3875,8 @@
   },
   "emailFor › returns the address for sponsorInquiry": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -3857,8 +3884,8 @@
   },
   "emailFor › returns the address for structuredData": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -4361,8 +4388,8 @@
   },
   "eventsLede › always mentions the global community": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -4370,8 +4397,8 @@
   },
   "eventsLede › drops the chapter clause when there are no chapters": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -4379,8 +4406,8 @@
   },
   "eventsLede › names the chapters it is given": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -4388,8 +4415,8 @@
   },
   "eventsLedeFor › drops the chapter clause when every city is forming": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -4397,8 +4424,8 @@
   },
   "eventsLedeFor › handles an empty roster": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -4406,8 +4433,8 @@
   },
   "eventsLedeFor › lists the cities in menu order": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -4415,8 +4442,8 @@
   },
   "eventsLedeFor › names no forming city from the committed chapters": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -4424,8 +4451,8 @@
   },
   "eventsLedeFor › names only the active chapters": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -5198,8 +5225,8 @@
   },
   "formatCityList › ignores blank and whitespace-only entries": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -5207,8 +5234,8 @@
   },
   "formatCityList › joins three or more cities with an Oxford comma": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -5216,8 +5243,8 @@
   },
   "formatCityList › joins two cities with and": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -5225,8 +5252,8 @@
   },
   "formatCityList › returns a single city unchanged": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -5234,8 +5261,8 @@
   },
   "formatCityList › returns an empty string for no cities": {
     "file": "src/lib/eventsIntro.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -6044,7 +6071,7 @@
   },
   "hasColumns › ignores a child whose children list is empty": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -6053,7 +6080,7 @@
   },
   "hasColumns › is false for a flat dropdown": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -6062,7 +6089,7 @@
   },
   "hasColumns › is false for an item with no children": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -6071,7 +6098,7 @@
   },
   "hasColumns › is true when any child carries children": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -7115,7 +7142,7 @@
   },
   "internalNavUrls › collects site-internal urls at every level and skips external ones": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -7691,8 +7718,8 @@
   },
   "isWhatsAppGroupLink › is false for a link that only mentions whatsapp elsewhere in the url": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7700,8 +7727,8 @@
   },
   "isWhatsAppGroupLink › is false for blank, relative and unparseable values": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7709,8 +7736,8 @@
   },
   "isWhatsAppGroupLink › is false for the Google Form": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7718,8 +7745,8 @@
   },
   "isWhatsAppGroupLink › is true for a WhatsApp group invite": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7727,8 +7754,8 @@
   },
   "isWhatsAppGroupLink › is true regardless of a www. prefix or capitalisation": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7736,8 +7763,8 @@
   },
   "joinCtas › NEVER returns a group invite, even when content supplies one": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7745,8 +7772,8 @@
   },
   "joinCtas › falls back to the shared form, the volunteer page and the newsletter": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7754,8 +7781,8 @@
   },
   "joinCtas › ignores a leftover per-entry volunteer url": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7763,8 +7790,8 @@
   },
   "joinCtas › treats a blank or whitespace-only override as absent": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7772,8 +7799,8 @@
   },
   "joinCtas › trims a padded override rather than emitting a broken url": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -7781,8 +7808,8 @@
   },
   "joinCtas › uses an entry-specific form when given": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -8042,8 +8069,8 @@
   },
   "llms.txt GET › includes the org name and description from settings": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -8051,8 +8078,8 @@
   },
   "llms.txt GET › lists key pages as absolute URLs": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -8060,8 +8087,8 @@
   },
   "llms.txt GET › names CANONICAL_ORIGIN, not the preview host, when it is set": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -8069,8 +8096,8 @@
   },
   "llms.txt GET › omits the Email line when the contact email is blank": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -8078,8 +8105,8 @@
   },
   "llms.txt GET › surfaces contact email and socials": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -9266,7 +9293,7 @@
   },
   "nestUnderColumn › appends flat when no column has the label": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -9275,7 +9302,7 @@
   },
   "nestUnderColumn › appends inside the named column after its existing links": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -9284,7 +9311,7 @@
   },
   "nestUnderColumn › does not mutate the column it nests into": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -9293,7 +9320,7 @@
   },
   "nestUnderColumn › does not nest under a same-labelled link that has no children": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -9302,7 +9329,7 @@
   },
   "nestUnderColumn › nests under the first matching column only": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -9311,7 +9338,7 @@
   },
   "nestUnderColumn › returns an empty list for empty inputs": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -10499,8 +10526,8 @@
   },
   "presenceSummary › counts 4 active and 2 forming for the real roster": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -10508,8 +10535,8 @@
   },
   "presenceSummary › counts a status-less chapter as active": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -10517,8 +10544,8 @@
   },
   "presenceSummary › handles an empty roster": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -10526,8 +10553,8 @@
   },
   "presenceSummary › returns the entries themselves, not just counts": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11390,8 +11417,8 @@
   },
   "resolveContactEmail › returns the trimmed address": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11399,8 +11426,8 @@
   },
   "resolveContactEmail › treats \"   \" as no address": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11408,8 +11435,8 @@
   },
   "resolveContactEmail › treats \"\" as no address": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11417,8 +11444,8 @@
   },
   "resolveContactEmail › treats null as no address": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11426,8 +11453,8 @@
   },
   "resolveContactEmail › treats undefined as no address": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11858,8 +11885,8 @@
   },
   "robots.txt GET › allows all crawlers": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11867,8 +11894,8 @@
   },
   "robots.txt GET › falls back to the request origin when site is unset": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11876,8 +11903,8 @@
   },
   "robots.txt GET › points the Sitemap at CANONICAL_ORIGIN when it is set": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11885,8 +11912,8 @@
   },
   "robots.txt GET › points the Sitemap at the configured site origin": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -11894,8 +11921,8 @@
   },
   "robots.txt GET › responds as text/plain": {
     "file": "src/lib/seoEndpoints.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13363,8 +13390,8 @@
   },
   "site singletons › falls back for a link an editor has blanked": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13372,8 +13399,8 @@
   },
   "site singletons › falls back to the shipped destinations when settings declare no links": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13381,8 +13408,8 @@
   },
   "site singletons › loads settings and nav from the data root as parsed JSON": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13390,8 +13417,8 @@
   },
   "site singletons › loads settings when the contact email is blank": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13399,8 +13426,8 @@
   },
   "site singletons › loads settings when the contact email is missing": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13408,8 +13435,8 @@
   },
   "site singletons › loads the sponsor page copy, its levels, and the disclaimer": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13417,8 +13444,8 @@
   },
   "site singletons › loads the volunteer and donate page copy from the data root": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13426,8 +13453,8 @@
   },
   "site singletons › prefers the links an editor has set": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -13435,8 +13462,8 @@
   },
   "site singletons › reflects a second data root on re-import": {
     "file": "src/lib/site.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -14110,8 +14137,8 @@
   },
   "sponsorCta › emails the shared inbox when there is no form": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -14119,8 +14146,8 @@
   },
   "sponsorCta › falls back to LinkedIn when the address is \"   \"": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -14128,8 +14155,8 @@
   },
   "sponsorCta › falls back to LinkedIn when the address is \"\"": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -14137,8 +14164,8 @@
   },
   "sponsorCta › falls back to LinkedIn when the address is undefined": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -14146,8 +14173,8 @@
   },
   "sponsorCta › ignores a blank form URL": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -14155,8 +14182,8 @@
   },
   "sponsorCta › offers no button when an inquiry form is configured": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -14164,8 +14191,8 @@
   },
   "sponsorCta › offers no button when there is no form, address or LinkedIn": {
     "file": "src/lib/contact.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -16081,7 +16108,7 @@
   },
   "unresolvedNavUrls › ignores a trailing slash difference": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16090,7 +16117,7 @@
   },
   "unresolvedNavUrls › reports a url with no page behind it": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16099,7 +16126,7 @@
   },
   "unresolvedNavUrls › resolves a bare fragment against the home page": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16108,7 +16135,7 @@
   },
   "unresolvedNavUrls › resolves a fragment against its page": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16387,8 +16414,8 @@
   },
   "volunteerFormHref › falls back to the volunteer page when no form is set": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -16396,8 +16423,8 @@
   },
   "volunteerFormHref › returns the configured interest form": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -16405,8 +16432,8 @@
   },
   "volunteerFormHref › treats a blank or whitespace-only form url as absent": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -16414,8 +16441,8 @@
   },
   "volunteerFormHref › trims a padded form url": {
     "file": "src/lib/localPresence.test.ts",
-    "lastRunAt": "2026-11-09T15:45:48.636Z",
-    "lastRunKind": "full",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
+    "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
@@ -16819,7 +16846,7 @@
   },
   "withChapterGroup › appends the group when there is no Events item": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16828,7 +16855,7 @@
   },
   "withChapterGroup › closes the dropdown with the lead call to action": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16837,7 +16864,7 @@
   },
   "withChapterGroup › does not mutate the caller list": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16846,7 +16873,7 @@
   },
   "withChapterGroup › does not resurrect the group for the global entry alone": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16855,7 +16882,7 @@
   },
   "withChapterGroup › ignores a leftover Programs item when placing the group": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16864,7 +16891,7 @@
   },
   "withChapterGroup › inserts the group directly after Events": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16873,7 +16900,7 @@
   },
   "withChapterGroup › lists only the cities before the lead call to action": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16882,7 +16909,7 @@
   },
   "withChapterGroup › omits the group entirely when there are no chapters": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16891,7 +16918,7 @@
   },
   "withCommunityItems › appends derived items after the hand-authored ones when there is no column": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16900,7 +16927,7 @@
   },
   "withCommunityItems › creates the group when nav.json no longer has one": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16909,7 +16936,7 @@
   },
   "withCommunityItems › does not mutate the caller list or its groups": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16918,7 +16945,7 @@
   },
   "withCommunityItems › leaves the surrounding menu order untouched": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16927,7 +16954,7 @@
   },
   "withCommunityItems › nests derived items under the WhatsApp community column": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -16936,7 +16963,7 @@
   },
   "withCommunityItems › returns the menu unchanged when there are no communities": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -17017,7 +17044,7 @@
   },
   "withoutHiddenSections › does not mutate the input tree": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -17026,7 +17053,7 @@
   },
   "withoutHiddenSections › drops a dropdown left empty by the removal": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -17035,7 +17062,7 @@
   },
   "withoutHiddenSections › drops a link to a hidden band": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -17044,7 +17071,7 @@
   },
   "withoutHiddenSections › keeps an item that has no children to begin with": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -17053,7 +17080,7 @@
   },
   "withoutHiddenSections › leaves links to real pages alone": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -17062,7 +17089,7 @@
   },
   "withoutHiddenSections › returns the menu unchanged when nothing is hidden": {
     "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-09T19:35:35.993Z",
+    "lastRunAt": "2026-11-09T22:51:06.325Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [

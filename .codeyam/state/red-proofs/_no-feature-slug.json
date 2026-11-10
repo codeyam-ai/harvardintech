@@ -1,0 +1,43 @@
+{
+  "provenAt": "2026-11-09T22:50:40Z",
+  "paths": [],
+  "runScope": [
+    "src/lib/contact.ts",
+    "src/lib/contact.test.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/contact.ts",
+      "find": "'The whole process takes under 3 minutes.'",
+      "replace": "'It takes under two minutes.'"
+    },
+    {
+      "file": "src/lib/contact.ts",
+      "find": "on your phone instead.",
+      "replace": "elsewhere."
+    }
+  ],
+  "tests": {
+    "promises the whole join takes under 3 minutes": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "tells Mac users to open the invite link on their phone": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "promises the whole join takes under 3 minutes",
+      "tells Mac users to open the invite link on their phone"
+    ]
+  }
+}

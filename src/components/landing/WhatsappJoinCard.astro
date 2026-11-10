@@ -12,6 +12,7 @@
 // Both links leave the site (the verification form and the criteria doc), so
 // both open in a new tab. The WhatsApp group itself is never linked.
 import { externalLinkAttrs } from '../../lib/externalLink';
+import { WHATSAPP_JOIN_TIME, WHATSAPP_MAC_TIP } from '../../lib/contact';
 
 interface Props {
   /** The alumni-verification form, which is also how you apply. */
@@ -28,11 +29,12 @@ const criteriaAttrs = externalLinkAttrs(criteriaUrl, Astro.url.origin);
   <span class="kick">How to join</span>
   <p>
     Fill out <a href={verifyUrl} {...verifyAttrs}>a short form</a> to confirm
-    you're a Harvard alum. It takes under two minutes.
+    you're a Harvard alum. {WHATSAPP_JOIN_TIME}
   </p>
   <a class="link-more wa-criteria" href={criteriaUrl} {...criteriaAttrs}>See the admissions criteria →</a>
   <div class="wa-join-act">
     <a class="btn btn-solid wa-apply" href={verifyUrl} {...verifyAttrs}>Apply to join the community</a>
+    <p class="wa-tip">{WHATSAPP_MAC_TIP}</p>
   </div>
 </div>
 
@@ -56,6 +58,11 @@ const criteriaAttrs = externalLinkAttrs(criteriaUrl, Astro.url.origin);
   }
   .wa-join-act {
     margin-top: 20px;
+  }
+  .wa-join .wa-tip {
+    font-size: 14px;
+    color: var(--ink-2);
+    margin: 12px 0 0;
   }
   .wa-apply {
     font-size: 15px;

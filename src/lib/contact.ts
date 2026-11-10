@@ -36,6 +36,19 @@ export const WHATSAPP_FORM_URL = 'https://forms.gle/GqgaCDDWhWAgpJC68';
  */
 export const NEWSLETTER_URL = 'https://mailchi.mp/0222623e1169/fbrj32e9wb';
 
+/**
+ * How long joining the WhatsApp community takes, start to finish — the form
+ * plus the admin adding you. Feedback 2026-11-09: people want a time estimate.
+ */
+export const WHATSAPP_JOIN_TIME = 'The whole process takes under 3 minutes.';
+
+/**
+ * WhatsApp's Mac app often fails to open a group invite link (a known WhatsApp
+ * issue, not ours). Saying so up front keeps it from throwing applicants off.
+ */
+export const WHATSAPP_MAC_TIP =
+  "If the invite link won't open in WhatsApp on your Mac (a known WhatsApp issue), open it on your phone instead.";
+
 /** The WhatsApp admissions criteria doc, from the original site's copy. */
 export const WHATSAPP_CRITERIA_URL =
   'https://docs.google.com/document/d/1IvWhYTdFqOzMYg6ySXx7pmMOfwhDwDHfXHdDkZRbkyE/edit?tab=t.0#heading=h.2l2z5vqeznos';

@@ -9,6 +9,8 @@ import {
   VOLUNTEER_PATH,
   WHATSAPP_FORM_URL,
   WHATSAPP_CRITERIA_URL,
+  WHATSAPP_JOIN_TIME,
+  WHATSAPP_MAC_TIP,
 } from './contact';
 
 const SOCIALS = [
@@ -140,6 +142,29 @@ describe('contact destinations', () => {
     const criteria = new URL(WHATSAPP_CRITERIA_URL);
     expect(criteria.hostname).toBe('docs.google.com');
     expect(criteria.pathname.startsWith('/document/')).toBe(true);
+  });
+});
+
+describe('WhatsApp join notes', () => {
+  // Owner, 2026-11-09: both join prompts say the whole process takes under 3 minutes.
+  it('promises the whole join takes under 3 minutes', () => {
+    expect(WHATSAPP_JOIN_TIME).toMatch(/under 3 minutes/);
+    expect(WHATSAPP_JOIN_TIME).not.toMatch(/two minutes/);
+  });
+
+  // The invite link often fails in the WhatsApp Mac app; the fix offered is the phone.
+  it('tells Mac users to open the invite link on their phone', () => {
+    expect(WHATSAPP_MAC_TIP).toMatch(/Mac/);
+    expect(WHATSAPP_MAC_TIP).toMatch(/invite link/);
+    expect(WHATSAPP_MAC_TIP).toMatch(/on your phone/);
+  });
+
+  // Each note is one finished sentence, so the two read cleanly side by side.
+  it('writes each note as one finished sentence', () => {
+    for (const note of [WHATSAPP_JOIN_TIME, WHATSAPP_MAC_TIP]) {
+      expect(note.trim()).toBe(note);
+      expect(note.endsWith('.')).toBe(true);
+    }
   });
 });
 

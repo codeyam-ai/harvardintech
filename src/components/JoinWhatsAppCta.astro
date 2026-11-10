@@ -17,6 +17,7 @@ import { siteLinks } from '../lib/site';
 import { joinCtas } from '../lib/localPresence';
 import { externalLinkAttrs } from '../lib/externalLink';
 import { withBase } from '../lib/url';
+import { WHATSAPP_JOIN_TIME, WHATSAPP_MAC_TIP } from '../lib/contact';
 
 interface Props {
   /** The chapter city or community name, used in the heading and button. */
@@ -57,6 +58,7 @@ const linkAttrs = externalLinkAttrs(href, Astro.url.origin);
         Apply to join
       </a>
     </p>
+    <p class="join-wa-note">{WHATSAPP_JOIN_TIME} {WHATSAPP_MAC_TIP}</p>
   </div>
 </section>
 
@@ -68,5 +70,12 @@ const linkAttrs = externalLinkAttrs(href, Astro.url.origin);
     display: flex;
     justify-content: center;
     margin: 0;
+  }
+  .join-wa-note {
+    max-width: 52ch;
+    margin: 14px auto 0;
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-2);
   }
 </style>

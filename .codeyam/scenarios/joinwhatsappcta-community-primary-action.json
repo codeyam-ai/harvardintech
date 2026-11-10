@@ -1,15 +1,15 @@
 {
   "name": "JoinWhatsAppCta - Community Primary Action",
-  "id": "ef1c0188-b66d-4092-ab0f-c53ca1224c77",
+  "id": "cdb2942e-5629-4141-af2b-f520f60fec6b",
   "url": "/isolated-components/JoinWhatsAppCta",
   "dimensions": [
     "Desktop"
   ],
   "mocks": {},
   "clock": {
-    "now": "2026-10-29T19:51:44Z"
+    "now": "2026-11-09T15:47:38Z"
   },
   "componentName": "JoinWhatsAppCta",
   "scenarioType": "component",
-  "description": "A community page's primary call to action. The load-bearing detail is one the screenshot cannot show: the button points at the Google Form, never at the WhatsApp group. Joining runs through the form so alumni status is verified before anyone is added, and a group invite published in HTML would skip that and could not be revoked once scraped. This fixture passes no override, so it renders the shared form every community falls back to."
+  "description": "A community page's primary call to action. Under the Apply to join button, a small centred grey note says the whole process takes under 3 minutes, and that if the invite link won't open in WhatsApp on a Mac it can be opened on a phone. The load-bearing detail is one the screenshot cannot show: the button points at the Google Form, never at the WhatsApp group. Joining runs through the form so alumni status is verified before anyone is added, and a group invite published in HTML would skip that and could not be revoked once scraped. This fixture passes no override, so it renders the shared form every community falls back to."
 }

@@ -830,7 +830,8 @@
         "src/lib/site.ts::siteLinks",
         "src/lib/localPresence.ts::joinCtas",
         "src/lib/externalLink.ts::externalLinkAttrs",
-        "src/lib/url.ts::withBase"
+        "src/lib/url.ts::withBase",
+        "src/lib/contact.ts::__file_root__"
       ],
       "name": "__file_root__"
     },
@@ -1936,7 +1937,8 @@
         "src/pages/isolated-components/WhatsappJoinCard/[...state].astro::__file_root__"
       ],
       "imports": [
-        "src/lib/externalLink.ts::externalLinkAttrs"
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/contact.ts::__file_root__"
       ],
       "name": "__file_root__"
     },
@@ -8183,7 +8185,8 @@
         "src/lib/site.ts",
         "src/lib/localPresence.ts",
         "src/lib/externalLink.ts",
-        "src/lib/url.ts"
+        "src/lib/url.ts",
+        "src/lib/contact.ts"
       ]
     },
     "src/components/LockedPreviewBody.astro": {
@@ -9110,7 +9113,8 @@
         "src/pages/isolated-components/WhatsappJoinCard/[...state].astro"
       ],
       "imports": [
-        "src/lib/externalLink.ts"
+        "src/lib/externalLink.ts",
+        "src/lib/contact.ts"
       ]
     },
     "src/components/landing/landing-images.test.ts": {
@@ -9771,6 +9775,8 @@
     },
     "src/lib/contact.ts": {
       "importedBy": [
+        "src/components/JoinWhatsAppCta.astro",
+        "src/components/landing/WhatsappJoinCard.astro",
         "src/components/landing/GetInvolved.astro",
         "src/components/landing/WhatsappCommunity.astro",
         "src/components/landing/SupportUs.astro",
@@ -12757,5 +12763,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-09T22:15:46Z"
+  "lastUpdated": "2026-11-10T16:52:52Z"
 }
