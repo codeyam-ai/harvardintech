@@ -560,7 +560,8 @@
       "primarynav-derived-chapters",
       "primarynav-sixth-chapter-published",
       "primarynav-no-chapters-yet"
-    ]
+    ],
+    "testFile": "src/components/nav/PrimaryNav.test.ts"
   },
   {
     "description": "Drop-in replacement for a raw img tag on images served from public/: adds srcset, sizes, intrinsic width/height and decoding=async when the build step produced width variants, and degrades to exactly the previous plain img when it did not.",

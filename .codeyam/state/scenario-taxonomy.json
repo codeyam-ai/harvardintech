@@ -658,6 +658,34 @@
         "status": "covered"
       }
     },
+    "PrimaryNav": {
+      "empty": {
+        "status": "covered"
+      },
+      "single": {
+        "status": "covered"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "covered"
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "The menu is rendered at build time into static HTML; there is no pending state"
+      },
+      "edge": {
+        "status": "covered"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "No request is made at render time, so there is no failure state to show"
+      },
+      "key-interaction": {
+        "status": "covered"
+      }
+    },
     "VolunteerProjectPage": {
       "empty": {
         "status": "covered"

@@ -401,6 +401,15 @@ const { items, subscribeUrl } = Astro.props as Props;
       opacity: 1;
       visibility: visible;
     }
+    /* The desktop hover/focus rule above centres the panel under its button with
+       `translateX(-50%)`, and its selector outranks the plain `.mega` reset. In
+       the drawer the panel is full width, so that shift slid every link half a
+       drawer off the left edge the moment a mouse rested on a section or a tap
+       focused its heading. Same selector, so the drawer's `none` wins here. */
+    .nav-item:hover .mega,
+    .nav-item:focus-within .mega {
+      transform: none;
+    }
     /* No card chrome in the drawer: this is one list, not five stacked panels. */
     .mega-in {
       display: block;

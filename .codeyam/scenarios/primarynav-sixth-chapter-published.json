@@ -11,6 +11,9 @@
   },
   "componentName": "PrimaryNav",
   "scenarioType": "component",
+  "demonstratesState": {
+    "children": "many"
+  },
   "description": "The state that proves the bug is gone. Miami exists in the chapters collection and nowhere in nav.json, and it still reaches the menu — publishing a chapter is now the only step. Before this change an editor got a working /chapters/miami page and a new homepage card but no menu entry, and no warning that one was missing.",
   "interactions": [
     {

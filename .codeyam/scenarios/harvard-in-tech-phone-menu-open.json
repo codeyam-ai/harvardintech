@@ -1,6 +1,6 @@
 {
   "name": "Harvard in Tech - Phone Menu Open",
-  "id": "08b16f42-cdaf-44da-bef1-d347fe7e8858",
+  "id": "d24ef620-ad34-49d6-aee5-74a30a44955e",
   "url": "/",
   "dimensions": [
     "Mobile",
@@ -51,11 +51,15 @@
   },
   "scenarioType": "application",
   "pageFilePath": "src/pages/index.astro",
-  "description": "The header menu open on a phone and on an iPad, driven by a real click on the Menu button. It is the counterpart to the landing-page frames beside it, which show the same header at rest, and the pair is the whole point: at rest the visitor sees the hero, and the navigation is there when they ask for it. Before this, at every width of 1040px and under, all five dropdown panels rendered OPEN and stacked down the page - so on a 390px phone no page showed any of its own content on the first screen at all, and at 768 a page's own heading started roughly 1,800px down. Tablet is captured alongside Mobile deliberately: the defect was never phone-only, and iPad portrait was just as broken. The click is part of the scenario because the open menu is interaction-only state - a resting capture of this route can never show it, and the click replays on every recapture so the frame cannot quietly go stale.",
+  "description": "The header menu open on a phone and on an iPad, driven by a real click on the Menu button, and then a tap on the Global community section heading. It is the counterpart to the landing-page frames beside it, which show the same header at rest, and the pair is the whole point: at rest the visitor sees the hero, and the navigation is there when they ask for it. Before this, at every width of 1040px and under, all five dropdown panels rendered OPEN and stacked down the page - so on a 390px phone no page showed any of its own content on the first screen at all, and at 768 a page's own heading started roughly 1,800px down. Tablet is captured alongside Mobile deliberately: the defect was never phone-only, and iPad portrait was just as broken. The heading tap is here because it used to slide that section's Newsletter and WhatsApp links half a drawer off the left edge of the screen (163px on a phone, 464px on an iPad): the tap focused the heading and switched on the desktop rule that centres a floating dropdown under its button. Now the tap changes nothing, so this frame must look exactly like the menu just after it opens, with every section's links lined up on the left. Both clicks replay on every recapture, because the open menu is interaction-only state and a resting capture of this route can never show it.",
   "interactions": [
     {
       "action": "click",
       "selector": ".nav-toggle"
+    },
+    {
+      "action": "click",
+      "selector": ".nav-item:nth-child(3) > .nav-top"
     }
   ]
 }

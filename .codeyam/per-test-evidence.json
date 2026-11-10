@@ -197,6 +197,33 @@
       "pass|changed|2026-10-22T16:09:43.168Z"
     ]
   },
+  "PrimaryNav drawer panels › cancels the desktop centring shift on focus inside the drawer": {
+    "file": "src/components/nav/PrimaryNav.test.ts",
+    "lastRunAt": "2026-11-10T19:21:06.672Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T19:21:06.672Z"
+    ]
+  },
+  "PrimaryNav drawer panels › cancels the desktop centring shift on hover inside the drawer": {
+    "file": "src/components/nav/PrimaryNav.test.ts",
+    "lastRunAt": "2026-11-10T19:21:06.672Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T19:21:06.672Z"
+    ]
+  },
+  "PrimaryNav drawer panels › keeps the desktop dropdown centred under its button": {
+    "file": "src/components/nav/PrimaryNav.test.ts",
+    "lastRunAt": "2026-11-10T19:21:06.672Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T19:21:06.672Z"
+    ]
+  },
   "REDIRECT_TARGETS › covers every path the old sitemap published": {
     "file": "src/lib/redirects.test.ts",
     "lastRunAt": "2026-11-10T17:59:50.833Z",

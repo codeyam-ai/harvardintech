@@ -9190,6 +9190,10 @@
         "src/lib/site.ts"
       ]
     },
+    "src/components/nav/PrimaryNav.test.ts": {
+      "importedBy": [],
+      "imports": []
+    },
     "src/components/nav/UtilityBar.astro": {
       "importedBy": [
         "src/pages/isolated-components/[name].astro",
@@ -12763,5 +12767,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-10T18:00:43Z"
+  "lastUpdated": "2026-11-10T20:16:20Z"
 }

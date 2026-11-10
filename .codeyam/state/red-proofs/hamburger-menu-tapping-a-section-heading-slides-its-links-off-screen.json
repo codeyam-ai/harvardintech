@@ -1,0 +1,40 @@
+{
+  "provenAt": "2026-11-10T19:20:42Z",
+  "slug": "hamburger-menu-tapping-a-section-heading-slides-its-links-off-screen",
+  "paths": [
+    "src/components/nav/PrimaryNav.astro"
+  ],
+  "runScope": [
+    "src/components/nav/PrimaryNav.astro"
+  ],
+  "tests": {
+    "cancels the desktop centring shift on focus inside the drawer": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "cancels the desktop centring shift on hover inside the drawer": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "keeps the desktop dropdown centred under its button": {
+      "withoutFix": "pass",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "cancels the desktop centring shift on hover inside the drawer",
+      "cancels the desktop centring shift on focus inside the drawer"
+    ]
+  }
+}

@@ -199,6 +199,33 @@
       "runner": "tests"
     },
     {
+      "description": "Tapping a section heading focuses it, so the focus rule must be cancelled too.",
+      "file": "src/components/nav/PrimaryNav.test.ts",
+      "format": "vitest",
+      "key": "PrimaryNav drawer panels › cancels the desktop centring shift on focus inside the drawer",
+      "line": 60,
+      "registeredAt": "2026-11-10T19:20:45Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Hovering a section in the drawer must not shift its full-width panel half a drawer to the left.",
+      "file": "src/components/nav/PrimaryNav.test.ts",
+      "format": "vitest",
+      "key": "PrimaryNav drawer panels › cancels the desktop centring shift on hover inside the drawer",
+      "line": 55,
+      "registeredAt": "2026-11-10T19:20:45Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The desktop dropdown still centres its floating panel under the button.",
+      "file": "src/components/nav/PrimaryNav.test.ts",
+      "format": "vitest",
+      "key": "PrimaryNav drawer panels › keeps the desktop dropdown centred under its button",
+      "line": 65,
+      "registeredAt": "2026-11-10T19:20:45Z",
+      "runner": "tests"
+    },
+    {
       "description": "The old sitemap (orig/sitemap_xml.html) is the definition of \"must not break\". Every path it published needs an entry or it 404s at launch.",
       "file": "src/lib/redirects.test.ts",
       "format": "vitest",
