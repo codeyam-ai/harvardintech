@@ -75,6 +75,13 @@ recorded in that panel, of how far this run may go without them:
   read-back-before-retry rule, 8a's investigate-before-classify, and 8a's
   scope-change re-ask.
 
+With that setting on, the schedule also types `scheduled-finalize` **between
+plans**, once the branch owes 25 or more deferred commits (the Large debt
+tier), so the debt is drained before it becomes one enormous pass. That
+checkpoint is always `scheduled-finalize`, never `scheduled-merge`, and
+plans are still queued behind it. Run it exactly like the end-of-run
+finalize, and do not touch the queue.
+
 **Release the branch finalize lock when a scheduled run ends.** Before typing
 this skill, the schedule took a branch-wide lock so that only one computer on
 the branch finalizes it. That is the computer that finished last. Whatever
@@ -88,7 +95,9 @@ codeyam-editor editor plan-schedule finalize-release
 It is a no-op when this computer holds no lock, so run it on every terminal
 outcome without checking first. Skipping it leaves the next finalize on this
 branch refused, and the Run Schedule panel then reports a finalize "running"
-on this computer that has already ended.
+on this computer that has already ended. After a between-plans checkpoint,
+the same command also queues the schedule's next plan, which starts when
+this turn ends. Without it the run stays stopped.
 
 Judgment calls are decided by rule in **every** mode, so an unattended run
 never waits mid-way for an answer: the rules in step 4b, step 6, and step 8a
@@ -1801,6 +1810,22 @@ commits cannot share one finalize, because the second does not exist yet. On
 minutes each, neither of which changed a single verdict. Two things now keep it
 cheap — lean on them rather than fighting the ordering:
 
+- **When every commit past the full-finalize marker is CI infrastructure, do not
+  re-finalize at all — run `codeyam-editor editor finalize-ci-only`.** CI
+  infrastructure means the explicit allowlist in `ci_infra_allowlist.rs`:
+  `.github/workflows/*.yml`, `.config/nextest.toml`, the Windows shard planner
+  and its tests, `scripts/lib/ci-*.sh`, and the `scripts/check-*.sh` lints with
+  their suites. The command runs only what reads those files. That is the
+  static checks whose `filePatterns` match them, the test partitions each
+  allowlist entry names, and, for a file the binary embeds (`cicd.yml`), the
+  includer module's tests plus a `rebuild-self --check` that must read
+  `current`. It then commits per-commit proof beside the marker, so CI's
+  `verify-full-finalize` passes. On PR #148 each such round cost 2,317–3,217 s
+  of full finalize. This path skips the whole-repo audit entirely. It refuses
+  (`Next valid action: session-finalize`) the moment a commit past the marker
+  touches anything else, and `verify-full-finalize` names it as the recovery
+  when the only uncovered paths are CI infrastructure
+  (`reason: ci-infrastructure-unproven`). `--dry-run` prints the plan first.
 - **A commit touching only CI provider config or test-scheduling config does
   not invalidate the audit.** `.github/workflows/**` (and the other CI config
   locations) and `.config/nextest.toml` are linted by the static checks and read
