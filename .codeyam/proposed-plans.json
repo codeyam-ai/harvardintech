@@ -1891,10 +1891,11 @@
         "fnd-489d51ed84e3"
       ],
       "evidenceSessions": 1,
-      "ideaRank": 1,
+      "ideaRank": 2,
+      "missedPasses": 1,
       "theme": {
         "lane": "codeyam-improvement",
-        "score": 481,
+        "score": 471,
         "notVerified": true
       }
     },
@@ -1914,10 +1915,10 @@
         "fnd-cfcf884fba2b"
       ],
       "evidenceSessions": 1,
-      "ideaRank": 2,
+      "ideaRank": 3,
       "theme": {
         "lane": "codeyam-improvement",
-        "score": 385,
+        "score": 377,
         "notVerified": true
       }
     },
@@ -1936,10 +1937,33 @@
         "fnd-2e060d54d39b"
       ],
       "evidenceSessions": 1,
-      "ideaRank": 3,
+      "ideaRank": 4,
       "theme": {
         "lane": "codeyam-improvement",
-        "score": 385,
+        "score": 377,
+        "notVerified": true
+      }
+    },
+    {
+      "id": "a-finished-change-can-pass-every-editor-check-while-the-real-production-build-has-new-problems",
+      "title": "A finished change can pass every editor check while the real production build has new problems",
+      "mode": "backend",
+      "body": "## Root cause\nThe build phase of session-finalize decides to skip itself using an input fingerprint that missed changes to source files. And the configured verify-build checks (tsc and astro check) are not the project's real `npm run build`, and they don't cover JS that runs in CI under scripts/. So a change can pass every check and still break or warn in the real build.\n\n## Evidence\nfnd-89cb1671ebca and fnd-10306959aec3 (wrong-result): finalize printed 'Phase 4/5: skipped (inputs unchanged since 94284e86)' after src/content/config.ts and seven other files changed, and only a manual `npm run build` showed the new glob-loader warning. This session also found that no verify-build check covers scripts/notify-site-alert.mjs. Producer code path not checked: codeyam-editor source is not in this repo, hence notVerified.\n\n## Smallest fix\nKey the Phase 4 skip on the same source digest that Phase 1 uses. Add the stack's production build command as a verify-build check.\n\n## Cost of leaving it\nA green finalize can certify a change that then fails, or warns, in the deploy workflow on main. That's the exact failure this cycle's alerting now reports.",
+      "reason": "Finalize skipped its build phase on a stale fingerprint, and verify-build never runs the production build or type-checks scripts/.",
+      "source": "codeyam-improvement",
+      "status": "pending",
+      "proposedAt": "2026-11-11T03:18:20.410751217+00:00",
+      "kind": "tech-debt",
+      "sightings": 1,
+      "evidenceIds": [
+        "fnd-89cb1671ebca",
+        "fnd-10306959aec3"
+      ],
+      "evidenceSessions": 1,
+      "ideaRank": 1,
+      "theme": {
+        "lane": "codeyam-improvement",
+        "score": 495,
         "notVerified": true
       }
     }
@@ -3037,6 +3061,11 @@
       "at": "2026-11-10T22:19:46.508646255+00:00",
       "feature": "Event pages and screenshots no longer drift with the calendar",
       "notes": "Fix shipped as b6df076b. A one-off production build now skips content folders that do not exist (siteClock is only ever seeded in a sandbox); dev still loads them so the watcher notices a seeded folder. The donors 'No files found' build wa…"
+    },
+    {
+      "at": "2026-11-11T03:18:20.410751217+00:00",
+      "feature": "Alerts when the site stops updating itself",
+      "notes": "Backend-only cycle: deploy workflow gained a notify job that opens, comments on, and closes a site-alert GitHub issue. 46 unit tests pass and it has not yet run against real GitHub; the first run on main after this push is the real test. W…"
     }
   ],
   "syntheses": [
@@ -3225,6 +3254,29 @@
         "finishing-a-change-can-be-blocked-by-a-file-the-editor-itself-just-wrote"
       ],
       "notes": "Double-start dev server (fnd-4af77099f273, fnd-615464727cf0) and expectation-diff false REMOVED (fnd-993c925c71c1, fnd-c6f695568cb7) each come from a single session with time-lost impact, so they do not yet meet the admission bar; pre-existing untracked files auto-committed (fnd-342e6a386f6b) likewise."
+    },
+    {
+      "at": "2026-11-11T03:18:20.410751217+00:00",
+      "lane": "codeyam-improvement",
+      "consumedIds": [
+        "fnd-83da24f80dbf",
+        "fnd-9812251bc5b1",
+        "fnd-89cb1671ebca",
+        "fnd-3cc3cb352468",
+        "fnd-10306959aec3",
+        "fnd-fa7ebe3445bd",
+        "fnd-42d4830f01be",
+        "fnd-16b07de0cdf4",
+        "fnd-0617f0e933ef",
+        "fnd-2b5cbf170e50"
+      ],
+      "keptIds": [
+        "a-finished-change-can-pass-every-editor-check-while-the-real-production-build-has-new-problems",
+        "screenshot-refresh-refuses-to-run-when-the-user-has-legitimately-added-new-content",
+        "finishing-a-change-can-be-blocked-by-a-file-the-editor-itself-just-wrote"
+      ],
+      "refused": 1,
+      "notes": "fnd-3cc3cb352468 and fnd-fa7ebe3445bd (whole-corpus serial recapture) come from one session and are time-lost only, so they're held for more evidence. fnd-83da24f80dbf (type check only at finalize) is held too: it's a single time-lost finding, related to the new build-coverage theme but not the same mechanism."
     }
   ]
 }
