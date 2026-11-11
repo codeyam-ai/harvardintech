@@ -81,6 +81,39 @@ Three things worth knowing:
 To run it by hand: `node scripts/import-luma.mjs --past` (`--dry-run` to see
 what it would do, `--force` to let Luma's version win over what is committed).
 
+## When the site stops updating itself
+
+Organizers rely on the site updating on its own and do not read the Actions
+tab, so after every run on `main` the deploy workflow's `notify` job keeps a
+GitHub issue open for as long as either of these is true:
+
+- **"The site has stopped publishing changes"** (label
+  `site-alert: publishing stopped`): the tests, the build or the Pages deploy
+  failed. The site stays up on its last good version; saves made in `/admin`
+  meanwhile are kept and go out once it publishes again.
+- **"New events from Luma are not reaching the site"** (label
+  `site-alert: event import refused`): Luma answered the import with an HTTP
+  error. The site still publishes; only new Luma events are missing.
+
+There is one issue per problem, never one per run. While a problem continues,
+each run that hits it adds a short "still happening" comment. The first run
+where things work again comments "working again" and closes the issue. A run
+cancelled by a newer push changes nothing. The notifier itself never fails a
+run; if it cannot reach GitHub it prints a warning and the deploy result
+stands. The wording organizers read lives in `src/lib/siteAlert.js`.
+
+**Who hears about it.** Everyone watching the repository (GitHub → the
+repository's **Watch** button → *All activity*, or *Custom* → *Issues*) is
+emailed by GitHub when the issue opens. To mention named organizers directly,
+set a repository variable: GitHub → **Settings** → **Secrets and variables** →
+**Actions** → **Variables** tab → **New repository variable**, name
+`SITE_ALERT_MENTIONS`, value their GitHub usernames separated by commas (e.g.
+`alice, bob`). They need to have access to the repository to be notified.
+
+**What it cannot catch.** If GitHub disables the nightly schedule after 60 days
+of inactivity (above), no run happens, so nothing can raise an alert. Any push
+or one manual run starts it again.
+
 ## Launch day checklist
 
 What it takes to make `main` the public harvardintech.com, in order. None of it

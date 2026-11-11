@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-11-11T02:15:09Z",
+  "title": "Tell organizers when the site stops updating itself",
+  "type": "feature",
+  "userRequest": "## Who benefits\nVolunteer organizers and editors who are not developers. They rely on the site updating on its own (CMS saves deploy, the nightly Luma import adds events) and do not read GitHub Actions logs.\n\n## Evidence\n- obs-1797287eaa3b (2026-11-06): one ordinary CMS save silently stopped every deploy until a developer changed code.\n- obs-f05b342faa7c (2026-11-09): an organizer noticed missing London events only by checking the site against Luma by hand, because the import had been importing nothing for two weeks.\n\n## Smallest useful version\nWhen the deploy workflow fails, or the Luma import ends with a refused feed, send one notification (an email or a GitHub issue opened by the workflow) to a configured organizer address. It should say in plain words what stopped and since when.\n\n## Case against\nGitHub already emails the person whose push triggered a failed workflow. The two root causes seen so far have each been fixed in code. A notification channel needs an owner to watch it, and for a small volunteer site it may be noise between incidents. Making the import fail loudly (see the app theme) might cover most of the need for free.\n## Decisions (Plan step, 2026-11-10)\n- Channel: a **GitHub issue** opened by the deploy workflow itself (user's choice). No mail account or new secret.\n- Repeats: **one open issue per problem**. A repeat adds a short comment; the first successful run closes it with a \"working again\" comment. (Agent's call, easy to change.)\n\n## Implementation\nTwo problems, each with its own issue, found by a fixed label:\n- `site-alert: publishing stopped` — the build job (tests, build, upload) or the Pages deploy step failed, so CMS saves and imports are not reaching the site.\n- `site-alert: event import refused` — `scripts/import-luma.mjs` exited 1 because Luma answered with an HTTP error, so no new events are coming in.\n\nFiles:\n1. `src/lib/siteAlert.js` (new, pure, importable by the workflow script and by vitest):\n   - `classifyRun({ buildResult, deployOutcome, lumaOutcome })` → per-problem verdict `failing | ok | unknown`. A cancelled run (concurrency cancel-in-progress) is `unknown` for everything — never alerts, never closes. Luma is `unknown` when its step did not run (e.g. tests failed first), so a publishing failure does not falsely close the import issue.\n   - `planAlertAction({ verdict, openIssue })` → `open | comment | close | none`.\n   - `alertTitle` / `alertBody` / `repeatComment` / `recoveredComment` — plain words for a non-developer: what stopped, what still works (e.g. \"the site is still up with the events already on it\"), since when (first failed run's date, from the open issue's creation date on repeats), a link to the run, and who to ask. Optional @mentions from a repo variable so named organizers are notified directly.\n2. `scripts/notify-site-alert.mjs` (new): reads run results from env, calls GitHub's REST API with `fetch` + `GITHUB_TOKEN` (list open issues by label, create label if missing, open/comment/close). Never fails the run itself — a broken notifier must not turn a green deploy red.\n3. `.github/workflows/deploy.yml`: deploy job exposes the Pages deploy step's outcome; new `notify` job, `needs: [build, deploy]`, `if: always() && github.ref_name == 'main'`, `permissions: issues: write`, runs the script.\n4. `DEPLOY_SETUP.md`: short \"When the site stops updating itself\" section — who gets told (people watching the repo, plus anyone in the `SITE_ALERT_MENTIONS` repo variable), what the issue means, that it closes itself. Notes the one gap left: if GitHub disables the nightly schedule after 60 days idle, no run happens, so nothing can alert.\n\n## Tests\n`src/lib/siteAlert.test.ts`: classification of every result combination (incl. cancelled and skipped Luma), the open/comment/close/none table, and that the copy names what stopped, the start date and the run link. The API script is exercised against a stubbed `fetch`.",
+  "description": "When the scheduled deploy workflow fails to publish the site or to import events from Luma, a new notify job now opens a GitHub issue (labelled site-alert) saying what stopped, since when, and linking the failed run. One open issue per problem: a repeat failure adds a comment instead of a new issue, and the first good run adds a 'working again' comment and closes it. The user chose a GitHub issue over emailing an address, so no mail account or new secret is needed. Pure rules and wording live in src/lib/siteAlert.js; the GitHub calls live in scripts/notify-site-alert.mjs; DEPLOY_SETUP.md documents it. 46 unit tests pass. Not yet exercised against real GitHub: that happens on the first run on main. Scope verdict: this cycle is a standalone operations improvement and delivered none of the project's listed deliverables and deferred none; their statuses are unchanged.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/completed/tell-organizers-when-the-site-stops-updating-itself.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/plans/tell-organizers-when-the-site-stops-updating-itself.md",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/02967cd8606f8e44b9b09d789b88b53c7e9f92d59008f98df8be83a858e927c7.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/0bd52f1d28cdf67042afa302e1b8ea3c1f9d8165499f4a53db53b960f2851afe.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "status": "modified"
+    },
+    {
+      "path": "DEPLOY_SETUP.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/red-proofs/tell-organizers-when-the-site-stops-updating-itself.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/9462fd909cc1558fd5bf8f15e52872fd828003ff233324f2dcfd16bf36813d04.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/a898fceba6df49445eac28947f504dbeee0378de867f6c73f7d09c9bd6d0d207.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/e3440b514acec7895ebb79072e360f0e51ade519e53524d2f85e5e8bf100771a.json",
+      "status": "added"
+    },
+    {
+      "path": "scripts/notify-site-alert.mjs",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/notifySiteAlert.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/siteAlert.js",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/siteAlert.test.ts",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 46,
+    "passed": 46,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 46,
+        "passed": 46
+      }
+    ]
+  }
+}

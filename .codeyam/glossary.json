@@ -773,6 +773,33 @@
     "testFile": "src/lib/seo.test.ts"
   },
   {
+    "description": "Posts a comment on a GitHub issue; shared by the repeat and recovery paths of the site-alert notifier.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "addComment",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
+  },
+  {
+    "description": "The plain-English body of a newly opened site-alert issue: what stopped, since when, what still works, what to do meanwhile, a link to the failed run, and any mentions.",
+    "filePath": "src/lib/siteAlert.js",
+    "name": "alertBody",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/siteAlert.test.ts"
+  },
+  {
+    "description": "Builds the link to one GitHub Actions run from server URL (defaulting to github.com), repository and run id, for the site-alert issue text.",
+    "filePath": "src/lib/siteAlert.js",
+    "name": "alertRunUrl",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/siteAlert.test.ts"
+  },
+  {
     "description": "The alt text to render for a site-relative image URL, resolved from the media library manifest with the render site's current value as the fallback. Adopting it can never make an image's alt worse than it was: an image with no record, or a record nobody has written alt for, keeps what the component already emitted. An explicit empty string in the manifest is a real answer — 'this image is decorative' — and wins over the fallback via `??` rather than collapsing under a truthiness check, which is the distinction the whole media-manifest feature rests on.",
     "filePath": "src/lib/media.ts",
     "name": "altFor",
@@ -1024,6 +1051,15 @@
     "testFile": "src/lib/donorImport.test.ts"
   },
   {
+    "description": "Reads one deploy-workflow run (build/deploy results, Pages and Luma step outcomes) into a failing/ok/unknown verdict for each site-alert problem; cancelled runs and steps that never ran are unknown so they neither open nor close an alert, and a Luma-only deploy failure never blames publishing.",
+    "filePath": "src/lib/siteAlert.js",
+    "name": "classifyRun",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/siteAlert.test.ts"
+  },
+  {
     "description": "Cleans an imported event title: invisible characters removed, whitespace collapsed, a typo table applied, a leading Harvard in Tech dropped and a dangling separator trimmed. Deliberately does NOT strip the trailing sponsor list, which has no reliable marker and is recorded per event instead.",
     "filePath": "src/lib/strikinglyArchive.js",
     "name": "cleanTitleText",
@@ -1040,6 +1076,15 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/strikinglyArchive.test.ts"
+  },
+  {
+    "description": "Leaves the working-again comment on a site-alert issue and then closes it as completed.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "closeAlert",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
   },
   {
     "description": "Where each school's cluster of supporters sits, distributed on a phyllotaxis spiral — the golden angle a sunflower packs its seeds on — rather than a grid. A grid of ceil(sqrt(n)) columns leaves its last row part-empty at any non-square count, and with thirteen schools that is a visibly bare corner: precisely the large empty area the design direction rules out. The spiral fills the ellipse evenly at ANY count and without leaving rows and columns legible in the finished picture, which is also what 'organic' asks for.",
@@ -1332,6 +1377,15 @@
     }
   },
   {
+    "description": "Creates the site-alert label on the repository, tolerating the 422 answer GitHub gives when it already exists.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "ensureLabel",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
+  },
+  {
     "description": "Patched into @codeyam/cms. Applies the site's copy-warning rules to a whole entry form — every text field, every row of a list field, and the markdown body — and returns the warnings keyed by field name (plus `body`). Non-text values are ignored; no rules means no warnings.",
     "filePath": "node_modules/@codeyam/cms/src/lib/copyWarnings.ts",
     "name": "entryCopyWarnings",
@@ -1495,6 +1549,15 @@
     "testFile": "src/lib/emptiedCollections.test.ts"
   },
   {
+    "description": "Finds the open GitHub issue carrying a site-alert label, or undefined; throws when GitHub will not list issues so the notifier never acts blind.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "findOpenAlert",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
+  },
+  {
     "description": "Builds one responsive-sweep finding for a page and width, taking its severity (fail or advisory) from the finding kind.",
     "filePath": "src/lib/responsiveSweep.ts",
     "name": "finding",
@@ -1548,6 +1611,15 @@
     "filePath": "src/lib/projects.ts",
     "name": "formatProjectDates",
     "testFile": "src/lib/projects.test.ts"
+  },
+  {
+    "description": "Writes a moment in plain words, always in UTC, e.g. Tuesday 10 November 2026, 07:10 UTC, so every organizer reads the same line in site-alert issues.",
+    "filePath": "src/lib/siteAlert.js",
+    "name": "formatWhen",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/siteAlert.test.ts"
   },
   {
     "description": "The donors carrying the Founding Donor badge, in input order. Founding is recognition for giving early rather than for giving more, so it is a flag cutting across every giving level instead of a level of its own — which is what lets a founding donor keep the level that describes their actual gift.",
@@ -1665,6 +1737,15 @@
     "filePath": "src/lib/momentumSections.ts",
     "name": "giftOrdinal",
     "testFile": "src/lib/momentumSections.test.ts"
+  },
+  {
+    "description": "A minimal GitHub REST client over fetch for the site-alert notifier: bearer token, GitHub JSON headers, JSON body, returns status/ok/data with null data for 204.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "githubClient",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
   },
   {
     "description": "Where to load Givebutter's widget loader from, or undefined when no account id is configured. The undefined case is the DEFAULT and the shipping state for a site that has not chosen a giving platform, so it has to mean no third-party request at all rather than an empty tag pointing at a CDN; blank and whitespace-only are treated as absent so a cleared CMS box cannot produce acct=. The id is URL-encoded because it arrives by copy-paste from Givebutter's dashboard, and a pasted value carrying & or # must not be able to add query parameters or truncate the ones already there. Pure and framework-free, the same shape as resolveGiveHref in ./giving.ts.",
@@ -2274,6 +2355,15 @@
     "testFile": "src/lib/archiveImporters.test.ts"
   },
   {
+    "description": "Direct-run entry point of the site-alert notifier that never throws: logs one line per problem, or turns any error into an Actions warning so it cannot fail the run.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "main",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
+  },
+  {
     "description": "Entry point of the responsive-image build step: walks public/images, writes 640/1280/1920 WebP variants for anything wide enough, and emits the manifest the srcset helper reads. Guarded so it runs only when the script is executed directly, never on import.",
     "filePath": "scripts/responsive-images.mjs",
     "name": "main",
@@ -2491,6 +2581,15 @@
     "testFile": "src/lib/sitePages.test.ts"
   },
   {
+    "description": "Acts on one deploy-workflow run: classifies it, and for each problem opens, comments on or closes its site-alert issue; returns what it did per problem.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "notify",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
+  },
+  {
     "description": "Builds the result of an import that wrote nothing because a feed was missing: ok false with the refused status when Luma refused, ok true when it was merely unreachable.",
     "filePath": "scripts/import-luma.mjs",
     "name": "offlineResult",
@@ -2513,6 +2612,15 @@
       "justification": "Astro middleware wiring around withSiteFonts, which carries the logic and its unit tests",
       "kind": "platform-glue"
     }
+  },
+  {
+    "description": "Opens a new site-alert issue for a problem: ensures its label, then creates the issue with the problem title, plain-English body and label; throws if GitHub refuses.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "openAlert",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
   },
   {
     "description": "The volunteer projects to render: drops any with closed: true (absent means open, since the CMS omits an unticked box), then sorts by order. Non-mutating.",
@@ -2635,6 +2743,15 @@
     "testFile": "src/lib/emptiedCollections.test.ts"
   },
   {
+    "description": "Parses the SITE_ALERT_MENTIONS repository variable into a deduplicated list of valid GitHub usernames: commas or spaces between names, optional leading @, invalid names dropped.",
+    "filePath": "src/lib/siteAlert.js",
+    "name": "parseMentions",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/siteAlert.test.ts"
+  },
+  {
     "description": "The path given with --only, or null to sweep every page.",
     "filePath": "scripts/responsive-sweep.mjs",
     "name": "parseOnly",
@@ -2688,6 +2805,15 @@
     "filePath": "src/lib/momentumNetwork.ts",
     "name": "placeNodes",
     "testFile": "src/lib/momentumNetwork.test.ts"
+  },
+  {
+    "description": "Maps a problem verdict and whether its alert issue is already open to the action to take: open a new issue, comment on the open one, close it, or do nothing.",
+    "filePath": "src/lib/siteAlert.js",
+    "name": "planAlertAction",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/siteAlert.test.ts"
   },
   {
     "description": "Which pages to sweep, or why the sweep cannot start: no build, a build made with the project-site deploy base, or an --only path that matches nothing.",
@@ -2816,6 +2942,15 @@
     "testFile": "src/lib/responsiveImage.test.ts"
   },
   {
+    "description": "Reads BUILD_RESULT, DEPLOY_RESULT, PAGES_OUTCOME and LUMA_OUTCOME from the workflow environment into the input shape classifyRun expects.",
+    "filePath": "scripts/notify-site-alert.mjs",
+    "name": "readRun",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/notifySiteAlert.test.ts"
+  },
+  {
     "description": "Reads and JSON-parses one singleton data file from the resolved dataRoot(), so every singleton read honours the codeyam sandbox redirect. Moved here from site.ts and de-duplicated when cutoverProgress.ts grew a second identical private copy - two implementations of respecting the sandbox is how one of them ends up not respecting it. Server-only: it touches the filesystem at call time.",
     "filePath": "src/lib/contentRoot.ts",
     "name": "readSingleton",
@@ -2830,6 +2965,15 @@
     "filePath": "src/lib/events.ts",
     "name": "recentPastEvents",
     "testFile": "src/lib/events.test.ts"
+  },
+  {
+    "description": "The working-again comment that closes a site-alert issue, using the problem-specific recovery sentence and the time it had been stopped since.",
+    "filePath": "src/lib/siteAlert.js",
+    "name": "recoveredComment",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/siteAlert.test.ts"
   },
   {
     "description": "Applies the deploy's base path to every old-URL redirect TARGET, returning a new map for astro.config to consume. It exists because Astro resolves a redirect's source against the base but not its target: on the project-subpath build it wrote dist/nyc/index.html — reached at /harvardintech/nyc/ — refreshing to a bare /chapters/nyc/, which is the domain root of the Pages host rather than where this site lives, so every indexed Strikingly URL would have redirected to a 404, with a rel=canonical pointing there too. Sources are left alone, since prefixing those as well would build a doubled base path. A base of / yields the map unchanged, which is the custom-domain build.",
@@ -2872,6 +3016,15 @@
       "justification": "Drives a live Vite dev server's module graph and watcher; its graph walk is transitiveImporters, which is unit-tested.",
       "kind": "platform-glue"
     }
+  },
+  {
+    "description": "The comment added to an already-open site-alert issue when the problem happens again, keeping the original first-noticed time.",
+    "filePath": "src/lib/siteAlert.js",
+    "name": "repeatComment",
+    "tags": [
+      "site-alert"
+    ],
+    "testFile": "src/lib/siteAlert.test.ts"
   },
   {
     "description": "The repeatable item list on a Strikingly section, or an empty list when the section has none.",

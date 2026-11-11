@@ -442,6 +442,60 @@
       "runner": "tests"
     },
     {
+      "description": "Recovery leaves its note BEFORE closing, so watchers see why it closed.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "addComment and closeAlert › comments, then closes the issue as completed",
+      "line": 116,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Shared by the repeat and recovery paths.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "addComment and closeAlert › posts a comment on the issue",
+      "line": 109,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Mentions are how named people get emailed directly.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "alertBody › mentions the configured people",
+      "line": 160,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The issue an organizer reads must say what broke, since when, what still works, and where the evidence is.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "alertBody › says what stopped, since when, what still works and links the run",
+      "line": 149,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The link organizers forward to whoever fixes the code.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "alertRunUrl › builds the run link from the server, repo and run id",
+      "line": 93,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "GITHUB_SERVER_URL is optional; github.com is the default.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "alertRunUrl › defaults to github.com when no server is given",
+      "line": 100,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "A freshly uploaded image nobody has described yet must degrade to the render site's current behavior, never emit `alt=\"undefined\"`.",
       "file": "src/lib/media.test.ts",
       "format": "vitest",
@@ -1987,6 +2041,78 @@
       "key": "class year › refuses to guess at anything else",
       "line": 162,
       "registeredAt": "2026-08-05T19:34:11Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The deploy job also fails when only Luma refused — after publishing. That must report the import, NOT claim the site stopped publishing.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "classifyRun › does not blame publishing when only the Luma import failed the deploy job",
+      "line": 49,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An import step that never ran (empty or skipped) must not close the import issue.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "classifyRun › leaves the import unknown when the Luma step never ran or was skipped",
+      "line": 64,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A clean run is what closes open alerts.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "classifyRun › marks both ok on a clean run",
+      "line": 56,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The build can pass and the Pages upload still fail.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "classifyRun › marks publishing failing when the Pages step fails after a good build",
+      "line": 41,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A broken build means nothing published — the 2026-11-06 outage.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "classifyRun › marks publishing failing when the build fails",
+      "line": 35,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A run cancelled by a newer push says nothing about either problem, so it must neither open nor close an issue.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "classifyRun › treats a cancelled build as unknown for both problems",
+      "line": 21,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Same for a deploy cancelled mid-flight, even when the build looked fine.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "classifyRun › treats a cancelled deploy as unknown for both problems",
+      "line": 28,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Missing inputs entirely — e.g. a malformed workflow — are unknown, not ok.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "classifyRun › treats missing inputs as unknown",
+      "line": 72,
+      "registeredAt": "2026-11-10T23:14:33Z",
       "runner": "tests"
     },
     {
@@ -4033,6 +4159,15 @@
       "runner": "tests"
     },
     {
+      "description": "A 422 \"already exists\" is the common case and must not throw.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "ensureLabel › creates the label and tolerates it already existing",
+      "line": 75,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "Text inside any row of a list field counts against that list field.",
       "file": "src/lib/copyWarnings.test.ts",
       "format": "vitest",
@@ -5176,6 +5311,33 @@
       "runner": "tests"
     },
     {
+      "description": "The label is how an open issue is found again; it must be URL-encoded.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "findOpenAlert › asks for open issues with the encoded label and returns the first",
+      "line": 54,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "No open issue is the normal state.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "findOpenAlert › returns undefined when nothing is open",
+      "line": 61,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Acting without knowing would duplicate or orphan an issue, so it throws.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "findOpenAlert › throws when GitHub will not list issues",
+      "line": 67,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "0.75rem is exactly 12px at the 16px root.",
       "file": "src/lib/typeFloor.test.ts",
       "format": "vitest",
@@ -5428,6 +5590,33 @@
       "runner": "tests"
     },
     {
+      "description": "Dates and strings must give the same answer; minutes and hours are padded.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "formatWhen › accepts a Date and pads hours and minutes",
+      "line": 112,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A time just before midnight UTC must not slip to the next local day.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "formatWhen › does not shift the day near midnight UTC",
+      "line": 117,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "UTC so every organizer reads the same line regardless of where the runner is.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "formatWhen › writes a moment in plain words in UTC",
+      "line": 107,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "The state the wall is in on day one.",
       "file": "src/lib/donors.test.ts",
       "format": "vitest",
@@ -5677,6 +5866,24 @@
       "key": "giftOrdinal › restarts at 01 for a second band rather than continuing a running count",
       "line": 414,
       "registeredAt": "2026-08-19T17:04:46.414252481+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "204 No Content has no body to parse.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "githubClient › returns null data for 204",
+      "line": 198,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The request must carry the token and API headers GitHub requires.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "githubClient › sends authenticated JSON requests and parses the answer",
+      "line": 184,
+      "registeredAt": "2026-11-10T23:14:33Z",
       "runner": "tests"
     },
     {
@@ -8327,6 +8534,24 @@
       "runner": "tests"
     },
     {
+      "description": "On success it logs one line per problem for the run's log.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "main › logs what it did for each problem",
+      "line": 174,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The notifier must never fail the run: errors become an Actions warning.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "main › turns any error into a warning instead of throwing",
+      "line": 164,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "An upload is exactly one add — not a whole-library rewrite.",
       "file": "src/lib/mediaManifestMerge.test.ts",
       "format": "vitest",
@@ -9659,6 +9884,42 @@
       "runner": "tests"
     },
     {
+      "description": "A good run closes whatever is open.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "notify › closes open issues on a good run",
+      "line": 154,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A repeat comments on the open issue and keeps its original start date.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "notify › comments on the issue already open for a repeat failure",
+      "line": 145,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A cancelled run must not touch GitHub at all.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "notify › makes no calls when the run says nothing",
+      "line": 128,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "First failure opens an issue; the run link comes from the env.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "notify › opens an issue for a new failure",
+      "line": 136,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "The correct name, in title case or as the banner renders it in capitals, is not flagged.",
       "file": "src/lib/brandNameContent.test.ts",
       "format": "vitest",
@@ -9683,6 +9944,24 @@
       "key": "offBrandMentions › ignores URLs",
       "line": 78,
       "registeredAt": "2026-10-15T14:23:34Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The label must exist before the issue that carries it is created.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "openAlert › makes the label, then opens the issue with title, body and label",
+      "line": 90,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A failed open must surface — the run's log is the only place it shows.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "openAlert › throws when the issue cannot be opened",
+      "line": 99,
+      "registeredAt": "2026-11-10T23:14:33Z",
       "runner": "tests"
     },
     {
@@ -10316,6 +10595,42 @@
       "runner": "tests"
     },
     {
+      "description": "Organizers will type it any of these ways.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "parseMentions › accepts commas or spaces and an optional leading @",
+      "line": 131,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Naming someone twice must not mention them twice.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "parseMentions › drops duplicates",
+      "line": 136,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Anything that is not a GitHub username is dropped, never mentioned.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "parseMentions › drops names that are not valid GitHub usernames",
+      "line": 141,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The variable is optional; unset means nobody is mentioned.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "parseMentions › returns nothing for an unset or empty variable",
+      "line": 124,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "No flag, or a dangling --only, means sweep every page.",
       "file": "src/lib/responsiveSweepScript.test.ts",
       "format": "vitest",
@@ -10511,6 +10826,54 @@
       "key": "placeNodes › places every supporter, including one with no school",
       "line": 202,
       "registeredAt": "2026-08-19T00:32:47Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A failing run with no open alert opens a new issue.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "planAlertAction › verdict failing with open issue false plans open",
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A failing run while an alert is already open adds a comment instead of a second issue.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "planAlertAction › verdict failing with open issue true plans comment",
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A good run with no open alert does nothing.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "planAlertAction › verdict ok with open issue false plans none",
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The first good run after an alert closes the open issue.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "planAlertAction › verdict ok with open issue true plans close",
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A run whose outcome is unknown never opens an issue.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "planAlertAction › verdict unknown with open issue false plans none",
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A run whose outcome is unknown leaves an open alert untouched.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "planAlertAction › verdict unknown with open issue true plans none",
+      "registeredAt": "2026-11-10T23:14:33Z",
       "runner": "tests"
     },
     {
@@ -11081,6 +11444,15 @@
       "runner": "tests"
     },
     {
+      "description": "The env names the workflow sets must map onto classifyRun's inputs.",
+      "file": "src/lib/notifySiteAlert.test.ts",
+      "format": "vitest",
+      "key": "readRun › reads the four results from the environment",
+      "line": 42,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
       "description": "The reason this function exists at all, and the reason it must not be a bare readFileSync('src/data/…'): every read has to follow the sandbox redirect, or a seeded scenario silently renders committed production content instead of its own.",
       "file": "src/lib/contentRoot.test.ts",
       "format": "vitest",
@@ -11213,6 +11585,31 @@
       "key": "recentPastEvents › returns nothing for a limit of zero or less",
       "line": 402,
       "registeredAt": "2026-09-16T14:05:10Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The two sentences must differ — the import one must not claim publishing recovered.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "recoveredComment › keeps the two recovery sentences distinct",
+      "line": 187,
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The Luma-import recovery comment names the time it started working again and its back-again sentence.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "recoveredComment › uses the lumaImport recovery sentence",
+      "registeredAt": "2026-11-10T23:14:33Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The publishing recovery comment names the time it started working again and its back-again sentence.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "recoveredComment › uses the publishing recovery sentence",
+      "registeredAt": "2026-11-10T23:14:33Z",
       "runner": "tests"
     },
     {
@@ -11447,6 +11844,15 @@
       "key": "renumberEntries › reports only the rows whose number changed",
       "line": 202,
       "registeredAt": "2026-08-10T21:05:09Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A repeat says it is still happening and keeps the original start date.",
+      "file": "src/lib/siteAlert.test.ts",
+      "format": "vitest",
+      "key": "repeatComment › says it is still happening and when it started",
+      "line": 169,
+      "registeredAt": "2026-11-10T23:14:33Z",
       "runner": "tests"
     },
     {

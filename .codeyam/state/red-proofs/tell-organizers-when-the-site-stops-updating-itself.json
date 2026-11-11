@@ -1,0 +1,72 @@
+{
+  "provenAt": "2026-11-10T23:14:00Z",
+  "slug": "tell-organizers-when-the-site-stops-updating-itself",
+  "paths": [],
+  "runScope": [
+    "src/lib/siteAlert.js",
+    "scripts/notify-site-alert.mjs",
+    "src/lib/siteAlert.test.ts",
+    "src/lib/notifySiteAlert.test.ts"
+  ],
+  "neuters": [
+    {
+      "file": "src/lib/siteAlert.js",
+      "find": "    PROBLEMS[key].backAgain,",
+      "replace": "    '',"
+    },
+    {
+      "file": "scripts/notify-site-alert.mjs",
+      "find": "  await addComment(api, repo, number, body);\n  await api('PATCH'",
+      "replace": "  await api('PATCH'"
+    },
+    {
+      "file": "scripts/notify-site-alert.mjs",
+      "find": "  } catch (error) {\n    log(",
+      "replace": "  } catch (error) {\n    throw error; log("
+    }
+  ],
+  "tests": {
+    "comments, then closes the issue as completed": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "turns any error into a warning instead of throwing": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "uses the %s recovery sentence": {
+      "withoutFix": "didNotBuild",
+      "withFix": "didNotBuild",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "uses the lumaImport recovery sentence": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    },
+    "uses the publishing recovery sentence": {
+      "withoutFix": "fail",
+      "withFix": "pass",
+      "established": {
+        "kind": "measured"
+      }
+    }
+  },
+  "proof": {
+    "verdict": "proven",
+    "flipped": [
+      "uses the publishing recovery sentence",
+      "uses the lumaImport recovery sentence"
+    ]
+  }
+}

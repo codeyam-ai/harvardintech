@@ -405,6 +405,21 @@
       ],
       "name": "__file_root__"
     },
+    "scripts/notify-site-alert.mjs::__file_root__": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [],
+      "imports": [
+        "src/lib/siteAlert.js::__file_root__",
+        "src/lib/siteAlert.js::alertBody",
+        "src/lib/siteAlert.js::alertRunUrl",
+        "src/lib/siteAlert.js::classifyRun",
+        "src/lib/siteAlert.js::parseMentions",
+        "src/lib/siteAlert.js::planAlertAction",
+        "src/lib/siteAlert.js::recoveredComment",
+        "src/lib/siteAlert.js::repeatComment"
+      ],
+      "name": "__file_root__"
+    },
     "scripts/responsive-images.mjs::__file_root__": {
       "filePath": "scripts/responsive-images.mjs",
       "importedBy": [],
@@ -4394,6 +4409,23 @@
       "imports": [],
       "name": "soundToggleLabel"
     },
+    "src/lib/notifySiteAlert.test.ts::__file_root__": {
+      "filePath": "src/lib/notifySiteAlert.test.ts",
+      "importedBy": [],
+      "imports": [
+        "scripts/notify-site-alert.mjs::addComment",
+        "scripts/notify-site-alert.mjs::closeAlert",
+        "scripts/notify-site-alert.mjs::ensureLabel",
+        "scripts/notify-site-alert.mjs::findOpenAlert",
+        "scripts/notify-site-alert.mjs::githubClient",
+        "scripts/notify-site-alert.mjs::main",
+        "scripts/notify-site-alert.mjs::notify",
+        "scripts/notify-site-alert.mjs::openAlert",
+        "scripts/notify-site-alert.mjs::readRun",
+        "src/lib/siteAlert.js::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
     "src/lib/order.test.ts::__file_root__": {
       "filePath": "src/lib/order.test.ts",
       "importedBy": [],
@@ -5187,6 +5219,103 @@
       ],
       "imports": [],
       "name": "volunteerPage"
+    },
+    "src/lib/siteAlert.js::__file_root__": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__",
+        "src/lib/notifySiteAlert.test.ts::__file_root__",
+        "scripts/notify-site-alert.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/lib/siteAlert.js::alertBody": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__",
+        "scripts/notify-site-alert.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "alertBody"
+    },
+    "src/lib/siteAlert.js::alertRunUrl": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__",
+        "scripts/notify-site-alert.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "alertRunUrl"
+    },
+    "src/lib/siteAlert.js::classifyRun": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__",
+        "scripts/notify-site-alert.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "classifyRun"
+    },
+    "src/lib/siteAlert.js::formatWhen": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "formatWhen"
+    },
+    "src/lib/siteAlert.js::parseMentions": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__",
+        "scripts/notify-site-alert.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "parseMentions"
+    },
+    "src/lib/siteAlert.js::planAlertAction": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__",
+        "scripts/notify-site-alert.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "planAlertAction"
+    },
+    "src/lib/siteAlert.js::recoveredComment": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__",
+        "scripts/notify-site-alert.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "recoveredComment"
+    },
+    "src/lib/siteAlert.js::repeatComment": {
+      "filePath": "src/lib/siteAlert.js",
+      "importedBy": [
+        "src/lib/siteAlert.test.ts::__file_root__",
+        "scripts/notify-site-alert.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "repeatComment"
+    },
+    "src/lib/siteAlert.test.ts::__file_root__": {
+      "filePath": "src/lib/siteAlert.test.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/siteAlert.js::__file_root__",
+        "src/lib/siteAlert.js::alertBody",
+        "src/lib/siteAlert.js::alertRunUrl",
+        "src/lib/siteAlert.js::classifyRun",
+        "src/lib/siteAlert.js::formatWhen",
+        "src/lib/siteAlert.js::parseMentions",
+        "src/lib/siteAlert.js::planAlertAction",
+        "src/lib/siteAlert.js::recoveredComment",
+        "src/lib/siteAlert.js::repeatComment"
+      ],
+      "name": "__file_root__"
     },
     "src/lib/siteClock.test.ts::__file_root__": {
       "filePath": "src/lib/siteClock.test.ts",
@@ -7839,6 +7968,14 @@
       ],
       "imports": [
         "src/lib/strikinglyArchive.js"
+      ]
+    },
+    "scripts/notify-site-alert.mjs": {
+      "importedBy": [
+        "src/lib/notifySiteAlert.test.ts"
+      ],
+      "imports": [
+        "src/lib/siteAlert.js"
       ]
     },
     "scripts/ours-shot.mjs": {
@@ -10711,6 +10848,13 @@
       "importedBy": [],
       "imports": []
     },
+    "src/lib/notifySiteAlert.test.ts": {
+      "importedBy": [],
+      "imports": [
+        "scripts/notify-site-alert.mjs",
+        "src/lib/siteAlert.js"
+      ]
+    },
     "src/lib/order.test.ts": {
       "importedBy": [],
       "imports": [
@@ -11159,6 +11303,20 @@
         "src/lib/contentRoot.ts",
         "src/lib/contact.ts",
         "src/lib/luma.ts"
+      ]
+    },
+    "src/lib/siteAlert.js": {
+      "importedBy": [
+        "src/lib/siteAlert.test.ts",
+        "src/lib/notifySiteAlert.test.ts",
+        "scripts/notify-site-alert.mjs"
+      ],
+      "imports": []
+    },
+    "src/lib/siteAlert.test.ts": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/siteAlert.js"
       ]
     },
     "src/lib/siteClock.test.ts": {
@@ -12823,5 +12981,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-10T22:15:37Z"
+  "lastUpdated": "2026-11-11T02:16:11Z"
 }

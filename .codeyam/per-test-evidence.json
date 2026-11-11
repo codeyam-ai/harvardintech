@@ -440,6 +440,60 @@
       "pass|full|2026-10-22T13:06:10.254Z"
     ]
   },
+  "addComment and closeAlert › comments, then closes the issue as completed": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "addComment and closeAlert › posts a comment on the issue": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "alertBody › mentions the configured people": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "alertBody › says what stopped, since when, what still works and links the run": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "alertRunUrl › builds the run link from the server, repo and run id": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "alertRunUrl › defaults to github.com when no server is given": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
   "altFor › falls back for a record that has no alt key yet": {
     "file": "src/lib/media.test.ts",
     "lastRunAt": "2026-11-10T22:14:34.838Z",
@@ -1986,6 +2040,78 @@
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
+    ]
+  },
+  "classifyRun › does not blame publishing when only the Luma import failed the deploy job": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "classifyRun › leaves the import unknown when the Luma step never ran or was skipped": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "classifyRun › marks both ok on a clean run": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "classifyRun › marks publishing failing when the Pages step fails after a good build": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "classifyRun › marks publishing failing when the build fails": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "classifyRun › treats a cancelled build as unknown for both problems": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "classifyRun › treats a cancelled deploy as unknown for both problems": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "classifyRun › treats missing inputs as unknown": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
     ]
   },
   "cleanTitleText › applies the whole title typo table": {
@@ -4035,6 +4161,15 @@
       "pass|full|2026-10-22T13:06:10.254Z"
     ]
   },
+  "ensureLabel › creates the label and tolerates it already existing": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
   "entryCopyWarnings › checks every row of a list field": {
     "file": "src/lib/copyWarnings.test.ts",
     "lastRunAt": "2026-11-10T22:14:34.838Z",
@@ -5178,6 +5313,33 @@
       "pass|full|2026-10-22T22:06:41.452Z"
     ]
   },
+  "findOpenAlert › asks for open issues with the encoded label and returns the first": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "findOpenAlert › returns undefined when nothing is open": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "findOpenAlert › throws when GitHub will not list issues": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
   "fontSizesBelowFloor › accepts a rem size that computes to the floor": {
     "file": "src/lib/typeFloor.test.ts",
     "lastRunAt": "2026-11-10T22:14:34.838Z",
@@ -5430,6 +5592,33 @@
       "pass|changed|2026-10-22T16:52:23.161Z"
     ]
   },
+  "formatWhen › accepts a Date and pads hours and minutes": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "formatWhen › does not shift the day near midnight UTC": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "formatWhen › writes a moment in plain words in UTC": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
   "foundingDonors › returns nothing when no donor is flagged": {
     "file": "src/lib/donors.test.ts",
     "lastRunAt": "2026-11-10T22:14:34.838Z",
@@ -5680,6 +5869,24 @@
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
+    ]
+  },
+  "githubClient › returns null data for 204": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "githubClient › sends authenticated JSON requests and parses the answer": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
     ]
   },
   "givebutterScriptSrc › builds the loader URL from an account id": {
@@ -8337,6 +8544,24 @@
       "pass|full|2026-10-22T13:06:10.254Z"
     ]
   },
+  "main › logs what it did for each problem": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "main › turns any error into a warning instead of throwing": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
   "manifestOps › reduces an upload to one add": {
     "file": "src/lib/mediaManifestMerge.test.ts",
     "lastRunAt": "2026-11-10T22:14:34.838Z",
@@ -9669,6 +9894,42 @@
       "pass|full|2026-10-22T13:06:10.254Z"
     ]
   },
+  "notify › closes open issues on a good run": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "notify › comments on the issue already open for a repeat failure": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "notify › makes no calls when the run says nothing": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "notify › opens an issue for a new failure": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
   "offBrandMentions › accepts the brand as written": {
     "file": "src/lib/brandNameContent.test.ts",
     "lastRunAt": "2026-11-10T22:14:34.838Z",
@@ -9694,6 +9955,24 @@
     "lastStatus": "pass",
     "statusRing": [
       "pass|changed|2026-10-22T16:52:23.161Z"
+    ]
+  },
+  "openAlert › makes the label, then opens the issue with title, body and label": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "openAlert › throws when the issue cannot be opened": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
     ]
   },
   "openProjects › does not mutate the input array": {
@@ -10326,6 +10605,42 @@
       "pass|full|2026-10-22T22:06:41.452Z"
     ]
   },
+  "parseMentions › accepts commas or spaces and an optional leading @": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "parseMentions › drops duplicates": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "parseMentions › drops names that are not valid GitHub usernames": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "parseMentions › returns nothing for an unset or empty variable": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
   "parseOnly › is null without the flag, or with the flag and no path": {
     "file": "src/lib/responsiveSweepScript.test.ts",
     "lastRunAt": "2026-11-10T22:14:34.838Z",
@@ -10522,6 +10837,60 @@
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-10-22T13:06:10.254Z"
+    ]
+  },
+  "planAlertAction › verdict failing with open issue false plans open": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "planAlertAction › verdict failing with open issue true plans comment": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "planAlertAction › verdict ok with open issue false plans none": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "planAlertAction › verdict ok with open issue true plans close": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "planAlertAction › verdict unknown with open issue false plans none": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "planAlertAction › verdict unknown with open issue true plans none": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
     ]
   },
   "planSweep › narrows to one page with or without its trailing slash": {
@@ -11091,6 +11460,15 @@
       "pass|full|2026-10-22T13:06:10.254Z"
     ]
   },
+  "readRun › reads the four results from the environment": {
+    "file": "src/lib/notifySiteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
   "readSingleton › follows the sandbox redirect rather than reading src/data": {
     "file": "src/lib/contentRoot.test.ts",
     "lastRunAt": "2026-11-10T22:14:34.838Z",
@@ -11224,6 +11602,33 @@
     "lastStatus": "pass",
     "statusRing": [
       "pass|changed|2026-10-22T16:52:23.161Z"
+    ]
+  },
+  "recoveredComment › keeps the two recovery sentences distinct": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "recoveredComment › uses the lumaImport recovery sentence": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
+    ]
+  },
+  "recoveredComment › uses the publishing recovery sentence": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
     ]
   },
   "redirectsForBase › accepts a base with or without its own trailing slash": {
@@ -11458,6 +11863,15 @@
     "lastStatus": "pass",
     "statusRing": [
       "pass|changed|2026-10-22T16:52:23.161Z"
+    ]
+  },
+  "repeatComment › says it is still happening and when it started": {
+    "file": "src/lib/siteAlert.test.ts",
+    "lastRunAt": "2026-11-10T23:15:04.531Z",
+    "lastRunKind": "changed",
+    "lastStatus": "pass",
+    "statusRing": [
+      "pass|changed|2026-11-10T23:15:04.531Z"
     ]
   },
   "replaceWithCopy › copies a nested tree into a missing destination": {

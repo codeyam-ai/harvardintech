@@ -214,6 +214,10 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    # Read by the notify job: did the site actually publish? The job's own
+    # result cannot say, because the Luma step below fails it AFTER publishing.
+    outputs:
+      pages_outcome: ${{ steps.deployment.outcome }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
@@ -226,6 +230,38 @@ jobs:
         run: |
           echo "::error::Luma refused the event feed, so no new events were imported. The site was published with the events already committed. See the 'Import events from Luma' step of the build job for the HTTP status."
           exit 1
+
+  # ---- tell organizers when the site stops updating itself ----------------
+  # Volunteer organizers rely on the site updating on its own and never open
+  # this tab. After every run on `main` this opens a plain-English GitHub issue
+  # when publishing failed or Luma refused the feed (one issue per problem, a
+  # short comment each time it repeats) and closes it with a "working again"
+  # comment once a run succeeds. People watching the repository are emailed by
+  # GitHub; usernames in the SITE_ALERT_MENTIONS repository variable are
+  # mentioned directly. The rules and the wording are in src/lib/siteAlert.js.
+  # It never fails the run itself. See DEPLOY_SETUP.md.
+  notify:
+    needs: [build, deploy]
+    if: always() && github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # No `npm ci`: the script and src/lib/siteAlert.js use only Node itself.
+      - name: Open, update or close the site-alert issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+          PAGES_OUTCOME: ${{ needs.deploy.outputs.pages_outcome }}
+          LUMA_OUTCOME: ${{ needs.build.outputs.luma_outcome }}
+          SITE_ALERT_MENTIONS: ${{ vars.SITE_ALERT_MENTIONS }}
+        run: node scripts/notify-site-alert.mjs
 
 # The gated review track returns at launch as a PRIVATE EDITOR BUILD OF `main`
 # published to the kept second repository (nseldeib/harvardintech-staging) and
