@@ -13,6 +13,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EventsPage from '../components/EventsPage.astro';
 import EventsIntroBand from '../components/EventsIntroBand.astro';
 import LumaCalendar from '../components/LumaCalendar.astro';
+import EventGallery from '../components/landing/EventGallery.astro';
 import { LUMA_EMBED_URL } from '../lib/luma';
 import { siteLinks } from '../lib/site';
 import { publishedEntries } from '../lib/drafts';
@@ -32,12 +33,28 @@ const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS).m
 // One "now" for the embed decision and the past grid, so they cannot disagree.
 const now = siteNow();
 const embedUrl = calendarEmbedUrl(events, LUMA_EMBED_URL, now);
+
+// Highlights gallery, curated in /admin on the `events` page-copy entry. No
+// entry, or an empty photo list, renders nothing — the page reads as it did.
+const pageCopy = (await getCollection('pageCopy')).find((p) => p.id === 'events')?.data;
+const galleryPhotos = pageCopy?.galleryPhotos ?? [];
 ---
 
 <BaseLayout title="Events" description="Upcoming and past Harvard Alumni in Tech events.">
   {/* The page's own title first, so it opens saying what it is rather than
       handing the first line to the Luma embed's "Full events calendar". */}
   <EventsIntroBand />
+  {
+    galleryPhotos.length > 0 && (
+      <EventGallery
+        photos={galleryPhotos}
+        kicker={pageCopy?.galleryKicker ?? 'Highlights'}
+        heading={pageCopy?.galleryHeading ?? 'Moments from past events'}
+        intro={pageCopy?.galleryIntro}
+        phoneCap={6}
+      />
+    )
+  }
   {/* The calendar PAGE is editable through settings; the embed URL stays in
       code because it carries the calendar id that `lumaFeed.test.ts` pins to
       the importer — the two must name the same calendar. */}

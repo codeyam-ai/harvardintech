@@ -1373,6 +1373,47 @@
           "type": "textarea",
           "optional": true,
           "hint": "The message a supporter posts from their badge. Keep [SUPPORTER MESSAGE] and [DONATION LINK] exactly as written \u2014 they are placeholders the badge swaps for the supporter's own words and the giving link. Delete either one and that part goes missing from what they share."
+        },
+        {
+          "name": "galleryKicker",
+          "label": "Events gallery eyebrow",
+          "type": "text",
+          "optional": true,
+          "hint": "The small uppercase line above the Events page highlights gallery. Blank shows \"Highlights\"."
+        },
+        {
+          "name": "galleryHeading",
+          "label": "Events gallery heading",
+          "type": "text",
+          "optional": true,
+          "hint": "The heading over the Events page highlights gallery. Blank shows \"Moments from past events\"."
+        },
+        {
+          "name": "galleryIntro",
+          "label": "Events gallery intro",
+          "type": "text",
+          "optional": true,
+          "hint": "One optional sentence under the gallery heading. Blank shows nothing."
+        },
+        {
+          "name": "galleryPhotos",
+          "label": "Events gallery photos",
+          "type": "list",
+          "optional": true,
+          "hint": "Highlights from past events, shown on the Events page between the intro and the full calendar. Leave it empty and the page has no gallery.",
+          "fields": [
+            {
+              "name": "image",
+              "label": "Photo",
+              "type": "image"
+            },
+            {
+              "name": "caption",
+              "label": "Caption",
+              "type": "text",
+              "optional": true
+            }
+          ]
         }
       ]
     },

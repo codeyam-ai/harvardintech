@@ -767,6 +767,16 @@ const pageCopy = defineCollection({
     // and an editor rewriting the message has no other way to learn they are load-
     // bearing.
     shareMessage: z.string().optional(),
+    // /events: the "highlights from past events" gallery between the intro band
+    // and the full calendar. Same `{ image, caption? }` rows as a chapter's
+    // `photos`, so an editor who has curated one already knows the other, and
+    // alt still resolves from `media.json`. Absent or empty → no gallery.
+    galleryKicker: z.string().optional(),
+    galleryHeading: z.string().optional(),
+    galleryIntro: z.string().optional(),
+    galleryPhotos: z
+      .array(z.object({ image: z.string(), caption: z.string().optional() }))
+      .optional(),
   }),
 });
 
