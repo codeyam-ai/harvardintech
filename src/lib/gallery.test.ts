@@ -1,44 +1,33 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import {
+  fullRowLimit,
   galleryColumns,
+  galleryTierLimits,
   galleryRevealImmediately,
   galleryStaggerDelay,
-  smallScreenCapLimit,
+  tileHiddenTiers,
   toGalleryPhotos,
-  visibleGalleryPhotos,
 } from './gallery';
 
-describe('smallScreenCapLimit', () => {
-  // The homepage wall: 38 photos shown, a 12-photo small-screen cap → 12.
-  it('returns the cap when it hides some of the shown photos', () => {
-    expect(smallScreenCapLimit(12, 38)).toBe(12);
+describe('tileHiddenTiers', () => {
+  const limits = { desktop: 15, tablet: 16, phone: 15 };
+
+  // Inside every width's cap: shown everywhere.
+  it('shows a tile inside every cap', () => {
+    expect(tileHiddenTiers(14, limits)).toEqual({ desktop: false, tablet: false, phone: false });
   });
 
-  // No phoneCap passed (every caller but the full-wall ones) → no cap at all.
-  it('returns undefined when no cap is given', () => {
-    expect(smallScreenCapLimit(undefined, 38)).toBeUndefined();
+  // The 16th photo (index 15) fills the tablet's fourth row but is past the
+  // desktop and phone caps.
+  it('hides a tile only at the widths whose cap it is past', () => {
+    expect(tileHiddenTiers(15, limits)).toEqual({ desktop: true, tablet: false, phone: true });
   });
 
-  // A curated chapter set already capped at 12 shows 12; a small-screen cap of
-  // 12 on top would hide nothing, so no phone-only "Show all" button appears.
-  it('returns undefined when the cap equals the shown count', () => {
-    expect(smallScreenCapLimit(12, 12)).toBeUndefined();
-  });
-
-  // A three-photo chapter gallery is already short — nothing to cap.
-  it('returns undefined when the cap exceeds the shown count', () => {
-    expect(smallScreenCapLimit(12, 3)).toBeUndefined();
-  });
-
-  // An empty gallery never gets a cap or a button.
-  it('returns undefined for an empty gallery', () => {
-    expect(smallScreenCapLimit(12, 0)).toBeUndefined();
-  });
-
-  // A negative cap is nonsense input; treat it as uncapped rather than hiding
-  // every photo.
-  it('returns undefined for a negative cap', () => {
-    expect(smallScreenCapLimit(-1, 38)).toBeUndefined();
+  // A width with no cap never hides, however far down the tile is.
+  it('never hides at an uncapped width', () => {
+    expect(
+      tileHiddenTiers(30, { desktop: undefined, tablet: 12, phone: 12 }),
+    ).toEqual({ desktop: false, tablet: true, phone: true });
   });
 });
 
@@ -246,33 +235,88 @@ describe('galleryColumns', () => {
   });
 });
 
-describe('visibleGalleryPhotos', () => {
-  const photos = toGalleryPhotos(['/1.jpg', '/2.jpg', '/3.jpg', '/4.jpg']);
-
-  // The load state for a capped gallery.
-  it('returns the first cap photos when collapsed', () => {
-    expect(visibleGalleryPhotos(photos, { cap: 2 })).toHaveLength(2);
+describe('fullRowLimit', () => {
+  // The NYC chapter: a 12-photo cap on the five-column grid showed two rows and
+  // a stray pair. Rounded up, it shows three full rows.
+  it('rounds a cap up to whole rows', () => {
+    expect(fullRowLimit(12, 5, 70)).toBe(15);
   });
 
-  // After "Show all N photos".
-  it('returns everything when expanded', () => {
-    expect(visibleGalleryPhotos(photos, { cap: 2, expanded: true })).toHaveLength(4);
+  // A cap that already fills its rows is kept as is.
+  it('keeps a cap that is already whole rows', () => {
+    expect(fullRowLimit(15, 5, 70)).toBe(15);
   });
 
-  // The landing page passes no cap and must keep rendering all 40. This is the
-  // case that stops the cap from becoming a silent default.
-  it('returns everything when no cap is given', () => {
-    expect(visibleGalleryPhotos(photos)).toHaveLength(4);
+  // The events page's phone cap of 6 on a four-column tablet grid: 4 + 2 became
+  // two full rows of 4.
+  it('rounds to the column count it is given', () => {
+    expect(fullRowLimit(6, 4, 10)).toBe(8);
+    expect(fullRowLimit(6, 3, 10)).toBe(6);
   });
 
-  // A cap larger than the gallery is not an error, just uncapped in practice.
-  it('returns everything when the cap exceeds the count', () => {
-    expect(visibleGalleryPhotos(photos, { cap: 99 })).toHaveLength(4);
+  // Too few photos to fill the rounded rows: show them all (ending mid-row is
+  // fine then) and offer no "Show all" button.
+  it('returns undefined when the rounded limit would hide nothing', () => {
+    expect(fullRowLimit(12, 5, 14)).toBeUndefined();
+    expect(fullRowLimit(15, 5, 15)).toBeUndefined();
   });
 
-  // Pure: the caller renders from this and must not have its source mutated.
-  it('does not mutate the input', () => {
-    visibleGalleryPhotos(photos, { cap: 1 });
-    expect(photos).toHaveLength(4);
+  // No cap, or a negative one, means uncapped.
+  it('returns undefined with no cap or a negative cap', () => {
+    expect(fullRowLimit(undefined, 5, 70)).toBeUndefined();
+    expect(fullRowLimit(-1, 5, 70)).toBeUndefined();
+  });
+
+  // A zero cap still shows one row rather than an empty grid with a button.
+  it('shows at least one row', () => {
+    expect(fullRowLimit(0, 5, 70)).toBe(5);
+  });
+});
+
+describe('galleryTierLimits', () => {
+  // NYC: cap 15 → 3 rows of 5 on desktop, 4 rows of 4 on tablet, 5 rows of 3
+  // on a phone.
+  it('aligns one cap to each width', () => {
+    expect(galleryTierLimits({ total: 70, columns: 5, cap: 15 })).toEqual({
+      desktop: 15,
+      tablet: 16,
+      phone: 15,
+    });
+  });
+
+  // Homepage: full wall on desktop, 12 (whole rows at 4 and 3) on small screens.
+  it('applies phoneCap only below desktop', () => {
+    expect(galleryTierLimits({ total: 38, columns: 5, phoneCap: 12 })).toEqual({
+      desktop: undefined,
+      tablet: 12,
+      phone: 12,
+    });
+  });
+
+  // Events page: 10 photos fill two desktop rows; phone cap 6 → 8 on tablet.
+  it('rounds the phone cap per small-screen width', () => {
+    expect(galleryTierLimits({ total: 10, columns: 5, phoneCap: 6 })).toEqual({
+      desktop: undefined,
+      tablet: 8,
+      phone: 6,
+    });
+  });
+
+  // A three-photo gallery has nothing to hide at any width.
+  it('hides nothing in a short gallery', () => {
+    expect(galleryTierLimits({ total: 3, columns: 3, cap: 15 })).toEqual({
+      desktop: undefined,
+      tablet: undefined,
+      phone: undefined,
+    });
+  });
+
+  // A two-column gallery rounds to rows of 2 at every width, not 3/4/5.
+  it('uses the gallery’s own column count when it is narrower', () => {
+    expect(galleryTierLimits({ total: 9, columns: 2, cap: 3 })).toEqual({
+      desktop: 4,
+      tablet: 4,
+      phone: 4,
+    });
   });
 });

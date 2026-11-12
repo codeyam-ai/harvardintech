@@ -6,10 +6,11 @@
 // This file IS the lightbox's data contract. `src/lib/lightbox.ts` finds tiles
 // by `[data-lightbox-open]`, reads `data-full` / `data-caption` / `data-alt`
 // off them, and decides what's reachable by arrowing from whether the enclosing
-// `.gallery-item` is `hidden`. Change an attribute name here and the lightbox
+// `.gallery-item` is displayed. Change an attribute name here and the lightbox
 // goes quiet rather than erroring — so keep the two in step.
 import { withBase } from '../../lib/url';
 import ResponsiveImg from '../ResponsiveImg.astro';
+import type { GalleryTier } from '../../lib/gallery';
 
 interface Props {
   /** Photo path, root-relative. Passed through `withBase` here, not by callers. */
@@ -17,26 +18,23 @@ interface Props {
   /** Editorial caption shown under the enlarged photo. Absent for most photos. */
   caption?: string;
   alt: string;
-  /** Over the gallery's cap: shipped in the HTML but not shown until "Show all".
-   *  Hidden tiles are display:none, so they occupy no grid cell and the visible
-   *  photos flow as one continuous run. */
-  overflow?: boolean;
-  /** Past the gallery's small-screen cap: shown on desktop, hidden by
-   *  EventGallery's CSS at ≤900px until "Show all". */
-  phoneOverflow?: boolean;
+  /** The grid widths at which this tile is past the gallery's full-row cap:
+   *  shipped in the HTML, but hidden by EventGallery's CSS at those widths
+   *  until "Show all". Hidden tiles are display:none, so they take no grid cell
+   *  and the visible photos flow as one continuous run. */
+  hideOn?: Partial<Record<GalleryTier, boolean>>;
   /** Per-tile stagger for the scroll-in fade, in ms. */
   delayMs?: number;
 }
 
-const { src, caption, alt, overflow = false, phoneOverflow = false, delayMs = 0 } =
-  Astro.props;
+const { src, caption, alt, hideOn = {}, delayMs = 0 } = Astro.props;
 ---
 
 <figure
   class="gallery-item"
-  hidden={overflow}
-  data-gallery-overflow={overflow ? '' : undefined}
-  data-phone-overflow={phoneOverflow ? '' : undefined}
+  data-hide-desktop={hideOn.desktop ? '' : undefined}
+  data-hide-tablet={hideOn.tablet ? '' : undefined}
+  data-hide-phone={hideOn.phone ? '' : undefined}
   style={`transition-delay: ${delayMs}ms;`}
 >
   {/* A button, not a link: there is no URL to navigate to, and a button is

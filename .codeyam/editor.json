@@ -806,6 +806,10 @@
   ],
   "testCacheIgnorePatterns": [
     "**/*.md",
+    "CMS_SETUP.md",
+    "DEPLOY_SETUP.md",
+    "README.md",
+    "docs/**",
     ".gitattributes",
     ".gitignore",
     ".claude/**",

@@ -1643,6 +1643,12 @@
     }
   },
   {
+    "description": "How many photos a collapsed gallery shows on a grid of N columns: the requested cap rounded up to whole rows, or undefined when that would hide nothing (so no Show all button).",
+    "filePath": "src/lib/gallery.ts",
+    "name": "fullRowLimit",
+    "testFile": "src/lib/gallery.test.ts"
+  },
+  {
     "description": "How many columns a gallery grid should use for a given photo count: one per photo up to a maximum of five, so a three-photo chapter renders three columns rather than five with two holes, while the shared 40-photo wall stays on the full-width grid. Floors at one so an empty gallery cannot produce an invalid grid-template.",
     "filePath": "src/lib/gallery.ts",
     "name": "galleryColumns",
@@ -1667,6 +1673,12 @@
     "description": "Returns the per-tile CSS transition-delay (ms) that staggers the Event Gallery fade-in across grid columns; tiles in the same column share a delay so each column ripples in together. Defaults to 5 columns, 60ms per column step.",
     "filePath": "src/lib/gallery.ts",
     "name": "galleryStaggerDelay",
+    "testFile": "src/lib/gallery.test.ts"
+  },
+  {
+    "description": "The collapsed photo count at each grid width (desktop 5, tablet 4, phone 3 columns). cap applies everywhere, phoneCap replaces it below desktop; each is rounded to whole rows at that width.",
+    "filePath": "src/lib/gallery.ts",
+    "name": "galleryTierLimits",
     "testFile": "src/lib/gallery.test.ts"
   },
   {
@@ -3383,16 +3395,6 @@
     "testFile": "src/lib/lumaFeed.test.ts"
   },
   {
-    "description": "How many photos an EventGallery keeps at phone and tablet widths, at or under 900px; undefined when the small-screen cap would hide nothing, which also suppresses the phone-only Show all button.",
-    "filePath": "src/lib/gallery.ts",
-    "name": "smallScreenCapLimit",
-    "tags": [
-      "gallery",
-      "responsive"
-    ],
-    "testFile": "src/lib/gallery.test.ts"
-  },
-  {
     "description": "Diameter of a SocialLinks badge for a given glyph size: glyph plus a 12px ring each side, floored at the 44px minimum tap target.",
     "filePath": "src/lib/tapTarget.ts",
     "name": "socialBadgeSize",
@@ -3625,6 +3627,12 @@
     "testFile": "src/lib/momentumNetwork.test.ts"
   },
   {
+    "description": "The grid widths at which a gallery tile is past that width's full-row cap, so EventGallery hides it there until Show all.",
+    "filePath": "src/lib/gallery.ts",
+    "name": "tileHiddenTiers",
+    "testFile": "src/lib/gallery.test.ts"
+  },
+  {
     "description": "One boolean per section saying whether it renders on the tinted band. Narrative sections alternate tinted and untinted so consecutive prose stays separated; the counter advances only on narratives, so a bespoke band between two of them does not flip the rhythm. Pure, replacing a counter that was mutated inside the page's render map.",
     "filePath": "src/lib/momentumSections.ts",
     "name": "tintedFlags",
@@ -3779,12 +3787,6 @@
       "strikingly-archive"
     ],
     "testFile": "src/lib/strikinglyArchive.test.ts"
-  },
-  {
-    "description": "The photos a gallery shows before and after its 'Show all N photos' control: the first `cap` when collapsed, everything when expanded or when no cap is given. The absent-cap case is what keeps the landing page's 40-photo wall uncapped — a default cap would silently truncate it. Pure; the caller renders from the result and its input is never mutated.",
-    "filePath": "src/lib/gallery.ts",
-    "name": "visibleGalleryPhotos",
-    "testFile": "src/lib/gallery.test.ts"
   },
   {
     "description": "Picks the Vite dependency cache for the running Astro command: the default node_modules/.vite for astro dev, a separate node_modules/.vite-build for build and check. A production-mode build sharing the dev cache replaced the dev server React runtime and broke every island with jsxDEV is not a function.",

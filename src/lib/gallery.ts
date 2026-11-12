@@ -47,35 +47,71 @@ export function galleryColumns(count: number, max = 5): number {
   return Math.max(1, Math.min(count, max));
 }
 
+/** The grid's three widths: >900px, 601–900px, ≤600px (EventGallery's CSS). */
+export type GalleryTier = 'desktop' | 'tablet' | 'phone';
+
+/** The most columns each tier's grid can have; a short gallery has fewer. */
+export const GALLERY_TIER_MAX_COLUMNS: Record<GalleryTier, number> = {
+  desktop: 5,
+  tablet: 4,
+  phone: 3,
+};
+
 /**
- * The photos to render given the collapsed/expanded state.
+ * How many photos a collapsed gallery shows on a grid of `columns`, or
+ * `undefined` when it would hide nothing (so no "Show all" button).
  *
- * `cap` absent means "show everything", which is what keeps the landing page's
- * 40-photo wall uncapped — the cap is opt-in per call site rather than a
- * default, so adding it here could never silently truncate the homepage.
+ * The requested `limit` is rounded UP to whole rows, so a collapsed gallery
+ * never stops mid-row: a 12-photo cap on the five-column grid showed two full
+ * rows and a stray pair. Only a gallery with too few photos to fill its last
+ * row ends mid-row, and then it shows all of them.
  */
-export function visibleGalleryPhotos(
-  photos: readonly GalleryPhoto[],
-  opts: { expanded?: boolean; cap?: number } = {},
-): GalleryPhoto[] {
-  const { expanded = false, cap } = opts;
-  if (expanded || cap === undefined || cap < 0) return [...photos];
-  return photos.slice(0, cap);
+export function fullRowLimit(
+  limit: number | undefined,
+  columns: number,
+  total: number,
+): number | undefined {
+  if (limit === undefined || limit < 0 || columns < 1) return undefined;
+  const aligned = Math.max(1, Math.ceil(limit / columns)) * columns;
+  return aligned >= total ? undefined : aligned;
 }
 
 /**
- * How many photos to keep on a phone or tablet (≤900px), or `undefined` when
- * the small-screen cap would hide nothing. Desktop always shows `shownCount`;
- * on a 390px phone the homepage's 38-photo wall ran to ~2,500px of scrolling
- * (responsive pass, 2026-10-16). Undefined also means no phone-only
- * "Show all" button, so a short gallery never offers one that reveals nothing.
+ * The collapsed photo count at each grid width. `cap` collapses at every width;
+ * `phoneCap` (when given) replaces it at tablet and phone widths only. Each is
+ * rounded to that width's own column count, so a gallery ends on a full row at
+ * 5, 4 and 3 columns alike.
  */
-export function smallScreenCapLimit(
-  phoneCap: number | undefined,
-  shownCount: number,
-): number | undefined {
-  if (phoneCap === undefined || phoneCap < 0 || phoneCap >= shownCount) return undefined;
-  return phoneCap;
+export function galleryTierLimits(opts: {
+  total: number;
+  columns: number;
+  cap?: number;
+  phoneCap?: number;
+}): Record<GalleryTier, number | undefined> {
+  const { total, columns, cap, phoneCap } = opts;
+  const small = phoneCap ?? cap;
+  const cols = (tier: GalleryTier) => Math.min(columns, GALLERY_TIER_MAX_COLUMNS[tier]);
+  return {
+    desktop: fullRowLimit(cap, cols('desktop'), total),
+    tablet: fullRowLimit(small, cols('tablet'), total),
+    phone: fullRowLimit(small, cols('phone'), total),
+  };
+}
+
+/**
+ * The grid widths at which tile `index` is past that width's cap, i.e. hidden
+ * until "Show all". A width with no cap (undefined) never hides anything.
+ */
+export function tileHiddenTiers(
+  index: number,
+  limits: Record<GalleryTier, number | undefined>,
+): Record<GalleryTier, boolean> {
+  const past = (limit: number | undefined) => limit !== undefined && index >= limit;
+  return {
+    desktop: past(limits.desktop),
+    tablet: past(limits.tablet),
+    phone: past(limits.phone),
+  };
 }
 
 // Whether to reveal every tile immediately instead of animating them in. We

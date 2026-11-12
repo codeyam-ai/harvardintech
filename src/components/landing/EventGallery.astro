@@ -21,9 +21,10 @@ import GalleryExpand from './GalleryExpand.astro';
 import {
   galleryColumns,
   galleryStaggerDelay,
-  smallScreenCapLimit,
+  galleryTierLimits,
+  tileHiddenTiers,
   toGalleryPhotos,
-  visibleGalleryPhotos,
+  type GalleryTier,
 } from '../../lib/gallery';
 import { altFor, readMediaManifest } from '../../lib/media';
 
@@ -36,7 +37,9 @@ interface Props {
    * outright would break a scenario for no gain.
    */
   images?: string[];
-  /** Collapse past this many photos behind "Show all N". Absent → uncapped. */
+  /** Collapse past this many photos behind "Show all N", rounded up to whole
+   *  rows at each grid width so the gallery never stops mid-row. Absent →
+   *  uncapped. */
   cap?: number;
   /**
    * The same collapse, on phone and tablet widths only (≤900px, where the grid
@@ -72,9 +75,12 @@ const {
 
 const all = toGalleryPhotos(photos ?? images ?? defaults);
 const columns = galleryColumns(all.length);
-const shown = visibleGalleryPhotos(all, { cap });
-const hidden = all.length - shown.length;
-const phoneLimit = smallScreenCapLimit(phoneCap, shown.length);
+// Per grid width, how many photos show before "Show all" — each a whole number
+// of rows at that width's column count, or undefined when nothing is hidden.
+const limits = galleryTierLimits({ total: all.length, columns, cap, phoneCap });
+const tiers = (['desktop', 'tablet', 'phone'] as GalleryTier[]).filter(
+  (tier) => limits[tier] !== undefined,
+);
 
 // Read the library once for the whole grid rather than per photo.
 const media = readMediaManifest();
@@ -99,21 +105,14 @@ const media = readMediaManifest();
             src={photo.src}
             caption={photo.caption}
             alt={altFor(photo.src, `Harvard Alumni in Tech event photo ${i + 1}`, media)}
-            overflow={i >= shown.length}
-            phoneOverflow={phoneLimit !== undefined && i >= phoneLimit && i < shown.length}
+            hideOn={tileHiddenTiers(i, limits)}
             delayMs={galleryStaggerDelay(i, columns)}
           />
         ))
       }
     </div>
 
-    {
-      hidden > 0 ? (
-        <GalleryExpand total={all.length} />
-      ) : phoneLimit !== undefined ? (
-        <GalleryExpand total={all.length} phoneOnly />
-      ) : null
-    }
+    {tiers.length > 0 ? <GalleryExpand total={all.length} tiers={tiers} /> : null}
   </div>
 
   <GalleryLightbox />
@@ -146,10 +145,20 @@ const media = readMediaManifest();
       grid-template-columns: repeat(min(var(--gallery-cols, 5), 3), 1fr);
     }
   }
-  /* The small-screen cap. `data-expanded` is set by "Show all"; until then the
-     tiles past `phoneCap` take no grid cell, exactly like the full cap's. */
-  @media (max-width: 900px) {
-    .gallery-grid:not([data-expanded]) :global([data-phone-overflow]) {
+  /* The full-row caps, one per grid width. `data-expanded` is set by "Show
+     all"; until then the tiles past that width's cap take no grid cell. */
+  @media (min-width: 901px) {
+    .gallery-grid:not([data-expanded]) :global([data-hide-desktop]) {
+      display: none;
+    }
+  }
+  @media (min-width: 601px) and (max-width: 900px) {
+    .gallery-grid:not([data-expanded]) :global([data-hide-tablet]) {
+      display: none;
+    }
+  }
+  @media (max-width: 600px) {
+    .gallery-grid:not([data-expanded]) :global([data-hide-phone]) {
       display: none;
     }
   }
@@ -168,9 +177,6 @@ const media = readMediaManifest();
   // the revealed tiles need observing (they were display:none on the first
   // pass, so they could never intersect) and their buttons need binding.
   document.querySelector('[data-gallery-expand]')?.addEventListener('click', (event) => {
-    document
-      .querySelectorAll<HTMLElement>('[data-gallery-overflow]')
-      .forEach((tile) => (tile.hidden = false));
     document.querySelector<HTMLElement>('.gallery-grid')?.setAttribute('data-expanded', '');
     (event.currentTarget as HTMLElement).closest('.gallery-more')?.remove();
     initGalleryReveal();

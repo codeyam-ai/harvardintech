@@ -5,18 +5,25 @@
 // this component never renders a button that would reveal nothing. The photos
 // it reveals already shipped in the HTML as hidden tiles, so the click is
 // instant and needs no refetch.
+import type { GalleryTier } from '../../lib/gallery';
+
 interface Props {
   /** The full photo count, including the hidden ones — the number in the label. */
   total: number;
-  /** Only the small-screen cap hides anything, so the button exists only at
-   *  phone and tablet widths. */
-  phoneOnly?: boolean;
+  /** The grid widths at which photos are hidden. The button shows only at
+   *  those, so a width that already shows everything never offers one. */
+  tiers: GalleryTier[];
 }
 
-const { total, phoneOnly = false } = Astro.props;
+const { total, tiers } = Astro.props;
 ---
 
-<div class:list={['gallery-more', { 'gallery-more--phone': phoneOnly }]}>
+<div
+  class="gallery-more"
+  data-show-desktop={tiers.includes('desktop') ? '' : undefined}
+  data-show-tablet={tiers.includes('tablet') ? '' : undefined}
+  data-show-phone={tiers.includes('phone') ? '' : undefined}
+>
   <button type="button" class="gallery-expand" data-gallery-expand>
     Show all {total} photos
   </button>
@@ -27,6 +34,22 @@ const { total, phoneOnly = false } = Astro.props;
     text-align: center;
     margin-top: 16px;
   }
+  /* Same three widths as EventGallery's grid: >900px, 601–900px, ≤600px. */
+  @media (min-width: 901px) {
+    .gallery-more:not([data-show-desktop]) {
+      display: none;
+    }
+  }
+  @media (min-width: 601px) and (max-width: 900px) {
+    .gallery-more:not([data-show-tablet]) {
+      display: none;
+    }
+  }
+  @media (max-width: 600px) {
+    .gallery-more:not([data-show-phone]) {
+      display: none;
+    }
+  }
   .gallery-expand {
     font: inherit;
     font-weight: 600;
@@ -35,12 +58,6 @@ const { total, phoneOnly = false } = Astro.props;
     border-radius: 4px;
     background: var(--white);
     cursor: pointer;
-  }
-  /* Matches the ≤900px breakpoint in EventGallery that hides the capped tiles. */
-  @media (min-width: 901px) {
-    .gallery-more--phone {
-      display: none;
-    }
   }
   .gallery-expand {
     min-height: 44px;

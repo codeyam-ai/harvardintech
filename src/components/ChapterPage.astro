@@ -150,9 +150,10 @@ const hasBody = Astro.slots.has('default');
         /* The gallery follows the photos: shown when this page has its own,
            absent otherwise. An empty `photos` list (what the CMS leaves behind
            when an editor removes the last row) counts as none. `cap` is passed
-           ONLY here; the landing page stays uncapped. */
+           ONLY here; the landing page stays uncapped. 15 is three full rows of
+           the five-column grid; narrower grids round to their own full rows. */
         photos?.length ? (
-          <EventGallery photos={photos} cap={12} heading={`Photos from ${name}`} />
+          <EventGallery photos={photos} cap={15} heading={`Photos from ${name}`} />
         ) : null
       }
       {/* Every active chapter page ends by offering the way in that needs no

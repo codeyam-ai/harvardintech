@@ -159,6 +159,23 @@ describe('initLightbox', () => {
     expect(scope?.dataset.lightboxIndex).toBe('0');
   });
 
+  // The full-row caps hide tiles with width-specific CSS, not `hidden`, so a
+  // tile that is simply not displayed must be skipped the same way.
+  it('skips photos hidden by CSS rather than the hidden attribute', async () => {
+    mountGallery(5);
+    document
+      .querySelectorAll<HTMLElement>('.gallery-item')
+      .forEach((tile, i) => i >= 3 && (tile.style.display = 'none'));
+    const scope = document.querySelector<HTMLElement>('[data-lightbox-scope]');
+    stubShowModal();
+    const { initLightbox } = await import('./lightbox');
+    initLightbox();
+
+    document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]')[2].click();
+    document.querySelector<HTMLElement>('[data-lightbox-next]')?.click();
+    expect(scope?.dataset.lightboxIndex).toBe('0');
+  });
+
   // After "Show all" unhides the rest, the ALREADY-BOUND tiles must arrow
   // through the full set. This is why the button list is resolved at click
   // time instead of captured when initLightbox first ran.

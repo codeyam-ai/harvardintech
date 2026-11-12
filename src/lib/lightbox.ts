@@ -77,9 +77,15 @@ export function initLightbox(): void {
     // are in the DOM from the start but hidden, and "Show all" reveals them
     // in place — so a list captured on the first call would leave the original
     // tiles arrowing around 12 photos while the grid shows 14.
+    // A tile counts as visible when it is displayed: the full-row caps hide
+    // tiles with CSS that differs per screen width, not with `hidden`.
     const visibleButtons = () =>
       Array.from(scope.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]')).filter(
-        (button) => !button.closest('.gallery-item')?.hasAttribute('hidden'),
+        (button) => {
+          const tile = button.closest<HTMLElement>('.gallery-item');
+          if (!tile) return true;
+          return !tile.hasAttribute('hidden') && getComputedStyle(tile).display !== 'none';
+        },
       );
 
     const buttons = visibleButtons();
