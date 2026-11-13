@@ -20,7 +20,11 @@ describe('upcomingEventCount', () => {
   const now = '2026-11-13';
   // Counted like splitEvents: an event on the day itself is still upcoming.
   it('counts today and later, not earlier', () => {
-    const events = [{ date: '2026-11-12' }, { date: '2026-11-13' }, { date: '2026-12-08' }];
+    const events = [
+      { title: 'a', date: '2026-11-12' },
+      { title: 'b', date: '2026-11-13' },
+      { title: 'c', date: '2026-12-08' },
+    ];
     expect(upcomingEventCount(events, now)).toBe(2);
     expect(upcomingEventCount(events, now)).toBe(splitEvents(events, now).upcoming.length);
   });
