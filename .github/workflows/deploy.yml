@@ -128,7 +128,9 @@ jobs:
       - name: Install dependencies
         # The repo's postinstall downloads a Playwright Chromium for local
         # scenario capture. A deploy build never drives a browser, so skip the
-        # ~150MB download on both tracks.
+        # ~150MB download on both tracks. Honoured by scripts/install-browser.mjs
+        # — Playwright's own handling of this variable does not cover the
+        # explicit `playwright install` the postinstall used to run.
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
         run: npm ci
