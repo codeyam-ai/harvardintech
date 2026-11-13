@@ -225,6 +225,11 @@ const chapters = defineCollection({
     // "HARVARD IN TECH <CITY>" title. All optional → a chapter without them
     // falls back to the centered header.
     heroImage: z.string().optional(),
+    // A banner photo under a licence that requires credit (CC BY) names its
+    // author here, shown small in the banner's corner and linked to the
+    // photo's source page. Unsplash and own-event photos leave it blank.
+    heroCredit: z.string().optional(),
+    heroCreditUrl: z.string().optional(),
     tagline: z.string().optional(),
     // This chapter's OWN event photos, curated in /admin. The "Photos from
     // <city>" gallery shows exactly when this list is non-empty; absent or

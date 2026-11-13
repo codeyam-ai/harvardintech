@@ -1,7 +1,11 @@
 ---
 blurb: Our West Coast chapter across San Francisco and Silicon Valley.
 city: SF & Bay Area
-heroImage: /images/events/sf-group-brick-wall.webp
+heroImage: /images/chapters/sf-bay-area.jpg
+heroCredit: 'Photo: Ben Ramirez, CC BY 3.0'
+heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Golden_Gate_1_(32898509).jpeg'
+featuredImage: /images/events/sf-group-brick-wall.webp
+featuredCaption: Leaders in Engineering Panel, San Francisco, April 2026
 leads:
   - name: Jessica Li
     role: Interim chapter lead

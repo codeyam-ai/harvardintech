@@ -220,6 +220,20 @@
           ]
         },
         {
+          "name": "heroCredit",
+          "label": "Banner photo credit",
+          "type": "text",
+          "optional": true,
+          "hint": "Only for a banner photo whose license requires credit (CC BY), e.g. \"Photo: Ben Ramirez, CC BY 3.0\". Shown small in the banner's corner. Leave blank for Unsplash or our own photos."
+        },
+        {
+          "name": "heroCreditUrl",
+          "label": "Banner photo credit link",
+          "type": "text",
+          "optional": true,
+          "hint": "The photo's source page, which states its license."
+        },
+        {
           "name": "featuredImage",
           "label": "Featured photo",
           "type": "image",

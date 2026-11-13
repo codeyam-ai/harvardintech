@@ -33,8 +33,20 @@ interface Props {
   tagline?: string;
   /** "Chapter", "Online group", "Community" — see `lib/pageBanner.ts`. */
   label?: string;
+  /** Banner photo credit and its link, for a licence that requires one. */
+  heroCredit?: string;
+  heroCreditUrl?: string;
 }
-const { name, region, blurb, heroImage, tagline, label = 'Chapter' } = Astro.props as Props;
+const {
+  name,
+  region,
+  blurb,
+  heroImage,
+  tagline,
+  label = 'Chapter',
+  heroCredit,
+  heroCreditUrl,
+} = Astro.props as Props;
 
 // A chapter with a photo gets the photo tone; one without falls back to paper
 // rather than to a second component. The region is appended to the lede rather
@@ -49,6 +61,8 @@ const lede = tagline ?? blurb;
   lede={lede}
   image={heroImage}
   tone={heroImage ? 'photo' : 'paper'}
+  credit={heroCredit}
+  creditUrl={heroCreditUrl}
 >
   {region ? <p class="chapter-region">{region}</p> : null}
 </PageBanner>

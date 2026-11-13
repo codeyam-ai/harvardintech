@@ -41,6 +41,13 @@ interface Props {
    *  one short word — /events, at Daniela's request (2026-11-07) — where the
    *  long-name wrapping problem cannot arise. */
   align?: 'left' | 'center';
+  /** Photo credit for a licence that requires one (CC BY), e.g. "Photo: Ben
+   *  Ramirez, CC BY 3.0". Shown small in the photo's corner; only on the photo
+   *  tone, since a paper banner has no photo to credit. */
+  credit?: string;
+  /** Where the credit links — the photo's source page, which states its
+   *  licence. */
+  creditUrl?: string;
 }
 const {
   label,
@@ -51,6 +58,8 @@ const {
   imagePosition,
   titleField,
   align = 'left',
+  credit,
+  creditUrl,
 } = Astro.props as Props;
 
 // A photo tone with no photo is the single most likely way to misuse this, and
@@ -79,6 +88,19 @@ const resolved = tone === 'photo' && image ? 'photo' : 'paper';
     {lede ? <p class="banner-lede">{lede}</p> : null}
     <slot />
   </div>
+  {
+    resolved === 'photo' && credit ? (
+      <p class="banner-credit">
+        {creditUrl ? (
+          <a href={creditUrl} rel="noopener" target="_blank">
+            {credit}
+          </a>
+        ) : (
+          credit
+        )}
+      </p>
+    ) : null
+  }
 </section>
 
 <style>
@@ -135,6 +157,23 @@ const resolved = tone === 'photo' && image ? 'photo' : 'paper';
     font-size: var(--t-lg);
     line-height: 1.6;
     color: var(--ink-2);
+  }
+  .banner-credit {
+    position: absolute;
+    right: 12px;
+    bottom: 8px;
+    z-index: 2;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .banner-credit a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .banner-credit a:hover {
+    text-decoration: underline;
   }
   /* Slotted content (a BannerCta's inline pill) centres with the text. */
   .banner[data-align='center'] .banner-in {
