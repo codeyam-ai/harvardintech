@@ -9,7 +9,52 @@ import {
   splitArchive,
   ARCHIVE_BEFORE,
   calendarEmbedUrl,
+  upcomingEventCount,
+  lumaFrameHeight,
+  LUMA_FRAME_MIN_PX,
+  LUMA_FRAME_PER_EVENT_PX,
+  LUMA_FRAME_MAX_EVENTS,
 } from './events';
+
+describe('upcomingEventCount', () => {
+  const now = '2026-11-13';
+  // Counted like splitEvents: an event on the day itself is still upcoming.
+  it('counts today and later, not earlier', () => {
+    const events = [{ date: '2026-11-12' }, { date: '2026-11-13' }, { date: '2026-12-08' }];
+    expect(upcomingEventCount(events, now)).toBe(2);
+    expect(upcomingEventCount(events, now)).toBe(splitEvents(events, now).upcoming.length);
+  });
+
+  it('is zero for no events', () => {
+    expect(upcomingEventCount([], now)).toBe(0);
+  });
+});
+
+describe('lumaFrameHeight', () => {
+  // The owner's ask: every upcoming event visible without scrolling inside the
+  // frame. Four events was the busy month that prompted it; on a phone Luma's
+  // list measured 939px tall, so the frame must be at least that.
+  it('fits four events as measured on a phone', () => {
+    expect(lumaFrameHeight(4)).toBeGreaterThanOrEqual(939);
+  });
+
+  // Each further event adds one card's worth of height.
+  it('grows by one card per event', () => {
+    expect(lumaFrameHeight(5) - lumaFrameHeight(4)).toBe(LUMA_FRAME_PER_EVENT_PX);
+  });
+
+  // Below the floor Luma's own empty state would grow a scrollbar.
+  it('never drops below the floor', () => {
+    expect(lumaFrameHeight(0)).toBe(LUMA_FRAME_MIN_PX);
+    expect(lumaFrameHeight(1)).toBe(LUMA_FRAME_MIN_PX);
+    expect(lumaFrameHeight(-3)).toBe(LUMA_FRAME_MIN_PX);
+  });
+
+  // A very busy month scrolls inside the frame rather than growing forever.
+  it('stops growing past the cap', () => {
+    expect(lumaFrameHeight(LUMA_FRAME_MAX_EVENTS + 5)).toBe(lumaFrameHeight(LUMA_FRAME_MAX_EVENTS));
+  });
+});
 
 describe('calendarEmbedUrl', () => {
   const EMBED = 'https://lu.ma/embed/calendar/cal-x/events';

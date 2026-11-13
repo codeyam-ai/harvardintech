@@ -1,6 +1,6 @@
 ---
 kind: focus
-title: Focus areas
+title: Ways to connect
 kicker: Explore
 order: 6
 ---

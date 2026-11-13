@@ -1,8 +1,8 @@
 ---
 title: 'Momentum Fund page'
 donateUrl: ''
-heroHeadlineNamed: "{name}, let's go further together."
-heroHeadlineGeneric: "Let's go further together."
+heroHeadlineNamed: '{name}, invest in our community.'
+heroHeadlineGeneric: 'Invest in our community.'
 heroKicker: The Momentum Fund
 heroSubhead: Help build the foundation Harvard Alumni in Tech needs to sustain its momentum and serve a growing global community.
 heroImage: /images/bg/hero-bg.jpg

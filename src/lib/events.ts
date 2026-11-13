@@ -144,6 +144,45 @@ export function calendarEmbedUrl(
   return events.some((e) => toEventDate(e.date).valueOf() >= reference) ? embedUrl : undefined;
 }
 
+/** How many events are upcoming at `now`, counted the way {@link splitEvents}
+ *  and {@link calendarEmbedUrl} count them (an event at `now` is upcoming). */
+export function upcomingEventCount(
+  events: readonly Pick<EventLike, 'date'>[],
+  now: string | Date,
+): number {
+  const reference = toEventDate(now).valueOf();
+  return events.filter((e) => toEventDate(e.date).valueOf() >= reference).length;
+}
+
+/** Luma's own empty state measures 371px at the calendar column's width, so a
+ *  frame any shorter grows a scrollbar around "No Upcoming Events". */
+export const LUMA_FRAME_MIN_PX = 380;
+/** Measured on the live embed (2026-11-13, four events): an event card plus its
+ *  share of the date headings runs ~218px at the 920px desktop column and
+ *  ~235px on a 358px-wide phone, where titles wrap. The phone figure is used
+ *  for both, so no width cuts off the last event; on a desktop that costs a
+ *  little grey under the last card. */
+export const LUMA_FRAME_PER_EVENT_PX = 235;
+/** Luma's top padding and the bottom margin under the last card. */
+export const LUMA_FRAME_CHROME_PX = 40;
+/** Past this many events the frame stops growing and scrolls inside, so a
+ *  very busy month cannot turn the page into one long iframe. */
+export const LUMA_FRAME_MAX_EVENTS = 10;
+
+/**
+ * The Luma embed's frame height for `count` upcoming events, in CSS pixels.
+ *
+ * The embed is a cross-origin iframe that does not report its content height,
+ * so the page has to choose one. A fixed height either cut the list off (the
+ * owner asked, 2026-11-13, for every upcoming event to show without scrolling
+ * inside the frame) or left a mostly empty grey box in a quiet month. Sizing it
+ * from the count we already import from the same calendar does both.
+ */
+export function lumaFrameHeight(count: number): number {
+  const shown = Math.min(Math.max(0, Math.floor(count)), LUMA_FRAME_MAX_EVENTS);
+  return Math.max(LUMA_FRAME_MIN_PX, LUMA_FRAME_CHROME_PX + shown * LUMA_FRAME_PER_EVENT_PX);
+}
+
 /**
  * The most recent `limit` events from an already-past list.
  *

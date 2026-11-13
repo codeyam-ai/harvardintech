@@ -18,7 +18,7 @@ import { LUMA_EMBED_URL } from '../lib/luma';
 import { siteLinks } from '../lib/site';
 import { publishedEntries } from '../lib/drafts';
 import { INCLUDE_DRAFTS } from '../lib/draftVisibility';
-import { calendarEmbedUrl } from '../lib/events';
+import { calendarEmbedUrl, upcomingEventCount } from '../lib/events';
 import { siteNow } from '../lib/siteClock';
 
 // Drafts are shown while authoring and on the review track, never on the public site.
@@ -33,6 +33,9 @@ const events = publishedEntries(await getCollection('events'), INCLUDE_DRAFTS).m
 // One "now" for the embed decision and the past grid, so they cannot disagree.
 const now = siteNow();
 const embedUrl = calendarEmbedUrl(events, LUMA_EMBED_URL, now);
+// How many events the Luma embed will list, so its frame can be tall enough to
+// show them all (the embed cannot report its own height).
+const upcomingCount = upcomingEventCount(events, now);
 
 // Highlights gallery, curated in /admin on the `events` page-copy entry. No
 // entry, or an empty photo list, renders nothing — the page reads as it did.
@@ -44,6 +47,16 @@ const galleryPhotos = pageCopy?.galleryPhotos ?? [];
   {/* The page's own title first, so it opens saying what it is rather than
       handing the first line to the Luma embed's "Full events calendar". */}
   <EventsIntroBand image={pageCopy?.bannerImage} />
+  {/* The calendar PAGE is editable through settings; the embed URL stays in
+      code because it carries the calendar id that `lumaFeed.test.ts` pins to
+      the importer — the two must name the same calendar. Upcoming events come
+      before the past-event photos (owner, 2026-11-13): what you can still go to
+      is the reason most visitors open this page. */}
+  <LumaCalendar
+    calendarUrl={siteLinks().luma}
+    embedUrl={embedUrl}
+    eventCount={upcomingCount}
+  />
   {
     galleryPhotos.length > 0 && (
       <EventGallery
@@ -55,9 +68,5 @@ const galleryPhotos = pageCopy?.galleryPhotos ?? [];
       />
     )
   }
-  {/* The calendar PAGE is editable through settings; the embed URL stays in
-      code because it carries the calendar id that `lumaFeed.test.ts` pins to
-      the importer — the two must name the same calendar. */}
-  <LumaCalendar calendarUrl={siteLinks().luma} embedUrl={embedUrl} />
   <EventsPage events={events} now={now} showIntro={false} />
 </BaseLayout>

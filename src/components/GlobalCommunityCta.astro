@@ -1,5 +1,5 @@
 ---
-// "Not near a chapter? Join the global community."
+// "No local chapter? You're still part of our global community!"
 //
 // This is the answer to a question the site used to leave hanging. Four cities
 // hold in-person events and two more are forming; every other alum — which is
@@ -23,26 +23,32 @@ interface Props {
    *  above it never wants another, so this stays a section heading. */
   id?: string;
 }
-const { heading = 'Not near a chapter? Join the global community.', id = 'global-community' } =
-  Astro.props;
+const {
+  heading = "No local chapter? You're still part of our global community!",
+  id = 'global-community',
+} = Astro.props;
 
 const { whatsappFormUrl, newsletterUrl, volunteerUrl } = joinCtas();
 
+// Copy from Daniela's review (2026-11-07). The WhatsApp blurb keeps the "active
+// conversations on AI…" clause from Laura's review, which asked the card to say
+// what a member will find inside. The newsletter label stays "Subscribe to the
+// newsletter", the one wording the site uses for that link everywhere.
 const actions = [
   {
-    label: 'Join the WhatsApp community',
+    label: 'Join our WhatsApp community',
     href: whatsappFormUrl,
-    blurb: 'Active conversations on AI, building companies and investing, with alumni worldwide. Sign up and we will verify your alumni affiliation.',
+    blurb: "Connect with Harvard alumni around the world, in active conversations on AI, building companies and investing. Simply fill out the form, and we'll verify your alumni affiliation.",
   },
   {
     label: 'Subscribe to the newsletter',
     href: newsletterUrl,
-    blurb: "Events, chapter news and alumni stories in one email — with what's happening near you up top.",
+    blurb: 'Stay up to date on upcoming events, chapter news, and alumni stories, including opportunities to connect near you.',
   },
   {
     label: 'Volunteer with us',
     href: volunteerUrl,
-    blurb: 'Help run a program, or start something where you live.',
+    blurb: 'Help organize events, support community initiatives, or bring Harvard Alumni in Tech to your city!',
   },
 ];
 ---
@@ -56,7 +62,7 @@ const actions = [
   <div class="wrap">
     <SectionHead
       title={heading}
-      intro="Stay connected wherever you are. All three are open to every alum, with or without a chapter nearby."
+      intro="Wherever you are in the world, there are plenty of ways to connect, stay involved, and build meaningful relationships with fellow Harvard alumni working in tech."
       align="center"
     />
 

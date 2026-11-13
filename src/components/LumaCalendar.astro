@@ -13,33 +13,40 @@
 // snippet (cal-id) is available. When neither url is set it shows a fallback.
 import LumaSubscribe from './LumaSubscribe.astro';
 import SectionHead from './ui/SectionHead.astro';
+import { lumaFrameHeight } from '../lib/events';
 
 interface Props {
   calendarUrl?: string;
   embedUrl?: string;
   title?: string;
   height?: number;
+  /** Upcoming events the embed will list. Set → the frame is sized to show
+   *  them all; absent → the viewport-based default. */
+  eventCount?: number;
 }
 const {
   calendarUrl,
   embedUrl,
   title = 'Full events calendar',
   height = 560,
+  eventCount,
 } = Astro.props as Props;
+const frameStyle =
+  eventCount === undefined ? undefined : `--luma-h: ${lumaFrameHeight(eventCount)}px`;
 ---
 
 <section class="luma sec" id="calendar">
   <div class="wrap">
     <SectionHead
       title={title}
-      intro="Everything coming up, across every chapter, live from our Luma calendar."
+      intro="Everything coming up, across every chapter, updated live from our Luma calendar."
       align="center"
     />
 
     {
       embedUrl ? (
         <Fragment>
-          <div class="luma-frame">
+          <div class="luma-frame" style={frameStyle}>
             <iframe
               class="luma-iframe"
               src={embedUrl}
@@ -54,14 +61,14 @@ const {
       ) : calendarUrl ? (
         <div class="luma-card">
           <div class="luma-card-copy">
-            <h3>Browse & subscribe on Luma</h3>
+            <h3>Browse & RSVP on Luma</h3>
             <p>
               Our full calendar of upcoming events lives on Luma. Subscribe to get
-              every new event, across all chapters, straight to your calendar.
+              every new event, across all chapters, straight to your inbox.
             </p>
           </div>
           <a class="btn btn-solid" href={calendarUrl} rel="noopener" target="_blank">
-            View &amp; subscribe on Luma
+            View &amp; RSVP on Luma
           </a>
         </div>
       ) : (
@@ -115,8 +122,13 @@ const {
        reached sooner in a month with nothing coming up. The floor is set by
        Luma's own empty state, which measures 371px tall at this column width
        (318px on a phone): any shorter and the frame grows a scrollbar around
-       a "No Upcoming Events" message that has nothing to scroll to. */
-    height: clamp(380px, 42vh, 460px);
+       a "No Upcoming Events" message that has nothing to scroll to.
+
+       Now sized from the upcoming-event count when the page passes one
+       (owner, 2026-11-13: show every upcoming event without scrolling inside
+       the frame) — see `lumaFrameHeight`. The clamp is the fallback for a
+       caller that does not know the count. */
+    height: var(--luma-h, clamp(380px, 42vh, 460px));
     border: 0;
     /* Luma's panel has its own rounded corners; this only clips the scroll
        area to match so the two edges agree. */

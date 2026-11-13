@@ -41,7 +41,7 @@ describe('eventsLede', () => {
   // omitting SF and misspelling two other chapters.
   it('names the chapters it is given', () => {
     expect(eventsLede(['Boston', 'London'])).toBe(
-      'In-person events, panels, and gatherings across our Boston and London chapters, plus a global community connected online.',
+      'In-person events across our Boston and London chapters, plus a global community connected online.',
     );
   });
 
@@ -50,7 +50,7 @@ describe('eventsLede', () => {
   it('drops the chapter clause when there are no chapters', () => {
     const lede = eventsLede([]);
     expect(lede).toBe(
-      'In-person events, panels, and gatherings, plus a global community connected online.',
+      'In-person events, plus a global community connected online.',
     );
     expect(lede).not.toContain('chapters');
   });
@@ -88,7 +88,7 @@ describe('eventsLedeFor', () => {
         { slug: 'boston', city: 'Boston', order: 1 },
       ]),
     ).toBe(
-      'In-person events, panels, and gatherings across our Boston and London chapters, plus a global community connected online.',
+      'In-person events across our Boston and London chapters, plus a global community connected online.',
     );
   });
 

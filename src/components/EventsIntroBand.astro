@@ -47,6 +47,11 @@ const calendarUrl = siteLinks().luma;
   image={image}
   tone={image ? 'photo' : 'paper'}
   imagePosition={image ? 'center 80%' : undefined}
+  align="center"
 >
-  {calendarUrl ? <BannerCta href={calendarUrl} label="Subscribe on Luma" /> : null}
+  {
+    calendarUrl ? (
+      <BannerCta href={calendarUrl} label="Subscribe to our events calendar on Luma" />
+    ) : null
+  }
 </PageBanner>

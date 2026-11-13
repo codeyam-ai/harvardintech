@@ -23,8 +23,8 @@ export function eventsLede(cities: readonly string[]): string {
   // With no chapters published the sentence still has to read as English, so
   // the clause drops out rather than leaving "across our  chapters".
   return list
-    ? `In-person events, panels, and gatherings across our ${list} chapters, plus a global community connected online.`
-    : 'In-person events, panels, and gatherings, plus a global community connected online.';
+    ? `In-person events across our ${list} chapters, plus a global community connected online.`
+    : 'In-person events, plus a global community connected online.';
 }
 
 /**

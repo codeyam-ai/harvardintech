@@ -1,6 +1,6 @@
 ---
 kind: gallery
-title: From our events
+title: Highlights from our events
 kicker: Community
 order: 13
 ---

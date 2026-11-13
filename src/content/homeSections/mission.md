@@ -7,5 +7,5 @@ order: 2
 ---
 
 - A network of alumni who give back and help each other
-- High-quality events, resources, and interactions
+- High-quality events, resources, and relationships
 - Thought leaders and stewards of the broader tech community

@@ -8,7 +8,7 @@ ctas:
   - label: 'Subscribe to the newsletter'
     url: 'https://mailchi.mp/0222623e1169/fbrj32e9wb'
     variant: solid
-  - label: 'Join WhatsApp'
+  - label: 'Join our WhatsApp community'
     url: '/#community'
     variant: out
 ---

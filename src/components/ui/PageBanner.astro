@@ -37,9 +37,21 @@ interface Props {
    *  preview patches exactly (see `BlogPostArticle`). Unset on every page that
    *  is not marked, so the heading carries no marker there. */
   titleField?: string;
+  /** Left-aligned by default (see above). `center` is for a page whose title is
+   *  one short word — /events, at Daniela's request (2026-11-07) — where the
+   *  long-name wrapping problem cannot arise. */
+  align?: 'left' | 'center';
 }
-const { label, title, lede, image, tone = 'paper', imagePosition, titleField } =
-  Astro.props as Props;
+const {
+  label,
+  title,
+  lede,
+  image,
+  tone = 'paper',
+  imagePosition,
+  titleField,
+  align = 'left',
+} = Astro.props as Props;
 
 // A photo tone with no photo is the single most likely way to misuse this, and
 // silently degrading is better than a black rectangle: `launch--images.md`
@@ -47,7 +59,7 @@ const { label, title, lede, image, tone = 'paper', imagePosition, titleField } =
 const resolved = tone === 'photo' && image ? 'photo' : 'paper';
 ---
 
-<section class="banner" data-tone={resolved}>
+<section class="banner" data-tone={resolved} data-align={align}>
   {
     resolved === 'photo' ? (
       <div class="banner-bg">
@@ -123,6 +135,13 @@ const resolved = tone === 'photo' && image ? 'photo' : 'paper';
     font-size: var(--t-lg);
     line-height: 1.6;
     color: var(--ink-2);
+  }
+  /* Slotted content (a BannerCta's inline pill) centres with the text. */
+  .banner[data-align='center'] .banner-in {
+    text-align: center;
+  }
+  .banner[data-align='center'] .banner-lede {
+    margin-inline: auto;
   }
 
   /* On a photo the eyebrow, title and lede all sit on the scrim, so they invert
