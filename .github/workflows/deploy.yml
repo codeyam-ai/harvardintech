@@ -91,11 +91,13 @@ jobs:
   # ---- main → codeyam-ai.github.io/harvardintech (gated today) ------------
   build:
     if: github.ref_name == 'main'
-    # Pinned, not ubuntu-latest: on 2026-11-13 ubuntu-latest moved to 26.04,
-    # where `npm ci`'s postinstall (`playwright install chromium`) fails with
-    # "Playwright does not support chromium on ubuntu26.04-x64" — no deploy can
-    # build. Move to ubuntu-latest again once Playwright supports 26.04.
-    runs-on: ubuntu-24.04
+    # On 2026-11-13 ubuntu-latest moved to 26.04, where `playwright install
+    # chromium` fails ("Playwright does not support chromium on
+    # ubuntu26.04-x64"), and every deploy broke. The build was pinned to 24.04
+    # for a day; it is back on ubuntu-latest because the install step below no
+    # longer downloads Chromium at all (scripts/install-browser.mjs). If a
+    # future runner image breaks the build, pin a version here again.
+    runs-on: ubuntu-latest
     # Read by the deploy job's last step: a refused Luma feed fails the run
     # only AFTER the site is published (see "Import events from Luma").
     outputs:
