@@ -29,4 +29,14 @@ galleryPhotos:
     caption: Alumni Day, Memorial Church
   - image: /images/events/alumni-day-2026/alumni-day-2026-03.webp
     caption: Alumni Day, Cambridge
+  - image: /images/events/sf-engineering-panel-2026/sf-engineering-panel-2026-01.webp
+    caption: Leaders in Engineering Panel, San Francisco
+  - image: /images/events/sf-engineering-panel-2026/sf-engineering-panel-2026-02.webp
+    caption: Leaders in Engineering Panel, San Francisco
+  - image: /images/events/sf-engineering-panel-2026/sf-engineering-panel-2026-03.webp
+    caption: Leaders in Engineering Panel, San Francisco
+  - image: /images/events/sf-engineering-panel-2026/sf-engineering-panel-2026-04.webp
+    caption: Leaders in Engineering Panel, San Francisco
+  - image: /images/events/sf-engineering-panel-2026/sf-engineering-panel-2026-05.webp
+    caption: Leaders in Engineering Panel, San Francisco
 ---
