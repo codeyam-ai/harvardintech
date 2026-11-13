@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 1bbe2360ac6e81ca4d466e3debedefd9331160ab  source-sha256: 7052f7c36415980efebcfa586ec3dac7b341cc416d1cd3afe7688854a77792b8
+// codeyam-editor: 0.1.7  build: 7b2fd6af5d12f0f0fa701d6a06d4c4a218ef4037  source-sha256: 0945f10fd0d9b40560a0d3989bd23e4cc8185fe5f07f998523b61e3b12d1af08
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -2298,7 +2298,7 @@ async function runScenarioCheckOnce(
       outputPath,
       url: frame.url() || url,
       unmockedRoutes,
-      mockUsage: { used: mockObserver.used, unused: mockObserver.unused },
+      mockUsage: { used: mockObserver.used, unused: mockObserver.unused, suppressedWrites: mockObserver.suppressedWrites },
       externalRequests: mockObserver.externalRequests,
       // Optional: supplied only by callers that know where the viewer's own
       // browser is served. Absent on every path that does not, which keeps the
@@ -2349,7 +2349,7 @@ async function runScenarioCheckOnce(
       unmockedRoutes,
       // A capture that threw still made requests; the inventory it collected up
       // to the failure is often exactly what explains the failure.
-      mockUsage: { used: mockObserver.used, unused: mockObserver.unused },
+      mockUsage: { used: mockObserver.used, unused: mockObserver.unused, suppressedWrites: mockObserver.suppressedWrites },
       externalRequests: mockObserver.externalRequests,
       viewerOrigin: config.viewerOrigin ?? null,
     });

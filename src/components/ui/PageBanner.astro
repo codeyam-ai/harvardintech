@@ -29,12 +29,17 @@ interface Props {
   /** `photo` needs an `image`; without one it falls back to `paper` rather than
    *  rendering an empty dark band. */
   tone?: 'paper' | 'photo';
+  /** Which part of the photo the wide, short band keeps, as a CSS
+   *  `object-position` ("center 65%"). Absent → centred. A room shot whose
+   *  people sit in the lower half otherwise shows mostly ceiling. */
+  imagePosition?: string;
   /** The CMS field the title renders, for a page whose content the /admin live
    *  preview patches exactly (see `BlogPostArticle`). Unset on every page that
    *  is not marked, so the heading carries no marker there. */
   titleField?: string;
 }
-const { label, title, lede, image, tone = 'paper', titleField } = Astro.props as Props;
+const { label, title, lede, image, tone = 'paper', imagePosition, titleField } =
+  Astro.props as Props;
 
 // A photo tone with no photo is the single most likely way to misuse this, and
 // silently degrading is better than a black rectangle: `launch--images.md`
@@ -46,7 +51,12 @@ const resolved = tone === 'photo' && image ? 'photo' : 'paper';
   {
     resolved === 'photo' ? (
       <div class="banner-bg">
-        <ResponsiveImg src={image!} alt="" loading="eager" />
+        <ResponsiveImg
+          src={image!}
+          alt=""
+          loading="eager"
+          style={imagePosition ? `object-position: ${imagePosition}` : undefined}
+        />
         <div class="banner-scrim" />
       </div>
     ) : null

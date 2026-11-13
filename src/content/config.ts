@@ -239,6 +239,13 @@ const chapters = defineCollection({
     photos: z
       .array(z.object({ image: z.string(), caption: z.string().optional() }))
       .optional(),
+    // One photo shown whole, with its caption, under the chapter's about text —
+    // for a picture worth seeing uncovered. A busy group shot fought the page
+    // name as the banner (owner, 2026-11-13: Boston's Alumni Day photo), so
+    // this is its place instead. Two flat fields rather than an object so the
+    // CMS edits them like any other. Blank image → nothing renders.
+    featuredImage: z.string().optional(),
+    featuredCaption: z.string().optional(),
     // Per-chapter "Connect With Us" email; absent → fall back to the global
     // settings contact email.
     contactEmail: z.string().optional(),
@@ -777,6 +784,9 @@ const pageCopy = defineCollection({
     galleryPhotos: z
       .array(z.object({ image: z.string(), caption: z.string().optional() }))
       .optional(),
+    // /events: the photo behind the page's "Events" banner. Blank keeps the
+    // plain paper banner.
+    bannerImage: z.string().optional(),
   }),
 });
 

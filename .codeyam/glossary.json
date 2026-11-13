@@ -136,32 +136,6 @@
     ]
   },
   {
-    "description": "Patched into @codeyam/cms. The amber line beneath an entry field (or the body) whose text uses wording the site has retired: the wording as typed, then the rule's message. FieldError's sibling in a caution colour, because a copy warning never blocks a save. Renders nothing when there is nothing to say.",
-    "filePath": "node_modules/@codeyam/cms/src/components/admin/CopyWarningNote.tsx",
-    "name": "CopyWarningNote",
-    "scenarios": [
-      "copywarningnote-retired-brand-under-a-field",
-      "copywarningnote-two-retired-forms-in-one-field"
-    ],
-    "tags": [
-      "cms",
-      "brand-name"
-    ]
-  },
-  {
-    "description": "Patched into @codeyam/cms. The one-line roll-up above the entry editor's Save button naming every field that carries a copy warning, ending with an explicit You can still save so the notes read as advice rather than a gate. Singular and plural copy; renders nothing when no field is flagged.",
-    "filePath": "node_modules/@codeyam/cms/src/components/admin/CopyWarningsSummary.tsx",
-    "name": "CopyWarningsSummary",
-    "scenarios": [
-      "copywarningssummary-two-fields-flagged",
-      "copywarningssummary-one-field-flagged"
-    ],
-    "tags": [
-      "cms",
-      "brand-name"
-    ]
-  },
-  {
     "description": "Records the answer to one open runbook decision. Deliberately not just a checkbox: a step is done or it isn't, but a decision has a CONTENT, and a control that recorded only 'answered' would strand the answer in whichever meeting produced it — which is exactly why D1 has been open since 2026-07-02. The text and the flag save together, so a decision can never read as answered with nothing recorded against it, and reopening drops both. Read-only for anyone without repo write: the answer still shows, because the point of committing it is that everyone can read it.",
     "filePath": "src/components/cutover/DecisionTick.tsx",
     "name": "DecisionTick",
@@ -170,28 +144,6 @@
       "decision-tick-writing-the-answer",
       "decision-tick-decided",
       "decision-tick-decided-read-only"
-    ]
-  },
-  {
-    "description": "The deploy status shrunk to a line in the corner, so publishing stops interrupting the work. Shown once the full panel is dismissed, and re-attached by StagingBar on whichever admin page loads next — which is what lets an editor publish, carry on editing elsewhere, and still be told her change went live. Its colour dot is never the only signal; the label says the outcome in words.",
-    "filePath": "node_modules/@codeyam/cms/src/components/admin/DeployChip.tsx",
-    "name": "DeployChip",
-    "scenarios": [
-      "deploychip-publishing",
-      "deploychip-published-still-updating",
-      "deploychip-change-is-live"
-    ]
-  },
-  {
-    "description": "The full deploy panel an editor sees after pressing Publish: a stepper from Committed through Live, the commit link, and the actions for each outcome. Dismissible at EVERY stage — it sits in a fixed full-screen scrim, so a close button that only enables on a terminal stage is a modal lock on the whole admin, which is exactly what it used to be on this site. Closing demotes it to DeployChip; the watch continues either way.",
-    "filePath": "node_modules/@codeyam/cms/src/components/admin/DeployStatus.tsx",
-    "name": "DeployStatus",
-    "scenarios": [
-      "deploystatus-publishing-dismissible",
-      "deploystatus-waiting-for-the-site",
-      "deploystatus-published-still-updating",
-      "deploystatus-live",
-      "deploystatus-build-failed"
     ]
   },
   {
@@ -603,15 +555,6 @@
     ],
     "tags": [
       "launch-design-system"
-    ]
-  },
-  {
-    "description": "The floating pill mounted in AdminLayout, so it rides along on every admin page: it counts the browser staging set, opens the review drawer, commits every staged file as one commit, and owns the deploy watch. The watch lives in its own state beside the publish flow rather than being a phase of it, which is what allows publishing again while a deploy is still in flight.",
-    "filePath": "node_modules/@codeyam/cms/src/components/admin/StagingBar.tsx",
-    "name": "StagingBar",
-    "scenarios": [
-      "stagingbar-publish-again-while-deploying",
-      "stagingbar-reviewing-before-publish"
     ]
   },
   {
@@ -1144,16 +1087,6 @@
     "testFile": "src/lib/contentRoot.test.ts"
   },
   {
-    "description": "Patched into @codeyam/cms. Turns the field names that carry copy warnings into the labels the editor sees for the summary above Save: the field's label, Body for the body, and the bare name for a key no field claims so a warning never silently drops out.",
-    "filePath": "node_modules/@codeyam/cms/src/lib/copyWarnings.ts",
-    "name": "copyWarnedFieldLabels",
-    "tags": [
-      "cms",
-      "brand-name"
-    ],
-    "testFile": "src/lib/copyWarnings.test.ts"
-  },
-  {
     "description": "Counts markdown files in each collection directory under a content root, reporting an empty directory as 0 and a missing root as no counts.",
     "filePath": "src/lib/emptiedCollections.ts",
     "name": "countCollectionFiles",
@@ -1386,16 +1319,6 @@
     "testFile": "src/lib/notifySiteAlert.test.ts"
   },
   {
-    "description": "Patched into @codeyam/cms. Applies the site's copy-warning rules to a whole entry form — every text field, every row of a list field, and the markdown body — and returns the warnings keyed by field name (plus `body`). Non-text values are ignored; no rules means no warnings.",
-    "filePath": "node_modules/@codeyam/cms/src/lib/copyWarnings.ts",
-    "name": "entryCopyWarnings",
-    "tags": [
-      "cms",
-      "brand-name"
-    ],
-    "testFile": "src/lib/copyWarnings.test.ts"
-  },
-  {
     "description": "Every public page in dist/ as a URL path, plus /404, skipping redirect stubs, asset folders, /admin, /previews, the cutover runbook and isolated-component routes.",
     "filePath": "scripts/responsive-sweep.mjs",
     "name": "enumeratePages",
@@ -1528,16 +1451,6 @@
       "cutover-runbook"
     ],
     "testFile": "src/lib/contentGaps.test.ts"
-  },
-  {
-    "description": "Patched into @codeyam/cms. Runs a site's declared copy-warning rules (collections.json `copyWarnings`) over one piece of text, with web addresses stripped first, and returns each matched wording once with the rule's message. A rule that will not compile is skipped. Advisory only — feeds the entry editor's amber notes, never a save gate.",
-    "filePath": "node_modules/@codeyam/cms/src/lib/copyWarnings.ts",
-    "name": "findCopyWarnings",
-    "tags": [
-      "cms",
-      "brand-name"
-    ],
-    "testFile": "src/lib/copyWarnings.test.ts"
   },
   {
     "description": "Decides which content collections came out empty when they should not have, returning one message each. Flags a collection whose files are in the sandbox but which the dev server loaded none of, and one that is empty on disk while git tracks entries for it. A collection the seed deliberately set to empty is never flagged, and exact counts are not compared because a loader may filter drafts. The seed adapter fails the capture on any message, so a blank roster can no longer be reported as a clean recapture.",

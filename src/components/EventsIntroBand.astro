@@ -21,6 +21,13 @@ import { eventsLedeFor } from '../lib/eventsIntro';
 import BannerCta from './ui/BannerCta.astro';
 import { siteLinks } from '../lib/site';
 
+interface Props {
+  /** The banner photo, from the `events` page-copy entry. Absent → the plain
+   *  paper banner. */
+  image?: string;
+}
+const { image } = Astro.props;
+
 const chapters = publishedEntries(await getCollection('chapters'), INCLUDE_DRAFTS).map((c) => ({
   slug: c.id,
   ...c.data,
@@ -32,6 +39,14 @@ const calendarUrl = siteLinks().luma;
 
 {/* No eyebrow: Events is a top-level menu item now, so there is no section to
     name above it (the old "Programs" label named a menu that no longer exists). */}
-<PageBanner title="Events" lede={lede}>
+{/* "center 80%": the default banner photo is a room shot whose people are in
+    its lower half; a centred crop of the wide band showed mostly ceiling. */}
+<PageBanner
+  title="Events"
+  lede={lede}
+  image={image}
+  tone={image ? 'photo' : 'paper'}
+  imagePosition={image ? 'center 80%' : undefined}
+>
   {calendarUrl ? <BannerCta href={calendarUrl} label="Subscribe on Luma" /> : null}
 </PageBanner>

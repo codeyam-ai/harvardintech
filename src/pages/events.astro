@@ -43,7 +43,7 @@ const galleryPhotos = pageCopy?.galleryPhotos ?? [];
 <BaseLayout title="Events" description="Upcoming and past Harvard Alumni in Tech events.">
   {/* The page's own title first, so it opens saying what it is rather than
       handing the first line to the Luma embed's "Full events calendar". */}
-  <EventsIntroBand />
+  <EventsIntroBand image={pageCopy?.bannerImage} />
   {
     galleryPhotos.length > 0 && (
       <EventGallery

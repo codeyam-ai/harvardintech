@@ -12,7 +12,9 @@
 // entry does not leave an empty bordered box on the page.
 import ChapterLeads from './ChapterLeads.astro';
 import ChapterLinks from './ChapterLinks.astro';
+import ResponsiveImg from './ResponsiveImg.astro';
 import { withBase } from '../lib/url';
+import { altFor, readMediaManifest } from '../lib/media';
 import type { Lead } from '../lib/leadSchema';
 
 interface PageLink {
@@ -28,6 +30,10 @@ interface Props {
   /** A line under the leads, e.g. "We're looking for a co-lead". */
   leadsNote?: string;
   links?: PageLink[];
+  /** One photo shown whole under the body, with an optional caption. Blank →
+   *  nothing renders. Alt resolves from `media.json` like every gallery photo. */
+  featuredImage?: string;
+  featuredCaption?: string;
   /**
    * Whether the markdown body has content.
    *
@@ -47,10 +53,18 @@ const {
   leadsNote,
   links = [],
   hasBody = false,
+  featuredImage,
+  featuredCaption,
 } = Astro.props;
 
+const featured = featuredImage?.trim() || undefined;
+const caption = featuredCaption?.trim() || undefined;
+const featuredAlt = featured
+  ? altFor(featured, caption ?? 'Harvard Alumni in Tech event photo', readMediaManifest())
+  : '';
+
 const leadsVisible = leads.length > 0;
-const hasContent = leadsVisible || links.length > 0 || hasBody;
+const hasContent = leadsVisible || links.length > 0 || hasBody || featured !== undefined;
 ---
 
 {
@@ -67,6 +81,19 @@ const hasContent = leadsVisible || links.length > 0 || hasBody;
         <div class="narrow-body">
           <slot />
         </div>
+
+        {
+          featured ? (
+            <figure class="featured">
+              <ResponsiveImg
+                src={featured}
+                alt={featuredAlt}
+                sizes="(max-width: 800px) 100vw, 760px"
+              />
+              {caption ? <figcaption>{caption}</figcaption> : null}
+            </figure>
+          ) : null
+        }
 
         {leadsVisible ? <ChapterLeads leads={leads} heading={leadsHeading} note={leadsNote} /> : null}
 
@@ -86,5 +113,19 @@ const hasContent = leadsVisible || links.length > 0 || hasBody;
   }
   .narrow-body:not(:empty) {
     margin-bottom: var(--s-5);
+  }
+  .featured {
+    margin: 0 0 var(--s-6);
+  }
+  .featured :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+  .featured figcaption {
+    margin-top: var(--s-2);
+    font-size: var(--t-sm, 0.875rem);
+    color: var(--ink-3);
   }
 </style>

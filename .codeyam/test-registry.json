@@ -5671,11 +5671,65 @@
       "runner": "tests"
     },
     {
+      "description": "A cap that already fills its rows is kept as is.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "fullRowLimit › keeps a cap that is already whole rows",
+      "line": 246,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Too few photos to fill the rounded rows: show them all (ending mid-row is fine then) and offer no \"Show all\" button.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "fullRowLimit › returns undefined when the rounded limit would hide nothing",
+      "line": 259,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "No cap, or a negative one, means uncapped.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "fullRowLimit › returns undefined with no cap or a negative cap",
+      "line": 265,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The NYC chapter: a 12-photo cap on the five-column grid showed two rows and a stray pair. Rounded up, it shows three full rows.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "fullRowLimit › rounds a cap up to whole rows",
+      "line": 241,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The events page's phone cap of 6 on a four-column tablet grid: 4 + 2 became two full rows of 4.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "fullRowLimit › rounds to the column count it is given",
+      "line": 252,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A zero cap still shows one row rather than an empty grid with a button.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "fullRowLimit › shows at least one row",
+      "line": 271,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The shared 40-photo wall stays on the full-width grid.",
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryColumns › clamps to the maximum for a large gallery",
-      "line": 227,
+      "line": 216,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -5684,7 +5738,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryColumns › floors at one column",
-      "line": 238,
+      "line": 227,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -5693,7 +5747,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryColumns › honours a custom maximum",
-      "line": 244,
+      "line": 233,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -5702,7 +5756,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryColumns › returns the maximum when the count equals it",
-      "line": 232,
+      "line": 221,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -5711,7 +5765,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryColumns › uses one column per photo below the maximum",
-      "line": 222,
+      "line": 211,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -5720,7 +5774,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryRevealImmediately › animates when IntersectionObserver exists and motion is allowed",
-      "line": 47,
+      "line": 36,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -5729,7 +5783,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryRevealImmediately › reveals immediately when IntersectionObserver is unavailable",
-      "line": 62,
+      "line": 51,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -5738,7 +5792,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryRevealImmediately › reveals immediately when both reduced motion and no observer",
-      "line": 69,
+      "line": 58,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -5747,7 +5801,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryRevealImmediately › reveals immediately when the user prefers reduced motion",
-      "line": 54,
+      "line": 43,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -5756,7 +5810,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryStaggerDelay › respects a custom column count",
-      "line": 96,
+      "line": 85,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -5765,7 +5819,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryStaggerDelay › returns zero for the first column",
-      "line": 78,
+      "line": 67,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -5774,7 +5828,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryStaggerDelay › staggers later columns by 60ms each",
-      "line": 84,
+      "line": 73,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -5783,8 +5837,53 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "galleryStaggerDelay › wraps the delay per row of five columns",
-      "line": 90,
+      "line": 79,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "NYC: cap 15 → 3 rows of 5 on desktop, 4 rows of 4 on tablet, 5 rows of 3 on a phone.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "galleryTierLimits › aligns one cap to each width",
+      "line": 279,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Homepage: full wall on desktop, 12 (whole rows at 4 and 3) on small screens.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "galleryTierLimits › applies phoneCap only below desktop",
+      "line": 288,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A three-photo gallery has nothing to hide at any width.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "galleryTierLimits › hides nothing in a short gallery",
+      "line": 306,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Events page: 10 photos fill two desktop rows; phone cap 6 → 8 on tablet.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "galleryTierLimits › rounds the phone cap per small-screen width",
+      "line": 297,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A two-column gallery rounds to rows of 2 at every width, not 3/4/5.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "galleryTierLimits › uses the gallery’s own column count when it is narrower",
+      "line": 315,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
       "runner": "tests"
     },
     {
@@ -7016,7 +7115,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "initGalleryReveal › is a no-op when there are no gallery tiles",
-      "line": 165,
+      "line": 154,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -7025,7 +7124,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "initGalleryReveal › observes tiles instead of revealing them when animation is enabled",
-      "line": 149,
+      "line": 138,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -7034,7 +7133,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "initGalleryReveal › reveals every tile immediately under reduced motion",
-      "line": 128,
+      "line": 117,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -7043,7 +7142,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "initGalleryReveal › reveals every tile immediately when IntersectionObserver is missing",
-      "line": 137,
+      "line": 126,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -7061,7 +7160,7 @@
       "file": "src/lib/lightbox.test.ts",
       "format": "vitest",
       "key": "initLightbox › does not rebind a tile on a second call",
-      "line": 188,
+      "line": 205,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -7070,7 +7169,7 @@
       "file": "src/lib/lightbox.test.ts",
       "format": "vitest",
       "key": "initLightbox › extends the arrow range once the hidden photos are revealed",
-      "line": 165,
+      "line": 182,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -7088,7 +7187,7 @@
       "file": "src/lib/lightbox.test.ts",
       "format": "vitest",
       "key": "initLightbox › is a no-op when there is no gallery on the page",
-      "line": 203,
+      "line": 220,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -7097,7 +7196,7 @@
       "file": "src/lib/lightbox.test.ts",
       "format": "vitest",
       "key": "initLightbox › leaves an empty gallery unbound",
-      "line": 211,
+      "line": 228,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -7108,6 +7207,15 @@
       "key": "initLightbox › opens the clicked photo with its caption",
       "line": 110,
       "registeredAt": "2026-08-07T19:09:04Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The full-row caps hide tiles with width-specific CSS, not `hidden`, so a tile that is simply not displayed must be skipped the same way.",
+      "file": "src/lib/lightbox.test.ts",
+      "format": "vitest",
+      "key": "initLightbox › skips photos hidden by CSS rather than the hidden attribute",
+      "line": 164,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
       "runner": "tests"
     },
     {
@@ -16093,6 +16201,33 @@
       "runner": "tests"
     },
     {
+      "description": "The 16th photo (index 15) fills the tablet's fourth row but is past the desktop and phone caps.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "tileHiddenTiers › hides a tile only at the widths whose cap it is past",
+      "line": 22,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A width with no cap never hides, however far down the tile is.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "tileHiddenTiers › never hides at an uncapped width",
+      "line": 27,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Inside every width's cap: shown everywhere.",
+      "file": "src/lib/gallery.test.ts",
+      "format": "vitest",
+      "key": "tileHiddenTiers › shows a tile inside every cap",
+      "line": 16,
+      "registeredAt": "2026-11-12T22:05:41.734185954+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Consecutive prose sections need separating, so narratives alternate tinted / untinted down the page.",
       "file": "src/lib/momentumSections.test.ts",
       "format": "vitest",
@@ -16250,7 +16385,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "toGalleryPhotos › accepts a mixed list",
-      "line": 190,
+      "line": 179,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -16259,7 +16394,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "toGalleryPhotos › drops rows with a missing or blank image",
-      "line": 200,
+      "line": 189,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -16268,7 +16403,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "toGalleryPhotos › normalizes CMS rows and keeps the caption",
-      "line": 183,
+      "line": 172,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -16277,7 +16412,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "toGalleryPhotos › normalizes a list of plain srcs",
-      "line": 175,
+      "line": 164,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -16286,7 +16421,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "toGalleryPhotos › returns nothing for an empty list",
-      "line": 215,
+      "line": 204,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
@@ -16295,7 +16430,7 @@
       "file": "src/lib/gallery.test.ts",
       "format": "vitest",
       "key": "toGalleryPhotos › treats a blank caption as absent",
-      "line": 208,
+      "line": 197,
       "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },

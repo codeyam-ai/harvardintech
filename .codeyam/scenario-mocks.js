@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 1bbe2360ac6e81ca4d466e3debedefd9331160ab  source-sha256: d671e6a8ff8f2fcf9ffbfd7fead563efb6c90449891aaa90b913c87f76d79206
+// codeyam-editor: 0.1.7  build: 7b2fd6af5d12f0f0fa701d6a06d4c4a218ef4037  source-sha256: a373745b34c6af5f41f4ee56709a7e00ec4be30c1e06817ce8f2dcef06c09763
 // Route matcher for the capture harness — one of THREE implementations of a
 // single semantic. The authority is the Rust engine
 // (crates/mock-engine/src/route_parser.rs), where the contract is written down;
@@ -286,7 +286,20 @@ function createRequestInventory(appOrigin) {
 function createMockObserver(httpMocks, appOrigin) {
   const usage = createMockUsageTally(httpMocks);
   const inventory = createRequestInventory(appOrigin);
+  const suppressedWrites = new Map();
   return {
+    // Writes the embedded-preview guard neutralized, once per method + URL.
+    recordSuppressedWrites: (rows) => {
+      for (const r of rows) {
+        if (r && typeof r.method === "string" && typeof r.url === "string") {
+          const path = typeof r.path === "string" ? r.path : r.url;
+          suppressedWrites.set(`${r.method} ${r.url}`, { method: r.method, url: r.url, path });
+        }
+      }
+    },
+    get suppressedWrites() {
+      return [...suppressedWrites.values()];
+    },
     recordFulfilled: (key) => usage.recordFulfilled(key),
     recordRequest: (url, mocked) => inventory.recordRequest(url, mocked),
     recordFailure: (url, mocked) => inventory.recordFailure(url, mocked),
@@ -310,16 +323,23 @@ function createMockObserver(httpMocks, appOrigin) {
 // request it answered on `window.__codeyamMockHits`; every frame is read because
 // the scenario page renders inside the harness iframe. A frame that cannot be
 // evaluated, or never ran the shim, contributes nothing.
+//
+// The same pass reads `window.__codeyamSuppressedWrites` — the writes the
+// editor's embedded-preview guard neutralized (ui/src/helpers/
+// scenarioWriteGuard.ts) — into `observer.suppressedWrites`. It runs even with
+// no declared mocks: a scenario with no mocks is exactly the one that leaks.
 async function recordInPageMockHits(page, observer, httpMocks) {
-  if (!httpMocks || Object.keys(httpMocks).length === 0) return;
+  const hasMocks = !!httpMocks && Object.keys(httpMocks).length > 0;
   for (const frame of page.frames()) {
-    let hits;
+    let found;
     try {
-      hits = await frame.evaluate(() => window.__codeyamMockHits);
+      found = await frame.evaluate(() => [window.__codeyamMockHits, window.__codeyamSuppressedWrites]);
     } catch {
       continue;
     }
-    if (!Array.isArray(hits)) continue;
+    const [hits, suppressed] = Array.isArray(found) ? found : [];
+    if (Array.isArray(suppressed)) observer.recordSuppressedWrites(suppressed);
+    if (!hasMocks || !Array.isArray(hits)) continue;
     for (const hit of hits) {
       if (!hit || typeof hit.method !== "string" || typeof hit.url !== "string") continue;
       const entry = findHttpMockEntry(httpMocks, {
@@ -345,6 +365,15 @@ function attachRequestInventory(page, observer, httpMocks) {
   });
 }
 
+// `(method, url) => boolean`: does a declared `mocks.http` entry answer this
+// request? The page-side form of `findHttpMockEntry`, which wants a Playwright
+// request — exposed to the page so the editor's embedded-preview write guard
+// (ui/src/helpers/embeddedPreviewWriteGuard.ts) lets a declared write mock win.
+function mockKeyMatcher(httpMocks) {
+  return (method, url) =>
+    !!findHttpMockEntry(httpMocks, { method: () => String(method), url: () => String(url) });
+}
+
 // Returns the capture's mock observer (see `createMockObserver`). Always returns
 // one, including for a scenario that declares no mocks at all — that is exactly
 // the case where an unexplained third-party fetch is hardest to account for.
@@ -361,6 +390,15 @@ async function attachHttpMocks(page, httpMocks, options = {}) {
   // chunks never resolve and the SPA renders blank. Scoping the matcher to
   // mocked targets lets those requests load natively while still mocking the API.
   const targets = mockedTargets(httpMocks);
+  // Capture serves mocks HERE, at the network layer, so the in-page shim holds
+  // none. The editor's embedded-preview write guard asks this so a declared
+  // write mock still wins over neutralization. A page without `exposeFunction`
+  // (a non-Playwright double) simply has no matcher, and the guard suppresses.
+  if (typeof page.exposeFunction === "function") {
+    await page
+      .exposeFunction("__codeyamCaptureMockMatches", mockKeyMatcher(httpMocks))
+      .catch(() => {});
+  }
   await page.route(
     (url) => requestTargetsMock(targets, url),
     async (route) => {
@@ -465,6 +503,7 @@ module.exports = {
   createMockUsageTally,
   createRequestInventory,
   createMockObserver,
+  mockKeyMatcher,
   attachHttpMocks,
   recordInPageMockHits,
   isDeclaredErrorMock,

@@ -46,6 +46,10 @@ interface Props {
    * community page never shows a gallery.
    */
   photos?: { image?: string; caption?: string }[];
+  /** One photo shown whole, with its caption, under the about text — for a
+   *  group shot that a banner would bury under the page name. */
+  featuredImage?: string;
+  featuredCaption?: string;
   events?: EventLike[];
   /** Heading over the events list. Defaults to "Upcoming Events in <name>",
    *  which reads wrong for a community ("...in Founders") — /communities passes
@@ -89,6 +93,8 @@ const {
   heroImage,
   tagline,
   photos,
+  featuredImage,
+  featuredCaption,
   events = [],
   eventsHeading,
   pastEvents = [],
@@ -143,6 +149,8 @@ const hasBody = Astro.slots.has('default');
         leadsNote={leadsNote}
         links={links}
         hasBody={hasBody}
+        featuredImage={featuredImage}
+        featuredCaption={featuredCaption}
       >
         <slot />
       </PageNarrowBody>

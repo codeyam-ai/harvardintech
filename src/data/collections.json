@@ -220,6 +220,20 @@
           ]
         },
         {
+          "name": "featuredImage",
+          "label": "Featured photo",
+          "type": "image",
+          "optional": true,
+          "hint": "One photo shown whole, with nothing written over it, under the chapter's about text — good for a group shot. Blank shows nothing."
+        },
+        {
+          "name": "featuredCaption",
+          "label": "Featured photo caption",
+          "type": "text",
+          "optional": true,
+          "hint": "A short line under the featured photo, e.g. \"Alumni Day 2026, Harvard Science Center\"."
+        },
+        {
           "name": "contactEmail",
           "label": "Contact email",
           "type": "text",
@@ -1373,6 +1387,13 @@
           "type": "textarea",
           "optional": true,
           "hint": "The message a supporter posts from their badge. Keep [SUPPORTER MESSAGE] and [DONATION LINK] exactly as written \u2014 they are placeholders the badge swaps for the supporter's own words and the giving link. Delete either one and that part goes missing from what they share."
+        },
+        {
+          "name": "bannerImage",
+          "label": "Events banner photo",
+          "type": "image",
+          "optional": true,
+          "hint": "The photo behind the \"Events\" title at the top of the Events page. Blank keeps the plain banner."
         },
         {
           "name": "galleryKicker",
