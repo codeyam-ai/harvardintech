@@ -1,7 +1,7 @@
 ---
 kind: donors
 kicker: The Momentum Fund
-title: Let's go further *together*.
+title: Invest in our *community*.
 order: 7
 ---
 
@@ -18,7 +18,7 @@ can be moved to the bottom, or switched off entirely, is one an edit can break.
 What this entry still controls is the WORDS: its Heading and Kicker are the
 headline and eyebrow drawn over the artwork. The heading understands
 `*asterisks*` — text between them is set in crimson italic, which is how
-"Let's go further *together*." gets its emphasis.
+"Invest in our *community*." gets its emphasis.
 
 The wording here is deliberately generic until the fundraising campaign opens.
 It used to speak about donors who do not exist yet ("The people behind the
