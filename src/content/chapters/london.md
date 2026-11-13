@@ -7,11 +7,58 @@ blurb: Our European hub across the London tech scene.
 heroImage: /images/chapters/london.jpg
 tagline: We are the London Chapter of Harvard Alumni in Tech.
 photos:
-  - image: /images/1784889425768.webp
+  - image: /images/events/london-mixer-2026/london-mixer-2026-01.webp
+    caption: London Mixer, July 2026
+  - image: /images/events/london-mixer-2026/london-mixer-2026-02.webp
+    caption: London Mixer, July 2026
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-01.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-mixer-2025/london-mixer-2025-01.webp
+    caption: London Mixer, 2025
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-02.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-mixer-2026/london-mixer-2026-03.webp
+    caption: London Mixer, July 2026
   - image: /images/1782977679252.webp
     caption: Live Coworking Session
+  - image: /images/events/london-mixer-2025/london-mixer-2025-02.webp
+    caption: London Mixer, 2025
+  - image: /images/events/london-mixer-2026/london-mixer-2026-06.webp
+    caption: London Mixer, July 2026
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-03.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-mixer-2026/london-mixer-2026-05.webp
+    caption: London Mixer, July 2026
   - image: /images/1782977679529.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-mixer-2025/london-mixer-2025-04.webp
+    caption: London Mixer, 2025
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-04.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-mixer-2025/london-mixer-2025-05.webp
+    caption: London Mixer, 2025
+  - image: /images/events/london-mixer-2026/london-mixer-2026-04.webp
+    caption: London Mixer, July 2026
+  - image: /images/1784889425768.webp
+    caption: London Mixer, July 2026
+  - image: /images/events/london-mixer-2026/london-mixer-2026-07.webp
+    caption: London Mixer, July 2026
   - image: /images/1784889426210.webp
+    caption: London Mixer, July 2026
+  - image: /images/events/london-mixer-2026/london-mixer-2026-08.webp
+    caption: London Mixer, July 2026
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-05.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-06.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-07.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-08.webp
+    caption: Alumni Founders Co-working Day, June 2026
+  - image: /images/events/london-mixer-2025/london-mixer-2025-03.webp
+    caption: London Mixer, 2025
+  - image: /images/events/london-mixer-2025/london-mixer-2025-06.webp
+    caption: London Mixer, 2025
 leadsNote: We're looking for a London co-lead. If you'd like to help run the chapter, get in touch.
 leads:
   - name: Nemo Shi

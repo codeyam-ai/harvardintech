@@ -39,4 +39,14 @@ galleryPhotos:
     caption: Leaders in Engineering Panel, San Francisco
   - image: /images/events/sf-engineering-panel-2026/sf-engineering-panel-2026-05.webp
     caption: Leaders in Engineering Panel, San Francisco
+  - image: /images/events/london-mixer-2026/london-mixer-2026-01.webp
+    caption: London Mixer, July 2026
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-01.webp
+    caption: Alumni Founders Co-working Day, London
+  - image: /images/events/london-mixer-2026/london-mixer-2026-02.webp
+    caption: London Mixer, July 2026
+  - image: /images/events/london-coworking-2026-06/london-coworking-2026-06-02.webp
+    caption: Alumni Founders Co-working Day, London
+  - image: /images/events/london-mixer-2025/london-mixer-2025-01.webp
+    caption: London Mixer, 2025
 ---
