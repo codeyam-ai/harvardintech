@@ -161,6 +161,8 @@ Fields to populate when missing:
 
 Write the changes via Edit on `.codeyam/editor.json`. Do **not** overwrite the whole file — preserve fields written by `editor init`.
 
+**Then declare per-unit test partitions.** Run `codeyam-editor editor configure-test-commands`. Besides its runner proposals, it reads the workspace manifests (Cargo `members` + `path =` deps, or `package.json` `workspaces` / `pnpm-workspace.yaml` + sibling deps) and writes one `testPartitions` entry per unit with `dependsOn` from that graph, plus the runner's `changedPartitionRoot` when every unit shares a parent (`crates/*`). It fills only what is absent and never edits a declared entry. Its stderr prints the resulting partition table (`partitions: …`, one row per partition), and it prints one line when the stack has no manifest reader yet. Copy that table, or that line, into the report's `editor.json` section. Without partitions, every change and every cache invalidation re-runs the whole suite.
+
 ## Phase 4b — Index the code (all branches)
 
 By the end of this phase the editor UI is functional. Without it, the App tab fills with phantom routes and entity detail pages show zeros. Three commands; each is idempotent and safe to re-run.
@@ -260,7 +262,7 @@ Write `.codeyam/onboarding-report.md` with these sections:
 (list from `archive-legacy` output, with one-line note per item if non-obvious)
 
 ## editor.json — what you populated
-(diff-style summary: which fields you filled in, what you inferred from)
+(diff-style summary: which fields you filled in, what you inferred from — including the partition table `configure-test-commands` printed, or its one-line "not auto-proposed" note)
 
 ## Code index
 - `dependency-graph.json` — N files analyzed, M entities, K imports
@@ -277,6 +279,9 @@ If any of these are zero, the editor UI for this project will not show component
 
 ## Isolation layout cleanup
 (legacy branch only: stack.json framework + the `moved` / `collisions_archived` / `unresolved` summary from `migrate-isolation-dir`. When the project was already on the modern layout, record "no changes — project already on modern layout".)
+
+## Test partition cost
+(paste `codeyam-editor editor partition-cost` text output. When it names a DOMINANT partition — also `assess`'s `dominantPartition` — quote its line and remedy here, and list "split <partition>" under Pending: every edit there re-runs most of the project's tests. A table of `?` is normal right after onboarding; it fills in as partition runs are recorded.)
 
 ## Scenarios registered
 (slug, type, URL, captured yes/no)

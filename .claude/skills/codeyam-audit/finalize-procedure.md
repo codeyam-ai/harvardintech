@@ -75,12 +75,13 @@ recorded in that panel, of how far this run may go without them:
   read-back-before-retry rule, 8a's investigate-before-classify, and 8a's
   scope-change re-ask.
 
-With that setting on, the schedule also types `scheduled-finalize` **between
-plans**, once the branch owes 25 or more deferred commits (the Large debt
-tier), so the debt is drained before it becomes one enormous pass. That
-checkpoint is always `scheduled-finalize`, never `scheduled-merge`, and
-plans are still queued behind it. Run it exactly like the end-of-run
-finalize, and do not touch the queue.
+The schedule never decides on its own to finalize. The branch's deferred
+debt is never a reason, however large it gets. The only time it types
+`scheduled-finalize` **between plans** is when the user asked for the full
+check (the closing question's "run the full check" answer, recorded by
+`plan-schedule finalize-request`). That run is always `scheduled-finalize`,
+never `scheduled-merge`, and plans are still queued behind it. Run it exactly
+like the end-of-run finalize, and do not touch the queue.
 
 **Release the branch finalize lock when a scheduled run ends.** Before typing
 this skill, the schedule took a branch-wide lock so that only one computer on
@@ -95,9 +96,9 @@ codeyam-editor editor plan-schedule finalize-release
 It is a no-op when this computer holds no lock, so run it on every terminal
 outcome without checking first. Skipping it leaves the next finalize on this
 branch refused, and the Run Schedule panel then reports a finalize "running"
-on this computer that has already ended. After a between-plans checkpoint,
-the same command also queues the schedule's next plan, which starts when
-this turn ends. Without it the run stays stopped.
+on this computer that has already ended. After a full check the user asked
+for between plans, the same command also queues the schedule's next plan,
+which starts when this turn ends. Without it the run stays stopped.
 
 Judgment calls are decided by rule in **every** mode, so an unattended run
 never waits mid-way for an answer: the rules in step 4b, step 6, and step 8a
@@ -1819,8 +1820,14 @@ cheap — lean on them rather than fighting the ordering:
   static checks whose `filePatterns` match them, the test partitions each
   allowlist entry names, and, for a file the binary embeds (`cicd.yml`), the
   includer module's tests plus a `rebuild-self --check` that must read
-  `current`. It then commits per-commit proof beside the marker, so CI's
-  `verify-full-finalize` passes. On PR #148 each such round cost 2,317–3,217 s
+  `current`. It then commits per-commit proof beside the marker (a
+  `ciInfraEvidence` row keyed on the commit's `git patch-id`). Both CI gates
+  read that proof: `verify-full-finalize` and the compile-free `fast-gates`
+  precheck (`scripts/lib/full-finalize-precheck.sh`). Before the precheck
+  learned to, PR #149's proven `cicd.yml` commit passed `verify-full-finalize`
+  and still failed `fast-gates`. So if `fast-gates` refuses a commit you proved,
+  the proof is missing from the pushed `finalize-debt.json` or the commit was
+  edited after the proof. On PR #148 each such round cost 2,317–3,217 s
   of full finalize. This path skips the whole-repo audit entirely. It refuses
   (`Next valid action: session-finalize`) the moment a commit past the marker
   touches anything else, and `verify-full-finalize` names it as the recovery

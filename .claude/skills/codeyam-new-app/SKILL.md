@@ -56,6 +56,17 @@ preserved verbatim), and wires persistence per `--share-db`.
 5. **Scaffold.** Run the command. On success it prints the new app's subdir,
    stack, chosen port, and whether the DB was shared.
 
+5b. **Declare the new app's test partition.** Run
+   `codeyam-editor editor configure-test-commands`. It appends a
+   `testPartitions` entry for each workspace unit the table lacks (it never
+   edits a declared one) and prints the table. If the new app is not a member
+   of the repo's root workspace, it is not in that table. Then add one entry
+   for it to `testPartitions` in `.codeyam/editor.json`: `name` = the subdir's
+   last segment, `runner` = the new app's runner, and `sourceFilePatterns:
+   ["<subdir>/**/*"]`. Either way, tell the user the new app's partition name.
+   Testing it then re-runs only its own tests, and the existing app's cache
+   stays warm.
+
 6. **Hand off to the build loop.** The new app is now a first-class `apps[]`
    entry. Switch to it in the editor and build features against it with the
    normal `/codeyam-editor` workflow — scenarios, live preview, and tests all

@@ -173,6 +173,81 @@ def merge_in_progress(project_dir):
     )
 
 
+# The Build tab's inline-activity marker. Mirrors `MARKER_FILENAME` in
+# `crates/control-api/src/build_activity_state.rs`.
+BUILD_ACTIVITY_MARKER = os.path.join(".codeyam", "state", "build-activity.json")
+
+
+def prototype_activity_in_progress(project_dir):
+    """True while the Build tab records a prototype in progress: a
+    `prototype` activity, or a `chat` that escalated itself into prototyping.
+    An absent or unreadable marker is False — no prototype is known."""
+    try:
+        with open(os.path.join(project_dir, BUILD_ACTIVITY_MARKER), "r") as f:
+            marker = json.load(f)
+    except (OSError, ValueError):
+        return False
+    if not isinstance(marker, dict):
+        return False
+    activity = marker.get("activity")
+    return activity == "prototype" or (activity == "chat" and marker.get("escalated") is True)
+
+
+def _workflow_slug(project_dir):
+    """The workflow step slug in `.codeyam/editor-step.json`, or ''."""
+    try:
+        with open(os.path.join(project_dir, ".codeyam", "editor-step.json"), "r") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        return ""
+    return (state.get("slug") or "") if isinstance(state, dict) else ""
+
+
+def prototype_git_refusal(project_dir, command, git_start):
+    """`(rule, reason, evidence)` when `command` is a `git commit` / `git push`
+    the prototype skill forbids, else None.
+
+    The prototype skill already says "Do NOT run `git add` or `git commit`";
+    nothing enforced it, and a laptop prototype commit broke nine UI tests for
+    every machine on a shared Fast Commit branch. A prototype pane is an inline
+    pane, which exports no `CODEYAM_EDITOR_ACTIVE`, so this runs before that
+    short-circuit. A pane that IS driving a workflow step keeps its own step
+    gates instead. Plan-only commits and pushes stay allowed: the prototype's
+    "Finish and Formalize in Build" writes and commits a plan."""
+    if not prototype_activity_in_progress(project_dir):
+        return None
+    if os.environ.get("CODEYAM_EDITOR_ACTIVE") and _workflow_slug(project_dir):
+        return None
+    if invokes_git_subcommand(command, "commit"):
+        if staged_paths_are_plans_only(project_dir) or runs_git_outside_project(
+            command, "commit", project_dir, git_start
+        ):
+            return None
+        return (
+            "prototype-git-commit",
+            "a prototype does not commit — its source changes ride into the feature "
+            "commit of the Build cycle that formalizes it. A raw commit carries no test "
+            "run, and once pushed every machine on the branch pays for its reds.",
+            "the Build tab records a prototype in progress "
+            f"({BUILD_ACTIVITY_MARKER}); `git commit` is in command position; the "
+            "staged set is not plans-only",
+        )
+    if invokes_git_subcommand(command, "push"):
+        if unpushed_range_is_plan_only(project_dir) or runs_git_outside_project(
+            command, "push", project_dir, git_start
+        ):
+            return None
+        return (
+            "prototype-git-push",
+            "a prototype does not push — the unpushed commits carry no test run, and "
+            "once on the shared branch every machine pays for their reds.",
+            "the Build tab records a prototype in progress "
+            f"({BUILD_ACTIVITY_MARKER}); `git push` is in command position; the "
+            "unpushed range is not plan-only",
+        )
+    return None
+
+
 def _slug_label(state, slug):
     """Human-readable identifier for BLOCKED messages. Slug is the
     primary handle; label is shown alongside when state carries it."""
@@ -295,7 +370,7 @@ def _load_refusal_log(path, now):
     return entries, rules
 
 
-def _record_refusal(project_dir, fingerprint, rule=None, now=None):
+def _record_refusal(project_dir, fingerprint, rule=None, now=None, refused_path=None):
     """Record a refusal and return `(call_count, rule_count)`, both
     INCLUDING this one. `(1, 1)` means a first refusal on either tier.
 
@@ -316,6 +391,10 @@ def _record_refusal(project_dir, fingerprint, rule=None, now=None):
     being emitted anyway, so an unreadable or unwritable log must never
     turn a clean refusal into a crash. Every failure path returns
     `(1, 1)`, which renders exactly today's message.
+
+    `refused_path` is the repo-relative file the refusal protected, stored on the
+    entry so `recent_scripted_refusal_age` can pair a later whole-file Write
+    with it. Older entries carry none and read as no path.
     """
     now = time.time() if now is None else now
     # The scripted-rewrite guard fires before the editor-mode short-circuit,
@@ -327,7 +406,10 @@ def _record_refusal(project_dir, fingerprint, rule=None, now=None):
     entries, rules = _load_refusal_log(path, now)
 
     count = sum(1 for e in entries if e.get("fingerprint") == fingerprint) + 1
-    entries.append({"fingerprint": fingerprint, "at": now})
+    entry = {"fingerprint": fingerprint, "at": now}
+    if refused_path:
+        entry["path"] = refused_path
+    entries.append(entry)
 
     rule_count = 1
     if rule:
@@ -498,6 +580,7 @@ QUESTION_COPY_CHECK_TIMEOUT_S = 3
 # Bounded so the file cannot grow without limit across a long-lived project.
 QUESTION_COPY_BOUNCE_MAX_SESSIONS = 20
 QUESTION_COPY_BOUNCE_MAX_HASHES = 20
+QUESTION_COPY_BOUNCE_MAX_RAISED = 100
 
 
 def question_payload_hash(questions):
@@ -524,14 +607,30 @@ def question_payload_was_bounced(project_dir, session_id, payload_hash):
     return payload_hash in (entry.get("hashes") or [])
 
 
-def next_bounce_record(bounces, key, payload_hash):
+def question_findings_already_raised(project_dir, session_id):
+    """The finding keys this session has already been shown, as a set.
+
+    A malformed record reads as "none raised" — the worst case is one more
+    bounce for a finding the agent has seen, never a crash."""
+    entry = _load_question_copy_bounces(project_dir).get(session_id or "") or {}
+    raised = entry.get("raised") if isinstance(entry, dict) else None
+    return set(raised) if isinstance(raised, list) else set()
+
+
+def next_bounce_record(bounces, key, payload_hash, raised=()):
     """Return `bounces` with `payload_hash` recorded for session `key`.
 
     Pure, so the caps are testable without a file: the session's hashes are
     de-duplicated and capped to the newest `QUESTION_COPY_BOUNCE_MAX_HASHES`,
     the session is marked `pending`, and it moves to the END of the mapping
     so the oldest sessions are the first evicted once there are more than
-    `QUESTION_COPY_BOUNCE_MAX_SESSIONS`. A malformed entry starts over."""
+    `QUESTION_COPY_BOUNCE_MAX_SESSIONS`. A malformed entry starts over.
+
+    `raised` is the finding keys this bounce showed. They are merged into the
+    session's `raised` list (capped to the newest
+    `QUESTION_COPY_BOUNCE_MAX_RAISED`), which is what lets a REWORDED draft
+    through when every finding it still carries was already shown. The key is
+    omitted while the list is empty, so a record without it is unchanged."""
     bounces = dict(bounces)
     entry = bounces.pop(key, None)
     if not isinstance(entry, dict):
@@ -541,21 +640,36 @@ def next_bounce_record(bounces, key, payload_hash):
         previous = []
     hashes = [h for h in previous if h != payload_hash]
     hashes.append(payload_hash)
-    bounces[key] = {"hashes": hashes[-QUESTION_COPY_BOUNCE_MAX_HASHES:], "pending": True}
+    record = {"hashes": hashes[-QUESTION_COPY_BOUNCE_MAX_HASHES:], "pending": True}
+    merged = _merged_raised(entry.get("raised"), raised)
+    if merged:
+        record["raised"] = merged
+    bounces[key] = record
     while len(bounces) > QUESTION_COPY_BOUNCE_MAX_SESSIONS:
         bounces.pop(next(iter(bounces)))
     return bounces
 
 
-def remember_question_bounce(project_dir, session_id, payload_hash):
-    """Record that this payload was bounced, so its re-send passes.
+def _merged_raised(previous, raised):
+    """`previous` raised keys with `raised` appended, de-duplicated so a
+    re-raised key moves to the newest end, capped to the newest
+    `QUESTION_COPY_BOUNCE_MAX_RAISED`. A non-list `previous` starts over."""
+    if not isinstance(previous, list):
+        previous = []
+    merged = [k for k in previous if k not in raised] + list(dict.fromkeys(raised))
+    return merged[-QUESTION_COPY_BOUNCE_MAX_RAISED:]
+
+
+def remember_question_bounce(project_dir, session_id, payload_hash, raised=()):
+    """Record that this payload was bounced, so its re-send passes, and which
+    findings it showed, so a reworded draft is not shown them again.
 
     `pending` is what the step hook consumes: the next question this session
     actually asks is logged with `bouncedFirst: true`. Best-effort — a write
     failure means the re-send is bounced once more, never that it is stuck."""
     try:
         bounces = next_bounce_record(
-            _load_question_copy_bounces(project_dir), session_id or "", payload_hash
+            _load_question_copy_bounces(project_dir), session_id or "", payload_hash, raised
         )
         path = _question_copy_bounce_path(project_dir)
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -565,56 +679,88 @@ def remember_question_bounce(project_dir, session_id, payload_hash):
         pass
 
 
-def _question_copy_finding_lines(row):
-    """Render one structured-checker row as short, actionable lines.
+def _option_position(labels, label):
+    """The option's position in the question, or its label when it is not
+    found. A finding about an option keys on its POSITION so that rewording
+    the label — the very fix the finding asks for — keeps the same key."""
+    try:
+        return str(list(labels).index(label))
+    except ValueError:
+        return f"label:{label}"
+
+
+def _question_copy_keyed_findings(row, labels=()):
+    """Render one structured-checker row as `(key, line)` pairs.
 
     The checker's JSON is the source of truth; this only lays it out. Each
     line names the exact words that were flagged, so the agent can find
-    them in the payload it just tried to send."""
-    lines = []
+    them in the payload it just tried to send. The key is the finding's kind
+    plus its STABLE subject — the term for a jargon hit, the option position
+    (from `labels`, the question's option labels in order) for an option
+    finding — so a reworded draft carrying the same finding has the same
+    key, and the gate does not raise it twice."""
+    findings = []
     for term in row.get("terms") or []:
-        lines.append(
+        findings.append((
+            f"term:{(term.get('term') or term.get('matched') or '').lower()}",
             f"`{term.get('matched') or term.get('term')}` is stated with no gloss — "
-            f"add the outcome, e.g. ({term.get('gloss')})"
-        )
+            f"add the outcome, e.g. ({term.get('gloss')})",
+        ))
     recommended = row.get("recommended")
     if recommended:
-        lines.append(recommended.get("guidance") or "an option is marked recommended without saying why")
+        findings.append((
+            "recommended",
+            recommended.get("guidance") or "an option is marked recommended without saying why",
+        ))
     for stake in row.get("stakes") or []:
-        lines.append(f"names a mechanism and no outcome — {stake.get('guidance')}")
+        findings.append((
+            f"stakes:{stake.get('kind') or ''}",
+            f"names a mechanism and no outcome — {stake.get('guidance')}",
+        ))
     unaccompanied = row.get("unaccompanied")
     if unaccompanied:
         excerpt = (unaccompanied.get("marker") or {}).get("excerpt", "")
-        lines.append(
+        findings.append((
+            "unaccompanied",
             f"the body carries technical detail (`{excerpt}`) with no plain sentence "
-            f"beside it — {unaccompanied.get('guidance')}"
-        )
+            f"beside it — {unaccompanied.get('guidance')}",
+        ))
     for shape in row.get("shapes") or []:
-        lines.append(f"`{shape.get('matched')}` ({shape.get('shape')}) — {shape.get('guidance')}")
-    lines.extend(_option_finding_lines(row.get("options") or {}))
+        findings.append((
+            f"shape:{shape.get('shape')}:{shape.get('matched')}",
+            f"`{shape.get('matched')}` ({shape.get('shape')}) — {shape.get('guidance')}",
+        ))
+    findings.extend(_option_keyed_findings(row.get("options") or {}, labels))
     for entry in row.get("optionUnaccompanied") or []:
         finding = entry.get("finding") or {}
         excerpt = (finding.get("marker") or {}).get("excerpt", "")
-        lines.append(
+        findings.append((
+            f"option-unaccompanied:{_option_position(labels, entry.get('label'))}",
             f'option "{entry.get("label")}" describes itself with technical detail '
-            f"(`{excerpt}`) and no plain sentence beside it — {finding.get('guidance')}"
+            f"(`{excerpt}`) and no plain sentence beside it — {finding.get('guidance')}",
+        ))
+    return findings
+
+
+def _option_keyed_findings(options, labels=()):
+    """`(key, line)` pairs for the checker's `options` block: options that
+    name a mechanism instead of an outcome, and groups of options the reader
+    cannot tell apart. Keyed on option positions, never labels."""
+    findings = [
+        (
+            f"option-mechanism:{_option_position(labels, label)}",
+            f'option "{label}" says what it operates on, not what happens to the reader',
         )
-    return lines
-
-
-def _option_finding_lines(options):
-    """Lines for the checker's `options` block: options that name a mechanism
-    instead of an outcome, and groups of options the reader cannot tell apart."""
-    lines = [
-        f'option "{label}" says what it operates on, not what happens to the reader'
         for label in options.get("mechanismOptions") or []
     ]
     for group in options.get("indistinguishable") or []:
-        lines.append(
+        positions = sorted(_option_position(labels, label) for label in group)
+        findings.append((
+            "option-indistinguishable:" + ",".join(positions),
             "options " + " and ".join(f'"{label}"' for label in group)
-            + " differ in nothing the reader can weigh"
-        )
-    return lines
+            + " differ in nothing the reader can weigh",
+        ))
+    return findings
 
 
 def run_structured_question_check(project_dir, questions):
@@ -642,29 +788,56 @@ def run_structured_question_check(project_dir, questions):
     return rows if isinstance(rows, list) else None
 
 
-def question_copy_findings(project_dir, questions):
-    """The finding lines for the real payload, or [] when the copy is clean OR
-    the check could not run (see `run_structured_question_check`). Each line is
-    prefixed `Qn:` when the payload asks more than one question."""
+def _option_labels(question):
+    """The question's option labels in order, or () for a malformed one."""
+    if not isinstance(question, dict):
+        return ()
+    return tuple(
+        (option or {}).get("label") if isinstance(option, dict) else None
+        for option in question.get("options") or []
+    )
+
+
+def question_copy_keyed_findings(project_dir, questions):
+    """`(key, line)` pairs for the real payload, or [] when the copy is clean
+    OR the check could not run (see `run_structured_question_check`). Each
+    line is prefixed `Qn:` when the payload asks more than one question, and
+    each key with its question's position."""
     rows = run_structured_question_check(project_dir, questions) or []
-    lines = []
+    findings = []
     for index, row in enumerate(rows):
         prefix = f"Q{index + 1}: " if len(rows) > 1 else ""
-        lines.extend(prefix + line for line in _question_copy_finding_lines(row or {}))
-    return lines
+        question = questions[index] if index < len(questions) else None
+        findings.extend(
+            (f"q{index}:{key}", prefix + line)
+            for key, line in _question_copy_keyed_findings(row or {}, _option_labels(question))
+        )
+    return findings
 
 
 def gate_question_copy(project_dir, session_id, questions, call):
-    """Bounce a question whose real payload has copy findings — once."""
+    """Bounce a question whose real payload has copy findings the session has
+    not already been shown.
+
+    Two escapes, both per session. An identical re-send passes (its hash was
+    bounced). And a REWORDED draft passes when every finding it still carries
+    was already raised: the agent has seen that finding and judged it, and
+    bouncing it again on every reword is what made one closing question cost
+    three round trips. A draft with any NEW finding still bounces, listing only
+    the new ones."""
     if not questions:
         return
     payload_hash = question_payload_hash(questions)
     if question_payload_was_bounced(project_dir, session_id, payload_hash):
         return
-    findings = question_copy_findings(project_dir, questions)
+    keyed = question_copy_keyed_findings(project_dir, questions)
+    if not keyed:
+        return
+    raised = question_findings_already_raised(project_dir, session_id)
+    findings = [line for key, line in keyed if key not in raised]
     if not findings:
         return
-    remember_question_bounce(project_dir, session_id, payload_hash)
+    remember_question_bounce(project_dir, session_id, payload_hash, [key for key, _ in keyed])
     block(
         project_dir,
         "question-copy",
@@ -673,10 +846,12 @@ def gate_question_copy(project_dir, session_id, questions, call):
         + "\n".join(f"  - {line}" for line in findings),
         "fix those words and send the revised question. If a finding is wrong, send the "
         "SAME question again unchanged — each payload is bounced at most once, so the "
-        "re-send goes through.",
+        "re-send goes through. A finding is raised once per session: a reworded question "
+        "is bounced again only for a finding it has not been shown yet.",
         detail=payload_hash,
         evidence=f"payload {payload_hash}; bounce record at {_question_copy_bounce_path(project_dir)}",
         call=call,
+        count_rule=False,
     )
 
 
@@ -701,7 +876,18 @@ def notice(rule, message):
     _PENDING_CONTEXT.append(f"NOTICE ({rule}): {message}" if _EXPLAIN_MODE else message)
 
 
-def block(project_dir, rule, reason, next_action, reference="", detail="", evidence="", call=""):
+def block(
+    project_dir,
+    rule,
+    reason,
+    next_action,
+    reference="",
+    detail="",
+    evidence="",
+    call="",
+    count_rule=True,
+    refused_path="",
+):
     """Emit a phase-gate refusal on the two-line contract and exit 2.
 
     Every refusal this hook emits goes through here, which is what makes
@@ -738,13 +924,26 @@ def block(project_dir, rule, reason, next_action, reference="", detail="", evide
 
     The text is laid out by `refusal_text` — action first, evidence last,
     and a repeat collapsed to two lines; see there for why.
+
+    `count_rule=False` keeps the refusal out of the per-rule tally, so it can
+    never render the RECURRING GUARDRAIL tier. That tier calls a rule "a known
+    recurring trap" whose next valid action is "the canonical path" — true
+    for a hard gate, false for an advisory whose escape is "re-send if the
+    finding is wrong". On the question-copy bounce it pushed agents to reword
+    rather than to judge. The exact-call tier still applies.
+
+    `refused_path` records which file the refusal protected, on the log entry
+    (see `_record_refusal`); it changes nothing in the message.
     """
     if _EXPLAIN_MODE:
         _emit_verdict(
             "BLOCKED", rule, detail, refusal_text(reason, next_action, reference, evidence)
         )
     count, rule_count = _record_refusal(
-        project_dir, "\x00".join((rule, detail, call, evidence)), rule
+        project_dir,
+        "\x00".join((rule, detail, call, evidence)),
+        rule if count_rule else None,
+        refused_path=refused_path or None,
     )
     # The leading newline is for the harness, which prints
     # `PreToolUse:<Tool> hook error: [<the hook's whole shell command>]: `
@@ -966,6 +1165,14 @@ _CODEYAM_TEST_VERBS = frozenset(("refresh-tests",))
 # reached through one is still an invocation of it.
 _SCRIPT_INTERPRETERS = frozenset(("bash", "sh", "zsh", "ksh", "dash"))
 
+# The builtins that run a script file in the CURRENT shell. Sourcing is a script
+# run like any other: VM 15 08c64753 ran a refused script by sourcing it.
+_SOURCE_BUILTINS = frozenset((".", "source"))
+
+# The language a script executed by path (`./x.py`) is scanned in. Anything
+# else — `.sh`, `.bash`, no extension — is read as shell.
+_SCRIPT_EXTENSION_LANGS = {".py": "py", ".js": "js", ".mjs": "js", ".cjs": "js"}
+
 
 def _configured_test_scripts(project_dir):
     """Project-specific test-runner SCRIPT invocations derived from
@@ -1114,22 +1321,35 @@ def _program_name(token):
 def _invokes_configured_script(tokens, project_dir):
     """True when one of the project's configured test scripts is what this
     command runs — in command position (`./scripts/run-shell-tests.sh`) or as the
-    script argument of a shell (`bash scripts/run-shell-tests.sh`).
+    script argument of a shell (`bash scripts/run-shell-tests.sh`) or of `.` /
+    `source`.
 
     Comparing whole tokens is what keeps `git commit -m "fixes
     scripts/run-shell-tests.sh"` allowed: a quoted message is one token, and one
-    token is never equal to the script path inside it."""
+    token is never equal to the script path inside it. The shell must itself be
+    in command position: VM 4 c8d1c6d8's `grep -n bash scripts/run-shell-tests.sh`
+    names `bash` only as a search term, and was refused as a test run."""
     scripts = {_program_name(s) for s in _configured_test_scripts(project_dir)}
     if not scripts:
         return False
     for index, tok in enumerate(tokens):
         if _program_name(tok) not in scripts:
             continue
-        if _in_command_position(tokens, index):
-            return True
-        if _program_name(tokens[index - 1]) in _SCRIPT_INTERPRETERS:
+        if _in_command_position(tokens, index) or _runs_as_script_argument(tokens, index):
             return True
     return False
+
+
+def _runs_as_script_argument(tokens, index):
+    """True when `tokens[index]` is the script a shell or `.`/`source` directly
+    before it runs — and that runner is itself in command position, so
+    `grep -n bash x.sh` (where `bash` is a search term) is not a run of x.sh."""
+    if index == 0:
+        return False
+    runner = tokens[index - 1]
+    if _program_name(runner) not in _SCRIPT_INTERPRETERS and runner not in _SOURCE_BUILTINS:
+        return False
+    return _in_command_position(tokens, index - 1)
 
 
 def is_test_run_command(command, project_dir):
@@ -1666,26 +1886,53 @@ def _in_command_position(tokens, index):
     return prior in _COMMAND_PREFIXES or bool(_ASSIGNMENT.match(prior))
 
 
-def _has_inplace_editor(command):
+def _has_inplace_editor(command, script_file=False):
     """True iff `command` invokes `sed`/`perl` with an in-place flag.
 
     Scoped to one command and blind to quoted text. A `sed` in one command says
     nothing about a flag in the next, so the scan restarts at every separator;
     and quoted regions collapse into single tokens, so a `-i` inside a grep
     pattern is data. Fails closed: a command that cannot be tokenized counts as
-    an in-place edit, so a malformed quote is never an evasion path."""
+    an in-place edit, so a malformed quote is never an evasion path.
+
+    `script_file` relaxes that for the text of a script file the command RUNS
+    (`script_run_write_targets`): a file is not a command line, and an
+    apostrophe in its prose (`echo it's done`) untokenizes it while editing
+    nothing. There an untokenizable segment counts only when a whitespace split
+    of it still shows `sed`/`perl` in command position with an in-place flag."""
     for segment in _split_commands(command):
         try:
             tokens = shlex.split(segment, posix=True)
         except ValueError:
-            return True
-        for index, tok in enumerate(tokens):
-            if tok.rsplit("/", 1)[-1] not in ("sed", "perl"):
-                continue
-            if not _in_command_position(tokens, index):
-                continue
-            if any(_INPLACE_FLAG.match(t) for t in tokens[index + 1:]):
+            if not script_file or _untokenizable_has_inplace_editor(segment):
                 return True
+            continue
+        if _tokens_have_inplace_editor(tokens):
+            return True
+    return False
+
+
+def _tokens_have_inplace_editor(tokens):
+    """True when the tokens of one command run `sed`/`perl` in command position
+    with an in-place flag."""
+    for index, tok in enumerate(tokens):
+        if tok.rsplit("/", 1)[-1] not in ("sed", "perl"):
+            continue
+        if not _in_command_position(tokens, index):
+            continue
+        if any(_INPLACE_FLAG.match(t) for t in tokens[index + 1:]):
+            return True
+    return False
+
+
+def _untokenizable_has_inplace_editor(segment):
+    """The lenient reading of a script-file segment shlex cannot tokenize: each
+    line (and each `;`/`&`/`|`-separated piece of one) split on whitespace,
+    then checked as `_tokens_have_inplace_editor` checks real tokens. Quotes are
+    ignored, so an unbalanced one cannot hide a `sed -i` on the next line."""
+    for piece in re.split(r"[\n;&|()]", segment):
+        if _tokens_have_inplace_editor(piece.split()):
+            return True
     return False
 
 
@@ -2282,6 +2529,162 @@ def self_matching_pgrep_notice(pattern):
     )
 
 
+# The pieces of the unbounded-poll rule. Mirrored, regex for regex, by
+# `crates/codeyam-editor/src/commands/editor/unbounded_poll.rs`; both sides are
+# tested against `tests/fixtures/unbounded-poll-commands.txt`. `for` is absent
+# from the head on purpose: a `for` loop iterates a finite list, and
+# `for i in $(seq N)` is the bound this rule recommends.
+_POLL_LOOP_HEAD = re.compile(r"\b(?:while|until)\b")
+_POLL_LOOP_BODY = re.compile(r"\bdo\b(.*)\bdone\b", re.DOTALL)
+_POLL_SLEEP = re.compile(r"\bsleep\b")
+_POLL_BOUND = re.compile(
+    r"\bg?timeout\s+(?:-\S+\s+)*\d|\bseq\s|\$\(\(|\(\(|\blet\s|\$\{?SECONDS\b"
+)
+# The loop as `<pre> while|until <cond>; do <body>; done <post>`, for rendering
+# the bounded rewrite of the agent's own command.
+_POLL_LOOP_PARTS = re.compile(
+    r"^(?P<pre>.*?)\b(?P<kw>while|until)\s+(?P<cond>.+?)\s*;\s*do\b\s*"
+    r"(?P<body>.*?)\s*;?\s*\bdone\b(?P<post>.*)$",
+    re.DOTALL,
+)
+_POLL_SLEEP_SECS = re.compile(r"\bsleep\s+(\d+(?:\.\d+)?)")
+_QUOTED = re.compile(r"'[^']*'|\"(?:[^\"\\]|\\.)*\"")
+_RUNS_ITS_ARGUMENT = re.compile(r"(?:\s-c|\beval)\s*$")
+# A bounded loop should give up after about this long.
+_POLL_BOUND_SECS = 1200
+
+
+def _without_inert_quotes(command):
+    """`command` with every quoted string blanked unless the shell RUNS it.
+
+    A loop inside quotes runs only when the string is handed to `sh -c` /
+    `bash -c` / `eval`; anywhere else (a `printf` payload, a JSON event, a
+    commit message) it is data. Blanked to `''` so the surrounding shell keeps
+    its shape."""
+    def keep_or_blank(match):
+        before = command[: match.start()]
+        return match.group(0) if _RUNS_ITS_ARGUMENT.search(before) else "''"
+
+    return _QUOTED.sub(keep_or_blank, command)
+
+
+def unbounded_background_poll(command):
+    """True for a `while`/`until` loop whose body sleeps and that has no bound.
+
+    Such a loop exits only when its condition comes true. Backgrounded, it is
+    the one wait whose completion notification can never arrive: VM 7
+    `2000458a` (2026-11-09) ended two turns on
+    `until ls …_bg.wasm | grep -qv …; do sleep 3; done`, the dev server never
+    rebuilt, and the agent idled 79 minutes until the user asked.
+
+    A `timeout <n>` / `gtimeout <n>` wrapper, a `seq` counter, a shell
+    arithmetic counter, or a `$SECONDS` deadline is a bound. A process watcher
+    (`while kill -0 <pid>`) is not: a hung build never ends."""
+    if not command:
+        return False
+    # The shell-tokenizing heredoc view: a data body (`cat <<EOF`) and a
+    # non-shell program's body (`python3 - <<'EOF'`) are both another
+    # program's input, so a loop written in them is not a shell wait loop.
+    shell = _without_inert_quotes(elide_heredoc_bodies(command, keep_programs=False))
+    if not _POLL_LOOP_HEAD.search(shell):
+        return False
+    body = _POLL_LOOP_BODY.search(shell)
+    if not body or not _POLL_SLEEP.search(body.group(1)):
+        return False
+    # The bound is read off the WHOLE command: `timeout 900 sh -c '…'` bounds
+    # the loop inside its quotes.
+    return not _POLL_BOUND.search(command)
+
+
+def bounded_poll_rewrite(command):
+    """The agent's own loop rewritten with a portable counter bound.
+
+    `for i in $(seq N); do <cond> && break; <body>; done; <follow-up>`, with
+    N × the loop's sleep near 20 minutes. A counter rather than `timeout`,
+    because `timeout` is GNU coreutils and a stock macOS has none. `None` when
+    the loop is not in a shape this can take apart; the caller then shows the
+    template instead."""
+    parts = _POLL_LOOP_PARTS.match(command.strip())
+    if not parts:
+        return None
+    cond = parts.group("cond").strip()
+    # `until C` loops while C is false, so it stops when C succeeds: `C && break`.
+    # `while C` stops when C fails: `C || break`. A leading `!` flips either.
+    stop_on_success = parts.group("kw") == "until"
+    if cond.startswith("! "):
+        cond = cond[2:].strip()
+        stop_on_success = not stop_on_success
+    joiner = "&&" if stop_on_success else "||"
+    sleep = _POLL_SLEEP_SECS.search(parts.group("body"))
+    secs = float(sleep.group(1)) if sleep else 5.0
+    count = max(1, round(_POLL_BOUND_SECS / secs)) if secs > 0 else 240
+    return (
+        f"{parts.group('pre')}for i in $(seq {count}); do {cond} {joiner} break; "
+        f"{parts.group('body').strip()}; done{parts.group('post')}"
+    )
+
+
+def unbounded_background_poll_text(command, backgrounded):
+    """The reason and next action for an unbounded poll loop.
+
+    One text for the refusal and the notice, so the two forms cannot describe
+    the hazard differently."""
+    rewrite = bounded_poll_rewrite(command) or (
+        "for i in $(seq 240); do <condition> && break; sleep 5; done; <follow-up>"
+    )
+    where = (
+        "backgrounded, so if its condition never comes true it never exits, its "
+        "completion notification never fires, and nothing re-invokes you"
+        if backgrounded
+        else "if its condition never comes true it runs until this call's timeout"
+    )
+    reason = (
+        f"this is a wait loop with no time limit — {where}. VM 7 idled 79 minutes "
+        f"on exactly this shape (2026-11-09)."
+    )
+    next_action = (
+        f"relaunch it with a bound, which exits within ~20 minutes either way:\n"
+        f"    {rewrite}\n"
+        f"  Waiting on a codeyam command? Use `{cli_command()} editor wait-for "
+        f"<task-id>` instead of a loop."
+    )
+    return reason, next_action
+
+
+def _workflow_in_flight(project_dir):
+    """True when the editor is active and a workflow step is recorded — the
+    state in which nobody is watching the pane between agent turns."""
+    return bool(os.environ.get("CODEYAM_EDITOR_ACTIVE")) and os.path.exists(
+        os.path.join(project_dir, ".codeyam", "editor-step.json")
+    )
+
+
+def _unbounded_poll_guard(project_dir, tool_input, call):
+    """Refuse or flag a Bash call that is a wait loop with no time limit.
+
+    Refused only when it can strand an unattended session: backgrounded (a
+    foreground loop is bounded by the call's own timeout) AND inside a
+    workflow. Anywhere else it is a notice, and a bounded loop passes."""
+    command = tool_input.get("command", "")
+    if not unbounded_background_poll(command):
+        return
+    backgrounded = bool(tool_input.get("run_in_background"))
+    reason, next_action = unbounded_background_poll_text(command, backgrounded)
+    if backgrounded and _workflow_in_flight(project_dir):
+        block(
+            project_dir,
+            "unbounded-background-poll",
+            reason,
+            next_action,
+            evidence=(
+                "run_in_background is true, a workflow step is in flight, and "
+                "the loop carries no timeout, seq/arithmetic counter, or $SECONDS bound"
+            ),
+            call=call,
+        )
+    notice("unbounded-poll", f"NOTE: {reason}\n  Next: {next_action}")
+
+
 # `pkill` in command position. It shares `pgrep`'s flag set, so its operand is
 # read by `_pgrep_full_pattern` too.
 _PKILL_CALL = re.compile(r"(?:\A|[\n;|&(`]|\$\()\s*(?:sudo\s+)?pkill\b([^;|&\n()`]*)")
@@ -2664,23 +3067,58 @@ def _shell_script_operand(texts, index):
 def _script_operand(texts):
     """`(word_index, lang)` of the script file the program in command position
     of a lexed command runs, or None when it runs none — `-c` code, stdin, a
-    module, or a program that is not an interpreter."""
+    module, or a bare program name that is not an interpreter.
+
+    Three spellings run a script without naming an interpreter, and each is a
+    script run: sourcing it (`. x.sh`, `source x.sh`) and executing it by path
+    (`./x.sh`, `scripts/x.sh`). A path-qualified program is read by its
+    extension; a compiled binary is excluded later, by its content."""
     wi = _command_word_index(texts)
     if wi is None:
         return None
-    program = _program_name(texts[wi])
-    if _PYTHON_INTERPRETER.match(program) or program in _JS_INTERPRETERS:
-        lang = "py" if _PYTHON_INTERPRETER.match(program) else "js"
+    lang = _interpreter_lang(_program_name(texts[wi]))
+    if lang is None:
+        found = _unnamed_interpreter_operand(texts, wi)
+        if found is None:
+            return None
+        operand, lang = found
+    elif lang == "sh":
+        operand = _shell_script_operand(texts, wi)
+    else:
         kind, operand = _interpreter_code_source(texts, wi, lang)
         if kind != "file":
             return None
-    elif program in _SCRIPT_INTERPRETERS:
-        lang, operand = "sh", _shell_script_operand(texts, wi)
-    else:
-        return None
     if operand is None or not texts[operand]:
         return None
     return operand, lang
+
+
+def _interpreter_lang(program):
+    """The language `program` (a bare name, see `_program_name`) interprets —
+    `"py"`, `"js"` or `"sh"` — or None when it is not a script interpreter."""
+    if _PYTHON_INTERPRETER.match(program):
+        return "py"
+    if program in _JS_INTERPRETERS:
+        return "js"
+    if program in _SCRIPT_INTERPRETERS:
+        return "sh"
+    return None
+
+
+def _unnamed_interpreter_operand(texts, wi):
+    """`(operand_index, lang)` when the word at `wi` — not an interpreter — runs
+    a script anyway: `.`/`source` run their operand as shell, and a
+    path-qualified program (`./x.py`, `scripts/x.sh`) is itself the script, read
+    in the language its extension names (shell when it names none). A bare
+    program name (`grep`) runs no script, so None. `operand_index` is None for
+    a `source` with nothing after it."""
+    word = texts[wi]
+    if word in _SOURCE_BUILTINS:
+        return (wi + 1 if wi + 1 < len(texts) else None), "sh"
+    if "/" in word:
+        extension = os.path.splitext(_program_name(word))[1]
+        return wi, _SCRIPT_EXTENSION_LANGS.get(extension, "sh")
+    return None
 
 
 def _script_operands(command):
@@ -3325,20 +3763,23 @@ def _perl_operands(tokens):
     return operands
 
 
-def inplace_edit_targets(command):
+def inplace_edit_targets(command, script_file=False):
     """`(found, paths)` for the in-place `sed`/`perl` edits in `command`:
     `found` is True when there is one, and `paths` lists every file they
     rewrite — or is None when any of them cannot be resolved (a positional
     list fed by `xargs`/`find -exec`, an unknown option, an unresolvable
     variable, an untokenizable command). Fails closed exactly as
-    `_has_inplace_editor` does."""
-    if not _has_inplace_editor(command):
+    `_has_inplace_editor` does, `script_file` included: an untokenizable
+    script-file segment is unresolvable only when it carries an in-place edit."""
+    if not _has_inplace_editor(command, script_file):
         return False, []
     paths = []
     for segment in _split_commands(command):
         try:
             tokens = shlex.split(segment, posix=True)
         except ValueError:
+            if script_file and not _untokenizable_has_inplace_editor(segment):
+                continue
             return True, None
         for index, tok in enumerate(tokens):
             program = tok.rsplit("/", 1)[-1]
@@ -3638,7 +4079,7 @@ def _write_data_spans(command, lang="sh"):
     return write_construct_data_spans(command)
 
 
-def write_targets(command, start="", lang="sh"):
+def write_targets(command, start="", lang="sh", script_file=False):
     """Parse `command` for in-process file-write constructs. Relative targets
     are rebased onto the directory the command runs in — `start` (see
     `session_start_directory`) composed with any `cd` before the write.
@@ -3648,6 +4089,8 @@ def write_targets(command, start="", lang="sh"):
     interpreter runs (`script_run_write_targets`). Code is scanned for its own
     write constructs only — shell redirects and in-place `sed` are skipped,
     and the caller rebases the paths onto the interpreter's directory.
+    `script_file` marks shell text read from a script file rather than typed as
+    a command line; see `_has_inplace_editor`.
 
     Returns `(explicit, opaque, append_only)`: `explicit` lists the paths the
     command writes to — literal, or resolved from a variable bound to a
@@ -3730,7 +4173,7 @@ def write_targets(command, start="", lang="sh"):
             truncating = True
         add([match.group("path")], match.start())
 
-    found, paths = inplace_edit_targets(command)
+    found, paths = inplace_edit_targets(command, script_file)
     if found:
         truncating = True
         # The operands carry no position, so they are rebased only when every
@@ -3777,14 +4220,22 @@ def eligible_pathspecs(paths, project_dir):
 
     Pure — no git, no filesystem. Split from `tracked_source_paths` so the
     normalize-and-filter half is testable without a git repository."""
+    # Agrees with `on_disk_source_paths`: an internal cache directory never
+    # holds authored source, so a `.codeyam/tmp` payload is no candidate.
+    return _eligible_paths(paths, project_dir, SOURCE_SUFFIXES, _INTERNAL_DIRS)
+
+
+def _eligible_paths(paths, project_dir, suffixes, excluded_dirs):
+    """The repo-relative, pathspec-safe subset of `paths` ending in one of
+    `suffixes` and outside every directory named in `excluded_dirs`,
+    de-duplicated and capped at `_MAX_PATH_CANDIDATES`. Pure — the shared core
+    of `eligible_pathspecs` and `eligible_json_pathspecs`."""
     candidates = []
     for path in paths:
         rel = _repo_relative(path, project_dir)
-        if not rel or not rel.lower().endswith(SOURCE_SUFFIXES):
+        if not rel or not rel.lower().endswith(suffixes):
             continue
-        # Agrees with `on_disk_source_paths`: an internal cache directory never
-        # holds authored source, so a `.codeyam/tmp` payload is no candidate.
-        if set(rel.split("/")[:-1]) & _INTERNAL_DIRS:
+        if set(rel.split("/")[:-1]) & excluded_dirs:
             continue
         if not _PATHSPEC_SAFE.match(rel) or rel in candidates:
             continue
@@ -3818,11 +4269,7 @@ def tracked_source_lookup(paths, project_dir):
         return [], "git ls-files"
     listed = _git_ls_files(candidates, project_dir)
     if listed is None:
-        return (
-            on_disk_source_paths(candidates, project_dir),
-            f"files on disk (git ls-files did not answer within "
-            f"{_GIT_LOOKUP_TIMEOUT_SECS}s, so existence stood in for tracked-ness)",
-        )
+        return on_disk_source_paths(candidates, project_dir), _DISK_FALLBACK_CONSULTED
     return listed, "git ls-files"
 
 
@@ -3831,6 +4278,13 @@ def tracked_source_lookup(paths, project_dir):
 # then proceeds unjudged; a git query allowed to consume the whole budget made
 # that the common failure under load instead of the rare one.
 _GIT_LOOKUP_TIMEOUT_SECS = 2
+
+# The evidence phrase for a tracked-ness verdict git could not give, shared by
+# `tracked_source_lookup` and `textual_json_rewrite_targets`.
+_DISK_FALLBACK_CONSULTED = (
+    f"files on disk (git ls-files did not answer within "
+    f"{_GIT_LOOKUP_TIMEOUT_SECS}s, so existence stood in for tracked-ness)"
+)
 
 
 def _git_ls_files(candidates, project_dir):
@@ -3954,9 +4408,10 @@ _UNREAD_SCRIPT_DIRS = frozenset(("node_modules", "target"))
 
 def script_run_write_targets(command, project_dir, start=""):
     """The write targets inside every script file `command` runs, one
-    `(script, explicit, opaque, append_only, mentions)` per script that has a
-    write construct. `explicit` and `mentions` are rebased onto the directory
-    the interpreter runs in — where `open('x.rs', 'w')` actually lands.
+    `(script, explicit, opaque, append_only, mentions, text)` per script that
+    has a write construct. `explicit` and `mentions` are rebased onto the
+    directory the interpreter runs in — where `open('x.rs', 'w')` actually
+    lands. `text` is the script as read (shell comments stripped).
 
     VM21 4405d5c1 wrote `split_list.py` to its scratchpad, with
     `open('/workspace/crates/app/src/mcp/tools.rs', 'w')` in it, then ran
@@ -3981,7 +4436,12 @@ def script_run_write_targets(command, project_dir, start=""):
         text = _read_run_script(on_disk, project_dir)
         if text is None:
             continue
-        explicit, opaque, append_only = write_targets(text, lang=lang)
+        if lang == "sh":
+            # A script FILE is scanned as a file: its comments are prose, and
+            # VM 15 08c64753's `# the previous push's run` and `<job>` made a
+            # harmless script read as an opaque write of every path it named.
+            text = _strip_shell_comments(text)
+        explicit, opaque, append_only = write_targets(text, lang=lang, script_file=True)
         if explicit or opaque:
             found.append((
                 path,
@@ -3989,8 +4449,38 @@ def script_run_write_targets(command, project_dir, start=""):
                 opaque,
                 append_only,
                 _join_onto(directory, _path_tokens(text)),
+                text,
             ))
     return found
+
+
+def _strip_shell_comments(text):
+    """`text` with every shell `#` comment removed up to its end of line. A `#`
+    opens a comment only at the start of a word and outside quotes, so `$#`,
+    `${#arr}`, `a#b` and `"# not a comment"` survive. Quote state carries across
+    lines, as the shell's does; a backslash escapes outside single quotes."""
+    out = []
+    quote = None
+    i = 0
+    n = len(text)
+    while i < n:
+        ch = text[i]
+        if quote is None and ch == "#" and (i == 0 or text[i - 1] in " \t\n;&|()"):
+            end = text.find("\n", i)
+            i = n if end == -1 else end
+            continue
+        if ch == "\\" and quote != "'":
+            out.append(text[i:i + 2])
+            i += 2
+            continue
+        if ch in "'\"":
+            if quote is None:
+                quote = ch
+            elif quote == ch:
+                quote = None
+        out.append(ch)
+        i += 1
+    return "".join(out)
 
 
 def _read_run_script(on_disk, project_dir):
@@ -4007,16 +4497,20 @@ def _read_run_script(on_disk, project_dir):
         if not os.path.isfile(on_disk) or os.path.getsize(on_disk) > _MAX_SCRIPT_BYTES:
             return None
         with open(on_disk, encoding="utf-8", errors="replace") as handle:
-            return handle.read()
+            text = handle.read()
     except OSError:
         return None
+    # A program executed by path may be a compiled binary, not a script.
+    return None if "\x00" in text else text
 
 
 # One place a write was found: the command's own text (`script == ""`) or a
 # script file it runs. `mentions` is filled only for an opaque write, whose
-# candidates are every path the source mentions rather than `explicit`.
+# candidates are every path the source mentions rather than `explicit`. `text`
+# is the program the write lives in, which the tracked-JSON check reads for a
+# textual transform (`textual_json_rewrite_targets`).
 _WriteSource = collections.namedtuple(
-    "_WriteSource", "explicit opaque append_only mentions script"
+    "_WriteSource", "explicit opaque append_only mentions script text", defaults=("",)
 )
 
 
@@ -4028,12 +4522,14 @@ def _rewrite_sources(command, project_dir, start=""):
     explicit, opaque, append_only = write_targets(command, start)
     if explicit or opaque:
         mentions = _join_onto(start, _path_tokens(command)) if opaque else []
-        sources.append(_WriteSource(explicit, opaque, append_only, mentions, ""))
-    for script, s_explicit, s_opaque, s_append, mentions in script_run_write_targets(
+        sources.append(_WriteSource(explicit, opaque, append_only, mentions, "", command))
+    for script, s_explicit, s_opaque, s_append, mentions, text in script_run_write_targets(
         command, project_dir, start
     ):
         sources.append(
-            _WriteSource(s_explicit, s_opaque, s_append, mentions if s_opaque else [], script)
+            _WriteSource(
+                s_explicit, s_opaque, s_append, mentions if s_opaque else [], script, text
+            )
         )
     return sources
 
@@ -4062,7 +4558,11 @@ def scripted_rewrite_details(command, project_dir, cwd=None):
         candidates.extend(source.mentions if source.opaque else source.explicit)
     tracked, consulted = tracked_source_lookup(candidates, project_dir)
     if not tracked:
-        return None, consulted, ""
+        textual, json_consulted = textual_json_rewrite_targets(command, sources, project_dir)
+        if not textual:
+            return None, consulted, ""
+        found, script = _textual_json_found(command, textual)
+        return found, json_consulted, script
     resolved = eligible_pathspecs([p for s in sources for p in s.explicit], project_dir)
     target = next((path for path in tracked if path in resolved), tracked[0])
     script = _script_carrying(sources, target, target in resolved, project_dir)
@@ -4070,6 +4570,92 @@ def scripted_rewrite_details(command, project_dir, cwd=None):
     stages = _split_commands(command)
     found = (target, _offending_stage(stages), len(stages), append_only, target not in resolved)
     return found, consulted, script
+
+
+# --- Textual rewrites of tracked JSON --------------------------------------
+#
+# `.json` is outside `SOURCE_SUFFIXES` because rewriting JSON THROUGH A PARSER
+# is structurally sound. VM10 dbae0c51 rewrote the committed `testRunners` of
+# `.codeyam/editor.json` with `s.replace(old, new)` — no parser anywhere — and
+# every guard waved it through: this one for the suffix, the state-read guard
+# because it exempts `.codeyam/` writes. A text transform of JSON has every
+# defect the source rule names (wrong grammar, a runtime-computed diff, no
+# file-state tracking), so a tracked `.json` target is judged here when the
+# program transforms text and never parses.
+
+# String surgery in python/node: `.replace(` / `.replaceAll(`, `re.sub(` /
+# `re.subn(`. In-place `sed`/`perl` is detected by `_has_inplace_editor`.
+_TEXTUAL_TRANSFORM = re.compile(r"\.replace(?:All)?\s*\(|\bre\.subn?\s*\(")
+
+# Cache directories that never hold a reviewed `.json`. `.codeyam` is NOT here,
+# unlike `_INTERNAL_DIRS`: its tracked JSON is exactly what dbae0c51 rewrote.
+_UNJUDGED_JSON_DIRS = frozenset(("node_modules", ".git", "target"))
+
+
+def is_textual_json_transform(text):
+    """True when the program `text` edits by text surgery and never parses JSON.
+
+    A parse anywhere (`json.load(s)`, `JSON.parse`, `jq`) makes it the
+    sanctioned parse-and-dump shape, which stays allowed. A data heredoc body is
+    elided first, so a commit message quoting `.replace(` is not a transform.
+    The in-place check runs in its lenient `script_file` mode: its fail-closed
+    default reads any untokenizable command — an apostrophe in a python heredoc
+    — as `sed -i`, which would turn every `json.dumps` writer into a refusal."""
+    program = elide_heredoc_bodies(text)
+    if parses_json(program):
+        return False
+    return bool(_TEXTUAL_TRANSFORM.search(program)) or _has_inplace_editor(
+        program, script_file=True
+    )
+
+
+def eligible_json_pathspecs(paths, project_dir):
+    """The repo-relative, pathspec-safe `.json` subset of `paths` outside
+    `_UNJUDGED_JSON_DIRS`, de-duplicated and capped. Pure — the JSON twin of
+    `eligible_pathspecs`."""
+    return _eligible_paths(paths, project_dir, ".json", _UNJUDGED_JSON_DIRS)
+
+
+def _textual_json_found(command, textual):
+    """`(found, script)` for the first of `textual`'s `(path, script)` pairs,
+    `found` shaped as `scripted_rewrite_stage`'s tuple. A JSON target is never
+    append-only (the transform reads the file whole) and never inferred (only
+    resolved targets reach `textual`)."""
+    target, script = textual[0]
+    stages = _split_commands(command)
+    return (target, _offending_stage(stages), len(stages), False, False), script
+
+
+def textual_json_rewrite_targets(command, sources, project_dir):
+    """`(found, consulted)`: `[(path, script)]` for every git-tracked `.json`
+    file a source in `sources` writes by text surgery
+    (`is_textual_json_transform`), plus the phrase naming how tracked-ness was
+    decided — the same wording `tracked_source_lookup` uses. Only
+    RESOLVED write targets are judged: an opaque one would fall back to every
+    JSON path the program mentions, and a parse-free script that merely names
+    `.codeyam/editor.json` beside its real output is not rewriting it.
+
+    A write of the preview-origin keys is left to `preview_origin_hand_write_target`,
+    whose refusal names the one verb that performs both coupled writes.
+
+    When git cannot answer, existence on disk stands in for tracked-ness — the
+    fail-closed direction `tracked_source_lookup` takes."""
+    consulted = "git ls-files"
+    if preview_origin_hand_write_target(command):
+        return [], consulted
+    found = []
+    for source in sources:
+        if not source.explicit or not is_textual_json_transform(source.text):
+            continue
+        candidates = eligible_json_pathspecs(source.explicit, project_dir)
+        if not candidates:
+            continue
+        listed = _git_ls_files(candidates, project_dir)
+        if listed is None:
+            listed = [p for p in candidates if os.path.isfile(os.path.join(project_dir, p))]
+            consulted = _DISK_FALLBACK_CONSULTED
+        found.extend((path, source.script) for path in listed)
+    return found, consulted
 
 
 def scripted_source_rewrite_target(command, project_dir, cwd=None):
@@ -4090,7 +4676,9 @@ def scripted_source_rewrite_target(command, project_dir, cwd=None):
 # tracked file is tracked source in every way that matters, since a reviewer
 # reads it as a diff. So this WARNS rather than refuses: a generator that writes
 # fresh output beside its input has the same shape, and the hook cannot tell
-# the two apart.
+# the two apart. The one exception is a split carved out by line range or marker
+# search (`line_range_split`), which no generator does and which produced both
+# measured broken splits — that shape is refused.
 
 
 def is_split_destination(source, written):
@@ -4141,7 +4729,7 @@ def split_by_script_notice(source, written):
         f"WARNING (split-by-script): this command reads the tracked source file "
         f"`{source}` and writes the new file `{written}` beside it, which is the "
         f"shape of splitting a file by script. Content moved out of a tracked file "
-        f"counts as tracked source for CLAUDE.md's Edit-tool rule, even though the "
+        f"counts as tracked source for this project's Edit-tool rule, even though the "
         f"new file stays untracked until it is staged. A script's diff is computed "
         f"at runtime, so a reviewer never sees what moved. And a script that counts "
         f"braces or function ends parses the language with the wrong grammar: an "
@@ -4151,6 +4739,126 @@ def split_by_script_notice(source, written):
         f"`{cli_command()} editor rename-symbol` renames an identifier across "
         f"source, glossary and registry. This command is NOT blocked: if it is a "
         f"generator writing fresh output, carry on."
+    )
+
+
+# The `split-by-script` shapes that are REFUSED rather than warned about: the
+# command carves the new file out of the source by line number or by a marker
+# search. Both broken splits measured (an awk that cut a function in half, a
+# python marker search that "matched in the wrong place") had this shape, and a
+# generator writing fresh output never does. Every other match stays a warning.
+_LINE_RANGE_SPLIT_SHAPES = (
+    # python: `lines = f.readlines()` / `.splitlines()` / `.split('\n')`, then a
+    # slice such as `L[316:443]` or `lines[start:end]`.
+    (
+        re.compile(r"\.(?:readlines|splitlines)\(|\.split\(\s*['\"]\\n['\"]\s*\)"),
+        re.compile(r"\[[^\[\]\n]*:[^\[\]\n]*\]"),
+        "a python line slice",
+    ),
+    # `sed -n '120,240p'`, `sed -n '/^fn a/,/^}/p'`
+    (
+        re.compile(
+            r"\bsed\b[^|;&\n]*['\"]?(?:\d+|/[^/\n]+/)\s*,\s*(?:\d+|\$|/[^/\n]+/)\s*p"
+        ),
+        None,
+        "a `sed` line range",
+    ),
+    # `awk 'NR>=120 && NR<=240'`
+    (re.compile(r"\bawk\b[^\n]*\bNR\s*(?:[<>]=?|==)\s*\d+"), None, "an `awk` NR range"),
+    # `head -n 240 src | tail -n +120 > new`
+    (
+        re.compile(r"\b(?:head|tail)\s+(?:-n\s*\+?\d+|-\+?\d+|--lines(?:=|\s+)\+?\d+)"),
+        None,
+        "a `head`/`tail` line count",
+    ),
+)
+
+
+def line_range_split(command):
+    """A short phrase naming the line-range or marker-search shape `command`
+    uses to carve out a file, else None. Pure.
+
+    Judged only alongside `split_by_script_target`, which has already proven
+    the command reads a tracked source and writes a new sibling of it."""
+    for primary, secondary, label in _LINE_RANGE_SPLIT_SHAPES:
+        if primary.search(command) and (secondary is None or secondary.search(command)):
+            return label
+    return None
+
+
+def line_range_split_refusal(source, written, shape):
+    """The `(reason, next_action, evidence)` triple for a split done by line
+    range. Pure."""
+    return (
+        f"this command reads the tracked source file `{source}` and writes the new "
+        f"file `{written}` beside it by {shape}, which is splitting a file by "
+        f"script. A line count or a marker search parses the language with the "
+        f"wrong grammar: one such split cut a function in half, another matched "
+        f"its markers in the wrong place. Content moved out of a tracked file "
+        f"counts as tracked source for this project's Edit-tool rule, even though "
+        f"the new file stays untracked until it is staged.",
+        f"create `{written}` with Write holding the moved items verbatim, then "
+        f"delete them from `{source}` with Edit (several Edits in one message run "
+        f"in parallel), then fix the imports the move breaks.",
+        f"`{source}` is git-tracked; `{written}` is an untracked write target at "
+        f"its split destination; carved out by {shape}",
+    )
+
+
+def recent_scripted_refusal_age(project_dir, rel_path, now=None):
+    """Seconds since the newest `scripted-rewrite` refusal that protected
+    `rel_path`, when it is younger than `_REPEAT_WINDOW_SEC`, else None.
+
+    Reads the same log `_record_refusal` writes; an entry with no `path` (one
+    written before paths were recorded) never matches. Best-effort: an
+    unreadable log reads as no refusal."""
+    now = time.time() if now is None else now
+    entries, _ = _load_refusal_log(os.path.join(project_dir, _REFUSAL_LOG), now)
+    ages = [
+        now - e["at"]
+        for e in entries
+        if e.get("path") == rel_path
+        and str(e.get("fingerprint", "")).startswith("scripted-rewrite\x00")
+    ]
+    return min(ages) if ages else None
+
+
+def write_after_scripted_refusal_target(tool_input, project_dir):
+    """`(rel_path, age_secs)` when this Write replaces an existing tracked file
+    whose scripted rewrite was refused within `_REPEAT_WINDOW_SEC`, else None.
+
+    A path outside the project, a file that does not exist yet (a new file is
+    the split recipe, not a substitute for Edit), or an untracked file never
+    match."""
+    rel = _repo_relative(tool_input.get("file_path", ""), project_dir)
+    if not rel:
+        return None
+    age = recent_scripted_refusal_age(project_dir, rel)
+    if age is None or not os.path.isfile(os.path.join(project_dir, rel)):
+        return None
+    if not tracked_source_paths([rel], project_dir):
+        return None
+    return rel, age
+
+
+def write_after_scripted_refusal_notice(rel_path, age_secs):
+    """The notice for a whole-file Write over a tracked file shortly after a
+    scripted rewrite of that same file was refused. Pure.
+
+    A notice, not a block: a whole-file Write is sometimes right (a generated
+    file, a rewrite the user asked for). But every measured case came minutes
+    after the refusal on the same path — the agent swapping one way around the
+    Edit rule for another."""
+    minutes = round(age_secs / 60)
+    when = "under a minute ago" if minutes < 1 else f"about {minutes} minute(s) ago"
+    return (
+        f"NOTICE (write-after-scripted-refusal): a scripted rewrite of `{rel_path}` "
+        f"was refused {when}, and this Write replaces the "
+        f"whole tracked file. A whole-file Write shows the reviewer no old/new text, "
+        f"which is what the refusal protected. The move the refusal named is Edit: "
+        f"several Edits in one message run in parallel, and `replace_all` covers a "
+        f"true replace-everywhere. If a full rewrite is genuinely intended (the user "
+        f"asked for one, or the file is generated), carry on."
     )
 
 
@@ -4505,7 +5213,12 @@ def scripted_rewrite_refusal(path, append_only=False, target_inferred=False, scr
     reason says what running it would do.
 
     `command`, when given, is the Bash command refused; an inferred target's
-    reason then names a prefix-assignment binding that left it unresolved."""
+    reason then names a prefix-assignment binding that left it unresolved.
+
+    A `.json` path reaches here only through `textual_json_rewrite_targets` —
+    the suffix is outside `SOURCE_SUFFIXES` — so it gets its own wording."""
+    if path.lower().endswith(".json"):
+        return textual_json_rewrite_refusal(path, script)
     if script:
         return _script_run_refusal(path, append_only, target_inferred, script, command)
     if target_inferred:
@@ -4538,6 +5251,41 @@ def scripted_rewrite_refusal(path, append_only=False, target_inferred=False, scr
         f"`{cli_command()} editor rename-symbol`. Writing to an untracked file, to "
         f"/tmp, or to the scratchpad is unaffected.",
     )
+
+
+def textual_json_rewrite_refusal(path, script=""):
+    """The `(reason, next_action)` pair for a text-surgery rewrite of the
+    tracked JSON file `path`. Says why parse-and-dump is still fine, so the
+    refusal is not read as "JSON may never be scripted"; for
+    `.codeyam/editor.json` it names the editor's own writers, because a
+    `testRunners` command or a per-machine override is what dbae0c51 was
+    actually changing."""
+    actor = f"running `{script}`" if script else "this command"
+    reason = (
+        f"{actor} rewrites the tracked JSON file `{path}` by text surgery "
+        f"(`.replace(`, `re.sub(`, `sed -i`/`perl -pi`) without ever parsing it. "
+        f"That edits JSON with the wrong grammar, computes its diff at runtime so "
+        f"the change never appears in the transcript a reviewer reads, and "
+        f"bypasses the file-state tracking that lets Edit refuse a file that "
+        f"changed underneath it. Rewriting JSON THROUGH a parser (load, change, "
+        f"dump) is the sanctioned shape and is not refused."
+    )
+    if path == ".codeyam/editor.json" or path.endswith("/.codeyam/editor.json"):
+        cli = cli_command()
+        next_action = (
+            f"for a `testRunners` entry run `{cli} editor configure-test-runner "
+            f"'<json>'`; for a per-machine change run `{cli} editor "
+            f"config-override <path> <value>` (it writes `editor.local.json`); "
+            f"otherwise use the Edit tool — several Edit calls in ONE message run "
+            f"in parallel."
+        )
+    else:
+        next_action = (
+            "use the Edit tool (several Edit calls in ONE message run in parallel, "
+            "and `replace_all: true` covers a replace-every-occurrence pass), or "
+            "rewrite it through a parser: load the JSON, change the value, dump it."
+        )
+    return reason, next_action
 
 
 def unparseable_command_refusal(command):
@@ -5011,6 +5759,100 @@ def inspector_nudge(command):
             f"reading the file is the only option here; the absence is real, not "
             f"something you missed. Not blocking; your command still runs."
         )
+    return None
+
+
+# ── build-output deletion nudge ────────────────────────────────────────
+#
+# On VM 15 every cleanup across 14 transcripts was a hand-run
+# `rm -rf <target>/debug/examples` or `cargo clean -p …`; not one ran
+# `editor disk --reclaim`, which is lock-aware and names where the space went.
+# A NOTICE, never a refusal: deleting build output is wasteful, not wrong, and
+# a block would strand an agent on a host with no guard at all.
+#
+# Stack assumption: keys on cargo's own `CACHEDIR.TAG` marker and the `cargo
+# clean` verb, so it is inert on every other stack.
+
+_RECURSIVE_RM_FLAG = re.compile(r"^-[a-zA-Z]*[rR][a-zA-Z]*$")
+_GLOB_CHARS = re.compile(r"[*?\[]")
+
+
+def _inside_cargo_target(path, cwd):
+    """True when `path` (or, for a glob, its literal prefix) lies inside a
+    cargo target root: some ancestor carries a `CACHEDIR.TAG` naming cargo."""
+    literal = _GLOB_CHARS.split(path, 1)[0] or "."
+    current = os.path.abspath(os.path.join(cwd, os.path.expanduser(literal)))
+    while True:
+        tag = os.path.join(current, "CACHEDIR.TAG")
+        try:
+            with open(tag, encoding="utf-8", errors="replace") as handle:
+                if "cargo" in handle.read(4096):
+                    return True
+        except OSError:
+            pass
+        parent = os.path.dirname(current)
+        if parent == current:
+            return False
+        current = parent
+
+
+def _is_cargo_clean(program, args):
+    """True for `cargo clean …` (any subcommand flags after it)."""
+    return program == "cargo" and args[:1] == ["clean"]
+
+
+def _recursive_rm_paths(args):
+    """The path operands of an `rm` whose flags make it recursive, or [] when
+    it is not recursive (a plain `rm` cannot take a directory tree)."""
+    recursive = any(_RECURSIVE_RM_FLAG.match(a) or a == "--recursive" for a in args)
+    if not recursive:
+        return []
+    return [a for a in args if not a.startswith("-")]
+
+
+def _deletes_build_output(tokens, cwd):
+    """True when one command's tokens run `rm -r` on a path inside a cargo
+    target root, or `cargo clean`, in command position."""
+    for index, tok in enumerate(tokens):
+        if not _in_command_position(tokens, index):
+            continue
+        program = tok.rsplit("/", 1)[-1]
+        args = tokens[index + 1:]
+        if _is_cargo_clean(program, args):
+            return True
+        if program == "rm" and any(
+            _inside_cargo_target(p, cwd) for p in _recursive_rm_paths(args)
+        ):
+            return True
+    return False
+
+
+def _build_output_deletion_notice(cli):
+    """The notice text, naming the lock-aware command that replaces the
+    hand-run deletion."""
+    return (
+        "NOTE: this deletes cargo build output by hand. "
+        f"`{cli} editor disk` shows where the space went, and "
+        f"`{cli} editor disk --reclaim` frees it safely while builds run "
+        "(idle linked binaries, dead deps and incremental state, scratch "
+        "targets); `--aggressive` also wipes debug/ and, with `--wait-idle`, "
+        "waits for an in-flight build instead of refusing. Not blocking; "
+        "your command still runs."
+    )
+
+
+def build_output_deletion_nudge(command, cwd):
+    """The notice for a command that deletes cargo build output by hand, or
+    None. Heredoc bodies and quoted text are data, so a commit message or a
+    grep that mentions `rm -rf` stays silent."""
+    command = elide_heredoc_bodies(command)
+    for segment in _split_commands(command):
+        try:
+            tokens = shlex.split(segment, posix=True)
+        except ValueError:
+            continue
+        if _deletes_build_output(tokens, cwd):
+            return _build_output_deletion_notice(cli_command())
     return None
 
 
@@ -5881,6 +6723,120 @@ def without_standalone_inspections(command):
     return scoped
 
 
+# What may precede a store path inside the literal that holds it: a root prefix
+# (`/workspace/`, `$P/`, `{root}/`) the scan steps back over.
+_PATH_PREFIX_TAIL = re.compile(r"[\w./~${}*-]*$")
+# An opening quote, with python's string-prefix letters (`f'`, `rb"`).
+_OPENING_QUOTE_TAIL = re.compile(r"(?:\b[fFrRbBuU]{1,2})?(['\"`])$")
+# A call whose argument can hand a file's bytes to a parse: `open(`,
+# `Path(`, `read_text(`, `readFileSync(`, `glob(`, `os.path.join(`, `listdir(` …
+# Deliberately broad — it is the "this might be read" side, and a false match
+# keeps the old, stricter verdict. `_ACCESS_CALL_NAME` is the callee half,
+# shared with `_assigned_name_is_read`, which asks the same question of a name.
+_ACCESS_CALL_NAME = r"(?i:\b[\w.]*(?:open|read|load|glob|path|join|walk|dir|file|stream)\w*)"
+_ACCESS_CALL_TAIL = re.compile(_ACCESS_CALL_NAME + r"\s*\(\s*$")
+# A loop binding the store to a name the body can open.
+_LOOP_HEAD_TAIL = re.compile(r"\bfor\s+\w+\s+in\s*[\[(]?\s*$")
+# A scalar assignment: `p = '<store>'`, `F=<store>`. Never `==`/`!=`/`<=`.
+_SCALAR_ASSIGNMENT_TAIL = re.compile(r"(?:^|[\s;(,])([A-Za-z_]\w*)\s*(?<![=!<>])=\s*$")
+# Programs that read a file operand straight into the parser's pipeline.
+_FILE_OPERAND_PROGRAM = re.compile(
+    r"^\s*(?:\w+=\S*\s+)*(?:\S*/)?(?:cat|jq|tac|head|tail|less|more)\b"
+)
+# The program reads its input from argv / an env var / fileinput, so where the
+# store sits cannot be told apart from what is parsed.
+_INDIRECT_INPUT = re.compile(r"\bsys\.argv\b|\bprocess\.argv\b|\bfileinput\b")
+
+
+def _shell_stage_tail(text):
+    """The text after the last shell separator (`|`, `;`, `&`, newline) that
+    sits OUTSIDE quotes, or None when `text` ends inside an open quote — the
+    shell's quote state, approximately. None means what follows sits inside a
+    `-c` program, not at shell level; a separator inside quotes (jq's
+    `'.tests | length'`) belongs to its argument and does not end the stage."""
+    quote = None
+    stage_start = 0
+    for index, ch in enumerate(text):
+        if ch in "'\"":
+            if quote is None:
+                quote = ch
+            elif quote == ch:
+                quote = None
+        elif quote is None and ch in "|;&\n":
+            stage_start = index + 1
+    return None if quote is not None else text[stage_start:]
+
+
+def _assigned_name_is_read(command, name, after):
+    """True when the variable `name`, assigned at offset `after`, later reaches
+    an access call (`open(p)`, `Path(p)`), a shell expansion (`$F`, `${F}`), or
+    an environment read."""
+    rest = command[after:]
+    escaped = re.escape(name)
+    return bool(
+        re.search(_ACCESS_CALL_NAME + rf"\s*\(\s*{escaped}\b", rest)
+        or re.search(rf"\$\{{?{escaped}\b", rest)
+        or re.search(rf"(?:environ|getenv|env)\W+{escaped}\b", rest)
+    )
+
+
+def _occurrence_is_access(command, start, end):
+    """True when the store occurrence `command[start:end]` sits where its bytes
+    can feed a parse. See `store_in_access_position`."""
+    prefix = command[:start]
+    prefix = prefix[: len(prefix) - len(_PATH_PREFIX_TAIL.search(prefix).group(0))]
+    quoted = _OPENING_QUOTE_TAIL.search(prefix)
+    outer = prefix[: quoted.start()] if quoted else prefix
+    if _ACCESS_CALL_TAIL.search(outer) or _LOOP_HEAD_TAIL.search(outer):
+        return True
+    if not quoted and re.search(r"<\s*$", outer):
+        return True
+    assigned = _SCALAR_ASSIGNMENT_TAIL.search(outer)
+    if assigned and _assigned_name_is_read(command, assigned.group(1), end):
+        return True
+    stage = _shell_stage_tail(outer)
+    return stage is not None and bool(_FILE_OPERAND_PROGRAM.search(stage))
+
+
+def store_in_access_position(command, store):
+    """True when `store` appears in `command` where it can feed the JSON parse,
+    rather than only being MENTIONED.
+
+    An access position is an access call's argument (`open(`, `Path(`,
+    `read_text`, `readFileSync(`, `load(open(`), a scalar assignment that is
+    later opened or expanded (`p = '<store>'` … `open(p)`), a loop head, a
+    shell operand of `cat`/`jq`/`head`/`tail` in the stage, or a `<` redirect.
+    A store inside some other string — a list of search needles, a `print`, a
+    regex, an `in` test — is a mention. VM10 findings §21: a transcript-analysis
+    script that parsed its OWN JSONL and searched it for the string
+    `.codeyam/editor.json` was refused as a hand-parse of that store.
+
+    Unresolvable shapes keep the old, unscoped verdict (True), the safe
+    direction to fail: a command or process substitution (whose output may be
+    the parse's argument), and a program that reads its input from
+    `sys.argv` / `process.argv` / `fileinput`. Pure."""
+    if "$(" in command or "`" in command or "<(" in command:
+        return store in command
+    if store in command and _INDIRECT_INPUT.search(command):
+        return True
+    return any(
+        _occurrence_is_access(command, m.start(), m.end())
+        for m in re.finditer(re.escape(store), command)
+    )
+
+
+def accessed_inspector(command):
+    """The `(store, inspector)` pair whose store `command` reads in an access
+    position (`store_in_access_position`), or None. Walks `_INSPECTOR_BY_STORE`
+    in its longest-path-first order, as `matching_inspector` does, so a nested
+    store still resolves to its own row; a store that is only mentioned is
+    skipped rather than ending the search."""
+    for store, inspector in _INSPECTOR_BY_STORE:
+        if store_in_access_position(command, store):
+            return (store, inspector)
+    return None
+
+
 def scripted_state_read_target(command):
     """The `(kind, store, inspector)` a scripted JSON parse of codeyam state
     touches, or None when `command` is not one.
@@ -5939,7 +6895,9 @@ def scripted_state_read_target(command):
         return ("journal-entry", _JOURNAL_ENTRIES_STORE, None)
     if writes_into_codeyam(command):
         return None
-    matched = matching_inspector(command)
+    # A store that is only mentioned — a search needle, a printed string — is
+    # not what the parse reads (`store_in_access_position`).
+    matched = accessed_inspector(command)
     if not matched:
         return None
     store, inspector = matched
@@ -6371,6 +7329,35 @@ def describe_call(tool_name, tool_input):
     return f"{base} #{digest}"
 
 
+# The head of a `wakeup-arm` token (`cyw1|<mode>|<step>|<epoch>`). The step
+# hook's `_WAKEUP_TOKEN_RE` spells out the epoch too, because it must read a
+# token exactly to judge it; here the question is only "was it armed through
+# `wakeup-arm` at all", and an epoch typo is the step hook's to catch.
+_WAKEUP_TOKEN_HEAD_RE = re.compile(r"\bcyw1\|[A-Za-z-]+\|\d{1,3}\|")
+
+
+def schedule_wakeup_lacks_token(tool_input):
+    """True when a `ScheduleWakeup` call would arm a wakeup the step hook can
+    never judge stale: a prompt with no `wakeup-arm` token.
+
+    A harness cannot cancel a scheduled wakeup, so a freehand one fires
+    whether or not its work finished — on VM 13 one landed in the
+    conversation a phase-boundary reset had just started, ahead of the resume
+    prompt, and read as a live "resume step 9" instruction at step 15. Three
+    shapes are not that and pass: `stop: true` (ends a loop, arms nothing), a
+    slash command (a user-invoked `/loop` re-arming its own input), and the
+    `<<autonomous-loop…>>` sentinels the runtime resolves itself."""
+    if not isinstance(tool_input, dict) or tool_input.get("stop") is True:
+        return False
+    prompt = tool_input.get("prompt")
+    if not isinstance(prompt, str) or not prompt.strip():
+        return False
+    stripped = prompt.strip()
+    if stripped.startswith("/") or stripped.startswith("<<autonomous-loop"):
+        return False
+    return _WAKEUP_TOKEN_HEAD_RE.search(prompt) is None
+
+
 def main():
     """Claude Code PreToolUse hook entry point: read the current
     editor step from `.codeyam/editor-step.json` and either allow or
@@ -6426,12 +7413,38 @@ def main():
                 detail=rewrite_target,
                 evidence=evidence,
                 call=call,
+                refused_path=rewrite_target,
             )
         # Its non-blocking twin, same scope: a split into untracked files passes
         # the guard above, and is still a scripted move of tracked source.
+        # The line-range shape is the exception: it is refused (see
+        # `_LINE_RANGE_SPLIT_SHAPES`).
         split = split_by_script_target(tool_input.get("command", ""), project_dir)
         if split:
+            shape = line_range_split(tool_input.get("command", ""))
+            if shape:
+                reason, next_action, evidence = line_range_split_refusal(*split, shape)
+                block(
+                    project_dir,
+                    "split-by-script",
+                    reason,
+                    next_action,
+                    detail=split[1],
+                    evidence=evidence,
+                    call=call,
+                )
             notice("split-by-script", split_by_script_notice(*split))
+
+    # A whole-file Write right after a scripted rewrite of that file was
+    # refused. Same scope as the guard above (every session), so it sits before
+    # the editor-mode short-circuit; a notice, so it never decides the call.
+    if tool_name == "Write":
+        after_refusal = write_after_scripted_refusal_target(tool_input, project_dir)
+        if after_refusal:
+            notice(
+                "write-after-scripted-refusal",
+                write_after_scripted_refusal_notice(*after_refusal),
+            )
 
     # Preview-origin hand-write guard. Same scope as the guard above: a
     # half-applied origin switch breaks the preview in any session.
@@ -6668,6 +7681,31 @@ def main():
         pgrep_pattern = self_matching_pgrep_loop(tool_input.get("command", ""))
         if pgrep_pattern:
             notice("self-matching-pgrep", self_matching_pgrep_notice(pgrep_pattern))
+        # The pgrep notice above is queued first, so a loop that is both rides
+        # out on the unbounded-poll refusal naming both.
+        _unbounded_poll_guard(project_dir, tool_input, call)
+
+        refusal = prototype_git_refusal(
+            project_dir,
+            tool_input.get("command", ""),
+            session_start_directory(event.get("cwd"), project_dir),
+        )
+        if refusal:
+            rule, reason, evidence = refusal
+            block(
+                project_dir,
+                rule,
+                reason,
+                "leave committing to Build — click \"Finish and Formalize in Build\" (or run "
+                "`codeyam-editor editor launch-plan <slug>` for the plan it wrote), and the "
+                "cycle commits these changes after its tests. If this change must ship "
+                "outside the workflow, run `codeyam-editor editor commit --out-of-workflow "
+                '-m "<msg>"`, which runs the test-cache gate before committing.',
+                reference="Plan-file commits (.codeyam/plans/*.md) and plan-only pushes are "
+                "allowed during a prototype.",
+                evidence=evidence,
+                call=call,
+            )
 
     # Every remaining rule is a workflow-step gate — only enforce in editor mode
     if not os.environ.get("CODEYAM_EDITOR_ACTIVE"):
@@ -6690,6 +7728,29 @@ def main():
 
     if not step:
         allow(f"step state at {state_path} carries no step number")
+
+    if tool_name == "ScheduleWakeup":
+        prompt = tool_input.get("prompt")
+        if schedule_wakeup_lacks_token(tool_input):
+            block(
+                project_dir,
+                "tokenless-wakeup",
+                "this wakeup carries no `cyw1|…` token, so if it fires after the "
+                "workflow has moved on (or into the conversation a phase-boundary "
+                "reset starts) nothing can tell it is stale, and it reads as a live "
+                "instruction.",
+                f"run `{cli_command()} editor wakeup-arm` (add `--task <task-id>` "
+                "when it hedges a backgrounded command) and use the line it prints "
+                "as this ScheduleWakeup's prompt.",
+                detail=slug,
+                evidence=(
+                    f"{resolved_context(project_dir, state_path)}; workflow at step "
+                    f"{step}; prompt is {len(prompt) if isinstance(prompt, str) else 0} "
+                    "chars with no token"
+                ),
+                call=call,
+            )
+        allow("ScheduleWakeup carries a wakeup token, stops the loop, or re-arms a /loop")
 
     metadata = load_step_metadata(project_dir)
     mode, mode_table = resolve_mode_table(state, metadata)
@@ -6760,6 +7821,9 @@ def main():
         nudge = inspector_nudge(command)
         if nudge:
             _PENDING_CONTEXT.append(nudge)
+        deletion_nudge = build_output_deletion_nudge(command, project_dir)
+        if deletion_nudge:
+            _PENDING_CONTEXT.append(deletion_nudge)
 
         # Position-aware, unlike the substring test it replaces: a command that
         # merely MENTIONS the CLI — most of all inside a quoted commit message —

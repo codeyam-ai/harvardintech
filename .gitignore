@@ -165,6 +165,7 @@ blob-report/
 .codeyam/state/check-in-loop.json
 .codeyam/state/idle-stopped-agents.json
 .codeyam/state/static-check-durations.json
+.codeyam/state/static-check-last-outcome.json
 .codeyam/state/claude-launch-settings.json
 .codeyam/state/extraction-plan.md
 .codeyam/state/deconstruct-plan.md
@@ -189,9 +190,11 @@ blob-report/
 .codeyam/state/plan-conflict-acks.json
 .codeyam/state/plan-landed-fetch.stamp
 .codeyam/state/recapture-tuning.json
+.codeyam/state/build-disk-growth.json
 .codeyam/state/sampled-freshness.json
 .codeyam/state/scoped-test-runs.json
 .codeyam/state/pre-commit-sync-orphan-bail.json
+.codeyam/state/build-activity.json
 .codeyam/state/step-highwater.json
 .codeyam/state/finalize-phase-fingerprints.json
 .codeyam/state/static-check-fingerprints.json
@@ -201,7 +204,10 @@ blob-report/
 .codeyam/state/relaunch-progress/
 .codeyam/state/needs-login.json
 .codeyam/state/check-in-grant.json
+.codeyam/state/expectation-decisions.jsonl
 .codeyam/state/plan-run-schedule.json
+.codeyam/state/schedule-finalize-request.json
+.codeyam/state/preview-tab-reload.json
 .codeyam/state/fix-only-proofs.json
 .codeyam/state/check-in-offer-decline.json
 .codeyam/remote-backup-preference.json
@@ -222,6 +228,8 @@ blob-report/
 .codeyam/state/schedule-launch-delivering.json
 .codeyam/state/agent-send-awaiting/
 .codeyam/state/run-complete-nudged/
+.codeyam/state/run-complete-pending/
+.codeyam/state/run-complete-acked/
 .codeyam/state/plan-complete-pending.json
 .codeyam/state/pre-commit-sync-parked-transient
 .codeyam/state/rebuild-self-job.json
@@ -254,7 +262,7 @@ blob-report/
 .codeyam/state/inline-hook-ids.json
 .codeyam/state/project-identity.json
 .codeyam/state/finalize-snapshot.json
-.codeyam/state/inline-agent-sessions.json
+.codeyam/state/cargo-tests-flag-advisory-shown
 .codeyam/test-run-marker.json
 .claude/settings.local.json
 .claude/hooks/__pycache__/

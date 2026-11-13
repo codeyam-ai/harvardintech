@@ -104,6 +104,7 @@ The plan body MUST:
 - Name the **exact file list** confirmed in Step 3 as the scope boundary, and state that no source outside it is to be edited.
 - Carry the assess rationale (fan-in, line count, untested entities) so the Deconstruct + TDD steps know what to target.
 - Name the loop chosen in Step 4 (visual scenarios vs. state/output fixtures), and any backend follow-up deferred from a UI+backend split.
+- Name the slice's test partition. Before writing the plan, run `codeyam-editor editor configure-test-commands`. It appends a `testPartitions` entry for any workspace unit the table lacks and prints the table. Put the partition that owns the slice's files in the body, so the TDD steps run only that unit's tests from day one. If the stack has no manifest reader, the command says so in one line; carry that line into the body instead.
 
 Then run `codeyam-editor editor launch-plan <slug>` with the slug from the printed path. This deterministically selects the plan and switches the UI to the Build tab via `usePlanLauncher.launchPlan` — it does not depend on the UI plan-watcher. Then output **exactly** `Done — opening Build to finalize.` and stop.
 

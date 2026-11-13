@@ -20,6 +20,7 @@ import json
 import os
 import re
 import sys
+import time
 from datetime import datetime, timezone
 
 # `_step_metadata` lives next to this file; add the hook directory to
@@ -904,20 +905,105 @@ def _wakeup_check(project_dir, token):
     return verdict if isinstance(verdict, dict) else None
 
 
-def _stale_wakeup_lines(project_dir, event_data):
-    """The `<stale-wakeup>` block for this prompt, or `[]`.
-
-    Only a token the editor itself judges STALE produces one; a LIVE or
-    WAITING wakeup, or one the editor could not judge, passes through
-    untouched."""
-    # Each verdict is a subprocess AND prunes its token's record, so it is
-    # asked once and shared by both readers below.
+def _wakeup_checker(project_dir):
+    """A memoized `token -> verdict` reader. Each verdict is a subprocess AND
+    prunes its token's record, so every reader of one prompt must share the
+    same checker rather than asking twice."""
     verdicts = {}
 
     def check(token):
         if token not in verdicts:
             verdicts[token] = _wakeup_check(project_dir, token)
         return verdicts[token]
+
+    return check
+
+
+# The fallback wakeup's own prompt (`wakeup.rs::wakeup_prompt_line`) once its
+# token is removed. Matched loosely on the binary name inside the backticks, so
+# a `codeyam-editor-dev` arm is recognised too.
+_WAKEUP_TEMPLATE_RE = re.compile(
+    r"Before doing anything else, run `[^`]*wakeup-check --token\s*`\.\s*"
+    r"If it reports STALE, .*? also\s+without re-fetching\.",
+    re.S,
+)
+
+
+def _is_wakeup_template_only(prompt_text, tokens):
+    """Whether `prompt_text` is nothing but the wakeup's template around its
+    `tokens` — no text a user typed alongside it."""
+    rest = prompt_text
+    for token in tokens:
+        rest = rest.replace(token, "")
+    return not _WAKEUP_TEMPLATE_RE.sub("", rest).strip()
+
+
+_STALE_WAKEUP_BLOCK_REASON = (
+    "Dropped a leftover CodeYam check-in reminder: it was set for work that has "
+    "already finished, so the agent was not woken for it."
+)
+
+
+def _question_open(project_dir):
+    """Whether a question to the user is open (the awaiting-user marker). Must
+    be read before the prompt hook removes that marker."""
+    return os.path.exists(
+        os.path.join(project_dir, ".codeyam", "run", "awaiting-user.json")
+    )
+
+
+def _stale_wakeup_refusal(project_dir, event_data, check):
+    """The `{"decision": "block"}` document refusing a fully-stale wakeup
+    prompt, or None to let the prompt through. A refusal is logged to the
+    foreign-prompt log, since the agent never sees the prompt it erased.
+
+    A question open when the wakeup fired is never refused: the agent must
+    re-ask it, which needs the turn a block erases."""
+    prompt_text = event_data.get("prompt")
+    reason = _stale_wakeup_decision(prompt_text, check, _question_open(project_dir))
+    if not reason:
+        return None
+    _log_foreign_prompt(
+        project_dir,
+        {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "sessionId": event_data.get("session_id"),
+            "kind": "stale-wakeup-blocked",
+            "tokens": _wakeup_tokens(prompt_text),
+        },
+    )
+    return json.dumps({"decision": "block", "reason": reason})
+
+
+def _stale_wakeup_decision(prompt_text, check, question_open):
+    """The reason to refuse this prompt outright, or None to let it through.
+
+    Refused only when every token in it is STALE, no question to the user was
+    open when it fired (the agent must re-ask that, which needs a turn), and
+    the prompt is only the wakeup's template (a user may have typed alongside
+    it). Anything else keeps today's `<stale-wakeup>` advisory path."""
+    if not isinstance(prompt_text, str) or question_open:
+        return None
+    tokens = _wakeup_tokens(prompt_text)
+    if not tokens:
+        return None
+    for token in tokens:
+        verdict = check(token)
+        if not (verdict and verdict.get("stale") is True):
+            return None
+    if not _is_wakeup_template_only(prompt_text, tokens):
+        return None
+    return _STALE_WAKEUP_BLOCK_REASON
+
+
+def _stale_wakeup_lines(project_dir, event_data, check=None):
+    """The `<stale-wakeup>` block for this prompt, or `[]`.
+
+    Only a token the editor itself judges STALE produces one; a LIVE or
+    WAITING wakeup, or one the editor could not judge, passes through
+    untouched."""
+    if check is None:
+        check = _wakeup_checker(project_dir)
 
     prompt_text = event_data.get("prompt")
     return _stale_wakeup_block(
@@ -975,6 +1061,138 @@ def _stale_wakeup_block(reasons, end_loop=False):
         "question to the user was open when it arrived, ask that question again.",
         *loop_line,
         "</stale-wakeup>",
+    ]
+
+
+# ── Arrived-during-reset detector ──────────────────────────────────────
+#
+# The backstop for a prompt with no wakeup token to judge. A phase-boundary
+# reset types `/clear` and then a resume prompt; anything the PREVIOUS
+# conversation scheduled can land between the two, and the fresh
+# conversation then reads it as its first instruction (VM 13: a freehand
+# "resume step 9" wakeup arrived 52s ahead of the resume, at step 15). While
+# the server's own records say a reset is in flight, any prompt that is not
+# the resume is marked possibly stale. The windows mirror the server's
+# (`PENDING_STALE_SECS` in context_reset.rs, `DELIVERY_STALE_SECS` in
+# context_reset_delivery.rs), so a record the server has abandoned holds
+# nothing here either.
+
+_RESET_PENDING_REL = os.path.join(".codeyam", "state", "context-reset-pending.json")
+_RESET_DELIVERY_REL = os.path.join(".codeyam", "state", "context-reset-delivering.json")
+_RESET_PENDING_WINDOW_S = 600
+_RESET_DELIVERY_WINDOW_S = 120
+# A sentence of `resume_prompt_keystrokes` (context_reset.rs) that nothing
+# else the server types carries.
+_RESUME_PROMPT_MARK = "The previous conversation was reset at a workflow phase boundary"
+
+
+def _read_json_dict(path):
+    """The JSON object at `path`, or None when it is absent, unreadable, or
+    not an object."""
+    try:
+        with open(path, "r") as f:
+            doc = json.load(f)
+    except (OSError, ValueError):
+        return None
+    return doc if isinstance(doc, dict) else None
+
+
+def _record_is_for(record_session, own_session):
+    """Whether a reset record keyed on `record_session` concerns this agent.
+    Unknown on either side counts as ours: a missed warning is the failure
+    this exists to prevent, and a spurious one only asks for a dismissal."""
+    return not record_session or not own_session or record_session == own_session
+
+
+def _parse_rfc3339_unix(stamp):
+    """Unix seconds for an RFC 3339 `stamp`, or None when it does not parse.
+
+    chrono's `to_rfc3339` writes nanoseconds; `fromisoformat` before Python
+    3.11 accepts at most six fraction digits, so the excess is trimmed."""
+    if not isinstance(stamp, str) or not stamp:
+        return None
+    trimmed = re.sub(r"(\.\d{6})\d+", r"\1", stamp).replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(trimmed)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return None
+    return parsed.timestamp()
+
+
+def _within_window(since_unix, now_unix, window_s):
+    """True when `since_unix` is no later than `now_unix` and less than
+    `window_s` seconds before it."""
+    return since_unix is not None and 0 <= now_unix - since_unix < window_s
+
+
+def _pending_reset_active(pending, own_session, now_unix):
+    """Whether a `context-reset-pending.json` record is this agent's and
+    still inside the server's pending window."""
+    if not pending or not _record_is_for(pending.get("editorSessionId"), own_session):
+        return False
+    created = _parse_rfc3339_unix(pending.get("createdAt"))
+    return _within_window(created, now_unix, _RESET_PENDING_WINDOW_S)
+
+
+def _delivery_reset_active(delivery, own_session, now_unix):
+    """Whether a `context-reset-delivering.json` record is this agent's and
+    still inside the server's delivery window."""
+    if not delivery:
+        return False
+    record = delivery.get("pending") if isinstance(delivery.get("pending"), dict) else {}
+    at_unix = delivery.get("atUnix")
+    if isinstance(at_unix, bool) or not isinstance(at_unix, (int, float)):
+        return False
+    return _record_is_for(record.get("editorSessionId"), own_session) and _within_window(
+        at_unix, now_unix, _RESET_DELIVERY_WINDOW_S
+    )
+
+
+def _reset_in_flight(project_dir, own_session, now_unix):
+    """True while a phase-boundary reset for this agent is pending or being
+    delivered and its resume prompt has not landed."""
+    pending = _read_json_dict(os.path.join(project_dir, _RESET_PENDING_REL))
+    delivery = _read_json_dict(os.path.join(project_dir, _RESET_DELIVERY_REL))
+    return _pending_reset_active(pending, own_session, now_unix) or _delivery_reset_active(
+        delivery, own_session, now_unix
+    )
+
+
+def _reset_exempt_prompt(stripped):
+    """Whether a prompt is one the reset detector must never mark: the resume
+    prompt itself, a slash command (the reset's own `/clear`), or a tokened
+    prompt (the stale-wakeup detector judges those exactly)."""
+    return (
+        _RESUME_PROMPT_MARK in stripped
+        or stripped.startswith("/")
+        or bool(_wakeup_tokens(stripped))
+    )
+
+
+def _reset_arrival_lines(project_dir, prompt_text, own_session, now_unix):
+    """The `<arrived-during-reset>` block for this prompt, or `[]`.
+
+    Fires only for a prompt `_reset_exempt_prompt` does not exempt, and only
+    while a reset is in flight."""
+    if not isinstance(prompt_text, str) or not prompt_text.strip():
+        return []
+    if _reset_exempt_prompt(prompt_text.strip()):
+        return []
+    if not _reset_in_flight(project_dir, own_session, now_unix):
+        return []
+    return [
+        "",
+        "<arrived-during-reset>",
+        "POSSIBLY STALE: this prompt arrived while a phase-boundary context reset is "
+        "in flight, before its resume prompt. It is most likely a check-in or "
+        "notification the previous conversation scheduled for itself, not an "
+        "instruction for this one.",
+        "Do not act on it: run nothing it asks for and ask the user nothing about it. "
+        "Say in one line that a leftover prompt arrived during the reset and was set "
+        "aside, then end the turn — the resume prompt carries the workflow forward.",
+        "</arrived-during-reset>",
     ]
 
 
@@ -1220,6 +1438,53 @@ def _session_start_tool_preload(project_dir):
     )
 
 
+# The pretool hook's refusal log (`_REFUSAL_LOG` there). Its `rules` map is the
+# durable per-rule count that renders that hook's RECURRING GUARDRAIL line.
+_REFUSAL_LOG_REL = os.path.join(".codeyam", "state", "refusal-fingerprints.json")
+
+
+def _scripted_rewrite_refusal_count(project_dir):
+    """How many calls this project's scripted-rewrite guard has refused, read
+    from the pretool hook's per-rule count. 0 when the log is missing,
+    unreadable, or carries no usable count (a bool or a non-int is not one)."""
+    try:
+        with open(os.path.join(project_dir, _REFUSAL_LOG_REL)) as f:
+            count = json.load(f)["rules"]["scripted-rewrite"]["count"]
+    except Exception:
+        return 0
+    if isinstance(count, bool) or not isinstance(count, int):
+        return 0
+    return max(count, 0)
+
+
+def _scripted_edit_reminder_text(count):
+    """The SessionStart "editing tracked source" block for a project whose
+    scripted-rewrite guard has refused `count` calls, or "" when it has refused
+    none. Pure.
+
+    The rule otherwise reaches the agent only as a refusal, and every reset
+    (startup, `/clear`, compaction) wipes it — so agents met it fresh 3–4 times
+    per plan, and after the refusal reached for a whole-file Write or a
+    line-slicing split script instead of Edit. SessionStart is the one place
+    that runs after every reset, before the first edit. Gated on the project
+    having tripped the rule, so a project that never has pays no context for
+    it. Names no language, extension or toolchain: client projects carry none
+    of codeyam's docs."""
+    if count < 1:
+        return ""
+    return (
+        f"Editing tracked source (this project's scripted-rewrite guard has refused "
+        f"{count} call(s) here):\n"
+        "  1. Change tracked source with Edit, never a scripted rewrite (a heredoc "
+        "`replace`, `sed -i`, `perl -pi`). Several Edits in one message run in "
+        "parallel, and `replace_all` covers a true replace-everywhere.\n"
+        "  2. Split a file with Write for the new file (the moved code verbatim) plus "
+        "Edit to delete it from the original — never a script that slices lines.\n"
+        "  3. A whole-file Write over an existing tracked file is not a substitute for "
+        "Edit: the reviewer sees no old/new text.\n"
+    )
+
+
 def _should_inject_tool_loading_protocol(project_dir, session_id):
     """Whether this prompt carries the per-prompt `<tool-loading-protocol>`.
 
@@ -1398,13 +1663,25 @@ def main():
             "(AskUserQuestion is already resident in editor sessions, so it needs no "
             "preload.)"
         )
+        reminder = _scripted_edit_reminder_text(_scripted_rewrite_refusal_count(project_dir))
+        if reminder:
+            print(reminder, end="")
         print("</session-start-hook>")
         return
 
     # Judged once, before anything else reads the prompt: a stale wakeup is
     # neither a feature request to capture nor a request to route.
+    wakeup_check = _wakeup_checker(project_dir)
+    if event_type == "user_prompt":
+        # Judged BEFORE the awaiting-user marker is removed below.
+        refusal = _stale_wakeup_refusal(project_dir, event_data, wakeup_check)
+        if refusal:
+            print(refusal)
+            return
     stale_wakeup_lines = (
-        _stale_wakeup_lines(project_dir, event_data) if event_type == "user_prompt" else []
+        _stale_wakeup_lines(project_dir, event_data, wakeup_check)
+        if event_type == "user_prompt"
+        else []
     )
 
     # ── Capture user's feature request prompt ──────────────────────────
@@ -1596,6 +1873,15 @@ def main():
 
         # Up front, so the agent reads it before anything telling it to act.
         lines.extend(stale_wakeup_lines)
+        if not stale_wakeup_lines:
+            lines.extend(
+                _reset_arrival_lines(
+                    project_dir,
+                    event_data.get("prompt"),
+                    os.environ.get("CODEYAM_EDITOR_SESSION_ID"),
+                    time.time(),
+                )
+            )
         lines.extend(_foreign_prompt_lines(project_dir, event_data, step, mode))
 
         # One-shot per session: the tool-loading-protocol is a session-entry

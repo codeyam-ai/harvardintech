@@ -96,6 +96,9 @@ const INJECTED_USER_BLOCKS = [
   ['user-prompt-submit-hook', 'hook-output'],
   ['session-start-hook', 'hook-output'],
   ['post-tool-use-hook', 'hook-output'],
+  // A background task's completion is delivered as a queued_command whose
+  // prompt is this envelope — harness output, not something the user typed.
+  ['task-notification', 'hook-output'],
   ['system-reminder', 'system-reminder'],
 ];
 
@@ -278,10 +281,23 @@ export function buildConversationTurns(messages) {
 export function appendClaudeMessage(obj, messages) {
   if (!obj.type) return;
 
+  if (obj.type === 'attachment' && obj.attachment?.type === 'queued_command') {
+    appendQueuedUserMessage(obj.attachment.prompt, obj.timestamp, true, messages);
+    return;
+  }
+
+  if (obj.type === 'queue-operation' && obj.operation === 'enqueue') {
+    appendQueuedUserMessage(obj.content, obj.timestamp, false, messages);
+    return;
+  }
+
   if (obj.type === 'user') {
     const content = obj.message?.content;
     if (!content) return;
     if (typeof content === 'string') {
+      // A queued message the user pulled back and sent as a normal prompt
+      // arrives here; drop its undelivered placeholder so it shows once.
+      dropUndeliveredQueued(classifyUserText(content).human, messages);
       messages.push({ role: 'user', text: content, ts: obj.timestamp });
     } else if (Array.isArray(content)) {
       const parts = [];
@@ -319,6 +335,55 @@ export function appendClaudeMessage(obj, messages) {
     }
     if (parts.length > 0) messages.push({ role: 'assistant', parts, ts: obj.timestamp });
   }
+}
+
+/**
+ * Record a message the user typed while a turn was running.
+ *
+ * Claude Code never writes such a message as a `type: "user"` record. It
+ * writes a `queue-operation` `enqueue` row when the message is typed and a
+ * `queued_command` attachment when it is delivered into the conversation.
+ * The delivery is authoritative: an `enqueue` is kept (marked undelivered)
+ * only until an attachment with the same text replaces it, so a message the
+ * transcript ended before delivering still appears, once.
+ *
+ * Only the human remainder is recorded — a `<task-notification>` envelope
+ * (a background task's completion) classifies as harness output and is
+ * dropped, so it is never reported as something the user said.
+ */
+function appendQueuedUserMessage(prompt, ts, delivered, messages) {
+  const { kind, human } = classifyUserText(queuedPromptText(prompt));
+  if (kind !== 'human') return;
+  if (delivered) dropUndeliveredQueued(human, messages);
+  const msg = { role: 'user', queued: true, text: human, ts };
+  if (!delivered) msg.undelivered = true;
+  messages.push(msg);
+}
+
+/** A queued prompt is usually a string; flatten a content-block array. */
+function queuedPromptText(prompt) {
+  if (typeof prompt === 'string') return prompt;
+  if (!Array.isArray(prompt)) return '';
+  return prompt
+    .map((p) => (typeof p === 'string' ? p : p?.type === 'text' ? p.text || '' : ''))
+    .filter(Boolean)
+    .join('\n');
+}
+
+/** Remove the undelivered queued placeholder whose text is `human`, if any. */
+function dropUndeliveredQueued(human, messages) {
+  if (!human) return;
+  const i = messages.findIndex((m) => m.undelivered && m.text === human);
+  if (i !== -1) messages.splice(i, 1);
+}
+
+/**
+ * Heading suffix marking a user message that was queued mid-turn —
+ * `' (queued mid-turn)'`, `' (queued, not delivered)'`, or `''`.
+ */
+export function queuedLabel(msg) {
+  if (!msg?.queued) return '';
+  return msg.undelivered ? ' (queued, not delivered)' : ' (queued mid-turn)';
 }
 
 /**
