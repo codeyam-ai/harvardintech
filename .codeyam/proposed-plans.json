@@ -1843,7 +1843,6 @@
         "obs-f05b342faa7c"
       ],
       "evidenceSessions": 2,
-      "ideaRank": 1,
       "offeredCount": 1,
       "lastOfferedAt": "2026-11-09T22:27:29.987988168+00:00"
     },
@@ -3066,6 +3065,11 @@
       "at": "2026-11-11T03:18:20.410751217+00:00",
       "feature": "Alerts when the site stops updating itself",
       "notes": "Backend-only cycle: deploy workflow gained a notify job that opens, comments on, and closes a site-alert GitHub issue. 46 unit tests pass and it has not yet run against real GitHub; the first run on main after this push is the real test. W…"
+    },
+    {
+      "at": "2026-11-14T04:25:01.956484597+00:00",
+      "feature": "Fall Welcome Mixer photos and an events highlights gallery",
+      "notes": "Push was clean (no pull). package-lock.json carries pre-existing npm peer-flag churn and is left alone each cycle. Capture runs on this project are near the 60s limit for the events and momentum-fund pages; if those pages grow, expect more…"
     }
   ],
   "syntheses": [
@@ -3277,6 +3281,17 @@
       ],
       "refused": 1,
       "notes": "fnd-3cc3cb352468 and fnd-fa7ebe3445bd (whole-corpus serial recapture) come from one session and are time-lost only, so they're held for more evidence. fnd-83da24f80dbf (type check only at finalize) is held too: it's a single time-lost finding, related to the new build-coverage theme but not the same mechanism."
+    },
+    {
+      "at": "2026-11-14T04:25:01.956484597+00:00",
+      "consumedIds": [
+        "obs-135999549881",
+        "obs-a1477b656119",
+        "obs-779e383f28fc",
+        "obs-271fe0910361",
+        "obs-4ef03360e28a"
+      ],
+      "notes": "Five observations across three sessions: reviewer copy-feedback stream (one session), a private Luma event not appearing, a phone-menu bug already fixed, and publish-failure alerts already built. No cluster cleared the two-session bar."
     }
   ]
 }
