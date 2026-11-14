@@ -1445,7 +1445,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "calendarEmbedUrl › returns the embed url when an event is upcoming",
-      "line": 19,
+      "line": 69,
       "registeredAt": "2026-10-16T14:07:17Z",
       "runner": "tests"
     },
@@ -1454,7 +1454,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "calendarEmbedUrl › returns the embed url when past and upcoming events are mixed",
-      "line": 45,
+      "line": 95,
       "registeredAt": "2026-10-16T14:07:17Z",
       "runner": "tests"
     },
@@ -1463,7 +1463,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "calendarEmbedUrl › returns undefined for an empty list",
-      "line": 30,
+      "line": 80,
       "registeredAt": "2026-10-16T14:07:17Z",
       "runner": "tests"
     },
@@ -1472,7 +1472,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "calendarEmbedUrl › returns undefined when every event is in the past",
-      "line": 25,
+      "line": 75,
       "registeredAt": "2026-10-16T14:07:17Z",
       "runner": "tests"
     },
@@ -1481,7 +1481,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "calendarEmbedUrl › returns undefined when no embed url is configured",
-      "line": 40,
+      "line": 90,
       "registeredAt": "2026-10-16T14:07:17Z",
       "runner": "tests"
     },
@@ -1490,7 +1490,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "calendarEmbedUrl › treats an event today as upcoming",
-      "line": 35,
+      "line": 85,
       "registeredAt": "2026-10-16T14:07:17Z",
       "runner": "tests"
     },
@@ -4622,7 +4622,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › carries the cover image through to the event card",
-      "line": 295,
+      "line": 345,
       "registeredAt": "2026-10-22T20:05:18Z",
       "runner": "tests"
     },
@@ -4631,7 +4631,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › carries the optional fields the event cards render",
-      "line": 273,
+      "line": 323,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4640,7 +4640,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › does not match a tag that only looks like the owner id",
-      "line": 303,
+      "line": 353,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4649,7 +4649,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › excludes events with no tag at all",
-      "line": 311,
+      "line": 361,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4658,7 +4658,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › handles an event with no communities key",
-      "line": 242,
+      "line": 292,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4667,7 +4667,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches a community id through the same chapter tag",
-      "line": 265,
+      "line": 315,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4676,7 +4676,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches an owner named in the communities list",
-      "line": 326,
+      "line": 376,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4685,7 +4685,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › matches any id in the communities list, with no chapter tag at all",
-      "line": 349,
+      "line": 399,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4694,7 +4694,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns a doubly-matching event only once",
-      "line": 342,
+      "line": 392,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -4703,7 +4703,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns nothing when no event is tagged to the owner",
-      "line": 318,
+      "line": 368,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4712,7 +4712,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › returns only the events tagged to the given owner",
-      "line": 257,
+      "line": 307,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -4721,7 +4721,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "eventsTaggedTo › still matches the chapter tag on a dual-tagged event",
-      "line": 334,
+      "line": 384,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -5459,7 +5459,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › does not zero-pad single-digit days",
-      "line": 79,
+      "line": 129,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -5468,7 +5468,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › formats a Date instance the same as its ISO string",
-      "line": 73,
+      "line": 123,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -5477,7 +5477,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "formatEventDate › formats an ISO date as Month D, YYYY",
-      "line": 68,
+      "line": 118,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -8624,6 +8624,42 @@
       "runner": "tests"
     },
     {
+      "description": "The owner's ask: every upcoming event visible without scrolling inside the frame. Four events was the busy month that prompted it; on a phone Luma's list measured 939px tall, so the frame must be at least that.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "lumaFrameHeight › fits four events as measured on a phone",
+      "line": 42,
+      "registeredAt": "2026-11-14T04:19:36.139548231+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Each further event adds one card's worth of height.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "lumaFrameHeight › grows by one card per event",
+      "line": 47,
+      "registeredAt": "2026-11-14T04:19:36.139548231+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Below the floor Luma's own empty state would grow a scrollbar.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "lumaFrameHeight › never drops below the floor",
+      "line": 52,
+      "registeredAt": "2026-11-14T04:19:36.139548231+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A very busy month scrolls inside the frame rather than growing forever.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "lumaFrameHeight › stops growing past the cap",
+      "line": 59,
+      "registeredAt": "2026-11-14T04:19:36.139548231+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "This is the identity the importer dedupes on, so a false negative imports a duplicate and a false positive silently skips a real event. Both Luma hosts appear in the wild, and a trailing slash is common in a pasted link.",
       "file": "src/lib/lumaFeed.test.ts",
       "format": "vitest",
@@ -11646,7 +11682,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › does not mutate its input",
-      "line": 411,
+      "line": 461,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11655,7 +11691,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › honours an explicit limit",
-      "line": 394,
+      "line": 444,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11664,7 +11700,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › preserves the order it was given",
-      "line": 377,
+      "line": 427,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11673,7 +11709,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns at most three events by default",
-      "line": 369,
+      "line": 419,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11682,7 +11718,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns everything when there are fewer than the limit",
-      "line": 388,
+      "line": 438,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -11691,7 +11727,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "recentPastEvents › returns nothing for a limit of zero or less",
-      "line": 402,
+      "line": 452,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -14268,60 +14304,6 @@
       "runner": "tests"
     },
     {
-      "description": "The homepage wall: 38 photos shown, a 12-photo small-screen cap → 12.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "smallScreenCapLimit › returns the cap when it hides some of the shown photos",
-      "line": 13,
-      "registeredAt": "2026-10-16T14:07:17Z",
-      "runner": "tests"
-    },
-    {
-      "description": "A negative cap is nonsense input; treat it as uncapped rather than hiding every photo.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "smallScreenCapLimit › returns undefined for a negative cap",
-      "line": 40,
-      "registeredAt": "2026-10-16T14:07:17Z",
-      "runner": "tests"
-    },
-    {
-      "description": "An empty gallery never gets a cap or a button.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "smallScreenCapLimit › returns undefined for an empty gallery",
-      "line": 34,
-      "registeredAt": "2026-10-16T14:07:17Z",
-      "runner": "tests"
-    },
-    {
-      "description": "No phoneCap passed (every caller but the full-wall ones) → no cap at all.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "smallScreenCapLimit › returns undefined when no cap is given",
-      "line": 18,
-      "registeredAt": "2026-10-16T14:07:17Z",
-      "runner": "tests"
-    },
-    {
-      "description": "A curated chapter set already capped at 12 shows 12; a small-screen cap of 12 on top would hide nothing, so no phone-only \"Show all\" button appears.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "smallScreenCapLimit › returns undefined when the cap equals the shown count",
-      "line": 24,
-      "registeredAt": "2026-10-16T14:07:17Z",
-      "runner": "tests"
-    },
-    {
-      "description": "A three-photo chapter gallery is already short — nothing to cap.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "smallScreenCapLimit › returns undefined when the cap exceeds the shown count",
-      "line": 29,
-      "registeredAt": "2026-10-16T14:07:17Z",
-      "runner": "tests"
-    },
-    {
       "description": "`--from` reads saved HTML instead of the network and `--dry-run` writes nothing, so the parse-and-plan half of the snapshot is exercised here with no live site involved — which matters, because the real run can only happen once, before the domain moves.",
       "file": "src/lib/archiveImporters.test.ts",
       "format": "vitest",
@@ -14551,7 +14533,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › accepts a caller-supplied cutoff",
-      "line": 448,
+      "line": 498,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -14560,7 +14542,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › defaults its cutoff to ARCHIVE_BEFORE",
-      "line": 458,
+      "line": 508,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -14569,7 +14551,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › keeps the order of both halves",
-      "line": 434,
+      "line": 484,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -14578,7 +14560,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › puts the day before the cutoff in the archive and the cutoff day in recent",
-      "line": 424,
+      "line": 474,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -14587,7 +14569,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitArchive › returns two empty halves for an empty list",
-      "line": 467,
+      "line": 517,
       "registeredAt": "2026-09-18T13:34:02Z",
       "runner": "tests"
     },
@@ -14596,7 +14578,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › does not mutate the input array order",
-      "line": 139,
+      "line": 189,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -14605,7 +14587,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › handles an empty event list",
-      "line": 105,
+      "line": 155,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -14614,7 +14596,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns no past events when all are upcoming",
-      "line": 118,
+      "line": 168,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -14623,7 +14605,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns no upcoming events when every event has passed",
-      "line": 130,
+      "line": 180,
       "registeredAt": "2026-08-05T20:56:12Z",
       "runner": "tests"
     },
@@ -14632,7 +14614,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns past events sorted most recent first",
-      "line": 99,
+      "line": 149,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -14641,7 +14623,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › returns upcoming events sorted soonest first",
-      "line": 93,
+      "line": 143,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -14650,7 +14632,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "splitEvents › treats an event exactly at now as upcoming",
-      "line": 110,
+      "line": 160,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -16367,7 +16349,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "toEventDate › parses an ISO date string into a Date",
-      "line": 59,
+      "line": 109,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -16376,7 +16358,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "toEventDate › returns a Date instance unchanged",
-      "line": 53,
+      "line": 103,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
     },
@@ -16664,7 +16646,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › accepts a communities tag that matches a known id",
-      "line": 223,
+      "line": 273,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -16673,7 +16655,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › catches a tag that differs only by whitespace",
-      "line": 170,
+      "line": 220,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -16682,7 +16664,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › handles an empty event list",
-      "line": 105,
+      "line": 155,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -16691,7 +16673,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › handles an event with no communities key",
-      "line": 242,
+      "line": 292,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -16700,7 +16682,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › names a chapter tag that matches no chapter",
-      "line": 149,
+      "line": 199,
       "registeredAt": "2026-07-28T20:50:40Z",
       "runner": "tests"
     },
@@ -16709,7 +16691,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports a bad chapter tag and a bad community tag together",
-      "line": 233,
+      "line": 283,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -16718,7 +16700,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports a typo in the communities list",
-      "line": 213,
+      "line": 263,
       "registeredAt": "2026-09-16T14:05:10Z",
       "runner": "tests"
     },
@@ -16727,7 +16709,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports each distinct tag once, in first-seen order",
-      "line": 177,
+      "line": 227,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -16736,7 +16718,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports every tag when there are no chapters at all",
-      "line": 204,
+      "line": 254,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -16745,7 +16727,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › reports nothing when every tag matches a chapter",
-      "line": 160,
+      "line": 210,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -16754,7 +16736,7 @@
       "file": "src/lib/events.test.ts",
       "format": "vitest",
       "key": "unmatchedChapterTags › treats a blank tag as untagged",
-      "line": 188,
+      "line": 238,
       "registeredAt": "2026-07-28T20:55:29Z",
       "runner": "tests"
     },
@@ -16792,6 +16774,24 @@
       "key": "unresolvedNavUrls › resolves a fragment against its page",
       "line": 569,
       "registeredAt": "2026-07-28T15:22:30Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Counted like splitEvents: an event on the day itself is still upcoming.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "upcomingEventCount › counts today and later, not earlier",
+      "line": 22,
+      "registeredAt": "2026-11-14T04:19:36.139548231+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "upcomingEventCount returns 0 for an empty event list.",
+      "file": "src/lib/events.test.ts",
+      "format": "vitest",
+      "key": "upcomingEventCount › is zero for no events",
+      "line": 33,
+      "registeredAt": "2026-11-14T04:19:57.722415233+00:00",
       "runner": "tests"
     },
     {
@@ -16987,51 +16987,6 @@
       "key": "video provider metadata › routes each recording to the host that claims it",
       "line": 229,
       "registeredAt": "2026-09-18T14:28:12.972169802+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "Pure: the caller renders from this and must not have its source mutated.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "visibleGalleryPhotos › does not mutate the input",
-      "line": 274,
-      "registeredAt": "2026-08-07T19:09:04Z",
-      "runner": "tests"
-    },
-    {
-      "description": "After \"Show all N photos\".",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "visibleGalleryPhotos › returns everything when expanded",
-      "line": 258,
-      "registeredAt": "2026-08-07T19:09:04Z",
-      "runner": "tests"
-    },
-    {
-      "description": "The landing page passes no cap and must keep rendering all 40. This is the case that stops the cap from becoming a silent default.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "visibleGalleryPhotos › returns everything when no cap is given",
-      "line": 264,
-      "registeredAt": "2026-08-07T19:09:04Z",
-      "runner": "tests"
-    },
-    {
-      "description": "A cap larger than the gallery is not an error, just uncapped in practice.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "visibleGalleryPhotos › returns everything when the cap exceeds the count",
-      "line": 269,
-      "registeredAt": "2026-08-07T19:09:04Z",
-      "runner": "tests"
-    },
-    {
-      "description": "The load state for a capped gallery.",
-      "file": "src/lib/gallery.test.ts",
-      "format": "vitest",
-      "key": "visibleGalleryPhotos › returns the first cap photos when collapsed",
-      "line": 253,
-      "registeredAt": "2026-08-07T19:09:04Z",
       "runner": "tests"
     },
     {

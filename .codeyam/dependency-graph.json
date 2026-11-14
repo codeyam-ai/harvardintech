@@ -1,5 +1,21 @@
 {
   "entities": {
+    ".claude/skills/review-session/scripts/extract-session-helpers.mjs::appendClaudeMessage": {
+      "filePath": ".claude/skills/review-session/scripts/extract-session-helpers.mjs",
+      "importedBy": [
+        ".claude/skills/review-session/scripts/extract-session.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "appendClaudeMessage"
+    },
+    ".claude/skills/review-session/scripts/extract-session-helpers.mjs::appendGeminiMessage": {
+      "filePath": ".claude/skills/review-session/scripts/extract-session-helpers.mjs",
+      "importedBy": [
+        ".claude/skills/review-session/scripts/extract-session.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "appendGeminiMessage"
+    },
     ".claude/skills/review-session/scripts/extract-session-helpers.mjs::buildConversationTurns": {
       "filePath": ".claude/skills/review-session/scripts/extract-session-helpers.mjs",
       "importedBy": [
@@ -24,13 +40,33 @@
       "imports": [],
       "name": "detectFormatFromPath"
     },
+    ".claude/skills/review-session/scripts/extract-session-helpers.mjs::formatTs": {
+      "filePath": ".claude/skills/review-session/scripts/extract-session-helpers.mjs",
+      "importedBy": [
+        ".claude/skills/review-session/scripts/extract-session.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "formatTs"
+    },
+    ".claude/skills/review-session/scripts/extract-session-helpers.mjs::queuedLabel": {
+      "filePath": ".claude/skills/review-session/scripts/extract-session-helpers.mjs",
+      "importedBy": [
+        ".claude/skills/review-session/scripts/extract-session.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "queuedLabel"
+    },
     ".claude/skills/review-session/scripts/extract-session.mjs::__file_root__": {
       "filePath": ".claude/skills/review-session/scripts/extract-session.mjs",
       "importedBy": [],
       "imports": [
+        ".claude/skills/review-session/scripts/extract-session-helpers.mjs::appendClaudeMessage",
+        ".claude/skills/review-session/scripts/extract-session-helpers.mjs::appendGeminiMessage",
         ".claude/skills/review-session/scripts/extract-session-helpers.mjs::buildConversationTurns",
         ".claude/skills/review-session/scripts/extract-session-helpers.mjs::detectFormat",
         ".claude/skills/review-session/scripts/extract-session-helpers.mjs::detectFormatFromPath",
+        ".claude/skills/review-session/scripts/extract-session-helpers.mjs::formatTs",
+        ".claude/skills/review-session/scripts/extract-session-helpers.mjs::queuedLabel",
         ".claude/skills/review-session/scripts/session-tokens.mjs::profileSession",
         ".claude/skills/review-session/scripts/session-tokens-report.mjs::renderTokensMarkdown",
         ".claude/skills/review-session/scripts/session-tokens-subagents.mjs::readSubagentLines"
@@ -1142,7 +1178,8 @@
       ],
       "imports": [
         "src/components/LumaSubscribe.astro::__file_root__",
-        "src/components/ui/SectionHead.astro::__file_root__"
+        "src/components/ui/SectionHead.astro::__file_root__",
+        "src/lib/events.ts::lumaFrameHeight"
       ],
       "name": "__file_root__"
     },
@@ -1209,7 +1246,10 @@
       "imports": [
         "src/components/ChapterLeads.astro::__file_root__",
         "src/components/ChapterLinks.astro::__file_root__",
+        "src/components/ResponsiveImg.astro::__file_root__",
         "src/lib/url.ts::withBase",
+        "src/lib/media.ts::altFor",
+        "src/lib/media.ts::readMediaManifest",
         "src/lib/leadSchema.ts::Lead"
       ],
       "name": "__file_root__"
@@ -1241,6 +1281,7 @@
     "src/components/ResponsiveImg.astro::__file_root__": {
       "filePath": "src/components/ResponsiveImg.astro",
       "importedBy": [
+        "src/components/PageNarrowBody.astro::__file_root__",
         "src/components/donate/TestimonialCard.astro::__file_root__",
         "src/components/give/GivePhoto.astro::__file_root__",
         "src/components/landing/GalleryTile.astro::__file_root__",
@@ -2083,11 +2124,12 @@
         "src/components/ui/SectionHead.astro::__file_root__",
         "src/components/landing/GalleryLightbox.astro::__file_root__",
         "src/components/landing/GalleryExpand.astro::__file_root__",
+        "src/lib/gallery.ts::GalleryTier",
         "src/lib/gallery.ts::galleryColumns",
         "src/lib/gallery.ts::galleryStaggerDelay",
-        "src/lib/gallery.ts::smallScreenCapLimit",
+        "src/lib/gallery.ts::galleryTierLimits",
+        "src/lib/gallery.ts::tileHiddenTiers",
         "src/lib/gallery.ts::toGalleryPhotos",
-        "src/lib/gallery.ts::visibleGalleryPhotos",
         "src/lib/media.ts::altFor",
         "src/lib/media.ts::readMediaManifest"
       ],
@@ -2113,7 +2155,9 @@
         "src/components/landing/EventGallery.astro::__file_root__",
         "src/pages/isolated-components/GalleryExpand.astro::__file_root__"
       ],
-      "imports": [],
+      "imports": [
+        "src/lib/gallery.ts::GalleryTier"
+      ],
       "name": "__file_root__"
     },
     "src/components/landing/GalleryLightbox.astro::__file_root__": {
@@ -2134,7 +2178,8 @@
       ],
       "imports": [
         "src/lib/url.ts::withBase",
-        "src/components/ResponsiveImg.astro::__file_root__"
+        "src/components/ResponsiveImg.astro::__file_root__",
+        "src/lib/gallery.ts::GalleryTier"
       ],
       "name": "__file_root__"
     },
@@ -4519,11 +4564,13 @@
         "src/lib/events.ts::__file_root__",
         "src/lib/events.ts::calendarEmbedUrl",
         "src/lib/events.ts::eventsTaggedTo",
+        "src/lib/events.ts::lumaFrameHeight",
         "src/lib/events.ts::recentPastEvents",
         "src/lib/events.ts::splitArchive",
         "src/lib/events.ts::splitEvents",
         "src/lib/events.ts::toEventDate",
-        "src/lib/events.ts::unmatchedChapterTags"
+        "src/lib/events.ts::unmatchedChapterTags",
+        "src/lib/events.ts::upcomingEventCount"
       ],
       "name": "__file_root__"
     },
@@ -4576,6 +4623,15 @@
       "imports": [],
       "name": "eventsTaggedTo"
     },
+    "src/lib/events.ts::lumaFrameHeight": {
+      "filePath": "src/lib/events.ts",
+      "importedBy": [
+        "src/components/LumaCalendar.astro::__file_root__",
+        "src/lib/events.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "lumaFrameHeight"
+    },
     "src/lib/events.ts::recentPastEvents": {
       "filePath": "src/lib/events.ts",
       "importedBy": [
@@ -4623,6 +4679,15 @@
       ],
       "imports": [],
       "name": "unmatchedChapterTags"
+    },
+    "src/lib/events.ts::upcomingEventCount": {
+      "filePath": "src/lib/events.ts",
+      "importedBy": [
+        "src/lib/events.test.ts::__file_root__",
+        "src/pages/events.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "upcomingEventCount"
     },
     "src/lib/eventsIntro.test.ts::__file_root__": {
       "filePath": "src/lib/eventsIntro.test.ts",
@@ -4716,12 +4781,13 @@
       "filePath": "src/lib/gallery.test.ts",
       "importedBy": [],
       "imports": [
+        "src/lib/gallery.ts::fullRowLimit",
         "src/lib/gallery.ts::galleryColumns",
         "src/lib/gallery.ts::galleryRevealImmediately",
         "src/lib/gallery.ts::galleryStaggerDelay",
-        "src/lib/gallery.ts::smallScreenCapLimit",
+        "src/lib/gallery.ts::galleryTierLimits",
+        "src/lib/gallery.ts::tileHiddenTiers",
         "src/lib/gallery.ts::toGalleryPhotos",
-        "src/lib/gallery.ts::visibleGalleryPhotos",
         "src/lib/gallery.ts::__file_root__",
         "src/lib/gallery.ts::__file_root__"
       ],
@@ -4736,6 +4802,16 @@
       ],
       "name": "tiles"
     },
+    "src/lib/gallery.ts::GalleryTier": {
+      "filePath": "src/lib/gallery.ts",
+      "importedBy": [
+        "src/components/landing/EventGallery.astro::__file_root__",
+        "src/components/landing/GalleryExpand.astro::__file_root__",
+        "src/components/landing/GalleryTile.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "GalleryTier"
+    },
     "src/lib/gallery.ts::__file_root__": {
       "filePath": "src/lib/gallery.ts",
       "importedBy": [
@@ -4746,6 +4822,14 @@
       ],
       "imports": [],
       "name": "__file_root__"
+    },
+    "src/lib/gallery.ts::fullRowLimit": {
+      "filePath": "src/lib/gallery.ts",
+      "importedBy": [
+        "src/lib/gallery.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "fullRowLimit"
     },
     "src/lib/gallery.ts::galleryColumns": {
       "filePath": "src/lib/gallery.ts",
@@ -4773,14 +4857,23 @@
       "imports": [],
       "name": "galleryStaggerDelay"
     },
-    "src/lib/gallery.ts::smallScreenCapLimit": {
+    "src/lib/gallery.ts::galleryTierLimits": {
       "filePath": "src/lib/gallery.ts",
       "importedBy": [
         "src/components/landing/EventGallery.astro::__file_root__",
         "src/lib/gallery.test.ts::__file_root__"
       ],
       "imports": [],
-      "name": "smallScreenCapLimit"
+      "name": "galleryTierLimits"
+    },
+    "src/lib/gallery.ts::tileHiddenTiers": {
+      "filePath": "src/lib/gallery.ts",
+      "importedBy": [
+        "src/components/landing/EventGallery.astro::__file_root__",
+        "src/lib/gallery.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "tileHiddenTiers"
     },
     "src/lib/gallery.ts::toGalleryPhotos": {
       "filePath": "src/lib/gallery.ts",
@@ -4790,15 +4883,6 @@
       ],
       "imports": [],
       "name": "toGalleryPhotos"
-    },
-    "src/lib/gallery.ts::visibleGalleryPhotos": {
-      "filePath": "src/lib/gallery.ts",
-      "importedBy": [
-        "src/components/landing/EventGallery.astro::__file_root__",
-        "src/lib/gallery.test.ts::__file_root__"
-      ],
-      "imports": [],
-      "name": "visibleGalleryPhotos"
     },
     "src/lib/givePageContent.ts::__file_root__": {
       "filePath": "src/lib/givePageContent.ts",
@@ -5182,6 +5266,7 @@
       "filePath": "src/lib/lightbox.test.ts",
       "importedBy": [],
       "imports": [
+        "src/lib/lightbox.ts::__file_root__",
         "src/lib/lightbox.ts::__file_root__"
       ],
       "name": "scope"
@@ -5191,6 +5276,7 @@
       "importedBy": [
         "src/lib/lightbox.test.ts::__file_root__",
         "src/lib/lightbox.test.ts::caption",
+        "src/lib/lightbox.test.ts::scope",
         "src/lib/lightbox.test.ts::scope",
         "src/lib/lightbox.test.ts::__file_root__",
         "src/lib/lightbox.test.ts::__file_root__",
@@ -5480,6 +5566,7 @@
     "src/lib/media.ts::altFor": {
       "filePath": "src/lib/media.ts",
       "importedBy": [
+        "src/components/PageNarrowBody.astro::__file_root__",
         "src/components/donate/MomentumClose.astro::__file_root__",
         "src/components/donate/MomentumNarrative.astro::__file_root__",
         "src/components/donate/TestimonialCard.astro::__file_root__",
@@ -5508,6 +5595,7 @@
     "src/lib/media.ts::readMediaManifest": {
       "filePath": "src/lib/media.ts",
       "importedBy": [
+        "src/components/PageNarrowBody.astro::__file_root__",
         "src/components/landing/BoardOfDirectors.astro::__file_root__",
         "src/components/landing/EventGallery.astro::__file_root__",
         "src/components/landing/OurChapters.astro::__file_root__"
@@ -8360,6 +8448,7 @@
         "src/lib/drafts.ts::publishedEntries",
         "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
         "src/lib/events.ts::calendarEmbedUrl",
+        "src/lib/events.ts::upcomingEventCount",
         "src/lib/siteClock.ts::siteNow"
       ],
       "name": "__file_root__"
@@ -10273,6 +10362,10 @@
         "src/lib/strikinglyArchive.js"
       ]
     },
+    "scripts/install-browser.mjs": {
+      "importedBy": [],
+      "imports": []
+    },
     "scripts/notify-site-alert.mjs": {
       "importedBy": [
         "src/lib/notifySiteAlert.test.ts"
@@ -10680,7 +10773,8 @@
       ],
       "imports": [
         "src/components/LumaSubscribe.astro",
-        "src/components/ui/SectionHead.astro"
+        "src/components/ui/SectionHead.astro",
+        "src/lib/events.ts"
       ]
     },
     "src/components/LumaSubscribe.astro": {
@@ -10734,7 +10828,9 @@
       "imports": [
         "src/components/ChapterLeads.astro",
         "src/components/ChapterLinks.astro",
+        "src/components/ResponsiveImg.astro",
         "src/lib/url.ts",
+        "src/lib/media.ts",
         "src/lib/leadSchema.ts"
       ]
     },
@@ -10757,6 +10853,7 @@
     },
     "src/components/ResponsiveImg.astro": {
       "importedBy": [
+        "src/components/PageNarrowBody.astro",
         "src/components/donate/TestimonialCard.astro",
         "src/components/give/GivePhoto.astro",
         "src/components/landing/GalleryTile.astro",
@@ -11420,7 +11517,9 @@
         "src/components/landing/EventGallery.astro",
         "src/pages/isolated-components/GalleryExpand.astro"
       ],
-      "imports": []
+      "imports": [
+        "src/lib/gallery.ts"
+      ]
     },
     "src/components/landing/GalleryLightbox.astro": {
       "importedBy": [
@@ -11437,7 +11536,8 @@
       ],
       "imports": [
         "src/lib/url.ts",
-        "src/components/ResponsiveImg.astro"
+        "src/components/ResponsiveImg.astro",
+        "src/lib/gallery.ts"
       ]
     },
     "src/components/landing/GetInvolved.astro": {
@@ -12680,6 +12780,7 @@
         "src/components/EventCardGrid.astro",
         "src/components/EventsPage.astro",
         "src/components/EventsSection.astro",
+        "src/components/LumaCalendar.astro",
         "src/components/landing/ContentHub.astro",
         "src/components/landing/UpcomingEvents.astro",
         "src/lib/events.test.ts",
@@ -12758,6 +12859,8 @@
     "src/lib/gallery.ts": {
       "importedBy": [
         "src/components/landing/EventGallery.astro",
+        "src/components/landing/GalleryExpand.astro",
+        "src/components/landing/GalleryTile.astro",
         "src/lib/gallery.test.ts",
         "src/lib/gallery.test.ts",
         "src/lib/gallery.test.ts",
@@ -12901,11 +13004,13 @@
         "src/lib/lightbox.ts",
         "src/lib/lightbox.ts",
         "src/lib/lightbox.ts",
+        "src/lib/lightbox.ts",
         "src/lib/lightbox.ts"
       ]
     },
     "src/lib/lightbox.ts": {
       "importedBy": [
+        "src/lib/lightbox.test.ts",
         "src/lib/lightbox.test.ts",
         "src/lib/lightbox.test.ts",
         "src/lib/lightbox.test.ts",
@@ -13000,6 +13105,7 @@
     },
     "src/lib/media.ts": {
       "importedBy": [
+        "src/components/PageNarrowBody.astro",
         "src/components/donate/MomentumClose.astro",
         "src/components/donate/MomentumNarrative.astro",
         "src/components/donate/TestimonialCard.astro",
@@ -15286,5 +15392,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-13T02:07:09Z"
+  "lastUpdated": "2026-11-14T04:22:03Z"
 }

@@ -29,6 +29,7 @@ describe('upcomingEventCount', () => {
     expect(upcomingEventCount(events, now)).toBe(splitEvents(events, now).upcoming.length);
   });
 
+  // An empty calendar counts as nothing upcoming, so the frame falls to its floor.
   it('is zero for no events', () => {
     expect(upcomingEventCount([], now)).toBe(0);
   });

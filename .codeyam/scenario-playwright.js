@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: fd21dd6a37bf477d3c105b5af0962eed166e262d  source-sha256: f982e7246a090e93f2bfe48e8dca532d4c91626ce6077b0dd05fcb63dcea737c
+// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: 4a0c838274ed090ee9f745e97ebe7df56b37e68efc9dfe73554c3ff7ed9234ad
 const {
   hasLoadingMarkers,
   isCanvasDominated,
@@ -8,10 +8,6 @@ const {
 const {
   candidateLabelSummary,
   canvasTextWaitGuidance,
-  noMatchGuidance,
-  describeMatchCandidates,
-  resolveTextTarget,
-  pickBestCandidate,
   pageOf,
   targetBox,
   pointIn,
@@ -20,6 +16,9 @@ const {
   outsideTargetError,
   pointerGeometry,
   locatorPointGeometry,
+  stepTimeoutMs,
+  pointerOptionsFor,
+  locateInteractionTarget,
 } = require("./scenario-targeting");
 const fs = require("fs");
 
@@ -1128,89 +1127,13 @@ async function performKeyboardInteraction(frame, { action, value }) {
   }
 }
 
-// How often a not-yet-rendered interaction target is looked up again.
-const TARGET_APPEAR_POLL_MS = 250;
-
-// Resolve a step's target to the single element to act on. Shared by
+// Resolve a step's target to the single element to act on, with this script's
+// canvas probe as the default (see `locateInteractionTarget`). Shared by
 // `performInteraction` and by callers that need the target's box BEFORE
 // acting (the pixel-effect signal clips its before/after shots to it).
-//
-// A target that is not there yet is re-polled until `appearTimeoutMs` is
-// spent: a page that keeps polling never reaches network idle, so the settle
-// before a step can time out while a fetch-gated control is still on its way.
-// The default of 0 keeps a single look for callers that only need geometry.
-async function resolveInteractionTarget(
-  frame,
-  interaction,
-  {
-    warnings,
-    canvasProbe = probeCanvasDominated,
-    appearTimeoutMs = 0,
-    sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
-    now = Date.now,
-  } = {},
-) {
-  const { action, selector, text } = interaction || {};
-
-  let matchedByText;
-  let targetDesc;
-  if (typeof text === "string" && text.length > 0) {
-    matchedByText = true;
-    targetDesc = `text "${text}"`;
-  } else if (typeof selector === "string" && selector.length > 0) {
-    matchedByText = false;
-    targetDesc = `selector "${selector}"`;
-  } else {
-    throw new Error(
-      "preview-interact: interaction requires a `text` or `selector` target",
-    );
-  }
-
-  const lookUp = async () => {
-    if (matchedByText) return resolveTextTarget(frame, text, action);
-    const locator = frame.locator(selector);
-    return { baseLocator: locator, matchCount: await locator.count() };
-  };
-  const deadline = now() + appearTimeoutMs;
-  let { baseLocator, matchCount } = await lookUp();
-  while (matchCount === 0 && now() < deadline) {
-    await sleep(TARGET_APPEAR_POLL_MS);
-    ({ baseLocator, matchCount } = await lookUp());
-  }
-
-  if (matchCount === 0) {
-    // Candidate labels are collected ONLY for the text branch — see
-    // `noMatchGuidance` for why a CSS-selector miss neither needs them nor
-    // should echo the user's page content back at them.
-    throw new Error(
-      noMatchGuidance({
-        targetDesc,
-        matchedByText,
-        candidateLabels: matchedByText
-          ? await candidateLabelSummary(frame)
-          : null,
-        canvasDominated: matchedByText ? await canvasProbe(frame) : false,
-      }),
-    );
-  }
-
-  const locator = await pickBestCandidate(baseLocator, matchCount);
-
-  // Ambiguity warning: a text target that still resolves >1 element within the
-  // winning tier acts on the best visible candidate, which may not be the one
-  // intended. Name the competing elements instead of silently proceeding. Only
-  // fires for text matches — an explicit selector that matches many is the
-  // caller's deliberate choice.
-  if (matchedByText && matchCount > 1 && Array.isArray(warnings)) {
-    warnings.push(
-      `preview-interact: ${targetDesc} matched ${matchCount} elements — acting on the best visible candidate. ` +
-        `Text resolution prefers an exact, interactive match, but several remain, so this may not be the element you meant. ` +
-        `Candidates: ${(await describeMatchCandidates(baseLocator, matchCount)).join(" | ")}. ` +
-        `Use an exact/role/testid selector to disambiguate.`,
-    );
-  }
-
-  return { locator, targetDesc };
+function resolveInteractionTarget(frame, interaction, opts = {}) {
+  const canvasProbe = opts.canvasProbe ?? probeCanvasDominated;
+  return locateInteractionTarget(frame, interaction, { ...opts, canvasProbe });
 }
 
 // Drive a single user-style interaction against the settled frame before the
@@ -1251,16 +1174,14 @@ async function performInteraction(
     });
   }
 
+  // A step's own `timeoutMs` replaces both defaults: a heavy page is slow to
+  // render the target and slow to make it actionable.
+  const actionTimeoutMs = stepTimeoutMs(interaction, timeoutMs);
   const { locator, targetDesc } = await resolveInteractionTarget(frame, interaction, {
     warnings,
-    appearTimeoutMs,
+    appearTimeoutMs: stepTimeoutMs(interaction, appearTimeoutMs),
   });
-
-  // Only the keys Playwright accepts, so an absent field never reaches it as
-  // an explicit `undefined`.
-  const pointerOpts = { timeout: timeoutMs };
-  if (position) pointerOpts.position = { x: position.x, y: position.y };
-  if (button) pointerOpts.button = button;
+  const pointerOpts = pointerOptionsFor(interaction, actionTimeoutMs);
 
   // Pointer verbs report where they landed; every other verb returns undefined.
   let geometry;
@@ -1271,10 +1192,10 @@ async function performInteraction(
         await locator.click(pointerOpts);
         break;
       case "fill":
-        await locator.fill(value ?? "", { timeout: timeoutMs });
+        await locator.fill(value ?? "", { timeout: actionTimeoutMs });
         break;
       case "press":
-        await locator.press(value || "Enter", { timeout: timeoutMs });
+        await locator.press(value || "Enter", { timeout: actionTimeoutMs });
         break;
       case "hover":
         // Reveals hover-only affordances (an action bar, a tooltip) — one of the
@@ -1546,6 +1467,28 @@ function isolateMissingComponentMessage(name, manifestPath) {
   );
 }
 
+// A canvas app (egui) paints its "No such component" panel where no DOM check
+// can read it, so its dispatcher publishes the component the served build
+// cannot draw as this global instead. Null when unset.
+const SERVED_BUILD_MISSING_GLOBAL = "__codeyamIsolateMissing";
+
+async function servedBuildMissingComponent(frame) {
+  return frame
+    .evaluate((name) => {
+      const value = globalThis[name];
+      return typeof value === "string" && value ? value : null;
+    }, SERVED_BUILD_MISSING_GLOBAL)
+    .catch(() => null);
+}
+
+function servedBuildMissingComponentMessage(name) {
+  return (
+    `the served build cannot draw component "${name}" — it was built before ` +
+    `that component was isolated. Wait for the dev server to finish ` +
+    `rebuilding (or run codeyam-editor editor restart-dev-server), then retry.`
+  );
+}
+
 // Fail the capture when the frame is the harness placeholder. Called after the
 // scenario loads and before any interaction or screenshot, so an interaction
 // never runs against the placeholder and the committed PNG is never replaced.
@@ -1553,6 +1496,10 @@ async function assertIsolatedComponentResolved(
   frame,
   { manifestPath = componentManifestPath } = {},
 ) {
+  const unbuilt = await servedBuildMissingComponent(frame);
+  if (unbuilt !== null) {
+    throw new Error(servedBuildMissingComponentMessage(unbuilt));
+  }
   const missing = await isolateMissingComponent(frame);
   if (missing !== null) {
     throw new Error(isolateMissingComponentMessage(missing, manifestPath()));
@@ -1596,5 +1543,7 @@ module.exports = {
   ISOLATE_MISSING_ATTR,
   isolateMissingComponent,
   isolateMissingComponentMessage,
+  servedBuildMissingComponent,
+  servedBuildMissingComponentMessage,
   assertIsolatedComponentResolved,
 };

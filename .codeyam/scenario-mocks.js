@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 7b2fd6af5d12f0f0fa701d6a06d4c4a218ef4037  source-sha256: a373745b34c6af5f41f4ee56709a7e00ec4be30c1e06817ce8f2dcef06c09763
+// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: a451da08f25492a8d91b69426965eb49ccf228b5623c4f51f3f7b4bb334c3ae4
 // Route matcher for the capture harness — one of THREE implementations of a
 // single semantic. The authority is the Rust engine
 // (crates/mock-engine/src/route_parser.rs), where the contract is written down;
@@ -415,23 +415,12 @@ async function attachHttpMocks(page, httpMocks, options = {}) {
       const headers = { ...(mock.headers || {}) };
       let body;
       if (mock.body !== undefined) {
-        body =
-          typeof mock.body === "string"
-            ? mock.body
-            : JSON.stringify(mock.body);
-        const hasContentType = Object.keys(headers).some(
-          (key) => key.toLowerCase() === "content-type",
-        );
-        if (!hasContentType) {
-          headers["content-type"] = "application/json";
-        }
+        body = typeof mock.body === "string" ? mock.body : JSON.stringify(mock.body);
+        const hasContentType = Object.keys(headers).some((h) => h.toLowerCase() === "content-type");
+        if (!hasContentType) headers["content-type"] = "application/json";
       }
 
-      await route.fulfill({
-        status: mock.status || 200,
-        headers,
-        body,
-      });
+      await route.fulfill({ status: mock.status || 200, headers, body });
     },
   );
 
@@ -450,7 +439,6 @@ async function attachHttpMocks(page, httpMocks, options = {}) {
 
   return observer;
 }
-
 
 // True when a console "Failed to load resource" error at `url` corresponds to
 // a mock this scenario DECLARED with an error status (>= 400). An intentional

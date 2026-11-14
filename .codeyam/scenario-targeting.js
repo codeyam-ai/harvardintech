@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: fd21dd6a37bf477d3c105b5af0962eed166e262d  source-sha256: 5ef2dbf93dd27a02012eb99b149abfd4ad6a79aa858365c52dfd505cd3316de6
+// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: 7056bc394a7115910de72162c078918144229ec56f90f3f08e5e85c8a8d0208b
 // Interaction targeting for the capture harness: turn a step's visible-text or
 // CSS-selector target into the one element to act on, explain a miss in terms
 // the author can act on, and measure where a pointer step lands inside its
@@ -337,6 +337,115 @@ async function locatorPointGeometry(frame, locator, targetDesc, action, position
   return pointerGeometry(box, at);
 }
 
+// A step's own `timeoutMs` when it sets a positive one, else the caller's
+// default — so a heavy WebGL page can ask for longer than the 5s default.
+function stepTimeoutMs(interaction, fallbackMs) {
+  const own = interaction && interaction.timeoutMs;
+  return typeof own === "number" && own > 0 ? own : fallbackMs;
+}
+
+// The Playwright options for a pointer verb. `holdMs` becomes `delay`, the gap
+// between press and release, so a UI that samples input once per frame sees
+// the press; `force` skips the actionability hit-test. Only keys the step set,
+// so an absent field never reaches Playwright as an explicit `undefined`.
+function pointerOptionsFor(interaction, timeoutMs) {
+  const { position, button, holdMs, force } = interaction || {};
+  const opts = { timeout: timeoutMs };
+  if (position) opts.position = { x: position.x, y: position.y };
+  if (button) opts.button = button;
+  if (typeof holdMs === "number" && holdMs > 0) opts.delay = holdMs;
+  if (force === true) opts.force = true;
+  return opts;
+}
+
+// How often a not-yet-rendered interaction target is looked up again.
+const TARGET_APPEAR_POLL_MS = 250;
+
+// Resolve a step's target to the single element to act on. The capture
+// script's `resolveInteractionTarget` wraps this with its canvas probe; callers
+// that need the target's box BEFORE acting (the pixel-effect signal clips its
+// before/after shots to it) reach it through that wrapper.
+//
+// A target that is not there yet is re-polled until `appearTimeoutMs` is
+// spent: a page that keeps polling never reaches network idle, so the settle
+// before a step can time out while a fetch-gated control is still on its way.
+// The default of 0 keeps a single look for callers that only need geometry.
+// `canvasProbe` answers whether a text miss happened on a canvas-dominated
+// page, so the miss can say the words are painted rather than absent.
+async function locateInteractionTarget(
+  frame,
+  interaction,
+  {
+    warnings,
+    canvasProbe,
+    appearTimeoutMs = 0,
+    sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+    now = Date.now,
+  } = {},
+) {
+  const { action, selector, text } = interaction || {};
+
+  let matchedByText;
+  let targetDesc;
+  if (typeof text === "string" && text.length > 0) {
+    matchedByText = true;
+    targetDesc = `text "${text}"`;
+  } else if (typeof selector === "string" && selector.length > 0) {
+    matchedByText = false;
+    targetDesc = `selector "${selector}"`;
+  } else {
+    throw new Error(
+      "preview-interact: interaction requires a `text` or `selector` target",
+    );
+  }
+
+  const lookUp = async () => {
+    if (matchedByText) return resolveTextTarget(frame, text, action);
+    const locator = frame.locator(selector);
+    return { baseLocator: locator, matchCount: await locator.count() };
+  };
+  const deadline = now() + appearTimeoutMs;
+  let { baseLocator, matchCount } = await lookUp();
+  while (matchCount === 0 && now() < deadline) {
+    await sleep(TARGET_APPEAR_POLL_MS);
+    ({ baseLocator, matchCount } = await lookUp());
+  }
+
+  if (matchCount === 0) {
+    // Candidate labels are collected ONLY for the text branch — see
+    // `noMatchGuidance` for why a CSS-selector miss neither needs them nor
+    // should echo the user's page content back at them.
+    throw new Error(
+      noMatchGuidance({
+        targetDesc,
+        matchedByText,
+        candidateLabels: matchedByText
+          ? await candidateLabelSummary(frame)
+          : null,
+        canvasDominated: matchedByText && canvasProbe ? await canvasProbe(frame) : false,
+      }),
+    );
+  }
+
+  const locator = await pickBestCandidate(baseLocator, matchCount);
+
+  // Ambiguity warning: a text target that still resolves >1 element within the
+  // winning tier acts on the best visible candidate, which may not be the one
+  // intended. Name the competing elements instead of silently proceeding. Only
+  // fires for text matches — an explicit selector that matches many is the
+  // caller's deliberate choice.
+  if (matchedByText && matchCount > 1 && Array.isArray(warnings)) {
+    warnings.push(
+      `preview-interact: ${targetDesc} matched ${matchCount} elements — acting on the best visible candidate. ` +
+        `Text resolution prefers an exact, interactive match, but several remain, so this may not be the element you meant. ` +
+        `Candidates: ${(await describeMatchCandidates(baseLocator, matchCount)).join(" | ")}. ` +
+        `Use an exact/role/testid selector to disambiguate.`,
+    );
+  }
+
+  return { locator, targetDesc };
+}
+
 module.exports = {
   INTERACTIVE_SELECTOR,
   collectInteractiveLabels,
@@ -354,4 +463,7 @@ module.exports = {
   outsideTargetError,
   pointerGeometry,
   locatorPointGeometry,
+  stepTimeoutMs,
+  pointerOptionsFor,
+  locateInteractionTarget,
 };

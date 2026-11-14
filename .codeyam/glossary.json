@@ -147,6 +147,28 @@
     ]
   },
   {
+    "description": "The deploy status shrunk to a line in the corner, so publishing stops interrupting the work. Shown once the full panel is dismissed, and re-attached by StagingBar on whichever admin page loads next — which is what lets an editor publish, carry on editing elsewhere, and still be told her change went live. Its colour dot is never the only signal; the label says the outcome in words.",
+    "filePath": "node_modules/@codeyam/cms/src/components/admin/DeployChip.tsx",
+    "name": "DeployChip",
+    "scenarios": [
+      "deploychip-publishing",
+      "deploychip-published-still-updating",
+      "deploychip-change-is-live"
+    ]
+  },
+  {
+    "description": "The full deploy panel an editor sees after pressing Publish: a stepper from Committed through Live, the commit link, and the actions for each outcome. Dismissible at EVERY stage — it sits in a fixed full-screen scrim, so a close button that only enables on a terminal stage is a modal lock on the whole admin, which is exactly what it used to be on this site. Closing demotes it to DeployChip; the watch continues either way.",
+    "filePath": "node_modules/@codeyam/cms/src/components/admin/DeployStatus.tsx",
+    "name": "DeployStatus",
+    "scenarios": [
+      "deploystatus-publishing-dismissible",
+      "deploystatus-waiting-for-the-site",
+      "deploystatus-published-still-updating",
+      "deploystatus-live",
+      "deploystatus-build-failed"
+    ]
+  },
+  {
     "description": "External-form embed for the static site: renders one of three states — a MailChimp-style POST form (action prop), an embedded provider iframe (embedUrl prop), or an unconfigured fallback message. Delegates submission to a third-party service since a static build has no backend.",
     "filePath": "src/components/EmbedForm.astro",
     "name": "EmbedForm",
@@ -555,6 +577,15 @@
     ],
     "tags": [
       "launch-design-system"
+    ]
+  },
+  {
+    "description": "The floating pill mounted in AdminLayout, so it rides along on every admin page: it counts the browser staging set, opens the review drawer, commits every staged file as one commit, and owns the deploy watch. The watch lives in its own state beside the publish flow rather than being a phase of it, which is what allows publishing again while a deploy is still in flight.",
+    "filePath": "node_modules/@codeyam/cms/src/components/admin/StagingBar.tsx",
+    "name": "StagingBar",
+    "scenarios": [
+      "stagingbar-publish-again-while-deploying",
+      "stagingbar-reviewing-before-publish"
     ]
   },
   {
@@ -2250,6 +2281,12 @@
     "testFile": "src/lib/lumaFeed.test.ts"
   },
   {
+    "description": "Picks the pixel height for the embedded Luma calendar from the upcoming-event count, so every upcoming event shows without scrolling inside the frame while a quiet month doesn't leave a large empty box; clamped between a minimum and a maximum event count.",
+    "filePath": "src/lib/events.ts",
+    "name": "lumaFrameHeight",
+    "testFile": "src/lib/events.test.ts"
+  },
+  {
     "description": "Extracts Luma's own event slug from a registration link, or null. This is the identity the importer dedupes on, because matching on the filename is not enough — one committed entry is filed a day later than Luma's local date for the same event.",
     "filePath": "src/lib/lumaFeed.js",
     "name": "lumaSlugFromLink",
@@ -3650,6 +3687,12 @@
     "filePath": "src/lib/nav.ts",
     "name": "unresolvedNavUrls",
     "testFile": "src/lib/nav.test.ts"
+  },
+  {
+    "description": "Counts how many events are upcoming at a given moment, using the same rule as splitEvents and calendarEmbedUrl (an event exactly at `now` counts as upcoming).",
+    "filePath": "src/lib/events.ts",
+    "name": "upcomingEventCount",
+    "testFile": "src/lib/events.test.ts"
   },
   {
     "description": "Tracks the CMS sign-in session for the runbook's tick controls, hydration-safely. Every render starts signed-out and adopts the real session in an effect after mount: the store answers signed-out on the server and, inside the codeyam preview, signed-in in the browser, so seeding state from it directly rendered two different trees and React discarded the subtree. Accepts an initialSession to pin a fixed session, the seam a scenario uses to capture the signed-out and signed-in states without a token.",

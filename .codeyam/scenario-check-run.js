@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 265bd72da3f9589144bc951d802239dad68fc784  source-sha256: a56bdc227b2714458e1a7694386afcb3bbd2671f141117674ed2be8fd13dadaf
+// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: 74470ed5504ac11dfcc5c6d0072784f514de5b77bfe0d8d47b246cc06a8c2e0c
 // npm/scenario-check-run.js — the decision half of one scenario capture: the
 // context options it opens with, the page collectors that turn console and
 // network events into issues, the navigation-status verdict, the settle
@@ -33,6 +33,7 @@ const {
   handlePageError,
   handleRequestFailed,
 } = require("./scenario-handlers");
+const { fingerprintHtml, getDOMFingerprint } = require("./scenario-dom-fingerprint");
 
 // The sentinel the reverse proxy stamps on its dev-server-down placeholder —
 // the other half of this contract is
@@ -116,47 +117,6 @@ function interactionEffectSignal(beforeFingerprint, afterFingerprint, pixelsChan
   if (beforeFingerprint !== afterFingerprint) return "dom";
   if (pixelsChanged === true) return "pixels";
   return null;
-}
-
-// Hash serialized markup into a compact `<length>-<hash>` fingerprint, so two
-// snapshots compare by value. Pure; `getDOMFingerprint` decides what markup
-// goes in.
-function fingerprintHtml(html) {
-  const text = String(html || "");
-  let hash = 0;
-  for (let i = 0; i < text.length; i++) {
-    hash = (hash << 5) - hash + text.charCodeAt(i);
-    hash |= 0;
-  }
-  return `${text.length}-${hash}`;
-}
-
-async function getDOMFingerprint(frame) {
-  try {
-    // On a clone, so the live page is untouched: drop each inline `cursor`
-    // and re-serialize every inline style in its canonical form.
-    //
-    // The cursor is pointer feedback, not app state — egui/eframe rewrites its
-    // canvas's cursor every time the pointer crosses a widget, so counting it
-    // made a click on empty canvas read as "changed", hiding exactly the dead
-    // step the verdict exists to name. It is removed through the style object,
-    // never a text regex, which would also eat visible text like "cursor: 4,2".
-    // Canonical form matters because the first script write to `el.style`
-    // re-serializes the WHOLE attribute (`display:block` → `display: block;`),
-    // which alone would move the fingerprint.
-    const html = await frame.evaluate(() => {
-      if (!document.body) return null;
-      const clone = document.body.cloneNode(true);
-      for (const el of clone.querySelectorAll("[style]")) {
-        el.style.removeProperty("cursor");
-        el.setAttribute("style", el.style.cssText);
-      }
-      return clone.innerHTML;
-    });
-    return html === null ? "" : fingerprintHtml(html);
-  } catch (err) {
-    return "";
-  }
 }
 
 // Measure the frame's visible (painted, non-opacity:0) text and fold it into
