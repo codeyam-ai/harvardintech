@@ -100,6 +100,9 @@ on this computer that has already ended. After a full check the user asked
 for between plans, the same command also queues the schedule's next plan,
 which starts when this turn ends. Without it the run stays stopped.
 
+A scheduled run never offers the speed or security review (step 8c): nobody
+is there to answer it.
+
 Judgment calls are decided by rule in **every** mode, so an unattended run
 never waits mid-way for an answer: the rules in step 4b, step 6, and step 8a
 apply identically whether the user is watching or away. With no argument, the
@@ -175,12 +178,24 @@ missing, and the workaround used.
 
 ## The one unrecoverable rule (read before any commit)
 
-**NEVER rebase, amend, or force-push a branch that may be shared.** A
+**NEVER rebase, amend, or force-push commits that have been pushed.** A
 concurrent session (or a teammate) may have committed under you at any moment.
 Integrate a moved primary branch by **merging it in**, never by rebasing onto
-it — `codeyam-editor editor sync-upstream --base` is the command that does it.
-Every other mistake in this procedure is recoverable; this one rewrites
-history other people may be building on and cannot be undone.
+it — `codeyam-editor editor sync-upstream --base` is the command that does it
+(the `--base` step always records a merge commit). Every other mistake in this
+procedure is recoverable; this one rewrites history other people may be
+building on and cannot be undone.
+
+**What the sync tools may rebase, and how they say so.** Before `--base`,
+`sync-upstream` (and `pre-commit-sync`) level the branch with its own upstream.
+On a branch with no merge commits over that upstream, that step **rebases the
+unpushed local commits** onto it and prints `sync: rebasing N unpushed
+commit(s) onto <upstream> (no shared history affected)`; `sync-upstream`'s JSON
+records it as `"integration": {"strategy": "rebase", "rebasedCommits": N}`.
+Those commit ids change, but no shared history does. It never replays a commit
+that any remote-tracking ref already has — that case integrates by merge
+(`"reason": "published-commits"`). So the rule above is enforced by the tool;
+don't hand-run a `git rebase` to get the same result.
 
 **Assume shared unless told otherwise.** On a genuinely private branch the
 only cost of merging is a slightly less-clean merge commit — which is never
@@ -519,8 +534,8 @@ neither can steal the other's port or starve it of cores.
 codeyam-editor editor refresh-tests --max-concurrent-runners 1
 ```
 
-It is the same lever `recapture-stale --concurrency` is for captures, applied
-to test runners. Reach for it when a run's failures look contention-shaped —
+It is the test-runner counterpart of pinning `recapture-stale --concurrency 1`
+for captures: a deliberate one-run override of an adaptive default. Reach for it when a run's failures look contention-shaped —
 a runner that contradicts its own output and was NOT already serially
 retried, or a failure that passes when run alone (a port collision, a timeout
 under load). Both diagnostics now name the flag. Measured on
@@ -1009,15 +1024,42 @@ crashed as it was about to start a sweep of about an hour.
 > sweep you stop for any reason resumes rather than restarts: each frame is
 > stamped fresh the moment it is captured.
 
-> **A large sweep is not necessarily a two-hour sweep — `--concurrency` is the
-> knob.** `recapture-stale` dispatches one capture at a time by default, which
-> on a 1,700-scenario corpus measured ~7,400s (just over two hours) at ~4.4s
-> each. Pass `codeyam-editor editor recapture-stale --concurrency <N>` to keep
-> N in flight (or set `scenarios.recaptureConcurrency` in `.codeyam/editor.json`
-> as a project default, since the right value is a property of the machine's
-> cores and memory, not of any one run).
+> **A large sweep is not necessarily a two-hour sweep — and the sweep sizes its
+> own width, so leave `--concurrency` off.** With no width pinned,
+> `recapture-stale` tunes how many captures it keeps in flight: it starts at the
+> width this machine settled at last time (or 1), widens while measured
+> throughput keeps improving and host memory stays above its reserve, and halves
+> on an unanswered capture or memory pressure. The ceiling is
+> `min(cores - 1, memory budget / per-capture peak)`. The settled width is
+> remembered per machine in `.codeyam/state/recapture-tuning.json` (gitignored),
+> so the next sweep starts where this one ended. (A serial sweep of a
+> 1,700-scenario corpus measured ~7,400s, just over two hours, at ~4.4s each —
+> that is the cost the tuner exists to cut.) Read what it chose from the run
+> JSON: `effective_concurrency`, and the `concurrency_tuning` block (the path it
+> took and each width's throughput).
 >
-> Raising it is safe because the editor server takes its capture gate
+> **A number PINS the width and DISABLES the tuner** — `--concurrency <N>` for
+> one run, or `scenarios.recaptureConcurrency` from config for every run. A
+> guessed pin trades a tuned, memory-aware width for a fixed one: too high pays
+> the saturation retries and back-offs the tuner avoids, too low is just slower.
+> Pin only deliberately:
+>
+> - `--concurrency 1` to debug a capture — the sequential path rules
+>   concurrency in or out.
+> - A cap on a machine shared with other heavy work. Pin it per machine with
+>   `codeyam-editor editor config-override scenarios.recaptureConcurrency <N>`
+>   (written to `.codeyam/editor.local.json`). **Never commit
+>   `scenarios.recaptureConcurrency` to `.codeyam/editor.json`**: that pins every
+>   machine to one width, when the right width is a property of each machine's
+>   cores and memory.
+>
+> To MEASURE the trade-off instead of guessing, run
+> `codeyam-editor editor recapture-stale --calibrate`. It captures a small sample
+> of already-fresh scenarios at widths 1, 2, 4, … and prints a width /
+> seconds-per-capture / peak-memory table. It writes no screenshots, and it
+> records the best width as this machine's learned start.
+>
+> A wide sweep is safe because the editor server takes its capture gate
 > EXCLUSIVELY for any capture that mutates shared state — one that seeds,
 > restarts the dev server, resets a sandbox or container, drives a shared
 > simulator, **or scripts streams or transcripts** (those overlay the scenario's
@@ -1034,8 +1076,9 @@ crashed as it was about to start a sweep of about an hour.
 > `crates/control-api/src/capture_lock_mode.rs::CaptureMutationInputs` before it
 > is safe to run concurrently.
 >
-> The real cost of too high a value is memory — every capture spawns its own
-> browser — so raise it in steps and watch. Native-simulator stacks are pinned
+> The real cost of too wide a sweep is memory — every capture spawns its own
+> browser — which is why the tuner widens one step at a time and watches host
+> memory as it goes. Native-simulator stacks are pinned
 > to 1 (one shared device) and ignore the flag, and a content-collection stack
 > sees little gain because nearly every capture there is exclusive either way.
 >
@@ -1052,9 +1095,11 @@ crashed as it was about to start a sweep of about an hour.
 > is reported honestly, so a genuinely uncapturable scenario is never masked.
 >
 > The JSON reports `captures_recovered_by_retry` for exactly this. Non-zero means
-> the run hit that saturation and absorbed it — the signal that a lower
-> `--concurrency` would have captured the same corpus in one pass. Without it, a
-> rescued run looks identical to one that never needed rescuing.
+> the run hit that saturation and absorbed it. Without the count, a rescued run
+> looks identical to one that never needed rescuing. On an auto-tuned sweep the
+> tuner has already halved its width in response, and the width it remembers
+> reflects that, so there is nothing to do. Under a pin, it is the signal that
+> the pin is too high: drop the pin and let the tuner choose.
 >
 > Two consequences for reading the output. The JSON reports `concurrency`
 > (requested) and `effective_concurrency` (used) — read the latter, since a
@@ -1062,7 +1107,7 @@ crashed as it was about to start a sweep of about an hour.
 > two parts, which is the part worth internalizing:
 >
 > - `capture_seconds` — the capture loop alone. **This is the only number that
->   shrinks when you raise concurrency.**
+>   shrinks as the width grows.**
 > - `elapsed_seconds` — the whole invocation, which also includes the
 >   collision-isolation post-pass. That post-pass re-hashes every screenshot in
 >   the project, so it is a FIXED whole-project cost regardless of how many
@@ -1075,20 +1120,20 @@ crashed as it was about to start a sweep of about an hour.
 > concurrency and leave the fixed portion alone. Dividing `elapsed_seconds`
 > wholesale is the same class of mis-pricing this reporting exists to stop.
 >
-> **`--concurrency` is not the only wall. `recapture-stale` also carries a
-> default 300-second budget, and on a large sweep that is the one you hit
-> first.** Concurrency changes how much gets captured *before* the budget
-> elapses; it does not change *whether* the sweep finishes. Reading the
-> paragraphs above and tuning only `--concurrency` therefore still leaves you
-> short — measured: 1,789 stale, **132 captured**, exit `2`. A sweep you intend
-> to complete wants the budget lifted explicitly:
+> **Concurrency is not the only wall. `recapture-stale` also carries a time
+> budget, and on a large sweep that is the one you hit first.** Width changes how
+> much gets captured *before* the budget elapses; it does not change *whether*
+> the sweep finishes. Under the old flat 300-second default, a wide sweep still
+> fell short — measured: 1,789 stale, **132 captured**, exit `2`. A sweep you
+> intend to complete in one pass, whatever it costs, can lift the wall
+> explicitly while leaving the width on auto:
 >
 > ```bash
-> codeyam-editor editor recapture-stale --concurrency <N> --max-seconds 0
+> codeyam-editor editor recapture-stale --max-seconds 0
 > ```
 >
-> `--max-seconds 0` disables the wall. Set both together — they are one decision
-> about a large sweep, not two independent knobs.
+> `--max-seconds 0` disables the wall. It is the separate decision about a large
+> sweep; the width needs no decision, since the tuner makes it.
 >
 > Distinguish the two outcomes rather than guessing: a budget bail sets
 > **`budget_expired: true`** on the stdout JSON and lists every uncaptured slug
@@ -1101,9 +1146,9 @@ crashed as it was about to start a sweep of about an hour.
 > sweep needs you to get both right.** Concurrency shrinks how long the captures
 > take; the budget bounds how long the run is ALLOWED to take. They are easy to
 > read as one lever and they are not: under a budget too small for the work,
-> raising concurrency changes only how many scenarios get captured before the
-> same wall, never whether the sweep finishes. Following the concurrency advice
-> above and no more is exactly how a reader still gets cut off.
+> a wider sweep changes only how many scenarios get captured before the same
+> wall, never whether the sweep finishes. Trusting the width alone is exactly
+> how a reader still gets cut off.
 >
 > The budget used to be a flat 300 seconds whenever you did not name one —
 > chosen before the command had any idea how much work it had found. Measured
@@ -1260,6 +1305,18 @@ plain red test is invisible to them, because only a test run can see it.
 
 ## 7. Commit → finalize → the merge-ready gate
 
+**Order of operations.** Run the chain in this order. Each step creates the
+precondition the next would otherwise refuse on, one refusal per launch:
+
+| # | Step | The refusal it pre-empts |
+|---|---|---|
+| 1 | `pre-commit-sync` | finalize and push refusing on a missing tested-tip record |
+| 2 | `rebuild-self` (only if `rebuild-self --check` reads `stale`) | `finalize-ci-only` refusing because an embedded file changed and the binary is stale |
+| 3 | `session-finalize` (or `finalize-ci-only` for CI-infrastructure-only commits) | `verify-full-finalize` reading no marker for HEAD |
+| 4 | `verify-full-finalize` | push refusing an unproven HEAD |
+| 5 | `push` | the PR having no remote branch |
+| 6 | `windows-check` (when its MANDATE below applies) | a red Windows CI job after merge |
+
 This is the expensive loop; still aim to run it *once*, cleanly — but two
 properties now make its cost proportional to the change rather than flat.
 
@@ -1342,7 +1399,7 @@ codeyam-editor editor fast-commit-stop
 # on a branch one machine pushes is always level, so it never sees main move.
 codeyam-editor editor sync-upstream --base \
   --trailer "<attribution trailer>"            # one --trailer per session attribution line
-codeyam-editor editor pre-commit-sync          # claims the commit queue; --recover if it bails
+codeyam-editor editor pre-commit-sync          # records the tested tip session-finalize requires; --recover if it bails
 codeyam-editor editor verify-merge-consistency # if either integrated a merge — see "After every merge"
 
 # MANDATORY when the branch carries platform surface (see "Cross-platform
@@ -1764,6 +1821,20 @@ targeted runs, then `gh pr ready <pr>` to start the one full run on the final
 tip. Without that, each targeted run sits beside a full run that cancels the
 previous one and is cancelled by the next.
 
+**One push, one Windows check, one `gh pr ready`.** Where this repo's CI is
+concerned, a green `windows-check` on the final tip is not repeated: the full
+PR run's `prior-verdict` job finds that dispatch on the same commit and skips
+the Windows lanes, and `assert-platform-suites-ran` names the dispatch in their
+place. That holds only while the PR's merge with its base is the same tree as
+the tip, so merge the base before the push, not after. The sequence is then:
+batch every known fix into ONE commit → push (PR in draft) → `windows-check` →
+fix every red its `--run` readback lists in ONE further commit, push, and check
+again → `gh pr ready <pr>` once, with nothing pushed after the green check. A
+push after it starts a Windows run the check already paid for. Measured on PR
+#150: three pushes, three `windows_only` dispatches (~20, ~45 and ~55 Windows
+minutes), and a final full run that re-ran the suite dispatch `43283338571` had
+passed about an hour earlier on the same SHA.
+
 Measured on PR #142: five full PR runs, each 33–50 minutes and ~39 jobs, to
 reach green. Three of the four red rounds were Windows-only: a repaired
 windows-gnu build whose newly-visible suite went straight to full CI (see the
@@ -1856,13 +1927,15 @@ cheap — lean on them rather than fighting the ordering:
   fingerprinting re-runs only the phases whose inputs moved; that is the
   mechanism the price above already reflects.
 
-> GOTCHA — **the queue tenure does not survive the push.** Every re-finalize
-> needs a fresh `codeyam-editor editor pre-commit-sync` first. The tenure claimed
-> for the previous finalize was released when `editor push` completed, so
-> `session-finalize` bails immediately with `Commit queue: finalize ran without
-> holding the queue head`. That message says what it is — *"this is a recovery,
-> not an error"* — so re-claim and re-run instead of investigating it as a
-> failure.
+> GOTCHA — **the tested-tip record does not survive the push.** Every
+> re-finalize needs a fresh `codeyam-editor editor pre-commit-sync` first.
+> `session-finalize` requires the tested-tip record `pre-commit-sync` writes, and
+> every successful `editor push` deletes it, so the first finalize after a push
+> refuses immediately with `Commit queue: finalize found no tested-tip record`.
+> `finalize-preview` names the same owed step (`Launch precondition: no
+> tested-tip record`). The message says what it is — *"this is a recovery, not
+> an error"* — so run `pre-commit-sync` and re-run instead of investigating it
+> as a failure.
 
 **The flake bar — "flake" requires proof of non-determinism.** A check may be
 labeled a flake ONLY when it **passed on a re-run with no code change**, OR it
@@ -2005,6 +2078,34 @@ non-GitHub remote, or a repo that defines no workflows at all reports
 unknown/not-applicable and exits `0` — this check never turns a network hiccup,
 or a project that simply has no CI, into a red gate.
 
+### 8c. Offer a due review — after the ship flow, never inside it
+
+Interactive runs only (no argument): `scheduled-finalize` / `scheduled-merge`
+skip this section. Once step 8 is done — or once the user said no to the
+ship question — ask once:
+
+```bash
+codeyam-editor editor periodic-review status
+```
+
+If nothing is `due`, end the run as usual. Otherwise ask ONE more,
+separate question: never folded into the ship question, which keeps its
+one-question contract. Offer each `due` review with this fixed copy, verbatim,
+plus "Not now":
+
+- speed due — **"Find what slows down your sessions"**: "Measures where time
+  went in your recent sessions, explains how CodeYam builds and tests this
+  project, and recommends changes. You pick which become plans."
+- security due — **"Check this project for security risks"**: "A read-only
+  security review. Each problem found is rated by how serious it is, and you
+  pick which become plans."
+- **"Not now"**: "Nothing runs. The review stays due and is offered again at
+  the next session end or audit."
+
+On a pick, run that review's skill (`/codeyam-audit-speed` or
+`/codeyam-audit-security`). It records its own run when it finishes, which
+resets that review's clock.
+
 ---
 
 ## Cross-platform pitfalls
@@ -2102,6 +2203,19 @@ reported the identical `[FAIL] windows-clippy` in ~1.5 minutes.
   was cancelled, or was killed) means the waiver is **unmet**: the branch has
   no Linux verdict at all. Fix or re-run the build until the suite runs; do not
   merge on the waiver alone.
+  The suite starts as soon as the setup phases pass and runs **beside** the
+  local phases (its output goes to `.codeyam/state/command-output/linux-suite.log`),
+  so a red suite stops the finalize while local phases are still running. Before
+  Phase 1, a seconds-long harness probe checks that the container looks like a
+  CI runner: the tests are not in process group 1, there is no git identity
+  (with `user.useConfigOnly` set), and `/workspace/node_modules` is empty. A
+  refusal there is a harness bug, so fix the harness script.
+  **When a test fails in the container because the environment lacks something
+  CI's runners also lack (a git identity, a tool, a free port), that is a
+  FIXTURE bug: fix the test** — e.g. `git config user.email` in the test's own
+  repo. Never give the harness what CI lacks. On `editor-improvements-110`,
+  giving the container a git identity failed the next finalize and hid a real
+  fixture bug that only Windows CI exposed, at about 200 minutes in all.
 - `codeyam-editor editor windows-check` — the Windows verdict. `cross-check`
   only COMPILES for Windows; it never runs a Windows test or touches a Windows
   filesystem, so a green `windows-clippy` says nothing about a `MAX_PATH`

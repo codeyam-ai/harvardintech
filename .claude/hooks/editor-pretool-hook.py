@@ -4693,6 +4693,46 @@ def is_split_destination(source, written):
     return written.startswith(f"{parent}/" if parent else f"{stem}/")
 
 
+# Separators that can carry one statement's output into another — command
+# substitution and subshells — so their presence keeps every mention judged.
+_CAPTURE_SEPARATORS = ("(", ")", "`")
+
+
+def _output_may_cross_statements(command):
+    """True when one statement of `command` can hand its output to another: a
+    `$( … )` / backtick capture, a subshell, or a `{ …; }` group whose shared
+    redirect writes what every member printed."""
+    pairs = _split_commands_with_separators(command)
+    return any(sep in _CAPTURE_SEPARATORS for _, sep in pairs) or any(
+        segment.strip()[:1] in ("{", "}") for segment, _ in pairs
+    )
+
+
+def terminal_only_paths(command, project_dir):
+    """The eligible paths `command` names ONLY in pipelines that write nothing,
+    so their content cannot flow into a write — `sed -n 1,10p a.rs` run as its
+    own statement prints to the terminal. Empty (judge every mention) whenever
+    output could cross statements: a `$( … )` / backtick capture, a subshell, or
+    a `{ …; } > f` group.
+
+    A path that appears in no shell pipeline at all — named inside an
+    interpreter heredoc body, which the splitter elides — is never returned:
+    that program may read it and write the new file in one process.
+
+    VM 19 1e3b8969 appended to a new `scenario_data_file.rs` with `cat >>` and,
+    as a separate statement, printed `sed -n 388,400p preview_kind.rs`; the
+    split guard refused a command that moved nothing."""
+    if _output_may_cross_statements(command):
+        return set()
+    flowing, quiet = set(), set()
+    for stages in _pipelines(command):
+        text = " | ".join(stages)
+        explicit, opaque, _ = write_targets(text)
+        paths = eligible_pathspecs(_path_tokens(text), project_dir)
+        (flowing if explicit or opaque else quiet).update(paths)
+    return quiet - flowing
+
+
 def split_by_script_target(command, project_dir):
     """`(source, written)` when `command` writes an UNTRACKED source file at a
     split destination (`is_split_destination`) of a tracked source file it also
@@ -4709,10 +4749,11 @@ def split_by_script_target(command, project_dir):
     new_files = [path for path in written if path not in already_tracked]
     if not new_files:
         return None
+    terminal_only = terminal_only_paths(command, project_dir)
     mentioned = [
         path
         for path in eligible_pathspecs(_path_tokens(command), project_dir)
-        if path not in written
+        if path not in written and path not in terminal_only
     ]
     sources = tracked_source_paths(mentioned, project_dir)
     for new_file in new_files:
@@ -8092,7 +8133,15 @@ def main():
                 )
 
         if invokes_git_subcommand(command, "push"):
-            if slug and push_slugs and slug not in push_slugs:
+            # A push from a scratch repository (`cd $S/repo && git push`,
+            # `git -C /tmp/r push`) publishes nothing of this project's — VM 17
+            # 3475dcbd was refused twice testing fetch flags in a throwaway repo.
+            if (
+                slug
+                and push_slugs
+                and slug not in push_slugs
+                and not runs_git_outside_project(command, "push", project_dir, git_start)
+            ):
                 allowed = ", ".join(sorted(push_slugs))
                 if unpushed_range_is_plan_only(project_dir):
                     next_action = (

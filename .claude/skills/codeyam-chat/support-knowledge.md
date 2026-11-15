@@ -88,6 +88,13 @@ confirm it, say so.
   this folder": down arrow, Enter.
 - **Logged out of Claude**: Home tab sign-in button, or `/login` in Build;
   locally `claude auth login`.
+- **Wrong or invalid agent API key** (Gemini, Codex, OpenCode, Muse — e.g.
+  `API_KEY_INVALID` on every turn): Home → AI agent → Change → **Replace key**
+  or **Remove key**. From chat, run `codeyam-editor editor api-key status
+  --provider <p>`, then `api-key clear --provider <p>`, or have the user pipe a
+  new key into `api-key set --provider <p>` (it reads stdin, so never put the
+  key in the command). Never edit `.codeyam/editor.local.json` yourself: it
+  holds secrets.
 - **Working vs stuck**: tests and screenshots can take minutes. No change for
   10+ minutes and no question waiting → Interrupt and "continue".
 - **The agent ran `/clear`**: intentional, it keeps the conversation small.
@@ -128,6 +135,14 @@ confirm it, say so.
   "save the full check for later" on each, then run the full check (or
   `/codeyam-audit`) at the end. Several machines (e.g. Codespaces) can work in
   parallel.
+- Two reviews: `/codeyam-audit-speed` explains why sessions take as long as
+  they do and what would speed them up; `/codeyam-audit-security` is a
+  read-only, rated security review. Both end with you choosing which findings
+  become plans. They are offered at a session end or after `/codeyam-audit`
+  only when due: speed after 10 features or 14 days, security after 30 days
+  or sooner when dependencies, CI or auth code changed (a new project after
+  its third feature). Anyone on the team running one resets it for everyone;
+  `periodicReviews` in `editor.json` changes the timing.
 - Features disappeared: work is kept when it is saved (committed and pushed);
   say yes when asked.
 - Something broke: ask for the root cause before fixing; if needed, go back to

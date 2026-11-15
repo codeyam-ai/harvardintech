@@ -46,9 +46,9 @@ it.** Everything below is the contract; the procedure is the body.
   progress and ends merge-ready, with a report of the decisions made and
   the plans written, so the user can still disagree after the fact. It
   never bails-and-abandons mid-way and never leaves the repo half-aligned.
-- **Never rebase, amend, or force-push.** Assume the branch may be shared;
-  integrate a moved primary branch by **merging** it in. This is the one
-  unrecoverable rule.
+- **Never rebase, amend, or force-push pushed commits.** Merge a moved
+  primary branch in; `sync-upstream` may rebase unpushed ones and says so.
+  This is the one unrecoverable rule.
 - **A green Fast-Commit session is NOT merge-ready.** The per-step gate is
   diff-scoped; `session-finalize` is whole-repo-scoped. Trust
   `verify-full-finalize`, not the session's green steps.

@@ -184,6 +184,96 @@ def log_event(project_dir, event, data=None):
 
 QUESTION_COPY_LOG = "question-copy.jsonl"
 
+# ── Answers the editor typed, not the user ──────────────────────────────
+# An Enter the editor types while an `AskUserQuestion` picker is up selects
+# its highlighted option 1, and the agent then acts on it as the user's
+# choice (fleet review 2026-11-11: four answers, every one option 1, each
+# landing beside an editor write). The editor stamps every keystroke write it
+# makes (`crates/control-api/src/editor_input_stamp.rs`); an answer arriving
+# within this window of a stamped Enter is treated as injected.
+EDITOR_INPUT_STAMP = os.path.join(".codeyam", "run", "editor-input.json")
+INJECTED_ANSWER_WINDOW_MS = 2000
+# The UI reports its launch writes just AFTER sending them, so the stamp can
+# trail the answer it explains by a beat. One re-read after this pause
+# catches it; it is paid only on an answer no stamp explained at first read.
+INJECTED_ANSWER_REREAD_S = 0.4
+
+INJECTED_ANSWER_CONTEXT = (
+    "This AskUserQuestion answer was produced by a keystroke the editor typed "
+    "({source}), not by the user — it arrived {age_ms} ms after an editor-typed "
+    "Enter, and an Enter on an open picker selects its first option. Treat the "
+    "question as DISMISSED: do not act on the selected option, record nothing as "
+    "decided by the user (no `--decided-by user`, no `audience --set`, no "
+    "`proposed-plan-write`), and ask it again at the next opportunity."
+)
+
+
+def _read_editor_input_stamp(project_dir):
+    try:
+        with open(os.path.join(project_dir, EDITOR_INPUT_STAMP), "r") as f:
+            stamp = json.load(f)
+        return stamp if isinstance(stamp, dict) else None
+    except Exception:
+        return None
+
+
+def _stamp_explains_answer(stamp, now_ms, window_ms=INJECTED_ANSWER_WINDOW_MS):
+    """The editor write that most likely chose an answer arriving at `now_ms`,
+    as `(source, age_ms)`, or None. Only an Enter can answer a picker, so the
+    stamp's last-Enter fields are what is judged; a stamp from the future
+    (clock skew) or older than the window explains nothing."""
+    if not isinstance(stamp, dict):
+        return None
+    at = stamp.get("lastEnterAtMs")
+    if not isinstance(at, (int, float)) or isinstance(at, bool):
+        return None
+    age = now_ms - at
+    if age < 0 or age > window_ms:
+        return None
+    return (str(stamp.get("lastEnterSource") or "unknown"), int(age))
+
+
+def _injected_answer_source(project_dir, sleep=time.sleep, clock=time.time):
+    """`(source, age_ms)` when the answer just returned was most likely typed
+    by the editor, else None. Never raises."""
+    try:
+        found = _stamp_explains_answer(_read_editor_input_stamp(project_dir), clock() * 1000)
+        if found is None:
+            sleep(INJECTED_ANSWER_REREAD_S)
+            found = _stamp_explains_answer(
+                _read_editor_input_stamp(project_dir), clock() * 1000
+            )
+        return found
+    except Exception:
+        return None
+
+
+def _injected_answer_output(found):
+    """The PostToolUse document that tells the agent the answer was injected."""
+    source, age_ms = found
+    return json.dumps(
+        {
+            "hookSpecificOutput": {
+                "hookEventName": "PostToolUse",
+                "additionalContext": INJECTED_ANSWER_CONTEXT.format(
+                    source=source, age_ms=age_ms
+                ),
+            }
+        }
+    )
+
+
+def _observe_question_answer(project_dir, event_data, in_cycle=True):
+    """Record one answered AskUserQuestion: log the question copy with the
+    answer's source, and save the audience answer only when the user gave it.
+    Returns the injected `(source, age_ms)`, or None for a user's answer —
+    the caller tells the agent when it is not None."""
+    injected = _injected_answer_source(project_dir)
+    _log_question_copy(project_dir, event_data, in_cycle=in_cycle, injected=injected)
+    if not injected:
+        _record_audience_answer(project_dir, event_data)
+    return injected
+
 # Seconds to wait for the jargon check before giving up on it. The check
 # is a nicety; the record of what was asked is the point, so a slow or
 # absent binary costs the flagged terms and nothing else.
@@ -379,7 +469,7 @@ def _consume_question_bounce(project_dir, session_id):
         return False
 
 
-def _log_question_copy(project_dir, event_data, in_cycle=True):
+def _log_question_copy(project_dir, event_data, in_cycle=True, injected=None):
     """Append one line per question asked, to .codeyam/logs/question-copy.jsonl.
 
     `in_cycle=False` is a question asked outside an editor session. It is
@@ -450,6 +540,11 @@ def _log_question_copy(project_dir, event_data, in_cycle=True):
                                 " ".join([text] + labels + descriptions),
                             ),
                             "bouncedFirst": bounced_first,
+                            # `injected` when an editor-typed Enter most
+                            # likely chose the answer (see
+                            # `_injected_answer_source`), else `user`.
+                            "answerSource": "injected" if injected else "user",
+                            "injectedBy": injected[0] if injected else None,
                         }
                     )
                     + "\n"
@@ -1627,8 +1722,9 @@ def main():
                 event_type == "post_tool_use"
                 and event_data.get("tool_name") == "AskUserQuestion"
             ):
-                _log_question_copy(project_dir, event_data, in_cycle=False)
-                _record_audience_answer(project_dir, event_data)
+                injected = _observe_question_answer(project_dir, event_data, in_cycle=False)
+                if injected:
+                    print(_injected_answer_output(injected))
         return
 
     state_path = os.path.join(project_dir, ".codeyam", "editor-step.json")
@@ -1715,9 +1811,9 @@ def main():
     # returning first would blind the log to exactly the ad-hoc questions
     # the contract most needs to see. Falls through afterwards — this
     # observer prints nothing and changes no control flow.
+    injected = None
     if event_type == "post_tool_use" and event_data.get("tool_name") == "AskUserQuestion":
-        _log_question_copy(project_dir, event_data)
-        _record_audience_answer(project_dir, event_data)
+        injected = _observe_question_answer(project_dir, event_data)
 
     # The user answered (or typed a new prompt, which also means they are
     # back): the session is no longer parked on them. Removes the marker the
@@ -1729,6 +1825,13 @@ def main():
             os.remove(os.path.join(project_dir, ".codeyam", "run", "awaiting-user.json"))
         except OSError:
             pass
+
+    # The answer was the editor's keystroke: say so and stop. Nothing below
+    # prints for an AskUserQuestion result, and one JSON document is the
+    # whole of what PostToolUse may write for it to reach the agent.
+    if injected:
+        print(_injected_answer_output(injected))
+        return
 
     if not os.path.exists(state_path):
         # No editor-step.json — a stateless session entry. This is the exact
