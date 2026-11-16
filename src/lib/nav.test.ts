@@ -730,12 +730,17 @@ describe('committed nav.json', () => {
     expect(fourthLevel).toEqual([]);
   });
 
-  // Volunteer, Donate and Sponsorship share one dropdown, so Get involved is
-  // not left holding a lone Volunteer link.
-  it('groups volunteering and giving under Get involved', () => {
+  // While the fundraising pages are unlisted (owner, 2026-11-16 — see
+  // src/lib/unlistedPages.ts), Get involved is a plain link to /volunteer/ and
+  // no menu item reaches /donate or /sponsor.
+  it('points Get involved straight at volunteering, with no fundraising links', () => {
     const group = nav.items.find((i) => i.label === 'Get involved');
+    expect(group?.url).toBe('/volunteer/');
+    expect(group?.children).toBeUndefined();
 
-    expect(group?.children?.map((c) => c.url)).toEqual(['/volunteer/', '/donate/', '/sponsor/']);
+    const urls = JSON.stringify(nav);
+    expect(urls).not.toContain('/donate');
+    expect(urls).not.toContain('/sponsor');
   });
 
   // The newsletter link must reach the sign-up form everyone else on the site

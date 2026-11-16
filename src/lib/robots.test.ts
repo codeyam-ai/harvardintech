@@ -11,7 +11,14 @@ describe('robotsTxtBody public track', () => {
     const body = robotsTxtBody('https://harvardintech.com/sitemap-index.xml', false);
     expect(body).toContain('User-agent: *');
     expect(body).toContain('Allow: /');
-    expect(body).not.toContain('Disallow: /');
+    expect(body).not.toMatch(/^Disallow: \/$/m);
+  });
+
+  // Unlisted pages stay reachable by URL but are kept out of crawlers' reach.
+  it('disallows only the unlisted fundraising pages', () => {
+    const body = robotsTxtBody('https://harvardintech.com/sitemap-index.xml', false);
+    const disallows = body.split('\n').filter((l) => l.startsWith('Disallow:'));
+    expect(disallows).toEqual(['Disallow: /donate', 'Disallow: /sponsor']);
   });
 
   // The Sitemap line carries the caller's resolved origin, not a placeholder —

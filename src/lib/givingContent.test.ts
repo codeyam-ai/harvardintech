@@ -74,9 +74,9 @@ describe('no public giving copy makes a legal or tax claim', () => {
   // The audit's L1-L4 and L12: tax-deductibility, 501(c)(6) status, and
   // charitable framing. Givebutter's own checkout carries whatever legal text a
   // gift needs; this site says none of it. Drafted and preview entries are
-  // exempt because the public build never renders them — the 501(c)(6)
-  // priority is drafted rather than deleted, so it can come back when the
-  // filing is real.
+  // exempt because the public build never renders them, so a claim can be held
+  // back in a draft until it is true (the old 501(c)(6) priority was deleted
+  // on 2026-11-16; a real filing comes back as a new entry).
   const LEGAL_CLAIM = /501\(c\)|tax[- ]deductib|tax adviser|charitable/i;
 
   // The assertion that actually protects a reader: nothing the public build
@@ -139,10 +139,10 @@ describe('the goal meter states the real pre-launch figures', () => {
 
 describe('the donate page shows one 2026 priority', () => {
   // What the $10,000 pays for has not been agreed, so the three old priorities
-  // — the 501(c)(6) filing, annual software, chapter programming — are drafted
-  // and one goal-shaped priority stands in their place. More than one published
-  // here means someone republished a priority the organization has not
-  // committed to.
+  // — the 501(c)(6) filing, annual software, chapter programming — were deleted
+  // (owner's decision, 2026-11-16) and one goal-shaped priority stands in their
+  // place. More than one published here means someone added a priority the
+  // organization has not committed to.
   it('publishes exactly one priorities pillar', () => {
     const published = contentFiles().filter(
       ({ file, text }) =>
@@ -158,24 +158,22 @@ describe('the donate page shows one 2026 priority', () => {
 });
 
 describe('the sponsor page shows no partnership it cannot honour', () => {
-  // "Ways to partner" is not rendered for launch and the Presenting level is
-  // not fleshed out, so the level stays in the CMS as a draft rather than being
-  // deleted — it comes back by publishing it.
-  it('keeps the Presenting Partner level drafted', () => {
-    expect(isDraft(fs.readFileSync('src/content/sponsorLevels/presenting.md', 'utf8'))).toBe(true);
+  // The Presenting level was never fleshed out, and the owner decided on
+  // 2026-11-16 not to offer it, so the level was deleted rather than left as a
+  // draft. Offering it again is a deliberate act: write a new level entry.
+  it('does not offer a Presenting Partner level', () => {
+    expect(fs.existsSync('src/content/sponsorLevels/presenting.md')).toBe(false);
   });
 
-  // Shipping sample logos asserts partnerships that do not exist. The wall's
-  // own empty state is honest and is itself an invitation.
-  it('keeps every example sponsor drafted', () => {
+  // Shipping sample logos asserts partnerships that do not exist. The three
+  // "Example" stand-ins were deleted on 2026-11-16; the wall's own empty state
+  // is honest and is itself an invitation. The folder is kept by a .gitkeep so
+  // the collection still loads with no entries.
+  it('carries no example sponsors', () => {
     const examples = fs
       .readdirSync('src/content/sponsors')
       .filter((name) => name.startsWith('example-') && name.endsWith('.md'));
-    expect(examples.length).toBeGreaterThan(0);
-    for (const name of examples) {
-      const text = fs.readFileSync(path.join('src/content/sponsors', name), 'utf8');
-      expect(isDraft(text), `${name} must stay drafted until a real sponsor replaces it`).toBe(true);
-    }
+    expect(examples).toEqual([]);
   });
 });
 

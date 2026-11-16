@@ -59,20 +59,7 @@
     },
     {
       "label": "Get involved",
-      "children": [
-        {
-          "label": "Volunteer",
-          "url": "/volunteer/"
-        },
-        {
-          "label": "Donate",
-          "url": "/donate/"
-        },
-        {
-          "label": "Sponsorship",
-          "url": "/sponsor/"
-        }
-      ]
+      "url": "/volunteer/"
     }
   ]
 }

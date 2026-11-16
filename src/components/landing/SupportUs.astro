@@ -34,11 +34,9 @@ const {
   intro,
 } = Astro.props as Props;
 
-const toSponsor = { href: withBase('/sponsor'), cta: 'Start a conversation →' };
+// The sponsor, host and job-post cards are withdrawn while /sponsor is unlisted
+// (owner, 2026-11-16 — see src/lib/unlistedPages.ts); restore them with it.
 const options = [
-  { label: 'Sponsor an event', ...toSponsor },
-  { label: 'Host us in your space', ...toSponsor },
-  { label: 'Share job opportunities', ...toSponsor },
   { label: 'Speak at an event', href: volunteerFormUrl ?? withBase(VOLUNTEER_PATH), cta: 'Volunteer →' },
   { label: 'Volunteer your time', href: withBase(VOLUNTEER_PATH), cta: 'Volunteer →' },
 ];
@@ -63,7 +61,7 @@ const options = [
 <style>
   .support-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
   .sup {

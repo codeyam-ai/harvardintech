@@ -12,7 +12,8 @@ $10,000, and printing the same figure twice on one page invites the two to
 disagree the moment one of them is edited.
 
 The three priorities it replaced — the legal and filing work, annual software,
-and chapter programming — are drafted rather than deleted. What the $10,000
-actually pays for has not been agreed yet, and listing uses the organization has
-not committed to would be the same kind of guess the old figures were. Once
-those uses are settled, publish them and give this entry its place among them.
+and chapter programming — were deleted (owner's decision, 2026-11-16). What the
+$10,000 actually pays for has not been agreed yet, and listing uses the
+organization has not committed to would be the same kind of guess the old
+figures were. Once those uses are settled, add them as new priorities written
+fresh, and give this entry its place among them.

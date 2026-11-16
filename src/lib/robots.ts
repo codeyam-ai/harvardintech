@@ -6,6 +6,7 @@
 //
 // The endpoint keeps origin resolution and response shaping; this owns the
 // content.
+import { UNLISTED_PATHS } from './unlistedPages';
 
 /**
  * Build a robots.txt body.
@@ -24,9 +25,11 @@ Disallow: /
 `;
   }
 
+  // Unlisted pages (see unlistedPages.ts) stay reachable but are not crawled.
+  const unlisted = UNLISTED_PATHS.map((p) => `Disallow: ${p}\n`).join('');
   return `User-agent: *
 Allow: /
-
+${unlisted}
 Sitemap: ${sitemapUrl}
 `;
 }

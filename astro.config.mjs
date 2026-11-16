@@ -19,6 +19,7 @@ import {
   substitutePassphrase,
 } from './src/lib/previewGate';
 import { redirectsForBase } from './src/lib/redirects';
+import { isUnlistedUrl } from './src/lib/unlistedPages';
 import { countLoadedEntries, listCollectionNames } from './src/lib/emptiedCollections';
 import {
   createQuietWaiter,
@@ -379,7 +380,10 @@ integrations.push(internalPathsAndPassphrase(isDev, isReviewTrack));
 // only track that emits a sitemap at all.
 if (includeSitemapIntegration(isReviewTrack)) {
   integrations.push(
-    sitemap({ filter: (page) => !isPreviewUrl(page) && !isInternalPath(page, base) }),
+    sitemap({
+      filter: (page) =>
+        !isPreviewUrl(page) && !isInternalPath(page, base) && !isUnlistedUrl(page, base),
+    }),
   );
 }
 
