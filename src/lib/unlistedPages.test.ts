@@ -5,7 +5,7 @@ import { isUnlistedPath, isUnlistedUrl } from './unlistedPages';
 describe('isUnlistedPath', () => {
   // Both fundraising pages, with or without a trailing slash or a sub-path.
   it('matches /donate and /sponsor in every shape', () => {
-    for (const p of ['/donate', '/donate/', '/donate/thanks/', '/sponsor', '/sponsor/']) {
+    for (const p of ['/donate', '/donate/', '/donate/thanks/', '/sponsor', '/sponsor/', '/admin/', '/admin/blog/x/']) {
       expect(isUnlistedPath(p)).toBe(true);
     }
   });

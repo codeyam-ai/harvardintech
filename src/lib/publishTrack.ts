@@ -17,8 +17,13 @@
  * workflow, where editors work on the review site and promote. Dev keeps it so
  * the codeyam Live Preview retains its admin scenarios.
  */
-export function includeCmsIntegration(isDev: boolean, isReviewTrack: boolean): boolean {
-  return isDev || isReviewTrack;
+export function includeCmsIntegration(_isDev: boolean, _isReviewTrack: boolean): boolean {
+  // Go-live (owner, 2026-11-16): there is one domain and no separate review
+  // origin, so the CMS ships on every track. On the public build /admin is
+  // unlinked, noindex, robots-disallowed, out of the sitemap and behind the
+  // hashed admin passphrase screen (src/lib/adminGate.ts). The draft-markdown
+  // exposure described above is accepted at deterrent level.
+  return true;
 }
 
 /**

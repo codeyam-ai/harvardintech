@@ -185,30 +185,16 @@ jobs:
           git push origin HEAD:${{ github.ref_name }}
       - name: Build site
         env:
-          # The domain cutover flips these two: drop DEPLOY_BASE_PATH (base → '/')
-          # and point PAGES_SITE at https://harvardintech.com. Nothing else changes.
-          DEPLOY_BASE_PATH: /harvardintech
-          # Where the preview is really hosted (the repo moved to codeyam-ai).
-          PAGES_SITE: https://codeyam-ai.github.io
-          # What every canonical link, share card and structured-data URL names:
-          # the live domain, never the gated preview. At launch PAGES_SITE
-          # becomes this same value and this line can go.
+          # LIVE (2026-11-16 cutover): `main` IS the public site at
+          # harvardintech.com, served from the domain root. No PREVIEW_GATE and
+          # no INCLUDE_DRAFTS, so pages are open and drafts stay hidden.
+          PAGES_SITE: https://harvardintech.com
           CANONICAL_ORIGIN: https://harvardintech.com
-          # The gate's passphrase lives only in this secret. A gated build
-          # without it fails instead of shipping a gate anyone can open.
-          PREVIEW_GATE_PASSPHRASE: ${{ secrets.PREVIEW_GATE_PASSPHRASE }}
-          # PRE-LAUNCH: `main` is NOT the public site yet. harvardintech.com is
-          # still served by Strikingly, and this deploy is the private preview
-          # the team reviews — so it is passphrase-gated, noindex, and shows
-          # drafts, and it serves /admin so the CMS can edit it.
-          #
-          # REMOVING THESE TWO LINES IS WHAT TAKES THE SITE PUBLIC. Do it only
-          # at the Strikingly cutover, and only once a private editor build of
-          # `main` is standing on the kept second repository — otherwise there is
-          # nothing left protecting the preview and /admin ships to the world.
-          # See DEPLOY_SETUP.md.
-          PREVIEW_GATE: '1'
-          INCLUDE_DRAFTS: '1'
+          # The CMS ships at /admin (unlinked, noindex, robots Disallow, not in
+          # the sitemap) behind its own passphrase screen. Only a SHA-256 hash
+          # of this secret reaches the built pages; a build that includes /admin
+          # without it fails. Saving an edit still needs a GitHub token.
+          ADMIN_PASSPHRASE: ${{ secrets.ADMIN_PASSPHRASE }}
         run: npm run build
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

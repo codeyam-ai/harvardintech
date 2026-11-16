@@ -6,7 +6,10 @@
 // not ready, but donor emails already link to /donate, so the URLs must keep
 // working. To bring a page back, remove it from this list and restore its links
 // (nav.json "Get involved", the homepage giving band's `draft` flag).
-export const UNLISTED_PATHS = ['/donate', '/sponsor'] as const;
+// `/admin` is the CMS (go-live, 2026-11-16): unlinked, noindex and behind the
+// admin passphrase screen; it is listed here so robots.txt and the sitemap
+// leave it out too.
+export const UNLISTED_PATHS = ['/admin', '/donate', '/sponsor'] as const;
 
 /** True when `pathname` (any base prefix already stripped) is an unlisted page. */
 export function isUnlistedPath(pathname: string): boolean {

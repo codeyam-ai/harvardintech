@@ -13,10 +13,10 @@ import {
 } from './publishTrack';
 
 describe('includeCmsIntegration', () => {
-  // The public production build must NOT ship /admin. This is the case that
-  // keeps draft markdown off harvardintech.com.
-  it('excludes the CMS from the public build', () => {
-    expect(includeCmsIntegration(false, false)).toBe(false);
+  // Go-live (owner, 2026-11-16): one domain, so the public build ships /admin —
+  // behind the hashed admin passphrase screen, noindex and robots-disallowed.
+  it('includes the CMS on the public build', () => {
+    expect(includeCmsIntegration(false, false)).toBe(true);
   });
 
   // The gated review origin is the one place /admin belongs.

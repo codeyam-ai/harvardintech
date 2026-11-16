@@ -102,10 +102,11 @@ describe('deploy.yml track coherence', () => {
   //
   // The site is served from a subpath of this repo's own Pages site, so the rule
   // applies even though it publishes by artifact upload rather than by push.
-  it('builds with a base matching this repo', () => {
-    expect(envValue(jobBody('build'), 'DEPLOY_BASE_PATH')).toBe(
-      pagesBasePathFor('harvardintech'),
-    );
+  // Since the go-live (2026-11-16) the site is served from the custom domain's
+  // root, so the build sets NO base path — a leftover subpath would 404 every
+  // asset on harvardintech.com.
+  it('builds at the domain root with no base path', () => {
+    expect(envValue(jobBody('build'), 'DEPLOY_BASE_PATH')).toBeUndefined();
   });
 
   // The one-site change on 2026-09-17 retired the `staging` branch and the
@@ -118,17 +119,17 @@ describe('deploy.yml track coherence', () => {
     expect(WORKFLOW).not.toMatch(/^\s{2}review:/m);
   });
 
-  // Dropping PREVIEW_GATE is precisely what takes the site public, and
-  // harvardintech.com is still Strikingly's — so until the cutover the build
-  // must set it. The one assertion here guarding exposure rather than
-  // correctness.
-  it('gates the build while the site is not meant to be public', () => {
-    expect(envValue(jobBody('build'), 'PREVIEW_GATE')).toBe('1');
+  // The site is public (owner, 2026-11-16): no site-wide gate, and drafts stay
+  // hidden. Re-adding either would put the whole live site behind a passphrase
+  // or publish unfinished drafts.
+  it('builds the public site: no site-wide gate and no drafts', () => {
+    expect(envValue(jobBody('build'), 'PREVIEW_GATE')).toBeUndefined();
+    expect(envValue(jobBody('build'), 'INCLUDE_DRAFTS')).toBeUndefined();
   });
 
-  // The repo moved to codeyam-ai; the site is hosted there now.
-  it('hosts the site on the codeyam-ai Pages site', () => {
-    expect(envValue(jobBody('build'), 'PAGES_SITE')).toBe('https://codeyam-ai.github.io');
+  // Hosted on the custom domain.
+  it('hosts the site on harvardintech.com', () => {
+    expect(envValue(jobBody('build'), 'PAGES_SITE')).toBe('https://harvardintech.com');
   });
 
   // Every advertised URL names the live domain, never the gated preview.
@@ -140,9 +141,9 @@ describe('deploy.yml track coherence', () => {
   // A gated build with an empty one would ship a gate anyone can open, so the
   // build refuses and the deploy fails rather than publishing it. That is also
   // why the secret going missing in the account move stopped every deploy dead.
-  it('takes the gate passphrase from the secret', () => {
-    expect(envValue(jobBody('build'), 'PREVIEW_GATE_PASSPHRASE')).toMatch(
-      /^\$\{\{\s*secrets\.PREVIEW_GATE_PASSPHRASE\s*\}\}$/,
+  it('takes the admin passphrase from the secret', () => {
+    expect(envValue(jobBody('build'), 'ADMIN_PASSPHRASE')).toMatch(
+      /^\$\{\{\s*secrets\.ADMIN_PASSPHRASE\s*\}\}$/,
     );
   });
 });

@@ -20,6 +20,12 @@ import {
 } from './src/lib/previewGate';
 import { redirectsForBase } from './src/lib/redirects';
 import { isUnlistedUrl } from './src/lib/unlistedPages';
+import {
+  ADMIN_PASSPHRASE,
+  assertAdminPassphrase,
+  injectAdminGate,
+  passphraseHash,
+} from './src/lib/adminGate';
 import { countLoadedEntries, listCollectionNames } from './src/lib/emptiedCollections';
 import {
   createQuietWaiter,
@@ -274,6 +280,21 @@ function internalPathsAndPassphrase(isDev, isReviewTrack) {
           if (!fs.existsSync(target)) continue;
           fs.rmSync(target, { recursive: true, force: true });
           logger.info(`removed internal path from the build: ${rel}`);
+        }
+        // The CMS ships on every track since the go-live; on a deploy build its
+        // pages get the hashed admin passphrase screen (src/lib/adminGate.ts).
+        const adminDir = path.join(out, 'admin');
+        if (!isDev && fs.existsSync(adminDir)) {
+          assertAdminPassphrase();
+          const hash = passphraseHash(ADMIN_PASSPHRASE);
+          let gated = 0;
+          for (const file of fs.readdirSync(adminDir, { recursive: true })) {
+            if (!String(file).endsWith('.html')) continue;
+            const abs = path.join(adminDir, String(file));
+            fs.writeFileSync(abs, injectAdminGate(fs.readFileSync(abs, 'utf8'), hash));
+            gated += 1;
+          }
+          logger.info(`admin passphrase screen added to ${gated} CMS page(s)`);
         }
         for (const rel of SELF_GATED_FILES) {
           const file = path.join(out, rel);
