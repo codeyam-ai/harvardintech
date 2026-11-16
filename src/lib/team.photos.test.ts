@@ -20,7 +20,15 @@ function readPhoto(markdown: string): string | undefined {
   return match ? match[1] : undefined;
 }
 
-const teamFiles = readdirSync(TEAM_DIR).filter((f) => f.endsWith('.md'));
+// Members added before their headshot arrived: they show initials until the
+// photo lands, by the owner's choice. Remove a name here when its photo is added.
+const PHOTO_PENDING = new Set([
+  'nicole-soltau.md', // owner, 2026-11-16: headshot to follow
+]);
+
+const teamFiles = readdirSync(TEAM_DIR)
+  .filter((f) => f.endsWith('.md'))
+  .filter((f) => !PHOTO_PENDING.has(f));
 
 describe('seeded team headshots', () => {
   // sanity: the curated board exists, so an empty glob can't vacuously pass

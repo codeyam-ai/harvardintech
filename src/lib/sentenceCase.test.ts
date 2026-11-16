@@ -43,6 +43,8 @@ const PROPER = new Set([
   'Fund',
   'Givebutter',
   'Luma',
+  // "Board of Directors" is the board's formal name (owner, 2026-11-16).
+  'Directors',
 ]);
 
 /**

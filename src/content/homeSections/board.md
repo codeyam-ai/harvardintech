@@ -1,6 +1,6 @@
 ---
 kind: board
-title: Board of directors
+title: Board of Directors
 kicker: Leadership
 order: 8
 ---
