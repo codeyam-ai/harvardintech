@@ -43,7 +43,7 @@ const media = readMediaManifest();
       members.length === 0 ? (
         <EmptyState title="Our board will be announced soon." />
       ) : (
-        <div class="board">
+        <div class="board" style={`--board-cols:${Math.min(Math.max(members.length, 1), 6)}`}>
           {members.map((member) => (
             <BoardMemberTile member={member} media={media} />
           ))}
@@ -56,7 +56,9 @@ const media = readMediaManifest();
 <style>
   .board {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    /* One row on desktop for up to six directors, so a sixth never drops onto a
+       row of its own (owner, 2026-11-16). */
+    grid-template-columns: repeat(var(--board-cols, 5), 1fr);
     gap: 20px;
   }
   /* The state production actually ships in: no directors entered yet. Was an

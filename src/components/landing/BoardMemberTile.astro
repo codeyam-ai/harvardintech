@@ -22,6 +22,12 @@ interface Props {
   media?: MediaManifest;
 }
 const { member, media } = Astro.props as Props;
+// "Co-Founder · Harvard C'08" reads as two facts, so each gets its own line and
+// the separator dot goes (owner, 2026-11-16).
+const roleLines = member.role
+  .split('·')
+  .map((s) => s.trim())
+  .filter(Boolean);
 ---
 
 <div class="bm">
@@ -35,7 +41,7 @@ const { member, media } = Astro.props as Props;
     }
   </div>
   <div class="nm">{member.name}</div>
-  <div class="ro">{member.role}</div>
+  <div class="ro">{roleLines.map((line) => <span class="ro-l">{line}</span>)}</div>
   {member.bio?.trim() ? <p class="bio">{member.bio}</p> : null}
 </div>
 
@@ -47,11 +53,11 @@ const { member, media } = Astro.props as Props;
     position: relative;
     width: 100%;
     aspect-ratio: 1;
-    /* The shared radius rather than a one-off 4px. The tile keeps its own
-       borderless look — it is a portrait, not a card. */
-    border-radius: var(--radius);
+    /* Round, to match the headshots (circular cutouts), so a director still
+       waiting on a photo shows an initials CIRCLE in line with everyone else
+       rather than a square (owner, 2026-11-16). */
+    border-radius: 50%;
     overflow: hidden;
-    background: var(--paper-2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,7 +67,17 @@ const { member, media } = Astro.props as Props;
     height: 100%;
     object-fit: cover;
   }
+  /* The headshots are circular cutouts with a white margin, so the circle a
+     visitor sees is ~82% of the frame. The initials disc matches that size, or
+     a director without a photo would look bigger than everyone else. */
   .initials {
+    width: 82%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--paper-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 34px;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -79,6 +95,9 @@ const { member, media } = Astro.props as Props;
     text-transform: uppercase;
     color: var(--ink-2);
     margin-top: 5px;
+  }
+  .ro-l {
+    display: block;
   }
   /* Every director ships with an empty bio today, and production starts empty,
      so a tile with no bio is the DEFAULT rendering rather than an edge case.
