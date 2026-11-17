@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: b0873eeb456580e3b290593af663f0e7dba6573e  source-sha256: 8ea8bb4c6058e15e73171807e0ab911594af67483b7b72ff8f46633140692567
+// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: b235ab7bf7ab82290097fe7271e7a919716bf1fcc08d2ca076057273a6c4c74b
 // The rendered-sources record inside the capture. Two sources feed it: the
 // app's own `capture.renderedSourcesSignal`, and rendered-source attribution —
 // watching which of the app's own functions run while the scenario loads. Both
@@ -16,9 +16,11 @@ const { parseWasmFunctionNames } = require("./wasm-name-section");
 const {
   workspaceCrates,
   filesForFunctionName,
+  hubItemsForFunctionName,
   functionRangeAt,
   retirableBreakpoints,
 } = require("./wasm-source-attribution");
+const { noteHubWatched, recordHubHit, hubFunctionRecord } = require("./scenario-check-hub-functions");
 
 // Every strategy this capture knows how to run. An unknown value is reported,
 // never guessed at.
@@ -95,9 +97,14 @@ async function installWasmCompilePause(page) {
 }
 
 // One range per function in `bytecode` that maps to a workspace file:
-// `{ start, end, files, name, breakpointId: null }`, in body order. A function
-// with no name, or whose name maps to no workspace file, is not watched.
-function functionRangesFor(bytecode, { crates, projectDir, exists = fs.existsSync }) {
+// `{ start, end, files, name, hubItems, breakpointId: null }`, in body order.
+// `hubItems` maps each hub file the function lives in to its item path there
+// (see `hubItemsForFunctionName`). A function with no name, or whose name maps
+// to no workspace file, is not watched.
+function functionRangesFor(
+  bytecode,
+  { crates, projectDir, hubFiles = new Set(), exists = fs.existsSync },
+) {
   const { importedFunctions, names, bodies } = parseWasmFunctionNames(bytecode);
   const ranges = [];
   for (let i = 0; i < bodies.length; i++) {
@@ -106,7 +113,8 @@ function functionRangesFor(bytecode, { crates, projectDir, exists = fs.existsSyn
     const files = filesForFunctionName(name, crates, projectDir, exists);
     if (files.size === 0) continue;
     const [start, end] = bodies[i];
-    ranges.push({ start, end, files, name, breakpointId: null });
+    const hubItems = hubItemsForFunctionName(name, crates, projectDir, hubFiles, exists);
+    ranges.push({ start, end, files, name, hubItems, breakpointId: null });
   }
   return ranges;
 }
@@ -114,8 +122,8 @@ function functionRangesFor(bytecode, { crates, projectDir, exists = fs.existsSyn
 // The breakpoint ids to remove after a hit: the ones that fired plus every
 // range `retirableBreakpoints` says is done, deduplicated. Clears each retired
 // range's `breakpointId`, so a range is never retired twice.
-function takeRetiredBreakpointIds(ranges, hitBreakpoints, sources, granularity) {
-  const done = retirableBreakpoints(ranges, sources, granularity);
+function takeRetiredBreakpointIds(ranges, hitBreakpoints, sources, granularity, hubFiles) {
+  const done = retirableBreakpoints(ranges, sources, granularity, hubFiles);
   const ids = new Set([...hitBreakpoints, ...done.map((r) => r.breakpointId)]);
   done.forEach((r) => {
     r.breakpointId = null;
@@ -134,10 +142,22 @@ function takeRetiredBreakpointIds(ranges, hitBreakpoints, sources, granularity) 
 // `granularity: "function"` keeps every breakpoint until its own function runs
 // and adds the names that ran to the record as `functions` — a measurement
 // mode, at one pause per distinct function.
+//
+// `hubFiles` (with `hubSet`, the editor's hash of that list) watches just
+// those files per function and every other file by file. The record then
+// carries `functions` / `functionUniverse` keyed by hub file and
+// `functionAttribution: "complete"`.
 async function watchWasmFunctionEntries(
   context,
   page,
-  { crates, projectDir, granularity = "file", exists = fs.existsSync },
+  {
+    crates,
+    projectDir,
+    granularity = "file",
+    hubFiles = new Set(),
+    hubSet = null,
+    exists = fs.existsSync,
+  },
 ) {
   await installWasmCompilePause(page);
   const cdp = await context.newCDPSession(page);
@@ -147,6 +167,9 @@ async function watchWasmFunctionEntries(
   const universe = new Set();
   const sources = new Set();
   const functions = new Set();
+  const hubWatched = new Map(); // hub file → Set of item paths watched
+  const hubRan = new Map(); // hub file → Set of item paths that ran
+  const hubUnmapped = new Set();
   let breakpoints = 0;
   let hits = 0;
   let setupMs = 0;
@@ -161,9 +184,11 @@ async function watchWasmFunctionEntries(
       const ranges = functionRangesFor(Buffer.from(bytecode, "base64"), {
         crates,
         projectDir,
+        hubFiles,
         exists,
       });
       ranges.forEach((r) => r.files.forEach((f) => universe.add(f)));
+      noteHubWatched(ranges, hubWatched);
       await Promise.all(
         ranges.map((range) =>
           cdp
@@ -192,8 +217,15 @@ async function watchWasmFunctionEntries(
       if (hit) {
         hit.files.forEach((f) => sources.add(f));
         functions.add(hit.name.replace(/\[[0-9a-f]+\]/g, ""));
+        recordHubHit(hit, hubRan, hubUnmapped);
       }
-      const ids = takeRetiredBreakpointIds(ranges, e.hitBreakpoints, sources, granularity);
+      const ids = takeRetiredBreakpointIds(
+        ranges,
+        e.hitBreakpoints,
+        sources,
+        granularity,
+        hubFiles,
+      );
       await Promise.all(
         ids.map((id) =>
           cdp.send("Debugger.removeBreakpoint", { breakpointId: id }).catch(() => {}),
@@ -215,8 +247,16 @@ async function watchWasmFunctionEntries(
         attribution: "complete",
         universe: [...universe].sort(),
         ...(granularity === "function" ? { functions: [...functions].sort() } : {}),
+        ...(hubFiles.size > 0 && granularity !== "function"
+          ? hubFunctionRecord({
+              watched: hubWatched,
+              ran: hubRan,
+              unmapped: hubUnmapped,
+              hubSet,
+            })
+          : {}),
       },
-      stats: { breakpoints, hits, setupMs },
+      stats: { breakpoints, hits, setupMs, hubFiles: hubWatched.size },
     };
   }
 
@@ -232,13 +272,23 @@ async function armRenderedSourcesAttribution(
   context,
   page,
   strategy,
-  { projectDir = process.cwd(), warnings = [], loadCrates = workspaceCrates } = {},
+  {
+    projectDir = process.cwd(),
+    warnings = [],
+    loadCrates = workspaceCrates,
+    hubs = { files: new Set(), hubSet: null },
+  } = {},
 ) {
   if (strategy !== "wasm-function-entry") return null;
   let watch;
   try {
     const crates = cachedWorkspaceCrates(projectDir, loadCrates);
-    watch = await watchWasmFunctionEntries(context, page, { crates, projectDir });
+    watch = await watchWasmFunctionEntries(context, page, {
+      crates,
+      projectDir,
+      hubFiles: hubs.files,
+      hubSet: hubs.hubSet,
+    });
   } catch (e) {
     warnings.push(
       `rendered-sources: wasm-function-entry attribution could not start (${(e && e.message) || e}); no attribution record was written, so staleness keeps this scenario's full static render set.`,
@@ -247,6 +297,7 @@ async function armRenderedSourcesAttribution(
   }
   return {
     strategy,
+    hubFiles: hubs.files.size,
     async finish() {
       const { record, stats } = await watch.finish();
       return { ...attributedRecordVerdict(record), stats };
@@ -366,11 +417,20 @@ function renderedSourcesFromOutcome(outcome, signal) {
 // once unarmed: the attribution pauses can be what stalled the app's startup,
 // and a slow attribution must never cost a screenshot. The retry writes no
 // attribution record, and says so on its result.
+//
+// Hub-function watching pauses more, so it is shed first: a capture that timed
+// out with hub files watched per function is retried with every file watched
+// by file, and only if THAT also times out is it retried unarmed.
 async function retryUnarmedOnReadyTimeout(first, config, attempt) {
   const armed = first && first.renderedSourcesAttribution;
   const timedOut =
     first && Array.isArray(first.issues) && first.issues.some((i) => i.kind === "ready-signal");
   if (!armed || !timedOut) return first;
+  if (armed.hubFiles > 0) {
+    const fileLevelConfig = { ...config, renderHubFiles: [] };
+    const fileLevel = await retryFileLevel(armed, fileLevelConfig, attempt);
+    return retryUnarmedOnReadyTimeout(fileLevel, fileLevelConfig, attempt);
+  }
   const second = await attempt({ ...config, renderedSourcesAttribution: null });
   second.warnings = [
     ...(second.warnings || []),
@@ -378,6 +438,21 @@ async function retryUnarmedOnReadyTimeout(first, config, attempt) {
   ];
   second.renderedSourcesAttribution = { ...armed, retriedUnarmed: true };
   return second;
+}
+
+// The file-level retry of a capture that timed out with `armed.hubFiles` hub
+// files watched per function: one attempt under `fileLevelConfig` (hub
+// watching off), its result marked `retriedFileLevel` and warned about.
+async function retryFileLevel(armed, fileLevelConfig, attempt) {
+  const fileLevel = await attempt(fileLevelConfig);
+  fileLevel.warnings = [
+    ...(fileLevel.warnings || []),
+    `rendered-sources: the capture missed its ready signal with ${armed.hubFiles} hub file(s) watched per function, so it was retried watching every file by file; this screenshot's record names no hub functions, so an edit to any of those files stales it.`,
+  ];
+  if (fileLevel.renderedSourcesAttribution) {
+    fileLevel.renderedSourcesAttribution.retriedFileLevel = true;
+  }
+  return fileLevel;
 }
 
 module.exports = {

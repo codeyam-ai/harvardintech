@@ -20,7 +20,7 @@ describe('admin gate', () => {
   });
 
   // The screen sits at the top of <head>, before the CMS's own scripts.
-  it('inserts right after <head> and only once', () => {
+  it('inserts at the top of the head element, only once', () => {
     const once = injectAdminGate(PAGE, passphraseHash('x'));
     expect(once.indexOf('hait-admin-ok')).toBeLessThan(once.indexOf('<title>'));
     expect(injectAdminGate(once, passphraseHash('x'))).toBe(once);

@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: 74470ed5504ac11dfcc5c6d0072784f514de5b77bfe0d8d47b246cc06a8c2e0c
+// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: df05e436ebd46b559aec0d11c4033c524ef30a346bf9ffd16fe18de04924d67c
 // npm/scenario-check-run.js — the decision half of one scenario capture: the
 // context options it opens with, the page collectors that turn console and
 // network events into issues, the navigation-status verdict, the settle
@@ -613,7 +613,73 @@ function decorateCaptureResult(
   return result;
 }
 
+// Init script: total the time every WebAssembly compile / instantiate the page
+// starts takes to settle, on `globalThis.__codeyamWasmTiming`. Each wrapper
+// returns the original call's own promise, so the app sees exactly what it
+// would have. `instantiateStreaming` overlaps the module's download, so its
+// time includes that part of the fetch. Serialized into the page by
+// Playwright, so it must not close over anything.
+function wasmCompileTimingInit() {
+  try {
+    const wasm = globalThis.WebAssembly;
+    if (!wasm || globalThis.__codeyamWasmTiming) return;
+    const record = { compileMs: 0, calls: 0 };
+    Object.defineProperty(globalThis, "__codeyamWasmTiming", { value: record });
+    for (const name of ["compile", "compileStreaming", "instantiate", "instantiateStreaming"]) {
+      const original = wasm[name];
+      if (typeof original !== "function") continue;
+      wasm[name] = function (...args) {
+        const startedAt = performance.now();
+        const result = original.apply(this, args);
+        Promise.resolve(result).then(
+          () => {
+            record.compileMs += performance.now() - startedAt;
+            record.calls += 1;
+          },
+          () => {},
+        );
+        return result;
+      };
+    }
+  } catch (_) {
+    // Timing is diagnostic; never break the page over it.
+  }
+}
+
+// The wasm phases of one capture, read from `frame` once the app is ready:
+// `wasmFetchMs` (summed resource-timing duration of every `.wasm` fetch),
+// `wasmTransferBytes` (bytes that crossed the network — 0 for a cache hit) and
+// `wasmCompileMs` (from `wasmCompileTimingInit`). A page that loaded no wasm
+// reports none of them, so a non-wasm capture's timings are unchanged.
+async function readWasmLoadTimings(frame) {
+  try {
+    return await frame.evaluate(collectWasmLoadTimings);
+  } catch (_) {
+    return {};
+  }
+}
+
+// The in-page body of `readWasmLoadTimings`: reads the page's own
+// `performance` resource entries and `__codeyamWasmTiming`. Serialized into
+// the page by Playwright, so it must not close over anything.
+function collectWasmLoadTimings() {
+  const out = {};
+  const entries = performance
+    .getEntriesByType("resource")
+    .filter((e) => /\.wasm(?:[?#]|$)/.test(e.name));
+  if (entries.length > 0) {
+    out.wasmFetchMs = Math.round(entries.reduce((sum, e) => sum + e.duration, 0));
+    out.wasmTransferBytes = entries.reduce((sum, e) => sum + (e.transferSize || 0), 0);
+  }
+  const timing = globalThis.__codeyamWasmTiming;
+  if (timing && timing.calls > 0) out.wasmCompileMs = Math.round(timing.compileMs);
+  return out;
+}
+
 module.exports = {
+  wasmCompileTimingInit,
+  readWasmLoadTimings,
+  collectWasmLoadTimings,
   DEV_SERVER_DOWN_HEADER,
   classifyInteractionEffect,
   resolvePixelClip,

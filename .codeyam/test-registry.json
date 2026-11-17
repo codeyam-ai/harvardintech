@@ -460,6 +460,42 @@
       "runner": "tests"
     },
     {
+      "description": "Whitespace around what the editor typed is ignored on both sides.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "admin gate › hashes the trimmed passphrase",
+      "line": 17,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The screen sits at the top of <head>, before the CMS's own scripts.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "admin gate › inserts at the top of the head element, only once",
+      "line": 23,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A deploy build with no secret fails rather than shipping an open CMS.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "admin gate › refuses an empty passphrase",
+      "line": 30,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The secret never appears in the built page — only its SHA-256.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "admin gate › writes the hash, not the passphrase, into the page",
+      "line": 9,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Mentions are how named people get emailed directly.",
       "file": "src/lib/siteAlert.test.ts",
       "format": "vitest",
@@ -2372,7 +2408,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed chapters › lists the six chapters alphabetically by city",
-      "line": 780,
+      "line": 785,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2381,7 +2417,7 @@
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed chapters › pins no chapter with an order, so the roster sorts alphabetically",
-      "line": 773,
+      "line": 778,
       "registeredAt": "2026-07-30T13:54:13Z",
       "runner": "tests"
     },
@@ -2410,15 +2446,6 @@
       "key": "committed nav.json › gives Global community a Newsletter section above the WhatsApp column",
       "line": 671,
       "registeredAt": "2026-11-09T19:35:14Z",
-      "runner": "tests"
-    },
-    {
-      "description": "Volunteer, Donate and Sponsorship share one dropdown, so Get involved is not left holding a lone Volunteer link.",
-      "file": "src/lib/nav.test.ts",
-      "format": "vitest",
-      "key": "committed nav.json › groups volunteering and giving under Get involved",
-      "line": 735,
-      "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
     {
@@ -2467,11 +2494,20 @@
       "runner": "tests"
     },
     {
+      "description": "While the fundraising pages are unlisted (owner, 2026-11-16 — see src/lib/unlistedPages.ts), Get involved is a plain link to /volunteer/ and no menu item reaches /donate or /sponsor.",
+      "file": "src/lib/nav.test.ts",
+      "format": "vitest",
+      "key": "committed nav.json › points Get involved straight at volunteering, with no fundraising links",
+      "line": 736,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The newsletter link must reach the sign-up form everyone else on the site uses, not the LinkedIn newsletter page it pointed at before.",
       "file": "src/lib/nav.test.ts",
       "format": "vitest",
       "key": "committed nav.json › points Newsletter at the site mailing-list sign-up",
-      "line": 744,
+      "line": 749,
       "registeredAt": "2026-10-09T15:32:35Z",
       "runner": "tests"
     },
@@ -3263,17 +3299,26 @@
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
       "key": "deploy.yml track coherence › advertises harvardintech.com from the gated build",
-      "line": 135,
+      "line": 136,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
-      "description": "The headline contract, and the bug class this file exists for: a job's base path must name the same repo it publishes to. The two sit far apart in the workflow with nothing connecting them, and a mismatch deploys a site that returns 200 while every asset and link 404s. The site is served from a subpath of this repo's own Pages site, so the rule applies even though it publishes by artifact upload rather than by push.",
+      "description": "The headline contract, and the bug class this file exists for: a job's base path must name the same repo it publishes to. The two sit far apart in the workflow with nothing connecting them, and a mismatch deploys a site that returns 200 while every asset and link 404s. The site is served from a subpath of this repo's own Pages site, so the rule applies even though it publishes by artifact upload rather than by push. Since the go-live (2026-11-16) the site is served from the custom domain's root, so the build sets NO base path — a leftover subpath would 404 every asset on harvardintech.com.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
-      "key": "deploy.yml track coherence › builds with a base matching this repo",
-      "line": 105,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "key": "deploy.yml track coherence › builds at the domain root with no base path",
+      "line": 108,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The site is public (owner, 2026-11-16): no site-wide gate, and drafts stay hidden. Re-adding either would put the whole live site behind a passphrase or publish unfinished drafts.",
+      "file": "src/lib/deployTracks.test.ts",
+      "format": "vitest",
+      "key": "deploy.yml track coherence › builds the public site: no site-wide gate and no drafts",
+      "line": 125,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
       "runner": "tests"
     },
     {
@@ -3281,35 +3326,26 @@
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
       "key": "deploy.yml track coherence › deploys no branch other than main",
-      "line": 116,
+      "line": 117,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
     {
-      "description": "Dropping PREVIEW_GATE is precisely what takes the site public, and harvardintech.com is still Strikingly's — so until the cutover the build must set it. The one assertion here guarding exposure rather than correctness.",
+      "description": "Hosted on the custom domain.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
-      "key": "deploy.yml track coherence › gates the build while the site is not meant to be public",
-      "line": 125,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
-      "runner": "tests"
-    },
-    {
-      "description": "The repo moved to codeyam-ai; the site is hosted there now.",
-      "file": "src/lib/deployTracks.test.ts",
-      "format": "vitest",
-      "key": "deploy.yml track coherence › hosts the site on the codeyam-ai Pages site",
-      "line": 130,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "key": "deploy.yml track coherence › hosts the site on harvardintech.com",
+      "line": 131,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
       "runner": "tests"
     },
     {
       "description": "The passphrase lives only in the secret — never a literal in the workflow. A gated build with an empty one would ship a gate anyone can open, so the build refuses and the deploy fails rather than publishing it. That is also why the secret going missing in the account move stopped every deploy dead.",
       "file": "src/lib/deployTracks.test.ts",
       "format": "vitest",
-      "key": "deploy.yml track coherence › takes the gate passphrase from the secret",
-      "line": 143,
-      "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
+      "key": "deploy.yml track coherence › takes the admin passphrase from the secret",
+      "line": 144,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
       "runner": "tests"
     },
     {
@@ -6976,12 +7012,12 @@
       "runner": "tests"
     },
     {
-      "description": "The public production build must NOT ship /admin. This is the case that keeps draft markdown off harvardintech.com.",
+      "description": "Go-live (owner, 2026-11-16): one domain, so the public build ships /admin — behind the hashed admin passphrase screen, noindex and robots-disallowed.",
       "file": "src/lib/publishTrack.test.ts",
       "format": "vitest",
-      "key": "includeCmsIntegration › excludes the CMS from the public build",
+      "key": "includeCmsIntegration › includes the CMS on the public build",
       "line": 18,
-      "registeredAt": "2026-07-30T17:08:52.711894037+00:00",
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
       "runner": "tests"
     },
     {
@@ -8032,6 +8068,33 @@
       "key": "isStepReady › reports an unblocked, unticked step as ready",
       "line": 144,
       "registeredAt": "2026-08-06T15:24:46Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A prefix that only LOOKS similar is a different page.",
+      "file": "src/lib/unlistedPages.test.ts",
+      "format": "vitest",
+      "key": "isUnlistedPath › leaves every other page listed",
+      "line": 14,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Both fundraising pages, with or without a trailing slash or a sub-path.",
+      "file": "src/lib/unlistedPages.test.ts",
+      "format": "vitest",
+      "key": "isUnlistedPath › matches /donate and /sponsor in every shape",
+      "line": 7,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "The sitemap passes full URLs; on a subpath deploy the base is stripped first.",
+      "file": "src/lib/unlistedPages.test.ts",
+      "format": "vitest",
+      "key": "isUnlistedUrl › reads full URLs on both the custom domain and a subpath deploy",
+      "line": 23,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
       "runner": "tests"
     },
     {
@@ -12571,7 +12634,7 @@
       "file": "src/lib/robots.test.ts",
       "format": "vitest",
       "key": "robotsTxtBody formatting › ends with a newline on both tracks",
-      "line": 57,
+      "line": 64,
       "registeredAt": "2026-07-30T17:03:44Z",
       "runner": "tests"
     },
@@ -12580,7 +12643,7 @@
       "file": "src/lib/robots.test.ts",
       "format": "vitest",
       "key": "robotsTxtBody formatting › puts the directive on its own line under the user-agent",
-      "line": 47,
+      "line": 54,
       "registeredAt": "2026-07-30T17:03:44Z",
       "runner": "tests"
     },
@@ -12594,11 +12657,20 @@
       "runner": "tests"
     },
     {
+      "description": "Unlisted pages stay reachable by URL but are kept out of crawlers' reach.",
+      "file": "src/lib/robots.test.ts",
+      "format": "vitest",
+      "key": "robotsTxtBody public track › disallows only the CMS and the unlisted fundraising pages",
+      "line": 18,
+      "registeredAt": "2026-11-16T23:41:57.454518266+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "The Sitemap line carries the caller's resolved origin, not a placeholder — the regression the original static robots.txt shipped.",
       "file": "src/lib/robots.test.ts",
       "format": "vitest",
       "key": "robotsTxtBody public track › points the Sitemap at the url it was given",
-      "line": 19,
+      "line": 26,
       "registeredAt": "2026-07-30T17:03:44Z",
       "runner": "tests"
     },
@@ -12607,7 +12679,7 @@
       "file": "src/lib/robots.test.ts",
       "format": "vitest",
       "key": "robotsTxtBody review track › disallows all crawlers when gated",
-      "line": 27,
+      "line": 34,
       "registeredAt": "2026-07-30T17:03:44Z",
       "runner": "tests"
     },
@@ -12616,7 +12688,7 @@
       "file": "src/lib/robots.test.ts",
       "format": "vitest",
       "key": "robotsTxtBody review track › omits the Sitemap line entirely when gated",
-      "line": 37,
+      "line": 44,
       "registeredAt": "2026-07-30T17:03:44Z",
       "runner": "tests"
     },
@@ -13345,7 +13417,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › ben-wei.md › declares a non-empty photo",
-      "line": 37,
+      "line": 45,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13354,7 +13426,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › ben-wei.md › points at an image that exists under public/",
-      "line": 43,
+      "line": 51,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13363,7 +13435,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › finds the seeded team content files",
-      "line": 27,
+      "line": 35,
       "registeredAt": "2026-06-15T12:22:55Z",
       "runner": "tests"
     },
@@ -13372,7 +13444,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › jessica-li.md › declares a non-empty photo",
-      "line": 37,
+      "line": 45,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13381,7 +13453,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › jessica-li.md › points at an image that exists under public/",
-      "line": 43,
+      "line": 51,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13390,7 +13462,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › krysia-lenzo.md › declares a non-empty photo",
-      "line": 37,
+      "line": 45,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13399,7 +13471,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › krysia-lenzo.md › points at an image that exists under public/",
-      "line": 43,
+      "line": 51,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13408,7 +13480,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › nadia-eldeib.md › declares a non-empty photo",
-      "line": 37,
+      "line": 45,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13417,7 +13489,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › nadia-eldeib.md › points at an image that exists under public/",
-      "line": 43,
+      "line": 51,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13426,7 +13498,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › peter-boyce.md › declares a non-empty photo",
-      "line": 37,
+      "line": 45,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -13435,7 +13507,7 @@
       "file": "src/lib/team.photos.test.ts",
       "format": "vitest",
       "key": "seeded team headshots › peter-boyce.md › points at an image that exists under public/",
-      "line": 43,
+      "line": 51,
       "registeredAt": "2026-09-28T16:55:12.476379117+00:00",
       "runner": "tests"
     },
@@ -14119,7 +14191,7 @@
       "file": "src/lib/sentenceCase.test.ts",
       "format": "vitest",
       "key": "site writing standard › actually reads the copy it claims to check",
-      "line": 198,
+      "line": 200,
       "registeredAt": "2026-10-02T21:35:26Z",
       "runner": "tests"
     },
@@ -14128,7 +14200,7 @@
       "file": "src/lib/sentenceCase.test.ts",
       "format": "vitest",
       "key": "site writing standard › actually reads the headings it claims to check",
-      "line": 149,
+      "line": 151,
       "registeredAt": "2026-10-02T21:35:26Z",
       "runner": "tests"
     },
@@ -14137,7 +14209,7 @@
       "file": "src/lib/sentenceCase.test.ts",
       "format": "vitest",
       "key": "site writing standard › spells its copy in American English",
-      "line": 207,
+      "line": 209,
       "registeredAt": "2026-10-02T21:35:26Z",
       "runner": "tests"
     },
@@ -14146,7 +14218,7 @@
       "file": "src/lib/sentenceCase.test.ts",
       "format": "vitest",
       "key": "site writing standard › writes every site-authored heading in sentence case",
-      "line": 160,
+      "line": 162,
       "registeredAt": "2026-10-02T21:35:26Z",
       "runner": "tests"
     },
@@ -15980,7 +16052,7 @@
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
       "key": "the retired giving page › draws its bar at zero",
-      "line": 208,
+      "line": 206,
       "registeredAt": "2026-10-08T18:23:06Z",
       "runner": "tests"
     },
@@ -15989,7 +16061,7 @@
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
       "key": "the retired giving page › keeps its goal equal to the goal meter",
-      "line": 199,
+      "line": 197,
       "registeredAt": "2026-10-08T18:23:06Z",
       "runner": "tests"
     },
@@ -15998,7 +16070,7 @@
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
       "key": "the retired giving page › no longer has a route",
-      "line": 184,
+      "line": 182,
       "registeredAt": "2026-09-19T02:45:59.726695971+00:00",
       "runner": "tests"
     },
@@ -16007,7 +16079,7 @@
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
       "key": "the retired giving page › redirects to the donate page",
-      "line": 192,
+      "line": 190,
       "registeredAt": "2026-09-19T02:45:59.727894772+00:00",
       "runner": "tests"
     },
@@ -16048,21 +16120,21 @@
       "runner": "tests"
     },
     {
-      "description": "Shipping sample logos asserts partnerships that do not exist. The wall's own empty state is honest and is itself an invitation.",
+      "description": "Shipping sample logos asserts partnerships that do not exist. The three \"Example\" stand-ins were deleted on 2026-11-16; the wall's own empty state is honest and is itself an invitation. The folder is kept by a .gitkeep so the collection still loads with no entries.",
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
-      "key": "the sponsor page shows no partnership it cannot honour › keeps every example sponsor drafted",
-      "line": 170,
-      "registeredAt": "2026-09-19T02:45:59.725545784+00:00",
+      "key": "the sponsor page shows no partnership it cannot honour › carries no example sponsors",
+      "line": 172,
+      "registeredAt": "2026-11-16T18:24:56Z",
       "runner": "tests"
     },
     {
-      "description": "\"Ways to partner\" is not rendered for launch and the Presenting level is not fleshed out, so the level stays in the CMS as a draft rather than being deleted — it comes back by publishing it.",
+      "description": "The Presenting level was never fleshed out, and the owner decided on 2026-11-16 not to offer it, so the level was deleted rather than left as a draft. Offering it again is a deliberate act: write a new level entry.",
       "file": "src/lib/givingContent.test.ts",
       "format": "vitest",
-      "key": "the sponsor page shows no partnership it cannot honour › keeps the Presenting Partner level drafted",
+      "key": "the sponsor page shows no partnership it cannot honour › does not offer a Presenting Partner level",
       "line": 164,
-      "registeredAt": "2026-09-19T02:45:59.724386081+00:00",
+      "registeredAt": "2026-11-16T18:24:56Z",
       "runner": "tests"
     },
     {

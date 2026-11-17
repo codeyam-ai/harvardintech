@@ -40,3 +40,6 @@ crates/codeyam-editor/skills.lock merge=codeyam-generated-artifact
 .codeyam/wasm-name-section.js merge=codeyam-generated-artifact
 .codeyam/wasm-source-attribution.js merge=codeyam-generated-artifact
 .codeyam/scenario-dom-fingerprint.js merge=codeyam-generated-artifact
+.codeyam/periodic-reviews.jsonl merge=union
+.codeyam/sampled-sweep-owed.json merge=codeyam-sampled-sweep-owed
+.codeyam/scenario-check-hub-functions.js merge=codeyam-generated-artifact

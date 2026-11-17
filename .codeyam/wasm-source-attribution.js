@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: b0873eeb456580e3b290593af663f0e7dba6573e  source-sha256: d15087f22047b95375c0e11d736bf235bc7e4e062996330e3b00b5e705668f75
+// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: 98237be092b114aad7eb2e33ca96b374d04df5b3c5fdaba26d17fc4f3b1375be
 // Map a wasm function back to the workspace source file that declares it, and
 // decide which function-entry breakpoints still have something to learn.
 //
@@ -43,8 +43,16 @@ function workspaceCrates(projectDir, exec = execFileSync) {
 // root. A crate root is never a submodule: `app::main` is the item `main`,
 // not a module backed by the bin root `main.rs`.
 function resolveModuleFile(projectDir, crate, segments, exists = fs.existsSync) {
+  return resolveModulePrefix(projectDir, crate, segments, exists).file;
+}
+
+// `resolveModuleFile` plus how many segments the file consumed:
+// `{ file, consumed }`. The segments past `consumed` name the item inside the
+// file (`Panel::show`, `inner::helper`).
+function resolveModulePrefix(projectDir, crate, segments, exists = fs.existsSync) {
   let dir = crate.srcDir;
   let file = null;
+  let consumed = 0;
   for (const seg of segments) {
     const flat = `${dir}/${seg}.rs`;
     const nested = `${dir}/${seg}/mod.rs`;
@@ -57,9 +65,10 @@ function resolveModuleFile(projectDir, crate, segments, exists = fs.existsSync) 
     } else {
       break;
     }
+    consumed++;
     dir = `${dir}/${seg}`;
   }
-  return file;
+  return { file, consumed };
 }
 
 const PATH_PATTERN = /[A-Za-z_][A-Za-z0-9_]*(?:::[A-Za-z_][A-Za-z0-9_]*)+/g;
@@ -85,6 +94,86 @@ function filesForFunctionName(name, crates, projectDir, exists = fs.existsSync) 
   return files;
 }
 
+// A trait-impl method name: `<Self as Trait>::method`. Its body lives in the
+// Self type's impl block, so it is attributed as `Self::method`.
+const TRAIT_IMPL = /^<(.+?) as .+?>::([A-Za-z_][A-Za-z0-9_]*)/;
+
+// The file a workspace path points into plus the item path inside it:
+// `{ file, item }`, `item` null when the path names no item below the module
+// file (a crate root, or a path that ends at the module). Null when the path is
+// outside the workspace.
+function itemForPath(pathText, crates, projectDir, exists) {
+  const [head, ...rest] = pathText.split("::");
+  const crate = crates.get(head);
+  if (!crate) return null;
+  const segments = rest.filter((s) => !LEGACY_HASH_SEGMENT.test(s));
+  const { file, consumed } = resolveModulePrefix(projectDir, crate, segments, exists);
+  const itemSegments = file ? segments.slice(consumed) : segments;
+  const item = itemSegments.length > 0 ? itemSegments.join("::") : null;
+  if (file) return [{ file, item }];
+  return crate.roots.map((root) => ({ file: root, item }));
+}
+
+// For each hub file a demangled function name points into, the item path
+// inside that file whose body the function is: `Map<file, item | null>`.
+// `null` means the name could not be pinned to one item there — the consumer
+// then treats the whole file as having run. Closures and generic arguments
+// truncate to the enclosing named fn, because the path pattern stops at
+// `{{closure}}` / `<`. Only `hubFiles` are reported.
+function hubItemsForFunctionName(name, crates, projectDir, hubFiles, exists = fs.existsSync) {
+  const out = new Map();
+  if (!hubFiles || hubFiles.size === 0) return out;
+  const plain = name.replace(/\[[0-9a-f]+\]/g, "");
+  const located =
+    traitImplItems(plain, crates, projectDir, exists) ||
+    pathPatternItems(plain, crates, projectDir, exists);
+  for (const { file, item } of located) {
+    if (!hubFiles.has(file)) continue;
+    // Two different items in one file from one name: keep it ambiguous.
+    if (out.has(file) && out.get(file) !== item) out.set(file, null);
+    else out.set(file, item);
+  }
+  return out;
+}
+
+// The `{ file, item }` locations a trait-impl method name (`<app::ui::Panel as
+// Trait>::show`) points at — `item` is `Panel::show`, or null when the Self
+// path names no item below its module file. Null when the name is no trait
+// impl or its Self type is outside the workspace.
+function traitImplItems(plain, crates, projectDir, exists) {
+  const traitImpl = plain.match(TRAIT_IMPL);
+  if (!traitImpl) return null;
+  const selfPath = traitImpl[1].replace(/<.*$/, "");
+  const located = itemForPath(selfPath, crates, projectDir, exists);
+  if (!located) return null;
+  return located.map(({ file, item }) => ({
+    file,
+    item: item ? `${item}::${traitImpl[2]}` : null,
+  }));
+}
+
+// The `{ file, item }` locations of every workspace path in a demangled name
+// whose code ran: the leading path, and a later path only when it is a closure
+// argument or the leading path is itself in the workspace.
+function pathPatternItems(plain, crates, projectDir, exists) {
+  const out = [];
+  const matches = [...plain.matchAll(PATH_PATTERN)];
+  const firstInWorkspace = matches.length > 0 && crates.has(matches[0][0].split("::")[0]);
+  for (const [i, m] of matches.entries()) {
+    const located = itemForPath(m[0], crates, projectDir, exists);
+    if (!located) continue;
+    // A workspace TYPE argument of a std generic (`drop_in_place<app::ui::
+    // Panel>`) names no code of the hub file: std's code ran, over a type whose
+    // layout the skeleton digest already keeps. A workspace CLOSURE argument
+    // (`core::iter::map::<app::ui::draw::{{closure}}>`) is its enclosing fn's
+    // code.
+    const isClosure = plain.slice(m.index + m[0].length).startsWith("::{");
+    if (i > 0 && !firstInWorkspace && !isClosure) continue;
+    out.push(...located);
+  }
+  return out;
+}
+
 // The watched function whose body holds byte offset `column`, or undefined.
 function functionRangeAt(ranges, column) {
   return ranges.find((r) => column >= r.start && column < r.end);
@@ -95,14 +184,24 @@ function functionRangeAt(ranges, column) {
 // about one per FILE — on egui, one pause per function stalled the app's WebGL
 // startup and it never signalled ready. `"function"` granularity keeps every
 // breakpoint until its own function runs (a measurement mode).
-function retirableBreakpoints(ranges, sources, granularity) {
+//
+// `hubFiles` mixes the two: a range touching any hub file keeps its breakpoint
+// until its own function runs (the hit itself removes it), so the record can
+// say which hub functions ran; every other range retires by file.
+function retirableBreakpoints(ranges, sources, granularity, hubFiles = new Set()) {
   if (granularity === "function") return [];
-  return ranges.filter((r) => r.breakpointId && [...r.files].every((f) => sources.has(f)));
+  return ranges.filter(
+    (r) =>
+      r.breakpointId &&
+      [...r.files].every((f) => sources.has(f) && !hubFiles.has(f)),
+  );
 }
 
 module.exports = {
   workspaceCrates,
   resolveModuleFile,
+  resolveModulePrefix,
+  hubItemsForFunctionName,
   filesForFunctionName,
   functionRangeAt,
   retirableBreakpoints,

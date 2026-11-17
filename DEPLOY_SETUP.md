@@ -2,33 +2,47 @@
 
 The build agent will ask which setup applies to your project.
 
-## Today: one gated site, not public
+## Today: harvardintech.com is live (since 2026-11-16)
 
-Until the Strikingly migration `harvardintech.com` is still Strikingly's and is
-untouched. The one site below is private:
+`main` builds the public site at **https://harvardintech.com**, served from the
+domain root. Strikingly is retired.
 
 | Branch | Origin | Gate | Drafts | `/admin` | Sitemap |
 | --- | --- | --- | --- | --- | --- |
-| `main` | codeyam-ai.github.io/harvardintech | passphrase + `noindex` | **visible** | **served** | none |
+| `main` | harvardintech.com | none on public pages | hidden | served, behind the admin passphrase screen | yes |
 
-The build sets `PREVIEW_GATE=1` and `INCLUDE_DRAFTS=1`. **Dropping
-`PREVIEW_GATE` is the switch that takes the site public** — do not do it before
-the cutover.
+The build sets `PAGES_SITE=https://harvardintech.com` and no `DEPLOY_BASE_PATH`,
+`PREVIEW_GATE` or `INCLUDE_DRAFTS`. `src/lib/deployTracks.test.ts` fails the
+deploy if any of those come back.
 
-**REQUIRED SECRET — `PREVIEW_GATE_PASSPHRASE`.** A gated build with no passphrase
-would ship a gate anyone can open, so the build refuses and the deploy FAILS.
-This secret did not survive the move to the `codeyam-ai` account, and every
-deploy between 2026-09-12 and 2026-09-17 failed on it alone. If deploys are
-failing and nothing else explains it, check this first.
+**REQUIRED SECRET — `ADMIN_PASSPHRASE`.** The CMS at `/admin` shows a passphrase
+screen; only a SHA-256 hash of this secret is written into the pages
+(`src/lib/adminGate.ts`). A build without it fails rather than ship an open CMS.
+Change it with `gh secret set ADMIN_PASSPHRASE --repo codeyam-ai/harvardintech`
+(it takes effect on the next deploy). The screen is a deterrent: saving an edit
+still needs a GitHub token.
 
-It is hosted on the repo's own Pages URL rather than `review.harvardintech.com`
-on purpose: a custom domain would mean adding a DNS record to
-`harvardintech.com`, and that domain stays untouched until the migration is
-approved.
+**Unlisted pages.** `src/lib/unlistedPages.ts` lists pages that are built and
+reachable by URL but kept out of sight: `/admin`, `/donate`, `/sponsor`. They
+carry `noindex`, robots.txt disallows them, the sitemap omits them, and nothing
+links to them. **To bring Donate/Sponsor back:** remove them from that list,
+restore the "Get involved" dropdown in `src/data/nav.json`, untick Draft on the
+homepage "Giving campaign" band, and restore the sponsor cards/button in
+`SupportUs.astro` and `GetInvolved.astro` (each has a comment marking what was
+withdrawn).
 
-**Content edits land on `main` too.** The CMS commits to the branch named in
+**DNS (GoDaddy).** Apex `@` A records → `185.199.108.153`, `185.199.109.153`,
+`185.199.110.153`, `185.199.111.153`; `www` CNAME → `codeyam-ai.github.io`. The
+custom domain is set in Settings → Pages with HTTPS enforced. Email is Zoho:
+never change the MX, the SPF TXT (and its `dc-…._spfm` include), `_dmarc`, the
+`mail` A record or the `k2`/`k3._domainkey` (Mailchimp) records.
+
+**Content edits land on `main`.** The CMS commits to the branch named in
 `src/data/cms.json`, which is `main`, so a save from `/admin` is on the site about
-two minutes later. There is no promote step.
+two minutes later. Drafts are not shown on any public page; use the CMS's
+Preview links to review unpublished changes.
+
+The sections below describe the pre-launch setup and are kept as history.
 
 ### Why there used to be two, and what replaced it
 

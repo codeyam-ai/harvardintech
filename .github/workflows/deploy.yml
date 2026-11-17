@@ -23,18 +23,17 @@
 # the go-ahead to touch that domain yet. The repo's own Pages URL needs no DNS,
 # so the domain stays untouched until the migration is approved.
 #
-# AT THE STRIKINGLY CUTOVER `main` becomes the public site:
+# SINCE THE 2026-11-16 CUTOVER `main` IS the public site:
 #
-#   main → harvardintech.com   open, indexable, drafts hidden, no /admin,
-#                              sitemap published.
+#   main → harvardintech.com   open, indexable, drafts hidden, sitemap
+#                              published; /admin served unlinked, noindex and
+#                              behind the hashed admin passphrase screen.
 #
-# Reaching that state means dropping PREVIEW_GATE/INCLUDE_DRAFTS from this build
-# AND standing a gated track back up — together, never one without the other, or
-# nothing is protected and /admin ships publicly. The gated track returns as a
-# PRIVATE EDITOR BUILD OF `main` published to the kept second repository
-# (nseldeib/harvardintech-staging, whose REVIEW_DEPLOY_KEY secret is retained for
-# exactly this), pointed at review.harvardintech.com. That is a launch-day step,
-# not a branch. See DEPLOY_SETUP.md.
+# The owner chose one domain over standing up a separate gated editor build, so
+# /admin ships on the public build (see src/lib/publishTrack.ts and
+# src/lib/adminGate.ts). The kept second repository
+# (nseldeib/harvardintech-staging) and its REVIEW_DEPLOY_KEY secret remain
+# available should a private editor build be wanted later. See DEPLOY_SETUP.md.
 #
 # The CMS Draft toggle is now the only axis that phases a change: it phases
 # CONTENT. Code is phased by not merging it.
@@ -50,10 +49,9 @@
 # `scripts/enable-pages.sh` once (or toggle the UI) and re-run — see
 # DEPLOY_SETUP.md.
 #
-# REQUIRED SECRET: PREVIEW_GATE_PASSPHRASE. The build refuses to ship a gate with
-# no passphrase, so this workflow FAILS without it. It did not survive the move
-# to the codeyam-ai account, which is why every deploy between 2026-09-12 and
-# 2026-09-17 failed.
+# REQUIRED SECRET: ADMIN_PASSPHRASE. The build refuses to ship /admin without
+# its passphrase screen, so this workflow FAILS without it. (The old
+# PREVIEW_GATE_PASSPHRASE was retired and deleted at the cutover.)
 name: Deploy to GitHub Pages
 
 on:

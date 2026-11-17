@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 7b2fd6af5d12f0f0fa701d6a06d4c4a218ef4037  source-sha256: 0945f10fd0d9b40560a0d3989bd23e4cc8185fe5f07f998523b61e3b12d1af08
+// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: 1c9cac753917cf67d082a39492f5629411eb772e4ef1085ab4e3bac5a31798d3
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -13,7 +13,11 @@
 
 const fs = require("fs");
 const path = require("path");
-const { launchChromiumWithSelfHeal } = require("./scenario-launch");
+const {
+  launchChromiumWithSelfHeal,
+  createWarmContext,
+  pageScopedCaptureTarget,
+} = require("./scenario-launch");
 const {
   DEV_SERVER_DOWN_HEADER,
   classifyInteractionEffect,
@@ -33,6 +37,8 @@ const {
   scenarioErrorMarkerIssue,
   driveSingleInteraction,
   decorateCaptureResult,
+  wasmCompileTimingInit,
+  readWasmLoadTimings,
 } = require("./scenario-check-run");
 
 const {
@@ -71,6 +77,7 @@ const {
 } = require("./scenario-issues");
 
 const { attachHttpMocks, recordInPageMockHits } = require("./scenario-mocks");
+const { resolveRenderHubFiles } = require("./scenario-check-hub-functions");
 const {
   resolveRenderedSourcesAttribution,
   armRenderedSourcesAttribution,
@@ -1748,6 +1755,9 @@ async function runScenarioCheck(config, options = {}) {
 // to the harness origin, apply the scenario's browser state, and install the
 // init script. THROWS on a capture-auth version skew rather than heading into a
 // guaranteed 401.
+//
+// `context` is a fresh Playwright context, or — for a warm capture — the
+// `pageScopedCaptureTarget` that puts everything but cookies on the page.
 async function prepareCaptureContext(context, config, resolvedHarnessOrigin) {
   // Authenticate the capture context to the editor's token-gated control-API
   // BEFORE any navigation. On a non-loopback bind the harness route requires the
@@ -1801,6 +1811,8 @@ async function prepareCaptureContext(context, config, resolvedHarnessOrigin) {
   // transcript / WS stream so the scripted agent state reaches the capture;
   // every other capture gets the reconnect-silencing stub.
   await context.addInitScript(getInitScript(scenarioScriptsLiveSocket(config)));
+  // Times the page's wasm compiles for the per-capture phase breakdown.
+  await context.addInitScript(wasmCompileTimingInit);
 }
 
 // Write the capture's screenshot to `outputPath` with the records that
@@ -1883,11 +1895,22 @@ async function writeCaptureScreenshot(
 // `browser`, when given, is a browser the caller keeps alive across captures
 // (worker mode, see `runCaptureWorker`). This capture then opens its own
 // context in it and closes only that context, so cookies, storage and
-// permissions stay per-scenario while the browser process, its HTTP cache and
-// its compiled-wasm cache are reused.
+// permissions stay per-scenario while the browser process is reused. Its HTTP
+// and compiled-code caches are NOT: each new context starts with empty ones.
+//
+// `warmContext`, when given AND the server marked this capture
+// `contextReuse: "persistent"`, is the worker's warm persistent context (see
+// `createWarmContext` in scenario-launch.js), which keeps those caches. The capture then
+// opens a page in it, puts its per-capture setup on that page, and closes only
+// the page.
 async function runScenarioCheckOnce(
   config,
-  { preflight = assertAppPortReachable, harnessOrigin, browser: sharedBrowser } = {},
+  {
+    preflight = assertAppPortReachable,
+    harnessOrigin,
+    browser: sharedBrowser,
+    warmContext = null,
+  } = {},
 ) {
   const { url, outputPath, height, httpMocks = {} } = config;
   const captureStartedAt = Date.now();
@@ -1938,14 +1961,22 @@ async function runScenarioCheckOnce(
   } catch (_) {
     /* malformed capture URL — the guard no-ops and failures stay fatal */
   }
-  const browser = sharedBrowser || (await launchChromiumWithSelfHeal());
+  const warm = config.contextReuse === "persistent" && warmContext ? warmContext : null;
+  const browser = warm ? null : sharedBrowser || (await launchChromiumWithSelfHeal());
   // Per-phase wall-clock, reported on the result so a run can say where its
   // capture time went instead of leaving it to be estimated.
   const timings = { browserStartMs: Date.now() - captureStartedAt };
-  const context = await browser.newContext(buildCaptureContextOptions(config, appOrigin));
-  await prepareCaptureContext(context, config, resolvedHarnessOrigin);
-
-  const page = await context.newPage();
+  const contextStartedAt = Date.now();
+  const { context, page, launchMs: warmLaunchMs } = await openCaptureContext({
+    warm,
+    browser,
+    contextOptions: buildCaptureContextOptions(config, appOrigin),
+    prepare: (target) => prepareCaptureContext(target, config, resolvedHarnessOrigin),
+  });
+  // A warm context's (re)launch is a browser start, not context setup.
+  timings.browserStartMs += warmLaunchMs;
+  timings.contextMs = Date.now() - contextStartedAt - warmLaunchMs;
+  timings.contextReuse = warm ? "persistent" : "fresh";
   // Rendered-source attribution, when the stack opts in, watches from before
   // the first navigation so the app's startup code is seen too. It never fails
   // the capture: an unknown strategy or one that cannot start is a warning.
@@ -1955,7 +1986,7 @@ async function runScenarioCheckOnce(
     context,
     page,
     attributionChoice.strategy,
-    { warnings: interactionWarnings },
+    { warnings: interactionWarnings, hubs: resolveRenderHubFiles(config) },
   );
   // Attach the network tracker BEFORE navigation so every request (the document
   // and every client-side data fetch) is counted. Used after DOM stability to
@@ -2021,7 +2052,8 @@ async function runScenarioCheckOnce(
     const { stableTimeoutMs, hydrationTimeoutMs, captureAtMs } =
       resolveSettleBudgets(config);
     const settleStartedAt = Date.now();
-    timings.navigateMs = settleStartedAt - captureStartedAt - timings.browserStartMs;
+    timings.navigateMs =
+      settleStartedAt - captureStartedAt - timings.browserStartMs - timings.contextMs;
     // App-declared readiness. DOM stability cannot see a canvas paint, so an
     // app that renders into one says when its first frame is down. Declared in
     // stack.json (`capture.readySignal`), or injected via config by tests. A
@@ -2040,6 +2072,10 @@ async function runScenarioCheckOnce(
       readiness.signal,
       readiness.timeoutMs,
     );
+    // A sub-phase of settle: how long the app took to say its first frame is
+    // down, which on a wasm app is where the module's compile shows up.
+    timings.readyMs = Date.now() - settleStartedAt;
+    Object.assign(timings, await readWasmLoadTimings(frame));
     if (!readyOutcome.ready) {
       pushIssue(issues, readySignalTimeoutIssue(readiness, page.url() || url));
     }
@@ -2316,7 +2352,12 @@ async function runScenarioCheckOnce(
       hydration,
       interactionWarnings,
     });
-    if (attribution) result.renderedSourcesAttribution = { strategy: attribution.strategy };
+    if (attribution) {
+      result.renderedSourcesAttribution = {
+        strategy: attribution.strategy,
+        hubFiles: attribution.hubFiles,
+      };
+    }
 
     // `capture-state` mode: attach the read-only page-state snapshot so the
     // backend can report localStorage + rendered text. Off by default, so a
@@ -2354,15 +2395,70 @@ async function runScenarioCheckOnce(
       viewerOrigin: config.viewerOrigin ?? null,
     });
   } finally {
-    if (sharedBrowser) {
-      // The caller owns the browser. A context that will not close leaves
-      // it behind in `browser.contexts()`, which is how the worker learns to
-      // replace the browser.
-      await closeBrowserBounded(context);
-    } else {
-      await closeBrowserBounded(browser);
-    }
+    await releaseCaptureScope({ warm, sharedBrowser, browser, context, page });
   }
+}
+
+// Open one capture's context and page, and run `prepare(target)` — its
+// per-capture setup — on the right target. A fresh capture opens a new context
+// in `browser` and prepares the context itself. A warm capture (`warm`, the
+// worker's `createWarmContext`) acquires the warm context, opens a page in it,
+// and prepares through `pageScopedCaptureTarget`, so nothing but cookies
+// outlives the page. `launchMs` is what a warm (re)launch cost, 0 otherwise.
+async function openCaptureContext({ warm, browser, contextOptions, prepare }) {
+  if (warm) {
+    const { context, launchMs } = await warm.acquire(contextOptions);
+    const page = await context.newPage();
+    await prepare(pageScopedCaptureTarget(context, page));
+    return { context, page, launchMs };
+  }
+  const context = await browser.newContext(contextOptions);
+  await prepare(context);
+  const page = await context.newPage();
+  return { context, page, launchMs: 0 };
+}
+
+// Close what one capture owns, and nothing its caller owns.
+async function releaseCaptureScope({ warm, sharedBrowser, browser, context, page }) {
+  if (warm) {
+    // The worker owns the warm context; this capture owns only its page. A
+    // page that will not close takes the context down with it, so nothing it
+    // left behind can reach the next scenario.
+    if ((await closeBrowserBounded(page)) !== "closed") await warm.discard();
+  } else if (sharedBrowser) {
+    // The caller owns the browser. A context that will not close leaves
+    // it behind in `browser.contexts()`, which is how the worker learns to
+    // replace the browser.
+    await closeBrowserBounded(context);
+  } else {
+    await closeBrowserBounded(browser);
+  }
+}
+
+// One fresh-context capture on the worker's shared browser, `shared.browser`:
+// replace a browser that disconnected or kept a context a previous capture
+// could not close, launch one when there is none, and charge that launch to
+// this capture. `shared` is mutated rather than returned so a capture that
+// throws still leaves the browser it launched on record for the next one.
+async function captureOnSharedBrowser(shared, config, { launch, capture }) {
+  if (
+    shared.browser &&
+    (!shared.browser.isConnected() || shared.browser.contexts().length > 0)
+  ) {
+    await closeBrowserBounded(shared.browser);
+    shared.browser = null;
+  }
+  let launchMs = 0;
+  if (!shared.browser) {
+    const launchStartedAt = Date.now();
+    shared.browser = await launch();
+    launchMs = Date.now() - launchStartedAt;
+  }
+  const result = await capture(config, { browser: shared.browser });
+  // The launch ran outside the capture, so charge it to the capture that
+  // needed it; every later capture on this browser reports zero.
+  if (result && result.timings) result.timings.browserStartMs += launchMs;
+  return result;
 }
 
 // Captures one worker serves before it exits so the editor starts a fresh one.
@@ -2382,16 +2478,23 @@ const WORKER_REPLY_PREFIX = "CODEYAM_CAPTURE_REPLY ";
 // One browser serves every request. It is relaunched when it disconnects or
 // a context failed to close. After `maxCaptures` the worker exits by itself and
 // the editor starts a fresh one.
+//
+// A request the server marked `contextReuse: "persistent"` runs in the worker's
+// warm context instead (created on first use, closed with the worker), so its
+// app's compiled code survives from one capture to the next. Every other
+// request keeps the per-capture context above.
 async function runCaptureWorker({
   input = process.stdin,
   output = process.stdout,
   launch = () => launchChromiumWithSelfHeal(),
   capture = runScenarioCheck,
   maxCaptures = WORKER_MAX_CAPTURES,
+  makeWarmContext = () => createWarmContext(),
 } = {}) {
   const readline = require("readline");
   const lines = readline.createInterface({ input, crlfDelay: Infinity });
-  let browser = null;
+  const shared = { browser: null };
+  let warmContext = null;
   let served = 0;
   const reply = (body) => output.write(`${WORKER_REPLY_PREFIX}${JSON.stringify(body)}\n`);
   for await (const line of lines) {
@@ -2399,24 +2502,13 @@ async function runCaptureWorker({
     try {
       const config = JSON.parse(line);
       if (!config.url) throw new Error("capture config has no url");
-      if (
-        browser &&
-        (!browser.isConnected() || browser.contexts().length > 0)
-      ) {
-        await closeBrowserBounded(browser);
-        browser = null;
+      if (config.contextReuse === "persistent") {
+        // The warm context charges its own (re)launches to the capture.
+        if (!warmContext) warmContext = makeWarmContext();
+        reply({ result: await capture(config, { warmContext }) });
+      } else {
+        reply({ result: await captureOnSharedBrowser(shared, config, { launch, capture }) });
       }
-      let launchMs = 0;
-      if (!browser) {
-        const launchStartedAt = Date.now();
-        browser = await launch();
-        launchMs = Date.now() - launchStartedAt;
-      }
-      const result = await capture(config, { browser });
-      // The launch ran outside the capture, so charge it to the capture that
-      // needed it; every later capture on this browser reports zero.
-      if (result && result.timings) result.timings.browserStartMs += launchMs;
-      reply({ result });
     } catch (error) {
       reply({ error: (error && error.message) || String(error) });
     }
@@ -2424,7 +2516,8 @@ async function runCaptureWorker({
     if (served >= maxCaptures) break;
   }
   lines.close();
-  if (browser) await closeBrowserBounded(browser);
+  if (shared.browser) await closeBrowserBounded(shared.browser);
+  if (warmContext) await warmContext.close();
 }
 
 /**
@@ -2469,6 +2562,9 @@ async function main() {
 module.exports = {
   runScenarioCheck,
   runCaptureWorker,
+  openCaptureContext,
+  releaseCaptureScope,
+  captureOnSharedBrowser,
   WORKER_REPLY_PREFIX,
   revealSettleNeeded,
   recordCssRuleMatches,

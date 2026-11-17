@@ -193,13 +193,13 @@
       "imports": [],
       "name": "profileSession"
     },
-    ".codeyam/capture.js::{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n}": {
+    ".codeyam/capture.js::{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n  wasmCompileTimingInit,\n  readWasmLoadTimings,\n}": {
       "filePath": ".codeyam/capture.js",
       "importedBy": [],
       "imports": [
         ".codeyam/scenario-check-run.js::__file_root__"
       ],
-      "name": "{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n}"
+      "name": "{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n  wasmCompileTimingInit,\n  readWasmLoadTimings,\n}"
     },
     ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}": {
       "filePath": ".codeyam/capture.js",
@@ -233,6 +233,14 @@
       ],
       "name": "{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}"
     },
+    ".codeyam/capture.js::{\n  launchChromiumWithSelfHeal,\n  createWarmContext,\n  pageScopedCaptureTarget,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch.js::__file_root__"
+      ],
+      "name": "{\n  launchChromiumWithSelfHeal,\n  createWarmContext,\n  pageScopedCaptureTarget,\n}"
+    },
     ".codeyam/capture.js::{\n  resolveRenderedSourcesAttribution,\n  armRenderedSourcesAttribution,\n  retryUnarmedOnReadyTimeout,\n  renderedSourcesRecordPath,\n  recordRenderedSources,\n  renderedSourcesFromOutcome,\n}": {
       "filePath": ".codeyam/capture.js",
       "importedBy": [],
@@ -265,13 +273,13 @@
       ],
       "name": "{ getInitScript }"
     },
-    ".codeyam/capture.js::{ launchChromiumWithSelfHeal }": {
+    ".codeyam/capture.js::{ resolveRenderHubFiles }": {
       "filePath": ".codeyam/capture.js",
       "importedBy": [],
       "imports": [
-        ".codeyam/scenario-launch.js::__file_root__"
+        ".codeyam/scenario-check-hub-functions.js::__file_root__"
       ],
-      "name": "{ launchChromiumWithSelfHeal }"
+      "name": "{ resolveRenderHubFiles }"
     },
     ".codeyam/isolation-props/BannerCta.ts::__file_root__": {
       "filePath": ".codeyam/isolation-props/BannerCta.ts",
@@ -361,10 +369,99 @@
       "imports": [],
       "name": "__file_root__"
     },
+    ".codeyam/scenario-check-attribution.js::{\n  workspaceCrates,\n  filesForFunctionName,\n  hubItemsForFunctionName,\n  functionRangeAt,\n  retirableBreakpoints,\n}": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/wasm-source-attribution.js::__file_root__"
+      ],
+      "name": "{\n  workspaceCrates,\n  filesForFunctionName,\n  hubItemsForFunctionName,\n  functionRangeAt,\n  retirableBreakpoints,\n}"
+    },
+    ".codeyam/scenario-check-attribution.js::{ noteHubWatched, recordHubHit, hubFunctionRecord }": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-hub-functions.js::__file_root__"
+      ],
+      "name": "{ noteHubWatched, recordHubHit, hubFunctionRecord }"
+    },
+    ".codeyam/scenario-check-attribution.js::{ parseWasmFunctionNames }": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/wasm-name-section.js::__file_root__"
+      ],
+      "name": "{ parseWasmFunctionNames }"
+    },
+    ".codeyam/scenario-check-hub-functions.js::__file_root__": {
+      "filePath": ".codeyam/scenario-check-hub-functions.js",
+      "importedBy": [
+        ".codeyam/capture.js::{ resolveRenderHubFiles }",
+        ".codeyam/scenario-check-attribution.js::{ noteHubWatched, recordHubHit, hubFunctionRecord }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
     ".codeyam/scenario-check-run.js::__file_root__": {
       "filePath": ".codeyam/scenario-check-run.js",
       "importedBy": [
-        ".codeyam/capture.js::{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n}"
+        ".codeyam/capture.js::{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n  wasmCompileTimingInit,\n  readWasmLoadTimings,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-check-run.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  describeBlankReason,\n}": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-metrics.js::__file_root__"
+      ],
+      "name": "{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  describeBlankReason,\n}"
+    },
+    ".codeyam/scenario-check-run.js::{\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-handlers.js::__file_root__"
+      ],
+      "name": "{\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}"
+    },
+    ".codeyam/scenario-check-run.js::{\n  waitForStablePage,\n  collectContentState,\n  collectVisibleTextLength,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n}": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-playwright.js::__file_root__"
+      ],
+      "name": "{\n  waitForStablePage,\n  collectContentState,\n  collectVisibleTextLength,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n}"
+    },
+    ".codeyam/scenario-check-run.js::{ createIssue, pushIssue }": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::__file_root__"
+      ],
+      "name": "{ createIssue, pushIssue }"
+    },
+    ".codeyam/scenario-check-run.js::{ fingerprintHtml, getDOMFingerprint }": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-dom-fingerprint.js::__file_root__"
+      ],
+      "name": "{ fingerprintHtml, getDOMFingerprint }"
+    },
+    ".codeyam/scenario-check-run.js::{ isDeclaredErrorMock, unmockedRouteFrom }": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-mocks.js::__file_root__"
+      ],
+      "name": "{ isDeclaredErrorMock, unmockedRouteFrom }"
+    },
+    ".codeyam/scenario-dom-fingerprint.js::__file_root__": {
+      "filePath": ".codeyam/scenario-dom-fingerprint.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::{ fingerprintHtml, getDOMFingerprint }"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -372,7 +469,8 @@
     ".codeyam/scenario-handlers.js::__file_root__": {
       "filePath": ".codeyam/scenario-handlers.js",
       "importedBy": [
-        ".codeyam/capture.js::{ getInitScript }"
+        ".codeyam/capture.js::{ getInitScript }",
+        ".codeyam/scenario-check-run.js::{\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -404,7 +502,8 @@
     ".codeyam/scenario-issues.js::__file_root__": {
       "filePath": ".codeyam/scenario-issues.js",
       "importedBy": [
-        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n  RELOADED_AFTER_READY,\n  retryOnLiveReload,\n}"
+        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n  RELOADED_AFTER_READY,\n  retryOnLiveReload,\n}",
+        ".codeyam/scenario-check-run.js::{ createIssue, pushIssue }"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -412,7 +511,7 @@
     ".codeyam/scenario-launch.js::__file_root__": {
       "filePath": ".codeyam/scenario-launch.js",
       "importedBy": [
-        ".codeyam/capture.js::{ launchChromiumWithSelfHeal }"
+        ".codeyam/capture.js::{\n  launchChromiumWithSelfHeal,\n  createWarmContext,\n  pageScopedCaptureTarget,\n}"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -421,7 +520,8 @@
       "filePath": ".codeyam/scenario-metrics.js",
       "importedBy": [
         ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}",
-        ".codeyam/capture.js::{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}"
+        ".codeyam/capture.js::{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}",
+        ".codeyam/scenario-check-run.js::{\n  findScenarioError,\n  SCENARIO_ERROR_MARKER,\n  hasRenderableContent,\n  describeBlankReason,\n}"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -429,7 +529,8 @@
     ".codeyam/scenario-mocks.js::__file_root__": {
       "filePath": ".codeyam/scenario-mocks.js",
       "importedBy": [
-        ".codeyam/capture.js::{ attachHttpMocks, recordInPageMockHits }"
+        ".codeyam/capture.js::{ attachHttpMocks, recordInPageMockHits }",
+        ".codeyam/scenario-check-run.js::{ isDeclaredErrorMock, unmockedRouteFrom }"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -437,7 +538,8 @@
     ".codeyam/scenario-playwright.js::__file_root__": {
       "filePath": ".codeyam/scenario-playwright.js",
       "importedBy": [
-        ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}"
+        ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}",
+        ".codeyam/scenario-check-run.js::{\n  waitForStablePage,\n  collectContentState,\n  collectVisibleTextLength,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n}"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -480,6 +582,22 @@
       ],
       "name": "__file_root__"
     },
+    ".codeyam/wasm-name-section.js::__file_root__": {
+      "filePath": ".codeyam/wasm-name-section.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::{ parseWasmFunctionNames }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/wasm-source-attribution.js::__file_root__": {
+      "filePath": ".codeyam/wasm-source-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::{\n  workspaceCrates,\n  filesForFunctionName,\n  hubItemsForFunctionName,\n  functionRangeAt,\n  retirableBreakpoints,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
     "astro.config.mjs::__file_root__": {
       "filePath": "astro.config.mjs",
       "importedBy": [],
@@ -492,6 +610,11 @@
         "src/lib/previewGate.ts::assertPassphraseConfigured",
         "src/lib/previewGate.ts::substitutePassphrase",
         "src/lib/redirects.ts::redirectsForBase",
+        "src/lib/unlistedPages.ts::isUnlistedUrl",
+        "src/lib/adminGate.ts::__file_root__",
+        "src/lib/adminGate.ts::assertAdminPassphrase",
+        "src/lib/adminGate.ts::injectAdminGate",
+        "src/lib/adminGate.ts::passphraseHash",
         "src/lib/emptiedCollections.ts::countLoadedEntries",
         "src/lib/emptiedCollections.ts::listCollectionNames",
         "src/lib/devContentRefresh.ts::createQuietWaiter",
@@ -2989,6 +3112,51 @@
         "src/lib/contact.ts::emailFor"
       ],
       "name": "__file_root__"
+    },
+    "src/lib/adminGate.test.ts::__file_root__": {
+      "filePath": "src/lib/adminGate.test.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/adminGate.ts::assertAdminPassphrase",
+        "src/lib/adminGate.ts::injectAdminGate",
+        "src/lib/adminGate.ts::passphraseHash"
+      ],
+      "name": "__file_root__"
+    },
+    "src/lib/adminGate.ts::__file_root__": {
+      "filePath": "src/lib/adminGate.ts",
+      "importedBy": [
+        "astro.config.mjs::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/lib/adminGate.ts::assertAdminPassphrase": {
+      "filePath": "src/lib/adminGate.ts",
+      "importedBy": [
+        "astro.config.mjs::__file_root__",
+        "src/lib/adminGate.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "assertAdminPassphrase"
+    },
+    "src/lib/adminGate.ts::injectAdminGate": {
+      "filePath": "src/lib/adminGate.ts",
+      "importedBy": [
+        "astro.config.mjs::__file_root__",
+        "src/lib/adminGate.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "injectAdminGate"
+    },
+    "src/lib/adminGate.ts::passphraseHash": {
+      "filePath": "src/lib/adminGate.ts",
+      "importedBy": [
+        "astro.config.mjs::__file_root__",
+        "src/lib/adminGate.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "passphraseHash"
     },
     "src/lib/archiveImporters.test.ts::__file_root__": {
       "filePath": "src/lib/archiveImporters.test.ts",
@@ -7058,6 +7226,14 @@
       ],
       "name": "__file_root__"
     },
+    "src/lib/robots.ts::__file_root__": {
+      "filePath": "src/lib/robots.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/unlistedPages.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
     "src/lib/robots.ts::robotsTxtBody": {
       "filePath": "src/lib/robots.ts",
       "importedBy": [
@@ -8137,6 +8313,40 @@
       ],
       "imports": [],
       "name": "fontSizesBelowFloor"
+    },
+    "src/lib/unlistedPages.test.ts::__file_root__": {
+      "filePath": "src/lib/unlistedPages.test.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/unlistedPages.ts::isUnlistedPath",
+        "src/lib/unlistedPages.ts::isUnlistedUrl"
+      ],
+      "name": "__file_root__"
+    },
+    "src/lib/unlistedPages.ts::__file_root__": {
+      "filePath": "src/lib/unlistedPages.ts",
+      "importedBy": [
+        "src/lib/robots.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/lib/unlistedPages.ts::isUnlistedPath": {
+      "filePath": "src/lib/unlistedPages.ts",
+      "importedBy": [
+        "src/lib/unlistedPages.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "isUnlistedPath"
+    },
+    "src/lib/unlistedPages.ts::isUnlistedUrl": {
+      "filePath": "src/lib/unlistedPages.ts",
+      "importedBy": [
+        "astro.config.mjs::__file_root__",
+        "src/lib/unlistedPages.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "isUnlistedUrl"
     },
     "src/lib/url.test.ts::__file_root__": {
       "filePath": "src/lib/url.test.ts",
@@ -10141,6 +10351,7 @@
         ".codeyam/scenario-metrics.js",
         ".codeyam/scenario-issues.js",
         ".codeyam/scenario-mocks.js",
+        ".codeyam/scenario-check-hub-functions.js",
         ".codeyam/scenario-check-attribution.js",
         ".codeyam/scenario-playwright.js",
         ".codeyam/scenario-targeting.js",
@@ -10228,17 +10439,42 @@
       "importedBy": [
         ".codeyam/capture.js"
       ],
+      "imports": [
+        ".codeyam/wasm-name-section.js",
+        ".codeyam/wasm-source-attribution.js",
+        ".codeyam/scenario-check-hub-functions.js"
+      ]
+    },
+    ".codeyam/scenario-check-hub-functions.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-attribution.js"
+      ],
       "imports": []
     },
     ".codeyam/scenario-check-run.js": {
       "importedBy": [
         ".codeyam/capture.js"
       ],
+      "imports": [
+        ".codeyam/scenario-issues.js",
+        ".codeyam/scenario-mocks.js",
+        ".codeyam/scenario-playwright.js",
+        ".codeyam/scenario-metrics.js",
+        ".codeyam/scenario-handlers.js",
+        ".codeyam/scenario-dom-fingerprint.js"
+      ]
+    },
+    ".codeyam/scenario-dom-fingerprint.js": {
+      "importedBy": [
+        ".codeyam/scenario-check-run.js"
+      ],
       "imports": []
     },
     ".codeyam/scenario-handlers.js": {
       "importedBy": [
-        ".codeyam/capture.js"
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js"
       ],
       "imports": [
         ".codeyam/scenario-issues.js"
@@ -10256,7 +10492,8 @@
       "importedBy": [
         ".codeyam/scenario-handlers.js",
         ".codeyam/scenario-interactivity.js",
-        ".codeyam/capture.js"
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js"
       ],
       "imports": []
     },
@@ -10269,19 +10506,22 @@
     ".codeyam/scenario-metrics.js": {
       "importedBy": [
         ".codeyam/scenario-playwright.js",
-        ".codeyam/capture.js"
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js"
       ],
       "imports": []
     },
     ".codeyam/scenario-mocks.js": {
       "importedBy": [
-        ".codeyam/capture.js"
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js"
       ],
       "imports": []
     },
     ".codeyam/scenario-playwright.js": {
       "importedBy": [
-        ".codeyam/capture.js"
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js"
       ],
       "imports": [
         ".codeyam/scenario-metrics.js",
@@ -10303,12 +10543,26 @@
         "src/lib/sandboxPublic.ts"
       ]
     },
+    ".codeyam/wasm-name-section.js": {
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/wasm-source-attribution.js": {
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js"
+      ],
+      "imports": []
+    },
     "astro.config.mjs": {
       "importedBy": [],
       "imports": [
         "src/lib/publishTrack.ts",
         "src/lib/previewGate.ts",
         "src/lib/redirects.ts",
+        "src/lib/unlistedPages.ts",
+        "src/lib/adminGate.ts",
         "src/lib/emptiedCollections.ts",
         "src/lib/devContentRefresh.ts",
         "src/lib/sandboxPublic.ts"
@@ -12200,6 +12454,19 @@
         "src/lib/contact.ts"
       ]
     },
+    "src/lib/adminGate.test.ts": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/adminGate.ts"
+      ]
+    },
+    "src/lib/adminGate.ts": {
+      "importedBy": [
+        "astro.config.mjs",
+        "src/lib/adminGate.test.ts"
+      ],
+      "imports": []
+    },
     "src/lib/archiveImporters.test.ts": {
       "importedBy": [],
       "imports": [
@@ -13569,7 +13836,9 @@
         "src/lib/robots.test.ts",
         "src/pages/robots.txt.ts"
       ],
-      "imports": []
+      "imports": [
+        "src/lib/unlistedPages.ts"
+      ]
     },
     "src/lib/sandboxPublic.test.ts": {
       "importedBy": [],
@@ -13899,6 +14168,20 @@
     "src/lib/typeFloor.ts": {
       "importedBy": [
         "src/lib/typeFloor.test.ts"
+      ],
+      "imports": []
+    },
+    "src/lib/unlistedPages.test.ts": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/unlistedPages.ts"
+      ]
+    },
+    "src/lib/unlistedPages.ts": {
+      "importedBy": [
+        "astro.config.mjs",
+        "src/lib/robots.ts",
+        "src/lib/unlistedPages.test.ts"
       ],
       "imports": []
     },
@@ -15392,5 +15675,5 @@
       "imports": []
     }
   },
-  "lastUpdated": "2026-11-14T04:22:03Z"
+  "lastUpdated": "2026-11-16T23:42:48Z"
 }

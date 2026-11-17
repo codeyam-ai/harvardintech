@@ -1,11 +1,15 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c870f4bd4df2e585028cfa8c3f9d48d54156ac4d  source-sha256: 7bf769d50c7695dc9f564bd2e86fe083027327629cef26d045da154668b3a453
+// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: e09328e349e5cecf7098efd5c421b555e489fc2121eaa5d7e116b48f8bcc54d4
 // Launching the capture browser: the Chromium flags that keep a headless
 // launch alive on dbus-less and containerized hosts, and the self-heal around
 // `chromium.launch()` — install a missing browser, retry a transient crash, and
-// diagnose (never heal) a host that lacks Chromium's system libraries. Split
-// out of scenario-check.js, which owns what happens once the browser is up.
+// diagnose (never heal) a host that lacks Chromium's system libraries — and the
+// warm persistent context a capture worker keeps alive across captures
+// (`createWarmContext`). Split out of scenario-check.js, which owns what happens
+// once the browser is up.
 
+const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const { spawn } = require("child_process");
 const { chromium } = require("playwright");
@@ -423,8 +427,203 @@ async function launchChromiumWithSelfHeal({
   }
 }
 
+// Launch a persistent Chromium context on `userDataDir` with the capture's
+// launch flags plus `contextOptions`, through the same self-heal path. A
+// persistent context keeps its HTTP and compiled-code caches on disk in that
+// profile, which is what a warm capture context reuses (see `createWarmContext`).
+function launchPersistentChromiumWithSelfHeal(userDataDir, contextOptions) {
+  return launchChromiumWithSelfHeal({
+    launch: () =>
+      chromium.launchPersistentContext(userDataDir, {
+        ...captureLaunchOptions(),
+        env: { ...process.env, ...CAPTURE_LAUNCH_DBUS_ENV },
+        ...contextOptions,
+      }),
+  });
+}
+
+// A warm capture context: one persistent Chromium context a capture worker
+// keeps alive across captures (`capture.contextReuse: "persistent"`).
+//
+// A fresh context per capture starts with an empty HTTP cache and an empty
+// compiled-code cache, so a single-bundle wasm app re-fetches and recompiles
+// its whole module for every screenshot. A persistent context keeps those
+// caches in its on-disk profile. What it must NOT keep is app state, so before
+// every capture `acquire` clears cookies and every storage type an app can
+// write — local storage, IndexedDB, service workers, Cache Storage, file
+// systems — for every origin the context has seen. Session storage dies with
+// the page, which the capture closes. The HTTP cache, the code cache and the
+// GPU shader cache survive; they are caches of the app's code, not its state.
+//
+// Per-capture setup (init scripts, routes, extra headers) goes on the PAGE in
+// this mode, never on the context, because a context-level init script or
+// route can never be removed and would leak into every later capture. See
+// `pageScopedCaptureTarget`.
+
+// The CDP `Storage.clearDataForOrigin` types that hold app state. Deliberately
+// not `all`: that also drops the shader cache, which is a cache of the app's
+// code, and a cold one is part of what a warm context exists to skip.
+const CLEARED_STORAGE_TYPES = [
+  "cookies",
+  "file_systems",
+  "indexeddb",
+  "local_storage",
+  "websql",
+  "service_workers",
+  "cache_storage",
+].join(",");
+
+// The origin of `url`, or null for one without a real origin (`about:`,
+// `data:`, a malformed URL).
+function originOf(url) {
+  try {
+    const origin = new URL(url).origin;
+    return origin && origin !== "null" ? origin : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+// The target `prepareCaptureContext` writes per-capture setup to in warm mode:
+// cookies on the context (cleared before every capture), everything else on the
+// page, where it ends with the page.
+function pageScopedCaptureTarget(context, page) {
+  return {
+    addCookies: (cookies) => context.addCookies(cookies),
+    addInitScript: (script, arg) => page.addInitScript(script, arg),
+    route: (matcher, handler) => page.route(matcher, handler),
+    setExtraHTTPHeaders: (headers) => page.setExtraHTTPHeaders(headers),
+  };
+}
+
+// Add the origin of every request `context` makes to `origins`, so a later
+// reset knows whose app state to clear. URLs without a real origin are skipped.
+function trackRequestOrigins(context, origins) {
+  context.on("request", (request) => {
+    const origin = originOf(request.url());
+    if (origin) origins.add(origin);
+  });
+}
+
+// Clear the app state (`CLEARED_STORAGE_TYPES`) of every origin in `origins`
+// through a CDP session on a throwaway page of `context`. No origins means
+// nothing to clear, so no page is opened. A failed clear is thrown — the
+// caller must not hand an uncleared context to the next scenario — but the
+// throwaway page is closed either way.
+async function clearOriginsAppState(context, origins) {
+  if (origins.size === 0) return;
+  const page = await context.newPage();
+  try {
+    const cdp = await context.newCDPSession(page);
+    for (const origin of origins) {
+      await cdp.send("Storage.clearDataForOrigin", {
+        origin,
+        storageTypes: CLEARED_STORAGE_TYPES,
+      });
+    }
+    await cdp.detach().catch(() => {});
+  } finally {
+    await page.close().catch(() => {});
+  }
+}
+
+// One worker's warm context. `launchPersistent(userDataDir, contextOptions)`
+// opens the context; it is injectable so tests need no browser.
+//
+// The context's options (viewport, device scale, locale, …) are fixed at
+// launch, so a capture whose options differ relaunches it on the same profile:
+// the caches are on disk and survive the relaunch. A context that closed or
+// failed to reset is discarded and relaunched the same way.
+function createWarmContext({
+  launchPersistent = launchPersistentChromiumWithSelfHeal,
+  profileDir = () => fs.mkdtempSync(path.join(os.tmpdir(), "codeyam-capture-profile-")),
+  removeProfile = (dir) => fs.rmSync(dir, { recursive: true, force: true }),
+} = {}) {
+  let dir = null;
+  let current = null; // { context, key, closed: boolean }
+  // Every origin any context on this profile has requested. Kept across
+  // relaunches: the profile persists app state on disk, so a relaunched context
+  // can still hold an earlier capture's storage for an origin it never touched.
+  const origins = new Set();
+
+  async function discard() {
+    const held = current;
+    current = null;
+    if (held && !held.closed) {
+      await held.context.close().catch(() => {});
+    }
+  }
+
+  async function launch(contextOptions, key) {
+    if (!dir) dir = profileDir();
+    const context = await launchPersistent(dir, contextOptions);
+    const held = { context, key, closed: false };
+    context.on("close", () => {
+      held.closed = true;
+    });
+    trackRequestOrigins(context, origins);
+    current = held;
+  }
+
+  // Close any page a previous capture (or the launch itself) left open, then
+  // clear every origin's app state.
+  async function reset(held) {
+    for (const page of held.context.pages()) {
+      await page.close().catch(() => {});
+    }
+    await held.context.clearCookies();
+    await clearOriginsAppState(held.context, origins);
+  }
+
+  return {
+    // The warm context for a capture with `contextOptions`, its app state
+    // cleared, and the milliseconds spent launching it (0 when it was reused).
+    async acquire(contextOptions) {
+      const key = JSON.stringify(contextOptions);
+      if (current && (current.closed || current.key !== key)) await discard();
+      let launchMs = 0;
+      if (!current) {
+        const startedAt = Date.now();
+        await launch(contextOptions, key);
+        launchMs = Date.now() - startedAt;
+      }
+      try {
+        await reset(current);
+      } catch (_) {
+        // A context that cannot be cleared cannot be trusted with the next
+        // scenario: drop it and clear a relaunched one. A second failure is
+        // thrown — the capture fails rather than running on uncleared state.
+        await discard();
+        const startedAt = Date.now();
+        await launch(contextOptions, key);
+        launchMs += Date.now() - startedAt;
+        await reset(current);
+      }
+      return { context: current.context, launchMs };
+    },
+    // Drop the context (its next `acquire` relaunches). Called when a capture
+    // could not close its page, so nothing it left can reach the next one.
+    discard,
+    // Close the context and delete its profile.
+    async close() {
+      await discard();
+      if (dir) {
+        removeProfile(dir);
+        dir = null;
+      }
+    },
+  };
+}
+
 module.exports = {
   launchChromiumWithSelfHeal,
+  launchPersistentChromiumWithSelfHeal,
+  CLEARED_STORAGE_TYPES,
+  createWarmContext,
+  clearOriginsAppState,
+  trackRequestOrigins,
+  originOf,
+  pageScopedCaptureTarget,
   isTransientLaunchCrash,
   isMissingSystemLibrary,
   missingLibraryNames,
