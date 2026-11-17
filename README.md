@@ -108,7 +108,7 @@ codeyam-editor start
 ```
 <!-- codeyam:run-and-edit:end -->
 
-<!-- codeyam:scenario-gallery:start d=62ff8d25b844 -->
+<!-- codeyam:scenario-gallery:start d=d13a0327d81c -->
 ## Scenario gallery
 
 States captured as runnable scenarios with codeyam-editor:
@@ -125,11 +125,11 @@ A blog post as a reader who still holds its link meets it. This scenario used to
 
 The page a reviewer actually lands on. An unpublished post, cloned to an unguessable URL and rendered in the site's real layout — no sign-in, no CMS account, no passphrase. The post it stands in for is still a draft and appears in no listing; this URL is the only way to reach it. Proves the load-bearing half of preview links: routableEntries built a page that publishedEntries deliberately excludes from every index.
 
-### Harvard In Tech - Numbers Band On An iPad
+### Events Route - Past Results From The October All-Hands
 
-<img src=".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png" alt="Harvard In Tech - Numbers Band On An iPad" width="280">
+<img src=".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--tablet.png" alt="Events Route - Past Results From The October All-Hands" width="280">
 
-The homepage at 768px (iPad portrait), scrolled to the numbers band. Since the October 2026 all-hands the band carries six figures, and one row of six would push the page sideways ("10,000+" alone is ~180px), so between 761px and 1200px it wraps to two rows of three and the page stays inside the screen. The hover only scrolls the band into view, since a URL fragment does not scroll a capture.
+The /events past grid now that the NYC Fall Welcome Mixer is written up after the fact: its card leads with "Sold out within 24 hours, with more than 90% of registrants attending", the October 2026 volunteer all-hands figure, instead of the old space-is-limited pitch. The card clamps its description, which is why the result comes first. The grid now opens with the London Alumni Founders Co-working Day of October 9, one of the two London events the Luma import missed while Luma was refusing its requests (fixed 2026-11-06 by naming the importer in a User-Agent header); the earlier monthly London co-working days fill the rest of the frame, and Alumni Day (June 5) is below the fold. The hover only scrolls the past grid into view.
 
 ### Chapter Route - New York City
 
@@ -143,11 +143,11 @@ The founding chapter with NO events tagged to it — the counterpart to London, 
 
 The site-wide integration keys on a screen of their own: the analytics measurement id, the Givebutter account id, and the raw head/body HTML escape hatch. Doubles as the live-preview pane's NO-PAGE state — siteIntegrations is the one collection declared with a null path, so the pane says 'This content has no page of its own' and falls back to the plain body preview rather than guessing an address and embedding a 404 beside the form for the whole session.
 
-### Harvard in Tech - Board On Four Sizes
+### Harvard In Tech - Numbers Band On An iPad
 
-<img src=".codeyam/scenarios/screenshots/harvard-in-tech-board-on-four-sizes--tablet.png" alt="Harvard in Tech - Board On Four Sizes" width="280">
+<img src=".codeyam/scenarios/screenshots/harvard-in-tech-numbers-band-on-an-ipad--tablet.png" alt="Harvard In Tech - Numbers Band On An iPad" width="280">
 
-The board grid at all four widths. It sits far below the fold, so the capture hovers a selector inside the band to bring it into frame - a URL fragment does not scroll a capture, which is why the older /#board scenario shoots the hero instead. Portraits in a grid are the homepage's densest layout, so this is where a column count that works at 1440 and fails at 768 shows up. NARROWED 2026-10-02: this ran at four widths until the capture pipeline stopped finishing it — the screenshot is taken and the verification request that follows returns 502, every time, on this scenario and on the chapters one beside it, while contact-on-four-sizes captures fine at the same four widths. Tablet and Desktop are what remain: Tablet is the intermediate width this frame exists to watch, Desktop is the reference that already works, and the pair still answers the question the four did. Mobile and Laptop go back the moment a four-width capture completes again.
+The homepage at 768px (iPad portrait), scrolled to the numbers band. Since the October 2026 all-hands the band carries six figures, and one row of six would push the page sideways ("10,000+" alone is ~180px), so between 761px and 1200px it wraps to two rows of three and the page stays inside the screen. The hover only scrolls the band into view, since a URL fragment does not scroll a capture.
 
 ### Community Route - Founders With Leads And Events
 

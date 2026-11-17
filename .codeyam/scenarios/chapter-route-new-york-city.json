@@ -3,12 +3,13 @@
   "id": "e48ca92f-4950-46cd-8d13-50e217c7d86a",
   "url": "/chapters/nyc",
   "dimensions": [
-    "Mobile",
-    "Tablet",
     "Laptop",
     "Desktop"
   ],
   "mocks": {},
+  "seed": {
+    "events": []
+  },
   "clock": {
     "now": "2026-11-06T00:16:38Z"
   },

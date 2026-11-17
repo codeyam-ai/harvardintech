@@ -1,0 +1,19 @@
+{
+  "name": "Chapter Route - New York City on phone and tablet",
+  "id": "120b96f9-e522-4c59-b3c7-5af382b9fd87",
+  "url": "/chapters/nyc",
+  "dimensions": [
+    "Mobile",
+    "Tablet"
+  ],
+  "mocks": {},
+  "clock": {
+    "now": "2026-11-06T00:16:38Z"
+  },
+  "seed": {
+    "events": []
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/chapters/[slug].astro",
+  "description": "The founding chapter with NO events tagged to it, at phone and tablet widths — the small-screen half of 'Chapter Route - New York City' (split in two because the NYC photo gallery makes all four sizes in one capture exceed the capture tool's per-scenario time limit). Neither an upcoming nor a recent events block renders; the capped photo gallery and its 'Show all' control fit the narrow grid."
+}

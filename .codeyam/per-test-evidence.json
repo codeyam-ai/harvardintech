@@ -2449,15 +2449,6 @@
       "pass|changed|2026-11-09T19:35:35.993Z"
     ]
   },
-  "committed nav.json › groups volunteering and giving under Get involved": {
-    "file": "src/lib/nav.test.ts",
-    "lastRunAt": "2026-11-14T04:19:03.239Z",
-    "lastRunKind": "full",
-    "lastStatus": "pass",
-    "statusRing": [
-      "pass|full|2026-10-22T13:06:10.254Z"
-    ]
-  },
   "committed nav.json › has no dropdown holding a single item": {
     "file": "src/lib/nav.test.ts",
     "lastRunAt": "2026-11-16T23:41:51.991Z",
@@ -3333,27 +3324,9 @@
       "pass|full|2026-11-16T23:41:57.454Z"
     ]
   },
-  "deploy.yml track coherence › builds with a base matching this repo": {
-    "file": "src/lib/deployTracks.test.ts",
-    "lastRunAt": "2026-11-16T21:39:39.432Z",
-    "lastRunKind": "changed",
-    "lastStatus": "pass",
-    "statusRing": [
-      "pass|full|2026-10-22T13:06:10.254Z"
-    ]
-  },
   "deploy.yml track coherence › deploys no branch other than main": {
     "file": "src/lib/deployTracks.test.ts",
     "lastRunAt": "2026-11-16T23:41:51.991Z",
-    "lastRunKind": "changed",
-    "lastStatus": "pass",
-    "statusRing": [
-      "pass|full|2026-10-22T13:06:10.254Z"
-    ]
-  },
-  "deploy.yml track coherence › gates the build while the site is not meant to be public": {
-    "file": "src/lib/deployTracks.test.ts",
-    "lastRunAt": "2026-11-16T21:39:39.432Z",
     "lastRunKind": "changed",
     "lastStatus": "pass",
     "statusRing": [
@@ -3369,15 +3342,6 @@
       "pass|full|2026-11-16T23:41:57.454Z"
     ]
   },
-  "deploy.yml track coherence › hosts the site on the codeyam-ai Pages site": {
-    "file": "src/lib/deployTracks.test.ts",
-    "lastRunAt": "2026-11-16T21:39:39.432Z",
-    "lastRunKind": "changed",
-    "lastStatus": "pass",
-    "statusRing": [
-      "pass|full|2026-10-22T13:06:10.254Z"
-    ]
-  },
   "deploy.yml track coherence › takes the admin passphrase from the secret": {
     "file": "src/lib/deployTracks.test.ts",
     "lastRunAt": "2026-11-16T23:41:57.454Z",
@@ -3385,15 +3349,6 @@
     "lastStatus": "pass",
     "statusRing": [
       "pass|full|2026-11-16T23:41:57.454Z"
-    ]
-  },
-  "deploy.yml track coherence › takes the gate passphrase from the secret": {
-    "file": "src/lib/deployTracks.test.ts",
-    "lastRunAt": "2026-11-16T21:39:39.432Z",
-    "lastRunKind": "changed",
-    "lastStatus": "pass",
-    "statusRing": [
-      "pass|full|2026-10-22T13:06:10.254Z"
     ]
   },
   "deployWatch › buildDeployRecord › carries the commit url, marker url and sampled baseline": {
@@ -7061,15 +7016,6 @@
     "lastStatus": "pass",
     "statusRing": [
       "pass|changed|2026-11-10T17:53:26.528Z"
-    ]
-  },
-  "includeCmsIntegration › excludes the CMS from the public build": {
-    "file": "src/lib/publishTrack.test.ts",
-    "lastRunAt": "2026-11-16T21:39:39.432Z",
-    "lastRunKind": "changed",
-    "lastStatus": "pass",
-    "statusRing": [
-      "pass|full|2026-10-22T13:06:10.254Z"
     ]
   },
   "includeCmsIntegration › includes the CMS on the public build": {
