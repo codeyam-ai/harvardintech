@@ -3070,6 +3070,11 @@
       "at": "2026-11-14T04:25:01.956484597+00:00",
       "feature": "Fall Welcome Mixer photos and an events highlights gallery",
       "notes": "Push was clean (no pull). package-lock.json carries pre-existing npm peer-flag churn and is left alone each cycle. Capture runs on this project are near the 60s limit for the events and momentum-fund pages; if those pages grow, expect more…"
+    },
+    {
+      "at": "2026-11-17T01:18:50.326734605+00:00",
+      "feature": "harvardintech.com is live",
+      "notes": "harvardintech.com went live 2026-11-16 (GitHub Pages, custom domain, HTTPS enforced). /donate and /sponsor are unlisted via src/lib/unlistedPages.ts until the 11/30 relaunch plans; /admin ships on the public build behind src/lib/adminGate.…"
     }
   ],
   "syntheses": [
