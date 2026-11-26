@@ -1865,7 +1865,6 @@
         "fnd-09539cd9bffc"
       ],
       "evidenceSessions": 1,
-      "ideaRank": 1,
       "offeredCount": 1,
       "lastOfferedAt": "2026-11-09T22:27:29.987988168+00:00",
       "theme": {
@@ -1891,10 +1890,9 @@
       ],
       "evidenceSessions": 1,
       "ideaRank": 2,
-      "missedPasses": 1,
       "theme": {
         "lane": "codeyam-improvement",
-        "score": 471,
+        "score": 223,
         "notVerified": true
       }
     },
@@ -1917,7 +1915,7 @@
       "ideaRank": 3,
       "theme": {
         "lane": "codeyam-improvement",
-        "score": 377,
+        "score": 179,
         "notVerified": true
       }
     },
@@ -1939,7 +1937,7 @@
       "ideaRank": 4,
       "theme": {
         "lane": "codeyam-improvement",
-        "score": 377,
+        "score": 179,
         "notVerified": true
       }
     },
@@ -1962,7 +1960,7 @@
       "ideaRank": 1,
       "theme": {
         "lane": "codeyam-improvement",
-        "score": 495,
+        "score": 235,
         "notVerified": true
       }
     }
@@ -3075,6 +3073,11 @@
       "at": "2026-11-17T01:18:50.326734605+00:00",
       "feature": "harvardintech.com is live",
       "notes": "harvardintech.com went live 2026-11-16 (GitHub Pages, custom domain, HTTPS enforced). /donate and /sponsor are unlisted via src/lib/unlistedPages.ts until the 11/30 relaunch plans; /admin ships on the public build behind src/lib/adminGate.…"
+    },
+    {
+      "at": "2026-11-26T05:08:25.854102008+00:00",
+      "feature": "Investors co-leads and new community banners",
+      "notes": "The feature was shipped early via an out-of-workflow commit plus a user-run `git push --no-verify`. This cycle then refreshed about 314 stale screenshots (mostly identical; around 50 real frame changes from the capture pipeline/isolation h…"
     }
   ],
   "syntheses": [
@@ -3297,6 +3300,45 @@
         "obs-4ef03360e28a"
       ],
       "notes": "Five observations across three sessions: reviewer copy-feedback stream (one session), a private Luma event not appearing, a phone-menu bug already fixed, and publish-failure alerts already built. No cluster cleared the two-session bar."
+    },
+    {
+      "at": "2026-11-26T05:08:25.854102008+00:00",
+      "lane": "app",
+      "consumedIds": [
+        "fnd-031474f8163e",
+        "fnd-88daf12bcd6a",
+        "fnd-d0acb8fd2542",
+        "fnd-8637fb3a886a",
+        "fnd-7d02bfd527b0",
+        "fnd-3b35b957c228",
+        "fnd-9007e81663a7",
+        "fnd-c40e93a97828",
+        "fnd-c4c247c1096c"
+      ],
+      "notes": "App batch is mostly cosmetic or unrated scenario-seed observations from earlier sessions; none meet the admission bar on their own. No themes proposed."
+    },
+    {
+      "at": "2026-11-26T05:08:25.854102008+00:00",
+      "lane": "codeyam-improvement",
+      "consumedIds": [
+        "fnd-96193f2ebdc1",
+        "fnd-e0b11615133b",
+        "fnd-73cea7fa2a2a",
+        "fnd-295d9bc6eeee",
+        "fnd-f1e9731a204e",
+        "fnd-df4aa4f1b411",
+        "fnd-3c09c00b2af8",
+        "fnd-9c0ffe164c9a",
+        "fnd-9eca01ae691d",
+        "fnd-a00ae6715edc"
+      ],
+      "keptIds": [
+        "a-finished-change-can-pass-every-editor-check-while-the-real-production-build-has-new-problems",
+        "seeded-screenshots-can-silently-show-the-real-content-instead-of-the-scenario-s-data",
+        "screenshot-refresh-refuses-to-run-when-the-user-has-legitimately-added-new-content",
+        "finishing-a-change-can-be-blocked-by-a-file-the-editor-itself-just-wrote"
+      ],
+      "notes": "The urgent-publish-on-main friction (fnd-3c09c00b2af8, fnd-295d9bc6eeee, plus this session) and the capture/dev-server reload race (fnd-e0b11615133b plus this session) now span multiple sessions. Their fix lives in codeyam-editor source, not this repo, so it can't be stated as a buildable change here; left as findings for the CodeYam team."
     }
   ]
 }
