@@ -427,6 +427,27 @@
           "hint": "Full-bleed header background. Blank falls back to the centered header."
         },
         {
+          "name": "heroCredit",
+          "label": "Banner photo credit",
+          "type": "text",
+          "optional": true,
+          "hint": "Only for a banner photo whose license requires credit (CC BY / BY-SA), e.g. \"Photo: King of Hearts, CC BY-SA 4.0\". Shown small in the banner's corner. Leave blank for Unsplash or our own photos."
+        },
+        {
+          "name": "heroCreditUrl",
+          "label": "Banner photo credit link",
+          "type": "text",
+          "optional": true,
+          "hint": "The photo's source page, which states its license."
+        },
+        {
+          "name": "heroImagePosition",
+          "label": "Banner photo focus",
+          "type": "text",
+          "optional": true,
+          "hint": "Which part of a wide banner photo stays in view on a phone, e.g. \"82% center\" keeps the right side. Blank keeps the middle."
+        },
+        {
           "name": "tagline",
           "label": "Tagline",
           "type": "text",

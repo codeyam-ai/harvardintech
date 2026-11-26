@@ -312,6 +312,13 @@ const communities = defineCollection({
       .optional(),
     blurb: z.string().optional(),
     heroImage: z.string().optional(),
+    // Same as the chapters field: credit for a banner photo whose licence
+    // requires it (CC BY / BY-SA), shown small in the banner's corner.
+    heroCredit: z.string().optional(),
+    heroCreditUrl: z.string().optional(),
+    // Which part of a wide banner photo stays in frame when a narrow screen
+    // crops it (CSS object-position, e.g. "82% center"). Absent → centred.
+    heroImagePosition: z.string().optional(),
     tagline: z.string().optional(),
     contactEmail: z.string().optional(),
     leads: z.array(leadSchema).optional(),

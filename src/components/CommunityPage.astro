@@ -35,6 +35,9 @@ interface Props {
   fullName?: string;
   blurb?: string;
   heroImage?: string;
+  heroCredit?: string;
+  heroCreditUrl?: string;
+  heroImagePosition?: string;
   tagline?: string;
   /** "What happens here" cards. The most important field on this page: it is
    *  what a community can say about itself before it has any events. */
@@ -55,6 +58,9 @@ const {
   fullName,
   blurb,
   heroImage,
+  heroCredit,
+  heroCreditUrl,
+  heroImagePosition,
   tagline,
   callouts = [],
   whatsappFormUrl,
@@ -81,6 +87,9 @@ const headingName = fullName ?? name;
   name={headingName}
   blurb={blurb}
   heroImage={heroImage}
+  heroCredit={heroCredit}
+  heroCreditUrl={heroCreditUrl}
+  heroImagePosition={heroImagePosition}
   tagline={tagline}
   label={bannerFor({ kind: 'community', name }).label}
 />

@@ -10,6 +10,10 @@ callouts:
   - title: Researchers, founders and operators together
     text: People training models, people shipping them inside large companies, and people deciding whether to — in one room rather than three.
 blurb: For alumni working in and around artificial intelligence.
+heroImage: /images/communities/ai-harvard-sec.webp
+heroCredit: 'Photo: Chris Rycroft, CC BY 2.0'
+heroCreditUrl: 'https://commons.wikimedia.org/wiki/File:Exterior_of_the_Science_and_Engineering_Complex_(51307817385).jpg'
+heroImagePosition: 40% 30%
 tagline: A global community for Harvard alumni working in AI.
 leads:
   - name: James Nicholson
