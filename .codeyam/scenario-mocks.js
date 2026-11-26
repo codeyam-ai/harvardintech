@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: a451da08f25492a8d91b69426965eb49ccf228b5623c4f51f3f7b4bb334c3ae4
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: 2e751d9ff2a9ef7b3946fd1ba96204b65419dae33662d1eaf5f046666e9ecbb4
 // Route matcher for the capture harness — one of THREE implementations of a
 // single semantic. The authority is the Rust engine
 // (crates/mock-engine/src/route_parser.rs), where the contract is written down;
@@ -497,3 +497,8 @@ module.exports = {
   isDeclaredErrorMock,
   unmockedRouteFrom,
 };
+
+// Pixel-path script: its code and this number both feed the capture pipeline
+// id. Bump the number for a change that alters pixels without changing code.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

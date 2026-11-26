@@ -1,0 +1,16 @@
+{
+  "name": "Community Route - Investors Co-Leads And Boston Banner",
+  "id": "782be5e2-b531-48da-bc79-bf5cf1c7c5b1",
+  "url": "/communities/investors",
+  "dimensions": [
+    "Desktop",
+    "Mobile"
+  ],
+  "mocks": {},
+  "clock": {
+    "now": "2026-11-26T02:57:11Z"
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/communities/[slug].astro",
+  "description": "The Investors community page now opens on a photo banner: the Back Bay skyline seen from Cambridge across the Charles, credited small in the corner because its CC BY-SA licence requires it. On a phone the wide panorama is cropped, so the entry sets its focus to 82% across to keep the Prudential Center in frame instead of the empty river on the left. Further down, the page shows two co-leads instead of one pilot lead: Stefan Pagacik and Kiran Govindaraju, each with a headshot, the shared role Investor Community Co-Lead, and a short bio (Stefan's trimmed to his current two companies)."
+}

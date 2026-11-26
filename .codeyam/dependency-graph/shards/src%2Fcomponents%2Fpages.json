@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "src/components/pages/SitePageBody.astro::__file_root__": {
+      "filePath": "src/components/pages/SitePageBody.astro",
+      "importedBy": [
+        "src/components/SitePage.astro::__file_root__",
+        "src/pages/isolated-components/SitePageBody-Table.astro::__file_root__",
+        "src/pages/isolated-components/SitePageBody.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/pages/SitePageHeader.astro::__file_root__": {
+      "filePath": "src/components/pages/SitePageHeader.astro",
+      "importedBy": [
+        "src/components/SitePage.astro::__file_root__",
+        "src/pages/isolated-components/SitePageHeader-LongTitle.astro::__file_root__",
+        "src/pages/isolated-components/SitePageHeader.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ui/PageBanner.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/components/pages/SitePageBody.astro": {
+      "importedBy": [
+        "src/components/SitePage.astro",
+        "src/pages/isolated-components/SitePageBody-Table.astro",
+        "src/pages/isolated-components/SitePageBody.astro"
+      ],
+      "imports": []
+    },
+    "src/components/pages/SitePageHeader.astro": {
+      "importedBy": [
+        "src/components/SitePage.astro",
+        "src/pages/isolated-components/SitePageHeader-LongTitle.astro",
+        "src/pages/isolated-components/SitePageHeader.astro"
+      ],
+      "imports": [
+        "src/components/ui/PageBanner.astro"
+      ]
+    }
+  }
+}

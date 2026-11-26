@@ -108,7 +108,7 @@ codeyam-editor start
 ```
 <!-- codeyam:run-and-edit:end -->
 
-<!-- codeyam:scenario-gallery:start d=d13a0327d81c -->
+<!-- codeyam:scenario-gallery:start d=06f845161d26 -->
 ## Scenario gallery
 
 States captured as runnable scenarios with codeyam-editor:
@@ -125,17 +125,23 @@ A blog post as a reader who still holds its link meets it. This scenario used to
 
 The page a reviewer actually lands on. An unpublished post, cloned to an unguessable URL and rendered in the site's real layout — no sign-in, no CMS account, no passphrase. The post it stands in for is still a draft and appears in no listing; this URL is the only way to reach it. Proves the load-bearing half of preview links: routableEntries built a page that publishedEntries deliberately excludes from every index.
 
+### Chapter Route - New York City
+
+<img src=".codeyam/scenarios/screenshots/chapter-route-new-york-city--laptop.png" alt="Chapter Route - New York City" width="280">
+
+The founding chapter with NO events tagged to it — the counterpart to London, where tags match and the events section appears. Neither an upcoming nor a recent block renders here, which is the assertion: both sections stay away entirely rather than leaving an empty heading behind. It is also the state a chapter sits in whenever its tags are typo'd, since a near-miss tag belongs to nobody and looks exactly like this.
+
 ### Events Route - Past Results From The October All-Hands
 
 <img src=".codeyam/scenarios/screenshots/events-route-past-results-from-the-october-all-hands--tablet.png" alt="Events Route - Past Results From The October All-Hands" width="280">
 
 The /events past grid now that the NYC Fall Welcome Mixer is written up after the fact: its card leads with "Sold out within 24 hours, with more than 90% of registrants attending", the October 2026 volunteer all-hands figure, instead of the old space-is-limited pitch. The card clamps its description, which is why the result comes first. The grid now opens with the London Alumni Founders Co-working Day of October 9, one of the two London events the Luma import missed while Luma was refusing its requests (fixed 2026-11-06 by naming the importer in a User-Agent header); the earlier monthly London co-working days fill the rest of the frame, and Alumni Day (June 5) is below the fold. The hover only scrolls the past grid into view.
 
-### Chapter Route - New York City
+### Chapter Route - New York City on phone and tablet
 
-<img src=".codeyam/scenarios/screenshots/chapter-route-new-york-city--mobile.png" alt="Chapter Route - New York City" width="280">
+<img src=".codeyam/scenarios/screenshots/chapter-route-new-york-city-on-phone-and-tablet--mobile.png" alt="Chapter Route - New York City on phone and tablet" width="280">
 
-The founding chapter with NO events tagged to it — the counterpart to London, where tags match and the events section appears. Neither an upcoming nor a recent block renders here, which is the assertion: both sections stay away entirely rather than leaving an empty heading behind. It is also the state a chapter sits in whenever its tags are typo'd, since a near-miss tag belongs to nobody and looks exactly like this.
+The founding chapter with NO events tagged to it, at phone and tablet widths — the small-screen half of 'Chapter Route - New York City' (split in two because the NYC photo gallery makes all four sizes in one capture exceed the capture tool's per-scenario time limit). Neither an upcoming nor a recent events block renders; the capped photo gallery and its 'Show all' control fit the narrow grid.
 
 ### CMS Analytics And Embeds
 
@@ -154,10 +160,4 @@ The homepage at 768px (iPad portrait), scrolled to the numbers band. Since the O
 <img src=".codeyam/scenarios/screenshots/community-route-founders-with-leads-and-events--mobile.png" alt="Community Route - Founders With Leads And Events" width="280">
 
 A community once it has people and a calendar behind it. Its events are tagged the ORIGINAL way — a single chapter tag naming the community — which this seed keeps on purpose: that path still works and this is what proves it. The newer alternative is an event's own communities list, which is what lets one London co-working day sit on the London chapter page and here at the same time without either tag having to win; the production Founders content uses that path, and this scenario deliberately covers the other. Its Join link points at the shared Google Form: this seed previously carried a raw chat.whatsapp.com invite, which put the one pattern the site forbids into a frame that looks like the product.
-
-### CMS Blog - Duplicate Is Not Momentum-Fund-Only
-
-<img src=".codeyam/scenarios/screenshots/cms-blog-duplicate-is-not-momentum-fund-only--desktop.png" alt="CMS Blog - Duplicate Is Not Momentum-Fund-Only" width="280">
-
-The same Duplicate action on a collection that has nothing to do with the campaign page. It matters because the request that produced this feature was about duplicating a Momentum Fund section, and the easy build would have gated the action to that one collection — which would have been MORE code to make the feature smaller. Duplicate lives in the shared entry-row action cluster instead, so pillar cards, events and blog posts get it for free, and a blog post duplicated here carries its own title, date, summary and body into the create form exactly the way a section does. The one exclusion is a preview row, whose action set is different and whose previewOf marker would otherwise mint a second unlisted clone of the same target. This list also shows the ordinary case for the row label: blog posts carry real titles, so no row is falling back to its slug.
 <!-- codeyam:scenario-gallery:end -->

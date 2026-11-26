@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: 1c9cac753917cf67d082a39492f5629411eb772e4ef1085ab4e3bac5a31798d3
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: a5f9e0af45213397dc57161ad06a1cca2d14f58fd95acd59755b4ed338389a0a
 
 // Render environment (colorScheme, deviceScaleFactor, userAgent, locale,
 // timezoneId, reduceMotion, forcedColors) is read from config when present
@@ -77,6 +77,7 @@ const {
 } = require("./scenario-issues");
 
 const { attachHttpMocks, recordInPageMockHits } = require("./scenario-mocks");
+const { PAGE_STATE_TEXT_NODE_CAP, dumpPageState } = require("./scenario-page-state");
 const { resolveRenderHubFiles } = require("./scenario-check-hub-functions");
 const {
   resolveRenderedSourcesAttribution,
@@ -663,6 +664,44 @@ function revealSettleNeeded({ readyFastPath, scrollHeight, viewportHeight }) {
   return scrollHeight > viewportHeight;
 }
 
+// Reveal-suppression fix: scroll-gated entrance animations (content held at
+// `opacity:0` until an IntersectionObserver fires on scroll) render blank in
+// isolation, where the app shell that wires those observers is absent.
+// Emulate reduced motion — so reduced-motion-aware stylesheets drop their
+// entrance animations and render the final state — and scroll the document
+// end-to-end to trip every observer, so the content reveals BEFORE we
+// measure and screenshot it, with no per-project force-reveal script. Both
+// are best-effort: a page/frame that cannot emulate or scroll (a
+// backend/static capture, a stubbed test target) is a no-op.
+async function revealScrollGatedContent(page, frame, { readyFastPath, height }) {
+  if (typeof page.emulateMedia === "function") {
+    await page.emulateMedia({ reducedMotion: "reduce" }).catch(() => {});
+  }
+  const scrollHeight = await scrollThroughDocument(frame).catch(() => null);
+  if (
+    typeof page.waitForTimeout === "function" &&
+    revealSettleNeeded({ readyFastPath, scrollHeight, viewportHeight: height || 900 })
+  ) {
+    await page.waitForTimeout(REVEAL_SETTLE_MS);
+  }
+}
+
+// Push one `unhandledrejection` issue per rejection the page's init script
+// recorded on `window.__codeyamUnhandledRejections` before the frame settled.
+async function pushUnhandledRejectionIssues(page, frame, url, issues) {
+  const rejectionMessages = await frame.evaluate(
+    () => window.__codeyamUnhandledRejections || [],
+  );
+  for (const message of rejectionMessages) {
+    pushIssue(
+      issues,
+      createIssue("unhandledrejection", message, {
+        url: page.url() || url,
+      }),
+    );
+  }
+}
+
 // Return a copy of `headers` with every name in `markerNames` removed.
 // Names are matched case-insensitively against the (lowercased) header keys
 // Playwright reports. Pure — never mutates its input — so unrelated headers
@@ -866,12 +905,6 @@ function pushRedirectMismatchIssue(issues, requestedUrl, frame, response, config
   );
 }
 
-// How many visible text nodes `dumpPageState` samples. Named because two
-// callers must agree on it: the sampler itself, and `verifyProbeSeedLanded`,
-// which can only treat "probe not found" as proof of absence when the sample
-// did NOT hit this cap.
-const PAGE_STATE_TEXT_NODE_CAP = 40;
-
 // Fallback for how long `verifyProbeSeedLanded` re-reads a frame that is still
 // showing committed content. Mirrors `SEED_LANDING_BUDGET` in
 // `seed_landing.rs`, and is used ONLY when the editor did not send
@@ -897,109 +930,6 @@ function readSeedLandingBudgetMs(config) {
   return typeof raw === "number" && Number.isFinite(raw) && raw > 0
     ? raw
     : SEED_LANDING_BUDGET_MS;
-}
-
-// Read-only page-state snapshot for `capture-state`: the full localStorage
-// map, a bounded sample of visible text nodes (document order), the page's
-// head metadata (`<title>` plus every named `<meta>`'s content), and — when a
-// selector is given — that element's text. Evaluated in-page against the
-// settled frame so it reflects exactly what a real capture saw (the proxy
-// already injected the scenario's seed into the served HTML). Every read is
-// individually guarded so a sandboxed/cross-origin localStorage never throws
-// the whole capture; the worst case is an empty section, not a failure.
-async function dumpPageState(frame, selector) {
-  return frame.evaluate(([sel, textNodeCap]) => {
-    const localStorage = {};
-    try {
-      for (let i = 0; i < window.localStorage.length; i++) {
-        const key = window.localStorage.key(i);
-        if (key != null) localStorage[key] = window.localStorage.getItem(key);
-      }
-    } catch (_) {
-      /* localStorage may be unavailable (sandboxed/opaque origin) */
-    }
-
-    const visibleText = [];
-    try {
-      // Reject text inside non-rendered tags (SCRIPT/STYLE/etc.) so an
-      // injected proxy script or inline CSS never masquerades as on-screen
-      // text — that noise is exactly what makes a state dump misleading.
-      const SKIP_TAGS = new Set([
-        "SCRIPT",
-        "STYLE",
-        "NOSCRIPT",
-        "TEMPLATE",
-        "HEAD",
-        "TITLE",
-      ]);
-      const walker = document.createTreeWalker(
-        document.body,
-        NodeFilter.SHOW_TEXT,
-        {
-          acceptNode(node) {
-            const parent = node.parentElement;
-            if (parent && SKIP_TAGS.has(parent.tagName)) {
-              return NodeFilter.FILTER_REJECT;
-            }
-            return (node.textContent || "").trim()
-              ? NodeFilter.FILTER_ACCEPT
-              : NodeFilter.FILTER_REJECT;
-          },
-        },
-      );
-      let node;
-      while ((node = walker.nextNode()) && visibleText.length < textNodeCap) {
-        const text = (node.textContent || "").replace(/\s+/g, " ").trim();
-        if (text) visibleText.push(text);
-      }
-    } catch (_) {
-      /* no body / detached document */
-    }
-
-    // Head metadata, deliberately its OWN field rather than more `visibleText`.
-    // `capture-state` consumers read `visibleText` as "text a reader sees on
-    // the page", and a `<title>` is not that. But a page that renders its
-    // seeded values only into `<title>` / `<meta content>` — a title-only page
-    // is exactly the reported case — still received the seed, and the Rust
-    // poll already counts it: matching the raw response body, head markup is
-    // in its haystack. Collecting the same surface here is what lets the two
-    // halves of one gate agree about what counts as the render.
-    const headMetadata = [];
-    try {
-      const title = (document.title || "").replace(/\s+/g, " ").trim();
-      if (title) headMetadata.push(title);
-    } catch (_) {
-      /* detached document */
-    }
-    try {
-      // `name` or `property` only: a bare `<meta charset>` or an
-      // `http-equiv` carries no authored content, and requiring one of the two
-      // naming attributes keeps the haystack to metadata someone declared.
-      const metas = document.querySelectorAll(
-        "meta[name][content], meta[property][content]",
-      );
-      for (let i = 0; i < metas.length && headMetadata.length < textNodeCap; i++) {
-        const content = (metas[i].getAttribute("content") || "")
-          .replace(/\s+/g, " ")
-          .trim();
-        if (content) headMetadata.push(content);
-      }
-    } catch (_) {
-      /* no head / detached document */
-    }
-
-    let selectorText = null;
-    if (sel) {
-      try {
-        const el = document.querySelector(sel);
-        if (el) selectorText = (el.textContent || "").replace(/\s+/g, " ").trim();
-      } catch (_) {
-        /* invalid selector — leave selectorText null */
-      }
-    }
-
-    return { localStorage, visibleText, headMetadata, selectorText };
-  }, [selector || null, PAGE_STATE_TEXT_NODE_CAP]);
 }
 
 // Landed-state verification, across every transport a seed can travel: prove
@@ -2120,37 +2050,8 @@ async function runScenarioCheckOnce(
     // signals are in hand, and surface it on the capture-state report below.
     const settleAdvisory = buildSettleAdvisory(stableOutcome, networkOutcome);
 
-    const rejectionMessages = await frame.evaluate(
-      () => window.__codeyamUnhandledRejections || [],
-    );
-    for (const message of rejectionMessages) {
-      pushIssue(
-        issues,
-        createIssue("unhandledrejection", message, {
-          url: page.url() || url,
-        }),
-      );
-    }
-
-    // Reveal-suppression fix: scroll-gated entrance animations (content held at
-    // `opacity:0` until an IntersectionObserver fires on scroll) render blank in
-    // isolation, where the app shell that wires those observers is absent.
-    // Emulate reduced motion — so reduced-motion-aware stylesheets drop their
-    // entrance animations and render the final state — and scroll the document
-    // end-to-end to trip every observer, so the content reveals BEFORE we
-    // measure and screenshot it, with no per-project force-reveal script. Both
-    // are best-effort: a page/frame that cannot emulate or scroll (a
-    // backend/static capture, a stubbed test target) is a no-op.
-    if (typeof page.emulateMedia === "function") {
-      await page.emulateMedia({ reducedMotion: "reduce" }).catch(() => {});
-    }
-    const scrollHeight = await scrollThroughDocument(frame).catch(() => null);
-    if (
-      typeof page.waitForTimeout === "function" &&
-      revealSettleNeeded({ readyFastPath, scrollHeight, viewportHeight: height || 900 })
-    ) {
-      await page.waitForTimeout(REVEAL_SETTLE_MS);
-    }
+    await pushUnhandledRejectionIssues(page, frame, url, issues);
+    await revealScrollGatedContent(page, frame, { readyFastPath, height });
 
     const rendered = await collectRenderedContent(page, frame, {
       issues,
@@ -2567,6 +2468,8 @@ module.exports = {
   captureOnSharedBrowser,
   WORKER_REPLY_PREFIX,
   revealSettleNeeded,
+  revealScrollGatedContent,
+  pushUnhandledRejectionIssues,
   recordCssRuleMatches,
   classifyInteractionEffect,
   interactionEffectSignal,
@@ -2627,3 +2530,8 @@ if (require.main === module) {
     process.exit(1);
   });
 }
+
+// Pixel-path script: its code and this number both feed the capture pipeline
+// id. Bump the number for a change that alters pixels without changing code.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

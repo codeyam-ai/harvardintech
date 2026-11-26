@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c870f4bd4df2e585028cfa8c3f9d48d54156ac4d  source-sha256: e1b0f970e834371fe7faec93943aaa33d2e9217311ebb759fe60910fff046bd0
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: 51b1d631c98a78e8cfbcc3afb3fc396982266bcc2037255174b344e01017e25f
 const LOADING_MARKERS = [
   "Loading scenario...",
   "Loading tests...",
@@ -453,3 +453,8 @@ module.exports = {
   SCENARIO_ERROR_MARKER,
   ERROR_CONTEXT_RADIUS,
 };
+
+// Pixel-path script: its code and this number both feed the capture pipeline
+// id. Bump the number for a change that alters pixels without changing code.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

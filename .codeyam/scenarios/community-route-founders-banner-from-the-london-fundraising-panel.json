@@ -1,0 +1,16 @@
+{
+  "name": "Community Route - Founders Banner From The London Fundraising Panel",
+  "id": "464d5800-73a5-4956-9922-b0f6029898a1",
+  "url": "/communities/founders",
+  "dimensions": [
+    "Desktop",
+    "Mobile"
+  ],
+  "mocks": {},
+  "clock": {
+    "now": "2026-11-26T03:03:03Z"
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/communities/[slug].astro",
+  "description": "Founders now opens on a wide room shot: our own 2026 London mixer panel, Fundraising in the era of AI-native startups, with the panellists under the slide and the audience in front. It replaces a tight crop of two people that the short banner cut off at the forehead. The focus sits 58% down, so the panellists' faces stay in frame on desktop; a phone shows the whole room."
+}

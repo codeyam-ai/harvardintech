@@ -1,0 +1,638 @@
+{
+  "entities": {
+    "scripts/crop.mjs::c": {
+      "filePath": "scripts/crop.mjs",
+      "importedBy": [
+        "scripts/crop.mjs::ctx"
+      ],
+      "imports": [],
+      "name": "c"
+    },
+    "scripts/crop.mjs::ctx": {
+      "filePath": "scripts/crop.mjs",
+      "importedBy": [],
+      "imports": [
+        "scripts/crop.mjs::c"
+      ],
+      "name": "ctx"
+    },
+    "scripts/download-assets.mjs::extract": {
+      "filePath": "scripts/download-assets.mjs",
+      "importedBy": [
+        "scripts/download-assets.mjs::gallery"
+      ],
+      "imports": [],
+      "name": "extract"
+    },
+    "scripts/download-assets.mjs::gallery": {
+      "filePath": "scripts/download-assets.mjs",
+      "importedBy": [],
+      "imports": [
+        "scripts/download-assets.mjs::extract"
+      ],
+      "name": "gallery"
+    },
+    "scripts/extract.mjs::galleryImgs": {
+      "filePath": "scripts/extract.mjs",
+      "importedBy": [],
+      "imports": [
+        "scripts/extract.mjs::s"
+      ],
+      "name": "galleryImgs"
+    },
+    "scripts/extract.mjs::s": {
+      "filePath": "scripts/extract.mjs",
+      "importedBy": [
+        "scripts/extract.mjs::galleryImgs"
+      ],
+      "imports": [],
+      "name": "s"
+    },
+    "scripts/import-archive-events.mjs::main": {
+      "filePath": "scripts/import-archive-events.mjs",
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/import-archive-events.mjs::parseArgs",
+        "src/lib/strikinglyArchive.js::eventFrontmatter",
+        "src/lib/strikinglyArchive.js::flattenWriteup",
+        "src/lib/strikinglyArchive.js::slugify"
+      ],
+      "name": "main"
+    },
+    "scripts/import-archive-events.mjs::parseArgs": {
+      "filePath": "scripts/import-archive-events.mjs",
+      "importedBy": [
+        "scripts/import-archive-events.mjs::main"
+      ],
+      "imports": [],
+      "name": "parseArgs"
+    },
+    "scripts/import-luma.mjs::collectEntries": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "scripts/import-luma.mjs::main"
+      ],
+      "imports": [
+        "src/lib/lumaFeed.js::lumaEntriesFromFeed"
+      ],
+      "name": "collectEntries"
+    },
+    "scripts/import-luma.mjs::fetchFeed": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "scripts/import-luma.mjs::fetchPeriods"
+      ],
+      "imports": [
+        "src/lib/lumaFeed.js::lumaFeedUrl"
+      ],
+      "name": "fetchFeed"
+    },
+    "scripts/import-luma.mjs::fetchPeriods": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "scripts/import-luma.mjs::main"
+      ],
+      "imports": [
+        "scripts/import-luma.mjs::fetchFeed"
+      ],
+      "name": "fetchPeriods"
+    },
+    "scripts/import-luma.mjs::main": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "src/lib/lumaImport.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/import-luma.mjs::collectEntries",
+        "scripts/import-luma.mjs::fetchPeriods",
+        "scripts/import-luma.mjs::offlineResult",
+        "scripts/import-luma.mjs::parseArgs",
+        "scripts/import-luma.mjs::printSummary",
+        "scripts/import-luma.mjs::readExisting",
+        "scripts/import-luma.mjs::writeEntries"
+      ],
+      "name": "main"
+    },
+    "scripts/import-luma.mjs::offlineResult": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "scripts/import-luma.mjs::main"
+      ],
+      "imports": [],
+      "name": "offlineResult"
+    },
+    "scripts/import-luma.mjs::parseArgs": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "scripts/import-luma.mjs::main"
+      ],
+      "imports": [],
+      "name": "parseArgs"
+    },
+    "scripts/import-luma.mjs::printSummary": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "scripts/import-luma.mjs::main"
+      ],
+      "imports": [],
+      "name": "printSummary"
+    },
+    "scripts/import-luma.mjs::readExisting": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "scripts/import-luma.mjs::main"
+      ],
+      "imports": [
+        "src/lib/lumaFeed.js::lumaSlugFromLink"
+      ],
+      "name": "readExisting"
+    },
+    "scripts/import-luma.mjs::writeEntries": {
+      "filePath": "scripts/import-luma.mjs",
+      "importedBy": [
+        "scripts/import-luma.mjs::main"
+      ],
+      "imports": [
+        "src/lib/lumaFeed.js::eventMarkdown"
+      ],
+      "name": "writeEntries"
+    },
+    "scripts/import-webinars.mjs::__file_root__": {
+      "filePath": "scripts/import-webinars.mjs",
+      "importedBy": [],
+      "imports": [
+        "src/lib/strikinglyArchive.js::webinarPostBody"
+      ],
+      "name": "__file_root__"
+    },
+    "scripts/import-webinars.mjs::main": {
+      "filePath": "scripts/import-webinars.mjs",
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/import-webinars.mjs::parseArgs",
+        "scripts/import-webinars.mjs::postBody",
+        "src/lib/strikinglyArchive.js::slugify"
+      ],
+      "name": "main"
+    },
+    "scripts/import-webinars.mjs::parseArgs": {
+      "filePath": "scripts/import-webinars.mjs",
+      "importedBy": [
+        "scripts/import-webinars.mjs::main"
+      ],
+      "imports": [],
+      "name": "parseArgs"
+    },
+    "scripts/import-webinars.mjs::postBody": {
+      "filePath": "scripts/import-webinars.mjs",
+      "importedBy": [
+        "scripts/import-webinars.mjs::main"
+      ],
+      "imports": [
+        "src/lib/strikinglyArchive.js::webinarPostBody"
+      ],
+      "name": "postBody"
+    },
+    "scripts/notify-site-alert.mjs::__file_root__": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [],
+      "imports": [
+        "src/lib/siteAlert.js::__file_root__",
+        "src/lib/siteAlert.js::classifyRun"
+      ],
+      "name": "__file_root__"
+    },
+    "scripts/notify-site-alert.mjs::addComment": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "scripts/notify-site-alert.mjs::closeAlert",
+        "scripts/notify-site-alert.mjs::notify",
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "addComment"
+    },
+    "scripts/notify-site-alert.mjs::closeAlert": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "scripts/notify-site-alert.mjs::notify",
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/notify-site-alert.mjs::addComment"
+      ],
+      "name": "closeAlert"
+    },
+    "scripts/notify-site-alert.mjs::ensureLabel": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "scripts/notify-site-alert.mjs::openAlert",
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "ensureLabel"
+    },
+    "scripts/notify-site-alert.mjs::findOpenAlert": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "scripts/notify-site-alert.mjs::notify",
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "findOpenAlert"
+    },
+    "scripts/notify-site-alert.mjs::githubClient": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "githubClient"
+    },
+    "scripts/notify-site-alert.mjs::main": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/notify-site-alert.mjs::notify"
+      ],
+      "name": "main"
+    },
+    "scripts/notify-site-alert.mjs::notify": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "scripts/notify-site-alert.mjs::main",
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/notify-site-alert.mjs::addComment",
+        "scripts/notify-site-alert.mjs::closeAlert",
+        "scripts/notify-site-alert.mjs::findOpenAlert",
+        "scripts/notify-site-alert.mjs::openAlert",
+        "scripts/notify-site-alert.mjs::readRun",
+        "src/lib/siteAlert.js::__file_root__",
+        "src/lib/siteAlert.js::alertRunUrl",
+        "src/lib/siteAlert.js::classifyRun",
+        "src/lib/siteAlert.js::parseMentions",
+        "src/lib/siteAlert.js::planAlertAction",
+        "src/lib/siteAlert.js::recoveredComment",
+        "src/lib/siteAlert.js::repeatComment"
+      ],
+      "name": "notify"
+    },
+    "scripts/notify-site-alert.mjs::openAlert": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "scripts/notify-site-alert.mjs::notify",
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/notify-site-alert.mjs::ensureLabel",
+        "src/lib/siteAlert.js::alertBody"
+      ],
+      "name": "openAlert"
+    },
+    "scripts/notify-site-alert.mjs::readRun": {
+      "filePath": "scripts/notify-site-alert.mjs",
+      "importedBy": [
+        "scripts/notify-site-alert.mjs::notify",
+        "src/lib/notifySiteAlert.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "readRun"
+    },
+    "scripts/responsive-images.mjs::IMAGES_DIR": {
+      "filePath": "scripts/responsive-images.mjs",
+      "importedBy": [
+        "scripts/responsive-images.mjs::main"
+      ],
+      "imports": [],
+      "name": "IMAGES_DIR"
+    },
+    "scripts/responsive-images.mjs::MANIFEST": {
+      "filePath": "scripts/responsive-images.mjs",
+      "importedBy": [
+        "scripts/responsive-images.mjs::main"
+      ],
+      "imports": [],
+      "name": "MANIFEST"
+    },
+    "scripts/responsive-images.mjs::main": {
+      "filePath": "scripts/responsive-images.mjs",
+      "importedBy": [],
+      "imports": [
+        "scripts/responsive-images.mjs::IMAGES_DIR",
+        "scripts/responsive-images.mjs::MANIFEST",
+        "scripts/responsive-images.mjs::newerThan",
+        "scripts/responsive-images.mjs::walk",
+        "src/lib/responsiveImageVariants.mjs::variantPath",
+        "src/lib/responsiveImageVariants.mjs::variantWidths"
+      ],
+      "name": "main"
+    },
+    "scripts/responsive-images.mjs::newerThan": {
+      "filePath": "scripts/responsive-images.mjs",
+      "importedBy": [
+        "scripts/responsive-images.mjs::main",
+        "src/lib/responsiveImagesScript.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "newerThan"
+    },
+    "scripts/responsive-images.mjs::walk": {
+      "filePath": "scripts/responsive-images.mjs",
+      "importedBy": [
+        "scripts/responsive-images.mjs::main",
+        "src/lib/responsiveImagesScript.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "walk"
+    },
+    "scripts/responsive-sweep.mjs::OUT_DIR": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::main",
+        "scripts/responsive-sweep.mjs::report"
+      ],
+      "imports": [],
+      "name": "OUT_DIR"
+    },
+    "scripts/responsive-sweep.mjs::__file_root__": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [],
+      "imports": [
+        "src/lib/responsiveSweep.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "scripts/responsive-sweep.mjs::builtWithDeployBase": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::planSweep",
+        "src/lib/responsiveSweepScript.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "builtWithDeployBase"
+    },
+    "scripts/responsive-sweep.mjs::enumeratePages": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::readDist",
+        "src/lib/responsiveSweepScript.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/responsive-sweep.mjs::isRedirectStub"
+      ],
+      "name": "enumeratePages"
+    },
+    "scripts/responsive-sweep.mjs::freePort": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::runSweep"
+      ],
+      "imports": [],
+      "name": "freePort"
+    },
+    "scripts/responsive-sweep.mjs::isRedirectStub": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::enumeratePages",
+        "src/lib/responsiveSweepScript.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/responsive-sweep.mjs::main"
+      ],
+      "name": "isRedirectStub"
+    },
+    "scripts/responsive-sweep.mjs::main": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::isRedirectStub"
+      ],
+      "imports": [
+        "scripts/responsive-sweep.mjs::OUT_DIR",
+        "scripts/responsive-sweep.mjs::parseOnly",
+        "scripts/responsive-sweep.mjs::planSweep",
+        "scripts/responsive-sweep.mjs::readDist",
+        "scripts/responsive-sweep.mjs::report",
+        "scripts/responsive-sweep.mjs::runSweep",
+        "src/lib/responsiveSweep.ts::__file_root__",
+        "src/lib/responsiveSweep.ts::summarise"
+      ],
+      "name": "main"
+    },
+    "scripts/responsive-sweep.mjs::measureInBrowser": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::sweepOne"
+      ],
+      "imports": [],
+      "name": "measureInBrowser"
+    },
+    "scripts/responsive-sweep.mjs::parseOnly": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::main",
+        "src/lib/responsiveSweepScript.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "parseOnly"
+    },
+    "scripts/responsive-sweep.mjs::planSweep": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::main",
+        "src/lib/responsiveSweepScript.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/responsive-sweep.mjs::builtWithDeployBase"
+      ],
+      "name": "planSweep"
+    },
+    "scripts/responsive-sweep.mjs::readDist": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::main"
+      ],
+      "imports": [
+        "scripts/responsive-sweep.mjs::enumeratePages"
+      ],
+      "name": "readDist"
+    },
+    "scripts/responsive-sweep.mjs::report": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::main",
+        "src/lib/responsiveSweepScript.test.ts::__file_root__"
+      ],
+      "imports": [
+        "scripts/responsive-sweep.mjs::OUT_DIR",
+        "src/lib/responsiveSweep.ts::__file_root__"
+      ],
+      "name": "report"
+    },
+    "scripts/responsive-sweep.mjs::runSweep": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::main"
+      ],
+      "imports": [
+        "scripts/responsive-sweep.mjs::freePort",
+        "scripts/responsive-sweep.mjs::startPreview",
+        "scripts/responsive-sweep.mjs::sweepJobs",
+        "scripts/responsive-sweep.mjs::sweepOne",
+        "src/lib/responsiveSweep.ts::__file_root__"
+      ],
+      "name": "runSweep"
+    },
+    "scripts/responsive-sweep.mjs::startPreview": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::runSweep"
+      ],
+      "imports": [],
+      "name": "startPreview"
+    },
+    "scripts/responsive-sweep.mjs::sweepJobs": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::runSweep",
+        "src/lib/responsiveSweepScript.test.ts::__file_root__"
+      ],
+      "imports": [
+        "src/lib/responsiveSweep.ts::__file_root__"
+      ],
+      "name": "sweepJobs"
+    },
+    "scripts/responsive-sweep.mjs::sweepOne": {
+      "filePath": "scripts/responsive-sweep.mjs",
+      "importedBy": [
+        "scripts/responsive-sweep.mjs::runSweep"
+      ],
+      "imports": [
+        "scripts/responsive-sweep.mjs::measureInBrowser",
+        "src/lib/responsiveSweep.ts::judgePage"
+      ],
+      "name": "sweepOne"
+    },
+    "scripts/snapshot-strikingly.mjs::__file_root__": {
+      "filePath": "scripts/snapshot-strikingly.mjs",
+      "importedBy": [],
+      "imports": [
+        "src/lib/strikinglyArchive.js::archiveItems",
+        "src/lib/strikinglyArchive.js::cleanTitleText",
+        "src/lib/strikinglyArchive.js::cleanWriteup",
+        "src/lib/strikinglyArchive.js::featuredEventItem",
+        "src/lib/strikinglyArchive.js::galleryItems",
+        "src/lib/strikinglyArchive.js::pageByPath",
+        "src/lib/strikinglyArchive.js::parseArchiveDate",
+        "src/lib/strikinglyArchive.js::slugify",
+        "src/lib/strikinglyArchive.js::storeFromHtml",
+        "src/lib/strikinglyArchive.js::strikinglyImageFallbackUrl",
+        "src/lib/strikinglyArchive.js::strikinglyImageUrl",
+        "src/lib/strikinglyArchive.js::videoProviderFor",
+        "src/lib/strikinglyArchive.js::webinarItems"
+      ],
+      "name": "__file_root__"
+    },
+    "scripts/snapshot-strikingly.mjs::main": {
+      "filePath": "scripts/snapshot-strikingly.mjs",
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "main"
+    }
+  },
+  "files": {
+    "scripts/compare-shot.mjs": {
+      "importedBy": [],
+      "imports": []
+    },
+    "scripts/crop.mjs": {
+      "importedBy": [],
+      "imports": []
+    },
+    "scripts/download-assets.mjs": {
+      "importedBy": [],
+      "imports": []
+    },
+    "scripts/extract.mjs": {
+      "importedBy": [],
+      "imports": []
+    },
+    "scripts/import-archive-events.mjs": {
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts"
+      ],
+      "imports": [
+        "src/lib/strikinglyArchive.js"
+      ]
+    },
+    "scripts/import-luma.mjs": {
+      "importedBy": [
+        "src/lib/lumaImport.test.ts"
+      ],
+      "imports": [
+        "src/lib/lumaFeed.js"
+      ]
+    },
+    "scripts/import-webinars.mjs": {
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts"
+      ],
+      "imports": [
+        "src/lib/strikinglyArchive.js"
+      ]
+    },
+    "scripts/install-browser.mjs": {
+      "importedBy": [],
+      "imports": []
+    },
+    "scripts/notify-site-alert.mjs": {
+      "importedBy": [
+        "src/lib/notifySiteAlert.test.ts"
+      ],
+      "imports": [
+        "src/lib/siteAlert.js"
+      ]
+    },
+    "scripts/ours-shot.mjs": {
+      "importedBy": [],
+      "imports": []
+    },
+    "scripts/responsive-images.mjs": {
+      "importedBy": [
+        "src/lib/responsiveImagesScript.test.ts"
+      ],
+      "imports": [
+        "src/lib/responsiveImageVariants.mjs"
+      ]
+    },
+    "scripts/responsive-sweep.mjs": {
+      "importedBy": [
+        "src/lib/responsiveSweepScript.test.ts"
+      ],
+      "imports": [
+        "src/lib/responsiveSweep.ts"
+      ]
+    },
+    "scripts/section-shot.mjs": {
+      "importedBy": [],
+      "imports": []
+    },
+    "scripts/snapshot-strikingly.mjs": {
+      "importedBy": [
+        "src/lib/archiveImporters.test.ts"
+      ],
+      "imports": [
+        "src/lib/strikinglyArchive.js"
+      ]
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "src/data/cms.json::__file_root__": {
+      "filePath": "src/data/cms.json",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/data/collections.json::__file_root__": {
+      "filePath": "src/data/collections.json",
+      "importedBy": [
+        "src/lib/brandNameContent.test.ts::__file_root__",
+        "src/lib/cmsOrderControls.test.ts::__file_root__",
+        "src/lib/copyWarnings.test.ts::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/data/collections.test.ts::__file_root__": {
+      "filePath": "src/data/collections.test.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/collectionRegistryDrift.ts::RegistryField",
+        "src/lib/collectionRegistryDrift.ts::declaredFieldNames",
+        "src/lib/collectionRegistryDrift.ts::missingFields",
+        "src/lib/collectionRegistryDrift.ts::schemaKeysFor",
+        "src/lib/collectionRegistryDrift.ts::singletonKeysWithoutEditor",
+        "src/lib/collectionRegistryDrift.ts::unknownFields",
+        "src/lib/leadSchema.ts::leadSchema"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/data/cms.json": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": []
+    },
+    "src/data/collections.json": {
+      "importedBy": [
+        "src/lib/brandNameContent.test.ts",
+        "src/lib/cmsOrderControls.test.ts",
+        "src/lib/copyWarnings.test.ts"
+      ],
+      "imports": []
+    },
+    "src/data/collections.test.ts": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/collectionRegistryDrift.ts",
+        "src/lib/leadSchema.ts"
+      ]
+    }
+  }
+}

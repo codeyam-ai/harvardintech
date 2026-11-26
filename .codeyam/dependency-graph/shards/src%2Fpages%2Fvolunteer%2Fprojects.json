@@ -1,0 +1,41 @@
+{
+  "entities": {
+    "src/pages/volunteer/projects/[slug].astro::__file_root__": {
+      "filePath": "src/pages/volunteer/projects/[slug].astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/LockedPreviewBody.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectPage.astro::__file_root__",
+        "src/layouts/BaseLayout.astro::__file_root__",
+        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
+        "src/lib/drafts.ts::isLocked",
+        "src/lib/drafts.ts::isPreview",
+        "src/lib/drafts.ts::publishedEntries",
+        "src/lib/drafts.ts::routableEntries",
+        "src/lib/projects.ts::chapterPhotos",
+        "src/lib/projects.ts::projectBackdrop",
+        "src/lib/projects.ts::projectCardData",
+        "src/lib/projects.ts::relatedProjects",
+        "src/lib/projects.ts::withProjectBackdrops",
+        "src/lib/site.ts::volunteerPage",
+        "src/lib/volunteerPageContent.ts::loadVolunteerCopy"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/pages/volunteer/projects/[slug].astro": {
+      "importedBy": [],
+      "imports": [
+        "src/layouts/BaseLayout.astro",
+        "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/lib/site.ts",
+        "src/lib/volunteerPageContent.ts",
+        "src/components/LockedPreviewBody.astro",
+        "src/lib/drafts.ts",
+        "src/lib/draftVisibility.ts",
+        "src/lib/projects.ts"
+      ]
+    }
+  }
+}

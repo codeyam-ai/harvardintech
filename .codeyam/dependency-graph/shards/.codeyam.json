@@ -1,0 +1,2258 @@
+{
+  "entities": {
+    ".codeyam/capture.js::buildSessionTokenCookies": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::prepareCaptureContext"
+      ],
+      "imports": [
+        ".codeyam/capture.js::originHost",
+        ".codeyam/capture.js::path",
+        ".codeyam/capture.js::readSessionToken"
+      ],
+      "name": "buildSessionTokenCookies"
+    },
+    ".codeyam/capture.js::captureAuthSkewDetected": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::prepareCaptureContext"
+      ],
+      "imports": [],
+      "name": "captureAuthSkewDetected"
+    },
+    ".codeyam/capture.js::captureOnSharedBrowser": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runCaptureWorker"
+      ],
+      "imports": [],
+      "name": "captureOnSharedBrowser"
+    },
+    ".codeyam/capture.js::decodeScreenshotPng": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/capture.js::path"
+      ],
+      "name": "decodeScreenshotPng"
+    },
+    ".codeyam/capture.js::fs": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::readSessionToken",
+        ".codeyam/capture.js::runFlowSteps",
+        ".codeyam/capture.js::writeCaptureScreenshot"
+      ],
+      "imports": [],
+      "name": "fs"
+    },
+    ".codeyam/capture.js::navigateFlowStep": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runFlowSteps"
+      ],
+      "imports": [
+        ".codeyam/capture.js::safeFrameUrl"
+      ],
+      "name": "navigateFlowStep"
+    },
+    ".codeyam/capture.js::onBoxSessionTokenExists": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::prepareCaptureContext"
+      ],
+      "imports": [
+        ".codeyam/capture.js::readSessionToken"
+      ],
+      "name": "onBoxSessionTokenExists"
+    },
+    ".codeyam/capture.js::openCaptureContext": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runScenarioCheckOnce"
+      ],
+      "imports": [],
+      "name": "openCaptureContext"
+    },
+    ".codeyam/capture.js::originHost": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::buildSessionTokenCookies"
+      ],
+      "imports": [],
+      "name": "originHost"
+    },
+    ".codeyam/capture.js::path": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::buildSessionTokenCookies",
+        ".codeyam/capture.js::decodeScreenshotPng",
+        ".codeyam/capture.js::readSessionToken",
+        ".codeyam/capture.js::runFlowSteps",
+        ".codeyam/capture.js::runScenarioCheckOnce",
+        ".codeyam/capture.js::writeCaptureScreenshot"
+      ],
+      "imports": [],
+      "name": "path"
+    },
+    ".codeyam/capture.js::prepareCaptureContext": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runScenarioCheckOnce"
+      ],
+      "imports": [
+        ".codeyam/capture.js::buildSessionTokenCookies",
+        ".codeyam/capture.js::captureAuthSkewDetected",
+        ".codeyam/capture.js::onBoxSessionTokenExists"
+      ],
+      "name": "prepareCaptureContext"
+    },
+    ".codeyam/capture.js::readSessionToken": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::buildSessionTokenCookies",
+        ".codeyam/capture.js::onBoxSessionTokenExists",
+        ".codeyam/capture.js::reportSubpathHydrationFailure"
+      ],
+      "imports": [
+        ".codeyam/capture.js::fs",
+        ".codeyam/capture.js::path"
+      ],
+      "name": "readSessionToken"
+    },
+    ".codeyam/capture.js::releaseCaptureScope": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runScenarioCheckOnce"
+      ],
+      "imports": [],
+      "name": "releaseCaptureScope"
+    },
+    ".codeyam/capture.js::reportSubpathHydrationFailure": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/capture.js::readSessionToken",
+        ".codeyam/capture.js::subpathHydrationReportTarget"
+      ],
+      "name": "reportSubpathHydrationFailure"
+    },
+    ".codeyam/capture.js::runCaptureWorker": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/capture.js::captureOnSharedBrowser",
+        ".codeyam/capture.js::runScenarioCheck"
+      ],
+      "name": "runCaptureWorker"
+    },
+    ".codeyam/capture.js::runFlowSteps": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runScenarioCheckOnce"
+      ],
+      "imports": [
+        ".codeyam/capture.js::fs",
+        ".codeyam/capture.js::navigateFlowStep",
+        ".codeyam/capture.js::path"
+      ],
+      "name": "runFlowSteps"
+    },
+    ".codeyam/capture.js::runScenarioCheck": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runCaptureWorker"
+      ],
+      "imports": [
+        ".codeyam/capture.js::runScenarioCheckOnce"
+      ],
+      "name": "runScenarioCheck"
+    },
+    ".codeyam/capture.js::runScenarioCheckOnce": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runScenarioCheck"
+      ],
+      "imports": [
+        ".codeyam/capture.js::openCaptureContext",
+        ".codeyam/capture.js::path",
+        ".codeyam/capture.js::prepareCaptureContext",
+        ".codeyam/capture.js::releaseCaptureScope",
+        ".codeyam/capture.js::runFlowSteps",
+        ".codeyam/capture.js::safeFrameUrl",
+        ".codeyam/capture.js::writeCaptureScreenshot"
+      ],
+      "name": "runScenarioCheckOnce"
+    },
+    ".codeyam/capture.js::safeFrameUrl": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::navigateFlowStep",
+        ".codeyam/capture.js::runScenarioCheckOnce"
+      ],
+      "imports": [],
+      "name": "safeFrameUrl"
+    },
+    ".codeyam/capture.js::subpathHydrationReportTarget": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::reportSubpathHydrationFailure"
+      ],
+      "imports": [],
+      "name": "subpathHydrationReportTarget"
+    },
+    ".codeyam/capture.js::writeCaptureScreenshot": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [
+        ".codeyam/capture.js::runScenarioCheckOnce"
+      ],
+      "imports": [
+        ".codeyam/capture.js::fs",
+        ".codeyam/capture.js::path"
+      ],
+      "name": "writeCaptureScreenshot"
+    },
+    ".codeyam/capture.js::{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n  wasmCompileTimingInit,\n  readWasmLoadTimings,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-run.js::__file_root__"
+      ],
+      "name": "{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n  wasmCompileTimingInit,\n  readWasmLoadTimings,\n}"
+    },
+    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-playwright.js::__file_root__"
+      ],
+      "name": "{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}"
+    },
+    ".codeyam/capture.js::{\n  buildCounterpartProbe,\n  subpathHydrationEscalation,\n  waitForHydration,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-interactivity.js::__file_root__"
+      ],
+      "name": "{\n  buildCounterpartProbe,\n  subpathHydrationEscalation,\n  waitForHydration,\n}"
+    },
+    ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n  RELOADED_AFTER_READY,\n  retryOnLiveReload,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::__file_root__"
+      ],
+      "name": "{\n  createIssue,\n  pushIssue,\n  buildResult,\n  RELOADED_AFTER_READY,\n  retryOnLiveReload,\n}"
+    },
+    ".codeyam/capture.js::{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-metrics.js::__file_root__"
+      ],
+      "name": "{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}"
+    },
+    ".codeyam/capture.js::{\n  launchChromiumWithSelfHeal,\n  createWarmContext,\n  pageScopedCaptureTarget,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch.js::__file_root__"
+      ],
+      "name": "{\n  launchChromiumWithSelfHeal,\n  createWarmContext,\n  pageScopedCaptureTarget,\n}"
+    },
+    ".codeyam/capture.js::{\n  resolveRenderedSourcesAttribution,\n  armRenderedSourcesAttribution,\n  retryUnarmedOnReadyTimeout,\n  renderedSourcesRecordPath,\n  recordRenderedSources,\n  renderedSourcesFromOutcome,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-attribution.js::__file_root__"
+      ],
+      "name": "{\n  resolveRenderedSourcesAttribution,\n  armRenderedSourcesAttribution,\n  retryUnarmedOnReadyTimeout,\n  renderedSourcesRecordPath,\n  recordRenderedSources,\n  renderedSourcesFromOutcome,\n}"
+    },
+    ".codeyam/capture.js::{ PAGE_STATE_TEXT_NODE_CAP, dumpPageState }": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-page-state.js::__file_root__"
+      ],
+      "name": "{ PAGE_STATE_TEXT_NODE_CAP, dumpPageState }"
+    },
+    ".codeyam/capture.js::{ attachHttpMocks, recordInPageMockHits }": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-mocks.js::__file_root__"
+      ],
+      "name": "{ attachHttpMocks, recordInPageMockHits }"
+    },
+    ".codeyam/capture.js::{ devicePixelRatioOf }": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-targeting.js::__file_root__"
+      ],
+      "name": "{ devicePixelRatioOf }"
+    },
+    ".codeyam/capture.js::{ getInitScript }": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-handlers.js::__file_root__"
+      ],
+      "name": "{ getInitScript }"
+    },
+    ".codeyam/capture.js::{ resolveRenderHubFiles }": {
+      "filePath": ".codeyam/capture.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-hub-functions.js::__file_root__"
+      ],
+      "name": "{ resolveRenderHubFiles }"
+    },
+    ".codeyam/preview-liveness.js::closeWithin": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [
+        ".codeyam/preview-liveness.js::runLiveness"
+      ],
+      "imports": [],
+      "name": "closeWithin"
+    },
+    ".codeyam/preview-liveness.js::createConsoleTail": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [
+        ".codeyam/preview-liveness.js::runLiveness"
+      ],
+      "imports": [],
+      "name": "createConsoleTail"
+    },
+    ".codeyam/preview-liveness.js::livenessLaunchOptions": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [
+        ".codeyam/preview-liveness.js::runLiveness"
+      ],
+      "imports": [],
+      "name": "livenessLaunchOptions"
+    },
+    ".codeyam/preview-liveness.js::loadAndAwaitReady": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [
+        ".codeyam/preview-liveness.js::runLiveness"
+      ],
+      "imports": [],
+      "name": "loadAndAwaitReady"
+    },
+    ".codeyam/preview-liveness.js::measureResponsiveness": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [
+        ".codeyam/preview-liveness.js::runLiveness"
+      ],
+      "imports": [
+        ".codeyam/preview-liveness.js::timedEvaluate"
+      ],
+      "name": "measureResponsiveness"
+    },
+    ".codeyam/preview-liveness.js::probeGpuAdapter": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [
+        ".codeyam/preview-liveness.js::runLiveness"
+      ],
+      "imports": [
+        ".codeyam/preview-liveness.js::timedEvaluate"
+      ],
+      "name": "probeGpuAdapter"
+    },
+    ".codeyam/preview-liveness.js::runLiveness": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/preview-liveness.js::closeWithin",
+        ".codeyam/preview-liveness.js::createConsoleTail",
+        ".codeyam/preview-liveness.js::livenessLaunchOptions",
+        ".codeyam/preview-liveness.js::loadAndAwaitReady",
+        ".codeyam/preview-liveness.js::measureResponsiveness",
+        ".codeyam/preview-liveness.js::probeGpuAdapter",
+        ".codeyam/preview-liveness.js::unresponsiveReasonText"
+      ],
+      "name": "runLiveness"
+    },
+    ".codeyam/preview-liveness.js::timedEvaluate": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [
+        ".codeyam/preview-liveness.js::measureResponsiveness",
+        ".codeyam/preview-liveness.js::probeGpuAdapter"
+      ],
+      "imports": [],
+      "name": "timedEvaluate"
+    },
+    ".codeyam/preview-liveness.js::unresponsiveReasonText": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [
+        ".codeyam/preview-liveness.js::runLiveness"
+      ],
+      "imports": [],
+      "name": "unresponsiveReasonText"
+    },
+    ".codeyam/preview-liveness.js::{\n  CAPTURE_HOST_RESOLVER_RULES,\n  CAPTURE_DISABLED_FEATURES,\n  mergeDisableFeaturesArg,\n  playwrightDefaultDisableFeaturesArg,\n  launchChromiumWithSelfHeal,\n}": {
+      "filePath": ".codeyam/preview-liveness.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch.js::__file_root__"
+      ],
+      "name": "{\n  CAPTURE_HOST_RESOLVER_RULES,\n  CAPTURE_DISABLED_FEATURES,\n  mergeDisableFeaturesArg,\n  playwrightDefaultDisableFeaturesArg,\n  launchChromiumWithSelfHeal,\n}"
+    },
+    ".codeyam/scenario-check-attribution.js::__file_root__": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/capture.js::{\n  resolveRenderedSourcesAttribution,\n  armRenderedSourcesAttribution,\n  retryUnarmedOnReadyTimeout,\n  renderedSourcesRecordPath,\n  recordRenderedSources,\n  renderedSourcesFromOutcome,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-check-attribution.js::armRenderedSourcesAttribution": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-attribution.js::attributedRecordVerdict",
+        ".codeyam/scenario-check-attribution.js::cachedWorkspaceCrates",
+        ".codeyam/scenario-check-attribution.js::watchWasmFunctionEntries"
+      ],
+      "name": "armRenderedSourcesAttribution"
+    },
+    ".codeyam/scenario-check-attribution.js::attributedRecordVerdict": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::armRenderedSourcesAttribution"
+      ],
+      "imports": [],
+      "name": "attributedRecordVerdict"
+    },
+    ".codeyam/scenario-check-attribution.js::cachedWorkspaceCrates": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::armRenderedSourcesAttribution"
+      ],
+      "imports": [],
+      "name": "cachedWorkspaceCrates"
+    },
+    ".codeyam/scenario-check-attribution.js::fs": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::functionRangesFor",
+        ".codeyam/scenario-check-attribution.js::readStackRenderedSourcesAttribution",
+        ".codeyam/scenario-check-attribution.js::watchWasmFunctionEntries"
+      ],
+      "imports": [],
+      "name": "fs"
+    },
+    ".codeyam/scenario-check-attribution.js::functionRangesFor": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::watchWasmFunctionEntries"
+      ],
+      "imports": [
+        ".codeyam/scenario-check-attribution.js::fs"
+      ],
+      "name": "functionRangesFor"
+    },
+    ".codeyam/scenario-check-attribution.js::installWasmCompilePause": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::watchWasmFunctionEntries"
+      ],
+      "imports": [],
+      "name": "installWasmCompilePause"
+    },
+    ".codeyam/scenario-check-attribution.js::path": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::readStackRenderedSourcesAttribution"
+      ],
+      "imports": [],
+      "name": "path"
+    },
+    ".codeyam/scenario-check-attribution.js::readStackRenderedSourcesAttribution": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::resolveRenderedSourcesAttribution"
+      ],
+      "imports": [
+        ".codeyam/scenario-check-attribution.js::fs",
+        ".codeyam/scenario-check-attribution.js::path"
+      ],
+      "name": "readStackRenderedSourcesAttribution"
+    },
+    ".codeyam/scenario-check-attribution.js::resolveRenderedSourcesAttribution": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-attribution.js::readStackRenderedSourcesAttribution"
+      ],
+      "name": "resolveRenderedSourcesAttribution"
+    },
+    ".codeyam/scenario-check-attribution.js::retryFileLevel": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::retryUnarmedOnReadyTimeout"
+      ],
+      "imports": [],
+      "name": "retryFileLevel"
+    },
+    ".codeyam/scenario-check-attribution.js::retryUnarmedOnReadyTimeout": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-attribution.js::retryFileLevel"
+      ],
+      "name": "retryUnarmedOnReadyTimeout"
+    },
+    ".codeyam/scenario-check-attribution.js::takeRetiredBreakpointIds": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::watchWasmFunctionEntries"
+      ],
+      "imports": [],
+      "name": "takeRetiredBreakpointIds"
+    },
+    ".codeyam/scenario-check-attribution.js::watchWasmFunctionEntries": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::armRenderedSourcesAttribution"
+      ],
+      "imports": [
+        ".codeyam/scenario-check-attribution.js::fs",
+        ".codeyam/scenario-check-attribution.js::functionRangesFor",
+        ".codeyam/scenario-check-attribution.js::installWasmCompilePause",
+        ".codeyam/scenario-check-attribution.js::takeRetiredBreakpointIds"
+      ],
+      "name": "watchWasmFunctionEntries"
+    },
+    ".codeyam/scenario-check-attribution.js::{\n  workspaceCrates,\n  filesForFunctionName,\n  hubItemsForFunctionName,\n  functionRangeAt,\n  retirableBreakpoints,\n}": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/wasm-source-attribution.js::__file_root__"
+      ],
+      "name": "{\n  workspaceCrates,\n  filesForFunctionName,\n  hubItemsForFunctionName,\n  functionRangeAt,\n  retirableBreakpoints,\n}"
+    },
+    ".codeyam/scenario-check-attribution.js::{ noteHubWatched, recordHubHit, hubFunctionRecord }": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-hub-functions.js::__file_root__"
+      ],
+      "name": "{ noteHubWatched, recordHubHit, hubFunctionRecord }"
+    },
+    ".codeyam/scenario-check-attribution.js::{ parseWasmFunctionNames }": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/wasm-name-section.js::__file_root__"
+      ],
+      "name": "{ parseWasmFunctionNames }"
+    },
+    ".codeyam/scenario-check-attribution.js::{ watchV8Coverage, armV8Coverage }": {
+      "filePath": ".codeyam/scenario-check-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/v8-coverage-attribution.js::__file_root__"
+      ],
+      "name": "{ watchV8Coverage, armV8Coverage }"
+    },
+    ".codeyam/scenario-check-hub-functions.js::HUB_FILES_PATH": {
+      "filePath": ".codeyam/scenario-check-hub-functions.js",
+      "importedBy": [
+        ".codeyam/scenario-check-hub-functions.js::readRenderHubFileList"
+      ],
+      "imports": [
+        ".codeyam/scenario-check-hub-functions.js::path"
+      ],
+      "name": "HUB_FILES_PATH"
+    },
+    ".codeyam/scenario-check-hub-functions.js::__file_root__": {
+      "filePath": ".codeyam/scenario-check-hub-functions.js",
+      "importedBy": [
+        ".codeyam/capture.js::{ resolveRenderHubFiles }",
+        ".codeyam/scenario-check-attribution.js::{ noteHubWatched, recordHubHit, hubFunctionRecord }",
+        ".codeyam/v8-coverage-attribution.js::{ hubFunctionRecord }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-check-hub-functions.js::fs": {
+      "filePath": ".codeyam/scenario-check-hub-functions.js",
+      "importedBy": [
+        ".codeyam/scenario-check-hub-functions.js::readRenderHubFileList"
+      ],
+      "imports": [],
+      "name": "fs"
+    },
+    ".codeyam/scenario-check-hub-functions.js::path": {
+      "filePath": ".codeyam/scenario-check-hub-functions.js",
+      "importedBy": [
+        ".codeyam/scenario-check-hub-functions.js::HUB_FILES_PATH"
+      ],
+      "imports": [],
+      "name": "path"
+    },
+    ".codeyam/scenario-check-hub-functions.js::readRenderHubFileList": {
+      "filePath": ".codeyam/scenario-check-hub-functions.js",
+      "importedBy": [
+        ".codeyam/scenario-check-hub-functions.js::resolveRenderHubFiles"
+      ],
+      "imports": [
+        ".codeyam/scenario-check-hub-functions.js::HUB_FILES_PATH",
+        ".codeyam/scenario-check-hub-functions.js::fs"
+      ],
+      "name": "readRenderHubFileList"
+    },
+    ".codeyam/scenario-check-hub-functions.js::resolveRenderHubFiles": {
+      "filePath": ".codeyam/scenario-check-hub-functions.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-hub-functions.js::readRenderHubFileList"
+      ],
+      "name": "resolveRenderHubFiles"
+    },
+    ".codeyam/scenario-check-run.js::__file_root__": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [
+        ".codeyam/capture.js::{\n  DEV_SERVER_DOWN_HEADER,\n  classifyInteractionEffect,\n  resolvePixelClip,\n  interactionEffectSignal,\n  fingerprintHtml,\n  getDOMFingerprint,\n  mergeVisibleTextLength,\n  isCrossOriginRequest,\n  isCaptureFatalRequestFailure,\n  isDevServerPlaceholderResponse,\n  buildCaptureContextOptions,\n  attachCaptureCollectors,\n  navigationStatusIssue,\n  resolveSettleBudgets,\n  collectRenderedContent,\n  scenarioErrorMarkerIssue,\n  driveSingleInteraction,\n  decorateCaptureResult,\n  wasmCompileTimingInit,\n  readWasmLoadTimings,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-check-run.js::attachCaptureCollectors": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-run.js::isCaptureFatalRequestFailure"
+      ],
+      "name": "attachCaptureCollectors"
+    },
+    ".codeyam/scenario-check-run.js::classifyInteractionEffect": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::driveSingleInteraction"
+      ],
+      "imports": [],
+      "name": "classifyInteractionEffect"
+    },
+    ".codeyam/scenario-check-run.js::collectRenderedContent": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-run.js::mergeVisibleTextLength"
+      ],
+      "name": "collectRenderedContent"
+    },
+    ".codeyam/scenario-check-run.js::collectWasmLoadTimings": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::readWasmLoadTimings"
+      ],
+      "imports": [],
+      "name": "collectWasmLoadTimings"
+    },
+    ".codeyam/scenario-check-run.js::driveSingleInteraction": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-run.js::classifyInteractionEffect",
+        ".codeyam/scenario-check-run.js::interactionEffectSignal",
+        ".codeyam/scenario-check-run.js::resolvePixelClip"
+      ],
+      "name": "driveSingleInteraction"
+    },
+    ".codeyam/scenario-check-run.js::interactionEffectSignal": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::driveSingleInteraction"
+      ],
+      "imports": [],
+      "name": "interactionEffectSignal"
+    },
+    ".codeyam/scenario-check-run.js::isCaptureFatalRequestFailure": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::attachCaptureCollectors"
+      ],
+      "imports": [
+        ".codeyam/scenario-check-run.js::isCrossOriginRequest"
+      ],
+      "name": "isCaptureFatalRequestFailure"
+    },
+    ".codeyam/scenario-check-run.js::isCrossOriginRequest": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::isCaptureFatalRequestFailure"
+      ],
+      "imports": [],
+      "name": "isCrossOriginRequest"
+    },
+    ".codeyam/scenario-check-run.js::mergeVisibleTextLength": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::collectRenderedContent"
+      ],
+      "imports": [],
+      "name": "mergeVisibleTextLength"
+    },
+    ".codeyam/scenario-check-run.js::readWasmLoadTimings": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-run.js::collectWasmLoadTimings"
+      ],
+      "name": "readWasmLoadTimings"
+    },
+    ".codeyam/scenario-check-run.js::resolvePixelClip": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::driveSingleInteraction"
+      ],
+      "imports": [],
+      "name": "resolvePixelClip"
+    },
+    ".codeyam/scenario-check-run.js::{\n  createIssue,\n  pushIssue,\n  DEV_SERVER_DOWN_HEADER,\n  isDevServerPlaceholderResponse,\n  navigationStatusIssue,\n  scenarioErrorMarkerIssue,\n}": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::__file_root__"
+      ],
+      "name": "{\n  createIssue,\n  pushIssue,\n  DEV_SERVER_DOWN_HEADER,\n  isDevServerPlaceholderResponse,\n  navigationStatusIssue,\n  scenarioErrorMarkerIssue,\n}"
+    },
+    ".codeyam/scenario-check-run.js::{\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-handlers.js::__file_root__"
+      ],
+      "name": "{\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}"
+    },
+    ".codeyam/scenario-check-run.js::{\n  waitForStablePage,\n  collectContentState,\n  collectVisibleTextLength,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n}": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-playwright.js::__file_root__"
+      ],
+      "name": "{\n  waitForStablePage,\n  collectContentState,\n  collectVisibleTextLength,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n}"
+    },
+    ".codeyam/scenario-check-run.js::{ fingerprintHtml, getDOMFingerprint }": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-dom-fingerprint.js::__file_root__"
+      ],
+      "name": "{ fingerprintHtml, getDOMFingerprint }"
+    },
+    ".codeyam/scenario-check-run.js::{ hasRenderableContent, describeBlankReason }": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-metrics.js::__file_root__"
+      ],
+      "name": "{ hasRenderableContent, describeBlankReason }"
+    },
+    ".codeyam/scenario-check-run.js::{ isDeclaredErrorMock, unmockedRouteFrom }": {
+      "filePath": ".codeyam/scenario-check-run.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-mocks.js::__file_root__"
+      ],
+      "name": "{ isDeclaredErrorMock, unmockedRouteFrom }"
+    },
+    ".codeyam/scenario-dom-fingerprint.js::__file_root__": {
+      "filePath": ".codeyam/scenario-dom-fingerprint.js",
+      "importedBy": [
+        ".codeyam/scenario-check-run.js::{ fingerprintHtml, getDOMFingerprint }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-dom-fingerprint.js::fingerprintHtml": {
+      "filePath": ".codeyam/scenario-dom-fingerprint.js",
+      "importedBy": [
+        ".codeyam/scenario-dom-fingerprint.js::getDOMFingerprint"
+      ],
+      "imports": [],
+      "name": "fingerprintHtml"
+    },
+    ".codeyam/scenario-dom-fingerprint.js::getDOMFingerprint": {
+      "filePath": ".codeyam/scenario-dom-fingerprint.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-dom-fingerprint.js::fingerprintHtml",
+        ".codeyam/scenario-dom-fingerprint.js::serializeVisibleDom"
+      ],
+      "name": "getDOMFingerprint"
+    },
+    ".codeyam/scenario-dom-fingerprint.js::serializeVisibleDom": {
+      "filePath": ".codeyam/scenario-dom-fingerprint.js",
+      "importedBy": [
+        ".codeyam/scenario-dom-fingerprint.js::getDOMFingerprint"
+      ],
+      "imports": [],
+      "name": "serializeVisibleDom"
+    },
+    ".codeyam/scenario-handlers.js::__file_root__": {
+      "filePath": ".codeyam/scenario-handlers.js",
+      "importedBy": [
+        ".codeyam/capture.js::{ getInitScript }",
+        ".codeyam/scenario-check-run.js::{\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-handlers.js::handleConsoleMessage": {
+      "filePath": ".codeyam/scenario-handlers.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-handlers.js::insecureContextAdvisory"
+      ],
+      "name": "handleConsoleMessage"
+    },
+    ".codeyam/scenario-handlers.js::insecureContextAdvisory": {
+      "filePath": ".codeyam/scenario-handlers.js",
+      "importedBy": [
+        ".codeyam/scenario-handlers.js::handleConsoleMessage"
+      ],
+      "imports": [],
+      "name": "insecureContextAdvisory"
+    },
+    ".codeyam/scenario-handlers.js::{ createIssue }": {
+      "filePath": ".codeyam/scenario-handlers.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::__file_root__"
+      ],
+      "name": "{ createIssue }"
+    },
+    ".codeyam/scenario-interactivity.js::__file_root__": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/capture.js::{\n  buildCounterpartProbe,\n  subpathHydrationEscalation,\n  waitForHydration,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-interactivity.js::buildCounterpartProbe": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-interactivity.js::collectHydrationState",
+        ".codeyam/scenario-interactivity.js::counterpartOriginUrl",
+        ".codeyam/scenario-interactivity.js::fs",
+        ".codeyam/scenario-interactivity.js::path"
+      ],
+      "name": "buildCounterpartProbe"
+    },
+    ".codeyam/scenario-interactivity.js::collectHydrationState": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::buildCounterpartProbe",
+        ".codeyam/scenario-interactivity.js::probeHydrationState"
+      ],
+      "imports": [],
+      "name": "collectHydrationState"
+    },
+    ".codeyam/scenario-interactivity.js::counterpartOriginUrl": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::buildCounterpartProbe"
+      ],
+      "imports": [],
+      "name": "counterpartOriginUrl"
+    },
+    ".codeyam/scenario-interactivity.js::fs": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::buildCounterpartProbe",
+        ".codeyam/scenario-interactivity.js::readStackJson"
+      ],
+      "imports": [],
+      "name": "fs"
+    },
+    ".codeyam/scenario-interactivity.js::hydrationMessage": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::interpretHydration"
+      ],
+      "imports": [
+        ".codeyam/scenario-interactivity.js::isUnderPreviewSubpath",
+        ".codeyam/scenario-interactivity.js::path"
+      ],
+      "name": "hydrationMessage"
+    },
+    ".codeyam/scenario-interactivity.js::inferFramework": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::resolveInteractivityExpectation"
+      ],
+      "imports": [],
+      "name": "inferFramework"
+    },
+    ".codeyam/scenario-interactivity.js::interpretHydration": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::probeHydrationState"
+      ],
+      "imports": [
+        ".codeyam/scenario-interactivity.js::hydrationMessage"
+      ],
+      "name": "interpretHydration"
+    },
+    ".codeyam/scenario-interactivity.js::isUnderPreviewSubpath": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::hydrationMessage",
+        ".codeyam/scenario-interactivity.js::subpathHydrationEscalation"
+      ],
+      "imports": [],
+      "name": "isUnderPreviewSubpath"
+    },
+    ".codeyam/scenario-interactivity.js::passwordCensusOf": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::probeHydrationState"
+      ],
+      "imports": [],
+      "name": "passwordCensusOf"
+    },
+    ".codeyam/scenario-interactivity.js::path": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::buildCounterpartProbe",
+        ".codeyam/scenario-interactivity.js::hydrationMessage",
+        ".codeyam/scenario-interactivity.js::readStackJson"
+      ],
+      "imports": [],
+      "name": "path"
+    },
+    ".codeyam/scenario-interactivity.js::probeHydrationState": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-interactivity.js::collectHydrationState",
+        ".codeyam/scenario-interactivity.js::interpretHydration",
+        ".codeyam/scenario-interactivity.js::passwordCensusOf",
+        ".codeyam/scenario-interactivity.js::readStackJson",
+        ".codeyam/scenario-interactivity.js::resolveInteractivityExpectation"
+      ],
+      "name": "probeHydrationState"
+    },
+    ".codeyam/scenario-interactivity.js::readStackJson": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::probeHydrationState"
+      ],
+      "imports": [
+        ".codeyam/scenario-interactivity.js::fs",
+        ".codeyam/scenario-interactivity.js::path"
+      ],
+      "name": "readStackJson"
+    },
+    ".codeyam/scenario-interactivity.js::resolveInteractivityExpectation": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [
+        ".codeyam/scenario-interactivity.js::probeHydrationState"
+      ],
+      "imports": [
+        ".codeyam/scenario-interactivity.js::inferFramework"
+      ],
+      "name": "resolveInteractivityExpectation"
+    },
+    ".codeyam/scenario-interactivity.js::subpathHydrationEscalation": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-interactivity.js::isUnderPreviewSubpath"
+      ],
+      "name": "subpathHydrationEscalation"
+    },
+    ".codeyam/scenario-interactivity.js::{ createIssue }": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::__file_root__"
+      ],
+      "name": "{ createIssue }"
+    },
+    ".codeyam/scenario-issues.js::__file_root__": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [
+        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n  RELOADED_AFTER_READY,\n  retryOnLiveReload,\n}",
+        ".codeyam/scenario-check-run.js::{\n  createIssue,\n  pushIssue,\n  DEV_SERVER_DOWN_HEADER,\n  isDevServerPlaceholderResponse,\n  navigationStatusIssue,\n  scenarioErrorMarkerIssue,\n}",
+        ".codeyam/scenario-handlers.js::{ createIssue }",
+        ".codeyam/scenario-interactivity.js::{ createIssue }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-issues.js::buildResult": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::deriveOriginSplit"
+      ],
+      "name": "buildResult"
+    },
+    ".codeyam/scenario-issues.js::createIssue": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [
+        ".codeyam/scenario-issues.js::navigationStatusIssue",
+        ".codeyam/scenario-issues.js::scenarioErrorMarkerIssue"
+      ],
+      "imports": [],
+      "name": "createIssue"
+    },
+    ".codeyam/scenario-issues.js::deriveOriginSplit": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [
+        ".codeyam/scenario-issues.js::buildResult"
+      ],
+      "imports": [],
+      "name": "deriveOriginSplit"
+    },
+    ".codeyam/scenario-issues.js::isDevServerPlaceholderResponse": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [
+        ".codeyam/scenario-issues.js::navigationStatusIssue"
+      ],
+      "imports": [],
+      "name": "isDevServerPlaceholderResponse"
+    },
+    ".codeyam/scenario-issues.js::liveReloadIssue": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [
+        ".codeyam/scenario-issues.js::retryOnLiveReload"
+      ],
+      "imports": [],
+      "name": "liveReloadIssue"
+    },
+    ".codeyam/scenario-issues.js::navigationStatusIssue": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::createIssue",
+        ".codeyam/scenario-issues.js::isDevServerPlaceholderResponse"
+      ],
+      "name": "navigationStatusIssue"
+    },
+    ".codeyam/scenario-issues.js::retryOnLiveReload": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::liveReloadIssue"
+      ],
+      "name": "retryOnLiveReload"
+    },
+    ".codeyam/scenario-issues.js::scenarioErrorMarkerIssue": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-issues.js::createIssue"
+      ],
+      "name": "scenarioErrorMarkerIssue"
+    },
+    ".codeyam/scenario-issues.js::{ findScenarioError, SCENARIO_ERROR_MARKER }": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-metrics.js::__file_root__"
+      ],
+      "name": "{ findScenarioError, SCENARIO_ERROR_MARKER }"
+    },
+    ".codeyam/scenario-launch-diagnostics.js::__file_root__": {
+      "filePath": ".codeyam/scenario-launch-diagnostics.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::{\n  PLAYWRIGHT_INSTALL_COMMAND,\n  CAPTURE_HOST_UNSUPPORTED_MARKER,\n  CAPTURE_BROWSER_DEPS_MISSING_MARKER,\n  isMissingSystemLibrary,\n  missingLibraryNames,\n  missingLibraryRemedy,\n  missingSystemLibraryError,\n  runPlaywrightInstall,\n  installFailureText,\n  unsupportedHost,\n  hostUnsupportedError,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-launch-diagnostics.js::hostUnsupportedError": {
+      "filePath": ".codeyam/scenario-launch-diagnostics.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch-diagnostics.js::hostUnsupportedRemedy",
+        ".codeyam/scenario-launch-diagnostics.js::installFailureText"
+      ],
+      "name": "hostUnsupportedError"
+    },
+    ".codeyam/scenario-launch-diagnostics.js::hostUnsupportedRemedy": {
+      "filePath": ".codeyam/scenario-launch-diagnostics.js",
+      "importedBy": [
+        ".codeyam/scenario-launch-diagnostics.js::hostUnsupportedError"
+      ],
+      "imports": [],
+      "name": "hostUnsupportedRemedy"
+    },
+    ".codeyam/scenario-launch-diagnostics.js::installFailureText": {
+      "filePath": ".codeyam/scenario-launch-diagnostics.js",
+      "importedBy": [
+        ".codeyam/scenario-launch-diagnostics.js::hostUnsupportedError",
+        ".codeyam/scenario-launch-diagnostics.js::unsupportedHost"
+      ],
+      "imports": [],
+      "name": "installFailureText"
+    },
+    ".codeyam/scenario-launch-diagnostics.js::missingLibraryNames": {
+      "filePath": ".codeyam/scenario-launch-diagnostics.js",
+      "importedBy": [
+        ".codeyam/scenario-launch-diagnostics.js::missingSystemLibraryError"
+      ],
+      "imports": [],
+      "name": "missingLibraryNames"
+    },
+    ".codeyam/scenario-launch-diagnostics.js::missingLibraryRemedy": {
+      "filePath": ".codeyam/scenario-launch-diagnostics.js",
+      "importedBy": [
+        ".codeyam/scenario-launch-diagnostics.js::missingSystemLibraryError"
+      ],
+      "imports": [],
+      "name": "missingLibraryRemedy"
+    },
+    ".codeyam/scenario-launch-diagnostics.js::missingSystemLibraryError": {
+      "filePath": ".codeyam/scenario-launch-diagnostics.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch-diagnostics.js::missingLibraryNames",
+        ".codeyam/scenario-launch-diagnostics.js::missingLibraryRemedy"
+      ],
+      "name": "missingSystemLibraryError"
+    },
+    ".codeyam/scenario-launch-diagnostics.js::unsupportedHost": {
+      "filePath": ".codeyam/scenario-launch-diagnostics.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch-diagnostics.js::installFailureText"
+      ],
+      "name": "unsupportedHost"
+    },
+    ".codeyam/scenario-launch.js::CLEARED_STORAGE_TYPES": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::clearOriginsAppState"
+      ],
+      "imports": [],
+      "name": "CLEARED_STORAGE_TYPES"
+    },
+    ".codeyam/scenario-launch.js::__file_root__": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/capture.js::{\n  launchChromiumWithSelfHeal,\n  createWarmContext,\n  pageScopedCaptureTarget,\n}",
+        ".codeyam/preview-liveness.js::{\n  CAPTURE_HOST_RESOLVER_RULES,\n  CAPTURE_DISABLED_FEATURES,\n  mergeDisableFeaturesArg,\n  playwrightDefaultDisableFeaturesArg,\n  launchChromiumWithSelfHeal,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-launch.js::captureLaunchOptions": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::launchChromiumWithSelfHeal",
+        ".codeyam/scenario-launch.js::launchPersistentChromiumWithSelfHeal"
+      ],
+      "imports": [
+        ".codeyam/scenario-launch.js::mergeDisableFeaturesArg",
+        ".codeyam/scenario-launch.js::playwrightDefaultDisableFeaturesArg"
+      ],
+      "name": "captureLaunchOptions"
+    },
+    ".codeyam/scenario-launch.js::clearOriginsAppState": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::createWarmContext"
+      ],
+      "imports": [
+        ".codeyam/scenario-launch.js::CLEARED_STORAGE_TYPES"
+      ],
+      "name": "clearOriginsAppState"
+    },
+    ".codeyam/scenario-launch.js::createWarmContext": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch.js::clearOriginsAppState",
+        ".codeyam/scenario-launch.js::fs",
+        ".codeyam/scenario-launch.js::launchPersistentChromiumWithSelfHeal",
+        ".codeyam/scenario-launch.js::os",
+        ".codeyam/scenario-launch.js::path",
+        ".codeyam/scenario-launch.js::trackRequestOrigins"
+      ],
+      "name": "createWarmContext"
+    },
+    ".codeyam/scenario-launch.js::fs": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::createWarmContext"
+      ],
+      "imports": [],
+      "name": "fs"
+    },
+    ".codeyam/scenario-launch.js::isTransientLaunchCrash": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::launchChromiumWithSelfHeal"
+      ],
+      "imports": [],
+      "name": "isTransientLaunchCrash"
+    },
+    ".codeyam/scenario-launch.js::launchChromiumWithSelfHeal": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::launchPersistentChromiumWithSelfHeal"
+      ],
+      "imports": [
+        ".codeyam/scenario-launch.js::captureLaunchOptions",
+        ".codeyam/scenario-launch.js::isTransientLaunchCrash"
+      ],
+      "name": "launchChromiumWithSelfHeal"
+    },
+    ".codeyam/scenario-launch.js::launchPersistentChromiumWithSelfHeal": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::createWarmContext"
+      ],
+      "imports": [
+        ".codeyam/scenario-launch.js::captureLaunchOptions",
+        ".codeyam/scenario-launch.js::launchChromiumWithSelfHeal"
+      ],
+      "name": "launchPersistentChromiumWithSelfHeal"
+    },
+    ".codeyam/scenario-launch.js::mergeDisableFeaturesArg": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::captureLaunchOptions"
+      ],
+      "imports": [],
+      "name": "mergeDisableFeaturesArg"
+    },
+    ".codeyam/scenario-launch.js::originOf": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::trackRequestOrigins"
+      ],
+      "imports": [],
+      "name": "originOf"
+    },
+    ".codeyam/scenario-launch.js::os": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::createWarmContext"
+      ],
+      "imports": [],
+      "name": "os"
+    },
+    ".codeyam/scenario-launch.js::path": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::createWarmContext",
+        ".codeyam/scenario-launch.js::playwrightDefaultDisableFeaturesArg"
+      ],
+      "imports": [],
+      "name": "path"
+    },
+    ".codeyam/scenario-launch.js::playwrightDefaultDisableFeaturesArg": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::captureLaunchOptions"
+      ],
+      "imports": [
+        ".codeyam/scenario-launch.js::path"
+      ],
+      "name": "playwrightDefaultDisableFeaturesArg"
+    },
+    ".codeyam/scenario-launch.js::trackRequestOrigins": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [
+        ".codeyam/scenario-launch.js::createWarmContext"
+      ],
+      "imports": [
+        ".codeyam/scenario-launch.js::originOf"
+      ],
+      "name": "trackRequestOrigins"
+    },
+    ".codeyam/scenario-launch.js::{\n  PLAYWRIGHT_INSTALL_COMMAND,\n  CAPTURE_HOST_UNSUPPORTED_MARKER,\n  CAPTURE_BROWSER_DEPS_MISSING_MARKER,\n  isMissingSystemLibrary,\n  missingLibraryNames,\n  missingLibraryRemedy,\n  missingSystemLibraryError,\n  runPlaywrightInstall,\n  installFailureText,\n  unsupportedHost,\n  hostUnsupportedError,\n}": {
+      "filePath": ".codeyam/scenario-launch.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch-diagnostics.js::__file_root__"
+      ],
+      "name": "{\n  PLAYWRIGHT_INSTALL_COMMAND,\n  CAPTURE_HOST_UNSUPPORTED_MARKER,\n  CAPTURE_BROWSER_DEPS_MISSING_MARKER,\n  isMissingSystemLibrary,\n  missingLibraryNames,\n  missingLibraryRemedy,\n  missingSystemLibraryError,\n  runPlaywrightInstall,\n  installFailureText,\n  unsupportedHost,\n  hostUnsupportedError,\n}"
+    },
+    ".codeyam/scenario-metrics.js::__file_root__": {
+      "filePath": ".codeyam/scenario-metrics.js",
+      "importedBy": [
+        ".codeyam/capture.js::{\n  isCanvasDominated,\n  frameHasVisualContent,\n  frameContentStats,\n  buildSettleAdvisory,\n  stripStateSelector,\n  collectCssRuleMatches,\n}",
+        ".codeyam/scenario-check-run.js::{ hasRenderableContent, describeBlankReason }",
+        ".codeyam/scenario-issues.js::{ findScenarioError, SCENARIO_ERROR_MARKER }",
+        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-metrics.js::buildErrorContextSnippet": {
+      "filePath": ".codeyam/scenario-metrics.js",
+      "importedBy": [
+        ".codeyam/scenario-metrics.js::findScenarioError"
+      ],
+      "imports": [],
+      "name": "buildErrorContextSnippet"
+    },
+    ".codeyam/scenario-metrics.js::findErrorPattern": {
+      "filePath": ".codeyam/scenario-metrics.js",
+      "importedBy": [
+        ".codeyam/scenario-metrics.js::findScenarioError"
+      ],
+      "imports": [],
+      "name": "findErrorPattern"
+    },
+    ".codeyam/scenario-metrics.js::findScenarioError": {
+      "filePath": ".codeyam/scenario-metrics.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-metrics.js::buildErrorContextSnippet",
+        ".codeyam/scenario-metrics.js::findErrorPattern"
+      ],
+      "name": "findScenarioError"
+    },
+    ".codeyam/scenario-metrics.js::frameContentStats": {
+      "filePath": ".codeyam/scenario-metrics.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-metrics.js::isDecodedFrame"
+      ],
+      "name": "frameContentStats"
+    },
+    ".codeyam/scenario-metrics.js::frameHasVisualContent": {
+      "filePath": ".codeyam/scenario-metrics.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-metrics.js::isDecodedFrame"
+      ],
+      "name": "frameHasVisualContent"
+    },
+    ".codeyam/scenario-metrics.js::isDecodedFrame": {
+      "filePath": ".codeyam/scenario-metrics.js",
+      "importedBy": [
+        ".codeyam/scenario-metrics.js::frameContentStats",
+        ".codeyam/scenario-metrics.js::frameHasVisualContent"
+      ],
+      "imports": [],
+      "name": "isDecodedFrame"
+    },
+    ".codeyam/scenario-mocks.js::__file_root__": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/capture.js::{ attachHttpMocks, recordInPageMockHits }",
+        ".codeyam/scenario-check-run.js::{ isDeclaredErrorMock, unmockedRouteFrom }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-mocks.js::findHttpMockEntry": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-mocks.js::matchUrl",
+        ".codeyam/scenario-mocks.js::splitMockKey"
+      ],
+      "name": "findHttpMockEntry"
+    },
+    ".codeyam/scenario-mocks.js::hasWildcard": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::matchUrl"
+      ],
+      "imports": [
+        ".codeyam/scenario-mocks.js::isWildcardSegment"
+      ],
+      "name": "hasWildcard"
+    },
+    ".codeyam/scenario-mocks.js::isParamSegment": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::isWildcardSegment"
+      ],
+      "imports": [],
+      "name": "isParamSegment"
+    },
+    ".codeyam/scenario-mocks.js::isWildcardSegment": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::hasWildcard",
+        ".codeyam/scenario-mocks.js::matchSegment"
+      ],
+      "imports": [
+        ".codeyam/scenario-mocks.js::isParamSegment"
+      ],
+      "name": "isWildcardSegment"
+    },
+    ".codeyam/scenario-mocks.js::matchPath": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::matchUrl"
+      ],
+      "imports": [
+        ".codeyam/scenario-mocks.js::matchSegment"
+      ],
+      "name": "matchPath"
+    },
+    ".codeyam/scenario-mocks.js::matchQuerySpec": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::matchUrl"
+      ],
+      "imports": [],
+      "name": "matchQuerySpec"
+    },
+    ".codeyam/scenario-mocks.js::matchSegment": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::matchPath"
+      ],
+      "imports": [
+        ".codeyam/scenario-mocks.js::isWildcardSegment"
+      ],
+      "name": "matchSegment"
+    },
+    ".codeyam/scenario-mocks.js::matchUrl": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::findHttpMockEntry"
+      ],
+      "imports": [
+        ".codeyam/scenario-mocks.js::hasWildcard",
+        ".codeyam/scenario-mocks.js::matchPath",
+        ".codeyam/scenario-mocks.js::matchQuerySpec",
+        ".codeyam/scenario-mocks.js::splitUrlQuery"
+      ],
+      "name": "matchUrl"
+    },
+    ".codeyam/scenario-mocks.js::splitMockKey": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::findHttpMockEntry"
+      ],
+      "imports": [],
+      "name": "splitMockKey"
+    },
+    ".codeyam/scenario-mocks.js::splitUrlQuery": {
+      "filePath": ".codeyam/scenario-mocks.js",
+      "importedBy": [
+        ".codeyam/scenario-mocks.js::matchUrl"
+      ],
+      "imports": [],
+      "name": "splitUrlQuery"
+    },
+    ".codeyam/scenario-page-state.js::__file_root__": {
+      "filePath": ".codeyam/scenario-page-state.js",
+      "importedBy": [
+        ".codeyam/capture.js::{ PAGE_STATE_TEXT_NODE_CAP, dumpPageState }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-playwright.js::__file_root__": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/capture.js::{\n  assertAppPortReachable,\n  defaultReadServerState,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  waitForReadySignal,\n  watchNavigationAfterReady,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  scrollThroughDocument,\n  forceFinalVisualState,\n  centerCaptureWrapper,\n  isCanvasInteraction,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n  waitForPredicate,\n  performInteractionSequence,\n  assertIsolatedComponentResolved,\n  logCaptureTiming,\n}",
+        ".codeyam/scenario-check-run.js::{\n  waitForStablePage,\n  collectContentState,\n  collectVisibleTextLength,\n  isCanvasInteraction,\n  resolveInteractionTarget,\n  performInteraction,\n  pixelSnapshot,\n  samePixels,\n  waitForPixelStable,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-playwright.js::assertAppPortReachable": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-playwright.js::logCaptureTiming",
+        ".codeyam/scenario-playwright.js::net",
+        ".codeyam/scenario-playwright.js::resolveTcpTarget"
+      ],
+      "name": "assertAppPortReachable"
+    },
+    ".codeyam/scenario-playwright.js::assertIsolatedComponentResolved": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-playwright.js::componentManifestPath",
+        ".codeyam/scenario-playwright.js::isolateMissingComponentMessage",
+        ".codeyam/scenario-playwright.js::servedBuildMissingComponent",
+        ".codeyam/scenario-playwright.js::servedBuildMissingComponentMessage"
+      ],
+      "name": "assertIsolatedComponentResolved"
+    },
+    ".codeyam/scenario-playwright.js::componentManifestPath": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/scenario-playwright.js::assertIsolatedComponentResolved"
+      ],
+      "imports": [
+        ".codeyam/scenario-playwright.js::fs"
+      ],
+      "name": "componentManifestPath"
+    },
+    ".codeyam/scenario-playwright.js::fs": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/scenario-playwright.js::componentManifestPath",
+        ".codeyam/scenario-playwright.js::logCaptureTiming"
+      ],
+      "imports": [],
+      "name": "fs"
+    },
+    ".codeyam/scenario-playwright.js::isolateMissingComponentMessage": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/scenario-playwright.js::assertIsolatedComponentResolved"
+      ],
+      "imports": [],
+      "name": "isolateMissingComponentMessage"
+    },
+    ".codeyam/scenario-playwright.js::logCaptureTiming": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/scenario-playwright.js::assertAppPortReachable"
+      ],
+      "imports": [
+        ".codeyam/scenario-playwright.js::fs"
+      ],
+      "name": "logCaptureTiming"
+    },
+    ".codeyam/scenario-playwright.js::net": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/scenario-playwright.js::assertAppPortReachable"
+      ],
+      "imports": [],
+      "name": "net"
+    },
+    ".codeyam/scenario-playwright.js::resolveTcpTarget": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/scenario-playwright.js::assertAppPortReachable"
+      ],
+      "imports": [],
+      "name": "resolveTcpTarget"
+    },
+    ".codeyam/scenario-playwright.js::servedBuildMissingComponent": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/scenario-playwright.js::assertIsolatedComponentResolved"
+      ],
+      "imports": [],
+      "name": "servedBuildMissingComponent"
+    },
+    ".codeyam/scenario-playwright.js::servedBuildMissingComponentMessage": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [
+        ".codeyam/scenario-playwright.js::assertIsolatedComponentResolved"
+      ],
+      "imports": [],
+      "name": "servedBuildMissingComponentMessage"
+    },
+    ".codeyam/scenario-playwright.js::{\n  candidateLabelSummary,\n  canvasTextWaitGuidance,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n  stepTimeoutMs,\n  pointerOptionsFor,\n  locateInteractionTarget,\n}": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-targeting.js::__file_root__"
+      ],
+      "name": "{\n  candidateLabelSummary,\n  canvasTextWaitGuidance,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n  stepTimeoutMs,\n  pointerOptionsFor,\n  locateInteractionTarget,\n}"
+    },
+    ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-metrics.js::__file_root__"
+      ],
+      "name": "{\n  hasLoadingMarkers,\n  isCanvasDominated,\n  shouldStopWaitingForImages,\n}"
+    },
+    ".codeyam/scenario-targeting.js::__file_root__": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/capture.js::{ devicePixelRatioOf }",
+        ".codeyam/scenario-playwright.js::{\n  candidateLabelSummary,\n  canvasTextWaitGuidance,\n  pageOf,\n  targetBox,\n  pointIn,\n  devicePixelRatioOf,\n  outsideTargetMessage,\n  outsideTargetError,\n  pointerGeometry,\n  locatorPointGeometry,\n  stepTimeoutMs,\n  pointerOptionsFor,\n  locateInteractionTarget,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/scenario-targeting.js::candidateLabelSummary": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locateInteractionTarget"
+      ],
+      "imports": [
+        ".codeyam/scenario-targeting.js::collectInteractiveLabels"
+      ],
+      "name": "candidateLabelSummary"
+    },
+    ".codeyam/scenario-targeting.js::collectInteractiveLabels": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::candidateLabelSummary"
+      ],
+      "imports": [],
+      "name": "collectInteractiveLabels"
+    },
+    ".codeyam/scenario-targeting.js::describeMatchCandidates": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locateInteractionTarget"
+      ],
+      "imports": [],
+      "name": "describeMatchCandidates"
+    },
+    ".codeyam/scenario-targeting.js::devicePixelRatioOf": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::outsideTargetError"
+      ],
+      "imports": [],
+      "name": "devicePixelRatioOf"
+    },
+    ".codeyam/scenario-targeting.js::locateInteractionTarget": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-targeting.js::candidateLabelSummary",
+        ".codeyam/scenario-targeting.js::describeMatchCandidates",
+        ".codeyam/scenario-targeting.js::noMatchGuidance",
+        ".codeyam/scenario-targeting.js::pickBestCandidate",
+        ".codeyam/scenario-targeting.js::resolveTextTarget"
+      ],
+      "name": "locateInteractionTarget"
+    },
+    ".codeyam/scenario-targeting.js::locatorPointGeometry": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-targeting.js::outsideTargetError",
+        ".codeyam/scenario-targeting.js::pointIn",
+        ".codeyam/scenario-targeting.js::pointerGeometry",
+        ".codeyam/scenario-targeting.js::targetBox"
+      ],
+      "name": "locatorPointGeometry"
+    },
+    ".codeyam/scenario-targeting.js::noMatchGuidance": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locateInteractionTarget"
+      ],
+      "imports": [],
+      "name": "noMatchGuidance"
+    },
+    ".codeyam/scenario-targeting.js::outsideTargetError": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locatorPointGeometry"
+      ],
+      "imports": [
+        ".codeyam/scenario-targeting.js::devicePixelRatioOf",
+        ".codeyam/scenario-targeting.js::outsideTargetMessage"
+      ],
+      "name": "outsideTargetError"
+    },
+    ".codeyam/scenario-targeting.js::outsideTargetMessage": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::outsideTargetError"
+      ],
+      "imports": [],
+      "name": "outsideTargetMessage"
+    },
+    ".codeyam/scenario-targeting.js::pickBestCandidate": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locateInteractionTarget"
+      ],
+      "imports": [],
+      "name": "pickBestCandidate"
+    },
+    ".codeyam/scenario-targeting.js::pointIn": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locatorPointGeometry"
+      ],
+      "imports": [],
+      "name": "pointIn"
+    },
+    ".codeyam/scenario-targeting.js::pointerGeometry": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locatorPointGeometry"
+      ],
+      "imports": [
+        ".codeyam/scenario-targeting.js::targetBox"
+      ],
+      "name": "pointerGeometry"
+    },
+    ".codeyam/scenario-targeting.js::resolveTextTarget": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locateInteractionTarget"
+      ],
+      "imports": [],
+      "name": "resolveTextTarget"
+    },
+    ".codeyam/scenario-targeting.js::targetBox": {
+      "filePath": ".codeyam/scenario-targeting.js",
+      "importedBy": [
+        ".codeyam/scenario-targeting.js::locatorPointGeometry",
+        ".codeyam/scenario-targeting.js::pointerGeometry"
+      ],
+      "imports": [],
+      "name": "targetBox"
+    },
+    ".codeyam/seed-adapter.ts::__file_root__": {
+      "filePath": ".codeyam/seed-adapter.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/emptiedCollections.ts::countCollectionFiles",
+        "src/lib/emptiedCollections.ts::countTrackedCollectionEntries",
+        "src/lib/emptiedCollections.ts::findEmptiedCollections",
+        "src/lib/emptiedCollections.ts::parseLoadedCounts",
+        "src/lib/emptiedCollections.ts::refreshOutcome",
+        "src/lib/sandboxPublic.ts::mirrorPublicImages",
+        "src/lib/sandboxPublic.ts::replaceWithCopy"
+      ],
+      "name": "__file_root__"
+    },
+    ".codeyam/source-map-decode.js::__file_root__": {
+      "filePath": ".codeyam/source-map-decode.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::{\n  originalPositionFor,\n  lineStarts,\n  offsetToPosition,\n  decodeDataUrl,\n  readSourceMap,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/source-map-decode.js::decodeVlqSegment": {
+      "filePath": ".codeyam/source-map-decode.js",
+      "importedBy": [
+        ".codeyam/source-map-decode.js::parseMappings"
+      ],
+      "imports": [],
+      "name": "decodeVlqSegment"
+    },
+    ".codeyam/source-map-decode.js::parseMappings": {
+      "filePath": ".codeyam/source-map-decode.js",
+      "importedBy": [
+        ".codeyam/source-map-decode.js::readSourceMap"
+      ],
+      "imports": [
+        ".codeyam/source-map-decode.js::decodeVlqSegment"
+      ],
+      "name": "parseMappings"
+    },
+    ".codeyam/source-map-decode.js::readSourceMap": {
+      "filePath": ".codeyam/source-map-decode.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/source-map-decode.js::parseMappings"
+      ],
+      "name": "readSourceMap"
+    },
+    ".codeyam/v8-coverage-attribution.js::__file_root__": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::{ watchV8Coverage, armV8Coverage }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/v8-coverage-attribution.js::addName": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::attributeScript",
+        ".codeyam/v8-coverage-attribution.js::v8CoverageRecord"
+      ],
+      "imports": [],
+      "name": "addName"
+    },
+    ".codeyam/v8-coverage-attribution.js::armV8Coverage": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/v8-coverage-attribution.js::watchV8Coverage"
+      ],
+      "name": "armV8Coverage"
+    },
+    ".codeyam/v8-coverage-attribution.js::attributeCoveredScript": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::watchV8Coverage"
+      ],
+      "imports": [
+        ".codeyam/v8-coverage-attribution.js::attributeScript",
+        ".codeyam/v8-coverage-attribution.js::identityMap",
+        ".codeyam/v8-coverage-attribution.js::isDependencyUrl",
+        ".codeyam/v8-coverage-attribution.js::readProjectSourceMap",
+        ".codeyam/v8-coverage-attribution.js::sourceMapText"
+      ],
+      "name": "attributeCoveredScript"
+    },
+    ".codeyam/v8-coverage-attribution.js::attributeScript": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::attributeCoveredScript"
+      ],
+      "imports": [
+        ".codeyam/v8-coverage-attribution.js::addName",
+        ".codeyam/v8-coverage-attribution.js::nameNearLine",
+        ".codeyam/v8-coverage-attribution.js::placeFunction"
+      ],
+      "name": "attributeScript"
+    },
+    ".codeyam/v8-coverage-attribution.js::detachCoverageSession": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::watchV8Coverage"
+      ],
+      "imports": [],
+      "name": "detachCoverageSession"
+    },
+    ".codeyam/v8-coverage-attribution.js::fs": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::watchV8Coverage"
+      ],
+      "imports": [],
+      "name": "fs"
+    },
+    ".codeyam/v8-coverage-attribution.js::identityMap": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::attributeCoveredScript"
+      ],
+      "imports": [
+        ".codeyam/v8-coverage-attribution.js::path"
+      ],
+      "name": "identityMap"
+    },
+    ".codeyam/v8-coverage-attribution.js::isDependencyUrl": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::attributeCoveredScript"
+      ],
+      "imports": [],
+      "name": "isDependencyUrl"
+    },
+    ".codeyam/v8-coverage-attribution.js::nameNearLine": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::attributeScript"
+      ],
+      "imports": [],
+      "name": "nameNearLine"
+    },
+    ".codeyam/v8-coverage-attribution.js::path": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::identityMap",
+        ".codeyam/v8-coverage-attribution.js::relativeInside"
+      ],
+      "imports": [],
+      "name": "path"
+    },
+    ".codeyam/v8-coverage-attribution.js::placeFunction": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::attributeScript"
+      ],
+      "imports": [],
+      "name": "placeFunction"
+    },
+    ".codeyam/v8-coverage-attribution.js::readProjectSourceMap": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::attributeCoveredScript"
+      ],
+      "imports": [],
+      "name": "readProjectSourceMap"
+    },
+    ".codeyam/v8-coverage-attribution.js::relativeInside": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/v8-coverage-attribution.js::path"
+      ],
+      "name": "relativeInside"
+    },
+    ".codeyam/v8-coverage-attribution.js::requestFetcher": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::watchV8Coverage"
+      ],
+      "imports": [],
+      "name": "requestFetcher"
+    },
+    ".codeyam/v8-coverage-attribution.js::sourceMapText": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::attributeCoveredScript"
+      ],
+      "imports": [],
+      "name": "sourceMapText"
+    },
+    ".codeyam/v8-coverage-attribution.js::v8CoverageRecord": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::watchV8Coverage"
+      ],
+      "imports": [
+        ".codeyam/v8-coverage-attribution.js::addName"
+      ],
+      "name": "v8CoverageRecord"
+    },
+    ".codeyam/v8-coverage-attribution.js::watchV8Coverage": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js::armV8Coverage"
+      ],
+      "imports": [
+        ".codeyam/v8-coverage-attribution.js::attributeCoveredScript",
+        ".codeyam/v8-coverage-attribution.js::detachCoverageSession",
+        ".codeyam/v8-coverage-attribution.js::fs",
+        ".codeyam/v8-coverage-attribution.js::requestFetcher",
+        ".codeyam/v8-coverage-attribution.js::v8CoverageRecord"
+      ],
+      "name": "watchV8Coverage"
+    },
+    ".codeyam/v8-coverage-attribution.js::{\n  originalPositionFor,\n  lineStarts,\n  offsetToPosition,\n  decodeDataUrl,\n  readSourceMap,\n}": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/source-map-decode.js::__file_root__"
+      ],
+      "name": "{\n  originalPositionFor,\n  lineStarts,\n  offsetToPosition,\n  decodeDataUrl,\n  readSourceMap,\n}"
+    },
+    ".codeyam/v8-coverage-attribution.js::{ hubFunctionRecord }": {
+      "filePath": ".codeyam/v8-coverage-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-check-hub-functions.js::__file_root__"
+      ],
+      "name": "{ hubFunctionRecord }"
+    },
+    ".codeyam/wasm-name-section.js::__file_root__": {
+      "filePath": ".codeyam/wasm-name-section.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::{ parseWasmFunctionNames }"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/wasm-name-section.js::countImportedFunctions": {
+      "filePath": ".codeyam/wasm-name-section.js",
+      "importedBy": [
+        ".codeyam/wasm-name-section.js::parseWasmFunctionNames"
+      ],
+      "imports": [
+        ".codeyam/wasm-name-section.js::readLeb",
+        ".codeyam/wasm-name-section.js::readName"
+      ],
+      "name": "countImportedFunctions"
+    },
+    ".codeyam/wasm-name-section.js::parseWasmFunctionNames": {
+      "filePath": ".codeyam/wasm-name-section.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/wasm-name-section.js::countImportedFunctions",
+        ".codeyam/wasm-name-section.js::readBodies",
+        ".codeyam/wasm-name-section.js::readFunctionNames",
+        ".codeyam/wasm-name-section.js::readLeb",
+        ".codeyam/wasm-name-section.js::readName"
+      ],
+      "name": "parseWasmFunctionNames"
+    },
+    ".codeyam/wasm-name-section.js::readBodies": {
+      "filePath": ".codeyam/wasm-name-section.js",
+      "importedBy": [
+        ".codeyam/wasm-name-section.js::parseWasmFunctionNames"
+      ],
+      "imports": [
+        ".codeyam/wasm-name-section.js::readLeb"
+      ],
+      "name": "readBodies"
+    },
+    ".codeyam/wasm-name-section.js::readFunctionNames": {
+      "filePath": ".codeyam/wasm-name-section.js",
+      "importedBy": [
+        ".codeyam/wasm-name-section.js::parseWasmFunctionNames"
+      ],
+      "imports": [
+        ".codeyam/wasm-name-section.js::readLeb",
+        ".codeyam/wasm-name-section.js::readName"
+      ],
+      "name": "readFunctionNames"
+    },
+    ".codeyam/wasm-name-section.js::readLeb": {
+      "filePath": ".codeyam/wasm-name-section.js",
+      "importedBy": [
+        ".codeyam/wasm-name-section.js::countImportedFunctions",
+        ".codeyam/wasm-name-section.js::parseWasmFunctionNames",
+        ".codeyam/wasm-name-section.js::readBodies",
+        ".codeyam/wasm-name-section.js::readFunctionNames",
+        ".codeyam/wasm-name-section.js::readName"
+      ],
+      "imports": [],
+      "name": "readLeb"
+    },
+    ".codeyam/wasm-name-section.js::readName": {
+      "filePath": ".codeyam/wasm-name-section.js",
+      "importedBy": [
+        ".codeyam/wasm-name-section.js::countImportedFunctions",
+        ".codeyam/wasm-name-section.js::parseWasmFunctionNames",
+        ".codeyam/wasm-name-section.js::readFunctionNames"
+      ],
+      "imports": [
+        ".codeyam/wasm-name-section.js::readLeb"
+      ],
+      "name": "readName"
+    },
+    ".codeyam/wasm-source-attribution.js::__file_root__": {
+      "filePath": ".codeyam/wasm-source-attribution.js",
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js::{\n  workspaceCrates,\n  filesForFunctionName,\n  hubItemsForFunctionName,\n  functionRangeAt,\n  retirableBreakpoints,\n}"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/wasm-source-attribution.js::filesForFunctionName": {
+      "filePath": ".codeyam/wasm-source-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/wasm-source-attribution.js::fs",
+        ".codeyam/wasm-source-attribution.js::resolveModuleFile"
+      ],
+      "name": "filesForFunctionName"
+    },
+    ".codeyam/wasm-source-attribution.js::fs": {
+      "filePath": ".codeyam/wasm-source-attribution.js",
+      "importedBy": [
+        ".codeyam/wasm-source-attribution.js::filesForFunctionName",
+        ".codeyam/wasm-source-attribution.js::resolveModuleFile",
+        ".codeyam/wasm-source-attribution.js::resolveModulePrefix"
+      ],
+      "imports": [],
+      "name": "fs"
+    },
+    ".codeyam/wasm-source-attribution.js::path": {
+      "filePath": ".codeyam/wasm-source-attribution.js",
+      "importedBy": [
+        ".codeyam/wasm-source-attribution.js::resolveModulePrefix",
+        ".codeyam/wasm-source-attribution.js::workspaceCrates"
+      ],
+      "imports": [],
+      "name": "path"
+    },
+    ".codeyam/wasm-source-attribution.js::resolveModuleFile": {
+      "filePath": ".codeyam/wasm-source-attribution.js",
+      "importedBy": [
+        ".codeyam/wasm-source-attribution.js::filesForFunctionName"
+      ],
+      "imports": [
+        ".codeyam/wasm-source-attribution.js::fs",
+        ".codeyam/wasm-source-attribution.js::resolveModulePrefix"
+      ],
+      "name": "resolveModuleFile"
+    },
+    ".codeyam/wasm-source-attribution.js::resolveModulePrefix": {
+      "filePath": ".codeyam/wasm-source-attribution.js",
+      "importedBy": [
+        ".codeyam/wasm-source-attribution.js::resolveModuleFile"
+      ],
+      "imports": [
+        ".codeyam/wasm-source-attribution.js::fs",
+        ".codeyam/wasm-source-attribution.js::path"
+      ],
+      "name": "resolveModulePrefix"
+    },
+    ".codeyam/wasm-source-attribution.js::workspaceCrates": {
+      "filePath": ".codeyam/wasm-source-attribution.js",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/wasm-source-attribution.js::path"
+      ],
+      "name": "workspaceCrates"
+    }
+  },
+  "files": {
+    ".codeyam/capture.js": {
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch.js",
+        ".codeyam/scenario-check-run.js",
+        ".codeyam/scenario-metrics.js",
+        ".codeyam/scenario-issues.js",
+        ".codeyam/scenario-mocks.js",
+        ".codeyam/scenario-page-state.js",
+        ".codeyam/scenario-check-hub-functions.js",
+        ".codeyam/scenario-check-attribution.js",
+        ".codeyam/scenario-playwright.js",
+        ".codeyam/scenario-targeting.js",
+        ".codeyam/scenario-handlers.js",
+        ".codeyam/scenario-interactivity.js"
+      ]
+    },
+    ".codeyam/preview-liveness.js": {
+      "importedBy": [],
+      "imports": [
+        ".codeyam/scenario-launch.js"
+      ]
+    },
+    ".codeyam/scenario-check-attribution.js": {
+      "importedBy": [
+        ".codeyam/capture.js"
+      ],
+      "imports": [
+        ".codeyam/wasm-name-section.js",
+        ".codeyam/wasm-source-attribution.js",
+        ".codeyam/scenario-check-hub-functions.js",
+        ".codeyam/v8-coverage-attribution.js"
+      ]
+    },
+    ".codeyam/scenario-check-hub-functions.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-attribution.js",
+        ".codeyam/v8-coverage-attribution.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/scenario-check-run.js": {
+      "importedBy": [
+        ".codeyam/capture.js"
+      ],
+      "imports": [
+        ".codeyam/scenario-issues.js",
+        ".codeyam/scenario-mocks.js",
+        ".codeyam/scenario-playwright.js",
+        ".codeyam/scenario-metrics.js",
+        ".codeyam/scenario-handlers.js",
+        ".codeyam/scenario-dom-fingerprint.js"
+      ]
+    },
+    ".codeyam/scenario-dom-fingerprint.js": {
+      "importedBy": [
+        ".codeyam/scenario-check-run.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/scenario-handlers.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js"
+      ],
+      "imports": [
+        ".codeyam/scenario-issues.js"
+      ]
+    },
+    ".codeyam/scenario-interactivity.js": {
+      "importedBy": [
+        ".codeyam/capture.js"
+      ],
+      "imports": [
+        ".codeyam/scenario-issues.js"
+      ]
+    },
+    ".codeyam/scenario-issues.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js",
+        ".codeyam/scenario-handlers.js",
+        ".codeyam/scenario-interactivity.js"
+      ],
+      "imports": [
+        ".codeyam/scenario-metrics.js"
+      ]
+    },
+    ".codeyam/scenario-launch-diagnostics.js": {
+      "importedBy": [
+        ".codeyam/scenario-launch.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/scenario-launch.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/preview-liveness.js"
+      ],
+      "imports": [
+        ".codeyam/scenario-launch-diagnostics.js"
+      ]
+    },
+    ".codeyam/scenario-metrics.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js",
+        ".codeyam/scenario-issues.js",
+        ".codeyam/scenario-playwright.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/scenario-mocks.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/scenario-page-state.js": {
+      "importedBy": [
+        ".codeyam/capture.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/scenario-playwright.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-check-run.js"
+      ],
+      "imports": [
+        ".codeyam/scenario-metrics.js",
+        ".codeyam/scenario-targeting.js"
+      ]
+    },
+    ".codeyam/scenario-targeting.js": {
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-playwright.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/seed-adapter.ts": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/emptiedCollections.ts",
+        "src/lib/sandboxPublic.ts"
+      ]
+    },
+    ".codeyam/source-map-decode.js": {
+      "importedBy": [
+        ".codeyam/v8-coverage-attribution.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/v8-coverage-attribution.js": {
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js"
+      ],
+      "imports": [
+        ".codeyam/scenario-check-hub-functions.js",
+        ".codeyam/source-map-decode.js"
+      ]
+    },
+    ".codeyam/wasm-name-section.js": {
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js"
+      ],
+      "imports": []
+    },
+    ".codeyam/wasm-source-attribution.js": {
+      "importedBy": [
+        ".codeyam/scenario-check-attribution.js"
+      ],
+      "imports": []
+    }
+  }
+}

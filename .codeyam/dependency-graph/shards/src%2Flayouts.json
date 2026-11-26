@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "src/layouts/BaseLayout.astro::__file_root__": {
+      "filePath": "src/layouts/BaseLayout.astro",
+      "importedBy": [
+        "src/pages/404.astro::__file_root__",
+        "src/pages/[slug].astro::__file_root__",
+        "src/pages/blog/[slug].astro::__file_root__",
+        "src/pages/chapters/[slug].astro::__file_root__",
+        "src/pages/donate.astro::__file_root__",
+        "src/pages/events.astro::__file_root__",
+        "src/pages/index.astro::__file_root__",
+        "src/pages/sponsor.astro::__file_root__",
+        "src/pages/volunteer/projects/[slug].astro::__file_root__",
+        "src/pages/volunteer.astro::__file_root__",
+        "src/pages/webinars.astro::__file_root__",
+        "src/pages/communities/[slug].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/BrandMark.astro::__file_root__",
+        "src/components/HeadExtras.astro::__file_root__",
+        "src/components/SEO.astro::__file_root__",
+        "src/components/nav/PrimaryNav.astro::__file_root__",
+        "src/components/nav/UtilityBar.astro::__file_root__",
+        "src/components/ui/SocialLinks.astro::__file_root__",
+        "src/lib/contact.ts::emailFor",
+        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
+        "src/lib/drafts.ts::publishedEntries",
+        "src/lib/homeSections.ts::hiddenSectionAnchors",
+        "src/lib/homeSectionsContent.ts::loadHomeSections",
+        "src/lib/integrationsContent.ts::loadIntegrations",
+        "src/lib/nav.ts::chapterNavItems",
+        "src/lib/nav.ts::communityNavItems",
+        "src/lib/nav.ts::withChapterGroup",
+        "src/lib/nav.ts::withCommunityItems",
+        "src/lib/nav.ts::withoutHiddenSections",
+        "src/lib/site.ts::nav",
+        "src/lib/site.ts::settings",
+        "src/lib/site.ts::siteLinks",
+        "src/lib/siteFonts.ts::__file_root__",
+        "src/lib/url.ts::withBase",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/layouts/BaseLayout.astro": {
+      "importedBy": [
+        "src/pages/404.astro",
+        "src/pages/[slug].astro",
+        "src/pages/blog/[slug].astro",
+        "src/pages/chapters/[slug].astro",
+        "src/pages/donate.astro",
+        "src/pages/events.astro",
+        "src/pages/index.astro",
+        "src/pages/sponsor.astro",
+        "src/pages/volunteer/projects/[slug].astro",
+        "src/pages/volunteer.astro",
+        "src/pages/webinars.astro",
+        "src/pages/communities/[slug].astro"
+      ],
+      "imports": [
+        "src/styles/tokens.css",
+        "src/lib/siteFonts.ts",
+        "src/components/SEO.astro",
+        "src/components/HeadExtras.astro",
+        "src/components/BrandMark.astro",
+        "src/components/nav/UtilityBar.astro",
+        "src/components/nav/PrimaryNav.astro",
+        "src/components/ui/SocialLinks.astro",
+        "src/lib/site.ts",
+        "src/lib/nav.ts",
+        "src/lib/homeSections.ts",
+        "src/lib/homeSectionsContent.ts",
+        "src/lib/integrationsContent.ts",
+        "src/lib/drafts.ts",
+        "src/lib/draftVisibility.ts",
+        "src/lib/url.ts",
+        "src/lib/contact.ts"
+      ]
+    }
+  }
+}

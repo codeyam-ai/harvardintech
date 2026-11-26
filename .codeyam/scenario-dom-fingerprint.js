@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: 46b66cf27419a8a788901724edcf1b24fa29ea9a5c4e14e434018e234bfe25aa
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: c8b82370383ff0788f3d7ce0a2c5a9df469d6a11d692d1b59f26eea57b3c8deb
 // npm/scenario-dom-fingerprint.js — the DOM fingerprint a single driven
 // interaction is judged by: snapshot before, snapshot after, and "did the page
 // change?" is whether the two fingerprints differ.
@@ -88,3 +88,9 @@ module.exports = {
   getDOMFingerprint,
   serializeVisibleDom,
 };
+
+// Pixel-path script (interaction settle compares these fingerprints): its code
+// and this number both feed the capture pipeline id. Bump the number for a
+// change that alters pixels without changing code.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

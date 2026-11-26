@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: 7056bc394a7115910de72162c078918144229ec56f90f3f08e5e85c8a8d0208b
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: 2f359d5c35d68f9c4fb1ab94f25db7484e85e95b3cce741556d020a1a7ae420d
 // Interaction targeting for the capture harness: turn a step's visible-text or
 // CSS-selector target into the one element to act on, explain a miss in terms
 // the author can act on, and measure where a pointer step lands inside its
@@ -467,3 +467,8 @@ module.exports = {
   pointerOptionsFor,
   locateInteractionTarget,
 };
+
+// Pixel-path script: its code and this number both feed the capture pipeline
+// id. Bump the number for a change that alters pixels without changing code.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

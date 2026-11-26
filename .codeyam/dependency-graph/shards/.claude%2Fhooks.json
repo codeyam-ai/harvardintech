@@ -1,0 +1,4352 @@
+{
+  "entities": {
+    ".claude/hooks/_step_metadata.py::_empty_mode_table": {
+      "filePath": ".claude/hooks/_step_metadata.py",
+      "importedBy": [
+        ".claude/hooks/_step_metadata.py::load_step_metadata",
+        ".claude/hooks/_step_metadata.py::resolve_mode_table"
+      ],
+      "imports": [],
+      "name": "_empty_mode_table"
+    },
+    ".claude/hooks/_step_metadata.py::_kv_pairs_to_int_dict": {
+      "filePath": ".claude/hooks/_step_metadata.py",
+      "importedBy": [
+        ".claude/hooks/_step_metadata.py::load_step_metadata"
+      ],
+      "imports": [],
+      "name": "_kv_pairs_to_int_dict"
+    },
+    ".claude/hooks/_step_metadata.py::_no_test_slug_map": {
+      "filePath": ".claude/hooks/_step_metadata.py",
+      "importedBy": [
+        ".claude/hooks/_step_metadata.py::load_step_metadata"
+      ],
+      "imports": [],
+      "name": "_no_test_slug_map"
+    },
+    ".claude/hooks/_step_metadata.py::_string_list": {
+      "filePath": ".claude/hooks/_step_metadata.py",
+      "importedBy": [
+        ".claude/hooks/_step_metadata.py::load_step_metadata"
+      ],
+      "imports": [],
+      "name": "_string_list"
+    },
+    ".claude/hooks/_step_metadata.py::load_step_metadata": {
+      "filePath": ".claude/hooks/_step_metadata.py",
+      "importedBy": [],
+      "imports": [
+        ".claude/hooks/_step_metadata.py::_empty_mode_table",
+        ".claude/hooks/_step_metadata.py::_kv_pairs_to_int_dict",
+        ".claude/hooks/_step_metadata.py::_no_test_slug_map",
+        ".claude/hooks/_step_metadata.py::_string_list"
+      ],
+      "name": "load_step_metadata"
+    },
+    ".claude/hooks/_step_metadata.py::resolve_mode_table": {
+      "filePath": ".claude/hooks/_step_metadata.py",
+      "importedBy": [],
+      "imports": [
+        ".claude/hooks/_step_metadata.py::_empty_mode_table"
+      ],
+      "name": "resolve_mode_table"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_argv_is_read_only": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::interpreter_argument"
+      ],
+      "imports": [],
+      "name": "_argv_is_read_only"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_argv_value": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::resolve_identifier"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::interpreter_argument"
+      ],
+      "name": "_argv_value"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_assigned_name_is_read": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_occurrence_is_access"
+      ],
+      "imports": [],
+      "name": "_assigned_name_is_read"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_build_output_deletion_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::build_output_deletion_nudge"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "_build_output_deletion_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_call_args": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_call_span",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_call_span"
+      ],
+      "name": "_call_args"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_call_span": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_call_args",
+        ".claude/hooks/editor-pretool-hook.py::_path_join_parts"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_call_args"
+      ],
+      "name": "_call_span"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_capped_rules": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_record_refusal"
+      ],
+      "imports": [],
+      "name": "_capped_rules"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_capture_available": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_capture_available"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_cd_directory": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_common_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::_heredocs_run_as_scripts",
+        ".claude/hooks/editor-pretool-hook.py::_rebased_on_cd",
+        ".claude/hooks/editor-pretool-hook.py::_script_operands",
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::session_start_directory"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_operand",
+        ".claude/hooks/editor-pretool-hook.py::_cd_scope_closed",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies",
+        ".claude/hooks/editor-pretool-hook.py::session_start_directory"
+      ],
+      "name": "_cd_directory"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_cd_operand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_expand_shell_operand"
+      ],
+      "name": "_cd_operand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_cd_scope_closed": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory"
+      ],
+      "imports": [],
+      "name": "_cd_scope_closed"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_code_literal_spans": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_write_data_spans",
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "imports": [],
+      "name": "_code_literal_spans"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_codeyam_verb": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_is_non_executing_runner_call",
+        ".claude/hooks/editor-pretool-hook.py::_test_runner_index",
+        ".claude/hooks/editor-pretool-hook.py::is_narrowed_refresh_only"
+      ],
+      "imports": [],
+      "name": "_codeyam_verb"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_command_program": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_command_word_index",
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_command_program"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_command_word_index": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_command_program",
+        ".claude/hooks/editor-pretool-hook.py::_script_operand",
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories",
+        ".claude/hooks/editor-pretool-hook.py::prefix_assigned_interpreter_operand"
+      ],
+      "imports": [],
+      "name": "_command_word_index"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_commit_gate_phrase": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_commit_gate_phrase"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_common_cd_directory": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory"
+      ],
+      "name": "_common_cd_directory"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_concatenated_paths": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_concatenation_value",
+        ".claude/hooks/editor-pretool-hook.py::_resolved_expression"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_path_join_parts",
+        ".claude/hooks/editor-pretool-hook.py::_plus_concat_parts",
+        ".claude/hooks/editor-pretool-hook.py::resolve_identifier"
+      ],
+      "name": "_concatenated_paths"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_concatenation_value": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::resolve_identifier"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_concatenated_paths"
+      ],
+      "name": "_concatenation_value"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_configured_test_scripts": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_invokes_configured_script"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_test_runner_index",
+        ".claude/hooks/editor-pretool-hook.py::block"
+      ],
+      "name": "_configured_test_scripts"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_deletes_build_output": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::build_output_deletion_nudge"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_inside_cargo_target",
+        ".claude/hooks/editor-pretool-hook.py::_is_cargo_clean",
+        ".claude/hooks/editor-pretool-hook.py::_recursive_rm_paths"
+      ],
+      "name": "_deletes_build_output"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_deliver_context_on_allow": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::allow"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::allow_context_json",
+        ".claude/hooks/editor-pretool-hook.py::allow_context_message"
+      ],
+      "name": "_deliver_context_on_allow"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_droppable_window_stage": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_live_window_drops",
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_droppable_window_stage"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_eligible_paths": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::eligible_json_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_repo_relative",
+        ".claude/hooks/editor-pretool-hook.py::eligible_json_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs"
+      ],
+      "name": "_eligible_paths"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_emit_verdict": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::allow",
+        ".claude/hooks/editor-pretool-hook.py::block"
+      ],
+      "imports": [],
+      "name": "_emit_verdict"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_expand_shell_operand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_operand",
+        ".claude/hooks/editor-pretool-hook.py::_git_option_directory",
+        ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets",
+        ".claude/hooks/editor-pretool-hook.py::interpreter_argument",
+        ".claude/hooks/editor-pretool-hook.py::tee_write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_shell_variable_values"
+      ],
+      "name": "_expand_shell_operand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_file_holds_handoff": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_paths_in",
+        ".claude/hooks/editor-pretool-hook.py::_transcript_holds_handoff"
+      ],
+      "imports": [],
+      "name": "_file_holds_handoff"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_gating_subcommand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::compound_gating_command",
+        ".claude/hooks/editor-pretool-hook.py::piped_gating_command"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep"
+      ],
+      "name": "_gating_subcommand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_git_lines": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::unpushed_range_is_plan_only"
+      ],
+      "imports": [],
+      "name": "_git_lines"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_git_ls_files": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_read_run_script",
+        ".claude/hooks/editor-pretool-hook.py::_untracked_beside_tracked",
+        ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_targets",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_lookup"
+      ],
+      "imports": [],
+      "name": "_git_ls_files"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_git_option_directory": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_expand_shell_operand",
+        ".claude/hooks/editor-pretool-hook.py::_join_onto"
+      ],
+      "name": "_git_option_directory"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_git_subcommand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand"
+      ],
+      "imports": [],
+      "name": "_git_subcommand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_grep_stage_pattern": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_source_patterns"
+      ],
+      "imports": [],
+      "name": "_grep_stage_pattern"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_handoff_body_reaches": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_paths_in",
+        ".claude/hooks/editor-pretool-hook.py::_reduces_output"
+      ],
+      "name": "_handoff_body_reaches"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_handoff_idiom": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_live_handoff_idiom",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read"
+      ],
+      "imports": [],
+      "name": "_handoff_idiom"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_handoff_paths_in": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_body_reaches",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read_tool"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_file_holds_handoff",
+        ".claude/hooks/editor-pretool-hook.py::_run_transcript_path",
+        ".claude/hooks/editor-pretool-hook.py::_transcript_holds_handoff"
+      ],
+      "name": "_handoff_paths_in"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_handoff_subcommand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_live_window_drops",
+        ".claude/hooks/editor-pretool-hook.py::windowed_live_handoff"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_gating_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_handoff_subcommand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_has_brace_group": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::terminal_only_paths"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators"
+      ],
+      "name": "_has_brace_group"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep",
+        ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets",
+        ".claude/hooks/editor-pretool-hook.py::is_textual_json_transform",
+        ".claude/hooks/editor-pretool-hook.py::tracked_file_count",
+        ".claude/hooks/editor-pretool-hook.py::tracked_recursive_rm",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::_tokens_have_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_untokenizable_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets"
+      ],
+      "name": "_has_inplace_editor"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_heredoc_consumer": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_openers"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "name": "_heredoc_consumer"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_heredoc_delimiter": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_openers",
+        ".claude/hooks/editor-pretool-hook.py::_lex_shell_words"
+      ],
+      "imports": [],
+      "name": "_heredoc_delimiter"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_heredoc_openers": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_consumer",
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_delimiter"
+      ],
+      "name": "_heredoc_openers"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_heredocs_run_as_scripts": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::_join_onto",
+        ".claude/hooks/editor-pretool-hook.py::_redirect_target",
+        ".claude/hooks/editor-pretool-hook.py::_same_file",
+        ".claude/hooks/editor-pretool-hook.py::_script_operands"
+      ],
+      "name": "_heredocs_run_as_scripts"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_in_command_position": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_deletes_build_output",
+        ".claude/hooks/editor-pretool-hook.py::_gating_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_handoff_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_invocations",
+        ".claude/hooks/editor-pretool-hook.py::_invokes_configured_script",
+        ".claude/hooks/editor-pretool-hook.py::_runs_as_script_argument",
+        ".claude/hooks/editor-pretool-hook.py::_shell_c_payload",
+        ".claude/hooks/editor-pretool-hook.py::_test_runner_index",
+        ".claude/hooks/editor-pretool-hook.py::_tokens_have_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep",
+        ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets",
+        ".claude/hooks/editor-pretool-hook.py::invokes_codeyam_editor",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::recursive_rm_operands",
+        ".claude/hooks/editor-pretool-hook.py::tee_write_targets"
+      ],
+      "imports": [],
+      "name": "_in_command_position"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_in_spans": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [],
+      "name": "_in_spans"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_inferred_target_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_prefix_trap_lead",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::prefix_assigned_interpreter_operand"
+      ],
+      "name": "_inferred_target_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_inside_cargo_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_deletes_build_output"
+      ],
+      "imports": [],
+      "name": "_inside_cargo_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_interpreter_code_source": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_script_operand",
+        ".claude/hooks/editor-pretool-hook.py::_shell_script_operand",
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_redirect_word_count"
+      ],
+      "name": "_interpreter_code_source"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_interpreter_invocations": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::interpreter_argument"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::_without_redirections"
+      ],
+      "name": "_interpreter_invocations"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_interpreter_lang": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_script_operand"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_interpreter_lang"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_invokes_configured_script": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::is_narrowed_refresh_only",
+        ".claude/hooks/editor-pretool-hook.py::is_test_run_command"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_configured_test_scripts",
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_runs_as_script_argument"
+      ],
+      "name": "_invokes_configured_script"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_is_cargo_clean": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_deletes_build_output"
+      ],
+      "imports": [],
+      "name": "_is_cargo_clean"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_is_inspection_only_stage": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::without_standalone_inspections"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_is_inspection_only_stage"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_is_integration_test_path": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::discover_lean_contract"
+      ],
+      "imports": [],
+      "name": "_is_integration_test_path"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_is_non_executing_runner_call": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_runs_tests"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_codeyam_verb",
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_is_non_executing_runner_call"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_is_pcre_flag": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep"
+      ],
+      "imports": [],
+      "name": "_is_pcre_flag"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_is_redirection_ampersand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_lex_shell_words",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators"
+      ],
+      "imports": [],
+      "name": "_is_redirection_ampersand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_is_rust_comment": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::line_count_limit",
+        ".claude/hooks/editor-pretool-hook.py::read_rel_skill_path"
+      ],
+      "imports": [],
+      "name": "_is_rust_comment"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_is_tee_stage": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::piped_gating_command"
+      ],
+      "imports": [],
+      "name": "_is_tee_stage"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_join_onto": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_git_option_directory",
+        ".claude/hooks/editor-pretool-hook.py::_heredocs_run_as_scripts",
+        ".claude/hooks/editor-pretool-hook.py::_rebased_on_cd",
+        ".claude/hooks/editor-pretool-hook.py::_rewrite_sources",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [],
+      "name": "_join_onto"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_kill_fed_sources": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::self_matching_kill"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::_substitutions"
+      ],
+      "name": "_kill_fed_sources"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_leading_operand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_test_runner_index"
+      ],
+      "imports": [],
+      "name": "_leading_operand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_lex_shell_words": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_script_operands",
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories",
+        ".claude/hooks/editor-pretool-hook.py::prefix_assigned_interpreter_operand",
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_delimiter",
+        ".claude/hooks/editor-pretool-hook.py::_is_redirection_ampersand",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands"
+      ],
+      "name": "_lex_shell_words"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_literal_value": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::resolve_identifier"
+      ],
+      "imports": [],
+      "name": "_literal_value"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_live_handoff_idiom": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::windowed_live_handoff"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_idiom"
+      ],
+      "name": "_live_handoff_idiom"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_live_handoff_recovery": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read_refusal"
+      ],
+      "imports": [],
+      "name": "_live_handoff_recovery"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_live_handoff_windows": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::refused_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::windowed_section_answer"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_texts",
+        ".claude/hooks/editor-pretool-hook.py::windowed_live_handoff"
+      ],
+      "name": "_live_handoff_windows"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_live_window_drops": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_droppable_window_stage",
+        ".claude/hooks/editor-pretool-hook.py::_handoff_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_spans",
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::refused_live_handoff"
+      ],
+      "name": "_live_window_drops"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_load_question_copy_bounces": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::question_findings_already_raised",
+        ".claude/hooks/editor-pretool-hook.py::question_payload_was_bounced",
+        ".claude/hooks/editor-pretool-hook.py::remember_question_bounce"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_question_copy_bounce_path"
+      ],
+      "name": "_load_question_copy_bounces"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_load_refusal_log": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_record_refusal",
+        ".claude/hooks/editor-pretool-hook.py::recent_scripted_refusal_age"
+      ],
+      "imports": [],
+      "name": "_load_refusal_log"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_merged_raised": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::next_bounce_record"
+      ],
+      "imports": [],
+      "name": "_merged_raised"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_module_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_test_runner_index"
+      ],
+      "imports": [],
+      "name": "_module_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_nested_segments": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::terminal_only_paths"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators"
+      ],
+      "name": "_nested_segments"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_node_argv": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::interpreter_argument"
+      ],
+      "imports": [],
+      "name": "_node_argv"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_occurrence_is_access": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::store_in_access_position"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_assigned_name_is_read",
+        ".claude/hooks/editor-pretool-hook.py::_shell_stage_tail",
+        ".claude/hooks/editor-pretool-hook.py::store_in_access_position"
+      ],
+      "name": "_occurrence_is_access"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_offending_stage": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_textual_json_found",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "_offending_stage"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_option_keyed_findings": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_question_copy_keyed_findings"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_option_position",
+        ".claude/hooks/editor-pretool-hook.py::block"
+      ],
+      "name": "_option_keyed_findings"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_option_labels": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::question_copy_keyed_findings"
+      ],
+      "imports": [],
+      "name": "_option_labels"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_option_position": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_option_keyed_findings",
+        ".claude/hooks/editor-pretool-hook.py::_question_copy_keyed_findings"
+      ],
+      "imports": [],
+      "name": "_option_position"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_ordinal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_repeat_notice"
+      ],
+      "imports": [],
+      "name": "_ordinal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_path_join_parts": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_concatenated_paths"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_call_span",
+        ".claude/hooks/editor-pretool-hook.py::_string_literal"
+      ],
+      "name": "_path_join_parts"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_path_tokens": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_carves_by_line_count",
+        ".claude/hooks/editor-pretool-hook.py::_rewrite_sources",
+        ".claude/hooks/editor-pretool-hook.py::preview_origin_hand_write_target",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target",
+        ".claude/hooks/editor-pretool-hook.py::terminal_only_paths"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_paths"
+      ],
+      "name": "_path_tokens"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_perl_operands": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets"
+      ],
+      "imports": [],
+      "name": "_perl_operands"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_pgrep_calls": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_source_patterns",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_loop"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands"
+      ],
+      "name": "_pgrep_calls"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_pgrep_full_pattern": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_source_patterns",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_kill",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_loop"
+      ],
+      "imports": [],
+      "name": "_pgrep_full_pattern"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_pid_alive": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::collect_unfinished_runs"
+      ],
+      "imports": [],
+      "name": "_pid_alive"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_pipe_notice_marker_path": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::claim_pipe_notice"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "_pipe_notice_marker_path"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_pipeline_carves_by_line_count": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::line_range_split",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_path_tokens",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "_pipeline_carves_by_line_count"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_pipeline_spans": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_live_window_drops",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators",
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff"
+      ],
+      "name": "_pipeline_spans"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_pipeline_texts": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_live_handoff_windows",
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_collateral",
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_offender"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "name": "_pipeline_texts"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_pipelines": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_kill_fed_sources",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_carves_by_line_count",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_spans",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_texts",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators",
+        ".claude/hooks/editor-pretool-hook.py::compound_gating_command",
+        ".claude/hooks/editor-pretool-hook.py::piped_gating_command",
+        ".claude/hooks/editor-pretool-hook.py::terminal_only_paths",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read",
+        ".claude/hooks/editor-pretool-hook.py::windowed_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::without_standalone_inspections"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_spans",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators"
+      ],
+      "name": "_pipelines"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_plus_concat_parts": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_concatenated_paths"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_string_literal"
+      ],
+      "name": "_plus_concat_parts"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_prefix_trap_lead": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_inferred_target_refusal",
+        ".claude/hooks/editor-pretool-hook.py::_script_run_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::prefix_assigned_interpreter_operand"
+      ],
+      "name": "_prefix_trap_lead"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_preview_hint": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_preview_hint"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_program_name": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_command_program",
+        ".claude/hooks/editor-pretool-hook.py::_droppable_window_stage",
+        ".claude/hooks/editor-pretool-hook.py::_handoff_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_consumer",
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_lang",
+        ".claude/hooks/editor-pretool-hook.py::_invokes_configured_script",
+        ".claude/hooks/editor-pretool-hook.py::_is_inspection_only_stage",
+        ".claude/hooks/editor-pretool-hook.py::_is_non_executing_runner_call",
+        ".claude/hooks/editor-pretool-hook.py::_runs_as_script_argument",
+        ".claude/hooks/editor-pretool-hook.py::_runs_parse_only",
+        ".claude/hooks/editor-pretool-hook.py::_script_operand",
+        ".claude/hooks/editor-pretool-hook.py::_shell_c_payload",
+        ".claude/hooks/editor-pretool-hook.py::_test_runner_index",
+        ".claude/hooks/editor-pretool-hook.py::_unnamed_interpreter_operand",
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories",
+        ".claude/hooks/editor-pretool-hook.py::invokes_codeyam_editor",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::is_narrowed_refresh_only",
+        ".claude/hooks/editor-pretool-hook.py::prefix_assigned_interpreter_operand",
+        ".claude/hooks/editor-pretool-hook.py::recursive_rm_operands",
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "imports": [],
+      "name": "_program_name"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_python_argv": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::interpreter_argument"
+      ],
+      "imports": [],
+      "name": "_python_argv"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_question_copy_bounce_path": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_load_question_copy_bounces",
+        ".claude/hooks/editor-pretool-hook.py::gate_question_copy",
+        ".claude/hooks/editor-pretool-hook.py::remember_question_bounce"
+      ],
+      "imports": [],
+      "name": "_question_copy_bounce_path"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_question_copy_keyed_findings": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::question_copy_keyed_findings"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_option_keyed_findings",
+        ".claude/hooks/editor-pretool-hook.py::_option_position"
+      ],
+      "name": "_question_copy_keyed_findings"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_quoted_region": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "imports": [],
+      "name": "_quoted_region"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_read_run_script": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_git_ls_files",
+        ".claude/hooks/editor-pretool-hook.py::_repo_relative",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets"
+      ],
+      "name": "_read_run_script"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_rebased_on_cd": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::_join_onto"
+      ],
+      "name": "_rebased_on_cd"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_record_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::recent_scripted_refusal_age"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_capped_rules",
+        ".claude/hooks/editor-pretool-hook.py::_load_refusal_log",
+        ".claude/hooks/editor-pretool-hook.py::recent_scripted_refusal_age"
+      ],
+      "name": "_record_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_recursive_rm_paths": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_deletes_build_output"
+      ],
+      "imports": [],
+      "name": "_recursive_rm_paths"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_redirect_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_heredocs_run_as_scripts"
+      ],
+      "imports": [],
+      "name": "_redirect_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_redirect_word_count": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_code_source",
+        ".claude/hooks/editor-pretool-hook.py::_shell_script_operand"
+      ],
+      "imports": [],
+      "name": "_redirect_word_count"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_reduces_output": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_body_reaches",
+        ".claude/hooks/editor-pretool-hook.py::windowed_live_handoff"
+      ],
+      "imports": [],
+      "name": "_reduces_output"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_rejoin_pairs": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff"
+      ],
+      "imports": [],
+      "name": "_rejoin_pairs"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_repeat_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::refusal_text"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_ordinal",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::describe_call"
+      ],
+      "name": "_repeat_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_repo_relative": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_eligible_paths",
+        ".claude/hooks/editor-pretool-hook.py::_read_run_script",
+        ".claude/hooks/editor-pretool-hook.py::_template_skeleton",
+        ".claude/hooks/editor-pretool-hook.py::classify_write_target",
+        ".claude/hooks/editor-pretool-hook.py::line_budget_violation",
+        ".claude/hooks/editor-pretool-hook.py::tracked_file_count",
+        ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_target"
+      ],
+      "imports": [],
+      "name": "_repo_relative"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_resolved_expression": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_concatenated_paths",
+        ".claude/hooks/editor-pretool-hook.py::_string_literal",
+        ".claude/hooks/editor-pretool-hook.py::_template_skeleton",
+        ".claude/hooks/editor-pretool-hook.py::interpreter_argument",
+        ".claude/hooks/editor-pretool-hook.py::resolve_identifier"
+      ],
+      "name": "_resolved_expression"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_rewrite_sources": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_join_onto",
+        ".claude/hooks/editor-pretool-hook.py::_path_tokens",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "_rewrite_sources"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_run_transcript_path": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_paths_in"
+      ],
+      "imports": [],
+      "name": "_run_transcript_path"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_runs_as_script_argument": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_invokes_configured_script"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_runs_as_script_argument"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_runs_non_shell_code": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "imports": [],
+      "name": "_runs_non_shell_code"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_runs_parse_only": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_script_operand"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_runs_parse_only"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_runs_tests": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::is_narrowed_refresh_only",
+        ".claude/hooks/editor-pretool-hook.py::is_test_run_command"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_is_non_executing_runner_call",
+        ".claude/hooks/editor-pretool-hook.py::_test_runner_index"
+      ],
+      "name": "_runs_tests"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_same_file": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_heredocs_run_as_scripts"
+      ],
+      "imports": [],
+      "name": "_same_file"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_script_carrying": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs"
+      ],
+      "name": "_script_carrying"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_script_operand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_script_operands"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_command_word_index",
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_code_source",
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_lang",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_runs_parse_only",
+        ".claude/hooks/editor-pretool-hook.py::_shell_script_operand",
+        ".claude/hooks/editor-pretool-hook.py::_unnamed_interpreter_operand"
+      ],
+      "name": "_script_operand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_script_operands": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_heredocs_run_as_scripts",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::_lex_shell_words",
+        ".claude/hooks/editor-pretool-hook.py::_script_operand"
+      ],
+      "name": "_script_operands"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_script_run_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_prefix_trap_lead",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_refusal"
+      ],
+      "name": "_script_run_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_sed_operands": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets"
+      ],
+      "imports": [],
+      "name": "_sed_operands"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_shell_c_payload": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::is_narrowed_refresh_only",
+        ".claude/hooks/editor-pretool-hook.py::is_test_run_command",
+        ".claude/hooks/editor-pretool-hook.py::tracked_recursive_rm"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_shell_c_payload"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_shell_script_operand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_script_operand"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_code_source",
+        ".claude/hooks/editor-pretool-hook.py::_redirect_word_count"
+      ],
+      "name": "_shell_script_operand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_shell_stage_tail": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_occurrence_is_access"
+      ],
+      "imports": [],
+      "name": "_shell_stage_tail"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_shell_variable_values": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_expand_shell_operand",
+        ".claude/hooks/editor-pretool-hook.py::prefix_assigned_interpreter_operand"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands"
+      ],
+      "name": "_shell_variable_values"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_slug_label": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_test_run_block_message",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_slug_label"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_source_patterns": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::self_matching_kill"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_grep_stage_pattern",
+        ".claude/hooks/editor-pretool-hook.py::_pgrep_calls",
+        ".claude/hooks/editor-pretool-hook.py::_pgrep_full_pattern"
+      ],
+      "name": "_source_patterns"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_split_commands": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_consumer",
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_invocations",
+        ".claude/hooks/editor-pretool-hook.py::_lex_shell_words",
+        ".claude/hooks/editor-pretool-hook.py::_offending_stage",
+        ".claude/hooks/editor-pretool-hook.py::_pgrep_calls",
+        ".claude/hooks/editor-pretool-hook.py::_shell_variable_values",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators",
+        ".claude/hooks/editor-pretool-hook.py::_textual_json_found",
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep",
+        ".claude/hooks/editor-pretool-hook.py::build_output_deletion_nudge",
+        ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets",
+        ".claude/hooks/editor-pretool-hook.py::invokes_codeyam_editor",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::is_narrowed_refresh_only",
+        ".claude/hooks/editor-pretool-hook.py::is_test_run_command",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::tee_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::tracked_recursive_rm",
+        ".claude/hooks/editor-pretool-hook.py::unparseable_command_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators"
+      ],
+      "name": "_split_commands"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_has_brace_group",
+        ".claude/hooks/editor-pretool-hook.py::_nested_segments",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_spans",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::_unrewritable_construct",
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_is_redirection_ampersand",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "name": "_split_commands_with_separators"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_string_literal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_path_join_parts",
+        ".claude/hooks/editor-pretool-hook.py::_plus_concat_parts",
+        ".claude/hooks/editor-pretool-hook.py::_resolved_expression",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [],
+      "name": "_string_literal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_strip_shell_comments": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets"
+      ],
+      "imports": [],
+      "name": "_strip_shell_comments"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_substitutions": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_kill_fed_sources"
+      ],
+      "imports": [],
+      "name": "_substitutions"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_tee_stage_operands": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::tee_write_targets"
+      ],
+      "imports": [],
+      "name": "_tee_stage_operands"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_template_skeleton": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_resolved_expression"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_repo_relative"
+      ],
+      "name": "_template_skeleton"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_test_run_block_message": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_slug_label",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::merge_in_progress"
+      ],
+      "name": "_test_run_block_message"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_test_runner_index": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_configured_test_scripts",
+        ".claude/hooks/editor-pretool-hook.py::_runs_tests"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_codeyam_verb",
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_leading_operand",
+        ".claude/hooks/editor-pretool-hook.py::_module_target",
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_test_runner_index"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_textual_json_found": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_offending_stage",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_stage"
+      ],
+      "name": "_textual_json_found"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_tokens_have_inplace_editor": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_untokenizable_has_inplace_editor"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position"
+      ],
+      "name": "_tokens_have_inplace_editor"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_transcript_holds_handoff": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_paths_in"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_file_holds_handoff"
+      ],
+      "name": "_transcript_holds_handoff"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_unbounded_poll_guard": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_workflow_in_flight",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::notice",
+        ".claude/hooks/editor-pretool-hook.py::unbounded_background_poll",
+        ".claude/hooks/editor-pretool-hook.py::unbounded_background_poll_text"
+      ],
+      "name": "_unbounded_poll_guard"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_unnamed_interpreter_operand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_script_operand"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_program_name"
+      ],
+      "name": "_unnamed_interpreter_operand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_unrewritable_construct": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "name": "_unrewritable_construct"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_untokenizable_has_inplace_editor": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_tokens_have_inplace_editor"
+      ],
+      "name": "_untokenizable_has_inplace_editor"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_untracked_beside_tracked": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_git_ls_files",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target"
+      ],
+      "name": "_untracked_beside_tracked"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_gating_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::is_test_run_command",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::tracked_file_count"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_is_pcre_flag",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::unparseable_command_refusal"
+      ],
+      "name": "_uses_pcre_grep"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_without_inert_quotes": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::unbounded_background_poll"
+      ],
+      "imports": [],
+      "name": "_without_inert_quotes"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_without_redirections": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_invocations"
+      ],
+      "imports": [],
+      "name": "_without_redirections"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_workflow_in_flight": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_unbounded_poll_guard"
+      ],
+      "imports": [],
+      "name": "_workflow_in_flight"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_workflow_slug": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::prototype_git_refusal"
+      ],
+      "imports": [],
+      "name": "_workflow_slug"
+    },
+    ".claude/hooks/editor-pretool-hook.py::_write_data_spans": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_code_literal_spans",
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "name": "_write_data_spans"
+    },
+    ".claude/hooks/editor-pretool-hook.py::accessed_inspector": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::matching_inspector",
+        ".claude/hooks/editor-pretool-hook.py::store_in_access_position"
+      ],
+      "name": "accessed_inspector"
+    },
+    ".claude/hooks/editor-pretool-hook.py::allow": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::invokes_codeyam_editor",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::notice",
+        ".claude/hooks/editor-pretool-hook.py::rewrite_bash_command",
+        ".claude/hooks/editor-pretool-hook.py::test_edit_refusal_suffix",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read_tool"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_deliver_context_on_allow",
+        ".claude/hooks/editor-pretool-hook.py::_emit_verdict",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::record_awaiting_user"
+      ],
+      "name": "allow"
+    },
+    ".claude/hooks/editor-pretool-hook.py::allow_context_json": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_deliver_context_on_allow"
+      ],
+      "imports": [],
+      "name": "allow_context_json"
+    },
+    ".claude/hooks/editor-pretool-hook.py::allow_context_message": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_deliver_context_on_allow",
+        ".claude/hooks/editor-pretool-hook.py::block"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "allow_context_message"
+    },
+    ".claude/hooks/editor-pretool-hook.py::begin_run": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::report_unfinished_runs"
+      ],
+      "imports": [],
+      "name": "begin_run"
+    },
+    ".claude/hooks/editor-pretool-hook.py::block": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_configured_test_scripts",
+        ".claude/hooks/editor-pretool-hook.py::_inferred_target_refusal",
+        ".claude/hooks/editor-pretool-hook.py::_option_keyed_findings",
+        ".claude/hooks/editor-pretool-hook.py::_repeat_notice",
+        ".claude/hooks/editor-pretool-hook.py::_test_run_block_message",
+        ".claude/hooks/editor-pretool-hook.py::_unbounded_poll_guard",
+        ".claude/hooks/editor-pretool-hook.py::describe_call",
+        ".claude/hooks/editor-pretool-hook.py::gate_question_copy",
+        ".claude/hooks/editor-pretool-hook.py::inspector_nudge",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::notice",
+        ".claude/hooks/editor-pretool-hook.py::piped_gating_command",
+        ".claude/hooks/editor-pretool-hook.py::refuse_unparseable",
+        ".claude/hooks/editor-pretool-hook.py::run_structured_question_check",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_refusal",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_notice",
+        ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_notice"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_emit_verdict",
+        ".claude/hooks/editor-pretool-hook.py::_record_refusal",
+        ".claude/hooks/editor-pretool-hook.py::allow_context_message",
+        ".claude/hooks/editor-pretool-hook.py::refusal_text"
+      ],
+      "name": "block"
+    },
+    ".claude/hooks/editor-pretool-hook.py::bounded_poll_rewrite": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::unbounded_background_poll_text"
+      ],
+      "imports": [],
+      "name": "bounded_poll_rewrite"
+    },
+    ".claude/hooks/editor-pretool-hook.py::build_output_deletion_nudge": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_build_output_deletion_notice",
+        ".claude/hooks/editor-pretool-hook.py::_deletes_build_output",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "build_output_deletion_nudge"
+    },
+    ".claude/hooks/editor-pretool-hook.py::claim_pipe_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipe_notice_marker_path",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "claim_pipe_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::classify_write_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_repo_relative"
+      ],
+      "name": "classify_write_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::collect_unfinished_runs": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::report_unfinished_runs"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pid_alive",
+        ".claude/hooks/editor-pretool-hook.py::finish_run"
+      ],
+      "name": "collect_unfinished_runs"
+    },
+    ".claude/hooks/editor-pretool-hook.py::compound_gating_command": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_gating_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "compound_gating_command"
+    },
+    ".claude/hooks/editor-pretool-hook.py::compound_gating_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "compound_gating_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::compound_stage_evidence": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_offender",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "compound_stage_evidence"
+    },
+    ".claude/hooks/editor-pretool-hook.py::describe_call": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_repeat_notice",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "describe_call"
+    },
+    ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_live_window_drops",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_spans",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::rewrite_windowed_handoff"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_droppable_window_stage",
+        ".claude/hooks/editor-pretool-hook.py::_live_window_drops",
+        ".claude/hooks/editor-pretool-hook.py::_rejoin_pairs",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators",
+        ".claude/hooks/editor-pretool-hook.py::_unrewritable_construct",
+        ".claude/hooks/editor-pretool-hook.py::refused_live_handoff"
+      ],
+      "name": "dewindowed_live_handoff"
+    },
+    ".claude/hooks/editor-pretool-hook.py::discover_lean_contract": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::line_budget_violation"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_is_integration_test_path",
+        ".claude/hooks/editor-pretool-hook.py::parse_lean_contract"
+      ],
+      "name": "discover_lean_contract"
+    },
+    ".claude/hooks/editor-pretool-hook.py::edits_only_inline_tests": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::is_test_edit"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::inline_test_module_span"
+      ],
+      "name": "edits_only_inline_tests"
+    },
+    ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_consumer",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_texts",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators",
+        ".claude/hooks/editor-pretool-hook.py::_unrewritable_construct",
+        ".claude/hooks/editor-pretool-hook.py::build_output_deletion_nudge",
+        ".claude/hooks/editor-pretool-hook.py::inspector_nudge",
+        ".claude/hooks/editor-pretool-hook.py::is_textual_json_transform",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_kill",
+        ".claude/hooks/editor-pretool-hook.py::unbounded_background_poll",
+        ".claude/hooks/editor-pretool-hook.py::unparseable_command_refusal",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read",
+        ".claude/hooks/editor-pretool-hook.py::windowed_live_handoff"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_heredoc_openers",
+        ".claude/hooks/editor-pretool-hook.py::_runs_non_shell_code",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands_with_separators"
+      ],
+      "name": "elide_heredoc_bodies"
+    },
+    ".claude/hooks/editor-pretool-hook.py::eligible_json_pathspecs": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_eligible_paths",
+        ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_eligible_paths",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs"
+      ],
+      "name": "eligible_json_pathspecs"
+    },
+    ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_eligible_paths",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_carves_by_line_count",
+        ".claude/hooks/editor-pretool-hook.py::_script_carrying",
+        ".claude/hooks/editor-pretool-hook.py::eligible_json_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target",
+        ".claude/hooks/editor-pretool-hook.py::terminal_only_paths",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_lookup",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_eligible_paths",
+        ".claude/hooks/editor-pretool-hook.py::on_disk_source_paths",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_paths"
+      ],
+      "name": "eligible_pathspecs"
+    },
+    ".claude/hooks/editor-pretool-hook.py::explain_requested": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "explain_requested"
+    },
+    ".claude/hooks/editor-pretool-hook.py::finish_run": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::collect_unfinished_runs"
+      ],
+      "imports": [],
+      "name": "finish_run"
+    },
+    ".claude/hooks/editor-pretool-hook.py::gate_question_copy": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_question_copy_bounce_path",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::question_copy_keyed_findings",
+        ".claude/hooks/editor-pretool-hook.py::question_findings_already_raised",
+        ".claude/hooks/editor-pretool-hook.py::question_payload_hash",
+        ".claude/hooks/editor-pretool-hook.py::question_payload_was_bounced",
+        ".claude/hooks/editor-pretool-hook.py::remember_question_bounce"
+      ],
+      "name": "gate_question_copy"
+    },
+    ".claude/hooks/editor-pretool-hook.py::git_add_paths_are_plans_only": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "git_add_paths_are_plans_only"
+    },
+    ".claude/hooks/editor-pretool-hook.py::git_invocation_directories": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::runs_git_outside_project"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::_command_word_index",
+        ".claude/hooks/editor-pretool-hook.py::_git_option_directory",
+        ".claude/hooks/editor-pretool-hook.py::_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_lex_shell_words",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_shell_c_payload",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand"
+      ],
+      "name": "git_invocation_directories"
+    },
+    ".claude/hooks/editor-pretool-hook.py::handoff_refusal_collateral": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_offender",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_texts",
+        ".claude/hooks/editor-pretool-hook.py::refused_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read"
+      ],
+      "name": "handoff_refusal_collateral"
+    },
+    ".claude/hooks/editor-pretool-hook.py::handoff_refusal_offender": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_texts",
+        ".claude/hooks/editor-pretool-hook.py::compound_stage_evidence",
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_collateral",
+        ".claude/hooks/editor-pretool-hook.py::refused_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read"
+      ],
+      "name": "handoff_refusal_offender"
+    },
+    ".claude/hooks/editor-pretool-hook.py::harness_applies_updated_input": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::rewrite_windowed_handoff"
+      ],
+      "imports": [],
+      "name": "harness_applies_updated_input"
+    },
+    ".claude/hooks/editor-pretool-hook.py::inline_test_module_span": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::edits_only_inline_tests"
+      ],
+      "imports": [],
+      "name": "inline_test_module_span"
+    },
+    ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_expand_shell_operand",
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_perl_operands",
+        ".claude/hooks/editor-pretool-hook.py::_sed_operands",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::_untokenizable_has_inplace_editor"
+      ],
+      "name": "inplace_edit_targets"
+    },
+    ".claude/hooks/editor-pretool-hook.py::inspector_nudge": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies",
+        ".claude/hooks/editor-pretool-hook.py::is_inspector_invocation",
+        ".claude/hooks/editor-pretool-hook.py::is_read_shaped_command",
+        ".claude/hooks/editor-pretool-hook.py::matching_inspector",
+        ".claude/hooks/editor-pretool-hook.py::probed_state_path"
+      ],
+      "name": "inspector_nudge"
+    },
+    ".claude/hooks/editor-pretool-hook.py::interpreter_argument": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_argv_value",
+        ".claude/hooks/editor-pretool-hook.py::_resolved_expression",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_argv_is_read_only",
+        ".claude/hooks/editor-pretool-hook.py::_expand_shell_operand",
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_invocations",
+        ".claude/hooks/editor-pretool-hook.py::_node_argv",
+        ".claude/hooks/editor-pretool-hook.py::_python_argv"
+      ],
+      "name": "interpreter_argument"
+    },
+    ".claude/hooks/editor-pretool-hook.py::invokes_codeyam_editor": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::allow",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand"
+      ],
+      "name": "invokes_codeyam_editor"
+    },
+    ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories",
+        ".claude/hooks/editor-pretool-hook.py::invokes_codeyam_editor",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::prototype_git_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_shell_c_payload",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep"
+      ],
+      "name": "invokes_git_subcommand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_inspector_invocation": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::inspector_nudge",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [],
+      "name": "is_inspector_invocation"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_narrowed_refresh_only": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_codeyam_verb",
+        ".claude/hooks/editor-pretool-hook.py::_invokes_configured_script",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_runs_tests",
+        ".claude/hooks/editor-pretool-hook.py::_shell_c_payload",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands"
+      ],
+      "name": "is_narrowed_refresh_only"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_read_shaped_command": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::inspector_nudge"
+      ],
+      "imports": [],
+      "name": "is_read_shaped_command"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_recursive_rm_flag": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::recursive_rm_operands"
+      ],
+      "imports": [],
+      "name": "is_recursive_rm_flag"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_split_destination": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target"
+      ],
+      "imports": [],
+      "name": "is_split_destination"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_test_edit": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::test_edit_allowed"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::edits_only_inline_tests",
+        ".claude/hooks/editor-pretool-hook.py::is_test_path"
+      ],
+      "name": "is_test_edit"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_test_path": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::is_test_edit"
+      ],
+      "imports": [],
+      "name": "is_test_path"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_test_run_command": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_invokes_configured_script",
+        ".claude/hooks/editor-pretool-hook.py::_runs_tests",
+        ".claude/hooks/editor-pretool-hook.py::_shell_c_payload",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep"
+      ],
+      "name": "is_test_run_command"
+    },
+    ".claude/hooks/editor-pretool-hook.py::is_textual_json_transform": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies",
+        ".claude/hooks/editor-pretool-hook.py::parses_json"
+      ],
+      "name": "is_textual_json_transform"
+    },
+    ".claude/hooks/editor-pretool-hook.py::line_budget_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "line_budget_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::line_budget_violation": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_repo_relative",
+        ".claude/hooks/editor-pretool-hook.py::discover_lean_contract",
+        ".claude/hooks/editor-pretool-hook.py::projected_line_count"
+      ],
+      "name": "line_budget_violation"
+    },
+    ".claude/hooks/editor-pretool-hook.py::line_count_limit": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::parse_lean_contract"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_is_rust_comment"
+      ],
+      "name": "line_count_limit"
+    },
+    ".claude/hooks/editor-pretool-hook.py::line_range_split": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_carves_by_line_count",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target"
+      ],
+      "name": "line_range_split"
+    },
+    ".claude/hooks/editor-pretool-hook.py::line_range_split_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "line_range_split_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::main": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::allow",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read_tool"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_capture_available",
+        ".claude/hooks/editor-pretool-hook.py::_commit_gate_phrase",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_carves_by_line_count",
+        ".claude/hooks/editor-pretool-hook.py::_preview_hint",
+        ".claude/hooks/editor-pretool-hook.py::_slug_label",
+        ".claude/hooks/editor-pretool-hook.py::_test_run_block_message",
+        ".claude/hooks/editor-pretool-hook.py::_unbounded_poll_guard",
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep",
+        ".claude/hooks/editor-pretool-hook.py::allow",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::build_output_deletion_nudge",
+        ".claude/hooks/editor-pretool-hook.py::claim_pipe_notice",
+        ".claude/hooks/editor-pretool-hook.py::classify_write_target",
+        ".claude/hooks/editor-pretool-hook.py::compound_gating_command",
+        ".claude/hooks/editor-pretool-hook.py::compound_gating_notice",
+        ".claude/hooks/editor-pretool-hook.py::compound_stage_evidence",
+        ".claude/hooks/editor-pretool-hook.py::describe_call",
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::explain_requested",
+        ".claude/hooks/editor-pretool-hook.py::gate_question_copy",
+        ".claude/hooks/editor-pretool-hook.py::git_add_paths_are_plans_only",
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_collateral",
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_offender",
+        ".claude/hooks/editor-pretool-hook.py::inspector_nudge",
+        ".claude/hooks/editor-pretool-hook.py::invokes_codeyam_editor",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::is_narrowed_refresh_only",
+        ".claude/hooks/editor-pretool-hook.py::is_test_run_command",
+        ".claude/hooks/editor-pretool-hook.py::line_budget_refusal",
+        ".claude/hooks/editor-pretool-hook.py::line_budget_violation",
+        ".claude/hooks/editor-pretool-hook.py::line_range_split",
+        ".claude/hooks/editor-pretool-hook.py::line_range_split_refusal",
+        ".claude/hooks/editor-pretool-hook.py::merge_in_progress",
+        ".claude/hooks/editor-pretool-hook.py::notice",
+        ".claude/hooks/editor-pretool-hook.py::piped_gating_command",
+        ".claude/hooks/editor-pretool-hook.py::piped_gating_notice",
+        ".claude/hooks/editor-pretool-hook.py::preview_marker_state",
+        ".claude/hooks/editor-pretool-hook.py::preview_origin_hand_write_refusal",
+        ".claude/hooks/editor-pretool-hook.py::preview_origin_hand_write_target",
+        ".claude/hooks/editor-pretool-hook.py::preview_required_next_action",
+        ".claude/hooks/editor-pretool-hook.py::prototype_git_refusal",
+        ".claude/hooks/editor-pretool-hook.py::read_event",
+        ".claude/hooks/editor-pretool-hook.py::record_awaiting_user",
+        ".claude/hooks/editor-pretool-hook.py::recursive_rm_refusal",
+        ".claude/hooks/editor-pretool-hook.py::refuse_unparseable",
+        ".claude/hooks/editor-pretool-hook.py::refused_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::report_unfinished_runs",
+        ".claude/hooks/editor-pretool-hook.py::resolved_context",
+        ".claude/hooks/editor-pretool-hook.py::rewrite_windowed_handoff",
+        ".claude/hooks/editor-pretool-hook.py::runs_git_outside_project",
+        ".claude/hooks/editor-pretool-hook.py::schedule_wakeup_lacks_token",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_refusal",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_refusal",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_kill",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_kill_refusal",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_loop",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_notice",
+        ".claude/hooks/editor-pretool-hook.py::session_start_directory",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_notice",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target",
+        ".claude/hooks/editor-pretool-hook.py::staged_paths_are_plans_only",
+        ".claude/hooks/editor-pretool-hook.py::test_edit_allowed",
+        ".claude/hooks/editor-pretool-hook.py::test_edit_refusal_suffix",
+        ".claude/hooks/editor-pretool-hook.py::tracked_recursive_rm",
+        ".claude/hooks/editor-pretool-hook.py::unpushed_range_is_plan_only",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_refusal",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read_refusal",
+        ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read_tool",
+        ".claude/hooks/editor-pretool-hook.py::windowed_section_answer",
+        ".claude/hooks/editor-pretool-hook.py::windowed_section_notice",
+        ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_notice",
+        ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_target"
+      ],
+      "name": "main"
+    },
+    ".claude/hooks/editor-pretool-hook.py::matching_inspector": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::accessed_inspector",
+        ".claude/hooks/editor-pretool-hook.py::inspector_nudge",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [],
+      "name": "matching_inspector"
+    },
+    ".claude/hooks/editor-pretool-hook.py::merge_in_progress": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_test_run_block_message",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "merge_in_progress"
+    },
+    ".claude/hooks/editor-pretool-hook.py::next_bounce_record": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::remember_question_bounce"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_merged_raised"
+      ],
+      "name": "next_bounce_record"
+    },
+    ".claude/hooks/editor-pretool-hook.py::notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_build_output_deletion_notice",
+        ".claude/hooks/editor-pretool-hook.py::_pipe_notice_marker_path",
+        ".claude/hooks/editor-pretool-hook.py::_unbounded_poll_guard",
+        ".claude/hooks/editor-pretool-hook.py::allow_context_message",
+        ".claude/hooks/editor-pretool-hook.py::build_output_deletion_nudge",
+        ".claude/hooks/editor-pretool-hook.py::claim_pipe_notice",
+        ".claude/hooks/editor-pretool-hook.py::compound_gating_command",
+        ".claude/hooks/editor-pretool-hook.py::compound_gating_notice",
+        ".claude/hooks/editor-pretool-hook.py::describe_call",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::piped_gating_notice",
+        ".claude/hooks/editor-pretool-hook.py::refusal_text",
+        ".claude/hooks/editor-pretool-hook.py::rewrite_windowed_handoff",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_kill_refusal",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_loop",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_notice",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target",
+        ".claude/hooks/editor-pretool-hook.py::unbounded_background_poll_text",
+        ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_notice"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::allow",
+        ".claude/hooks/editor-pretool-hook.py::block"
+      ],
+      "name": "notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::on_disk_source_paths": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_lookup",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target"
+      ],
+      "imports": [],
+      "name": "on_disk_source_paths"
+    },
+    ".claude/hooks/editor-pretool-hook.py::parse_lean_contract": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::discover_lean_contract"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::line_count_limit",
+        ".claude/hooks/editor-pretool-hook.py::read_rel_skill_path"
+      ],
+      "name": "parse_lean_contract"
+    },
+    ".claude/hooks/editor-pretool-hook.py::parses_command_output_transcript": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::parses_harness_tool_result",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::piped_gating_notice",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "name": "parses_command_output_transcript"
+    },
+    ".claude/hooks/editor-pretool-hook.py::parses_harness_tool_result": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::parses_command_output_transcript",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "name": "parses_harness_tool_result"
+    },
+    ".claude/hooks/editor-pretool-hook.py::parses_json": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::is_textual_json_transform",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target",
+        ".claude/hooks/editor-pretool-hook.py::without_standalone_inspections"
+      ],
+      "imports": [],
+      "name": "parses_json"
+    },
+    ".claude/hooks/editor-pretool-hook.py::piped_gating_command": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_gating_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_is_tee_stage",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::block"
+      ],
+      "name": "piped_gating_command"
+    },
+    ".claude/hooks/editor-pretool-hook.py::piped_gating_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::parses_command_output_transcript"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "piped_gating_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::prefix_assigned_interpreter_operand": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_inferred_target_refusal",
+        ".claude/hooks/editor-pretool-hook.py::_prefix_trap_lead"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_command_word_index",
+        ".claude/hooks/editor-pretool-hook.py::_lex_shell_words",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_shell_variable_values"
+      ],
+      "name": "prefix_assigned_interpreter_operand"
+    },
+    ".claude/hooks/editor-pretool-hook.py::preview_marker_state": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::preview_required_next_action"
+      ],
+      "imports": [],
+      "name": "preview_marker_state"
+    },
+    ".claude/hooks/editor-pretool-hook.py::preview_origin_hand_write_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "preview_origin_hand_write_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::preview_origin_hand_write_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_path_tokens",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "preview_origin_hand_write_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::preview_required_next_action": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::preview_marker_state"
+      ],
+      "name": "preview_required_next_action"
+    },
+    ".claude/hooks/editor-pretool-hook.py::probed_state_path": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::inspector_nudge"
+      ],
+      "imports": [],
+      "name": "probed_state_path"
+    },
+    ".claude/hooks/editor-pretool-hook.py::projected_line_count": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::line_budget_violation"
+      ],
+      "imports": [],
+      "name": "projected_line_count"
+    },
+    ".claude/hooks/editor-pretool-hook.py::prototype_activity_in_progress": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::prototype_git_refusal"
+      ],
+      "imports": [],
+      "name": "prototype_activity_in_progress"
+    },
+    ".claude/hooks/editor-pretool-hook.py::prototype_git_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_workflow_slug",
+        ".claude/hooks/editor-pretool-hook.py::invokes_git_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::prototype_activity_in_progress",
+        ".claude/hooks/editor-pretool-hook.py::runs_git_outside_project",
+        ".claude/hooks/editor-pretool-hook.py::staged_paths_are_plans_only",
+        ".claude/hooks/editor-pretool-hook.py::unpushed_range_is_plan_only"
+      ],
+      "name": "prototype_git_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::question_copy_keyed_findings": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::gate_question_copy"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_option_labels",
+        ".claude/hooks/editor-pretool-hook.py::_question_copy_keyed_findings",
+        ".claude/hooks/editor-pretool-hook.py::run_structured_question_check"
+      ],
+      "name": "question_copy_keyed_findings"
+    },
+    ".claude/hooks/editor-pretool-hook.py::question_findings_already_raised": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::gate_question_copy"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_load_question_copy_bounces"
+      ],
+      "name": "question_findings_already_raised"
+    },
+    ".claude/hooks/editor-pretool-hook.py::question_payload_hash": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::gate_question_copy"
+      ],
+      "imports": [],
+      "name": "question_payload_hash"
+    },
+    ".claude/hooks/editor-pretool-hook.py::question_payload_was_bounced": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::gate_question_copy"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_load_question_copy_bounces"
+      ],
+      "name": "question_payload_was_bounced"
+    },
+    ".claude/hooks/editor-pretool-hook.py::read_event": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "read_event"
+    },
+    ".claude/hooks/editor-pretool-hook.py::read_rel_skill_path": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::parse_lean_contract"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_is_rust_comment"
+      ],
+      "name": "read_rel_skill_path"
+    },
+    ".claude/hooks/editor-pretool-hook.py::recent_scripted_refusal_age": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_record_refusal",
+        ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_load_refusal_log",
+        ".claude/hooks/editor-pretool-hook.py::_record_refusal"
+      ],
+      "name": "recent_scripted_refusal_age"
+    },
+    ".claude/hooks/editor-pretool-hook.py::record_awaiting_user": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::allow",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "record_awaiting_user"
+    },
+    ".claude/hooks/editor-pretool-hook.py::recursive_rm_operands": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::tracked_recursive_rm"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::is_recursive_rm_flag"
+      ],
+      "name": "recursive_rm_operands"
+    },
+    ".claude/hooks/editor-pretool-hook.py::recursive_rm_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "recursive_rm_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::refusal_text": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::block"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_repeat_notice",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "refusal_text"
+    },
+    ".claude/hooks/editor-pretool-hook.py::refuse_unparseable": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::unparseable_command_refusal"
+      ],
+      "name": "refuse_unparseable"
+    },
+    ".claude/hooks/editor-pretool-hook.py::refused_live_handoff": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_live_window_drops",
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_collateral",
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_offender",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_live_handoff_windows",
+        ".claude/hooks/editor-pretool-hook.py::windowed_section_notice"
+      ],
+      "name": "refused_live_handoff"
+    },
+    ".claude/hooks/editor-pretool-hook.py::remember_question_bounce": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::gate_question_copy"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_load_question_copy_bounces",
+        ".claude/hooks/editor-pretool-hook.py::_question_copy_bounce_path",
+        ".claude/hooks/editor-pretool-hook.py::next_bounce_record"
+      ],
+      "name": "remember_question_bounce"
+    },
+    ".claude/hooks/editor-pretool-hook.py::report_unfinished_runs": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::begin_run",
+        ".claude/hooks/editor-pretool-hook.py::collect_unfinished_runs",
+        ".claude/hooks/editor-pretool-hook.py::unfinished_run_message"
+      ],
+      "name": "report_unfinished_runs"
+    },
+    ".claude/hooks/editor-pretool-hook.py::resolve_identifier": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_concatenated_paths",
+        ".claude/hooks/editor-pretool-hook.py::_resolved_expression",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_argv_value",
+        ".claude/hooks/editor-pretool-hook.py::_concatenation_value",
+        ".claude/hooks/editor-pretool-hook.py::_literal_value"
+      ],
+      "name": "resolve_identifier"
+    },
+    ".claude/hooks/editor-pretool-hook.py::resolved_context": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "resolved_context"
+    },
+    ".claude/hooks/editor-pretool-hook.py::rewrite_bash_command": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::rewrite_windowed_handoff"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::allow"
+      ],
+      "name": "rewrite_bash_command"
+    },
+    ".claude/hooks/editor-pretool-hook.py::rewrite_windowed_handoff": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::dewindowed_live_handoff",
+        ".claude/hooks/editor-pretool-hook.py::harness_applies_updated_input",
+        ".claude/hooks/editor-pretool-hook.py::notice",
+        ".claude/hooks/editor-pretool-hook.py::rewrite_bash_command",
+        ".claude/hooks/editor-pretool-hook.py::rewritten_handoff_notice"
+      ],
+      "name": "rewrite_windowed_handoff"
+    },
+    ".claude/hooks/editor-pretool-hook.py::rewritten_handoff_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::rewrite_windowed_handoff"
+      ],
+      "imports": [],
+      "name": "rewritten_handoff_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::run_structured_question_check": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::question_copy_keyed_findings"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::block"
+      ],
+      "name": "run_structured_question_check"
+    },
+    ".claude/hooks/editor-pretool-hook.py::runs_git_outside_project": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::prototype_git_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::git_invocation_directories"
+      ],
+      "name": "runs_git_outside_project"
+    },
+    ".claude/hooks/editor-pretool-hook.py::schedule_wakeup_lacks_token": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [],
+      "name": "schedule_wakeup_lacks_token"
+    },
+    ".claude/hooks/editor-pretool-hook.py::script_run_write_targets": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_read_run_script",
+        ".claude/hooks/editor-pretool-hook.py::_rewrite_sources",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::_join_onto",
+        ".claude/hooks/editor-pretool-hook.py::_path_tokens",
+        ".claude/hooks/editor-pretool-hook.py::_read_run_script",
+        ".claude/hooks/editor-pretool-hook.py::_script_operands",
+        ".claude/hooks/editor-pretool-hook.py::_strip_shell_comments",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "script_run_write_targets"
+    },
+    ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_verdict",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_offending_stage",
+        ".claude/hooks/editor-pretool-hook.py::_rewrite_sources",
+        ".claude/hooks/editor-pretool-hook.py::_script_carrying",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::_textual_json_found",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_verdict",
+        ".claude/hooks/editor-pretool-hook.py::session_start_directory",
+        ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_targets",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_lookup"
+      ],
+      "name": "scripted_rewrite_details"
+    },
+    ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_script_run_refusal",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_inferred_target_refusal",
+        ".claude/hooks/editor-pretool-hook.py::_script_run_refusal",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_refusal",
+        ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_targets"
+      ],
+      "name": "scripted_rewrite_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_stage": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_textual_json_found",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_verdict",
+        ".claude/hooks/editor-pretool-hook.py::scripted_source_rewrite_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_verdict",
+        ".claude/hooks/editor-pretool-hook.py::session_start_directory",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "scripted_rewrite_stage"
+    },
+    ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_verdict": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_stage",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_stage"
+      ],
+      "name": "scripted_rewrite_verdict"
+    },
+    ".claude/hooks/editor-pretool-hook.py::scripted_source_rewrite_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_stage"
+      ],
+      "name": "scripted_source_rewrite_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::scripted_state_read_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [],
+      "name": "scripted_state_read_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::parses_command_output_transcript",
+        ".claude/hooks/editor-pretool-hook.py::parses_harness_tool_result"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::accessed_inspector",
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies",
+        ".claude/hooks/editor-pretool-hook.py::is_inspector_invocation",
+        ".claude/hooks/editor-pretool-hook.py::matching_inspector",
+        ".claude/hooks/editor-pretool-hook.py::parses_command_output_transcript",
+        ".claude/hooks/editor-pretool-hook.py::parses_harness_tool_result",
+        ".claude/hooks/editor-pretool-hook.py::parses_json",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_refusal",
+        ".claude/hooks/editor-pretool-hook.py::store_in_access_position",
+        ".claude/hooks/editor-pretool-hook.py::without_standalone_inspections",
+        ".claude/hooks/editor-pretool-hook.py::write_targets",
+        ".claude/hooks/editor-pretool-hook.py::writes_into_codeyam"
+      ],
+      "name": "scripted_state_read_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::self_matching_kill": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_kill_fed_sources",
+        ".claude/hooks/editor-pretool-hook.py::_pgrep_full_pattern",
+        ".claude/hooks/editor-pretool-hook.py::_source_patterns",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_loop"
+      ],
+      "name": "self_matching_kill"
+    },
+    ".claude/hooks/editor-pretool-hook.py::self_matching_kill_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "self_matching_kill_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_loop": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::self_matching_kill"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_pgrep_calls",
+        ".claude/hooks/editor-pretool-hook.py::_pgrep_full_pattern",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "self_matching_pgrep_loop"
+    },
+    ".claude/hooks/editor-pretool-hook.py::self_matching_pgrep_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "self_matching_pgrep_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::session_start_directory": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_stage",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_cd_directory"
+      ],
+      "name": "session_start_directory"
+    },
+    ".claude/hooks/editor-pretool-hook.py::split_by_script_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target"
+      ],
+      "name": "split_by_script_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::split_by_script_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_carves_by_line_count",
+        ".claude/hooks/editor-pretool-hook.py::line_range_split",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_notice"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_path_tokens",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::is_split_destination",
+        ".claude/hooks/editor-pretool-hook.py::notice",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_verdict",
+        ".claude/hooks/editor-pretool-hook.py::terminal_only_paths",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_paths",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "split_by_script_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::staged_paths_are_plans_only": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::prototype_git_refusal"
+      ],
+      "imports": [],
+      "name": "staged_paths_are_plans_only"
+    },
+    ".claude/hooks/editor-pretool-hook.py::store_in_access_position": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_occurrence_is_access",
+        ".claude/hooks/editor-pretool-hook.py::accessed_inspector",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_occurrence_is_access"
+      ],
+      "name": "store_in_access_position"
+    },
+    ".claude/hooks/editor-pretool-hook.py::tee_write_targets": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_expand_shell_operand",
+        ".claude/hooks/editor-pretool-hook.py::_in_command_position",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::_tee_stage_operands"
+      ],
+      "name": "tee_write_targets"
+    },
+    ".claude/hooks/editor-pretool-hook.py::terminal_only_paths": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_has_brace_group",
+        ".claude/hooks/editor-pretool-hook.py::_nested_segments",
+        ".claude/hooks/editor-pretool-hook.py::_path_tokens",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "terminal_only_paths"
+    },
+    ".claude/hooks/editor-pretool-hook.py::test_edit_allowed": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::is_test_edit"
+      ],
+      "name": "test_edit_allowed"
+    },
+    ".claude/hooks/editor-pretool-hook.py::test_edit_refusal_suffix": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::allow"
+      ],
+      "name": "test_edit_refusal_suffix"
+    },
+    ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_refusal"
+      ],
+      "imports": [],
+      "name": "textual_json_rewrite_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_targets": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_git_ls_files",
+        ".claude/hooks/editor-pretool-hook.py::eligible_json_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::is_textual_json_transform",
+        ".claude/hooks/editor-pretool-hook.py::preview_origin_hand_write_target",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_lookup"
+      ],
+      "name": "textual_json_rewrite_targets"
+    },
+    ".claude/hooks/editor-pretool-hook.py::tracked_file_count": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::tracked_recursive_rm"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_repo_relative",
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_paths"
+      ],
+      "name": "tracked_file_count"
+    },
+    ".claude/hooks/editor-pretool-hook.py::tracked_recursive_rm": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_shell_c_payload",
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::recursive_rm_operands",
+        ".claude/hooks/editor-pretool-hook.py::tracked_file_count"
+      ],
+      "name": "tracked_recursive_rm"
+    },
+    ".claude/hooks/editor-pretool-hook.py::tracked_source_lookup": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::textual_json_rewrite_targets",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_paths"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_git_ls_files",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::on_disk_source_paths"
+      ],
+      "name": "tracked_source_lookup"
+    },
+    ".claude/hooks/editor-pretool-hook.py::tracked_source_paths": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_path_tokens",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target",
+        ".claude/hooks/editor-pretool-hook.py::tracked_file_count",
+        ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_lookup"
+      ],
+      "name": "tracked_source_paths"
+    },
+    ".claude/hooks/editor-pretool-hook.py::unbounded_background_poll": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_unbounded_poll_guard"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_without_inert_quotes",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "name": "unbounded_background_poll"
+    },
+    ".claude/hooks/editor-pretool-hook.py::unbounded_background_poll_text": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_unbounded_poll_guard"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::bounded_poll_rewrite",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "unbounded_background_poll_text"
+    },
+    ".claude/hooks/editor-pretool-hook.py::unfinished_run_message": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::report_unfinished_runs"
+      ],
+      "imports": [],
+      "name": "unfinished_run_message"
+    },
+    ".claude/hooks/editor-pretool-hook.py::unparseable_command_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_uses_pcre_grep",
+        ".claude/hooks/editor-pretool-hook.py::refuse_unparseable"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_split_commands",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "name": "unparseable_command_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::unpushed_range_is_plan_only": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::prototype_git_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_git_lines"
+      ],
+      "name": "unpushed_range_is_plan_only"
+    },
+    ".claude/hooks/editor-pretool-hook.py::untracked_source_append_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target"
+      ],
+      "name": "untracked_source_append_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::untracked_source_append_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_untracked_beside_tracked",
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::untracked_source_append_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_rewrite_sources",
+        ".claude/hooks/editor-pretool-hook.py::_untracked_beside_tracked",
+        ".claude/hooks/editor-pretool-hook.py::eligible_pathspecs",
+        ".claude/hooks/editor-pretool-hook.py::on_disk_source_paths",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_details",
+        ".claude/hooks/editor-pretool-hook.py::session_start_directory"
+      ],
+      "name": "untracked_source_append_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_collateral",
+        ".claude/hooks/editor-pretool-hook.py::handoff_refusal_offender",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_body_reaches",
+        ".claude/hooks/editor-pretool-hook.py::_handoff_idiom",
+        ".claude/hooks/editor-pretool-hook.py::_handoff_paths_in",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "name": "windowed_handoff_read"
+    },
+    ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read_refusal": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_live_handoff_recovery"
+      ],
+      "name": "windowed_handoff_read_refusal"
+    },
+    ".claude/hooks/editor-pretool-hook.py::windowed_handoff_read_tool": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_paths_in",
+        ".claude/hooks/editor-pretool-hook.py::allow",
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "name": "windowed_handoff_read_tool"
+    },
+    ".claude/hooks/editor-pretool-hook.py::windowed_live_handoff": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_live_handoff_windows"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_handoff_subcommand",
+        ".claude/hooks/editor-pretool-hook.py::_live_handoff_idiom",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::_reduces_output",
+        ".claude/hooks/editor-pretool-hook.py::elide_heredoc_bodies"
+      ],
+      "name": "windowed_live_handoff"
+    },
+    ".claude/hooks/editor-pretool-hook.py::windowed_section_answer": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_live_handoff_windows"
+      ],
+      "name": "windowed_section_answer"
+    },
+    ".claude/hooks/editor-pretool-hook.py::windowed_section_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main",
+        ".claude/hooks/editor-pretool-hook.py::refused_live_handoff"
+      ],
+      "imports": [],
+      "name": "windowed_section_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::without_standalone_inspections": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_is_inspection_only_stage",
+        ".claude/hooks/editor-pretool-hook.py::_pipelines",
+        ".claude/hooks/editor-pretool-hook.py::parses_json"
+      ],
+      "name": "without_standalone_inspections"
+    },
+    ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_notice": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::block",
+        ".claude/hooks/editor-pretool-hook.py::notice"
+      ],
+      "name": "write_after_scripted_refusal_notice"
+    },
+    ".claude/hooks/editor-pretool-hook.py::write_after_scripted_refusal_target": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_repo_relative",
+        ".claude/hooks/editor-pretool-hook.py::recent_scripted_refusal_age",
+        ".claude/hooks/editor-pretool-hook.py::tracked_source_paths"
+      ],
+      "name": "write_after_scripted_refusal_target"
+    },
+    ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_write_data_spans",
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_code_literal_spans",
+        ".claude/hooks/editor-pretool-hook.py::_command_program",
+        ".claude/hooks/editor-pretool-hook.py::_heredocs_run_as_scripts",
+        ".claude/hooks/editor-pretool-hook.py::_interpreter_code_source",
+        ".claude/hooks/editor-pretool-hook.py::_lex_shell_words",
+        ".claude/hooks/editor-pretool-hook.py::_program_name",
+        ".claude/hooks/editor-pretool-hook.py::_quoted_region"
+      ],
+      "name": "write_construct_data_spans"
+    },
+    ".claude/hooks/editor-pretool-hook.py::write_targets": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::_offending_stage",
+        ".claude/hooks/editor-pretool-hook.py::_pipeline_carves_by_line_count",
+        ".claude/hooks/editor-pretool-hook.py::_rewrite_sources",
+        ".claude/hooks/editor-pretool-hook.py::preview_origin_hand_write_target",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::scripted_rewrite_stage",
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target",
+        ".claude/hooks/editor-pretool-hook.py::split_by_script_target",
+        ".claude/hooks/editor-pretool-hook.py::terminal_only_paths",
+        ".claude/hooks/editor-pretool-hook.py::writes_into_codeyam"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::_call_args",
+        ".claude/hooks/editor-pretool-hook.py::_common_cd_directory",
+        ".claude/hooks/editor-pretool-hook.py::_has_inplace_editor",
+        ".claude/hooks/editor-pretool-hook.py::_in_spans",
+        ".claude/hooks/editor-pretool-hook.py::_join_onto",
+        ".claude/hooks/editor-pretool-hook.py::_rebased_on_cd",
+        ".claude/hooks/editor-pretool-hook.py::_resolved_expression",
+        ".claude/hooks/editor-pretool-hook.py::_string_literal",
+        ".claude/hooks/editor-pretool-hook.py::_write_data_spans",
+        ".claude/hooks/editor-pretool-hook.py::inplace_edit_targets",
+        ".claude/hooks/editor-pretool-hook.py::interpreter_argument",
+        ".claude/hooks/editor-pretool-hook.py::resolve_identifier",
+        ".claude/hooks/editor-pretool-hook.py::script_run_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::session_start_directory",
+        ".claude/hooks/editor-pretool-hook.py::tee_write_targets",
+        ".claude/hooks/editor-pretool-hook.py::write_construct_data_spans"
+      ],
+      "name": "write_targets"
+    },
+    ".claude/hooks/editor-pretool-hook.py::writes_into_codeyam": {
+      "filePath": ".claude/hooks/editor-pretool-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-pretool-hook.py::scripted_state_read_target"
+      ],
+      "imports": [
+        ".claude/hooks/editor-pretool-hook.py::write_targets"
+      ],
+      "name": "writes_into_codeyam"
+    },
+    ".claude/hooks/editor-step-hook.py::_audience_record_failure_reason": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_record_audience_answer"
+      ],
+      "imports": [],
+      "name": "_audience_record_failure_reason"
+    },
+    ".claude/hooks/editor-step-hook.py::_carried_user_messages": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_is_carried_user_message"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_parse_carried_section"
+      ],
+      "name": "_carried_user_messages"
+    },
+    ".claude/hooks/editor-step-hook.py::_clear_step_context_marker": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_clear_step_context_marker"
+    },
+    ".claude/hooks/editor-step-hook.py::_consume_question_bounce": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_log_question_copy"
+      ],
+      "imports": [],
+      "name": "_consume_question_bounce"
+    },
+    ".claude/hooks/editor-step-hook.py::_context_injection_key": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_editor_context_lines"
+      ],
+      "imports": [],
+      "name": "_context_injection_key"
+    },
+    ".claude/hooks/editor-step-hook.py::_delivery_reset_active": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_in_flight"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_record_is_for",
+        ".claude/hooks/editor-step-hook.py::_within_window"
+      ],
+      "name": "_delivery_reset_active"
+    },
+    ".claude/hooks/editor-step-hook.py::_editor_context_due": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_editor_context_lines"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_read_step_context_marker",
+        ".claude/hooks/editor-step-hook.py::_step_context_due",
+        ".claude/hooks/editor-step-hook.py::_write_step_context_marker"
+      ],
+      "name": "_editor_context_due"
+    },
+    ".claude/hooks/editor-step-hook.py::_editor_context_lines": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_context_injection_key",
+        ".claude/hooks/editor-step-hook.py::_editor_context_due"
+      ],
+      "name": "_editor_context_lines"
+    },
+    ".claude/hooks/editor-step-hook.py::_flagged_terms": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_log_question_copy"
+      ],
+      "imports": [],
+      "name": "_flagged_terms"
+    },
+    ".claude/hooks/editor-step-hook.py::_foreign_conversation_ids": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_foreign_prompt_findings"
+      ],
+      "imports": [],
+      "name": "_foreign_conversation_ids"
+    },
+    ".claude/hooks/editor-step-hook.py::_foreign_prompt_findings": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_foreign_prompt_lines"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_foreign_conversation_ids",
+        ".claude/hooks/editor-step-hook.py::_steps_behind"
+      ],
+      "name": "_foreign_prompt_findings"
+    },
+    ".claude/hooks/editor-step-hook.py::_foreign_prompt_lines": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_foreign_prompt_findings",
+        ".claude/hooks/editor-step-hook.py::_log_foreign_prompt"
+      ],
+      "name": "_foreign_prompt_lines"
+    },
+    ".claude/hooks/editor-step-hook.py::_injected_answer_output": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_injected_answer_output"
+    },
+    ".claude/hooks/editor-step-hook.py::_injected_answer_source": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_log_question_copy",
+        ".claude/hooks/editor-step-hook.py::_observe_question_answer"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_read_editor_input_stamp",
+        ".claude/hooks/editor-step-hook.py::_stamp_explains_answer"
+      ],
+      "name": "_injected_answer_source"
+    },
+    ".claude/hooks/editor-step-hook.py::_is_carried_user_message": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_arrival_lines"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_carried_user_messages"
+      ],
+      "name": "_is_carried_user_message"
+    },
+    ".claude/hooks/editor-step-hook.py::_is_wakeup_template_only": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_decision"
+      ],
+      "imports": [],
+      "name": "_is_wakeup_template_only"
+    },
+    ".claude/hooks/editor-step-hook.py::_log_audience_record_failure": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_record_audience_answer"
+      ],
+      "imports": [],
+      "name": "_log_audience_record_failure"
+    },
+    ".claude/hooks/editor-step-hook.py::_log_foreign_prompt": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_foreign_prompt_lines",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_refusal"
+      ],
+      "imports": [],
+      "name": "_log_foreign_prompt"
+    },
+    ".claude/hooks/editor-step-hook.py::_log_question_copy": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_observe_question_answer"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_consume_question_bounce",
+        ".claude/hooks/editor-step-hook.py::_flagged_terms",
+        ".claude/hooks/editor-step-hook.py::_injected_answer_source"
+      ],
+      "name": "_log_question_copy"
+    },
+    ".claude/hooks/editor-step-hook.py::_looks_like_task_tool_query": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_observe_task_tool_capability",
+        ".claude/hooks/editor-step-hook.py::_task_tools_in_search_result"
+      ],
+      "imports": [],
+      "name": "_looks_like_task_tool_query"
+    },
+    ".claude/hooks/editor-step-hook.py::_machine_task_tools_absent": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_record_machine_task_tools",
+        ".claude/hooks/editor-step-hook.py::_session_start_tool_preload",
+        ".claude/hooks/editor-step-hook.py::_should_inject_tool_loading_protocol"
+      ],
+      "imports": [],
+      "name": "_machine_task_tools_absent"
+    },
+    ".claude/hooks/editor-step-hook.py::_mark_tool_loading_injected": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_task_tool_marker",
+        ".claude/hooks/editor-step-hook.py::_task_tools_available",
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_mark_tool_loading_injected"
+    },
+    ".claude/hooks/editor-step-hook.py::_observe_question_answer": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_injected_answer_source",
+        ".claude/hooks/editor-step-hook.py::_log_question_copy",
+        ".claude/hooks/editor-step-hook.py::_record_audience_answer"
+      ],
+      "name": "_observe_question_answer"
+    },
+    ".claude/hooks/editor-step-hook.py::_observe_task_tool_capability": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_looks_like_task_tool_query",
+        ".claude/hooks/editor-step-hook.py::_settle_task_tools",
+        ".claude/hooks/editor-step-hook.py::_task_tools_in_search_result"
+      ],
+      "name": "_observe_task_tool_capability"
+    },
+    ".claude/hooks/editor-step-hook.py::_parse_carried_section": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_carried_user_messages"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_unquote_carry_line"
+      ],
+      "name": "_parse_carried_section"
+    },
+    ".claude/hooks/editor-step-hook.py::_parse_rfc3339_unix": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_pending_reset_active"
+      ],
+      "imports": [],
+      "name": "_parse_rfc3339_unix"
+    },
+    ".claude/hooks/editor-step-hook.py::_pending_reset_active": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_in_flight"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_parse_rfc3339_unix",
+        ".claude/hooks/editor-step-hook.py::_record_is_for",
+        ".claude/hooks/editor-step-hook.py::_within_window"
+      ],
+      "name": "_pending_reset_active"
+    },
+    ".claude/hooks/editor-step-hook.py::_possibly_stale_arrival_lines": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_arrival_lines"
+      ],
+      "imports": [],
+      "name": "_possibly_stale_arrival_lines"
+    },
+    ".claude/hooks/editor-step-hook.py::_prompt_is_from_the_user": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_turn_wait_interval"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_wakeup_tokens"
+      ],
+      "name": "_prompt_is_from_the_user"
+    },
+    ".claude/hooks/editor-step-hook.py::_question_open": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_record_turn_wait",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_refusal"
+      ],
+      "imports": [],
+      "name": "_question_open"
+    },
+    ".claude/hooks/editor-step-hook.py::_read_editor_input_stamp": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_injected_answer_source"
+      ],
+      "imports": [],
+      "name": "_read_editor_input_stamp"
+    },
+    ".claude/hooks/editor-step-hook.py::_read_json_dict": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_in_flight"
+      ],
+      "imports": [],
+      "name": "_read_json_dict"
+    },
+    ".claude/hooks/editor-step-hook.py::_read_step_context_marker": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_editor_context_due",
+        ".claude/hooks/editor-step-hook.py::_step_context_due",
+        ".claude/hooks/editor-step-hook.py::_step_reminder_due"
+      ],
+      "imports": [],
+      "name": "_read_step_context_marker"
+    },
+    ".claude/hooks/editor-step-hook.py::_record_audience_answer": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_observe_question_answer"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_audience_record_failure_reason",
+        ".claude/hooks/editor-step-hook.py::_log_audience_record_failure"
+      ],
+      "name": "_record_audience_answer"
+    },
+    ".claude/hooks/editor-step-hook.py::_record_is_for": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_delivery_reset_active",
+        ".claude/hooks/editor-step-hook.py::_pending_reset_active"
+      ],
+      "imports": [],
+      "name": "_record_is_for"
+    },
+    ".claude/hooks/editor-step-hook.py::_record_machine_task_tools": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_settle_task_tools"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_machine_task_tools_absent"
+      ],
+      "name": "_record_machine_task_tools"
+    },
+    ".claude/hooks/editor-step-hook.py::_record_speed_wait": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_utc_now_iso"
+      ],
+      "name": "_record_speed_wait"
+    },
+    ".claude/hooks/editor-step-hook.py::_record_task_tools_available": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_settle_task_tools"
+      ],
+      "imports": [],
+      "name": "_record_task_tools_available"
+    },
+    ".claude/hooks/editor-step-hook.py::_record_turn_end": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_utc_now_iso"
+      ],
+      "name": "_record_turn_end"
+    },
+    ".claude/hooks/editor-step-hook.py::_record_turn_wait": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_question_open",
+        ".claude/hooks/editor-step-hook.py::_turn_wait_interval",
+        ".claude/hooks/editor-step-hook.py::_utc_now_iso"
+      ],
+      "name": "_record_turn_wait"
+    },
+    ".claude/hooks/editor-step-hook.py::_reset_arrival_lines": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_is_carried_user_message",
+        ".claude/hooks/editor-step-hook.py::_possibly_stale_arrival_lines",
+        ".claude/hooks/editor-step-hook.py::_reset_exempt_prompt",
+        ".claude/hooks/editor-step-hook.py::_reset_in_flight",
+        ".claude/hooks/editor-step-hook.py::_user_message_arrival_lines"
+      ],
+      "name": "_reset_arrival_lines"
+    },
+    ".claude/hooks/editor-step-hook.py::_reset_exempt_prompt": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_arrival_lines"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_wakeup_tokens"
+      ],
+      "name": "_reset_exempt_prompt"
+    },
+    ".claude/hooks/editor-step-hook.py::_reset_in_flight": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_arrival_lines"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_delivery_reset_active",
+        ".claude/hooks/editor-step-hook.py::_pending_reset_active",
+        ".claude/hooks/editor-step-hook.py::_read_json_dict"
+      ],
+      "name": "_reset_in_flight"
+    },
+    ".claude/hooks/editor-step-hook.py::_reset_task_tool_marker": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_mark_tool_loading_injected"
+      ],
+      "name": "_reset_task_tool_marker"
+    },
+    ".claude/hooks/editor-step-hook.py::_scripted_edit_reminder_text": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_scripted_edit_reminder_text"
+    },
+    ".claude/hooks/editor-step-hook.py::_scripted_rewrite_refusal_count": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_scripted_rewrite_refusal_count"
+    },
+    ".claude/hooks/editor-step-hook.py::_session_start_tool_preload": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_machine_task_tools_absent"
+      ],
+      "name": "_session_start_tool_preload"
+    },
+    ".claude/hooks/editor-step-hook.py::_settle_task_tools": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_observe_task_tool_capability"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_record_machine_task_tools",
+        ".claude/hooks/editor-step-hook.py::_record_task_tools_available"
+      ],
+      "name": "_settle_task_tools"
+    },
+    ".claude/hooks/editor-step-hook.py::_should_inject_tool_loading_protocol": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_machine_task_tools_absent",
+        ".claude/hooks/editor-step-hook.py::_task_tools_available",
+        ".claude/hooks/editor-step-hook.py::_tool_loading_already_injected"
+      ],
+      "name": "_should_inject_tool_loading_protocol"
+    },
+    ".claude/hooks/editor-step-hook.py::_sign_in_step_task": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_sign_in_step_task"
+    },
+    ".claude/hooks/editor-step-hook.py::_stale_wakeup_block": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_lines"
+      ],
+      "imports": [],
+      "name": "_stale_wakeup_block"
+    },
+    ".claude/hooks/editor-step-hook.py::_stale_wakeup_decision": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_refusal"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_is_wakeup_template_only",
+        ".claude/hooks/editor-step-hook.py::_wakeup_tokens"
+      ],
+      "name": "_stale_wakeup_decision"
+    },
+    ".claude/hooks/editor-step-hook.py::_stale_wakeup_ends_loop": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_lines"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_wakeup_tokens"
+      ],
+      "name": "_stale_wakeup_ends_loop"
+    },
+    ".claude/hooks/editor-step-hook.py::_stale_wakeup_lines": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_block",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_ends_loop",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_reasons",
+        ".claude/hooks/editor-step-hook.py::_wakeup_checker"
+      ],
+      "name": "_stale_wakeup_lines"
+    },
+    ".claude/hooks/editor-step-hook.py::_stale_wakeup_reasons": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_lines"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_wakeup_tokens"
+      ],
+      "name": "_stale_wakeup_reasons"
+    },
+    ".claude/hooks/editor-step-hook.py::_stale_wakeup_refusal": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_log_foreign_prompt",
+        ".claude/hooks/editor-step-hook.py::_question_open",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_decision",
+        ".claude/hooks/editor-step-hook.py::_wakeup_tokens"
+      ],
+      "name": "_stale_wakeup_refusal"
+    },
+    ".claude/hooks/editor-step-hook.py::_stamp_explains_answer": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_injected_answer_source"
+      ],
+      "imports": [],
+      "name": "_stamp_explains_answer"
+    },
+    ".claude/hooks/editor-step-hook.py::_step_context_due": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_editor_context_due",
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_read_step_context_marker",
+        ".claude/hooks/editor-step-hook.py::_write_step_context_marker"
+      ],
+      "name": "_step_context_due"
+    },
+    ".claude/hooks/editor-step-hook.py::_step_injection_key": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_step_injection_key"
+    },
+    ".claude/hooks/editor-step-hook.py::_step_reminder_due": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_read_step_context_marker",
+        ".claude/hooks/editor-step-hook.py::_write_step_context_marker"
+      ],
+      "name": "_step_reminder_due"
+    },
+    ".claude/hooks/editor-step-hook.py::_steps_behind": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_foreign_prompt_findings"
+      ],
+      "imports": [],
+      "name": "_steps_behind"
+    },
+    ".claude/hooks/editor-step-hook.py::_task_tools_available": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_should_inject_tool_loading_protocol"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_mark_tool_loading_injected"
+      ],
+      "name": "_task_tools_available"
+    },
+    ".claude/hooks/editor-step-hook.py::_task_tools_in_search_result": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_observe_task_tool_capability"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_looks_like_task_tool_query"
+      ],
+      "name": "_task_tools_in_search_result"
+    },
+    ".claude/hooks/editor-step-hook.py::_terminal_signal_missing": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "_terminal_signal_missing"
+    },
+    ".claude/hooks/editor-step-hook.py::_tool_loading_already_injected": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_should_inject_tool_loading_protocol"
+      ],
+      "imports": [],
+      "name": "_tool_loading_already_injected"
+    },
+    ".claude/hooks/editor-step-hook.py::_turn_wait_interval": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_record_turn_wait"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_prompt_is_from_the_user"
+      ],
+      "name": "_turn_wait_interval"
+    },
+    ".claude/hooks/editor-step-hook.py::_unquote_carry_line": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_parse_carried_section"
+      ],
+      "imports": [],
+      "name": "_unquote_carry_line"
+    },
+    ".claude/hooks/editor-step-hook.py::_user_message_arrival_lines": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_reset_arrival_lines"
+      ],
+      "imports": [],
+      "name": "_user_message_arrival_lines"
+    },
+    ".claude/hooks/editor-step-hook.py::_utc_now_iso": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_record_speed_wait",
+        ".claude/hooks/editor-step-hook.py::_record_turn_end",
+        ".claude/hooks/editor-step-hook.py::_record_turn_wait"
+      ],
+      "imports": [],
+      "name": "_utc_now_iso"
+    },
+    ".claude/hooks/editor-step-hook.py::_wakeup_check": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_wakeup_checker"
+      ],
+      "imports": [],
+      "name": "_wakeup_check"
+    },
+    ".claude/hooks/editor-step-hook.py::_wakeup_checker": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_lines",
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_wakeup_check"
+      ],
+      "name": "_wakeup_checker"
+    },
+    ".claude/hooks/editor-step-hook.py::_wakeup_tokens": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_prompt_is_from_the_user",
+        ".claude/hooks/editor-step-hook.py::_reset_exempt_prompt",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_decision",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_ends_loop",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_reasons",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_refusal"
+      ],
+      "imports": [],
+      "name": "_wakeup_tokens"
+    },
+    ".claude/hooks/editor-step-hook.py::_wedge_notice": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::emit_wedge_block"
+      ],
+      "imports": [],
+      "name": "_wedge_notice"
+    },
+    ".claude/hooks/editor-step-hook.py::_within_window": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_delivery_reset_active",
+        ".claude/hooks/editor-step-hook.py::_pending_reset_active"
+      ],
+      "imports": [],
+      "name": "_within_window"
+    },
+    ".claude/hooks/editor-step-hook.py::_write_step_context_marker": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::_editor_context_due",
+        ".claude/hooks/editor-step-hook.py::_step_context_due",
+        ".claude/hooks/editor-step-hook.py::_step_reminder_due"
+      ],
+      "imports": [],
+      "name": "_write_step_context_marker"
+    },
+    ".claude/hooks/editor-step-hook.py::detect_event": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "detect_event"
+    },
+    ".claude/hooks/editor-step-hook.py::emit_wedge_block": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main",
+        ".claude/hooks/editor-step-hook.py::rebuild_check_verdict"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_wedge_notice"
+      ],
+      "name": "emit_wedge_block"
+    },
+    ".claude/hooks/editor-step-hook.py::label_signals_pre_commit_warning": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "label_signals_pre_commit_warning"
+    },
+    ".claude/hooks/editor-step-hook.py::label_signals_sync_gate": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "label_signals_sync_gate"
+    },
+    ".claude/hooks/editor-step-hook.py::label_signals_user_feedback_phase": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "label_signals_user_feedback_phase"
+    },
+    ".claude/hooks/editor-step-hook.py::log_event": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "log_event"
+    },
+    ".claude/hooks/editor-step-hook.py::main": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::_clear_step_context_marker",
+        ".claude/hooks/editor-step-hook.py::_editor_context_lines",
+        ".claude/hooks/editor-step-hook.py::_foreign_prompt_lines",
+        ".claude/hooks/editor-step-hook.py::_injected_answer_output",
+        ".claude/hooks/editor-step-hook.py::_mark_tool_loading_injected",
+        ".claude/hooks/editor-step-hook.py::_observe_question_answer",
+        ".claude/hooks/editor-step-hook.py::_observe_task_tool_capability",
+        ".claude/hooks/editor-step-hook.py::_record_speed_wait",
+        ".claude/hooks/editor-step-hook.py::_record_turn_end",
+        ".claude/hooks/editor-step-hook.py::_record_turn_wait",
+        ".claude/hooks/editor-step-hook.py::_reset_arrival_lines",
+        ".claude/hooks/editor-step-hook.py::_reset_task_tool_marker",
+        ".claude/hooks/editor-step-hook.py::_scripted_edit_reminder_text",
+        ".claude/hooks/editor-step-hook.py::_scripted_rewrite_refusal_count",
+        ".claude/hooks/editor-step-hook.py::_session_start_tool_preload",
+        ".claude/hooks/editor-step-hook.py::_should_inject_tool_loading_protocol",
+        ".claude/hooks/editor-step-hook.py::_sign_in_step_task",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_lines",
+        ".claude/hooks/editor-step-hook.py::_stale_wakeup_refusal",
+        ".claude/hooks/editor-step-hook.py::_step_context_due",
+        ".claude/hooks/editor-step-hook.py::_step_injection_key",
+        ".claude/hooks/editor-step-hook.py::_step_reminder_due",
+        ".claude/hooks/editor-step-hook.py::_terminal_signal_missing",
+        ".claude/hooks/editor-step-hook.py::_wakeup_checker",
+        ".claude/hooks/editor-step-hook.py::detect_event",
+        ".claude/hooks/editor-step-hook.py::emit_wedge_block",
+        ".claude/hooks/editor-step-hook.py::label_signals_pre_commit_warning",
+        ".claude/hooks/editor-step-hook.py::label_signals_sync_gate",
+        ".claude/hooks/editor-step-hook.py::label_signals_user_feedback_phase",
+        ".claude/hooks/editor-step-hook.py::log_event",
+        ".claude/hooks/editor-step-hook.py::resolve_mode",
+        ".claude/hooks/editor-step-hook.py::stale_binary_notice"
+      ],
+      "name": "main"
+    },
+    ".claude/hooks/editor-step-hook.py::rebuild_check_verdict": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::stale_binary_notice"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::emit_wedge_block"
+      ],
+      "name": "rebuild_check_verdict"
+    },
+    ".claude/hooks/editor-step-hook.py::resolve_mode": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [],
+      "name": "resolve_mode"
+    },
+    ".claude/hooks/editor-step-hook.py::stale_binary_notice": {
+      "filePath": ".claude/hooks/editor-step-hook.py",
+      "importedBy": [
+        ".claude/hooks/editor-step-hook.py::main"
+      ],
+      "imports": [
+        ".claude/hooks/editor-step-hook.py::rebuild_check_verdict"
+      ],
+      "name": "stale_binary_notice"
+    }
+  },
+  "files": {
+    ".claude/hooks/_step_metadata.py": {
+      "importedBy": [],
+      "imports": []
+    },
+    ".claude/hooks/editor-pretool-hook.py": {
+      "importedBy": [],
+      "imports": []
+    },
+    ".claude/hooks/editor-step-hook.py": {
+      "importedBy": [],
+      "imports": []
+    }
+  }
+}

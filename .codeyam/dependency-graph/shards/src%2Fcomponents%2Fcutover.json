@@ -1,0 +1,636 @@
+{
+  "entities": {
+    "src/components/cutover/ContentGapArea.astro::__file_root__": {
+      "filePath": "src/components/cutover/ContentGapArea.astro",
+      "importedBy": [
+        "src/components/cutover/RunbookContentGaps.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/ContentGapItem.astro::__file_root__",
+        "src/lib/contentGaps.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/ContentGapItem.astro::__file_root__": {
+      "filePath": "src/components/cutover/ContentGapItem.astro",
+      "importedBy": [
+        "src/components/cutover/ContentGapArea.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/contentGaps.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/DecisionCard.astro::__file_root__": {
+      "filePath": "src/components/cutover/DecisionCard.astro",
+      "importedBy": [
+        "src/components/cutover/RunbookDecisions.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/DecisionDetail.astro::__file_root__",
+        "src/components/cutover/DecisionRecommendation.astro::__file_root__",
+        "src/components/cutover/DecisionTick.tsx::DecisionTick",
+        "src/lib/cutoverProgress.ts::CutoverProgress",
+        "src/lib/cutoverProgress.ts::DecisionDef",
+        "src/lib/cutoverProgress.ts::isDecisionAnswered"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/DecisionDetail.astro::__file_root__": {
+      "filePath": "src/components/cutover/DecisionDetail.astro",
+      "importedBy": [
+        "src/components/cutover/DecisionCard.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/DecisionRecommendation.astro::__file_root__": {
+      "filePath": "src/components/cutover/DecisionRecommendation.astro",
+      "importedBy": [
+        "src/components/cutover/DecisionCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/DecisionTick.tsx::DecisionTick": {
+      "filePath": "src/components/cutover/DecisionTick.tsx",
+      "importedBy": [
+        "src/components/cutover/DecisionCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/DecisionTick.tsx::Props",
+        "src/components/cutover/DecisionTick.tsx::Save",
+        "src/components/cutover/useAuthSession.ts::useAuthSession",
+        "src/lib/cutoverFormat.ts::shortDate",
+        "src/lib/cutoverTicks.ts::applyDecisionAnswer",
+        "src/lib/cutoverTicks.ts::commitTick"
+      ],
+      "name": "DecisionTick"
+    },
+    "src/components/cutover/DecisionTick.tsx::Props": {
+      "filePath": "src/components/cutover/DecisionTick.tsx",
+      "importedBy": [
+        "src/components/cutover/DecisionTick.tsx::DecisionTick"
+      ],
+      "imports": [],
+      "name": "Props"
+    },
+    "src/components/cutover/DecisionTick.tsx::Save": {
+      "filePath": "src/components/cutover/DecisionTick.tsx",
+      "importedBy": [
+        "src/components/cutover/DecisionTick.tsx::DecisionTick"
+      ],
+      "imports": [],
+      "name": "Save"
+    },
+    "src/components/cutover/DecisionTick.tsx::__file_root__": {
+      "filePath": "src/components/cutover/DecisionTick.tsx",
+      "importedBy": [
+        "src/pages/isolated-components/DecisionTick-Decided.astro::__file_root__",
+        "src/pages/isolated-components/DecisionTick-ReadOnly.astro::__file_root__",
+        "src/pages/isolated-components/DecisionTick.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/EmailRule.astro::__file_root__": {
+      "filePath": "src/components/cutover/EmailRule.astro",
+      "importedBy": [
+        "src/components/cutover/RunbookWhatThisIs.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/NumberedLine.astro::__file_root__": {
+      "filePath": "src/components/cutover/NumberedLine.astro",
+      "importedBy": [
+        "src/components/cutover/RunbookChecks.astro::__file_root__",
+        "src/components/cutover/RunbookRollback.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/OperatorDetail.astro::__file_root__": {
+      "filePath": "src/components/cutover/OperatorDetail.astro",
+      "importedBy": [
+        "src/components/cutover/StepCard.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RecordRow.astro::__file_root__": {
+      "filePath": "src/components/cutover/RecordRow.astro",
+      "importedBy": [
+        "src/components/cutover/RunbookRecords.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookChecks.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookChecks.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/NumberedLine.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookContentGaps.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookContentGaps.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/ContentGapArea.astro::__file_root__",
+        "src/lib/contentGaps.ts::ContentGap",
+        "src/lib/contentGaps.ts::groupGapsByArea"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookDecisions.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookDecisions.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/DecisionCard.astro::__file_root__",
+        "src/lib/cutoverProgress.ts::CutoverProgress",
+        "src/lib/cutoverProgress.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookFooter.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookFooter.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookHeader.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookHeader.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookOnTheDay.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookOnTheDay.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookRecords.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookRecords.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/RecordRow.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookRollback.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookRollback.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/NumberedLine.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookSteps.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookSteps.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/StepCard.astro::__file_root__",
+        "src/lib/cutoverProgress.ts::CutoverProgress",
+        "src/lib/cutoverProgress.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookSummary.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookSummary.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/StandingBanner.astro::__file_root__",
+        "src/lib/cutoverProgress.ts::Rollup",
+        "src/lib/cutoverProgress.ts::summaryLine"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookTimeline.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookTimeline.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/TimelinePhase.astro::__file_root__",
+        "src/lib/cutoverProgress.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/RunbookWhatThisIs.astro::__file_root__": {
+      "filePath": "src/components/cutover/RunbookWhatThisIs.astro",
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/EmailRule.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/StandingBanner.astro::__file_root__": {
+      "filePath": "src/components/cutover/StandingBanner.astro",
+      "importedBy": [
+        "src/components/cutover/RunbookSummary.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/StepCard.astro::__file_root__": {
+      "filePath": "src/components/cutover/StepCard.astro",
+      "importedBy": [
+        "src/components/cutover/RunbookSteps.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/OperatorDetail.astro::__file_root__",
+        "src/components/cutover/StepContentHold.astro::__file_root__",
+        "src/components/cutover/StepFacts.astro::__file_root__",
+        "src/components/cutover/StepRisk.astro::__file_root__",
+        "src/components/cutover/StepTick.tsx::StepTick",
+        "src/lib/cutoverProgress.ts::CutoverProgress",
+        "src/lib/cutoverProgress.ts::StepDef",
+        "src/lib/cutoverProgress.ts::blockedLabel",
+        "src/lib/cutoverProgress.ts::blockingDecisions",
+        "src/lib/cutoverProgress.ts::isHeldForContent",
+        "src/lib/cutoverProgress.ts::isStepDone"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/StepContentHold.astro::__file_root__": {
+      "filePath": "src/components/cutover/StepContentHold.astro",
+      "importedBy": [
+        "src/components/cutover/StepCard.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/StepFacts.astro::__file_root__": {
+      "filePath": "src/components/cutover/StepFacts.astro",
+      "importedBy": [
+        "src/components/cutover/StepCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts::StepDef",
+        "src/lib/cutoverProgress.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/StepRisk.astro::__file_root__": {
+      "filePath": "src/components/cutover/StepRisk.astro",
+      "importedBy": [
+        "src/components/cutover/StepCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/StepTick.tsx::Props": {
+      "filePath": "src/components/cutover/StepTick.tsx",
+      "importedBy": [
+        "src/components/cutover/StepTick.tsx::StepTick"
+      ],
+      "imports": [],
+      "name": "Props"
+    },
+    "src/components/cutover/StepTick.tsx::Save": {
+      "filePath": "src/components/cutover/StepTick.tsx",
+      "importedBy": [
+        "src/components/cutover/StepTick.tsx::StepTick"
+      ],
+      "imports": [],
+      "name": "Save"
+    },
+    "src/components/cutover/StepTick.tsx::StepTick": {
+      "filePath": "src/components/cutover/StepTick.tsx",
+      "importedBy": [
+        "src/components/cutover/StepCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/cutover/StepTick.tsx::Props",
+        "src/components/cutover/StepTick.tsx::Save",
+        "src/components/cutover/useAuthSession.ts::useAuthSession",
+        "src/lib/cutoverFormat.ts::shortDate",
+        "src/lib/cutoverTicks.ts::applyStepTick",
+        "src/lib/cutoverTicks.ts::commitTick",
+        "src/lib/cutoverTicks.ts::tickCommitMessage"
+      ],
+      "name": "StepTick"
+    },
+    "src/components/cutover/StepTick.tsx::__file_root__": {
+      "filePath": "src/components/cutover/StepTick.tsx",
+      "importedBy": [
+        "src/pages/isolated-components/StepTick-Done.astro::__file_root__",
+        "src/pages/isolated-components/StepTick.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/TimelinePhase.astro::__file_root__": {
+      "filePath": "src/components/cutover/TimelinePhase.astro",
+      "importedBy": [
+        "src/components/cutover/RunbookTimeline.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts::CutoverProgress",
+        "src/lib/cutoverProgress.ts::Phase",
+        "src/lib/cutoverProgress.ts::__file_root__",
+        "src/lib/cutoverProgress.ts::byPhase",
+        "src/lib/cutoverProgress.ts::isStepDone"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/cutover/useAuthSession.ts::useAuthSession": {
+      "filePath": "src/components/cutover/useAuthSession.ts",
+      "importedBy": [
+        "src/components/cutover/DecisionTick.tsx::DecisionTick",
+        "src/components/cutover/StepTick.tsx::StepTick"
+      ],
+      "imports": [],
+      "name": "useAuthSession"
+    }
+  },
+  "files": {
+    "src/components/cutover/ContentGapArea.astro": {
+      "importedBy": [
+        "src/components/cutover/RunbookContentGaps.astro"
+      ],
+      "imports": [
+        "src/lib/contentGaps.ts",
+        "src/components/cutover/ContentGapItem.astro"
+      ],
+      "typeOnlyImports": [
+        "src/lib/contentGaps.ts"
+      ]
+    },
+    "src/components/cutover/ContentGapItem.astro": {
+      "importedBy": [
+        "src/components/cutover/ContentGapArea.astro"
+      ],
+      "imports": [
+        "src/lib/contentGaps.ts"
+      ],
+      "typeOnlyImports": [
+        "src/lib/contentGaps.ts"
+      ]
+    },
+    "src/components/cutover/DecisionCard.astro": {
+      "importedBy": [
+        "src/components/cutover/RunbookDecisions.astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts",
+        "src/components/cutover/DecisionDetail.astro",
+        "src/components/cutover/DecisionRecommendation.astro",
+        "src/components/cutover/DecisionTick.tsx"
+      ]
+    },
+    "src/components/cutover/DecisionDetail.astro": {
+      "importedBy": [
+        "src/components/cutover/DecisionCard.astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/DecisionRecommendation.astro": {
+      "importedBy": [
+        "src/components/cutover/DecisionCard.astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts"
+      ],
+      "typeOnlyImports": [
+        "src/lib/cutoverProgress.ts"
+      ]
+    },
+    "src/components/cutover/DecisionTick.tsx": {
+      "importedBy": [
+        "src/components/cutover/DecisionCard.astro",
+        "src/pages/isolated-components/DecisionTick-Decided.astro",
+        "src/pages/isolated-components/DecisionTick-ReadOnly.astro",
+        "src/pages/isolated-components/DecisionTick.astro"
+      ],
+      "imports": [
+        "src/lib/cutoverTicks.ts",
+        "src/lib/cutoverFormat.ts",
+        "src/components/cutover/useAuthSession.ts"
+      ]
+    },
+    "src/components/cutover/EmailRule.astro": {
+      "importedBy": [
+        "src/components/cutover/RunbookWhatThisIs.astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/NumberedLine.astro": {
+      "importedBy": [
+        "src/components/cutover/RunbookChecks.astro",
+        "src/components/cutover/RunbookRollback.astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/OperatorDetail.astro": {
+      "importedBy": [
+        "src/components/cutover/StepCard.astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/RecordRow.astro": {
+      "importedBy": [
+        "src/components/cutover/RunbookRecords.astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/RunbookChecks.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/components/cutover/NumberedLine.astro"
+      ]
+    },
+    "src/components/cutover/RunbookContentGaps.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/lib/contentGaps.ts",
+        "src/components/cutover/ContentGapArea.astro"
+      ]
+    },
+    "src/components/cutover/RunbookDecisions.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts",
+        "src/components/cutover/DecisionCard.astro"
+      ]
+    },
+    "src/components/cutover/RunbookFooter.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/RunbookHeader.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/RunbookOnTheDay.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/RunbookRecords.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/components/cutover/RecordRow.astro"
+      ]
+    },
+    "src/components/cutover/RunbookRollback.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/components/cutover/NumberedLine.astro"
+      ]
+    },
+    "src/components/cutover/RunbookSteps.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts",
+        "src/components/cutover/StepCard.astro"
+      ]
+    },
+    "src/components/cutover/RunbookSummary.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts",
+        "src/components/cutover/StandingBanner.astro"
+      ]
+    },
+    "src/components/cutover/RunbookTimeline.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts",
+        "src/components/cutover/TimelinePhase.astro"
+      ],
+      "typeOnlyImports": [
+        "src/lib/cutoverProgress.ts"
+      ]
+    },
+    "src/components/cutover/RunbookWhatThisIs.astro": {
+      "importedBy": [
+        "src/pages/cutover-runbook/[...path].astro"
+      ],
+      "imports": [
+        "src/components/cutover/EmailRule.astro"
+      ]
+    },
+    "src/components/cutover/StandingBanner.astro": {
+      "importedBy": [
+        "src/components/cutover/RunbookSummary.astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/StepCard.astro": {
+      "importedBy": [
+        "src/components/cutover/RunbookSteps.astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts",
+        "src/components/cutover/OperatorDetail.astro",
+        "src/components/cutover/StepContentHold.astro",
+        "src/components/cutover/StepFacts.astro",
+        "src/components/cutover/StepRisk.astro",
+        "src/components/cutover/StepTick.tsx"
+      ]
+    },
+    "src/components/cutover/StepContentHold.astro": {
+      "importedBy": [
+        "src/components/cutover/StepCard.astro"
+      ],
+      "imports": []
+    },
+    "src/components/cutover/StepFacts.astro": {
+      "importedBy": [
+        "src/components/cutover/StepCard.astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts"
+      ]
+    },
+    "src/components/cutover/StepRisk.astro": {
+      "importedBy": [
+        "src/components/cutover/StepCard.astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts"
+      ],
+      "typeOnlyImports": [
+        "src/lib/cutoverProgress.ts"
+      ]
+    },
+    "src/components/cutover/StepTick.tsx": {
+      "importedBy": [
+        "src/components/cutover/StepCard.astro",
+        "src/pages/isolated-components/StepTick-Done.astro",
+        "src/pages/isolated-components/StepTick.astro"
+      ],
+      "imports": [
+        "src/lib/cutoverTicks.ts",
+        "src/lib/cutoverFormat.ts",
+        "src/components/cutover/useAuthSession.ts"
+      ]
+    },
+    "src/components/cutover/TimelinePhase.astro": {
+      "importedBy": [
+        "src/components/cutover/RunbookTimeline.astro"
+      ],
+      "imports": [
+        "src/lib/cutoverProgress.ts"
+      ]
+    },
+    "src/components/cutover/useAuthSession.ts": {
+      "importedBy": [
+        "src/components/cutover/DecisionTick.tsx",
+        "src/components/cutover/StepTick.tsx"
+      ],
+      "imports": []
+    }
+  }
+}

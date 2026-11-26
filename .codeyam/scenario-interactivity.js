@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c23ce41100a6229ea1b7b518a4114f87721740ec  source-sha256: 8ad1de7e5385d8af7889b9884831d134e90ebd5dee2717b179e62e13186bdb30
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: 58d97f850615b4eb8fbee196d340b36814fecba0fc49496d665d08ce730fadf3
 const fs = require("fs");
 const path = require("path");
 const { createIssue } = require("./scenario-issues");
@@ -838,3 +838,8 @@ module.exports = {
   probeHydrationState,
   waitForHydration,
 };
+
+// Pixel-path script: its code and this number both feed the capture pipeline
+// id. Bump the number for a change that alters pixels without changing code.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

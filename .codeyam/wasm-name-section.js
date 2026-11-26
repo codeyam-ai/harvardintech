@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: b0873eeb456580e3b290593af663f0e7dba6573e  source-sha256: aa5694243e6362c732bd09f716566510b1fec8b8d697594b743123636512549c
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: 40940a662de9e8a36090711bbbd03822ede6e9d6b3e141970bd7d8414a71b5b3
 // Read the parts of a wasm binary that rendered-source attribution needs: each
 // defined function's name and the byte range of its body. Parsed from the bytes
 // rather than asked of DevTools (`Debugger.disassembleWasmModule`), whose text
@@ -121,3 +121,8 @@ function parseWasmFunctionNames(bytes) {
 }
 
 module.exports = { parseWasmFunctionNames };
+
+// Diagnostic script: it writes no pixels, so only this number (not its code)
+// feeds the capture pipeline id. Bump it if a change ever alters a frame.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

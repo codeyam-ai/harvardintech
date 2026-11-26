@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "src/pages/cutover-runbook/[...path].astro::__file_root__": {
+      "filePath": "src/pages/cutover-runbook/[...path].astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/HeadExtras.astro::__file_root__",
+        "src/components/SEO.astro::__file_root__",
+        "src/components/cutover/RunbookChecks.astro::__file_root__",
+        "src/components/cutover/RunbookContentGaps.astro::__file_root__",
+        "src/components/cutover/RunbookDecisions.astro::__file_root__",
+        "src/components/cutover/RunbookFooter.astro::__file_root__",
+        "src/components/cutover/RunbookHeader.astro::__file_root__",
+        "src/components/cutover/RunbookOnTheDay.astro::__file_root__",
+        "src/components/cutover/RunbookRecords.astro::__file_root__",
+        "src/components/cutover/RunbookRollback.astro::__file_root__",
+        "src/components/cutover/RunbookSteps.astro::__file_root__",
+        "src/components/cutover/RunbookSummary.astro::__file_root__",
+        "src/components/cutover/RunbookTimeline.astro::__file_root__",
+        "src/components/cutover/RunbookWhatThisIs.astro::__file_root__",
+        "src/data/cms.json::__file_root__",
+        "src/lib/contentGapsContent.ts::loadContentGaps",
+        "src/lib/cutoverProgress.ts::loadCutoverProgress",
+        "src/lib/cutoverProgress.ts::rollup",
+        "src/lib/integrationsContent.ts::loadIntegrations",
+        "src/lib/previewGate.ts::PREVIEW_GATE_ENABLED",
+        "src/lib/publishTrack.ts::includeCutoverRunbook",
+        "src/lib/site.ts::settings",
+        "src/lib/url.ts::withBase",
+        "src/styles/cutover-runbook.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/pages/cutover-runbook/[...path].astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/SEO.astro",
+        "src/components/HeadExtras.astro",
+        "src/components/cutover/RunbookHeader.astro",
+        "src/components/cutover/RunbookSummary.astro",
+        "src/components/cutover/RunbookWhatThisIs.astro",
+        "src/components/cutover/RunbookDecisions.astro",
+        "src/components/cutover/RunbookTimeline.astro",
+        "src/components/cutover/RunbookOnTheDay.astro",
+        "src/components/cutover/RunbookSteps.astro",
+        "src/components/cutover/RunbookContentGaps.astro",
+        "src/components/cutover/RunbookChecks.astro",
+        "src/components/cutover/RunbookRollback.astro",
+        "src/components/cutover/RunbookRecords.astro",
+        "src/components/cutover/RunbookFooter.astro",
+        "src/lib/site.ts",
+        "src/lib/integrationsContent.ts",
+        "src/lib/previewGate.ts",
+        "src/lib/publishTrack.ts",
+        "src/lib/cutoverProgress.ts",
+        "src/lib/contentGapsContent.ts",
+        "src/lib/url.ts",
+        "src/data/cms.json",
+        "src/styles/cutover-runbook.css"
+      ]
+    }
+  }
+}

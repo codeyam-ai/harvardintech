@@ -1,0 +1,140 @@
+{
+  "entities": {
+    "src/components/give/GiveClose.astro::__file_root__": {
+      "filePath": "src/components/give/GiveClose.astro",
+      "importedBy": [
+        "src/pages/isolated-components/GiveClose.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/donate/GiveButton.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/give/GiveCollage.astro::__file_root__": {
+      "filePath": "src/components/give/GiveCollage.astro",
+      "importedBy": [
+        "src/pages/isolated-components/GiveCollage.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/media.ts::altFor",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/give/GiveFaq.astro::__file_root__": {
+      "filePath": "src/components/give/GiveFaq.astro",
+      "importedBy": [
+        "src/pages/isolated-components/GiveFaq.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/give/GiveHero.astro::__file_root__": {
+      "filePath": "src/components/give/GiveHero.astro",
+      "importedBy": [
+        "src/pages/isolated-components/GiveHero.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/give/GivePhoto.astro::__file_root__": {
+      "filePath": "src/components/give/GivePhoto.astro",
+      "importedBy": [
+        "src/pages/isolated-components/GivePhoto.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ResponsiveImg.astro::__file_root__",
+        "src/lib/media.ts::altFor",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/give/GiveRecognition.astro::__file_root__": {
+      "filePath": "src/components/give/GiveRecognition.astro",
+      "importedBy": [
+        "src/pages/isolated-components/GiveRecognition.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/give/GiveStatement.astro::__file_root__": {
+      "filePath": "src/components/give/GiveStatement.astro",
+      "importedBy": [
+        "src/pages/isolated-components/GiveStatement.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/give/GivingCard.astro::__file_root__": {
+      "filePath": "src/components/give/GivingCard.astro",
+      "importedBy": [
+        "src/pages/isolated-components/GivingCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/donate/GiveButton.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/components/give/GiveClose.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/GiveClose.astro"
+      ],
+      "imports": [
+        "src/components/donate/GiveButton.astro"
+      ]
+    },
+    "src/components/give/GiveCollage.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/GiveCollage.astro"
+      ],
+      "imports": [
+        "src/lib/media.ts",
+        "src/lib/url.ts"
+      ]
+    },
+    "src/components/give/GiveFaq.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/GiveFaq.astro"
+      ],
+      "imports": []
+    },
+    "src/components/give/GiveHero.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/GiveHero.astro"
+      ],
+      "imports": []
+    },
+    "src/components/give/GivePhoto.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/GivePhoto.astro"
+      ],
+      "imports": [
+        "src/lib/media.ts",
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
+      ]
+    },
+    "src/components/give/GiveRecognition.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/GiveRecognition.astro"
+      ],
+      "imports": []
+    },
+    "src/components/give/GiveStatement.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/GiveStatement.astro"
+      ],
+      "imports": []
+    },
+    "src/components/give/GivingCard.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/GivingCard.astro"
+      ],
+      "imports": [
+        "src/components/donate/GiveButton.astro"
+      ]
+    }
+  }
+}

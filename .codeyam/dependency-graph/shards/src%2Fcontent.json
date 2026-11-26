@@ -1,0 +1,299 @@
+{
+  "entities": {
+    "src/content/config.ts::__file_root__": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/contentRoot.ts::contentRoot",
+        "src/lib/leadSchema.ts::leadSchema",
+        "src/lib/previewFieldsSchema.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/content/config.ts::accomplishments": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::pageCopy",
+        "src/content/config.ts::pillars"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "accomplishments"
+    },
+    "src/content/config.ts::blog": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::pages"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/lib/previewFieldsSchema.ts::__file_root__"
+      ],
+      "name": "blog"
+    },
+    "src/content/config.ts::chapters": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::communities"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::pages",
+        "src/lib/leadSchema.ts::leadSchema",
+        "src/lib/localPresence.ts::isWhatsAppGroupLink",
+        "src/lib/previewFieldsSchema.ts::__file_root__"
+      ],
+      "name": "chapters"
+    },
+    "src/content/config.ts::collectionGlob": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::accomplishments",
+        "src/content/config.ts::blog",
+        "src/content/config.ts::chapters",
+        "src/content/config.ts::communities",
+        "src/content/config.ts::donors",
+        "src/content/config.ts::events",
+        "src/content/config.ts::heroSlides",
+        "src/content/config.ts::homeSections",
+        "src/content/config.ts::momentumSections",
+        "src/content/config.ts::pageCopy",
+        "src/content/config.ts::pages",
+        "src/content/config.ts::pillars",
+        "src/content/config.ts::projects",
+        "src/content/config.ts::siteClock",
+        "src/content/config.ts::siteIntegrations",
+        "src/content/config.ts::sponsorLevels",
+        "src/content/config.ts::sponsorPage",
+        "src/content/config.ts::sponsors",
+        "src/content/config.ts::stats",
+        "src/content/config.ts::team",
+        "src/content/config.ts::testimonials",
+        "src/content/config.ts::volunteerPage"
+      ],
+      "imports": [
+        "src/content/config.ts::root",
+        "src/content/config.ts::siteClock"
+      ],
+      "name": "collectionGlob"
+    },
+    "src/content/config.ts::communities": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::events"
+      ],
+      "imports": [
+        "src/content/config.ts::chapters",
+        "src/content/config.ts::collectionGlob",
+        "src/lib/leadSchema.ts::leadSchema",
+        "src/lib/localPresence.ts::isWhatsAppGroupLink",
+        "src/lib/previewFieldsSchema.ts::__file_root__"
+      ],
+      "name": "communities"
+    },
+    "src/content/config.ts::donors": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::momentumSections"
+      ],
+      "name": "donors"
+    },
+    "src/content/config.ts::events": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::pageCopy",
+        "src/content/config.ts::projects"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::communities"
+      ],
+      "name": "events"
+    },
+    "src/content/config.ts::heroSlides": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "heroSlides"
+    },
+    "src/content/config.ts::homeSections": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::momentumSections"
+      ],
+      "name": "homeSections"
+    },
+    "src/content/config.ts::momentumSections": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::donors",
+        "src/content/config.ts::homeSections",
+        "src/content/config.ts::pageCopy"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::pillars"
+      ],
+      "name": "momentumSections"
+    },
+    "src/content/config.ts::pageCopy": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::accomplishments",
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::events",
+        "src/content/config.ts::momentumSections",
+        "src/content/config.ts::pages",
+        "src/content/config.ts::pillars",
+        "src/content/config.ts::stats"
+      ],
+      "name": "pageCopy"
+    },
+    "src/content/config.ts::pages": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::chapters",
+        "src/content/config.ts::pageCopy"
+      ],
+      "imports": [
+        "src/content/config.ts::blog",
+        "src/content/config.ts::collectionGlob",
+        "src/lib/previewFieldsSchema.ts::__file_root__"
+      ],
+      "name": "pages"
+    },
+    "src/content/config.ts::pillars": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::momentumSections",
+        "src/content/config.ts::pageCopy"
+      ],
+      "imports": [
+        "src/content/config.ts::accomplishments",
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "pillars"
+    },
+    "src/content/config.ts::projects": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::volunteerPage"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::events",
+        "src/lib/previewFieldsSchema.ts::__file_root__"
+      ],
+      "name": "projects"
+    },
+    "src/content/config.ts::root": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "imports": [
+        "src/lib/contentRoot.ts::contentRoot"
+      ],
+      "name": "root"
+    },
+    "src/content/config.ts::siteClock": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "siteClock"
+    },
+    "src/content/config.ts::siteIntegrations": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "siteIntegrations"
+    },
+    "src/content/config.ts::sponsorLevels": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "sponsorLevels"
+    },
+    "src/content/config.ts::sponsorPage": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::team"
+      ],
+      "name": "sponsorPage"
+    },
+    "src/content/config.ts::sponsors": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "sponsors"
+    },
+    "src/content/config.ts::stats": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::pageCopy"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "stats"
+    },
+    "src/content/config.ts::team": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [
+        "src/content/config.ts::sponsorPage"
+      ],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "team"
+    },
+    "src/content/config.ts::testimonials": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob"
+      ],
+      "name": "testimonials"
+    },
+    "src/content/config.ts::volunteerPage": {
+      "filePath": "src/content/config.ts",
+      "importedBy": [],
+      "imports": [
+        "src/content/config.ts::collectionGlob",
+        "src/content/config.ts::projects"
+      ],
+      "name": "volunteerPage"
+    }
+  },
+  "files": {
+    "src/content/config.ts": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/previewFieldsSchema.ts",
+        "src/lib/contentRoot.ts",
+        "src/lib/localPresence.ts",
+        "src/lib/leadSchema.ts"
+      ]
+    }
+  }
+}

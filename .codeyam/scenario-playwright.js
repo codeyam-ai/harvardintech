@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: a7cfba071c939e2a4f6c87eb60005c6c345c51fb  source-sha256: 4a0c838274ed090ee9f745e97ebe7df56b37e68efc9dfe73554c3ff7ed9234ad
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: d89ca31ae2987838e47d600ab555beb15d6e8f9666b1d534f8504ba3740c044e
 const {
   hasLoadingMarkers,
   isCanvasDominated,
@@ -1377,9 +1377,18 @@ async function probeCanvasDominated(frame) {
 // candidate-labels hint from `performInteraction`), and the caller turns that
 // into a failed capture — never a silent resting-state screenshot for a
 // sequence that didn't fully run.
-// `settle` is injectable so unit tests that drive a mock frame stay
-// network-free and fast; production callers use the default real
-// `waitForStablePage` re-settle between steps.
+// A step that matches SOMETHING but changes nothing is the other half: after a
+// redesign a text target can still resolve to an inert label, and a canvas
+// click at a stale position lands on empty paint. So the viewport is
+// snapshotted before the first step and after each step until one changes it,
+// and a sequence that was meant to change the page but in which no step did
+// fails too (see `deadInteractionSequenceMessage`). A sequence that changes the
+// page and then undoes it is not dead, even though it ends where it began. A pure `waitFor` sequence is exempt — it
+// asserts state, it does not change it. A snapshot that could not be taken
+// (null) never fails the capture.
+// `settle`, `pixelSettle` and `snapshot` are injectable so unit tests that
+// drive a mock frame stay network-free and fast; production callers use the
+// real `waitForStablePage` re-settle and a full-viewport `pixelSnapshot`.
 async function performInteractionSequence(
   page,
   frame,
@@ -1391,9 +1400,17 @@ async function performInteractionSequence(
     loadingMarkers,
     settle = waitForStablePage,
     pixelSettle = waitForPixelStable,
+    snapshot = pixelSnapshot,
     warnings,
   } = {},
 ) {
+  const expectsEffect = interactions.some((step) => (step || {}).action !== "waitFor");
+  // The frame the next step is judged against, and whether any step so far
+  // changed it. Judging each step against its predecessor (not the last frame
+  // against the first) lets a sequence that undoes itself — select then clear,
+  // open then close — pass, while one where no step did anything still fails.
+  let previous = expectsEffect ? await snapshot(page, null) : null;
+  let changed = false;
   for (let i = 0; i < interactions.length; i += 1) {
     try {
       await performInteraction(frame, interactions[i], {
@@ -1410,7 +1427,54 @@ async function performInteractionSequence(
     if (isCanvasInteraction(interactions[i])) {
       await pixelSettle(page, { timeoutMs: settleMs });
     }
+    // Once any step changed the frame there is nothing left to prove, so the
+    // remaining steps take no snapshot. A null snapshot is unknown, and
+    // `samePixels` reads it as "changed" so it never fails a capture.
+    if (expectsEffect && !changed) {
+      const current = await snapshot(page, null);
+      changed = !samePixels(previous, current);
+      previous = current;
+    }
   }
+  if (expectsEffect && !changed) {
+    throw new Error(deadInteractionSequenceMessage(interactions));
+  }
+}
+
+// The stable head of the dead-sequence failure. `recapture-stale` matches it
+// (with the no-match wording) to report a sweep's dead targets as one cause.
+const DEAD_INTERACTION_MARKER = "interactions had no visible effect";
+
+// One step as the operator wrote it: `click text "Save"`, `click selector
+// "canvas" at (120, 40)`, `key "Enter"`.
+function describeInteractionStep(step) {
+  const { action, text, selector, position, value } = step || {};
+  let target = "";
+  if (typeof text === "string" && text) target = ` text "${text}"`;
+  else if (typeof selector === "string" && selector) target = ` selector "${selector}"`;
+  else if (typeof value === "string" && value) target = ` "${value}"`;
+  const at =
+    position && typeof position.x === "number" && typeof position.y === "number"
+      ? ` at (${position.x}, ${position.y})`
+      : "";
+  return `${action || "?"}${target}${at}`;
+}
+
+// Why a sequence whose frame did not change fails, naming every step so the
+// scenario author can see which targets the current UI no longer honors.
+function deadInteractionSequenceMessage(interactions) {
+  const steps = interactions
+    .map((step, i) => `[${i}] ${describeInteractionStep(step)}`)
+    .join("; ");
+  return (
+    `${DEAD_INTERACTION_MARKER}: the viewport is pixel-identical before and ` +
+    `after each of all ${interactions.length} step(s) (${steps}). Each step resolved a ` +
+    `target, but nothing it did changed the page, so this frame would be the ` +
+    `scenario's resting screen, not the state it declares. The usual cause is a ` +
+    `UI change that moved or renamed the control a step aims at (a text label ` +
+    `that now matches inert copy, or a canvas position that is now empty). ` +
+    `Update the scenario's interactions to target the current control.`
+  );
 }
 
 // The query-param isolation harness renders a placeholder instead of the
@@ -1540,6 +1604,8 @@ module.exports = {
   waitForPredicate,
   probeCanvasDominated,
   performInteractionSequence,
+  DEAD_INTERACTION_MARKER,
+  describeInteractionStep,
   ISOLATE_MISSING_ATTR,
   isolateMissingComponent,
   isolateMissingComponentMessage,
@@ -1547,3 +1613,8 @@ module.exports = {
   servedBuildMissingComponentMessage,
   assertIsolatedComponentResolved,
 };
+
+// Pixel-path script: its code and this number both feed the capture pipeline
+// id. Bump the number for a change that alters pixels without changing code.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

@@ -1,0 +1,2182 @@
+{
+  "entities": {
+    "src/pages/isolated-components/AccomplishmentCard.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/AccomplishmentCard.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/AccomplishmentCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BlogPostArticle-Embed.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BlogPostArticle-Embed.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostArticle.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BlogPostArticle.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BlogPostArticle.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostArticle.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BlogPostBody-Locked.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BlogPostBody-Locked.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostBody.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BlogPostBody.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BlogPostBody.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostBody.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BoardMemberTile-Initials.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BoardMemberTile-Initials.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/BoardMemberTile.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BoardMemberTile-NoBio.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BoardMemberTile-NoBio.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/BoardMemberTile.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BoardMemberTile.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BoardMemberTile.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/BoardMemberTile.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BrandGlyph.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BrandGlyph.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/BrandGlyph.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/BrandMark.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/BrandMark.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/BrandMark.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/CalloutCard.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CalloutCard.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/CalloutCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterEvents.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ChapterLeads-Committee.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads-Committee.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ChapterLeads-FullProfile.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads-FullProfile.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ChapterLeads-Headshots.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads-Headshots.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ChapterLeads-NoPhoto.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads-NoPhoto.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ChapterLeads.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ChapterLeads.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ComingSoon.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ComingSoon.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ComingSoon.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/CommunityCallouts.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CommunityCallouts.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/CommunityCallouts.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/CommunityPage.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CommunityPage.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/CommunityPage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/CopyWarningNote.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CopyWarningNote.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/CopyWarningsSummary-OneField.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CopyWarningsSummary-OneField.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/CopyWarningsSummary.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/CopyWarningsSummary.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DecisionTick-Decided.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DecisionTick-Decided.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/DecisionTick.tsx::__file_root__",
+        "src/styles/cutover-runbook.css::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DecisionTick-ReadOnly.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DecisionTick-ReadOnly.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/DecisionTick.tsx::__file_root__",
+        "src/styles/cutover-runbook.css::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DecisionTick.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DecisionTick.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/DecisionTick.tsx::__file_root__",
+        "src/styles/cutover-runbook.css::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DeployChip-Live.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DeployChip-Live.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DeployChip-Publishing.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DeployChip-Publishing.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DeployChip-StillUpdating.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DeployChip-StillUpdating.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DeployStatus-Failed.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DeployStatus-Failed.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DeployStatus-Live.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DeployStatus-Live.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DeployStatus-Publishing.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DeployStatus-Publishing.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DeployStatus-StillUpdating.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DeployStatus-StillUpdating.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/DeployStatus-Verifying.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/DeployStatus-Verifying.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/EmptyState-NoAction.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EmptyState-NoAction.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/EmptyState.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/EmptyState.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EmptyState.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/EmptyState.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/EventCardGrid-Past.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventCardGrid-Past.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/EventCardGrid.astro::__file_root__",
+        "src/lib/events.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/EventCardGrid.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventCardGrid.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/EventCardGrid.astro::__file_root__",
+        "src/lib/events.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/EventsIntro.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventsIntro.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/EventsIntro.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/EventsIntroBand.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventsIntroBand.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/EventsIntroBand.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/FormingChapterCta.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/FormingChapterCta.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/FormingChapterCta.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GalleryExpand.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GalleryExpand.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/GalleryExpand.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GalleryLightbox.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GalleryLightbox.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/GalleryLightbox.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GalleryLightboxUncaptioned.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GalleryLightboxUncaptioned.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/GalleryLightbox.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GalleryTile.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GalleryTile.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/GalleryTile.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiftPillarCard.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiftPillarCard.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiftPillarCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiftPillars.astro::__file_root__",
+        "src/lib/momentumSections.ts::sectionHeading",
+        "src/lib/sectionGroups.ts::cardsInGroup",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiftPillars-Numbered.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiftPillars-Numbered.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiftPillars.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiftPillars.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiftPillars.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiftPillars.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiveButton-GivingClosed.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveButton-GivingClosed.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiveButton.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiveButton.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveButton.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiveButton.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiveClose.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveClose.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveClose.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiveCollage.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveCollage.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveCollage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiveFaq.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveFaq.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveFaq.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiveHero.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveHero.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveHero.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GivePhoto.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GivePhoto.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GivePhoto.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiveRecognition.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveRecognition.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveRecognition.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GiveStatement.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GiveStatement.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveStatement.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GivingCard.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GivingCard.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GivingCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GivingSoonNote-OnDark.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GivingSoonNote-OnDark.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GivingSoonNote.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GivingSoonNote.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GlobalCommunityAction.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GlobalCommunityAction.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/GlobalCommunityAction.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GlobalCommunityCta.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GlobalCommunityCta.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/GlobalCommunityCta.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GlobeIcon.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GlobeIcon.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/GlobeIcon.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GoalMeter-LongTitle.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GoalMeter-LongTitle.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GoalMeter.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GoalMeter-PreLaunch.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GoalMeter-PreLaunch.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GoalMeter.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GoalMeter-WithLink.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GoalMeter-WithLink.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GoalMeter.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/GoalMeter.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/GoalMeter.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GoalMeter.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/HomeSections.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/HomeSections.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/HomeSections.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ImageField-StagedUpload.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ImageField-StagedUpload.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/JoinWhatsAppCta.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/JoinWhatsAppCta.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/JoinWhatsAppCta.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/LockedPreviewBody.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/LockedPreviewBody.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/LockedPreviewBody.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/LumaSubscribe.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/LumaSubscribe.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/LumaSubscribe.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/MediaCard-StagedUpload.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MediaCard-StagedUpload.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/MomentumClose-Split.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MomentumClose-Split.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumClose.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/MomentumClose.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MomentumClose.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumClose.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/MomentumMission.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MomentumMission.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumMission.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/MomentumNarrative-Columns.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MomentumNarrative-Columns.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumNarrative.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/MomentumStats.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MomentumStats.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumStats.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumTestimonials.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/MomentumTestimonials.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/MomentumTestimonials.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumTestimonials.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/NavItemLabel.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/NavItemLabel.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/nav/NavItemLabel.astro::__file_root__",
+        "src/lib/localPresence.ts::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/NotFound.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/NotFound.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/NotFound.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/OnlineGroupEyebrow.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/OnlineGroupEyebrow.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/OnlineGroupEyebrow.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/OrderArrows-BottomRow.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/OrderArrows-BottomRow.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/OrderArrows-MiddleRow.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/OrderArrows-MiddleRow.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/OrderArrows-OnlyRow.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/OrderArrows-OnlyRow.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/OrderArrows-TopRow.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/OrderArrows-TopRow.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/PageBanner-Photo.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/PageBanner-Photo.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/PageBanner.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/PageBanner.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/PageBanner.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/PageBanner.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/PageNarrowBody.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/PageNarrowBody.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/PageNarrowBody.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/PastEventsMore.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/PastEventsMore.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/PastEventsMore.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/ResponsiveImg.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/ResponsiveImg.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ResponsiveImg.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/SectionHead-Centered.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SectionHead-Centered.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/SectionHead.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/SectionHead.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SectionHead.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/SectionHead.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/SitePageBody-Table.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SitePageBody-Table.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/pages/SitePageBody.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/SitePageBody.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SitePageBody.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/pages/SitePageBody.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/SitePageHeader-LongTitle.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SitePageHeader-LongTitle.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/pages/SitePageHeader.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/SitePageHeader.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SitePageHeader.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/pages/SitePageHeader.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/SocialLinks-OnDark.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SocialLinks-OnDark.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/SocialLinks.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/SocialLinks.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/SocialLinks.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/SocialLinks.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/StagingBar-PublishAgainWhileDeploying.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/StagingBar-PublishAgainWhileDeploying.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/StagingBar-Reviewing.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/StagingBar-Reviewing.astro",
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/StepTick-Done.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/StepTick-Done.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/StepTick.tsx::__file_root__",
+        "src/styles/cutover-runbook.css::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/StepTick.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/StepTick.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/StepTick.tsx::__file_root__",
+        "src/styles/cutover-runbook.css::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/TestimonialCard-Full.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/TestimonialCard-Full.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/TestimonialCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/TestimonialCard.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/TestimonialCard.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/TestimonialCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerBenefit.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerBenefit.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerBenefit.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerBenefits.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerBenefits.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerBenefits.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerHero.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerHero.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerHero.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectBody.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectBody.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectBody.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectCard.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectCard.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectCardLinks.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectCardLinks.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCardLinks.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectCta.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectCta.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCta.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectHeader.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectHeader.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectMeta.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectMeta.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectMeta.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectPage.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectPage.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectPage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectPhoto.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectPhoto.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectPhoto.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectThumb.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectThumb.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectThumb.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjects.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjects.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjects.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerProjectsEmpty.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerProjectsEmpty.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectsEmpty.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerRelatedProjects.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/VolunteerRelatedProjects.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/VolunteerRelatedProjects.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerRelatedProjects.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/WebinarCard-NoCover.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarCard-NoCover.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/WebinarCard.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarCard.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarCard.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/WebinarsPage-Empty.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarsPage-Empty.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/WebinarsPage-Single.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarsPage-Single.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/WebinarsPage.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarsPage.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/WebinarsPointer.astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/WebinarsPointer.astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarsPointer.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/pages/isolated-components/[name].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/[name].astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterConnect.astro::__file_root__",
+        "src/components/ChapterEvents.astro::__file_root__",
+        "src/components/ChapterHero.astro::__file_root__",
+        "src/components/ChapterPage.astro::__file_root__",
+        "src/components/ChapterSignUp.astro::__file_root__",
+        "src/components/EmbedForm.astro::__file_root__",
+        "src/components/EventsPage.astro::__file_root__",
+        "src/components/LumaCalendar.astro::__file_root__",
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/components/SponsorPage.astro::__file_root__",
+        "src/components/VolunteerPage.astro::__file_root__",
+        "src/components/donate/MomentumAccomplishments.astro::__file_root__",
+        "src/components/donate/MomentumNarrative.astro::__file_root__",
+        "src/components/donate/MomentumNetwork.astro::__file_root__",
+        "src/components/landing/BoardOfDirectors.astro::__file_root__",
+        "src/components/landing/ContactUs.astro::__file_root__",
+        "src/components/landing/ContentHub.astro::__file_root__",
+        "src/components/landing/EventGallery.astro::__file_root__",
+        "src/components/landing/FocusAreas.astro::__file_root__",
+        "src/components/landing/GetInvolved.astro::__file_root__",
+        "src/components/landing/GivingCampaign.astro::__file_root__",
+        "src/components/landing/HeroCarousel.astro::__file_root__",
+        "src/components/landing/OurChapters.astro::__file_root__",
+        "src/components/landing/Stats.astro::__file_root__",
+        "src/components/landing/SupportUs.astro::__file_root__",
+        "src/components/landing/UpcomingEvents.astro::__file_root__",
+        "src/components/landing/WhatsappCommunity.astro::__file_root__",
+        "src/components/nav/PrimaryNav.astro::__file_root__",
+        "src/components/nav/UtilityBar.astro::__file_root__",
+        "src/components/sponsor/SponsorInquiry.astro::__file_root__",
+        "src/components/sponsor/SponsorLevels.astro::__file_root__",
+        "src/components/sponsor/SponsorWall.astro::__file_root__",
+        "src/lib/donatePageContent.ts::loadAccomplishments",
+        "src/lib/momentumSectionsContent.ts::loadMomentumSections",
+        "src/lib/nav.ts::chapterNavItems",
+        "src/lib/nav.ts::communityNavItems",
+        "src/lib/nav.ts::withChapterGroup",
+        "src/lib/nav.ts::withCommunityItems",
+        "src/lib/site.ts::donatePage",
+        "src/lib/site.ts::settings",
+        "src/lib/site.ts::sponsorPage",
+        "src/lib/site.ts::volunteerPage",
+        "src/lib/team.ts::filterActiveBoardMembers",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/pages/isolated-components/AccomplishmentCard.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/AccomplishmentCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BlogPostArticle-Embed.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostArticle.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BlogPostArticle.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostArticle.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BlogPostBody-Locked.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostBody.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BlogPostBody.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostBody.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BoardMemberTile-Initials.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/BoardMemberTile.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BoardMemberTile-NoBio.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/BoardMemberTile.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BoardMemberTile.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/BoardMemberTile.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BrandGlyph.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/BrandGlyph.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/BrandMark.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/BrandMark.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/CalloutCard.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/CalloutCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ChapterEvents-CommunityEmpty.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterEvents.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ChapterLeads-Committee.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ChapterLeads-FullProfile.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ChapterLeads-Headshots.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ChapterLeads-NoPhoto.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ChapterLeads.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ChapterLeads.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ComingSoon.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ComingSoon.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/CommunityCallouts.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/CommunityCallouts.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/CommunityPage.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/CommunityPage.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/CopyWarningNote.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/CopyWarningsSummary-OneField.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/CopyWarningsSummary.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/DecisionTick-Decided.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/DecisionTick.tsx",
+        "src/styles/tokens.css",
+        "src/styles/cutover-runbook.css"
+      ]
+    },
+    "src/pages/isolated-components/DecisionTick-ReadOnly.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/DecisionTick.tsx",
+        "src/styles/tokens.css",
+        "src/styles/cutover-runbook.css"
+      ]
+    },
+    "src/pages/isolated-components/DecisionTick.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/DecisionTick.tsx",
+        "src/styles/tokens.css",
+        "src/styles/cutover-runbook.css"
+      ]
+    },
+    "src/pages/isolated-components/DeployChip-Live.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/DeployChip-Publishing.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/DeployChip-StillUpdating.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/DeployStatus-Failed.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/DeployStatus-Live.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/DeployStatus-Publishing.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/DeployStatus-StillUpdating.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/DeployStatus-Verifying.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/EmptyState-NoAction.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/EmptyState.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/EmptyState.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/EmptyState.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/EventCardGrid-Past.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/EventCardGrid.astro",
+        "src/styles/tokens.css",
+        "src/lib/events.ts"
+      ],
+      "typeOnlyImports": [
+        "src/lib/events.ts"
+      ]
+    },
+    "src/pages/isolated-components/EventCardGrid.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/EventCardGrid.astro",
+        "src/styles/tokens.css",
+        "src/lib/events.ts"
+      ],
+      "typeOnlyImports": [
+        "src/lib/events.ts"
+      ]
+    },
+    "src/pages/isolated-components/EventsIntro.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/EventsIntro.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/EventsIntroBand.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/EventsIntroBand.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/FormingChapterCta.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/FormingChapterCta.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GalleryExpand.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/GalleryExpand.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GalleryLightbox.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/GalleryLightbox.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GalleryLightboxUncaptioned.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/GalleryLightbox.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GalleryTile.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/GalleryTile.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiftPillarCard.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiftPillarCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiftPillars.astro",
+        "src/lib/momentumSections.ts",
+        "src/lib/sectionGroups.ts",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiftPillars-Numbered.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiftPillars.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiftPillars.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiftPillars.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiveButton-GivingClosed.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiveButton.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiveButton.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GiveButton.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiveClose.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveClose.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiveCollage.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveCollage.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiveFaq.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveFaq.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiveHero.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveHero.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GivePhoto.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GivePhoto.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiveRecognition.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveRecognition.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GiveStatement.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GiveStatement.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GivingCard.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/give/GivingCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GivingSoonNote-OnDark.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GivingSoonNote.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GlobalCommunityAction.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/GlobalCommunityAction.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GlobalCommunityCta.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/GlobalCommunityCta.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GlobeIcon.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/GlobeIcon.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GoalMeter-LongTitle.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GoalMeter.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GoalMeter-PreLaunch.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GoalMeter.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GoalMeter-WithLink.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GoalMeter.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/GoalMeter.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/GoalMeter.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/HomeSections.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/HomeSections.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ImageField-StagedUpload.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/JoinWhatsAppCta.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/JoinWhatsAppCta.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/LockedPreviewBody.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/LockedPreviewBody.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/LumaSubscribe.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/LumaSubscribe.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/MediaCard-StagedUpload.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/MomentumClose-Split.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumClose.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/MomentumClose.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumClose.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/MomentumMission.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumMission.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/MomentumNarrative-Columns.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumNarrative.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/MomentumStats.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumStats.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumTestimonials.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/MomentumTestimonials.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/MomentumTestimonials.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/NavItemLabel.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/nav/NavItemLabel.astro",
+        "src/styles/tokens.css",
+        "src/lib/localPresence.ts"
+      ]
+    },
+    "src/pages/isolated-components/NotFound.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/NotFound.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/OnlineGroupEyebrow.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/landing/OnlineGroupEyebrow.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/OrderArrows-BottomRow.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/OrderArrows-MiddleRow.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/OrderArrows-OnlyRow.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/OrderArrows-TopRow.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/PageBanner-Photo.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/PageBanner.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/PageBanner.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/PageBanner.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/PageNarrowBody.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/PageNarrowBody.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/PastEventsMore.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/PastEventsMore.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/ResponsiveImg.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ResponsiveImg.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/SectionHead-Centered.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/SectionHead.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/SectionHead.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/SectionHead.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/SitePageBody-Table.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/pages/SitePageBody.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/SitePageBody.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/pages/SitePageBody.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/SitePageHeader-LongTitle.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/pages/SitePageHeader.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/SitePageHeader.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/pages/SitePageHeader.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/SocialLinks-OnDark.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/SocialLinks.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/SocialLinks.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/ui/SocialLinks.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/StagingBar-PublishAgainWhileDeploying.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/StagingBar-Reviewing.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/StepTick-Done.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/StepTick.tsx",
+        "src/styles/tokens.css",
+        "src/styles/cutover-runbook.css"
+      ]
+    },
+    "src/pages/isolated-components/StepTick.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/cutover/StepTick.tsx",
+        "src/styles/tokens.css",
+        "src/styles/cutover-runbook.css"
+      ]
+    },
+    "src/pages/isolated-components/TestimonialCard-Full.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/TestimonialCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/TestimonialCard.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/donate/TestimonialCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerBenefit.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerBenefit.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerBenefits.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerBenefits.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerHero.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerHero.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectBody.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectBody.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectCard.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectCardLinks.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCardLinks.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectCta.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCta.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectHeader.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectHeader.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectHeader.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectMeta.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectMeta.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectPage.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectPhoto.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectPhoto.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectThumb.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectThumb.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjects.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjects.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerProjectsEmpty.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectsEmpty.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerRelatedProjects.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/VolunteerRelatedProjects.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/volunteer/VolunteerRelatedProjects.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/WebinarCard-NoCover.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/WebinarCard.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarCard.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/WebinarsPage-Empty.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarsPage.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/WebinarsPage-Single.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarsPage.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/WebinarsPage.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarsPage.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/WebinarsPointer.astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/WebinarsPointer.astro",
+        "src/styles/tokens.css"
+      ]
+    },
+    "src/pages/isolated-components/[name].astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/EmbedForm.astro",
+        "src/components/EventsPage.astro",
+        "src/components/LumaCalendar.astro",
+        "src/components/ChapterPage.astro",
+        "src/components/ChapterHero.astro",
+        "src/components/ChapterEvents.astro",
+        "src/components/ChapterSignUp.astro",
+        "src/components/ChapterConnect.astro",
+        "src/components/landing/ContactUs.astro",
+        "src/components/landing/HeroCarousel.astro",
+        "src/components/landing/Stats.astro",
+        "src/components/landing/OurChapters.astro",
+        "src/components/landing/FocusAreas.astro",
+        "src/components/landing/ContentHub.astro",
+        "src/components/landing/GivingCampaign.astro",
+        "src/components/landing/WhatsappCommunity.astro",
+        "src/components/landing/GetInvolved.astro",
+        "src/components/landing/SupportUs.astro",
+        "src/components/landing/EventGallery.astro",
+        "src/components/landing/UpcomingEvents.astro",
+        "src/components/landing/BoardOfDirectors.astro",
+        "src/components/VolunteerPage.astro",
+        "src/components/MomentumFundPage.astro",
+        "src/components/SponsorPage.astro",
+        "src/components/sponsor/SponsorLevels.astro",
+        "src/components/sponsor/SponsorWall.astro",
+        "src/components/sponsor/SponsorInquiry.astro",
+        "src/components/donate/MomentumAccomplishments.astro",
+        "src/components/donate/MomentumNarrative.astro",
+        "src/components/donate/MomentumNetwork.astro",
+        "src/components/nav/PrimaryNav.astro",
+        "src/components/nav/UtilityBar.astro",
+        "src/lib/momentumSectionsContent.ts",
+        "src/lib/team.ts",
+        "src/lib/donatePageContent.ts",
+        "src/lib/nav.ts",
+        "src/lib/site.ts",
+        "src/styles/tokens.css"
+      ]
+    }
+  }
+}

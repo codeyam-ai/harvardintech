@@ -1,0 +1,146 @@
+{
+  "entities": {
+    ".codeyam/isolation-props/BannerCta.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/BannerCta.ts",
+      "importedBy": [
+        "src/pages/isolated-components/BannerCta/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/EventCardMedia.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/EventCardMedia.ts",
+      "importedBy": [
+        "src/pages/isolated-components/EventCardMedia/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/HitDirectoryTeaser.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/HitDirectoryTeaser.ts",
+      "importedBy": [
+        "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/LeadAvatar.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/LeadAvatar.ts",
+      "importedBy": [
+        "src/pages/isolated-components/LeadAvatar/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/LeadCommitteeGrid.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/LeadCommitteeGrid.ts",
+      "importedBy": [
+        "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/LeadContactLinks.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/LeadContactLinks.ts",
+      "importedBy": [
+        "src/pages/isolated-components/LeadContactLinks/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/LeadProfile.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/LeadProfile.ts",
+      "importedBy": [
+        "src/pages/isolated-components/LeadProfile/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/MissionStatement.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/MissionStatement.ts",
+      "importedBy": [
+        "src/pages/isolated-components/MissionStatement/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/VolunteerProjectBackdrop.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/VolunteerProjectBackdrop.ts",
+      "importedBy": [
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    ".codeyam/isolation-props/WhatsappJoinCard.ts::__file_root__": {
+      "filePath": ".codeyam/isolation-props/WhatsappJoinCard.ts",
+      "importedBy": [
+        "src/pages/isolated-components/WhatsappJoinCard/[...state].astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    ".codeyam/isolation-props/BannerCta.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/BannerCta/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/EventCardMedia.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/EventCardMedia/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/HitDirectoryTeaser.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/HitDirectoryTeaser/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/LeadAvatar.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/LeadAvatar/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/LeadCommitteeGrid.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/LeadCommitteeGrid/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/LeadContactLinks.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/LeadContactLinks/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/LeadProfile.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/LeadProfile/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/MissionStatement.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/MissionStatement/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/VolunteerProjectBackdrop.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro"
+      ],
+      "imports": []
+    },
+    ".codeyam/isolation-props/WhatsappJoinCard.ts": {
+      "importedBy": [
+        "src/pages/isolated-components/WhatsappJoinCard/[...state].astro"
+      ],
+      "imports": []
+    }
+  }
+}

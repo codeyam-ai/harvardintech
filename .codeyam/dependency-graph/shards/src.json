@@ -1,0 +1,20 @@
+{
+  "entities": {
+    "src/middleware.ts::onRequest": {
+      "filePath": "src/middleware.ts",
+      "importedBy": [],
+      "imports": [
+        "src/lib/siteFonts.ts::withSiteFonts"
+      ],
+      "name": "onRequest"
+    }
+  },
+  "files": {
+    "src/middleware.ts": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/siteFonts.ts"
+      ]
+    }
+  }
+}

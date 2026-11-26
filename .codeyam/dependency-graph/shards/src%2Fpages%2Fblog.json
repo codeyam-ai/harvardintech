@@ -1,0 +1,27 @@
+{
+  "entities": {
+    "src/pages/blog/[slug].astro::__file_root__": {
+      "filePath": "src/pages/blog/[slug].astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/BlogPostBody.astro::__file_root__",
+        "src/layouts/BaseLayout.astro::__file_root__",
+        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
+        "src/lib/drafts.ts::isPreview",
+        "src/lib/drafts.ts::routableEntries"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/pages/blog/[slug].astro": {
+      "importedBy": [],
+      "imports": [
+        "src/layouts/BaseLayout.astro",
+        "src/components/BlogPostBody.astro",
+        "src/lib/drafts.ts",
+        "src/lib/draftVisibility.ts"
+      ]
+    }
+  }
+}

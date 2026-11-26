@@ -1,0 +1,37 @@
+{
+  "entities": {
+    "src/pages/communities/[slug].astro::__file_root__": {
+      "filePath": "src/pages/communities/[slug].astro",
+      "importedBy": [],
+      "imports": [
+        "src/components/CommunityPage.astro::__file_root__",
+        "src/components/LockedPreviewBody.astro::__file_root__",
+        "src/layouts/BaseLayout.astro::__file_root__",
+        "src/lib/draftVisibility.ts::INCLUDE_DRAFTS",
+        "src/lib/drafts.ts::isLocked",
+        "src/lib/drafts.ts::isPreview",
+        "src/lib/drafts.ts::publishedEntries",
+        "src/lib/drafts.ts::routableEntries",
+        "src/lib/events.ts::eventsTaggedTo",
+        "src/lib/events.ts::recentPastEvents",
+        "src/lib/events.ts::splitEvents",
+        "src/lib/siteClock.ts::siteNow"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/pages/communities/[slug].astro": {
+      "importedBy": [],
+      "imports": [
+        "src/layouts/BaseLayout.astro",
+        "src/components/CommunityPage.astro",
+        "src/lib/events.ts",
+        "src/lib/siteClock.ts",
+        "src/components/LockedPreviewBody.astro",
+        "src/lib/drafts.ts",
+        "src/lib/draftVisibility.ts"
+      ]
+    }
+  }
+}

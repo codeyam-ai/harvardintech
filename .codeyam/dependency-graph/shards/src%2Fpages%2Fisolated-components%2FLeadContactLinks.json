@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "src/pages/isolated-components/LeadContactLinks/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/LeadContactLinks/[...state].astro",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/isolation-props/LeadContactLinks.ts::__file_root__",
+        "src/components/leads/LeadContactLinks.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/pages/isolated-components/LeadContactLinks/[...state].astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/leads/LeadContactLinks.astro",
+        ".codeyam/isolation-props/LeadContactLinks.ts",
+        "src/styles/tokens.css"
+      ]
+    }
+  }
+}

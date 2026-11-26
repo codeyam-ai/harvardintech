@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: ede6c91b28dd9408a9fd461fed6632790db5da7e2b6c6c785e1ef1690842f833
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: 1daf00e6eba84c2127677a6cbbb4542b2b4730f1a0b99dfb35599cb678449a4b
 // The per-function half of rendered-source attribution: which functions of the
 // HUB files each screenshot ran. A hub file is one most scenarios' render sets
 // hold (an app shell, a dispatch module); file-level attribution cannot narrow
@@ -97,3 +97,8 @@ module.exports = {
   recordHubHit,
   hubFunctionRecord,
 };
+
+// Diagnostic script: it writes no pixels, so only this number (not its code)
+// feeds the capture pipeline id. Bump it if a change ever alters a frame.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

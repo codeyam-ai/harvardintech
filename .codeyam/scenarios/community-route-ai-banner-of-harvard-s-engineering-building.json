@@ -1,0 +1,16 @@
+{
+  "name": "Community Route - AI Banner Of Harvard's Engineering Building",
+  "id": "36a1bb9d-3ca4-4d46-9c69-5e1c699515ca",
+  "url": "/communities/ai",
+  "dimensions": [
+    "Desktop",
+    "Mobile"
+  ],
+  "mocks": {},
+  "clock": {
+    "now": "2026-11-26T03:03:03Z"
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/communities/[slug].astro",
+  "description": "AI now opens on the patterned metal facade of Harvard's Science and Engineering Complex in Allston, home of SEAS, against a blue sky. It is a campus building where AI work happens, not an event photo from another city. The banner is credited in the corner as its CC BY licence requires, and the focus keeps the building's corner in frame on a phone."
+}

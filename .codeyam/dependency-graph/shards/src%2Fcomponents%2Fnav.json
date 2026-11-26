@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "src/components/nav/NavItemLabel.astro::__file_root__": {
+      "filePath": "src/components/nav/NavItemLabel.astro",
+      "importedBy": [
+        "src/components/nav/PrimaryNav.astro::__file_root__",
+        "src/pages/isolated-components/NavItemLabel.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ui/GlobeIcon.astro::__file_root__",
+        "src/lib/site.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/nav/PrimaryNav.astro::__file_root__": {
+      "filePath": "src/components/nav/PrimaryNav.astro",
+      "importedBy": [
+        "src/layouts/BaseLayout.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/nav/NavItemLabel.astro::__file_root__",
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/nav.ts::hasColumns",
+        "src/lib/site.ts::__file_root__",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/nav/UtilityBar.astro::__file_root__": {
+      "filePath": "src/components/nav/UtilityBar.astro",
+      "importedBy": [
+        "src/layouts/BaseLayout.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/utilityBar.ts::utilityLine",
+        "src/lib/utilityBar.ts::utilityLineCompact"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/components/nav/NavItemLabel.astro": {
+      "importedBy": [
+        "src/components/nav/PrimaryNav.astro",
+        "src/pages/isolated-components/NavItemLabel.astro"
+      ],
+      "imports": [
+        "src/components/ui/GlobeIcon.astro",
+        "src/lib/site.ts"
+      ],
+      "typeOnlyImports": [
+        "src/lib/site.ts"
+      ]
+    },
+    "src/components/nav/PrimaryNav.astro": {
+      "importedBy": [
+        "src/layouts/BaseLayout.astro",
+        "src/pages/isolated-components/[name].astro"
+      ],
+      "imports": [
+        "src/components/nav/NavItemLabel.astro",
+        "src/lib/externalLink.ts",
+        "src/lib/url.ts",
+        "src/lib/nav.ts",
+        "src/lib/site.ts"
+      ],
+      "typeOnlyImports": [
+        "src/lib/site.ts"
+      ]
+    },
+    "src/components/nav/PrimaryNav.test.ts": {
+      "importedBy": [],
+      "imports": []
+    },
+    "src/components/nav/UtilityBar.astro": {
+      "importedBy": [
+        "src/layouts/BaseLayout.astro",
+        "src/pages/isolated-components/[name].astro"
+      ],
+      "imports": [
+        "src/lib/utilityBar.ts"
+      ]
+    }
+  }
+}

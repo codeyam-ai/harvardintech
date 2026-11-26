@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: b235ab7bf7ab82290097fe7271e7a919716bf1fcc08d2ca076057273a6c4c74b
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: edc0e00b40ab3a55229a66eb8028456fd49e3c215b73a256dfc52bc988028fa1
 // The rendered-sources record inside the capture. Two sources feed it: the
 // app's own `capture.renderedSourcesSignal`, and rendered-source attribution —
 // watching which of the app's own functions run while the scenario loads. Both
@@ -21,10 +21,12 @@ const {
   retirableBreakpoints,
 } = require("./wasm-source-attribution");
 const { noteHubWatched, recordHubHit, hubFunctionRecord } = require("./scenario-check-hub-functions");
+const { watchV8Coverage, armV8Coverage } = require("./v8-coverage-attribution");
 
 // Every strategy this capture knows how to run. An unknown value is reported,
-// never guessed at.
-const ATTRIBUTION_STRATEGIES = ["wasm-function-entry"];
+// never guessed at. `wasm-function-entry` watches a Rust app compiled to wasm;
+// `v8-coverage` reads V8 precise coverage for a browser-rendered JS/TS app.
+const ATTRIBUTION_STRATEGIES = ["wasm-function-entry", "v8-coverage"];
 
 // The declared strategy from `.codeyam/stack.json`, or null. Never throws; an
 // unreadable stack.json declares no strategy.
@@ -277,8 +279,12 @@ async function armRenderedSourcesAttribution(
     warnings = [],
     loadCrates = workspaceCrates,
     hubs = { files: new Set(), hubSet: null },
+    watchCoverage = watchV8Coverage,
   } = {},
 ) {
+  if (strategy === "v8-coverage") {
+    return armV8Coverage(context, page, { projectDir, warnings, watchCoverage });
+  }
   if (strategy !== "wasm-function-entry") return null;
   let watch;
   try {
@@ -472,3 +478,8 @@ module.exports = {
   mergeRenderedSourcesRecord,
   retryUnarmedOnReadyTimeout,
 };
+
+// Diagnostic script: it writes no pixels, so only this number (not its code)
+// feeds the capture pipeline id. Bump it if a change ever alters a frame.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

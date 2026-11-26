@@ -1,0 +1,235 @@
+{
+  "entities": {
+    "src/components/ui/BannerCta.astro::__file_root__": {
+      "filePath": "src/components/ui/BannerCta.astro",
+      "importedBy": [
+        "src/components/EventsIntroBand.astro::__file_root__",
+        "src/components/volunteer/VolunteerHero.astro::__file_root__",
+        "src/pages/isolated-components/BannerCta/[...state].astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/ui/BrandGlyph.astro::__file_root__": {
+      "filePath": "src/components/ui/BrandGlyph.astro",
+      "importedBy": [
+        "src/components/landing/ContactUs.astro::__file_root__",
+        "src/components/landing/ContentHub.astro::__file_root__",
+        "src/components/landing/FocusAreas.astro::__file_root__",
+        "src/components/leads/LeadContactLinks.astro::__file_root__",
+        "src/components/ui/SocialLinks.astro::__file_root__",
+        "src/pages/isolated-components/BrandGlyph.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/brandIcons.ts::BrandIcon",
+        "src/lib/brandIcons.ts::brandIcon"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/ui/EmptyState.astro::__file_root__": {
+      "filePath": "src/components/ui/EmptyState.astro",
+      "importedBy": [
+        "src/components/ChapterEvents.astro::__file_root__",
+        "src/components/EventsSection.astro::__file_root__",
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/components/landing/BoardOfDirectors.astro::__file_root__",
+        "src/components/landing/OurChapters.astro::__file_root__",
+        "src/components/sponsor/SponsorWall.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectsEmpty.astro::__file_root__",
+        "src/pages/isolated-components/EmptyState-NoAction.astro::__file_root__",
+        "src/pages/isolated-components/EmptyState.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/ui/GlobeIcon.astro::__file_root__": {
+      "filePath": "src/components/ui/GlobeIcon.astro",
+      "importedBy": [
+        "src/components/landing/OnlineGroupEyebrow.astro::__file_root__",
+        "src/components/nav/NavItemLabel.astro::__file_root__",
+        "src/pages/isolated-components/GlobeIcon.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/ui/PageBanner.astro::__file_root__": {
+      "filePath": "src/components/ui/PageBanner.astro",
+      "importedBy": [
+        "src/components/BlogPostArticle.astro::__file_root__",
+        "src/components/EventsIntroBand.astro::__file_root__",
+        "src/components/WebinarsPage.astro::__file_root__",
+        "src/components/pages/SitePageHeader.astro::__file_root__",
+        "src/components/sponsor/SponsorHero.astro::__file_root__",
+        "src/components/volunteer/VolunteerHero.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__",
+        "src/pages/isolated-components/PageBanner-Photo.astro::__file_root__",
+        "src/pages/isolated-components/PageBanner.astro::__file_root__",
+        "src/components/ChapterHero.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ResponsiveImg.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/ui/SectionHead.astro::__file_root__": {
+      "filePath": "src/components/ui/SectionHead.astro",
+      "importedBy": [
+        "src/components/ChapterConnect.astro::__file_root__",
+        "src/components/ChapterEvents.astro::__file_root__",
+        "src/components/ChapterSignUp.astro::__file_root__",
+        "src/components/CommunityCallouts.astro::__file_root__",
+        "src/components/EventsSection.astro::__file_root__",
+        "src/components/FormingChapterCta.astro::__file_root__",
+        "src/components/GlobalCommunityCta.astro::__file_root__",
+        "src/components/JoinWhatsAppCta.astro::__file_root__",
+        "src/components/LumaCalendar.astro::__file_root__",
+        "src/components/landing/BoardOfDirectors.astro::__file_root__",
+        "src/components/landing/ContactUs.astro::__file_root__",
+        "src/components/landing/ContentHub.astro::__file_root__",
+        "src/components/landing/EventGallery.astro::__file_root__",
+        "src/components/landing/FocusAreas.astro::__file_root__",
+        "src/components/landing/OurChapters.astro::__file_root__",
+        "src/components/landing/SupportUs.astro::__file_root__",
+        "src/components/landing/UpcomingEvents.astro::__file_root__",
+        "src/components/sponsor/SponsorInquiry.astro::__file_root__",
+        "src/components/sponsor/SponsorLevels.astro::__file_root__",
+        "src/components/volunteer/VolunteerBenefits.astro::__file_root__",
+        "src/pages/isolated-components/SectionHead-Centered.astro::__file_root__",
+        "src/pages/isolated-components/SectionHead.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/ui/SocialLinks.astro::__file_root__": {
+      "filePath": "src/components/ui/SocialLinks.astro",
+      "importedBy": [
+        "src/components/ChapterConnect.astro::__file_root__",
+        "src/layouts/BaseLayout.astro::__file_root__",
+        "src/pages/isolated-components/SocialLinks-OnDark.astro::__file_root__",
+        "src/pages/isolated-components/SocialLinks.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ui/BrandGlyph.astro::__file_root__",
+        "src/lib/brandIcons.ts::brandIcon",
+        "src/lib/contact.ts::connectLinks",
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/site.ts::settings",
+        "src/lib/socialLabel.ts::socialDisplayLabel",
+        "src/lib/tapTarget.ts::socialBadgeSize"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/components/ui/BannerCta.astro": {
+      "importedBy": [
+        "src/components/EventsIntroBand.astro",
+        "src/components/volunteer/VolunteerHero.astro",
+        "src/pages/isolated-components/BannerCta/[...state].astro"
+      ],
+      "imports": [
+        "src/lib/externalLink.ts",
+        "src/lib/url.ts"
+      ]
+    },
+    "src/components/ui/BrandGlyph.astro": {
+      "importedBy": [
+        "src/components/landing/ContactUs.astro",
+        "src/components/landing/ContentHub.astro",
+        "src/components/landing/FocusAreas.astro",
+        "src/components/leads/LeadContactLinks.astro",
+        "src/components/ui/SocialLinks.astro",
+        "src/pages/isolated-components/BrandGlyph.astro"
+      ],
+      "imports": [
+        "src/lib/brandIcons.ts"
+      ]
+    },
+    "src/components/ui/EmptyState.astro": {
+      "importedBy": [
+        "src/components/ChapterEvents.astro",
+        "src/components/EventsSection.astro",
+        "src/components/WebinarsPage.astro",
+        "src/components/landing/BoardOfDirectors.astro",
+        "src/components/landing/OurChapters.astro",
+        "src/components/sponsor/SponsorWall.astro",
+        "src/components/volunteer/VolunteerProjectsEmpty.astro",
+        "src/pages/isolated-components/EmptyState-NoAction.astro",
+        "src/pages/isolated-components/EmptyState.astro"
+      ],
+      "imports": []
+    },
+    "src/components/ui/GlobeIcon.astro": {
+      "importedBy": [
+        "src/components/landing/OnlineGroupEyebrow.astro",
+        "src/components/nav/NavItemLabel.astro",
+        "src/pages/isolated-components/GlobeIcon.astro"
+      ],
+      "imports": []
+    },
+    "src/components/ui/PageBanner.astro": {
+      "importedBy": [
+        "src/components/BlogPostArticle.astro",
+        "src/components/EventsIntroBand.astro",
+        "src/components/WebinarsPage.astro",
+        "src/components/pages/SitePageHeader.astro",
+        "src/components/sponsor/SponsorHero.astro",
+        "src/components/volunteer/VolunteerHero.astro",
+        "src/components/volunteer/VolunteerProjectHeader.astro",
+        "src/pages/isolated-components/PageBanner-Photo.astro",
+        "src/pages/isolated-components/PageBanner.astro",
+        "src/components/ChapterHero.astro"
+      ],
+      "imports": [
+        "src/components/ResponsiveImg.astro"
+      ]
+    },
+    "src/components/ui/SectionHead.astro": {
+      "importedBy": [
+        "src/components/ChapterConnect.astro",
+        "src/components/ChapterEvents.astro",
+        "src/components/ChapterSignUp.astro",
+        "src/components/CommunityCallouts.astro",
+        "src/components/EventsSection.astro",
+        "src/components/FormingChapterCta.astro",
+        "src/components/GlobalCommunityCta.astro",
+        "src/components/JoinWhatsAppCta.astro",
+        "src/components/LumaCalendar.astro",
+        "src/components/landing/BoardOfDirectors.astro",
+        "src/components/landing/ContactUs.astro",
+        "src/components/landing/ContentHub.astro",
+        "src/components/landing/EventGallery.astro",
+        "src/components/landing/FocusAreas.astro",
+        "src/components/landing/OurChapters.astro",
+        "src/components/landing/SupportUs.astro",
+        "src/components/landing/UpcomingEvents.astro",
+        "src/components/sponsor/SponsorInquiry.astro",
+        "src/components/sponsor/SponsorLevels.astro",
+        "src/components/volunteer/VolunteerBenefits.astro",
+        "src/pages/isolated-components/SectionHead-Centered.astro",
+        "src/pages/isolated-components/SectionHead.astro"
+      ],
+      "imports": []
+    },
+    "src/components/ui/SocialLinks.astro": {
+      "importedBy": [
+        "src/components/ChapterConnect.astro",
+        "src/layouts/BaseLayout.astro",
+        "src/pages/isolated-components/SocialLinks-OnDark.astro",
+        "src/pages/isolated-components/SocialLinks.astro"
+      ],
+      "imports": [
+        "src/components/ui/BrandGlyph.astro",
+        "src/lib/brandIcons.ts",
+        "src/lib/contact.ts",
+        "src/lib/externalLink.ts",
+        "src/lib/socialLabel.ts",
+        "src/lib/site.ts",
+        "src/lib/tapTarget.ts"
+      ]
+    }
+  }
+}

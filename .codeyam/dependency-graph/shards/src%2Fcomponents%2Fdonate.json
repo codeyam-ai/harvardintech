@@ -1,0 +1,391 @@
+{
+  "entities": {
+    "src/components/donate/AccomplishmentCard.astro::__file_root__": {
+      "filePath": "src/components/donate/AccomplishmentCard.astro",
+      "importedBy": [
+        "src/components/donate/MomentumAccomplishments.astro::__file_root__",
+        "src/pages/isolated-components/AccomplishmentCard.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/donate/GiftPillarCard.astro::__file_root__": {
+      "filePath": "src/components/donate/GiftPillarCard.astro",
+      "importedBy": [
+        "src/components/donate/GiftPillars.astro::__file_root__",
+        "src/pages/isolated-components/GiftPillarCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/GiftPillars.astro::__file_root__": {
+      "filePath": "src/components/donate/GiftPillars.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro::__file_root__",
+        "src/pages/isolated-components/GiftPillars-Numbered.astro::__file_root__",
+        "src/pages/isolated-components/GiftPillars.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/donate/GiftPillarCard.astro::__file_root__",
+        "src/components/donate/GiveButton.astro::__file_root__",
+        "src/lib/momentumSections.ts::giftOrdinal",
+        "src/lib/site.ts::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/GiveButton.astro::__file_root__": {
+      "filePath": "src/components/donate/GiveButton.astro",
+      "importedBy": [
+        "src/components/donate/GiftPillars.astro::__file_root__",
+        "src/components/donate/MomentumClose.astro::__file_root__",
+        "src/components/donate/MomentumNetwork.astro::__file_root__",
+        "src/components/give/GiveClose.astro::__file_root__",
+        "src/components/give/GivingCard.astro::__file_root__",
+        "src/pages/isolated-components/GiveButton-GivingClosed.astro::__file_root__",
+        "src/pages/isolated-components/GiveButton.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/donate/GivingSoonNote.astro::__file_root__",
+        "src/lib/giving.ts::isGivingOpen",
+        "src/lib/giving.ts::resolveGiveHref"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/GivingSoonNote.astro::__file_root__": {
+      "filePath": "src/components/donate/GivingSoonNote.astro",
+      "importedBy": [
+        "src/components/donate/GiveButton.astro::__file_root__",
+        "src/components/landing/GivingCampaign.astro::__file_root__",
+        "src/pages/isolated-components/GivingSoonNote-OnDark.astro::__file_root__",
+        "src/pages/isolated-components/GivingSoonNote.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/giving.ts::__file_root__",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/GoalMeter.astro::__file_root__": {
+      "filePath": "src/components/donate/GoalMeter.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/GoalMeter-LongTitle.astro::__file_root__",
+        "src/pages/isolated-components/GoalMeter-PreLaunch.astro::__file_root__",
+        "src/pages/isolated-components/GoalMeter-WithLink.astro::__file_root__",
+        "src/pages/isolated-components/GoalMeter.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/momentumSections.ts::campaignLink"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/MomentumAccomplishments.astro::__file_root__": {
+      "filePath": "src/components/donate/MomentumAccomplishments.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/donate/AccomplishmentCard.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/MomentumClose.astro::__file_root__": {
+      "filePath": "src/components/donate/MomentumClose.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/MomentumClose-Split.astro::__file_root__",
+        "src/pages/isolated-components/MomentumClose.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/donate/GiveButton.astro::__file_root__",
+        "src/lib/campaignCopy.ts::splitParagraphs",
+        "src/lib/media.ts::altFor",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/MomentumMission.astro::__file_root__": {
+      "filePath": "src/components/donate/MomentumMission.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/MomentumMission.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/campaignCopy.ts::emphasizedHeading"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/MomentumNarrative.astro::__file_root__": {
+      "filePath": "src/components/donate/MomentumNarrative.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/MomentumNarrative-Columns.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/media.ts::altFor",
+        "src/lib/momentumSections.ts::resolveLayout"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/MomentumNetwork.astro::__file_root__": {
+      "filePath": "src/components/donate/MomentumNetwork.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/donate/GiveButton.astro::__file_root__",
+        "src/components/donate/NetworkSupporterRoll.astro::__file_root__",
+        "src/lib/donors.ts::DonorLike",
+        "src/lib/donors.ts::DonorTierLike",
+        "src/lib/donors.ts::donorPublicIdentity",
+        "src/lib/momentumNetwork.ts::headlineHtml",
+        "src/lib/momentumNetwork.ts::matchesNetworkSearch",
+        "src/lib/momentumNetwork.ts::networkLayout",
+        "src/lib/momentumNetwork.ts::networkNodeDetail",
+        "src/lib/momentumNetwork.ts::shortSchoolLabel",
+        "src/lib/momentumNetwork.ts::supporterRoll",
+        "src/lib/supporterBadge.ts::badgeFor",
+        "src/lib/supporterBadge.ts::canShareBadge",
+        "src/lib/supporterBadge.ts::facebookShareUrl",
+        "src/lib/supporterBadge.ts::linkedInShareUrl",
+        "src/lib/supporterBadge.ts::shareMessage",
+        "src/lib/supporterBadge.ts::supporterPageUrl"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/MomentumStats.astro::__file_root__": {
+      "filePath": "src/components/donate/MomentumStats.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/MomentumStats.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/donate/MomentumTestimonials.astro::TestimonialLike": {
+      "filePath": "src/components/donate/MomentumTestimonials.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "TestimonialLike"
+    },
+    "src/components/donate/MomentumTestimonials.astro::__file_root__": {
+      "filePath": "src/components/donate/MomentumTestimonials.astro",
+      "importedBy": [
+        "src/components/MomentumFundPage.astro::__file_root__",
+        "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro::__file_root__",
+        "src/pages/isolated-components/MomentumTestimonials.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/donate/TestimonialCard.astro::__file_root__",
+        "src/lib/order.ts::sortByOrder"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/NetworkSupporterRoll.astro::__file_root__": {
+      "filePath": "src/components/donate/NetworkSupporterRoll.astro",
+      "importedBy": [
+        "src/components/donate/MomentumNetwork.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/donors.ts::DonorLike",
+        "src/lib/donors.ts::DonorTierLike",
+        "src/lib/donors.ts::donorDisplayName",
+        "src/lib/donors.ts::donorPublicIdentity",
+        "src/lib/momentumNetwork.ts::__file_root__",
+        "src/lib/momentumNetwork.ts::shortSchoolLabel"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/donate/TestimonialCard.astro::__file_root__": {
+      "filePath": "src/components/donate/TestimonialCard.astro",
+      "importedBy": [
+        "src/components/donate/MomentumTestimonials.astro::__file_root__",
+        "src/pages/isolated-components/TestimonialCard-Full.astro::__file_root__",
+        "src/pages/isolated-components/TestimonialCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ResponsiveImg.astro::__file_root__",
+        "src/lib/media.ts::altFor",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/components/donate/AccomplishmentCard.astro": {
+      "importedBy": [
+        "src/components/donate/MomentumAccomplishments.astro",
+        "src/pages/isolated-components/AccomplishmentCard.astro"
+      ],
+      "imports": []
+    },
+    "src/components/donate/GiftPillarCard.astro": {
+      "importedBy": [
+        "src/components/donate/GiftPillars.astro",
+        "src/pages/isolated-components/GiftPillarCard.astro"
+      ],
+      "imports": [
+        "src/lib/url.ts"
+      ]
+    },
+    "src/components/donate/GiftPillars.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/GiftPillars-DuplicatedBand.astro",
+        "src/pages/isolated-components/GiftPillars-Numbered.astro",
+        "src/pages/isolated-components/GiftPillars.astro"
+      ],
+      "imports": [
+        "src/components/donate/GiftPillarCard.astro",
+        "src/components/donate/GiveButton.astro",
+        "src/lib/momentumSections.ts",
+        "src/lib/site.ts"
+      ],
+      "typeOnlyImports": [
+        "src/lib/site.ts"
+      ]
+    },
+    "src/components/donate/GiveButton.astro": {
+      "importedBy": [
+        "src/components/donate/GiftPillars.astro",
+        "src/components/donate/MomentumClose.astro",
+        "src/components/donate/MomentumNetwork.astro",
+        "src/components/give/GiveClose.astro",
+        "src/components/give/GivingCard.astro",
+        "src/pages/isolated-components/GiveButton-GivingClosed.astro",
+        "src/pages/isolated-components/GiveButton.astro"
+      ],
+      "imports": [
+        "src/lib/giving.ts",
+        "src/components/donate/GivingSoonNote.astro"
+      ]
+    },
+    "src/components/donate/GivingSoonNote.astro": {
+      "importedBy": [
+        "src/components/donate/GiveButton.astro",
+        "src/components/landing/GivingCampaign.astro",
+        "src/pages/isolated-components/GivingSoonNote-OnDark.astro",
+        "src/pages/isolated-components/GivingSoonNote.astro"
+      ],
+      "imports": [
+        "src/lib/giving.ts",
+        "src/lib/url.ts"
+      ]
+    },
+    "src/components/donate/GoalMeter.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/GoalMeter-LongTitle.astro",
+        "src/pages/isolated-components/GoalMeter-PreLaunch.astro",
+        "src/pages/isolated-components/GoalMeter-WithLink.astro",
+        "src/pages/isolated-components/GoalMeter.astro"
+      ],
+      "imports": [
+        "src/lib/momentumSections.ts"
+      ]
+    },
+    "src/components/donate/MomentumAccomplishments.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/[name].astro"
+      ],
+      "imports": [
+        "src/components/donate/AccomplishmentCard.astro"
+      ]
+    },
+    "src/components/donate/MomentumClose.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/MomentumClose-Split.astro",
+        "src/pages/isolated-components/MomentumClose.astro"
+      ],
+      "imports": [
+        "src/lib/campaignCopy.ts",
+        "src/lib/media.ts",
+        "src/lib/url.ts",
+        "src/components/donate/GiveButton.astro"
+      ]
+    },
+    "src/components/donate/MomentumMission.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/MomentumMission.astro"
+      ],
+      "imports": [
+        "src/lib/campaignCopy.ts"
+      ]
+    },
+    "src/components/donate/MomentumNarrative.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/MomentumNarrative-Columns.astro",
+        "src/pages/isolated-components/[name].astro"
+      ],
+      "imports": [
+        "src/lib/media.ts",
+        "src/lib/momentumSections.ts"
+      ]
+    },
+    "src/components/donate/MomentumNetwork.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/[name].astro"
+      ],
+      "imports": [
+        "src/components/donate/GiveButton.astro",
+        "src/components/donate/NetworkSupporterRoll.astro",
+        "src/lib/momentumNetwork.ts",
+        "src/lib/supporterBadge.ts",
+        "src/lib/donors.ts"
+      ]
+    },
+    "src/components/donate/MomentumStats.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/MomentumStats.astro"
+      ],
+      "imports": []
+    },
+    "src/components/donate/MomentumTestimonials.astro": {
+      "importedBy": [
+        "src/components/MomentumFundPage.astro",
+        "src/components/MomentumFundPage.astro",
+        "src/pages/isolated-components/MomentumTestimonials-PhotoRows.astro",
+        "src/pages/isolated-components/MomentumTestimonials.astro"
+      ],
+      "imports": [
+        "src/components/donate/TestimonialCard.astro",
+        "src/lib/order.ts"
+      ]
+    },
+    "src/components/donate/NetworkSupporterRoll.astro": {
+      "importedBy": [
+        "src/components/donate/MomentumNetwork.astro"
+      ],
+      "imports": [
+        "src/lib/donors.ts",
+        "src/lib/momentumNetwork.ts"
+      ]
+    },
+    "src/components/donate/TestimonialCard.astro": {
+      "importedBy": [
+        "src/components/donate/MomentumTestimonials.astro",
+        "src/pages/isolated-components/TestimonialCard-Full.astro",
+        "src/pages/isolated-components/TestimonialCard.astro"
+      ],
+      "imports": [
+        "src/lib/media.ts",
+        "src/lib/url.ts",
+        "src/components/ResponsiveImg.astro"
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "src/pages/isolated-components/EventCardMedia/[...state].astro::__file_root__": {
+      "filePath": "src/pages/isolated-components/EventCardMedia/[...state].astro",
+      "importedBy": [],
+      "imports": [
+        ".codeyam/isolation-props/EventCardMedia.ts::__file_root__",
+        "src/components/EventCardMedia.astro::__file_root__",
+        "src/styles/tokens.css::__file_root__"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/pages/isolated-components/EventCardMedia/[...state].astro": {
+      "importedBy": [],
+      "imports": [
+        "src/components/EventCardMedia.astro",
+        ".codeyam/isolation-props/EventCardMedia.ts",
+        "src/styles/tokens.css"
+      ]
+    }
+  }
+}

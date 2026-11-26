@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: c23ce41100a6229ea1b7b518a4114f87721740ec  source-sha256: 40e39b7207a6b9e38a20ea3e7dd8fc56a0dc95abc1fbdf8ae25a575942761e2b
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: 239908febdef6efaf75552aafe7c1e009ec98de7171c4bc16f2f9f32dad0a3c3
 const { createIssue } = require("./scenario-issues");
 
 // Known substrings that mean the app refused to initialize because it was loaded
@@ -240,3 +240,8 @@ module.exports = {
   INSECURE_HOST_ADVISORY_MESSAGE,
   VITE_WS_NOISE_PATTERN,
 };
+
+// Pixel-path script: its code and this number both feed the capture pipeline
+// id. Bump the number for a change that alters pixels without changing code.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

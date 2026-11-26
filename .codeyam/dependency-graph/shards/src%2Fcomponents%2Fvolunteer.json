@@ -1,0 +1,386 @@
+{
+  "entities": {
+    "src/components/volunteer/VolunteerBenefit.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerBenefit.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerBenefits.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerBenefit.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerBenefits.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerBenefits.astro",
+      "importedBy": [
+        "src/components/VolunteerPage.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerBenefits.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ui/SectionHead.astro::__file_root__",
+        "src/components/volunteer/VolunteerBenefit.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerHero.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerHero.astro",
+      "importedBy": [
+        "src/components/VolunteerPage.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerHero.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ui/BannerCta.astro::__file_root__",
+        "src/components/ui/PageBanner.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectBackdrop.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectBackdrop.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectThumb.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectBody.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectBody.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectBody.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectCard.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectCard.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjects.astro::__file_root__",
+        "src/components/volunteer/VolunteerRelatedProjects.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectCard.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCardLinks.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectMeta.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectThumb.astro::__file_root__",
+        "src/lib/projects.ts::projectPath",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectCardLinks.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectCardLinks.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectCard.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectCardLinks.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectCta.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectCta.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectCta.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/externalLink.ts::externalLinkAttrs",
+        "src/lib/projects.ts::projectCta",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectHeader.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectHeader.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ui/PageBanner.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectMeta.astro::__file_root__",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectMeta.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectMeta.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectCard.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectMeta.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/projects.ts::formatProjectDates"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectPage.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectPage.astro",
+      "importedBy": [
+        "src/pages/isolated-components/VolunteerProjectPage.astro::__file_root__",
+        "src/pages/volunteer/projects/[slug].astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectBody.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectCta.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectPhoto.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjects.astro::VolunteerProjectLike",
+        "src/components/volunteer/VolunteerRelatedProjects.astro::__file_root__"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectPhoto.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectPhoto.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectPhoto.astro::__file_root__"
+      ],
+      "imports": [
+        "src/lib/media.ts::altFor",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectThumb.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectThumb.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectCard.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectThumb.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectBackdrop.astro::__file_root__",
+        "src/lib/media.ts::altFor",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjects.astro::VolunteerProjectLike": {
+      "filePath": "src/components/volunteer/VolunteerProjects.astro",
+      "importedBy": [
+        "src/components/VolunteerPage.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectPage.astro::__file_root__",
+        "src/components/volunteer/VolunteerRelatedProjects.astro::__file_root__"
+      ],
+      "imports": [],
+      "name": "VolunteerProjectLike"
+    },
+    "src/components/volunteer/VolunteerProjects.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjects.astro",
+      "importedBy": [
+        "src/components/VolunteerPage.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjects.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCard.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjectsEmpty.astro::__file_root__",
+        "src/lib/projects.ts::ProjectLike",
+        "src/lib/projects.ts::openProjects"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerProjectsEmpty.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerProjectsEmpty.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjects.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerProjectsEmpty.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/ui/EmptyState.astro::__file_root__",
+        "src/lib/url.ts::withBase"
+      ],
+      "name": "__file_root__"
+    },
+    "src/components/volunteer/VolunteerRelatedProjects.astro::__file_root__": {
+      "filePath": "src/components/volunteer/VolunteerRelatedProjects.astro",
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro::__file_root__",
+        "src/pages/isolated-components/VolunteerRelatedProjects.astro::__file_root__"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCard.astro::__file_root__",
+        "src/components/volunteer/VolunteerProjects.astro::VolunteerProjectLike"
+      ],
+      "name": "__file_root__"
+    }
+  },
+  "files": {
+    "src/components/volunteer/VolunteerBenefit.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerBenefits.astro",
+        "src/pages/isolated-components/VolunteerBenefit.astro"
+      ],
+      "imports": []
+    },
+    "src/components/volunteer/VolunteerBenefits.astro": {
+      "importedBy": [
+        "src/components/VolunteerPage.astro",
+        "src/pages/isolated-components/VolunteerBenefits.astro"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerBenefit.astro",
+        "src/components/ui/SectionHead.astro"
+      ]
+    },
+    "src/components/volunteer/VolunteerHero.astro": {
+      "importedBy": [
+        "src/components/VolunteerPage.astro",
+        "src/pages/isolated-components/VolunteerHero.astro"
+      ],
+      "imports": [
+        "src/components/ui/PageBanner.astro",
+        "src/components/ui/BannerCta.astro"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectBackdrop.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectThumb.astro",
+        "src/pages/isolated-components/VolunteerProjectBackdrop/[...state].astro"
+      ],
+      "imports": [
+        "src/lib/url.ts"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectBody.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/pages/isolated-components/VolunteerProjectBody.astro"
+      ],
+      "imports": []
+    },
+    "src/components/volunteer/VolunteerProjectCard.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjects.astro",
+        "src/components/volunteer/VolunteerRelatedProjects.astro",
+        "src/pages/isolated-components/VolunteerProjectCard.astro"
+      ],
+      "imports": [
+        "src/lib/url.ts",
+        "src/lib/projects.ts",
+        "src/components/volunteer/VolunteerProjectThumb.astro",
+        "src/components/volunteer/VolunteerProjectMeta.astro",
+        "src/components/volunteer/VolunteerProjectCardLinks.astro"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectCardLinks.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectCard.astro",
+        "src/pages/isolated-components/VolunteerProjectCardLinks.astro"
+      ],
+      "imports": [
+        "src/lib/externalLink.ts",
+        "src/lib/url.ts"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectCta.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/pages/isolated-components/VolunteerProjectCta.astro"
+      ],
+      "imports": [
+        "src/lib/externalLink.ts",
+        "src/lib/url.ts",
+        "src/lib/projects.ts"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectHeader.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/pages/isolated-components/VolunteerProjectHeader-OnPhoto.astro",
+        "src/pages/isolated-components/VolunteerProjectHeader.astro"
+      ],
+      "imports": [
+        "src/components/ui/PageBanner.astro",
+        "src/components/volunteer/VolunteerProjectMeta.astro",
+        "src/lib/url.ts"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectMeta.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectCard.astro",
+        "src/components/volunteer/VolunteerProjectHeader.astro",
+        "src/pages/isolated-components/VolunteerProjectMeta.astro"
+      ],
+      "imports": [
+        "src/lib/projects.ts"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectPage.astro": {
+      "importedBy": [
+        "src/pages/isolated-components/VolunteerProjectPage.astro",
+        "src/pages/volunteer/projects/[slug].astro"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectPhoto.astro",
+        "src/components/volunteer/VolunteerProjectHeader.astro",
+        "src/components/volunteer/VolunteerProjectBody.astro",
+        "src/components/volunteer/VolunteerProjectCta.astro",
+        "src/components/volunteer/VolunteerRelatedProjects.astro",
+        "src/components/volunteer/VolunteerProjects.astro"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectPhoto.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/pages/isolated-components/VolunteerProjectPhoto.astro"
+      ],
+      "imports": [
+        "src/lib/url.ts",
+        "src/lib/media.ts"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectThumb.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectCard.astro",
+        "src/pages/isolated-components/VolunteerProjectThumb.astro"
+      ],
+      "imports": [
+        "src/lib/url.ts",
+        "src/lib/media.ts",
+        "src/components/volunteer/VolunteerProjectBackdrop.astro"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjects.astro": {
+      "importedBy": [
+        "src/components/VolunteerPage.astro",
+        "src/components/VolunteerPage.astro",
+        "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/components/volunteer/VolunteerRelatedProjects.astro",
+        "src/pages/isolated-components/VolunteerProjects.astro"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCard.astro",
+        "src/components/volunteer/VolunteerProjectsEmpty.astro",
+        "src/lib/projects.ts"
+      ]
+    },
+    "src/components/volunteer/VolunteerProjectsEmpty.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjects.astro",
+        "src/pages/isolated-components/VolunteerProjectsEmpty.astro"
+      ],
+      "imports": [
+        "src/components/ui/EmptyState.astro",
+        "src/lib/url.ts"
+      ]
+    },
+    "src/components/volunteer/VolunteerRelatedProjects.astro": {
+      "importedBy": [
+        "src/components/volunteer/VolunteerProjectPage.astro",
+        "src/pages/isolated-components/VolunteerRelatedProjects-Single.astro",
+        "src/pages/isolated-components/VolunteerRelatedProjects.astro"
+      ],
+      "imports": [
+        "src/components/volunteer/VolunteerProjectCard.astro",
+        "src/components/volunteer/VolunteerProjects.astro"
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 // codeyam-generated — DO NOT EDIT.
-// codeyam-editor: 0.1.7  build: 615112861944c5bb09df405088c9db9a206954a7  source-sha256: 98237be092b114aad7eb2e33ca96b374d04df5b3c5fdaba26d17fc4f3b1375be
+// codeyam-editor: 0.1.7  protocol: 1  build: 3c04f028e1c7a16d15df213f41de17e3686934cb  source-sha256: 9ba3ac2b00a5213b1fe3d55c78b78e8eaf2f67584dba6426accfdbe79b2a7cad
 // Map a wasm function back to the workspace source file that declares it, and
 // decide which function-entry breakpoints still have something to learn.
 //
@@ -206,3 +206,8 @@ module.exports = {
   functionRangeAt,
   retirableBreakpoints,
 };
+
+// Diagnostic script: it writes no pixels, so only this number (not its code)
+// feeds the capture pipeline id. Bump it if a change ever alters a frame.
+const CAPTURE_VISUAL_CONTRACT = 1;
+module.exports.CAPTURE_VISUAL_CONTRACT = CAPTURE_VISUAL_CONTRACT;

@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "astro.config.mjs::__file_root__": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [],
+      "imports": [
+        "src/lib/devContentRefresh.ts::viteCacheDir",
+        "src/lib/publishTrack.ts::includeCmsIntegration",
+        "src/lib/publishTrack.ts::includeSitemapIntegration",
+        "src/lib/publishTrack.ts::isInternalPath",
+        "src/lib/redirects.ts::redirectsForBase",
+        "src/lib/unlistedPages.ts::isUnlistedUrl"
+      ],
+      "name": "__file_root__"
+    },
+    "astro.config.mjs::codeyamContentRefresh": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [],
+      "imports": [
+        "astro.config.mjs::loadedCollectionCounts",
+        "astro.config.mjs::reloadSingletonReaders",
+        "astro.config.mjs::root",
+        "src/lib/devContentRefresh.ts::createQuietWaiter",
+        "src/lib/devContentRefresh.ts::createSerialQueue",
+        "src/lib/devContentRefresh.ts::duplicateServerMessage",
+        "src/lib/devContentRefresh.ts::markServerErrorPages",
+        "src/lib/devContentRefresh.ts::registerDevServer",
+        "src/lib/devContentRefresh.ts::watchedContentPaths"
+      ],
+      "name": "codeyamContentRefresh"
+    },
+    "astro.config.mjs::initContentSandbox": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [
+        "astro.config.mjs::{ sandboxContent, sandboxData }"
+      ],
+      "imports": [
+        "astro.config.mjs::root",
+        "src/lib/sandboxPublic.ts::mirrorPublicImages",
+        "src/lib/sandboxPublic.ts::replaceWithCopy"
+      ],
+      "name": "initContentSandbox"
+    },
+    "astro.config.mjs::internalPathsAndPassphrase": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [],
+      "imports": [
+        "astro.config.mjs::isDev",
+        "src/lib/adminGate.ts::__file_root__",
+        "src/lib/adminGate.ts::assertAdminPassphrase",
+        "src/lib/adminGate.ts::injectAdminGate",
+        "src/lib/adminGate.ts::passphraseHash",
+        "src/lib/previewGate.ts::__file_root__",
+        "src/lib/previewGate.ts::assertPassphraseConfigured",
+        "src/lib/previewGate.ts::substitutePassphrase",
+        "src/lib/publishTrack.ts::excludedFromBuild"
+      ],
+      "name": "internalPathsAndPassphrase"
+    },
+    "astro.config.mjs::isDev": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [
+        "astro.config.mjs::internalPathsAndPassphrase"
+      ],
+      "imports": [],
+      "name": "isDev"
+    },
+    "astro.config.mjs::loadedCollectionCounts": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [
+        "astro.config.mjs::codeyamContentRefresh"
+      ],
+      "imports": [
+        "src/lib/emptiedCollections.ts::countLoadedEntries",
+        "src/lib/emptiedCollections.ts::listCollectionNames"
+      ],
+      "name": "loadedCollectionCounts"
+    },
+    "astro.config.mjs::reloadSingletonReaders": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [
+        "astro.config.mjs::codeyamContentRefresh"
+      ],
+      "imports": [
+        "astro.config.mjs::root",
+        "src/lib/devContentRefresh.ts::transitiveImporters"
+      ],
+      "name": "reloadSingletonReaders"
+    },
+    "astro.config.mjs::root": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [
+        "astro.config.mjs::codeyamContentRefresh",
+        "astro.config.mjs::initContentSandbox",
+        "astro.config.mjs::reloadSingletonReaders",
+        "astro.config.mjs::{ sandboxContent, sandboxData }"
+      ],
+      "imports": [],
+      "name": "root"
+    },
+    "astro.config.mjs::{ sandboxContent, sandboxData }": {
+      "filePath": "astro.config.mjs",
+      "importedBy": [],
+      "imports": [
+        "astro.config.mjs::initContentSandbox",
+        "astro.config.mjs::root"
+      ],
+      "name": "{ sandboxContent, sandboxData }"
+    }
+  },
+  "files": {
+    "astro.config.mjs": {
+      "importedBy": [],
+      "imports": [
+        "src/lib/publishTrack.ts",
+        "src/lib/previewGate.ts",
+        "src/lib/redirects.ts",
+        "src/lib/unlistedPages.ts",
+        "src/lib/adminGate.ts",
+        "src/lib/emptiedCollections.ts",
+        "src/lib/devContentRefresh.ts",
+        "src/lib/sandboxPublic.ts"
+      ]
+    },
+    "vitest.config.ts": {
+      "importedBy": [],
+      "imports": []
+    }
+  }
+}
