@@ -514,6 +514,8 @@ def _emit_verdict(verdict, rule, detail, message):
         lines.append(f"DETAIL: {detail}")
     if message:
         lines.append(message)
+    if _UPDATED_INPUT is not None:
+        lines.append(f"REWRITTEN COMMAND: {_UPDATED_INPUT.get('command', '')}")
     lines.extend(_PENDING_CONTEXT)
     print("\n".join(lines))
     sys.exit(0)
@@ -1052,12 +1054,24 @@ def _test_run_block_message(state, slug, info, project_dir=None):
             f"none is needed: a rebase is in progress, and when the sync "
             f"finishes it runs the tests of the partitions that own every file "
             f"you resolved by hand. A compile check (e.g. a build or type "
-            f"check) is not a test run and is allowed.",
+            f"check) is not a test run and is allowed, and so is a "
+            f"seconds-long `{cli_command()} editor refresh-tests --test <key>` "
+            f"check of one test.",
             f"`{cli_command()} editor pre-commit-sync --continue-rebase` — it "
             f"finishes the rebase and runs those owed tests.",
         )
     next_slug = info.get("nextTestRunSlug")
-    if next_slug:
+    if slug in _TEST_GATING_SLUGS:
+        # The sync or push itself refuses on a red test, so "advance" would
+        # name a step that refuses the same red (VM21 737763df). The targeted
+        # check is the seconds-long way to judge a fix; the step's own re-run
+        # is what discharges the gate.
+        recovery = (
+            f"`{cli_command()} editor refresh-tests --test <the failing test>` "
+            f"to check a fix in seconds; then re-run `{cli_command()} editor "
+            f"{slug}`, which re-checks the whole partition."
+        )
+    elif next_slug:
         recovery = (
             f"advance to `{next_slug}` — the next step in this mode where "
             f"test runs are in scope."
@@ -1067,28 +1081,54 @@ def _test_run_block_message(state, slug, info, project_dir=None):
             "advance — no test-running step remains in this mode, so there is "
             "nowhere left to re-run this."
         )
+    file_clause = (
+        f" At push, `{cli_command()} editor refresh-tests --file <path>` — the "
+        f"deferred-commit push refusal's own recovery — is allowed too."
+        if slug in _FILE_NARROWED_SLUGS
+        else ""
+    )
     return (
         f"test runs are not allowed at {where} "
         f"(test_scope: none). The hardening phases already ran the tests; this "
         f"step is a presentation / commit gate, where a test run is out of "
-        f"scope. A stale-partition refusal's own recovery, "
-        f"`{cli_command()} editor refresh-tests --partition <name>`, is the "
-        f"one run allowed here.",
+        f"scope. Two narrowed runs are allowed here: `{cli_command()} editor "
+        f"refresh-tests --test <key>` to check one failing test, and "
+        f"`{cli_command()} editor refresh-tests --partition <name>`, a "
+        f"stale-partition refusal's own recovery.{file_clause}",
         recovery,
     )
 
 
-def is_partition_refresh_only(command, project_dir):
-    """True when every test run in `command` is codeyam's own `refresh-tests`
-    narrowed by at least one `--partition` — the exact recovery a stale-
-    partition refusal prints — and nothing else.
+# Post-hardening slugs whose own command refuses on a red test. A test-run
+# refusal there must never recommend `advance`: the step being advanced from
+# is the one refusing.
+_TEST_GATING_SLUGS = ("pre-commit-sync", "push")
 
-    That recovery is what `commit --out-of-workflow` names when the commit's
+# Post-hardening slugs where a `--file`-narrowed `refresh-tests` is also
+# admitted. The deferred-commit push refusal
+# (`deferred_push_commits.rs::refusal_next_action`) names per-file runs, and
+# refusing them verbatim forced a hand translation to `--partition`, which
+# widened a few-file run to a 30k-test partition (~10 min). It fires only at
+# push, so the `--file` admission stays there.
+_FILE_NARROWED_SLUGS = ("push",)
+
+
+def is_narrowed_refresh_only(command, project_dir, allow_file=False):
+    """True when every test run in `command` is codeyam's own `refresh-tests`
+    narrowed by at least one `--partition` or `--test` (or `--file`, when
+    `allow_file`) — the exact recoveries a stale-partition refusal, a red owed
+    run, and the deferred-commit push refusal print — and nothing else.
+
+    `--partition` is what `commit --out-of-workflow` names when the commit's
     partitions are stale, and it fires at the commit and push slugs. Refusing
     it there left a refusal whose only named way out was itself refused, and
     the observed escape was stepping the workflow back to Glossary to run it.
-    A whole-suite or `--changed` run, a raw runner, or a mixed compound stays
-    a test run and stays blocked."""
+    `--test <key>` is the seconds-long check a red at pre-commit-sync / push
+    names (`retry_action_because`, `proof_command`); refusing it cost VM13
+    a4d95432 two extra 9–11 minute syncs and sent VM21 737763df to raw
+    `cargo test`. Neither discharges a gate on its own — the sync or push
+    still re-checks the whole partition. A whole-suite or `--changed` run, a
+    raw runner, or a mixed compound stays a test run and stays blocked."""
     saw_refresh = False
     for segment in _split_commands(command):
         try:
@@ -1106,10 +1146,12 @@ def is_partition_refresh_only(command, project_dir):
             and _program_name(tokens[0]) in _CODEYAM_CLIS
             and _codeyam_verb(tokens[1:]) == "refresh-tests"
         )
-        has_partition = any(
-            tok == "--partition" or tok.startswith("--partition=") for tok in tokens
+        flags = ("--partition", "--test") + (("--file",) if allow_file else ())
+        is_narrowed = any(
+            tok in flags or tok.startswith(tuple(f"{f}=" for f in flags))
+            for tok in tokens
         )
-        if not (is_refresh and has_partition):
+        if not (is_refresh and is_narrowed):
             return False
         saw_refresh = True
     return saw_refresh
@@ -2102,27 +2144,38 @@ def _pipelines(command):
     pipeline rather than extending it. That empty-segment check is the whole
     difference between `audit || echo failed` (allowed — two pipelines) and
     `audit | tail` (one two-stage pipeline)."""
-    pipelines = []
-    current = []
     pairs = _split_commands_with_separators(command)
+    return [[pairs[index][0] for index in span] for span in _pipeline_spans(pairs)]
+
+
+def _pipeline_spans(pairs):
+    """The pipelines of a `_split_commands_with_separators` result, as lists of
+    indices into `pairs` rather than stage text — what a caller that rebuilds
+    the command needs, since an index carries the separator with it.
+
+    The single grouping rule `_pipelines` is defined by, so the rewrite in
+    `dewindowed_live_handoff` cannot see different pipelines from the guards
+    that judged the call."""
+    spans = []
+    current = []
     for index, (segment, separator) in enumerate(pairs):
         if not segment.strip():
             if current:
-                pipelines.append(current)
+                spans.append(current)
                 current = []
             continue
-        current.append(segment)
+        current.append(index)
         piped_into_next = (
             separator == "|"
             and index + 1 < len(pairs)
             and pairs[index + 1][0].strip()
         )
         if not piped_into_next:
-            pipelines.append(current)
+            spans.append(current)
             current = []
     if current:
-        pipelines.append(current)
-    return pipelines
+        spans.append(current)
+    return spans
 
 
 def _gating_subcommand(stage):
@@ -3072,7 +3125,10 @@ def _script_operand(texts):
     Three spellings run a script without naming an interpreter, and each is a
     script run: sourcing it (`. x.sh`, `source x.sh`) and executing it by path
     (`./x.sh`, `scripts/x.sh`). A path-qualified program is read by its
-    extension; a compiled binary is excluded later, by its content."""
+    extension; a compiled binary is excluded later, by its content.
+
+    A parse-only check (`node --check x.mjs`, `bash -n x.sh`) runs nothing, so
+    it names no script either — see `_runs_parse_only`."""
     wi = _command_word_index(texts)
     if wi is None:
         return None
@@ -3082,6 +3138,8 @@ def _script_operand(texts):
         if found is None:
             return None
         operand, lang = found
+    elif _runs_parse_only(texts, wi):
+        return None
     elif lang == "sh":
         operand = _shell_script_operand(texts, wi)
     else:
@@ -3091,6 +3149,32 @@ def _script_operand(texts):
     if operand is None or not texts[operand]:
         return None
     return operand, lang
+
+
+# Interpreters whose `--check` / `-c` parses the script and exits without running
+# it. Bun and Deno spell their checks differently, so they are not listed.
+_NODE_PROGRAMS = frozenset(("node", "nodejs"))
+
+
+def _runs_parse_only(texts, wi):
+    """True when the interpreter at `texts[wi]` is asked only to PARSE its
+    script: `node --check` / `node -c`, or a shell option cluster carrying `n`
+    (`bash -n`, `sh -nv`). Only the options before the operand are read, so a
+    `-c` the script itself receives does not count. (`python -m py_compile` and
+    `ruby -c` already name no script operand.)
+
+    VM 29 8bf78016 ran `node --check scripts/issues.mjs && echo syntax-ok`; the
+    guard read the script, found a write in it, and refused a command that
+    executed none of it — so the agent dropped the syntax check."""
+    program = _program_name(texts[wi])
+    for tok in texts[wi + 1:]:
+        if not tok.startswith("-") or tok in ("-", "--"):
+            return False
+        if program in _NODE_PROGRAMS and tok in ("--check", "-c"):
+            return True
+        if program in _SCRIPT_INTERPRETERS and re.match(r"^-[A-Za-z]*n[A-Za-z]*$", tok):
+            return True
+    return False
 
 
 def _interpreter_lang(program):
@@ -3802,6 +3886,63 @@ def inplace_edit_targets(command, script_file=False):
     return True, paths or None
 
 
+def _tee_stage_operands(args):
+    """`(appends, operands)` for the arguments that follow one `tee`: `appends`
+    is True when `-a` / `--append` (alone or in a short-flag cluster such as
+    `-ai`) is given, and `operands` are the file names it writes. Reading stops
+    at the first redirect token, which ends `tee`'s own argument list; a `--`
+    makes every later argument an operand. Pure."""
+    appends = False
+    operands = []
+    options_done = False
+    for arg in args:
+        if _REDIRECT_TOKEN.match(arg):
+            break
+        if not options_done and arg == "--":
+            options_done = True
+        elif not options_done and arg.startswith("-") and len(arg) > 1:
+            if arg == "--append" or (not arg.startswith("--") and "a" in arg[1:]):
+                appends = True
+        else:
+            operands.append(arg)
+    return appends, operands
+
+
+def tee_write_targets(command):
+    """`(found, appending, paths)` for the `tee` stages in `command`: `found`
+    is True when one runs, `appending` when every one of them is `tee -a`, and
+    `paths` lists the files they write — or is None when an operand cannot be
+    resolved (an unbound variable, an untokenizable stage).
+
+    `tee` writes its file operands exactly as `>` / `>>` does, but carries no
+    redirect token, so `_SHELL_REDIRECT` never saw `cat <<'EOF' | tee -a
+    crates/…/a.rs` and the guard waved the append through (2026-11-15 fleet
+    review). A heredoc body is elided by `_split_commands`, and scanning stops
+    at the first redirect token, so `tee -a f.rs <<'EOF'` names only `f.rs`."""
+    found = False
+    appending = True
+    paths = []
+    for segment in _split_commands(command):
+        try:
+            tokens = shlex.split(segment, posix=True)
+        except ValueError:
+            if re.search(r"(?:^|[\s/])tee\b", segment):
+                return True, False, None
+            continue
+        for index, tok in enumerate(tokens):
+            if tok.rsplit("/", 1)[-1] != "tee" or not _in_command_position(tokens, index):
+                continue
+            found = True
+            stage_appends, operands = _tee_stage_operands(tokens[index + 1:])
+            appending = appending and stage_appends
+            for operand in operands:
+                expanded = _expand_shell_operand(command, operand)
+                if expanded is None:
+                    return True, False, None
+                paths.extend(expanded)
+    return found, appending and found, paths
+
+
 def _resolved_expression(command, expr):
     """The literal paths a write construct's target expression names — the
     literal itself, the values of a bare variable bound to literals, or the
@@ -3950,6 +4091,18 @@ def _cd_directory(command, position, start=""):
         elif directory is not None:
             directory = os.path.join(directory, operand)
     return directory
+
+
+def _common_cd_directory(command, positions, start=""):
+    """The directory every one of `positions` runs in (see `_cd_directory`),
+    or `start` when they disagree or there are none.
+
+    A write construct whose operands carry no position of their own (an
+    in-place `sed -i`, a `tee`) is rebased only when every occurrence of its
+    program runs in the SAME directory; otherwise the operands keep the reading
+    from the directory the command started in."""
+    directories = {_cd_directory(command, position, start) for position in positions}
+    return directories.pop() if len(directories) == 1 else start
 
 
 def _rebased_on_cd(command, position, paths, start=""):
@@ -4176,14 +4329,23 @@ def write_targets(command, start="", lang="sh", script_file=False):
     found, paths = inplace_edit_targets(command, script_file)
     if found:
         truncating = True
-        # The operands carry no position, so they are rebased only when every
-        # in-place editor in the command runs in the SAME directory; otherwise
-        # they keep the reading from the directory the command started in.
-        directories = {
-            _cd_directory(command, m.start(), start)
-            for m in _INPLACE_PROGRAM.finditer(command)
-        }
-        directory = directories.pop() if len(directories) == 1 else start
+        directory = _common_cd_directory(
+            command, (m.start() for m in _INPLACE_PROGRAM.finditer(command)), start
+        )
+        if paths is None:
+            add(None, 0)
+        else:
+            explicit.extend(_join_onto(directory, paths))
+
+    found, tee_appends, paths = tee_write_targets(command)
+    if found:
+        if tee_appends:
+            appending = True
+        else:
+            truncating = True
+        directory = _common_cd_directory(
+            command, (m.start() for m in re.finditer(r"\btee\b", command)), start
+        )
         if paths is None:
             add(None, 0)
         else:
@@ -4572,6 +4734,61 @@ def scripted_rewrite_details(command, project_dir, cwd=None):
     return found, consulted, script
 
 
+def untracked_source_append_target(command, project_dir, cwd=None):
+    """The UNTRACKED source file `command` appends to when that file already
+    exists and sits beside tracked source of the same suffix, else None.
+
+    `scripted_rewrite_details` judges only tracked targets, so an append into
+    a file this cycle created was waved through. VM 7 f5258afc created a `.rs`
+    module, let a later `Write` drop its test module, and restored it with
+    `cat >> … <<'EOF'` — new code in a tracked source directory, which CLAUDE.md
+    treats as tracked source for the Edit-only rule. Only an append judged
+    whole (every write resolved, every write an append) to a file already on
+    disk qualifies: creating a new file and writing to /tmp, the scratchpad, or
+    a directory with no tracked source of that suffix are all unaffected. When
+    git cannot answer, this answers None — the tracked guard above is the
+    fail-closed one; this widening fails open rather than refuse on a guess."""
+    sources = _rewrite_sources(command, project_dir, session_start_directory(cwd, project_dir))
+    if not sources or not all(s.append_only and not s.opaque for s in sources):
+        return None
+    candidates = eligible_pathspecs([p for s in sources for p in s.explicit], project_dir)
+    for path in on_disk_source_paths(candidates, project_dir):
+        if _untracked_beside_tracked(path, project_dir):
+            return path
+    return None
+
+
+def _untracked_beside_tracked(path, project_dir):
+    """True when git does not track the project-relative `path` but does track
+    a file of the same suffix in its directory. A repo-root file (no directory)
+    is never judged, and an unanswered `git ls-files` answers False — the
+    fail-open direction `untracked_source_append_target` documents."""
+    directory = os.path.dirname(path)
+    if not directory:
+        return False
+    suffix = os.path.splitext(path)[1]
+    listed = _git_ls_files([path, f":(glob){directory}/*{suffix}"], project_dir)
+    return bool(listed) and path not in listed
+
+
+def untracked_source_append_refusal(path):
+    """The `(reason, next_action)` pair for an `untracked_source_append_target`
+    match. Says why an untracked file is judged at all, so the refusal is not
+    read as the tracked check misfiring. Pure."""
+    return (
+        f"this command appends to `{path}`, an untracked source file beside "
+        f"tracked source of the same kind. Code written there is reviewed as "
+        f"source once staged, so the Edit-only rule covers it: an append's diff "
+        f"is computed at runtime, so the change never appears in the transcript "
+        f"a reviewer reads, and it bypasses the file-state tracking that lets "
+        f"Edit refuse a file that changed underneath it.",
+        f"use the Edit tool anchored on the file's existing final construct: "
+        f"`old_string` is that construct verbatim, `new_string` is that same "
+        f"construct followed by the new content (Read the file first). Writing "
+        f"to /tmp or to the scratchpad is unaffected.",
+    )
+
+
 # --- Textual rewrites of tracked JSON --------------------------------------
 #
 # `.json` is outside `SOURCE_SUFFIXES` because rewriting JSON THROUGH A PARSER
@@ -4693,27 +4910,45 @@ def is_split_destination(source, written):
     return written.startswith(f"{parent}/" if parent else f"{stem}/")
 
 
-# Separators that can carry one statement's output into another — command
-# substitution and subshells — so their presence keeps every mention judged.
-_CAPTURE_SEPARATORS = ("(", ")", "`")
-
-
-def _output_may_cross_statements(command):
-    """True when one statement of `command` can hand its output to another: a
-    `$( … )` / backtick capture, a subshell, or a `{ …; }` group whose shared
-    redirect writes what every member printed."""
-    pairs = _split_commands_with_separators(command)
-    return any(sep in _CAPTURE_SEPARATORS for _, sep in pairs) or any(
-        segment.strip()[:1] in ("{", "}") for segment, _ in pairs
+def _has_brace_group(command):
+    """True when `command` holds a `{ …; }` group, whose shared redirect writes
+    what every member printed — so no member's output is its own."""
+    return any(
+        segment.strip()[:1] in ("{", "}")
+        for segment, _ in _split_commands_with_separators(command)
     )
 
 
+def _nested_segments(command):
+    """The segments of `command` that run inside a `$( … )` / backtick capture
+    or a `( … )` subshell, whose output can feed a write in another statement
+    (`X=$(sed -n 1,9p a.rs); echo "$X" > b.rs`). A segment at the top level
+    prints to the terminal unless its own pipeline redirects."""
+    nested = []
+    depth, in_backtick = 0, False
+    for segment, separator in _split_commands_with_separators(command):
+        if depth > 0 or in_backtick:
+            nested.append(segment)
+        if separator == "(":
+            depth += 1
+        elif separator == ")":
+            depth = max(0, depth - 1)
+        elif separator == "`":
+            in_backtick = not in_backtick
+    return nested
+
+
 def terminal_only_paths(command, project_dir):
-    """The eligible paths `command` names ONLY in pipelines that write nothing,
-    so their content cannot flow into a write — `sed -n 1,10p a.rs` run as its
-    own statement prints to the terminal. Empty (judge every mention) whenever
-    output could cross statements: a `$( … )` / backtick capture, a subshell, or
-    a `{ …; } > f` group.
+    """The eligible paths `command` names ONLY in top-level pipelines that write
+    nothing, so their content cannot flow into a write — `sed -n 1,10p a.rs`
+    run as its own statement prints to the terminal. A path named inside a
+    capture or subshell (`_nested_segments`) is never quiet, and a `{ …; } > f`
+    group anywhere makes every path count (empty result).
+
+    A capture elsewhere in the command does not disqualify a top-level read.
+    VM 20 cfa9ac3d's `rustfmt highlight_due.rs post.rs` stood beside a `$( … )`
+    in another statement, and the whole command was judged a split of
+    `highlight_due.rs` because of it.
 
     A path that appears in no shell pipeline at all — named inside an
     interpreter heredoc body, which the splitter elides — is never returned:
@@ -4722,9 +4957,11 @@ def terminal_only_paths(command, project_dir):
     VM 19 1e3b8969 appended to a new `scenario_data_file.rs` with `cat >>` and,
     as a separate statement, printed `sed -n 388,400p preview_kind.rs`; the
     split guard refused a command that moved nothing."""
-    if _output_may_cross_statements(command):
+    if _has_brace_group(command):
         return set()
     flowing, quiet = set(), set()
+    for segment in _nested_segments(command):
+        flowing.update(eligible_pathspecs(_path_tokens(segment), project_dir))
     for stages in _pipelines(command):
         text = " | ".join(stages)
         explicit, opaque, _ = write_targets(text)
@@ -4806,24 +5043,55 @@ _LINE_RANGE_SPLIT_SHAPES = (
     ),
     # `awk 'NR>=120 && NR<=240'`
     (re.compile(r"\bawk\b[^\n]*\bNR\s*(?:[<>]=?|==)\s*\d+"), None, "an `awk` NR range"),
-    # `head -n 240 src | tail -n +120 > new`
-    (
-        re.compile(r"\b(?:head|tail)\s+(?:-n\s*\+?\d+|-\+?\d+|--lines(?:=|\s+)\+?\d+)"),
-        None,
-        "a `head`/`tail` line count",
-    ),
+)
+
+# `head -n 240 src | tail -n +120 > new`. Judged per pipeline, unlike the shapes
+# above (see `_pipeline_carves_by_line_count`).
+_HEAD_TAIL_LINE_COUNT = re.compile(
+    r"\b(?:head|tail)\s+(?:-n\s*\+?\d+|-\+?\d+|--lines(?:=|\s+)\+?\d+)"
 )
 
 
-def line_range_split(command):
+def _pipeline_carves_by_line_count(command, split=None, project_dir=None):
+    """True when ONE pipeline of `command` holds a `head`/`tail` line count and
+    redirects into a file. Given `split` — `(source, written)` from
+    `split_by_script_target` — that same pipeline must also name `source` (as an
+    argument, or behind `cat`/`<`) and write `written`. Pure.
+
+    A head/tail count is the most common output filter there is: VM 20
+    cfa9ac3d's `refresh-tests … | tail -60` and VM 29 a3c90d29's
+    `grep -n … units.rs | head -3` each carved nothing, but matching the count
+    anywhere in the command called both a split "by a head/tail line count"."""
+    for stages in _pipelines(command):
+        text = " | ".join(stages)
+        if not _HEAD_TAIL_LINE_COUNT.search(text):
+            continue
+        explicit, _, _ = write_targets(text)
+        if not explicit:
+            continue
+        if split is None:
+            return True
+        source, written = split
+        if written in eligible_pathspecs(explicit, project_dir) and source in eligible_pathspecs(
+            _path_tokens(text), project_dir
+        ):
+            return True
+    return False
+
+
+def line_range_split(command, split=None, project_dir=None):
     """A short phrase naming the line-range or marker-search shape `command`
     uses to carve out a file, else None. Pure.
 
     Judged only alongside `split_by_script_target`, which has already proven
-    the command reads a tracked source and writes a new sibling of it."""
+    the command reads a tracked source and writes a new sibling of it; pass its
+    `split` (and `project_dir`) so a head/tail count is credited only to the
+    pipeline that carries that move."""
     for primary, secondary, label in _LINE_RANGE_SPLIT_SHAPES:
         if primary.search(command) and (secondary is None or secondary.search(command)):
             return label
+    if _pipeline_carves_by_line_count(command, split, project_dir):
+        return "a `head`/`tail` line count"
     return None
 
 
@@ -5659,6 +5927,7 @@ _INSPECTOR_BY_STORE = [
     (".codeyam/state/finalize-debt.json", "finalize-debt"),
     (".codeyam/state/last-advance.txt", "step-handoff --section <NAME> (bare to list sections)"),
     (".codeyam/dependency-graph.json", "deps-imports / deps-imported-by"),
+    (".codeyam/dependency-graph/", "deps-imports / deps-imported-by"),
     (".codeyam/test-registry.json", "registry-query"),
     (".codeyam/per-test-evidence.json", "evidence-query"),
     (".codeyam/project-deliverables.json", "deliverables"),
@@ -6011,6 +6280,15 @@ _HANDOFF_CONTENT_SNIFFED = (_HANDOFF_TOOL_RESULT, _HANDOFF_TASK_OUTPUT)
 _HANDOFF_CONTENT_MARKERS = ("CODEYAM_FULL_HANDOFF", "━━━ BEGIN STEP ")
 _HANDOFF_SNIFF_BYTES = 8192
 
+# The sniff of an opaque file needs each marker at the START of a line. A real
+# hand-off prints both at column 0. A tool result that only QUOTES one, inside
+# JSON (`"…\n━━━ BEGIN STEP 4…"`) or behind a `grep -n` prefix (`12:━━━ BEGIN
+# STEP 4`), is a diagnosis of a hand-off, not a hand-off, and refusing it
+# stranded agents reading their own transcripts.
+_HANDOFF_LINE_START_MARKER = re.compile(
+    r"(?m)^(?:" + "|".join(re.escape(m) for m in _HANDOFF_CONTENT_MARKERS) + r")"
+)
+
 
 def _handoff_paths_in(text):
     """Every hand-off-carrying path `text` names, opaque tool results included.
@@ -6045,13 +6323,16 @@ def _file_holds_handoff(path):
     files by an opaque id. Fails OPEN — an unreadable or missing path is not a
     hand-off — because this guard's job is to refuse a read of a KNOWN
     instruction file, and refusing an unrelated tool result the agent has every
-    right to window would strand it for no benefit."""
+    right to window would strand it for no benefit.
+
+    A marker counts only at the start of a line (`_HANDOFF_LINE_START_MARKER`),
+    so a result that merely quotes advance output is not classified as one."""
     try:
         with open(path, "rb") as handle:
             head = handle.read(_HANDOFF_SNIFF_BYTES).decode("utf-8", "replace")
     except OSError:
         return False
-    return any(marker in head for marker in _HANDOFF_CONTENT_MARKERS)
+    return bool(_HANDOFF_LINE_START_MARKER.search(head))
 
 
 def _run_transcript_path(text, match):
@@ -6170,16 +6451,26 @@ def _live_handoff_idiom(stage):
     return None
 
 
-def _handoff_emits_body(upstream):
-    """True when some stage in `upstream` emits a contiguous BODY of a store.
+def _handoff_body_reaches(upstream):
+    """True when a stage in `upstream` emits a contiguous BODY of a store AND
+    that body reaches the end of `upstream` without being reduced.
 
-    Fails CLOSED: any stage that reads a hand-off and is not a recognised
-    reducer counts as a body emitter, so an unfamiliar reader piped into
-    `head`/`tail` is still refused."""
-    return any(
-        _handoff_paths_in(stage) and not _HANDOFF_REDUCER.search(stage)
-        for stage in upstream
-    )
+    Walks backwards from the stage nearest the window. A reducer on the way
+    (`_reduces_output`: grep, rg, wc — not an inverted `grep -v`) turns the
+    body into a match list, so the window downstream truncates matches, not a
+    section: `cat F | grep -n X | head` is a search. The live guard makes the
+    same cut with its `break`.
+
+    Fails CLOSED: any stage that reads a hand-off and is not itself a reducer
+    counts as a body emitter, and an unfamiliar stage between it and the
+    window (`sort`, `cut`) is not a reducer, so `cat F | sort | head` is still
+    refused."""
+    for stage in reversed(upstream):
+        if _reduces_output(stage):
+            return False
+        if _handoff_paths_in(stage) and not _HANDOFF_REDUCER.search(stage):
+            return True
+    return False
 
 
 def windowed_handoff_read(command):
@@ -6204,6 +6495,8 @@ def windowed_handoff_read(command):
     `grep PATTERN FILE | head` — which truncates grep's OUTPUT, not the file —
     and refused a `head` belonging to an entirely different command joined by
     `;`, handing the agent a refusal that named its own command as permitted.
+    An upstream body counts only when it reaches the window unreduced
+    (`_handoff_body_reaches`), so `cat F | grep X | head` is a search too.
 
     Pure and side-effect free, so the idiom set is assertable directly without
     going through captured stdout."""
@@ -6217,7 +6510,7 @@ def windowed_handoff_read(command):
             idiom = _handoff_idiom(stage)
             if not idiom:
                 continue
-            if _handoff_paths_in(stage) or _handoff_emits_body(pipeline[:index]):
+            if _handoff_paths_in(stage) or _handoff_body_reaches(pipeline[:index]):
                 return idiom
     return None
 
@@ -6253,12 +6546,17 @@ def _handoff_subcommand(stage):
 
     Position-aware for the reason `_gating_subcommand` is: the name is only an
     invocation when it is the program the stage runs, so
-    `grep "editor advance" notes.md | head` is not a hit."""
+    `grep "editor advance" notes.md | head` is not a hit.
+
+    `--help` / `-h` is not a hit either: `advance --help` prints clap's help
+    text, which carries no step instructions to lose."""
     try:
         tokens = shlex.split(stage, posix=True)
     except ValueError:
         match = _HANDOFF_PRODUCER_INVOCATION.search(stage)
-        return match.group(1) if match else None
+        if not match or _HELP_FLAG.search(stage[match.end():]):
+            return None
+        return match.group(1)
     for index, tok in enumerate(tokens):
         if _program_name(tok) not in _CODEYAM_CLIS:
             continue
@@ -6266,6 +6564,8 @@ def _handoff_subcommand(stage):
             continue
         rest = tokens[index + 1:]
         if len(rest) >= 2 and rest[0] == "editor" and rest[1] in _HANDOFF_PRODUCING_SUBCOMMANDS:
+            if any(arg in ("--help", "-h") for arg in rest[2:]):
+                return None
             if rest[1] == "step-handoff" and any(
                 arg == "--section" or arg.startswith("--section=") for arg in rest[2:]
             ):
@@ -6309,6 +6609,210 @@ def windowed_live_handoff(command):
     return None
 
 
+# The label `_handoff_subcommand` gives a `step-handoff --section` answer.
+_SECTION_ANSWER = "step-handoff --section"
+
+
+def _pipeline_texts(command):
+    """Each pipeline of `command` re-joined into one ` | `-separated string,
+    heredoc bodies elided, so a per-pipeline predicate sees one command at a
+    time and never a `head` that belongs to a neighbouring `;` segment."""
+    return [
+        " | ".join(stage.strip() for stage in pipeline)
+        for pipeline in _pipelines(elide_heredoc_bodies(command or ""))
+    ]
+
+
+def _live_handoff_windows(command):
+    """Every `windowed_live_handoff` match in `command`, one per pipeline."""
+    windows = []
+    for text in _pipeline_texts(command):
+        live = windowed_live_handoff(text)
+        if live:
+            windows.append(live)
+    return windows
+
+
+def refused_live_handoff(command):
+    """The first live window in `command` the hook REFUSES, or None.
+
+    A window of a `step-handoff --section` answer is not refused: the agent
+    already chose a bounded unit by name, the answer reports any required
+    section it left out, and refusing it threw away the whole compound — the
+    `track-step` riding beside it included — in about 35 of 219 measured fleet
+    sessions. It gets `windowed_section_notice` instead. A window of the whole
+    store (`advance | head`, `step | sed -n …`, bare `step-handoff | head`)
+    still is refused."""
+    for live in _live_handoff_windows(command):
+        if live[0] != _SECTION_ANSWER:
+            return live
+    return None
+
+
+def windowed_section_answer(command):
+    """The idiom of the first windowed `--section` answer in `command`, or None."""
+    for subcommand, idiom in _live_handoff_windows(command):
+        if subcommand == _SECTION_ANSWER:
+            return idiom
+    return None
+
+
+def windowed_section_notice(idiom):
+    """The advisory a windowed `--section` answer carries instead of a refusal."""
+    return (
+        f"this pipes a `step-handoff --section` answer into `{idiom}`, which can "
+        f"cut a section short. The answer ends with the line `step-handoff: N "
+        f"REQUIRED section(s) of this step are NOT shown above: …`, the only "
+        f"signal a required section went unread, and a window drops that line "
+        f"first. Running `{cli_command()} editor step-handoff --section <name>` "
+        f"bare is the complete read. Not blocking; your command still runs."
+    )
+
+
+# The programs a window stage dropped by `dewindowed_live_handoff` may run.
+# Each one only reads stdin and writes stdout, so dropping it changes what the
+# caller SEES and nothing else. `tee`, `xargs`, and `while read` are left out
+# on purpose: each one writes a file or runs a command, and dropping it would
+# change what the call DOES.
+_DROPPABLE_WINDOW_PROGRAMS = frozenset(
+    ("head", "tail", "sed", "awk", "grep", "egrep", "fgrep", "rg", "cat", "cut", "sort", "uniq")
+)
+
+# A construct that lets an otherwise read-only stage write or execute: an
+# output redirection, or awk's `system(`. Matched over the raw stage text with
+# quotes included, so a `>` inside a quoted pattern also refuses. That fails
+# closed and keeps today's refusal.
+_WINDOW_STAGE_SIDE_EFFECT = re.compile(r">|\bsystem\s*\(")
+
+# `sed`'s own ways to write: `-i` / `--in-place`, and the `w FILE` command.
+_SED_WRITES = re.compile(r"(?:^|\s)-[A-Za-z]*i|--in-place|\bw\s")
+
+
+def _droppable_window_stage(stage):
+    """True when `stage` can be dropped from a pipeline without changing
+    anything except what reaches the terminal."""
+    try:
+        tokens = shlex.split(stage, posix=True)
+    except ValueError:
+        return False
+    if not tokens:
+        return False
+    program = _program_name(tokens[0])
+    if program not in _DROPPABLE_WINDOW_PROGRAMS or _WINDOW_STAGE_SIDE_EFFECT.search(stage):
+        return False
+    if program == "sed" and _SED_WRITES.search(stage):
+        return False
+    # awk can read from a command with `"cmd" | getline`; the quoted `|` stays
+    # inside the stage, so any `|` left in an awk stage refuses.
+    return not (program == "awk" and "|" in stage)
+
+
+def _unrewritable_construct(command, pairs):
+    """True when `command` carries a heredoc, a subshell, or a command
+    substitution — a shape whose window output could feed something the
+    rewrite cannot see, such as `x=$(advance | tail)`. `pairs` is the
+    command's `_split_commands_with_separators` result."""
+    if elide_heredoc_bodies(command, keep_programs=False) != command:
+        return True
+    return any(separator and separator in "()`" for _, separator in pairs)
+
+
+def _live_window_drops(pairs):
+    """What `dewindowed_live_handoff` removes from `pairs`: the indices of every
+    stage piped after a live hand-off producer, and for each producer the
+    separator it inherits from its pipeline's last stage. None when any such
+    stage could change what the call DOES (`_droppable_window_stage`)."""
+    dropped = set()
+    separators = {}
+    for span in _pipeline_spans(pairs):
+        segments = [pairs[index][0] for index in span]
+        if not refused_live_handoff(" | ".join(s.strip() for s in segments)):
+            continue
+        producer = next(k for k, s in enumerate(segments) if _handoff_subcommand(s))
+        window = span[producer + 1:]
+        if not window or not all(_droppable_window_stage(pairs[i][0]) for i in window):
+            return None
+        dropped.update(window)
+        separators[span[producer]] = pairs[span[-1]][1]
+    return dropped, separators
+
+
+def _rejoin_pairs(pairs, dropped, separators):
+    """The command text of `pairs` without the `dropped` indices, each index in
+    `separators` taking that separator instead of its own. A stage left with no
+    separator (the end of the command) loses its trailing whitespace."""
+    parts = []
+    for index, (segment, separator) in enumerate(pairs):
+        if index in dropped:
+            continue
+        separator = separators.get(index, separator)
+        parts.append((segment if separator else segment.rstrip()) + separator)
+    return "".join(parts)
+
+
+def dewindowed_live_handoff(command):
+    """`command` with each refused live hand-off window removed, or None when
+    that cannot be done safely.
+
+    The window is everything piped AFTER the hand-off producer in the same
+    pipeline: `advance 2>&1 | tail -40 && track-step completed` becomes
+    `advance 2>&1 && track-step completed`. Every other part of the call is
+    kept byte for byte, separators included, so a command chained after the
+    window still runs. The refusal used to throw those commands away with the
+    read, and the agent had to re-issue them. That happened on all four VMs
+    on 2026-11-21.
+
+    None, so the caller refuses as before, when:
+      - nothing in `command` is a refused live window;
+      - the command carries a heredoc, a subshell, or a command
+        substitution, since the window's output could then feed something
+        this rewrite cannot see, such as `x=$(advance | tail)`;
+      - a dropped stage could write or run something
+        (`_droppable_window_stage`), e.g. `advance | tee out.txt | tail`,
+        because a later command may read `out.txt`;
+      - the result still carries a refused window. That should never happen,
+        and refusing is the safe answer if it does.
+
+    Pure, so the rewrite is assertable directly."""
+    if not command or not refused_live_handoff(command):
+        return None
+    pairs = _split_commands_with_separators(command)
+    if _unrewritable_construct(command, pairs):
+        return None
+    drops = _live_window_drops(pairs)
+    if drops is None:
+        return None
+    rewritten = _rejoin_pairs(pairs, *drops)
+    if refused_live_handoff(rewritten):
+        return None
+    return rewritten
+
+
+def harness_applies_updated_input(event):
+    """True when the caller is Claude Code itself, which applies the
+    `updatedInput` a PreToolUse hook returns.
+
+    Claude Code puts a `tool_use_id` on every PreToolUse event. The OpenCode
+    plugin and the Antigravity shim each build their own Claude-shaped payload
+    without one, and neither reads `updatedInput` back, so a rewrite there
+    would silently run the windowed command as written. This fails closed: an
+    event with no id gets no rewrite and keeps today's refusal."""
+    return bool((event or {}).get("tool_use_id"))
+
+
+def rewritten_handoff_notice(subcommand, idiom):
+    """The pointer an allowed, de-windowed call carries."""
+    cli = cli_command()
+    return (
+        f"the `{idiom}` window piped after `{cli} editor {subcommand}` was "
+        f"removed before this call ran, so you get the WHOLE step hand-off, and "
+        f"every command chained after it ran as written. A window of a hand-off "
+        f"can end on a `━━━ … ━━━` banner and drop that section's body without "
+        f"any sign. Run `{cli} editor {subcommand}` bare. To narrow it, use "
+        f"`{cli} editor step-handoff --section <NAME>`."
+    )
+
+
 def handoff_refusal_collateral(command):
     """The pipelines of `command` that read no hand-off window — what a
     pre-execution refusal discards along with the read.
@@ -6318,9 +6822,8 @@ def handoff_refusal_collateral(command):
     like that, one of them discarding a `track-step completed` workflow
     mutation, and nothing said so. Naming them is the fix."""
     collateral = []
-    for pipeline in _pipelines(elide_heredoc_bodies(command or "")):
-        text = " | ".join(stage.strip() for stage in pipeline)
-        if windowed_handoff_read(text) or windowed_live_handoff(text):
+    for text in _pipeline_texts(command):
+        if windowed_handoff_read(text) or refused_live_handoff(text):
             continue
         collateral.append(text)
     return collateral
@@ -6335,11 +6838,10 @@ def handoff_refusal_offender(command):
     piped `step-handoff`, and the refusal — advice about hand-off sections —
     read as an answer about the `grep`. Quoting the matched part is what
     makes clear the rest of the line was not the problem."""
-    pipelines = _pipelines(elide_heredoc_bodies(command or ""))
-    for pipeline in pipelines:
-        text = " | ".join(stage.strip() for stage in pipeline)
-        if windowed_handoff_read(text) or windowed_live_handoff(text):
-            return compound_stage_evidence(text, len(pipelines))
+    texts = _pipeline_texts(command)
+    for text in texts:
+        if windowed_handoff_read(text) or refused_live_handoff(text):
+            return compound_stage_evidence(text, len(texts))
     return ""
 
 
@@ -6396,10 +6898,12 @@ def _live_handoff_recovery(subcommand):
             f"instructions it printed, "
         ),
         "step": (
-            f"run `{cli} editor step` BARE — it prints the current step's "
-            f"instructions once and saves the same text to `{_HANDOFF_STORE}`, "
-            f"so there is nothing to window and nothing to lose by reading "
-            f"all of it. To narrow, "
+            f"run `{cli} editor step` BARE, as a call of its own — it prints "
+            f"the current step's instructions once and saves the same text to "
+            f"`{_HANDOFF_STORE}`, so there is nothing to window and nothing to "
+            f"lose by reading all of it. Reading another file first (e.g. "
+            f"`.codeyam/state/context-carry.md` after a reset) is a SEPARATE "
+            f"call before it, never `;`-joined to it. To narrow, "
         ),
         "step-handoff --section": (
             "run it WITHOUT the window — the command already saves and prints "
@@ -7088,6 +7592,111 @@ def classify_write_target(file_path, project_dir):
     return ("code", normalized)
 
 
+# Stack assumption: these are the test-file conventions of the runners codeyam
+# supports today — a `tests/` / `test/` / `__tests__/` / `spec/` directory, the
+# JS/TS `*.test.*` / `*.spec.*` names, pytest's `test_*` / `*_test`, Go's
+# `*_test.go`, and Rust's colocated `#[cfg(test)]` module. A test file outside
+# every convention reads as PRODUCTION, which is refused with the `editor
+# change` recovery — today's behavior — so an unknown stack degrades to the old
+# cost, never to a production edit slipping through a test-only gate.
+_TEST_DIR_SEGMENTS = frozenset({"tests", "test", "__tests__", "spec"})
+_INLINE_TEST_MARKER = "#[cfg(test)]"
+
+
+def is_test_path(rel):
+    """True when the repo-relative `rel` names a test file by convention."""
+    parts = rel.replace("\\", "/").split("/")
+    if any(part in _TEST_DIR_SEGMENTS for part in parts[:-1]):
+        return True
+    name = parts[-1].lower()
+    if ".test." in name or ".spec." in name:
+        return True
+    stem = name.rsplit(".", 1)[0] if "." in name else ""
+    return stem.startswith("test_") or stem.endswith(("_test", "_tests"))
+
+
+def inline_test_module_span(body):
+    """`(start, end)` character offsets of the first top-level `#[cfg(test)]`
+    module in a Rust source `body`, or None when it has no inline one.
+
+    The span runs from the marker to the end of the first column-0 `}` line
+    after it. That relies on rustfmt's layout — every line inside the module is
+    indented — which `cargo fmt` enforces on this kind of file. An out-of-line
+    `#[cfg(test)] mod tests;` (its `;` comes before any `{`) is skipped, as is a
+    `#[cfg(test)] use …;`, rather than given a span that swallows what follows
+    it."""
+    padded = "\n" + body
+    search_from = 0
+    while True:
+        hit = padded.find("\n" + _INLINE_TEST_MARKER, search_from)
+        if hit < 0:
+            return None
+        start = hit  # offset into `body`: `padded` is one character longer
+        brace = body.find("{", start)
+        semi = body.find(";", start)
+        if brace >= 0 and not 0 <= semi < brace:
+            close = body.find("\n}", brace)
+            return None if close < 0 else (start, close + 2)
+        search_from = hit + 1
+
+
+def edits_only_inline_tests(tool_name, tool_input, abs_path):
+    """True when an `Edit` to a Rust source file replaces text that lies wholly
+    inside the file's colocated `#[cfg(test)]` module.
+
+    `Write` is never one: it replaces the whole file, production half included.
+    An `old_string` absent from the file is not one either — that Edit fails on
+    its own, and allowing it would only defer the refusal to a retry."""
+    if tool_name != "Edit" or not abs_path.endswith(".rs"):
+        return False
+    old = tool_input.get("old_string") or ""
+    if not old:
+        return False
+    try:
+        with open(abs_path, "r", encoding="utf-8") as f:
+            body = f.read()
+    except (OSError, UnicodeDecodeError):
+        return False
+    span = inline_test_module_span(body)
+    first = body.find(old)
+    if span is None or first < 0:
+        return False
+    last = body.rfind(old) if tool_input.get("replace_all") else first
+    return first >= span[0] and last + len(old) <= span[1]
+
+
+def is_test_edit(tool_name, tool_input, rel, project_dir):
+    """True when this Write/Edit touches test code only — a test file by path
+    convention, or an Edit confined to a Rust file's inline test module."""
+    if is_test_path(rel):
+        return True
+    return edits_only_inline_tests(tool_name, tool_input, os.path.join(project_dir, rel))
+
+
+def test_edit_allowed(
+    slug, test_edit_slugs, code_change_slugs, tool_name, tool_input, rel, project_dir
+):
+    """True when the slug-level test-edit carve-out admits this Write/Edit: the
+    active slug is a test-edit slug, it is NOT already a code-change slug (where
+    the ordinary path allows everything and this check would be moot), and the
+    target is test code."""
+    if not slug or slug not in test_edit_slugs or slug in code_change_slugs:
+        return False
+    return is_test_edit(tool_name, tool_input, rel, project_dir)
+
+
+def test_edit_refusal_suffix(at_test_edit_slug):
+    """The sentence appended to the code-change refusal at a test-edit slug, so
+    the reader learns a TEST edit would have passed; empty elsewhere."""
+    if not at_test_edit_slug:
+        return ""
+    return (
+        " This step does allow TEST edits — a test file, or a Rust "
+        "file's `#[cfg(test)]` module — without `editor change`; this "
+        "target is production code."
+    )
+
+
 def preview_marker_state(marker_path, step):
     """`(preview_ok, observed)` for the preview gate — whether the marker at
     `marker_path` matches `step`, and a human-readable account of what was
@@ -7312,13 +7921,48 @@ _UNFINISHED_WARNING = ""
 _PENDING_CONTEXT = []
 
 
-def allow_context_json(message):
+# The rewritten tool input an allow hands back as `updatedInput`, or None.
+# Set by `rewrite_bash_command`, the hook's only rewrite so far.
+_UPDATED_INPUT = None
+
+
+def rewrite_bash_command(tool_input, command):
+    """Swap `command` into the in-flight Bash call.
+
+    `tool_input` is mutated in place so every gate after the rewrite judges
+    the command that will actually run. The same input is recorded for the
+    allow to return as `updatedInput`."""
+    global _UPDATED_INPUT
+    tool_input["command"] = command
+    _UPDATED_INPUT = dict(tool_input)
+
+
+def rewrite_windowed_handoff(event, tool_input, command, live):
+    """Strip the refused live window `live` (a `(subcommand, idiom)` pair) out
+    of `command` and swap the result into the call, when the harness applies
+    a rewrite and the rewrite is safe. True when it did, so the caller skips
+    the refusal; False leaves the call untouched for the refusal to judge."""
+    if not harness_applies_updated_input(event):
+        return False
+    rewritten = dewindowed_live_handoff(command)
+    if not rewritten:
+        return False
+    rewrite_bash_command(tool_input, rewritten)
+    notice("windowed-handoff-rewrite", rewritten_handoff_notice(*live))
+    return True
+
+
+def allow_context_json(message, updated_input=None):
     """The stdout document that hands `message` to the model on an allowed
-    call. Carries no `permissionDecision`, so it grants nothing — the call
-    still goes through the normal permission flow. Pure."""
-    return json.dumps(
-        {"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": message}}
-    )
+    call, plus `updated_input` as `updatedInput` when the call was rewritten.
+    Carries no `permissionDecision`, so it grants nothing — the call, rewritten
+    or not, still goes through the normal permission flow. Pure."""
+    output = {"hookEventName": "PreToolUse"}
+    if message:
+        output["additionalContext"] = message
+    if updated_input is not None:
+        output["updatedInput"] = updated_input
+    return json.dumps({"hookSpecificOutput": output})
 
 
 def allow_context_message(parts):
@@ -7333,8 +7977,8 @@ def allow_context_message(parts):
 
 def _deliver_context_on_allow(message=""):
     text = allow_context_message([message, *_PENDING_CONTEXT, _UNFINISHED_WARNING])
-    if text:
-        print(allow_context_json(text))
+    if text or _UPDATED_INPUT is not None:
+        print(allow_context_json(text, _UPDATED_INPUT))
 
 
 def describe_call(tool_name, tool_input):
@@ -7456,13 +8100,29 @@ def main():
                 call=call,
                 refused_path=rewrite_target,
             )
+        appended = untracked_source_append_target(
+            tool_input.get("command", ""), project_dir, session_cwd
+        )
+        if appended:
+            reason, next_action = untracked_source_append_refusal(appended)
+            block(
+                project_dir,
+                "scripted-rewrite",
+                reason,
+                next_action,
+                detail=appended,
+                evidence=resolved_context(project_dir, "git ls-files"),
+                call=call,
+                refused_path=appended,
+            )
         # Its non-blocking twin, same scope: a split into untracked files passes
         # the guard above, and is still a scripted move of tracked source.
         # The line-range shape is the exception: it is refused (see
-        # `_LINE_RANGE_SPLIT_SHAPES`).
+        # `_LINE_RANGE_SPLIT_SHAPES`, and `_pipeline_carves_by_line_count` for
+        # the head/tail count, which only the pipeline making the move earns).
         split = split_by_script_target(tool_input.get("command", ""), project_dir)
         if split:
-            shape = line_range_split(tool_input.get("command", ""))
+            shape = line_range_split(tool_input.get("command", ""), split, project_dir)
             if shape:
                 reason, next_action, evidence = line_range_split_refusal(*split, shape)
                 block(
@@ -7551,7 +8211,7 @@ def main():
     if tool_name == "Bash":
         command = tool_input.get("command", "")
         piped = piped_gating_command(command)
-        if piped and windowed_live_handoff(command):
+        if piped and refused_live_handoff(command):
             piped = None
         if piped:
             if not _capture_available():
@@ -7581,7 +8241,7 @@ def main():
         # anywhere but last reports a status the caller cannot attribute. One
         # advisory per call: the piped one already names the status read.
         compound = None if piped else compound_gating_command(command)
-        if compound and not windowed_live_handoff(command):
+        if compound and not refused_live_handoff(command):
             notice("compound-gating-command", compound_gating_notice(*compound))
 
     # Recursive-delete guard. Neither step-scoped nor editor-mode-scoped, for
@@ -7645,7 +8305,11 @@ def main():
                 ),
                 call=call,
             )
-        live = windowed_live_handoff(command)
+        live = refused_live_handoff(command)
+        # On Claude Code the window is stripped instead of refused, and every
+        # gate below judges the rewritten command. See `dewindowed_live_handoff`.
+        if live and rewrite_windowed_handoff(event, tool_input, command, live):
+            live = None
         if live:
             subcommand, idiom = live
             reason, next_action = windowed_handoff_read_refusal(
@@ -7666,6 +8330,11 @@ def main():
                 ),
                 call=call,
             )
+        # A windowed `--section` answer runs, with a pointer: see
+        # `refused_live_handoff` for why it is not refused.
+        section_idiom = windowed_section_answer(command)
+        if section_idiom:
+            notice("windowed-section-read", windowed_section_notice(section_idiom))
 
     # A `Read` of the hand-off carrying NEITHER key is a whole-file read and
     # stays allowed — it is one of the two complete alternatives the refusal
@@ -7800,6 +8469,7 @@ def main():
     commit_slugs = set(mode_table.get("commitSlugs", []))
     push_slugs = set(mode_table.get("pushSlugs", []))
     preview_required_slugs = set(mode_table.get("previewRequiredSlugs", []))
+    test_edit_slugs = set(mode_table.get("testEditSlugs", []))
     test_run_slugs = set(mode_table.get("testRunSlugs", []))
     no_test_slugs = mode_table.get("noTestSlugs", {}) or {}
 
@@ -7826,14 +8496,19 @@ def main():
         # An untokenizable command (None) is refused on the honest
         # unparseable reason rather than asserted to be a test run.
         #
-        # Post-hardening slugs carve out ONE shape: a partition-narrowed
-        # `refresh-tests`, which is the recovery a stale-partition commit
-        # refusal names at exactly these slugs. Pre-Demo slugs get no carve-out.
+        # Post-hardening slugs carve out ONE shape: a `--partition`- or
+        # `--test`-narrowed `refresh-tests`, the recoveries a stale-partition
+        # commit refusal and a red owed run name at exactly these slugs. At
+        # push (`_FILE_NARROWED_SLUGS`) a `--file`-narrowed one is admitted
+        # too: the deferred-commit push refusal's own recovery.
+        # Pre-Demo slugs get no carve-out.
         test_run = False
         if slug and test_run_slugs and slug not in test_run_slugs:
             test_run = is_test_run_command(command, project_dir)
             post_hardening = (no_test_slugs.get(slug) or {}).get("kind") == "post-hardening"
-            if test_run and post_hardening and is_partition_refresh_only(command, project_dir):
+            if test_run and post_hardening and is_narrowed_refresh_only(
+                command, project_dir, allow_file=slug in _FILE_NARROWED_SLUGS
+            ):
                 test_run = False
         if test_run is None:
             refuse_unparseable(project_dir, command, call)
@@ -7977,6 +8652,22 @@ def main():
         # PAUSED mid-operation, and `git commit` stays gated by its own slug
         # check regardless, so this cannot land a commit outside the commit
         # slug — it only lets an in-flight integration be finished.
+        #
+        # A test-edit slug (`backend-review`) admits test code ahead of that
+        # refusal. Without it, a missing test found at review cost an `editor
+        # change` walk-back to step 12 and a 15-minute replay of 12–13 for an
+        # edit neither step's output depends on. Production paths fall through
+        # to the refusal unchanged.
+        if test_edit_allowed(
+            slug,
+            test_edit_slugs,
+            code_change_slugs,
+            tool_name,
+            tool_input,
+            normalized_target,
+            project_dir,
+        ):
+            allow(f"{normalized_target} is test code and `{slug}` allows test edits")
         if (
             slug
             and code_change_slugs
@@ -7984,6 +8675,7 @@ def main():
             and not merge_in_progress(project_dir)
         ):
             allowed = ", ".join(sorted(code_change_slugs))
+            test_only = test_edit_refusal_suffix(slug in test_edit_slugs)
             # The list of permitted slugs is REFERENCE, deliberately below
             # both contract lines. Led with, it reads as a set to reason
             # about — which is how this block came to be the most-retried
@@ -7999,7 +8691,7 @@ def main():
                     f"`editor change` reopens the build loop: it MOVES the workflow "
                     f"cursor back to the nearest earlier slug that permits edits and "
                     f"prints the command to return here. Code changes are allowed at "
-                    f"slugs: {allowed}."
+                    f"slugs: {allowed}.{test_only}"
                 ),
                 detail=f"{slug}\x00{file_path}",
                 evidence=(

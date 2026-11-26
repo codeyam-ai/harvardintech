@@ -98,8 +98,8 @@ to re-research at the `explore` slug:
 - `.codeyam/test-registry.json` — every registered test, its file, and the
   glossary entries it exercises. Use it to find which tests cover the
   area you're about to touch
-- `.codeyam/deps-index.txt` — line-oriented projection of
-  `dependency-graph.json`. Use it to find which functions/components
+- `.codeyam/deps-index.txt` — line-oriented projection of the dependency
+  graph (sharded under `.codeyam/dependency-graph/`). Use it to find which functions/components
   call into the area you're touching, and what already exists nearby
   that you might reuse
 

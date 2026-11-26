@@ -179,6 +179,20 @@ tests; tests that only pass in a particular order or with shared state (they
 cannot be run alone, which defeats targeting); and test fixtures or setup
 files that a large share of tests import.
 
+### Slow tests that hold a run's tail
+
+One test that runs for half an hour holds its whole partition open, however
+fast the rest of the suite is. Rank them across every session and machine:
+`codeyam-editor editor speed-history --kind slow-tests --since 14d --format json`.
+Each entry is one test, with `totalMs` (every recorded run's time summed — the
+minutes it has held), `maxMs`, `runs`, `unfinished` (runs that ended with it
+still going) and `hosts`. Rank by `totalMs`. A test that appears on several
+hosts is a property of the test, not of one machine. A test with `unfinished`
+above zero has been killed at a timeout, so its `maxMs` is a minimum. A test
+is recorded once it passes 60 seconds, and only for runners that can time
+their tests (cargo today). An empty answer on a project with other runners
+means "not measured", not "no slow tests". Say which it is.
+
 ## Phase 4: Diagnose
 
 Map each hotspot to a cause and an owner.

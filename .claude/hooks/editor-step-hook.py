@@ -1047,6 +1047,99 @@ def _question_open(project_dir):
     )
 
 
+def _utc_now_iso():
+    """Now, as the second-precision RFC3339 UTC stamp the speed ledger's waits
+    sidecar uses (`take_waiting_ms` parses it back)."""
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+def _record_speed_wait(project_dir):
+    """Append the open question's `{askedAt, answeredAt}` interval to the speed
+    ledger's machine-local waits sidecar, so a plan cycle's row can separate
+    active time from time spent waiting on the user. Must run before the
+    awaiting-user marker is removed. Best-effort; prints nothing."""
+    run_dir = os.path.join(project_dir, ".codeyam", "run")
+    try:
+        with open(os.path.join(run_dir, "awaiting-user.json")) as f:
+            asked_at = json.load(f).get("askedAt")
+        if not asked_at:
+            return
+        answered_at = _utc_now_iso()
+        with open(os.path.join(run_dir, "speed-waits.jsonl"), "a") as f:
+            f.write(json.dumps({"askedAt": asked_at, "answeredAt": answered_at}) + "\n")
+    except (OSError, ValueError, AttributeError):
+        pass
+
+
+_TURN_ENDED_MARKER = "turn-ended.json"
+
+
+def _record_turn_end(project_dir):
+    """Stamp when the agent's turn ended. A turn that ends hands the session to
+    the user, so the gap until their next prompt is time waiting on them — the
+    wait a plan cycle with its check-ins waived spends, since it asks no
+    structured question. A later stop overwrites the stamp, so a stop the hook
+    refused (the agent kept working) is superseded by the real one."""
+    run_dir = os.path.join(project_dir, ".codeyam", "run")
+    try:
+        os.makedirs(run_dir, exist_ok=True)
+        with open(os.path.join(run_dir, _TURN_ENDED_MARKER), "w") as f:
+            json.dump({"endedAt": _utc_now_iso()}, f)
+    except OSError:
+        pass
+
+
+def _prompt_is_from_the_user(prompt_text):
+    """Whether a submitted prompt is the user coming back, rather than the
+    harness re-invoking the agent: a background task's completion notification
+    or a scheduled wakeup arrives as a prompt too, but nobody was waited on."""
+    if not isinstance(prompt_text, str):
+        return False
+    if "<task-notification>" in prompt_text:
+        return False
+    return not _wakeup_tokens(prompt_text)
+
+
+def _turn_wait_interval(ended_at, prompt_text, question_was_open, now):
+    """The `{askedAt, answeredAt}` wait from the turn ending at `ended_at` to
+    this prompt, or None when it is not a wait on the user: no recorded turn
+    end, a prompt the harness sent, or an open question (whose own, earlier
+    `askedAt` interval already covers this gap — recording both double counts)."""
+    if not ended_at or question_was_open or not _prompt_is_from_the_user(prompt_text):
+        return None
+    return {"askedAt": ended_at, "answeredAt": now}
+
+
+def _record_turn_wait(project_dir, prompt_text):
+    """Append the turn-end → user-prompt wait to the speed ledger's waits
+    sidecar and consume the turn-end stamp. Must run before the awaiting-user
+    marker is removed. Best-effort; prints nothing."""
+    run_dir = os.path.join(project_dir, ".codeyam", "run")
+    marker = os.path.join(run_dir, _TURN_ENDED_MARKER)
+    try:
+        with open(marker) as f:
+            ended_at = json.load(f).get("endedAt")
+    except (OSError, ValueError, AttributeError):
+        return
+    try:
+        os.remove(marker)
+    except OSError:
+        pass
+    interval = _turn_wait_interval(
+        ended_at,
+        prompt_text,
+        _question_open(project_dir),
+        _utc_now_iso(),
+    )
+    if not interval:
+        return
+    try:
+        with open(os.path.join(run_dir, "speed-waits.jsonl"), "a") as f:
+            f.write(json.dumps(interval) + "\n")
+    except OSError:
+        pass
+
+
 def _stale_wakeup_refusal(project_dir, event_data, check):
     """The `{"decision": "block"}` document refusing a fully-stale wakeup
     prompt, or None to let the prompt through. A refusal is logged to the
@@ -1179,6 +1272,11 @@ _RESET_DELIVERY_WINDOW_S = 120
 # A sentence of `resume_prompt_keystrokes` (context_reset.rs) that nothing
 # else the server types carries.
 _RESUME_PROMPT_MARK = "The previous conversation was reset at a workflow phase boundary"
+# A line the user queued during the last turn is copied into the carry note
+# under this heading before `/clear` (`QUEUED_SECTION_HEADING` in
+# context_reset_queued.rs). Such a prompt is the user's, never stale.
+_CARRY_REL = os.path.join(".codeyam", "state", "context-carry.md")
+_QUEUED_SECTION_HEADING = "## User message received during reset"
 
 
 def _read_json_dict(path):
@@ -1266,17 +1364,69 @@ def _reset_exempt_prompt(stripped):
     )
 
 
-def _reset_arrival_lines(project_dir, prompt_text, own_session, now_unix):
-    """The `<arrived-during-reset>` block for this prompt, or `[]`.
+def _unquote_carry_line(line):
+    """A blockquote line with its `> ` (or bare `>`) marker removed."""
+    return line[2:] if line.startswith("> ") else line[1:]
 
-    Fires only for a prompt `_reset_exempt_prompt` does not exempt, and only
-    while a reset is in flight."""
-    if not isinstance(prompt_text, str) or not prompt_text.strip():
+
+def _parse_carried_section(text):
+    """The quoted messages under the carry note's queued-message heading, in
+    order, or `[]`. Each blockquote is one message; the section ends at the
+    next `## ` heading."""
+    at = text.find(_QUEUED_SECTION_HEADING)
+    if at < 0:
         return []
-    if _reset_exempt_prompt(prompt_text.strip()):
+    messages, current = [], []
+    for line in text[at + len(_QUEUED_SECTION_HEADING):].splitlines():
+        if line.startswith("## "):
+            break
+        if line.startswith(">"):
+            current.append(_unquote_carry_line(line))
+        elif current:
+            messages.append("\n".join(current))
+            current = []
+    if current:
+        messages.append("\n".join(current))
+    return messages
+
+
+def _carried_user_messages(project_dir):
+    """The user lines the server copied into the carry note before `/clear`
+    (`context_reset_queued.rs`), un-quoted, or `[]`."""
+    try:
+        with open(os.path.join(project_dir, _CARRY_REL), "r") as f:
+            return _parse_carried_section(f.read())
+    except OSError:
         return []
-    if not _reset_in_flight(project_dir, own_session, now_unix):
-        return []
+
+
+def _is_carried_user_message(project_dir, prompt_text):
+    """Whether `prompt_text` is one of the carried user lines, compared with
+    whitespace collapsed."""
+    wanted = " ".join(prompt_text.split())
+    return any(" ".join(m.split()) == wanted for m in _carried_user_messages(project_dir))
+
+
+def _user_message_arrival_lines():
+    """The `<arrived-during-reset>` block for a prompt the server carried as
+    the user's own queued message: act on it."""
+    return [
+        "",
+        "<arrived-during-reset>",
+        "FROM THE USER: this prompt arrived while a phase-boundary context reset "
+        "was in flight, but it is a message the user typed during the previous "
+        "conversation's last turn. The server carried it into "
+        "`.codeyam/state/context-carry.md` under \"User message received during "
+        "reset\". It is not stale.",
+        "Act on it: read the carry note for the context it refers to and do what "
+        "it asks. Do not set it aside.",
+        "</arrived-during-reset>",
+    ]
+
+
+def _possibly_stale_arrival_lines():
+    """The `<arrived-during-reset>` block for any other prompt: most likely a
+    leftover check-in, but never stale if it is the user talking."""
     return [
         "",
         "<arrived-during-reset>",
@@ -1284,11 +1434,30 @@ def _reset_arrival_lines(project_dir, prompt_text, own_session, now_unix):
         "in flight, before its resume prompt. It is most likely a check-in or "
         "notification the previous conversation scheduled for itself, not an "
         "instruction for this one.",
-        "Do not act on it: run nothing it asks for and ask the user nothing about it. "
-        "Say in one line that a leftover prompt arrived during the reset and was set "
-        "aside, then end the turn — the resume prompt carries the workflow forward.",
+        "A message from the user is never stale: if this is the user talking to you "
+        "(a request or a reply), not a check-in or notification, act on it.",
+        "Otherwise do not act on it: run nothing it asks for and ask the user nothing "
+        "about it. Say in one line that a leftover prompt arrived during the reset and "
+        "was set aside, then end the turn — the resume prompt carries the workflow forward.",
         "</arrived-during-reset>",
     ]
+
+
+def _reset_arrival_lines(project_dir, prompt_text, own_session, now_unix):
+    """The `<arrived-during-reset>` block for this prompt, or `[]`.
+
+    Fires only for a prompt `_reset_exempt_prompt` does not exempt, and only
+    while a reset is in flight. A prompt the server carried as the user's
+    queued message gets the act-on-it block; anything else the stale one."""
+    if not isinstance(prompt_text, str) or not prompt_text.strip():
+        return []
+    if _reset_exempt_prompt(prompt_text.strip()):
+        return []
+    if not _reset_in_flight(project_dir, own_session, now_unix):
+        return []
+    if _is_carried_user_message(project_dir, prompt_text):
+        return _user_message_arrival_lines()
+    return _possibly_stale_arrival_lines()
 
 
 def _step_reminder_due(project_dir, key):
@@ -1818,9 +1987,14 @@ def main():
     # The user answered (or typed a new prompt, which also means they are
     # back): the session is no longer parked on them. Removes the marker the
     # pretool hook wrote when the question was raised.
+    if event_type == "user_prompt":
+        _record_turn_wait(project_dir, event_data.get("prompt"))
+    if event_type == "stop":
+        _record_turn_end(project_dir)
     if event_type == "user_prompt" or (
         event_type == "post_tool_use" and event_data.get("tool_name") == "AskUserQuestion"
     ):
+        _record_speed_wait(project_dir)
         try:
             os.remove(os.path.join(project_dir, ".codeyam", "run", "awaiting-user.json"))
         except OSError:

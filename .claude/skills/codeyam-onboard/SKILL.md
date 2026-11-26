@@ -265,7 +265,7 @@ Write `.codeyam/onboarding-report.md` with these sections:
 (diff-style summary: which fields you filled in, what you inferred from — including the partition table `configure-test-commands` printed, or its one-line "not auto-proposed" note)
 
 ## Code index
-- `dependency-graph.json` — N files analyzed, M entities, K imports
+- `dependency-graph/` — N files analyzed, M entities, K imports
 - `glossary.json` — A entries auto-added, S skipped (see Pending for full skip list)
 - `test-registry.json` — T entries across R runners
 

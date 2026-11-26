@@ -174,6 +174,24 @@ use the workaround it gives (or the closest read-only equivalent), continue,
 and list the gap under **CodeYam improvements** in the final report — what was
 missing, and the workaround used.
 
+**List the re-tests a push handed to this audit.** A push made with
+`editor push --defer-to-audit "<reason>"` skipped its queue-head re-test and
+left a `deferToAudit` note on the pushed tip, in the shipped
+`refs/notes/codeyam/emergency-push` ref. Fetch that ref, then let the merge
+gate name what is still owed:
+
+```bash
+git fetch origin '+refs/notes/codeyam/emergency-push:refs/notes/codeyam/emergency-push' 2>/dev/null || true
+codeyam-editor editor verify-full-finalize --format json   # read its `deferredToAudit` array
+```
+
+Each entry is a commit since the merge-base whose skipped partitions no full
+finalize has re-run yet. They are **owed**, not optional: the whole-repo
+`session-finalize` this procedure runs re-runs every partition and settles
+them, and the branch is not merge-ready until it does. Name each entry (short
+sha, skipped partitions, the quoted reason) under **Decisions** in the final
+report. A `verify-full-finalize` exit 0 means none are left owed.
+
 ---
 
 ## The one unrecoverable rule (read before any commit)
@@ -457,20 +475,37 @@ to it:**
    with `audit --timings`, or read this repo's recent full runs with
    `codeyam-editor editor audit-history --full-only`, rather than trusting any
    duration written in this file.
-2. **Read-only `reconcile-registry`** (no `--auto-apply`, so no partition
+2. **Compile gates** — `codeyam-editor editor verify-build --scope branch`
+   (every static check the branch's whole diff selects, as `session-finalize`
+   measures it), and, when the branch carries platform surface (see
+   "Cross-platform pitfalls"), `codeyam-editor editor cross-check`. A red here
+   is a source fix, so it belongs with step 4's edits, not after the warm.
+   Re-run both on this pass's own edits before the warm: the edits can redden
+   a check the branch passed.
+3. **Read-only `reconcile-registry`** (no `--auto-apply`, so no partition
    pre-flight). It lists the line drifts, stale entries, and unregistered tests
    that would otherwise turn the warm red.
-3. **Source edits** — the step-4b judgment fixes the non-cache-dependent
-   findings call for, plus the drifts the read-only reconcile listed. **Register each new test
+4. **Source edits** — the step-4b judgment fixes the non-cache-dependent
+   findings call for, the compile-gate failures, and the drifts the read-only
+   reconcile listed. **Register each new test
    as you write it** (`register-test`, `register-test-batch`, or
    `reconcile-registry --auto-apply --partition <the partition you touched>`),
    so the registry is complete before the warm rather than changed after it.
-4. **Warm** — a flag-free `codeyam-editor editor refresh-tests`, then re-run
+5. **Warm** — a flag-free `codeyam-editor editor refresh-tests`, then re-run
    the audit. What remains is the true debt.
-5. **Sweep** — step 5's `recapture-stale`, after the checkpoint commit step 5
+6. **Sweep** — step 5's `recapture-stale`, after the checkpoint commit step 5
    requires.
 
-Why the warm is fourth, not first: the warm is only durable until the next
+Why the compile gates come before the warm: each fix they force is a source
+edit, and every source edit re-stales the partitions the warm just paid for.
+Measured on `editor-improvements-112` (2026-11-17): three full warms (~31, ~23
+and ~20 minutes) where one would have done. After the first, a commit was
+refused by `cargo-clippy` (dead code already on the branch); later
+`cross-check` reported `[FAIL] windows-clippy` (two unix-only test helpers).
+Each was a one-line fix, and each re-staled all 12 cargo partitions. Both
+verdicts were available in minutes before the first warm.
+
+Why the warm is fifth, not first: the warm is only durable until the next
 source or registry edit. Touching one tracked file re-stales the partition
 that owns it, and a moved registry digest re-stales every partition of that
 runner (see 4a's second GOTCHA), so a warm paid before the edits is a warm
@@ -858,8 +893,19 @@ the fix, and leave its findings exactly where they are:
 
 ```bash
 codeyam-editor editor plan-create --source codeyam-audit --prefix audit \
-  --mode backend --title "<what the fix is>" --body-file <path>   # prints the slug
+  --mode backend --title "<what the fix is>" --body-file <path> \
+  --owns "<ID>:<subject>" --owns "<ID>:<subject>"   # prints the slug
 ```
+
+Pass one `--owns` per finding item the plan will fix: `<ID>:<subject>`, where
+the subject is the item's name exactly as the audit prints it (for a coverage
+row `name (path)`, the bare `name` is enough), or `<ID>` alone for the whole
+finding. `plan-create` refuses an id that is not on the `audit --only ?` list.
+From then on, while the plan is queued, every audit labels those findings
+`(owned by plan <slug>)` in text and lists them in the JSON `ownedBy[]` array
+(`{id, item, plan}`). The label never changes the verdict: owned findings still
+fail. A claim on a finding that no longer fails shows up under
+`staleOwnershipClaims[]` — drop it from that plan's `owns:`.
 
 Do **not** baseline those findings — not with a `plan:` justification, not with
 any other. CLAUDE.md's "No deferral primitives" rule forbids it: a suppression
@@ -887,6 +933,15 @@ The rules:
   forever. Record the call in the report.
 - **Anything that deletes or rewrites content** — see step 6: delete only what
   is clearly dead; leave anything uncertain in place and report it.
+- **A grown file over its size ceiling (`SOURCE_EXCEEDS_SIZE_BUDGET`)** is
+  decided here too, not asked. Re-record only the grown files with
+  `codeyam-editor editor size-ledger-init --force --file <path>…`, and keep it
+  only when its tally reports `lowered 0` (the same check the finalize's
+  size refusal names) — a non-zero count means it rewrote ceilings beyond the
+  growth being accepted; shrink those files instead.
+  For each re-recorded file this branch grew by more than the 25-line bar
+  above, write a paydown plan (`plan-create --prefix audit`) and list it
+  in the report.
 - **Accepting a finding into the audit baseline** is allowed without asking in
   exactly one case: a finding the check's own documentation says a
   capture or test cannot distinguish (e.g. a genuine
@@ -1230,7 +1285,20 @@ codeyam-editor editor presentability-scan
 
 # Refresh the README how-to + scenario gallery (idempotent).
 codeyam-editor editor readme-sync
+
+# Does the app stay responsive after it paints? Samples the root plus each
+# application scenario's route in a WebGPU/WebGL-enabled browser.
+codeyam-editor editor preview-liveness
 ```
+
+**A `preview-liveness` that exits `2` naming an unresponsive route is a
+release blocker, not a polish item.** A page that paints and then locks its
+main thread passes every screenshot, because the screenshot was taken before
+the lock — and it freezes every real browser that opens it. Read the console
+tail it prints, fix the block, and re-run. A route reported `skipped` (no
+probe script, or the dev server not up) has not been checked; an all-skipped
+run blocks too, so start the app and re-run rather than moving on. A
+non-browser stack has no page to probe: skip this command there.
 
 **A `readme-sync` that exits `2` with `BLOCKED:` is a finding to act on, not a
 step to skip past.** It means the README's gallery or how-to block holds content
@@ -1370,6 +1438,15 @@ on a branch carrying audit debt: on `editor-improvements-103` the agent held
 the first run's findings from `audit --format json` before starting it, and
 the two Phase 0.6 blocks that followed cost 69 minutes.
 
+**The one class that may remain: coverage findings on this pass's own tests.**
+`UNCOVERED_GLOSSARY_ENTRY` on an entity whose test this pass wrote clears only
+through the finalize's own LCOV bootstrap — nothing before it collects the
+coverage that would clear it. Start the finalize with those still listed, and
+name each in the run report. Everything else, including a coverage finding on an
+entity whose test predates this pass, is driven to zero first. On
+`editor-improvements-112` six such findings remained at launch, and the finalize
+passed.
+
 **Commit the audit's own fixes through `commit --out-of-workflow`, never a raw
 `git commit`.** An audit is out-of-workflow work: no editor cycle is parked at
 its commit step, so there is no `advance` to commit through. The sanctioned
@@ -1404,7 +1481,9 @@ codeyam-editor editor verify-merge-consistency # if either integrated a merge �
 
 # MANDATORY when the branch carries platform surface (see "Cross-platform
 # pitfalls"): the finalize's Phase 4b gates on these same checks and fails on
-# a real cross-target error, so get the verdict cheaply first.
+# a real cross-target error, so get the verdict cheaply first. Its first run
+# belongs at step 2's compile gates, before the warm; this one confirms the
+# edits made since.
 codeyam-editor editor cross-check
 # MANDATORY when this branch repaired a red Windows cross-target build (or the
 # Windows suite has otherwise never run on it): see the windows-check MANDATE.
@@ -1619,8 +1698,11 @@ questions.
 **When a too-big plan from step 4b owns open findings**, the branch never
 reached `verify-full-finalize` exit 0, so it is not merge-ready: nothing is
 pushed or merged (`editor push` would refuse the uncovered range anyway). The
-run report lists each open finding beside the plan slug that owns it, and the
-ship question says so plainly and offers what is still possible, e.g.:
+run report lists each open finding beside the plan slug that owns it. Take
+that list from the audit's `ownedBy[]` array (`editor audit --format json`),
+not by cross-referencing plans by hand. A failing finding absent from
+`ownedBy[]` is owned by no plan, and the report must say so. The ship
+question says so plainly and offers what is still possible, e.g.:
 
 > *"Everything else is fixed. 3 problems remain that need a bigger change, so
 > I wrote a plan for them; the branch can't merge until that plan is done.
@@ -1927,11 +2009,13 @@ cheap — lean on them rather than fighting the ordering:
   fingerprinting re-runs only the phases whose inputs moved; that is the
   mechanism the price above already reflects.
 
-> GOTCHA — **the tested-tip record does not survive the push.** Every
-> re-finalize needs a fresh `codeyam-editor editor pre-commit-sync` first.
-> `session-finalize` requires the tested-tip record `pre-commit-sync` writes, and
-> every successful `editor push` deletes it, so the first finalize after a push
-> refuses immediately with `Commit queue: finalize found no tested-tip record`.
+> GOTCHA — **the tested-tip record does not survive a push that pulled.**
+> `session-finalize` requires the tested-tip record `pre-commit-sync` writes. A
+> clean `editor push` re-records it as the sha it landed (it prints `Push:
+> recorded <sha> as the tested tip`), so a re-finalize on a branch level with
+> origin needs no sync. A push that had to pull origin's commits (or took the
+> plan-only route) deletes it, so the first finalize after such a push refuses
+> immediately with `Commit queue: finalize found no tested-tip record`.
 > `finalize-preview` names the same owed step (`Launch precondition: no
 > tested-tip record`). The message says what it is — *"this is a recovery, not
 > an error"* — so run `pre-commit-sync` and re-run instead of investigating it
@@ -2097,8 +2181,8 @@ plus "Not now":
   went in your recent sessions, explains how CodeYam builds and tests this
   project, and recommends changes. You pick which become plans."
 - security due — **"Check this project for security risks"**: "A read-only
-  security review. Each problem found is rated by how serious it is, and you
-  pick which become plans."
+  security review that changes nothing you wrote. Each problem found is rated
+  by how serious it is, and you pick which become plans."
 - **"Not now"**: "Nothing runs. The review stays due and is offered again at
   the next session end or audit."
 
@@ -2166,7 +2250,10 @@ footguns behind each (all observed in real CI-fix rounds):
   accepted on — so the branch had no Linux verdict anywhere, local or CI.
 
 **MANDATE — when this surface is present, run the local repros BEFORE the first
-`session-finalize`, not after it (and never after CI tells you):** the finalize
+`session-finalize` — at step 2's compile gates, ahead of the warm — and never
+after CI tells you.** A cross-target fix is a
+source edit that re-stales the warm, so the first `cross-check` belongs ahead of
+it; step 7 re-runs it only to confirm the edits made since. The finalize
 runs these same cross-target checks as a gating Phase 4b, so a failure found
 here costs ~90 seconds instead of a blocked finalize. Measured on
 `editor-improvements-101`: a `session-finalize` spent 21 minutes before

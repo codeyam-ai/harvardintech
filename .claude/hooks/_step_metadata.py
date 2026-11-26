@@ -121,6 +121,7 @@ def _empty_mode_table():
         "commitSlugs": [],
         "pushSlugs": [],
         "previewRequiredSlugs": [],
+        "testEditSlugs": [],
         "testRunSlugs": [],
         "noTestSlugs": {},
     }
@@ -221,6 +222,10 @@ def load_step_metadata(project_dir):
             "commitSlugs": _string_list(mode_raw.get("commitSlugs")),
             "pushSlugs": _string_list(mode_raw.get("pushSlugs")),
             "previewRequiredSlugs": _string_list(mode_raw.get("previewRequiredSlugs")),
+            # Additive within v3, like `noTestSlugs`. Absent → empty list →
+            # no slug admits test-only edits, which is the pre-existing
+            # refusal, never a production edit let through.
+            "testEditSlugs": _string_list(mode_raw.get("testEditSlugs")),
             # v3 projection. Absent in a v1/v2 cache → empty list → the
             # pretool hook treats test runs as ungated (degrade to "allow"),
             # never "block every test run".
