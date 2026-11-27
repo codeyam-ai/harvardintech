@@ -1,0 +1,40 @@
+{
+  "claimStartedAt": "2026-11-27T19:30:11Z",
+  "completedAt": "2026-11-27T19:37:44Z",
+  "completedBy": {
+    "agentProvider": "claude",
+    "codeyamEditorVersion": "0.1.7",
+    "currentStep": "backend-step15",
+    "machine": "codeyam-editor-codeyam-editor-1",
+    "originId": "5f1e2b6b-891b-4d4e-bddd-3bad650095e9",
+    "pid": 1962306,
+    "priority": 0,
+    "selectedPlan": "perf--link-unresolved-scenarios-to-their-source-so-edits-retake-only-affected-screenshots-ne",
+    "sessionId": "3a71df00-1263-4fee-a464-b73fc0a96020",
+    "startedAt": "2026-11-27T19:30:11Z"
+  },
+  "createdAt": "2026-11-27T16:20:33Z",
+  "deliverables": [
+    ".gitattributes",
+    ".gitignore",
+    "README.md",
+    "public/images/communities/ai-harvard-sec.webp",
+    "public/images/communities/investors-boston-skyline.webp",
+    "public/images/team/kiran-govindaraju.webp",
+    "src/components/ChapterHero.astro",
+    "src/components/CommunityPage.astro",
+    "src/content/communities/ai.md",
+    "src/content/communities/founders.md",
+    "src/content/communities/investors.md",
+    "src/content/config.ts",
+    "src/data/collections.json",
+    "src/data/imageCredits.json",
+    "src/data/media.json",
+    "src/pages/communities/[slug].astro"
+  ],
+  "journalTimestamp": "2026-11-27T19:37:44Z",
+  "mode": "backend",
+  "planFile": "completed/perf--link-unresolved-scenarios-to-their-source-so-edits-retake-only-affected-screenshots-ne.md",
+  "slug": "perf--link-unresolved-scenarios-to-their-source-so-edits-retake-only-affected-screenshots-ne",
+  "title": "perf -- Link unresolved scenarios to their source so edits retake only affected screenshots (ne)"
+}

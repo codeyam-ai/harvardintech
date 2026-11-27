@@ -1,5 +1,13 @@
 [
   {
+    "description": "AccomplishmentCard component (donate). Example state: One cell of the four-up evidence strip, framed at grid-cell width because that is the only shape this card ever takes.",
+    "filePath": "src/components/donate/AccomplishmentCard.astro",
+    "name": "AccomplishmentCard",
+    "scenarios": [
+      "accomplishmentcard-one-cell-of-the-evidence-strip"
+    ]
+  },
+  {
     "description": "The solid pill button under a page banner's title and lede, passed into PageBanner's slot. Shared by the /events banner (Subscribe on Luma) and the /volunteer banner; takes a site path or an outside URL and handles base-prefixing and new-tab behaviour itself.",
     "filePath": "src/components/ui/BannerCta.astro",
     "name": "BannerCta",
@@ -20,6 +28,36 @@
       "blogpostarticle-post-with-an-embed"
     ],
     "testFile": "src/lib/blogPreviewMarkers.test.ts"
+  },
+  {
+    "description": "BlogPostBody component (components). Example state: The locked branch, and the one worth guarding.",
+    "filePath": "src/components/BlogPostBody.astro",
+    "name": "BlogPostBody",
+    "scenarios": [
+      "blogpostbody-locked-prompt-replaces-the-article",
+      "blogpostbody-nothing-encrypted-article-renders"
+    ]
+  },
+  {
+    "description": "BoardMemberTile component (landing). Example state: A director added before anyone uploaded their photo — the first thing a newly added board member looks like.",
+    "filePath": "src/components/landing/BoardMemberTile.astro",
+    "name": "BoardMemberTile",
+    "scenarios": [
+      "boardmembertile-initials-instead-of-a-headshot",
+      "boardmembertile-no-bio-yet",
+      "boardmembertile-with-a-bio"
+    ]
+  },
+  {
+    "description": "BoardOfDirectors component (landing). Shown in 4 component scenario(s).",
+    "filePath": "src/components/landing/BoardOfDirectors.astro",
+    "name": "BoardOfDirectors",
+    "scenarios": [
+      "board-of-directors",
+      "board-of-directors-every-bio-written",
+      "board-of-directors-retired-member-hidden",
+      "board-of-directors-two-of-five-bios-written"
+    ]
   },
   {
     "description": "One brand or section glyph as inline SVG, resolved from an icon key, a label, or an already-resolved icon for callers using a different table. Four surfaces had hand-rolled the same eight lines, and being small is exactly why they drifted: one copy carried a focusable attribute and another did not, so the same mark was keyboard-reachable on one band and skipped on the next. Renders nothing when a name resolves to no icon, so a CMS-entered channel label can be passed straight through.",
@@ -111,6 +149,14 @@
     ]
   },
   {
+    "description": "ComingSoon component (components). Example state: The placeholder a section renders when an editor switches Show as coming soon on.",
+    "filePath": "src/components/ComingSoon.astro",
+    "name": "ComingSoon",
+    "scenarios": [
+      "coming-soon-band"
+    ]
+  },
+  {
     "description": "A grid of short cards naming what a community or chapter actually does. It is how a page with no calendar entries still says something concrete — the AI community's activity is a recurring call, which is real but is not an event, so without this the page carried only a blurb and a photo.",
     "filePath": "src/components/CommunityCallouts.astro",
     "name": "CommunityCallouts",
@@ -124,6 +170,15 @@
     "name": "CommunityPage",
     "scenarios": [
       "communitypage-founders-composed"
+    ]
+  },
+  {
+    "description": "ContactUs component (landing). Shown in 2 component scenario(s).",
+    "filePath": "src/components/landing/ContactUs.astro",
+    "name": "ContactUs",
+    "scenarios": [
+      "contactus-default",
+      "contactus-no-email-set"
     ]
   },
   {
@@ -190,6 +245,15 @@
     ],
     "tags": [
       "events"
+    ]
+  },
+  {
+    "description": "EventGallery component (landing). Example state: The 38-photo event grid.",
+    "filePath": "src/components/landing/EventGallery.astro",
+    "name": "EventGallery",
+    "scenarios": [
+      "event-gallery",
+      "eventgallery-small-screen-cap"
     ]
   },
   {
@@ -262,6 +326,58 @@
     "testFile": "src/lib/seoEndpoints.test.ts"
   },
   {
+    "description": "GalleryExpand component (landing). Example state: The control under a capped gallery, labelled with the full photo count rather than the hidden remainder — \"Show all 14 photos\" on a chapter showing twelve.",
+    "filePath": "src/components/landing/GalleryExpand.astro",
+    "name": "GalleryExpand",
+    "scenarios": [
+      "galleryexpand-fourteen-photos"
+    ]
+  },
+  {
+    "description": "GalleryLightbox component (landing). Example state: The viewer opened on a photo with no caption — the majority case, since the shared 38-photo set carries none.",
+    "filePath": "src/components/landing/GalleryLightbox.astro",
+    "name": "GalleryLightbox",
+    "scenarios": [
+      "gallerylightbox-no-caption",
+      "gallerylightbox-photo-open"
+    ]
+  },
+  {
+    "description": "GalleryTile component (landing). Example state: One square tile at the width a five-column grid gives it.",
+    "filePath": "src/components/landing/GalleryTile.astro",
+    "name": "GalleryTile",
+    "scenarios": [
+      "gallerytile-captioned-photo",
+      "gallerytile-keyboard-focus"
+    ]
+  },
+  {
+    "description": "GetInvolved component (landing). Shown in 1 component scenario(s).",
+    "filePath": "src/components/landing/GetInvolved.astro",
+    "name": "GetInvolved",
+    "scenarios": [
+      "get-involved"
+    ]
+  },
+  {
+    "description": "GiftPillarCard component (donate). Example state: A single gift pillar carrying an optional inline link, which reads as part of the sentence rather than as a separate call to action.",
+    "filePath": "src/components/donate/GiftPillarCard.astro",
+    "name": "GiftPillarCard",
+    "scenarios": [
+      "giftpillarcard-with-inline-link"
+    ]
+  },
+  {
+    "description": "GiftPillars component (donate). Example state: The gift grid on cream with 01 / 02 / 03 in bordered cells sharing single-pixel rules, replacing the three icon badges.",
+    "filePath": "src/components/donate/GiftPillars.astro",
+    "name": "GiftPillars",
+    "scenarios": [
+      "giftpillars-numbered-bordered-grid",
+      "giftpillars-the-duplicated-band-shows-its-own-cards",
+      "giftpillars-three-pillars"
+    ]
+  },
+  {
     "description": "The campaign's pill-shaped giving CTA — or, while the campaign is closed, the note that stands in for it. Every giving band on the campaign page routes through here, so both questions have one answer: whether there is a button at all, and where it goes. That is what makes a blank Donate URL close giving everywhere at once, and what makes pasting a platform URL open it again with no code change.",
     "filePath": "src/components/donate/GiveButton.astro",
     "name": "GiveButton",
@@ -275,11 +391,75 @@
     ]
   },
   {
+    "description": "GiveClose component (give). Example state: The page's second and last live button, which is deliberate rather than an oversight: the card at the top serves someone who arrived already decided, this one catches the reader who scrolled the whole argument.",
+    "filePath": "src/components/give/GiveClose.astro",
+    "name": "GiveClose",
+    "scenarios": [
+      "giveclose-the-final-ask"
+    ]
+  },
+  {
+    "description": "GiveCollage component (give). Example state: Six real photographs, because the band's entire content is the pictures.",
+    "filePath": "src/components/give/GiveCollage.astro",
+    "name": "GiveCollage",
+    "scenarios": [
+      "givecollage-six-photographs-in-one-frame"
+    ]
+  },
+  {
+    "description": "GiveFaq component (give). Example state: All five questions in the resting, collapsed state — the one worth reviewing, because the band's argument is that a reader who has decided to give should meet the button rather than five paragraphs of caveats, and that only holds if the closed list is scannable at a glance.",
+    "filePath": "src/components/give/GiveFaq.astro",
+    "name": "GiveFaq",
+    "scenarios": [
+      "givefaq-every-question-closed"
+    ]
+  },
+  {
+    "description": "GiveHero component (give). Example state: The giving page's first screen, with the real headline rather than a stand-in — its length is what decides whether it breaks over two lines or three against the band's 16ch cap, so a shorter placeholder would review a wrap this band never has.",
+    "filePath": "src/components/give/GiveHero.astro",
+    "name": "GiveHero",
+    "scenarios": [
+      "givehero-the-opening-ask"
+    ]
+  },
+  {
+    "description": "GivePhoto component (give). Example state: The full-bleed photograph between the hero and the giving card.",
+    "filePath": "src/components/give/GivePhoto.astro",
+    "name": "GivePhoto",
+    "scenarios": [
+      "givephoto-the-strip-the-card-overlaps"
+    ]
+  },
+  {
+    "description": "GiveRecognition component (give). Example state: What a supporter gets, shown rather than described.",
+    "filePath": "src/components/give/GiveRecognition.astro",
+    "name": "GiveRecognition",
+    "scenarios": [
+      "giverecognition-the-placeholder-supporter-card"
+    ]
+  },
+  {
+    "description": "GiveStatement component (give). Example state: Both tones on one frame, because the component's only real decision is the tone and the thing worth reviewing is that the two do not read as the same band twice.",
+    "filePath": "src/components/give/GiveStatement.astro",
+    "name": "GiveStatement",
+    "scenarios": [
+      "givestatement-both-tones-together"
+    ]
+  },
+  {
     "description": "Giving Campaign crimson CTA band: the fundraising ask with Donate and Sponsorship actions and no fabricated progress meter.",
     "filePath": "src/components/landing/GivingCampaign.astro",
     "name": "GivingCampaign",
     "scenarios": [
       "giving-campaign"
+    ]
+  },
+  {
+    "description": "GivingCard component (give). Example state: The page's one interactive control, in the state production is actually in: no donation platform configured, so the button resolves to a giving enquiry and the note underneath admits that no payment is taken here.",
+    "filePath": "src/components/give/GivingCard.astro",
+    "name": "GivingCard",
+    "scenarios": [
+      "givingcard-no-platform-connected"
     ]
   },
   {
@@ -343,6 +523,23 @@
     "name": "HeroCarousel",
     "scenarios": [
       "hero-carousel"
+    ]
+  },
+  {
+    "description": "HitDirectoryTeaser component (landing). Example state: The HIT Directory teaser as the WhatsApp band shows it: an ink Inside the community kicker with a Beta tag and the serif title on the left, and one sentence beside it, under a hairline.",
+    "filePath": "src/components/landing/HitDirectoryTeaser.astro",
+    "name": "HitDirectoryTeaser",
+    "scenarios": [
+      "hitdirectoryteaser-default",
+      "hitdirectoryteaser-long-copy"
+    ]
+  },
+  {
+    "description": "HomeSections component (landing). Example state: The homepage band stack with one band in each visibility state, which is the only place the three can be compared directly since a real page shows one arrangement at a time.",
+    "filePath": "src/components/landing/HomeSections.astro",
+    "name": "HomeSections",
+    "scenarios": [
+      "home-sections-all-three-visibility-states"
     ]
   },
   {
@@ -411,11 +608,27 @@
     ]
   },
   {
+    "description": "LockedPreviewBody component (components). Example state: The resting state of a password-protected preview, and the state most people who follow a protected link will ever see.",
+    "filePath": "src/components/LockedPreviewBody.astro",
+    "name": "LockedPreviewBody",
+    "scenarios": [
+      "lockedpreviewbody-before-the-password"
+    ]
+  },
+  {
     "description": "Events-page Luma calendar block: renders an inline iframe embed when an embed URL is set, otherwise a branded card linking out to the public Luma calendar, with a fallback when neither is set.",
     "filePath": "src/components/LumaCalendar.astro",
     "name": "LumaCalendar",
     "scenarios": [
       "luma-calendar"
+    ]
+  },
+  {
+    "description": "LumaSubscribe component (components). Example state: The one centred line beneath the inline Luma embed on /events: a sentence about getting every new event in your own calendar, then SUBSCRIBE ON LUMA → in the shared small-link style.",
+    "filePath": "src/components/LumaSubscribe.astro",
+    "name": "LumaSubscribe",
+    "scenarios": [
+      "lumasubscribe-default"
     ]
   },
   {
@@ -428,6 +641,81 @@
     ],
     "tags": [
       "homepage"
+    ]
+  },
+  {
+    "description": "MomentumAccomplishments component (donate). Example state: 'What we've accomplished so far' on the Momentum Fund page, rendered from the real published copy rather than invented figures.",
+    "filePath": "src/components/donate/MomentumAccomplishments.astro",
+    "name": "MomentumAccomplishments",
+    "scenarios": [
+      "momentumaccomplishments-campaign-track-record"
+    ]
+  },
+  {
+    "description": "MomentumClose component (donate). Example state: The dark closing band repeating the giving CTA for readers who reached the bottom of the campaign narrative.",
+    "filePath": "src/components/donate/MomentumClose.astro",
+    "name": "MomentumClose",
+    "scenarios": [
+      "momentumclose-closing-ask",
+      "momentumclose-photo-split"
+    ]
+  },
+  {
+    "description": "MomentumFundPage component (components). Example state: The campaign page after someone changed an Order field in the CMS: the same sections in a different sequence, with the hero and the closing ask still framing them.",
+    "filePath": "src/components/MomentumFundPage.astro",
+    "name": "MomentumFundPage",
+    "scenarios": [
+      "momentum-fund-sections-reordered-by-an-editor"
+    ]
+  },
+  {
+    "description": "MomentumMission component (donate). Example state: The new gold mission band, second on the campaign page.",
+    "filePath": "src/components/donate/MomentumMission.astro",
+    "name": "MomentumMission",
+    "scenarios": [
+      "momentummission-gold-band"
+    ]
+  },
+  {
+    "description": "MomentumNarrative component (donate). Example state: The guard that matters: an editor picked image-left but has not chosen a photo yet.",
+    "filePath": "src/components/donate/MomentumNarrative.astro",
+    "name": "MomentumNarrative",
+    "scenarios": [
+      "momentumnarrative-image-layout-without-an-image",
+      "momentumnarrative-image-left",
+      "momentumnarrative-image-right",
+      "momentumnarrative-text-only",
+      "momentumnarrative-two-prose-columns"
+    ]
+  },
+  {
+    "description": "MomentumNetwork component (donate). Example state: The interaction the whole band is built around, which a resting capture cannot show: the selected node turns gold while every other node stays crimson, that supporter's own connections brighten to full teal while the rest of the web settles back, and the panel opens wi",
+    "filePath": "src/components/donate/MomentumNetwork.astro",
+    "name": "MomentumNetwork",
+    "scenarios": [
+      "momentum-network-a-supporter-selected",
+      "momentum-network-a-supporter-who-wrote-no-message",
+      "momentum-network-anonymity-among-named-supporters",
+      "momentum-network-day-one-the-grid-unlit",
+      "momentum-network-the-campaign-at-scale",
+      "momentum-network-the-first-gift"
+    ]
+  },
+  {
+    "description": "MomentumStats component (donate). Example state: The figures band: 150+ events hosted, 8,500+ newsletter subscribers, and 6+ active communities, the October 2026 all-hands figures the homepage stat strip also uses.",
+    "filePath": "src/components/donate/MomentumStats.astro",
+    "name": "MomentumStats",
+    "scenarios": [
+      "momentumstats-campaign-figures"
+    ]
+  },
+  {
+    "description": "MomentumTestimonials component (donate). Example state: The impact band as the campaign design draws it: alternating photo and quote rows on aqua, under a kicker, a serif heading, and a slotted lede.",
+    "filePath": "src/components/donate/MomentumTestimonials.astro",
+    "name": "MomentumTestimonials",
+    "scenarios": [
+      "momentumtestimonials-photo-led-rows",
+      "momentumtestimonials-three-quotes"
     ]
   },
   {
@@ -546,6 +834,24 @@
     }
   },
   {
+    "description": "SitePageBody component (pages). Example state: The privacy page's cookie table in a CMS page body at phone width.",
+    "filePath": "src/components/pages/SitePageBody.astro",
+    "name": "SitePageBody",
+    "scenarios": [
+      "sitepagebody-cookie-table-on-a-phone",
+      "sitepagebody-markdown-an-editor-can-write"
+    ]
+  },
+  {
+    "description": "SitePageHeader component (pages). Example state: The state an editor reaches without meaning to.",
+    "filePath": "src/components/pages/SitePageHeader.astro",
+    "name": "SitePageHeader",
+    "scenarios": [
+      "sitepageheader-long-title-and-no-description",
+      "sitepageheader-title-and-lede"
+    ]
+  },
+  {
     "description": "The site's social row, in one place. The footer and every chapter and community Connect row render it, which is what stops them disagreeing about which accounts exist — the chapter row listed a retired Twitter bird as a raster badge long after the footer had moved on. Comes in an on-light variant with each mark in its brand colour on a white badge, and an on-dark variant with no badge, because a white circle on the footer's ink reads as a hole punched in the band. The e-mail badge is not a caller's decision: connectLinks synthesizes it only when an address is actually set.",
     "filePath": "src/components/ui/SocialLinks.astro",
     "name": "SocialLinks",
@@ -555,6 +861,43 @@
     ],
     "tags": [
       "launch-design-system"
+    ]
+  },
+  {
+    "description": "SponsorInquiry component (sponsor). Example state: The closing ask in its current state: the email CTA works today, and the form panel carries reader-facing copy saying the form is on the way.",
+    "filePath": "src/components/sponsor/SponsorInquiry.astro",
+    "name": "SponsorInquiry",
+    "scenarios": [
+      "sponsorinquiry-awaiting-a-form",
+      "sponsorinquiry-form-configured",
+      "sponsorinquiry-no-email-and-no-form"
+    ]
+  },
+  {
+    "description": "SponsorLevels component (sponsor). Example state: The partnership levels as a sponsor reads them: Presenting, Chapter, Event and Community, each scoped by what it underwrites and what the sponsor gets.",
+    "filePath": "src/components/sponsor/SponsorLevels.astro",
+    "name": "SponsorLevels",
+    "scenarios": [
+      "sponsorlevels-four-partnership-levels"
+    ]
+  },
+  {
+    "description": "SponsorPage component (components). Example state: The whole page with the sponsors collection empty — the real production day-one view.",
+    "filePath": "src/components/SponsorPage.astro",
+    "name": "SponsorPage",
+    "scenarios": [
+      "sponsorpage-full-page-no-partners",
+      "sponsorpage-full-page-with-examples"
+    ]
+  },
+  {
+    "description": "SponsorWall component (sponsor). Example state: The wall as the page ships today: sample entries behind an explicit 'example placements, not actual sponsors' notice, each on a dashed border with its own Example tag, grouped under the partnership level it belongs to.",
+    "filePath": "src/components/sponsor/SponsorWall.astro",
+    "name": "SponsorWall",
+    "scenarios": [
+      "sponsorwall-example-placements",
+      "sponsorwall-no-partners-yet",
+      "sponsorwall-real-partners"
     ]
   },
   {
@@ -577,12 +920,62 @@
     ]
   },
   {
+    "description": "SupportUs component (landing). Example state: The Ways to support band: five crimson-edged tiles (sponsor an event, host us, share jobs, speak, volunteer), each a link as a whole.",
+    "filePath": "src/components/landing/SupportUs.astro",
+    "name": "SupportUs",
+    "scenarios": [
+      "support-us"
+    ]
+  },
+  {
+    "description": "TestimonialCard component (donate). Example state: The card doing its whole job: event photo with its navy caption bar on the left, and on the right the quote under a crimson rule with a gold-ringed portrait above an affiliation and a role.",
+    "filePath": "src/components/donate/TestimonialCard.astro",
+    "name": "TestimonialCard",
+    "scenarios": [
+      "testimonialcard-every-field-filled",
+      "testimonialcard-quote-without-an-event-photo",
+      "testimonialcard-with-role"
+    ]
+  },
+  {
+    "description": "UpcomingEvents component (landing). Shown in 1 component scenario(s).",
+    "filePath": "src/components/landing/UpcomingEvents.astro",
+    "name": "UpcomingEvents",
+    "scenarios": [
+      "upcoming-events"
+    ]
+  },
+  {
     "description": "The crimson strip above the header: a one-line where-we-are reading as a global-community lede followed by the chapter cities. The city list is derived from the chapters collection by the layout rather than hand-maintained, so it cannot fall behind the chapters the site actually has — the failure it used to have when it read the labels back out of a nav group. With no chapters it degrades to the lede alone instead of leaving a dangling separator.",
     "filePath": "src/components/nav/UtilityBar.astro",
     "name": "UtilityBar",
     "scenarios": [
       "utilitybar-derived-cities",
       "utilitybar-no-chapters"
+    ]
+  },
+  {
+    "description": "VolunteerBenefit component (volunteer). Example state: A single benefit block carrying the longest of the four bodies, proving the crimson rule and spacing hold at length.",
+    "filePath": "src/components/volunteer/VolunteerBenefit.astro",
+    "name": "VolunteerBenefit",
+    "scenarios": [
+      "volunteerbenefit-long-copy"
+    ]
+  },
+  {
+    "description": "VolunteerBenefits component (volunteer). Example state: 'Why Volunteer with Harvard Alumni in Tech?' with all four benefit blocks, including the long-copy first block.",
+    "filePath": "src/components/volunteer/VolunteerBenefits.astro",
+    "name": "VolunteerBenefits",
+    "scenarios": [
+      "volunteerbenefits-four-blocks"
+    ]
+  },
+  {
+    "description": "VolunteerHero component (volunteer). Example state: The /volunteer hero: the 'Join the Volunteer Team' headline, the 100%-volunteer-run intro, and the sign-up button: a solid pill with no arrow, now the shared BannerCta that the /events banner also uses.",
+    "filePath": "src/components/volunteer/VolunteerHero.astro",
+    "name": "VolunteerHero",
+    "scenarios": [
+      "volunteerhero-default"
     ]
   },
   {
@@ -598,6 +991,14 @@
     ]
   },
   {
+    "description": "VolunteerProjectBody component (volunteer). Example state: The prose column holding a project's rendered markdown: paragraphs, a heading, and the long bulleted list an organizer actually wrote.",
+    "filePath": "src/components/volunteer/VolunteerProjectBody.astro",
+    "name": "VolunteerProjectBody",
+    "scenarios": [
+      "volunteerprojectbody-rendered-markdown"
+    ]
+  },
+  {
     "description": "One open volunteer project in the /volunteer grid: thumbnail or backdrop photo, title, commitment and dates, blurb, and the detail and sign-up links. Every field but the title is optional.",
     "filePath": "src/components/volunteer/VolunteerProjectCard.astro",
     "name": "VolunteerProjectCard",
@@ -606,6 +1007,22 @@
     ],
     "tags": [
       "volunteer-projects"
+    ]
+  },
+  {
+    "description": "VolunteerProjectCardLinks component (volunteer). Example state: The three link combinations a real grid produces: both, detail-page link only for a project with no sign-up form yet, and apply-only for a card rendered without a slug.",
+    "filePath": "src/components/volunteer/VolunteerProjectCardLinks.astro",
+    "name": "VolunteerProjectCardLinks",
+    "scenarios": [
+      "volunteerprojectcardlinks-both-detail-only-and-apply-only"
+    ]
+  },
+  {
+    "description": "VolunteerProjectCta component (volunteer). Example state: Both branches of the call-to-action together.",
+    "filePath": "src/components/volunteer/VolunteerProjectCta.astro",
+    "name": "VolunteerProjectCta",
+    "scenarios": [
+      "volunteerprojectcta-own-link-and-fallback"
     ]
   },
   {
@@ -621,6 +1038,14 @@
     ]
   },
   {
+    "description": "VolunteerProjectMeta component (volunteer). Example state: All six visible shapes the framing-detail row can take, boxed at the 340px inner width of a card in the three-column /volunteer grid because the only interesting layout question is where a long range wraps.",
+    "filePath": "src/components/volunteer/VolunteerProjectMeta.astro",
+    "name": "VolunteerProjectMeta",
+    "scenarios": [
+      "volunteerprojectmeta-every-date-shape"
+    ]
+  },
+  {
     "description": "A volunteer project's own page, composition only: photo, header with backdrop fallback, rendered description, sign-up CTA, and related projects.",
     "filePath": "src/components/volunteer/VolunteerProjectPage.astro",
     "name": "VolunteerProjectPage",
@@ -629,6 +1054,14 @@
     ],
     "tags": [
       "volunteer-projects"
+    ]
+  },
+  {
+    "description": "VolunteerProjectPhoto component (volunteer). Example state: The detail page's photo band, shown with the real 1200x1200 square an editor uploaded.",
+    "filePath": "src/components/volunteer/VolunteerProjectPhoto.astro",
+    "name": "VolunteerProjectPhoto",
+    "scenarios": [
+      "volunteerprojectphoto-square-upload"
     ]
   },
   {
@@ -651,6 +1084,14 @@
     ],
     "tags": [
       "volunteer-projects"
+    ]
+  },
+  {
+    "description": "VolunteerProjectsEmpty component (volunteer). Example state: What visitors actually see today: no projects open yet.",
+    "filePath": "src/components/volunteer/VolunteerProjectsEmpty.astro",
+    "name": "VolunteerProjectsEmpty",
+    "scenarios": [
+      "volunteerprojectsempty-production-default"
     ]
   },
   {
@@ -699,6 +1140,15 @@
     ],
     "tags": [
       "webinars"
+    ]
+  },
+  {
+    "description": "WhatsappCommunity component (landing). Shown in 2 component scenario(s).",
+    "filePath": "src/components/landing/WhatsappCommunity.astro",
+    "name": "WhatsappCommunity",
+    "scenarios": [
+      "whatsapp-community",
+      "whatsapp-community-no-directory"
     ]
   },
   {

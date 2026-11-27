@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-11-27T19:37:44Z",
+  "title": "perf -- Link unresolved scenarios to their source so edits retake only affected screenshots (ne)",
+  "type": "feature",
+  "userRequest": "## Summary\n\n115 of 347 scenarios cannot be traced back to the source file they show. `scenario-for-changes` reports\n`unresolved: 115` for every changed file, with reasons like \"component 'AccomplishmentCard' is not in the glossary and no\nsource file was found\". The files do exist: `src/components/donate/AccomplishmentCard.astro`,\n`src/components/BlogPostBody.astro`. When the editor can't tell whether an edit reaches a scenario, it falls back to broad\ncapture sampling, which costs about 31.5 min per cycle (`reconcile:capture:sample`). Resolving them lets an edit\nretake only the screenshots it actually changes. Estimate: 10–15 min saved per cycle (exact share unknown until measured).\n\nSubmitted by: ne\n\n## Key Decisions\n\n- Fix it at the source of truth. Add glossary entries for the missing `.astro` components so every resolver tier finds them,\n  rather than pinning `pageFilePath` scenario by scenario.\n- Most-affected components first, by scenario count: Momentum*, BoardOfDirectors/BoardMemberTile, DeployStatus/DeployChip, OrderArrows,\n  GiftPillars, SponsorInquiry, SponsorWall, TestimonialCard, BlogPostBody.\n- Verify with the editor's own query. Done means `scenario-for-changes --changed-files src/layouts/BaseLayout.astro --limit 0 --format json`\n  reports `unresolved` at 0 (or near 0, with every remaining one explained).\n\n## Implementation\n\n### 1. List every unresolved component\n\nRun `codeyam-editor editor scenario-for-changes --changed-files src/layouts/BaseLayout.astro --limit 0 --format json` and\ncollect the distinct component names in `unresolved[].why`.\n\n### 2. Add glossary entries\n\nFor each one, find its `.astro` file under `src/components/**` and add a glossary entry with\n`codeyam-editor editor glossary-add` (name, filePath, description).\n\n### 3. Re-check\n\nRe-run step 1's query and record the unresolved count before and after. Then edit one shared file (for example\n`src/components/ui/PageBanner.astro`, which maps to 19 scenarios today) and confirm the recapture set is the mapped set.\n\n## Reused existing code\n\n- `src/components/donate/AccomplishmentCard.astro`\n- `src/components/BlogPostBody.astro`\n- `src/components/landing/BoardOfDirectors.astro`\n\n## Scenarios to Demonstrate\n\n- No visual change. This is scenario metadata only.\n\n## General fix for the CodeYam editor (for Jared)\n\nVerified to be partly general. `scenario-explain board-of-directors` shows the glossary tier MISSING and resolution only\nsucceeding through `implicit-component-file`, while `scenario-for-changes` cannot resolve other components whose `.astro`\nfile sits in a nested folder (`src/components/donate/`). Two editor-side gaps that would affect any Astro project:\n(a) the analyzer that builds the glossary does not register `.astro` components, and (b) the component-file fallback does not search\nnested `src/components/**/<Name>.astro`. Worth fixing in the editor so new Astro projects never accumulate unresolved\nscenarios. — ne",
+  "description": "Added glossary entries for 52 site .astro components. Each entry names the scenarios that render that component. With these entries, asking which screenshots show a given edit returns a correct answer (scenario-for-changes unresolved: 115 -> 29). This change saves NO screenshot time. The plan assumed the audit/staleness path missed these scenarios, but it already resolved every one of them (0 SOURCE_UNRESOLVED), so the premise was wrong. The user kept the entries because the answers are now correct. Metadata only: no site source and no tests changed. 29 components remain unresolved: 20 are @codeyam/cms package components in node_modules (out of scope), and 9 are state-suffixed componentNames whose pinned pageFilePath scenario-for-changes ignores (filed upstream as an editor bug). Scope verdict: this is a tooling cycle, so it delivered no project deliverable and deferred none. The open content-quality deliverable stays deferred by the user, and every deliverable decision was made by the user.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph/index.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/perf--link-unresolved-scenarios-to-their-source-so-edits-retake-only-affected-screenshots-ne.md\t.codeyam/plans/completed/perf--link-unresolved-scenarios-to-their-source-so-edits-retake-only-affected-screenshots-ne.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/speed-history.jsonl",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/710fed152b067d3c0d04c2365348a2f658c3830f048c0374da0a464c64ef36a9.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/d3391dff471c0107bac35063f9e94a70c0bf79f1283906131f57aec7732ef0c6.json",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 1981,
+    "passed": 1981,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1981,
+        "passed": 1981
+      }
+    ]
+  }
+}
