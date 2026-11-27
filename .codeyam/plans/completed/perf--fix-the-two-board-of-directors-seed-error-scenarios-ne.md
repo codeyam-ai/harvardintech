@@ -50,3 +50,15 @@ Recapture both (`recapture-stale --target <slug>`). Re-run `scenario-review` and
 ## General fix for the CodeYam editor (for Jared)
 
 Specific to this project. No editor change needed. — ne
+
+## Outcome (2026-11-27, ne): closed as superseded, no site change
+
+The premise was wrong. Nothing about these two scenarios is broken:
+- `scenario-review` flags a pair as `seed-error-candidate` when their frames are byte-identical. Here they are identical **by design**:
+  the Retired fixture feeds six directors with one marked retired, and must render exactly the five that Default shows. The captured
+  frame shows "05 DIRECTORS" with no former director, which is correct.
+- The pair is already recorded in `.codeyam/audit-baseline.json` as an intended identical capture, with a justification.
+- The retired filter is unit-tested in `src/lib/team.test.ts` ("removes a member with retired: true").
+
+**For Jared / the CodeYam team (editor-side, general):** `scenario-review` does not read the audit baseline's intended-identical
+pairs, so it keeps reporting baselined pairs as seed errors. It should skip pairs that the distinct-capture baseline already accepts. — ne
