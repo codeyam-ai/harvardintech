@@ -1,0 +1,10 @@
+{
+  "holds": [
+    {
+      "slug": "perf--make-each-screenshot-capture-faster-ne",
+      "reason": "Measured 2026-11-27 (ne): ~11 s of each 17 s capture is CodeYam editor orchestration; this project's code can save at most ~1.3 s (tsx start-up). Waiting on an editor-side capture speed-up.",
+      "heldAt": "2026-11-27T18:28:12.836588034+00:00",
+      "machine": "codeyam-editor-codeyam-editor-1"
+    }
+  ]
+}

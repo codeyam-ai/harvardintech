@@ -63,3 +63,32 @@ Re-run the same 5 captures and report the before and after per-capture seconds.
 Partly unverified. The 21.6 s vs 74.6 s swing between sweeps on the same tree suggests that part of the cost is in the editor's
 capture pipeline, not the app. If step 1 shows the time is spent inside the editor's capture (settle waits, browser
 start-up per scenario), send that breakdown to the CodeYam team as an editor-wide capture-speed fix. — ne
+
+## Measured findings (2026-11-27, ne) — plan on hold
+
+Step 1 was run. The result: the time is mostly **inside the CodeYam editor**, so this plan is on hold waiting on an editor fix.
+
+| Piece of one capture | Seconds | How measured |
+|---|---|---|
+| Whole capture (`board-of-directors`) | 17–18.7 | `recapture-stale --force --target board-of-directors` (wall 18.7 s, capture_seconds 17) |
+| Browser: navigate + settle + screenshot + context | ~3.1 | that run's `capture_seconds_breakdown` (0.5 + 2.1 + 0.3 + 0.1) |
+| This project's seed adapter, end to end | ~3.1–3.4 | `npx tsx .codeyam/seed-adapter.ts <empty seed>`, timed twice |
+| ↳ of which `tsx` start-up alone | 1.35 | `npx tsx -e 0` |
+| ↳ copying `public/images` (24 MB tree) | 0.02 | `fs.cpSync` timed |
+| **Unaccounted, editor orchestration** | **~11** | 17 − 3.1 − 3.1 |
+
+The 10-scenario sample (`recapture-stale --calibrate-context-reuse`) agrees: 18.1 s per capture, with browser phases at about 3.6 s per scenario.
+A warm browser context saved only about 1 s (17.0 s) and was not pixel-safe (1 of 37 frames differed).
+
+**What this project could still do:** remove the `tsx` start-up (about 1.3 s per capture, about 7%), for example by bundling the adapter once.
+That isn't worth the maintenance on its own.
+
+**For Jared / the CodeYam team, editor-side (general to every project):**
+1. About 11 s per capture is spent outside the browser and outside the seed adapter. This includes "Warming dev server" and orchestration.
+   It is 60–65% of every capture on this project.
+2. `recapture-stale --calibrate-context-reuse` rewrote 10 committed `.png.hash` sidecars: `isolationHostHash` changed and
+   `cssRuleMatches` was dropped, while the pixels were unchanged. A host-hash flip like that is the likely cause of
+   `recapture-causes`' top entry: "isolation host changed (src/pages/isolated-components)", 159/198 identical frames, about 198 min wasted
+   in one run. The touched sidecars were restored with `git checkout`.
+3. Comment-only and whitespace-only edits to isolation routes correctly restale nothing (dry-run verified). So the waste is not
+   this project's file layout. — ne
