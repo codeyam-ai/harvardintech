@@ -59,6 +59,7 @@
       "filePath": "src/components/ui/PageBanner.astro",
       "importedBy": [
         "src/components/BlogPostArticle.astro::__file_root__",
+        "src/components/ChapterHero.astro::__file_root__",
         "src/components/EventsIntroBand.astro::__file_root__",
         "src/components/WebinarsPage.astro::__file_root__",
         "src/components/pages/SitePageHeader.astro::__file_root__",
@@ -66,8 +67,7 @@
         "src/components/volunteer/VolunteerHero.astro::__file_root__",
         "src/components/volunteer/VolunteerProjectHeader.astro::__file_root__",
         "src/pages/isolated-components/PageBanner-Photo.astro::__file_root__",
-        "src/pages/isolated-components/PageBanner.astro::__file_root__",
-        "src/components/ChapterHero.astro::__file_root__"
+        "src/pages/isolated-components/PageBanner.astro::__file_root__"
       ],
       "imports": [
         "src/components/ResponsiveImg.astro::__file_root__"
@@ -173,6 +173,7 @@
     "src/components/ui/PageBanner.astro": {
       "importedBy": [
         "src/components/BlogPostArticle.astro",
+        "src/components/ChapterHero.astro",
         "src/components/EventsIntroBand.astro",
         "src/components/WebinarsPage.astro",
         "src/components/pages/SitePageHeader.astro",
@@ -180,8 +181,7 @@
         "src/components/volunteer/VolunteerHero.astro",
         "src/components/volunteer/VolunteerProjectHeader.astro",
         "src/pages/isolated-components/PageBanner-Photo.astro",
-        "src/pages/isolated-components/PageBanner.astro",
-        "src/components/ChapterHero.astro"
+        "src/pages/isolated-components/PageBanner.astro"
       ],
       "imports": [
         "src/components/ResponsiveImg.astro"

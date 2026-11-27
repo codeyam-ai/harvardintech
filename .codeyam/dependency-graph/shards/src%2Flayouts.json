@@ -7,14 +7,14 @@
         "src/pages/[slug].astro::__file_root__",
         "src/pages/blog/[slug].astro::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
+        "src/pages/communities/[slug].astro::__file_root__",
         "src/pages/donate.astro::__file_root__",
         "src/pages/events.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/sponsor.astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/volunteer.astro::__file_root__",
-        "src/pages/webinars.astro::__file_root__",
-        "src/pages/communities/[slug].astro::__file_root__"
+        "src/pages/webinars.astro::__file_root__"
       ],
       "imports": [
         "src/components/BrandMark.astro::__file_root__",
@@ -51,14 +51,14 @@
         "src/pages/[slug].astro",
         "src/pages/blog/[slug].astro",
         "src/pages/chapters/[slug].astro",
+        "src/pages/communities/[slug].astro",
         "src/pages/donate.astro",
         "src/pages/events.astro",
         "src/pages/index.astro",
         "src/pages/sponsor.astro",
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/volunteer.astro",
-        "src/pages/webinars.astro",
-        "src/pages/communities/[slug].astro"
+        "src/pages/webinars.astro"
       ],
       "imports": [
         "src/styles/tokens.css",

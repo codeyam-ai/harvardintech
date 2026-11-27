@@ -68,9 +68,9 @@
     "src/components/landing/EventGallery.astro::__file_root__": {
       "filePath": "src/components/landing/EventGallery.astro",
       "importedBy": [
+        "src/components/ChapterPage.astro::__file_root__",
         "src/components/landing/HomeSections.astro::__file_root__",
         "src/pages/events.astro::__file_root__",
-        "src/components/ChapterPage.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ],
       "imports": [
@@ -395,9 +395,9 @@
     },
     "src/components/landing/EventGallery.astro": {
       "importedBy": [
+        "src/components/ChapterPage.astro",
         "src/components/landing/HomeSections.astro",
         "src/pages/events.astro",
-        "src/components/ChapterPage.astro",
         "src/pages/isolated-components/[name].astro"
       ],
       "imports": [

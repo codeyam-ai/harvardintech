@@ -37,6 +37,7 @@
         "src/pages/isolated-components/ChapterLeads.astro::__file_root__",
         "src/pages/isolated-components/ComingSoon.astro::__file_root__",
         "src/pages/isolated-components/CommunityCallouts.astro::__file_root__",
+        "src/pages/isolated-components/CommunityPage.astro::__file_root__",
         "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro::__file_root__",
         "src/pages/isolated-components/CopyWarningNote.astro::__file_root__",
         "src/pages/isolated-components/CopyWarningsSummary-OneField.astro::__file_root__",
@@ -157,7 +158,6 @@
         "src/pages/isolated-components/WebinarsPage.astro::__file_root__",
         "src/pages/isolated-components/WebinarsPointer.astro::__file_root__",
         "src/pages/isolated-components/WhatsappJoinCard/[...state].astro::__file_root__",
-        "src/pages/isolated-components/CommunityPage.astro::__file_root__",
         "src/pages/isolated-components/[name].astro::__file_root__"
       ],
       "imports": [],
@@ -199,6 +199,7 @@
         "src/pages/isolated-components/ChapterLeads.astro",
         "src/pages/isolated-components/ComingSoon.astro",
         "src/pages/isolated-components/CommunityCallouts.astro",
+        "src/pages/isolated-components/CommunityPage.astro",
         "src/pages/isolated-components/CopyWarningNote-TwoWordings.astro",
         "src/pages/isolated-components/CopyWarningNote.astro",
         "src/pages/isolated-components/CopyWarningsSummary-OneField.astro",
@@ -319,7 +320,6 @@
         "src/pages/isolated-components/WebinarsPage.astro",
         "src/pages/isolated-components/WebinarsPointer.astro",
         "src/pages/isolated-components/WhatsappJoinCard/[...state].astro",
-        "src/pages/isolated-components/CommunityPage.astro",
         "src/pages/isolated-components/[name].astro"
       ],
       "imports": []

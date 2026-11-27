@@ -1,0 +1,69 @@
+{
+  "timestamp": "2026-11-27T15:53:27Z",
+  "title": "Make editor checks pass after Investors co-leads push",
+  "type": "feature",
+  "userRequest": "## Goal\n\nBring the branch to a state where every editor check passes after the most recent\npushed work (\"Investors: co-leads Stefan and Kiran plus Boston skyline banner\",\nb5398603, plus the follow-up codeyam state commits 387fdfef / 374b6c24).\n\nThat commit shipped through an out-of-workflow commit and a push that skipped the\nfinal check, so the editor's verification gate has not been run against HEAD.\n\n## What was prototyped\n\nNothing was changed in the working tree during the prototype session — no source\nedits, no new scenarios. The only untracked file is\n`.codeyam/cycle-closed-dismissed.json` (editor state).\n\n## Scope for Build\n\n1. Run the full editor check suite against HEAD (tests, typecheck, lint, scenario\n   captures/screenshots, dependency-graph freshness, audit gate).\n2. Fix any failures that come from the Investors / communities changes:\n   - communities schema fields `heroCredit`, `heroCreditUrl`, `heroImagePosition`\n     and their CMS editing surface\n   - Investors, Founders and AI community banner/hero scenarios\n   - the 10 CMS publishing-bar scenarios pinned to their source files\n3. Refresh any stale scenario screenshots or generated codeyam state the checks flag.\n4. Don't change product behavior beyond what is needed to get the checks green.\n\n## Edge cases to verify\n\n- Communities with no hero credit render with no empty credit line.\n- `heroImagePosition` falls back to a sensible default when unset.\n- Shard-based dependency graph (`.codeyam/dependency-graph/`) is current and the old\n  single-file graph is no longer referenced.",
+  "description": "Verification-only cycle: the plan asked to make editor checks pass after the Investors co-leads (Stefan and Kiran) + Boston skyline banner push, but HEAD 374b6c24 was already covered by a full branch-wide finalize. This cycle re-ran the stale test partition (1981/1981 vitest tests pass) and the audit (cache fresh, 11 non-blocking advisories only); no source changes. Scope verdict: no project deliverable delivered or deferred by this cycle — the publication-quality content deliverable stays deferred (user-decided) pending team-supplied material; plan-error deviation recorded because the plan asked for work already done.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph/index.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph/shards/src%2Fcomponents%2Flanding.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph/shards/src%2Fcomponents%2Fui.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph/shards/src%2Fcomponents.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph/shards/src%2Flayouts.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph/shards/src%2Flib.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph/shards/src%2Fstyles.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/completed/make-editor-checks-pass-after-investors-co-leads-push.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/9c9b6a1ad8f7c312d9f40e2e41327e67297326399c45c74f1efd460b26f7f393.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache/blobs/5ff9976a670caa680050501d3d36017401fa466dda74f185efb6b4efc01b1dfd.json",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 1981,
+    "passed": 1981,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 1981,
+        "passed": 1981
+      }
+    ]
+  }
+}

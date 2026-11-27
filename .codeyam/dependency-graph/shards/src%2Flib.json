@@ -666,10 +666,10 @@
     "src/lib/contentRoot.ts::contentRoot": {
       "filePath": "src/lib/contentRoot.ts",
       "importedBy": [
-        "src/lib/contentRoot.test.ts::__file_root__",
-        "src/lib/siteClock.ts::siteNow",
         "src/content/config.ts::__file_root__",
-        "src/content/config.ts::root"
+        "src/content/config.ts::root",
+        "src/lib/contentRoot.test.ts::__file_root__",
+        "src/lib/siteClock.ts::siteNow"
       ],
       "imports": [],
       "name": "contentRoot"
@@ -1817,14 +1817,14 @@
         "src/pages/[slug].astro::__file_root__",
         "src/pages/blog/[slug].astro::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
+        "src/pages/communities/[slug].astro::__file_root__",
         "src/pages/donate.astro::__file_root__",
         "src/pages/events.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/sponsor.astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/volunteer.astro::__file_root__",
-        "src/pages/webinars.astro::__file_root__",
-        "src/pages/communities/[slug].astro::__file_root__"
+        "src/pages/webinars.astro::__file_root__"
       ],
       "imports": [
         "src/lib/draftVisibility.ts::resolveIncludeDrafts"
@@ -1881,8 +1881,8 @@
         "src/lib/drafts.test.ts::__file_root__",
         "src/pages/[slug].astro::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
-        "src/pages/volunteer/projects/[slug].astro::__file_root__",
-        "src/pages/communities/[slug].astro::__file_root__"
+        "src/pages/communities/[slug].astro::__file_root__",
+        "src/pages/volunteer/projects/[slug].astro::__file_root__"
       ],
       "imports": [
         "src/lib/drafts.ts::DraftableEntry"
@@ -1896,8 +1896,8 @@
         "src/pages/[slug].astro::__file_root__",
         "src/pages/blog/[slug].astro::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
-        "src/pages/volunteer/projects/[slug].astro::__file_root__",
-        "src/pages/communities/[slug].astro::__file_root__"
+        "src/pages/communities/[slug].astro::__file_root__",
+        "src/pages/volunteer/projects/[slug].astro::__file_root__"
       ],
       "imports": [
         "src/lib/drafts.ts::DraftableEntry"
@@ -1921,14 +1921,14 @@
         "src/lib/nav.test.ts::__file_root__",
         "src/lib/sponsorPageContent.ts::loadSponsorLevels",
         "src/pages/chapters/[slug].astro::__file_root__",
+        "src/pages/communities/[slug].astro::__file_root__",
         "src/pages/donate.astro::__file_root__",
         "src/pages/events.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
         "src/pages/sponsor.astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
         "src/pages/volunteer.astro::__file_root__",
-        "src/pages/webinars.astro::__file_root__",
-        "src/pages/communities/[slug].astro::__file_root__"
+        "src/pages/webinars.astro::__file_root__"
       ],
       "imports": [
         "src/lib/drafts.ts::DraftableEntry"
@@ -1942,8 +1942,8 @@
         "src/pages/[slug].astro::__file_root__",
         "src/pages/blog/[slug].astro::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
-        "src/pages/volunteer/projects/[slug].astro::__file_root__",
-        "src/pages/communities/[slug].astro::__file_root__"
+        "src/pages/communities/[slug].astro::__file_root__",
+        "src/pages/volunteer/projects/[slug].astro::__file_root__"
       ],
       "imports": [
         "src/lib/drafts.ts::DraftableEntry",
@@ -2146,6 +2146,8 @@
       "filePath": "src/lib/events.ts",
       "importedBy": [
         "src/components/ChapterEvents.astro::__file_root__",
+        "src/components/ChapterPage.astro::__file_root__",
+        "src/components/CommunityPage.astro::__file_root__",
         "src/components/EventCard.astro::__file_root__",
         "src/components/EventCardGrid.astro::__file_root__",
         "src/components/EventsSection.astro::__file_root__",
@@ -2155,9 +2157,7 @@
         "src/lib/projects.ts::__file_root__",
         "src/lib/projects.ts::formatProjectDates",
         "src/pages/isolated-components/EventCardGrid-Past.astro::__file_root__",
-        "src/pages/isolated-components/EventCardGrid.astro::__file_root__",
-        "src/components/ChapterPage.astro::__file_root__",
-        "src/components/CommunityPage.astro::__file_root__"
+        "src/pages/isolated-components/EventCardGrid.astro::__file_root__"
       ],
       "imports": [
         "src/lib/dates.ts::__file_root__"
@@ -2225,8 +2225,8 @@
         "src/components/EventsPage.astro::__file_root__",
         "src/lib/events.test.ts::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
-        "src/pages/index.astro::__file_root__",
-        "src/pages/communities/[slug].astro::__file_root__"
+        "src/pages/communities/[slug].astro::__file_root__",
+        "src/pages/index.astro::__file_root__"
       ],
       "imports": [
         "src/lib/events.ts::EventLike",
@@ -2882,12 +2882,12 @@
       "filePath": "src/lib/leadSchema.ts",
       "importedBy": [
         "src/components/ChapterLeads.astro::__file_root__",
+        "src/components/ChapterPage.astro::__file_root__",
+        "src/components/CommunityPage.astro::__file_root__",
         "src/components/PageNarrowBody.astro::__file_root__",
         "src/components/leads/LeadCommitteeGrid.astro::__file_root__",
         "src/components/leads/LeadProfile.astro::__file_root__",
-        "src/lib/leads.ts::__file_root__",
-        "src/components/ChapterPage.astro::__file_root__",
-        "src/components/CommunityPage.astro::__file_root__"
+        "src/lib/leads.ts::__file_root__"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -2895,11 +2895,11 @@
     "src/lib/leadSchema.ts::leadSchema": {
       "filePath": "src/lib/leadSchema.ts",
       "importedBy": [
-        "src/data/collections.test.ts::__file_root__",
-        "src/lib/leadSchema.ts::Lead",
         "src/content/config.ts::__file_root__",
         "src/content/config.ts::chapters",
-        "src/content/config.ts::communities"
+        "src/content/config.ts::communities",
+        "src/data/collections.test.ts::__file_root__",
+        "src/lib/leadSchema.ts::Lead"
       ],
       "imports": [],
       "name": "leadSchema"
@@ -2927,8 +2927,8 @@
     "src/lib/leads.ts::chapterLeadsHeading": {
       "filePath": "src/lib/leads.ts",
       "importedBy": [
-        "src/lib/leads.test.ts::__file_root__",
-        "src/components/ChapterPage.astro::__file_root__"
+        "src/components/ChapterPage.astro::__file_root__",
+        "src/lib/leads.test.ts::__file_root__"
       ],
       "imports": [],
       "name": "chapterLeadsHeading"
@@ -3140,9 +3140,9 @@
     "src/lib/localPresence.ts::isForming": {
       "filePath": "src/lib/localPresence.ts",
       "importedBy": [
+        "src/components/ChapterPage.astro::__file_root__",
         "src/lib/localPresence.test.ts::__file_root__",
-        "src/lib/nav.ts::chapterNavItems",
-        "src/components/ChapterPage.astro::__file_root__"
+        "src/lib/nav.ts::chapterNavItems"
       ],
       "imports": [
         "src/lib/localPresence.ts::chapterStatus"
@@ -3152,10 +3152,10 @@
     "src/lib/localPresence.ts::isWhatsAppGroupLink": {
       "filePath": "src/lib/localPresence.ts",
       "importedBy": [
-        "src/lib/localPresence.test.ts::__file_root__",
-        "src/lib/localPresence.ts::joinCtas",
         "src/content/config.ts::chapters",
-        "src/content/config.ts::communities"
+        "src/content/config.ts::communities",
+        "src/lib/localPresence.test.ts::__file_root__",
+        "src/lib/localPresence.ts::joinCtas"
       ],
       "imports": [],
       "name": "isWhatsAppGroupLink"
@@ -4326,9 +4326,9 @@
     "src/lib/pageBanner.ts::bannerFor": {
       "filePath": "src/lib/pageBanner.ts",
       "importedBy": [
-        "src/lib/pageBanner.test.ts::__file_root__",
         "src/components/ChapterPage.astro::__file_root__",
-        "src/components/CommunityPage.astro::__file_root__"
+        "src/components/CommunityPage.astro::__file_root__",
+        "src/lib/pageBanner.test.ts::__file_root__"
       ],
       "imports": [
         "src/lib/pageBanner.ts::Banner",
@@ -4657,13 +4657,13 @@
     "src/lib/previewFieldsSchema.ts::__file_root__": {
       "filePath": "src/lib/previewFieldsSchema.ts",
       "importedBy": [
-        "src/lib/previewFieldsSchema.test.ts::__file_root__",
         "src/content/config.ts::__file_root__",
         "src/content/config.ts::blog",
         "src/content/config.ts::chapters",
         "src/content/config.ts::communities",
         "src/content/config.ts::pages",
-        "src/content/config.ts::projects"
+        "src/content/config.ts::projects",
+        "src/lib/previewFieldsSchema.test.ts::__file_root__"
       ],
       "imports": [],
       "name": "__file_root__"
@@ -5803,10 +5803,10 @@
         "src/pages/cutover-runbook/[...path].astro::__file_root__",
         "src/pages/donate.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__",
         "src/pages/llms.txt.ts::GET",
         "src/pages/llms.txt.ts::__file_root__",
-        "src/pages/sponsor.astro::__file_root__",
-        "src/pages/isolated-components/[name].astro::__file_root__"
+        "src/pages/sponsor.astro::__file_root__"
       ],
       "imports": [
         "src/lib/contentRoot.ts::readSingleton",
@@ -5841,8 +5841,8 @@
       "filePath": "src/lib/site.ts",
       "importedBy": [
         "src/lib/site.ts::DonatePageCopy",
-        "src/pages/sponsor.astro::__file_root__",
-        "src/pages/isolated-components/[name].astro::__file_root__"
+        "src/pages/isolated-components/[name].astro::__file_root__",
+        "src/pages/sponsor.astro::__file_root__"
       ],
       "imports": [
         "src/lib/contentRoot.ts::readSingleton",
@@ -5855,9 +5855,9 @@
       "importedBy": [
         "src/components/FormingChapterCta.astro::__file_root__",
         "src/pages/index.astro::__file_root__",
+        "src/pages/isolated-components/[name].astro::__file_root__",
         "src/pages/volunteer/projects/[slug].astro::__file_root__",
-        "src/pages/volunteer.astro::__file_root__",
-        "src/pages/isolated-components/[name].astro::__file_root__"
+        "src/pages/volunteer.astro::__file_root__"
       ],
       "imports": [
         "src/lib/contentRoot.ts::readSingleton",
@@ -6006,9 +6006,9 @@
       "importedBy": [
         "src/lib/siteClock.test.ts::__file_root__",
         "src/pages/chapters/[slug].astro::__file_root__",
+        "src/pages/communities/[slug].astro::__file_root__",
         "src/pages/events.astro::__file_root__",
-        "src/pages/index.astro::__file_root__",
-        "src/pages/communities/[slug].astro::__file_root__"
+        "src/pages/index.astro::__file_root__"
       ],
       "imports": [
         "src/lib/contentRoot.ts::contentRoot",
@@ -7258,13 +7258,13 @@
     },
     "src/lib/contentRoot.ts": {
       "importedBy": [
+        "src/content/config.ts",
         "src/lib/contentRoot.test.ts",
         "src/lib/cutoverProgress.ts",
         "src/lib/givePageContent.ts",
         "src/lib/media.ts",
         "src/lib/site.ts",
-        "src/lib/siteClock.ts",
-        "src/content/config.ts"
+        "src/lib/siteClock.ts"
       ],
       "imports": []
     },
@@ -7515,14 +7515,14 @@
         "src/pages/[slug].astro",
         "src/pages/blog/[slug].astro",
         "src/pages/chapters/[slug].astro",
+        "src/pages/communities/[slug].astro",
         "src/pages/donate.astro",
         "src/pages/events.astro",
         "src/pages/index.astro",
         "src/pages/sponsor.astro",
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/volunteer.astro",
-        "src/pages/webinars.astro",
-        "src/pages/communities/[slug].astro"
+        "src/pages/webinars.astro"
       ],
       "imports": [
         "src/lib/envFlag.ts"
@@ -7550,14 +7550,14 @@
         "src/pages/[slug].astro",
         "src/pages/blog/[slug].astro",
         "src/pages/chapters/[slug].astro",
+        "src/pages/communities/[slug].astro",
         "src/pages/donate.astro",
         "src/pages/events.astro",
         "src/pages/index.astro",
         "src/pages/sponsor.astro",
         "src/pages/volunteer/projects/[slug].astro",
         "src/pages/volunteer.astro",
-        "src/pages/webinars.astro",
-        "src/pages/communities/[slug].astro"
+        "src/pages/webinars.astro"
       ],
       "imports": []
     },
@@ -7633,6 +7633,8 @@
     "src/lib/events.ts": {
       "importedBy": [
         "src/components/ChapterEvents.astro",
+        "src/components/ChapterPage.astro",
+        "src/components/CommunityPage.astro",
         "src/components/EventCard.astro",
         "src/components/EventCardGrid.astro",
         "src/components/EventsPage.astro",
@@ -7643,13 +7645,11 @@
         "src/lib/events.test.ts",
         "src/lib/projects.ts",
         "src/pages/chapters/[slug].astro",
+        "src/pages/communities/[slug].astro",
         "src/pages/events.astro",
         "src/pages/index.astro",
         "src/pages/isolated-components/EventCardGrid-Past.astro",
-        "src/pages/isolated-components/EventCardGrid.astro",
-        "src/components/ChapterPage.astro",
-        "src/components/CommunityPage.astro",
-        "src/pages/communities/[slug].astro"
+        "src/pages/isolated-components/EventCardGrid.astro"
       ],
       "imports": [
         "src/lib/dates.ts"
@@ -7827,14 +7827,14 @@
     "src/lib/leadSchema.ts": {
       "importedBy": [
         "src/components/ChapterLeads.astro",
+        "src/components/ChapterPage.astro",
+        "src/components/CommunityPage.astro",
         "src/components/PageNarrowBody.astro",
         "src/components/leads/LeadCommitteeGrid.astro",
         "src/components/leads/LeadProfile.astro",
+        "src/content/config.ts",
         "src/data/collections.test.ts",
-        "src/lib/leads.ts",
-        "src/components/ChapterPage.astro",
-        "src/components/CommunityPage.astro",
-        "src/content/config.ts"
+        "src/lib/leads.ts"
       ],
       "imports": []
     },
@@ -7847,10 +7847,10 @@
     "src/lib/leads.ts": {
       "importedBy": [
         "src/components/ChapterLeads.astro",
+        "src/components/ChapterPage.astro",
         "src/components/leads/LeadCommitteeGrid.astro",
         "src/components/leads/LeadProfile.astro",
-        "src/lib/leads.test.ts",
-        "src/components/ChapterPage.astro"
+        "src/lib/leads.test.ts"
       ],
       "imports": [
         "src/lib/leadSchema.ts"
@@ -7895,18 +7895,18 @@
     },
     "src/lib/localPresence.ts": {
       "importedBy": [
+        "src/components/ChapterPage.astro",
         "src/components/FormingChapterCta.astro",
         "src/components/GlobalCommunityCta.astro",
         "src/components/JoinWhatsAppCta.astro",
         "src/components/landing/OnlineGroupEyebrow.astro",
         "src/components/landing/OurChapters.astro",
+        "src/content/config.ts",
         "src/lib/eventsIntro.ts",
         "src/lib/localPresence.test.ts",
         "src/lib/nav.test.ts",
         "src/lib/nav.ts",
-        "src/pages/isolated-components/NavItemLabel.astro",
-        "src/components/ChapterPage.astro",
-        "src/content/config.ts"
+        "src/pages/isolated-components/NavItemLabel.astro"
       ],
       "imports": [
         "src/lib/contact.ts"
@@ -8164,9 +8164,9 @@
     },
     "src/lib/pageBanner.ts": {
       "importedBy": [
-        "src/lib/pageBanner.test.ts",
         "src/components/ChapterPage.astro",
-        "src/components/CommunityPage.astro"
+        "src/components/CommunityPage.astro",
+        "src/lib/pageBanner.test.ts"
       ],
       "imports": []
     },
@@ -8251,8 +8251,8 @@
     },
     "src/lib/previewFieldsSchema.ts": {
       "importedBy": [
-        "src/lib/previewFieldsSchema.test.ts",
-        "src/content/config.ts"
+        "src/content/config.ts",
+        "src/lib/previewFieldsSchema.test.ts"
       ],
       "imports": []
     },
@@ -8590,11 +8590,11 @@
         "src/pages/donate.astro",
         "src/pages/events.astro",
         "src/pages/index.astro",
+        "src/pages/isolated-components/[name].astro",
         "src/pages/llms.txt.ts",
         "src/pages/sponsor.astro",
         "src/pages/volunteer/projects/[slug].astro",
-        "src/pages/volunteer.astro",
-        "src/pages/isolated-components/[name].astro"
+        "src/pages/volunteer.astro"
       ],
       "imports": [
         "src/lib/contentRoot.ts",
@@ -8626,9 +8626,9 @@
       "importedBy": [
         "src/lib/siteClock.test.ts",
         "src/pages/chapters/[slug].astro",
+        "src/pages/communities/[slug].astro",
         "src/pages/events.astro",
-        "src/pages/index.astro",
-        "src/pages/communities/[slug].astro"
+        "src/pages/index.astro"
       ],
       "imports": [
         "src/lib/contentRoot.ts"

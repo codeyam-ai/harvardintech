@@ -1,0 +1,40 @@
+{
+  "claimStartedAt": "2026-11-27T15:37:10Z",
+  "completedAt": "2026-11-27T15:53:27Z",
+  "completedBy": {
+    "agentProvider": "claude",
+    "codeyamEditorVersion": "0.1.7",
+    "currentStep": "ui-step19",
+    "machine": "codeyam-editor-codeyam-editor-1",
+    "originId": "5f1e2b6b-891b-4d4e-bddd-3bad650095e9",
+    "pid": 7,
+    "priority": 0,
+    "selectedPlan": "make-editor-checks-pass-after-investors-co-leads-push",
+    "sessionId": "3a71df00-1263-4fee-a464-b73fc0a96020",
+    "startedAt": "2026-11-27T15:37:10Z"
+  },
+  "createdAt": "2026-11-27T15:37:07Z",
+  "deliverables": [
+    ".gitattributes",
+    ".gitignore",
+    "README.md",
+    "public/images/communities/ai-harvard-sec.webp",
+    "public/images/communities/investors-boston-skyline.webp",
+    "public/images/team/kiran-govindaraju.webp",
+    "src/components/ChapterHero.astro",
+    "src/components/CommunityPage.astro",
+    "src/content/communities/ai.md",
+    "src/content/communities/founders.md",
+    "src/content/communities/investors.md",
+    "src/content/config.ts",
+    "src/data/collections.json",
+    "src/data/imageCredits.json",
+    "src/data/media.json",
+    "src/pages/communities/[slug].astro"
+  ],
+  "journalTimestamp": "2026-11-27T15:53:27Z",
+  "mode": "ui",
+  "planFile": "completed/make-editor-checks-pass-after-investors-co-leads-push.md",
+  "slug": "make-editor-checks-pass-after-investors-co-leads-push",
+  "title": "Make editor checks pass after Investors co-leads push"
+}
