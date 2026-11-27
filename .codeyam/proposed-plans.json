@@ -3078,6 +3078,11 @@
       "at": "2026-11-26T05:08:25.854102008+00:00",
       "feature": "Investors co-leads and new community banners",
       "notes": "The feature was shipped early via an out-of-workflow commit plus a user-run `git push --no-verify`. This cycle then refreshed about 314 stale screenshots (mostly identical; around 50 real frame changes from the capture pipeline/isolation h…"
+    },
+    {
+      "at": "2026-11-27T15:58:24.901795023+00:00",
+      "feature": "Editor checks confirmed green after the Investors co-leads update",
+      "notes": "Verification-only cycle; there were no source changes. The stale 'all' test partition was refreshed (1981/1981 pass). Finalize was green and the push to main went cleanly with 0 commits pulled. 11 audit advisories remain and do not block: …"
     }
   ],
   "syntheses": [
