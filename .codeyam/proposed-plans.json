@@ -3083,6 +3083,11 @@
       "at": "2026-11-27T15:58:24.901795023+00:00",
       "feature": "Editor checks confirmed green after the Investors co-leads update",
       "notes": "Verification-only cycle; there were no source changes. The stale 'all' test partition was refreshed (1981/1981 pass). Finalize was green and the push to main went cleanly with 0 commits pulled. 11 audit advisories remain and do not block: …"
+    },
+    {
+      "at": "2026-11-27T19:40:51.093804271+00:00",
+      "feature": "Site components linked to the screenshots that show them",
+      "notes": "Metadata-only cycle: 52 glossary entries with scenarios satisfiers for .astro components. The full suite (1981 tests) is green. Finalize and push are clean, and main is pushed. Plan #3 'Skip type checks on content-only edits (ne)' is queue…"
     }
   ],
   "syntheses": [
